@@ -7,7 +7,7 @@
 //
 
 #import "SYNAppDelegate.h"
-#import "SYNViewController.h"
+#import "SYNBottomTabViewController.h"
 #import "TestFlight.h"
 #import "UncaughtExceptionHandler.h"
 
@@ -23,8 +23,8 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[SYNViewController alloc] initWithNibName: @"SYNViewController"
-                                                              bundle: nil];
+    self.viewController = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
+                                                                       bundle: nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

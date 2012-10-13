@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class SYNViewController;
+@class SYNBottomTabViewController;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) SYNViewController *viewController;
+@property (strong, nonatomic) SYNBottomTabViewController *viewController;
 
 @end

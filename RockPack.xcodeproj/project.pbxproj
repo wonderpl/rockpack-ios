@@ -24,6 +24,17 @@
 		019824FA1629D09500216900 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 019824F91629D09500216900 /* iTunesArtwork */; };
 		019824FE1629D1A600216900 /* DINNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 019824FC1629D1A600216900 /* DINNextLTPro-Bold.otf */; };
 		019824FF1629D1A600216900 /* DINNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 019824FD1629D1A600216900 /* DINNextLTPro-Regular.otf */; };
+		019825091629DCA700216900 /* BackgroundDiscovery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825081629DCA700216900 /* BackgroundDiscovery@2x.png */; };
+		0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNBottomTabViewController.m */; };
+		0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */; };
+		019825181629E23000216900 /* TabFriendsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825101629E23000216900 /* TabFriendsHighlighted@2x.png */; };
+		019825191629E23000216900 /* TabFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825111629E23000216900 /* TabFriends@2x.png */; };
+		0198251A1629E23000216900 /* TabMyRockPackHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825121629E23000216900 /* TabMyRockPackHighlighted@2x.png */; };
+		0198251B1629E23000216900 /* TabMyRockPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825131629E23000216900 /* TabMyRockPack@2x.png */; };
+		0198251C1629E23000216900 /* TabDiscoverHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825141629E23000216900 /* TabDiscoverHighlighted@2x.png */; };
+		0198251D1629E23000216900 /* TabDiscover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825151629E23000216900 /* TabDiscover@2x.png */; };
+		0198251E1629E23000216900 /* TabWallPacksHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */; };
+		0198251F1629E23000216900 /* TabWallPacks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825171629E23000216900 /* TabWallPacks@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +63,18 @@
 		019824F91629D09500216900 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		019824FC1629D1A600216900 /* DINNextLTPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINNextLTPro-Bold.otf"; sourceTree = "<group>"; };
 		019824FD1629D1A600216900 /* DINNextLTPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINNextLTPro-Regular.otf"; sourceTree = "<group>"; };
+		019825081629DCA700216900 /* BackgroundDiscovery@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundDiscovery@2x.png"; sourceTree = "<group>"; };
+		0198250A1629DCF100216900 /* SYNBottomTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBottomTabViewController.h; sourceTree = "<group>"; };
+		0198250B1629DCF100216900 /* SYNBottomTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBottomTabViewController.m; sourceTree = "<group>"; };
+		0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNBottomTabViewController.xib; sourceTree = "<group>"; };
+		019825101629E23000216900 /* TabFriendsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabFriendsHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825111629E23000216900 /* TabFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabFriends@2x.png"; sourceTree = "<group>"; };
+		019825121629E23000216900 /* TabMyRockPackHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabMyRockPackHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825131629E23000216900 /* TabMyRockPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabMyRockPack@2x.png"; sourceTree = "<group>"; };
+		019825141629E23000216900 /* TabDiscoverHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabDiscoverHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825151629E23000216900 /* TabDiscover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabDiscover@2x.png"; sourceTree = "<group>"; };
+		019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabWallPacksHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825171629E23000216900 /* TabWallPacks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabWallPacks@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +160,8 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0198250F1629E21F00216900 /* Tabs */,
+				019825071629DC9B00216900 /* Backgrounds */,
 				019824F41629CEA200216900 /* App Icons */,
 				019824F31629CE9900216900 /* Launch Images */,
 			);
@@ -165,6 +190,9 @@
 				010DEFEC1629BDC40080F26B /* SYNViewController.h */,
 				010DEFED1629BDC40080F26B /* SYNViewController.m */,
 				010DEFEF1629BDC40080F26B /* SYNViewController.xib */,
+				0198250A1629DCF100216900 /* SYNBottomTabViewController.h */,
+				0198250B1629DCF100216900 /* SYNBottomTabViewController.m */,
+				0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -247,6 +275,29 @@
 			name = Fonts;
 			sourceTree = "<group>";
 		};
+		019825071629DC9B00216900 /* Backgrounds */ = {
+			isa = PBXGroup;
+			children = (
+				019825081629DCA700216900 /* BackgroundDiscovery@2x.png */,
+			);
+			name = Backgrounds;
+			sourceTree = "<group>";
+		};
+		0198250F1629E21F00216900 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				019825101629E23000216900 /* TabFriendsHighlighted@2x.png */,
+				019825111629E23000216900 /* TabFriends@2x.png */,
+				019825121629E23000216900 /* TabMyRockPackHighlighted@2x.png */,
+				019825131629E23000216900 /* TabMyRockPack@2x.png */,
+				019825141629E23000216900 /* TabDiscoverHighlighted@2x.png */,
+				019825151629E23000216900 /* TabDiscover@2x.png */,
+				019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */,
+				019825171629E23000216900 /* TabWallPacks@2x.png */,
+			);
+			name = Tabs;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -306,6 +357,16 @@
 				019824FA1629D09500216900 /* iTunesArtwork in Resources */,
 				019824FE1629D1A600216900 /* DINNextLTPro-Bold.otf in Resources */,
 				019824FF1629D1A600216900 /* DINNextLTPro-Regular.otf in Resources */,
+				019825091629DCA700216900 /* BackgroundDiscovery@2x.png in Resources */,
+				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
+				019825181629E23000216900 /* TabFriendsHighlighted@2x.png in Resources */,
+				019825191629E23000216900 /* TabFriends@2x.png in Resources */,
+				0198251A1629E23000216900 /* TabMyRockPackHighlighted@2x.png in Resources */,
+				0198251B1629E23000216900 /* TabMyRockPack@2x.png in Resources */,
+				0198251C1629E23000216900 /* TabDiscoverHighlighted@2x.png in Resources */,
+				0198251D1629E23000216900 /* TabDiscover@2x.png in Resources */,
+				0198251E1629E23000216900 /* TabWallPacksHighlighted@2x.png in Resources */,
+				0198251F1629E23000216900 /* TabWallPacks@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +382,7 @@
 				010DEFEE1629BDC40080F26B /* SYNViewController.m in Sources */,
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
+				0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
