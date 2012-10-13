@@ -19,6 +19,11 @@
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
 		019824F21629CE1600216900 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824F11629CE1600216900 /* libz.dylib */; };
+		019824F61629CEDC00216900 /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019824F51629CEDC00216900 /* Default-Landscape@2x.png */; };
+		019824F81629D07A00216900 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019824F71629D07A00216900 /* Icon@2x.png */; };
+		019824FA1629D09500216900 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 019824F91629D09500216900 /* iTunesArtwork */; };
+		019824FE1629D1A600216900 /* DINNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 019824FC1629D1A600216900 /* DINNextLTPro-Bold.otf */; };
+		019824FF1629D1A600216900 /* DINNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 019824FD1629D1A600216900 /* DINNextLTPro-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +47,11 @@
 		019824EE1629CC7600216900 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = RockPack/libTestFlight.a; sourceTree = "<group>"; };
 		019824EF1629CC7600216900 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		019824F11629CE1600216900 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		019824F51629CEDC00216900 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
+		019824F71629D07A00216900 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		019824F91629D09500216900 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		019824FC1629D1A600216900 /* DINNextLTPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINNextLTPro-Bold.otf"; sourceTree = "<group>"; };
+		019824FD1629D1A600216900 /* DINNextLTPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINNextLTPro-Regular.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				019824DE1629CA5900216900 /* Images */,
+				019824FB1629D19600216900 /* Fonts */,
 				019824DF1629CA6000216900 /* Property List */,
 				019824E01629CA9400216900 /* Strings */,
 			);
@@ -126,6 +137,8 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				019824F41629CEA200216900 /* App Icons */,
+				019824F31629CE9900216900 /* Launch Images */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -208,6 +221,32 @@
 			name = TestFlight;
 			sourceTree = "<group>";
 		};
+		019824F31629CE9900216900 /* Launch Images */ = {
+			isa = PBXGroup;
+			children = (
+				019824F51629CEDC00216900 /* Default-Landscape@2x.png */,
+			);
+			name = "Launch Images";
+			sourceTree = "<group>";
+		};
+		019824F41629CEA200216900 /* App Icons */ = {
+			isa = PBXGroup;
+			children = (
+				019824F71629D07A00216900 /* Icon@2x.png */,
+				019824F91629D09500216900 /* iTunesArtwork */,
+			);
+			name = "App Icons";
+			sourceTree = "<group>";
+		};
+		019824FB1629D19600216900 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				019824FC1629D1A600216900 /* DINNextLTPro-Bold.otf */,
+				019824FD1629D1A600216900 /* DINNextLTPro-Regular.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -262,6 +301,11 @@
 			files = (
 				010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */,
 				010DEFF11629BDC40080F26B /* SYNViewController.xib in Resources */,
+				019824F61629CEDC00216900 /* Default-Landscape@2x.png in Resources */,
+				019824F81629D07A00216900 /* Icon@2x.png in Resources */,
+				019824FA1629D09500216900 /* iTunesArtwork in Resources */,
+				019824FE1629D1A600216900 /* DINNextLTPro-Bold.otf in Resources */,
+				019824FF1629D1A600216900 /* DINNextLTPro-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

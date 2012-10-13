@@ -10,20 +10,18 @@
 
 @interface SYNViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *test;
+
 @end
+
+//    self.test.font =  [UIFont fontWithName:@"DINNextLTPro-Bold" size: 24];
 
 @implementation SYNViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
 }
 
 @end
