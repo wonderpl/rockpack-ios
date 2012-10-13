@@ -120,7 +120,7 @@
 		if (_selectedIndex != NSNotFound)
 		{
 			UIButton *fromButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-			fromButton.highlighted = FALSE;
+			fromButton.selected = FALSE;
 			fromViewController = self.selectedViewController;
 		}
         
@@ -130,7 +130,7 @@
 		if (_selectedIndex != NSNotFound)
 		{
 			toButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-			toButton.highlighted = TRUE;
+			toButton.selected = TRUE;
 			toViewController = self.selectedViewController;
 		}
         
@@ -160,15 +160,13 @@
              {
                  fromViewController.view.alpha = 0.0f;
                  toViewController.view.alpha = 1.0f;
-                 //                 [fromViewController removeFromSuperview];
+                 [fromViewController.view removeFromSuperview];
                  self.view.userInteractionEnabled = YES;
              }];
 		}
 		else  // not animated
 		{
 			[fromViewController.view removeFromSuperview];
-            
-            //			toViewController.view.frame = contentContainerView.bounds;
 			[self.view addSubview: toViewController.view];
 		}
 	}
