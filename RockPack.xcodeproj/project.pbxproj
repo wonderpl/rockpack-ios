@@ -13,11 +13,12 @@
 		010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFDD1629BDC40080F26B /* InfoPlist.strings */; };
 		010DEFE11629BDC40080F26B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE01629BDC40080F26B /* main.m */; };
 		010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE41629BDC40080F26B /* SYNAppDelegate.m */; };
-		010DEFE71629BDC40080F26B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFE61629BDC40080F26B /* Default.png */; };
-		010DEFE91629BDC40080F26B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFE81629BDC40080F26B /* Default@2x.png */; };
-		010DEFEB1629BDC40080F26B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFEA1629BDC40080F26B /* Default-568h@2x.png */; };
 		010DEFEE1629BDC40080F26B /* SYNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFED1629BDC40080F26B /* SYNViewController.m */; };
 		010DEFF11629BDC40080F26B /* SYNViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFEF1629BDC40080F26B /* SYNViewController.xib */; };
+		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
+		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
+		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
+		019824F21629CE1600216900 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824F11629CE1600216900 /* libz.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,18 +26,22 @@
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		010DEFD81629BDC40080F26B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		010DEFDC1629BDC40080F26B /* RockPack-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RockPack-Info.plist"; sourceTree = "<group>"; };
+		010DEFDC1629BDC40080F26B /* RockPack-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "RockPack-Info.plist"; path = "RockPack/RockPack-Info.plist"; sourceTree = "<group>"; };
 		010DEFDE1629BDC40080F26B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		010DEFE01629BDC40080F26B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		010DEFE21629BDC40080F26B /* RockPack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RockPack-Prefix.pch"; sourceTree = "<group>"; };
 		010DEFE31629BDC40080F26B /* SYNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
 		010DEFE41629BDC40080F26B /* SYNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
-		010DEFE61629BDC40080F26B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		010DEFE81629BDC40080F26B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		010DEFEA1629BDC40080F26B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		010DEFEC1629BDC40080F26B /* SYNViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNViewController.h; sourceTree = "<group>"; };
 		010DEFED1629BDC40080F26B /* SYNViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNViewController.m; sourceTree = "<group>"; };
 		010DEFF01629BDC40080F26B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SYNViewController.xib; sourceTree = "<group>"; };
+		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
+		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
+		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
+		019824EE1629CC7600216900 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = RockPack/libTestFlight.a; sourceTree = "<group>"; };
+		019824EF1629CC7600216900 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		019824F11629CE1600216900 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,9 +49,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */,
-				010DEFD71629BDC40080F26B /* Foundation.framework in Frameworks */,
+				019824F01629CC7600216900 /* libTestFlight.a in Frameworks */,
+				019824F21629CE1600216900 /* libz.dylib in Frameworks */,
 				010DEFD91629BDC40080F26B /* CoreGraphics.framework in Frameworks */,
+				010DEFD71629BDC40080F26B /* Foundation.framework in Frameworks */,
+				010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +63,8 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				010DEFDA1629BDC40080F26B /* RockPack */,
+				019824F11629CE1600216900 /* libz.dylib */,
+				010DEFDA1629BDC40080F26B /* Source */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
 				010DEFD11629BDC40080F26B /* Products */,
 			);
@@ -73,6 +81,7 @@
 		010DEFD31629BDC40080F26B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				019824EE1629CC7600216900 /* libTestFlight.a */,
 				010DEFD41629BDC40080F26B /* UIKit.framework */,
 				010DEFD61629BDC40080F26B /* Foundation.framework */,
 				010DEFD81629BDC40080F26B /* CoreGraphics.framework */,
@@ -80,31 +89,123 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		010DEFDA1629BDC40080F26B /* RockPack */ = {
+		010DEFDA1629BDC40080F26B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFE31629BDC40080F26B /* SYNAppDelegate.h */,
-				010DEFE41629BDC40080F26B /* SYNAppDelegate.m */,
-				010DEFEC1629BDC40080F26B /* SYNViewController.h */,
-				010DEFED1629BDC40080F26B /* SYNViewController.m */,
-				010DEFEF1629BDC40080F26B /* SYNViewController.xib */,
+				019824E21629CAC000216900 /* App Delegate */,
+				019824E31629CADE00216900 /* Custom Views */,
+				019824E11629CAB600216900 /* View Controllers */,
+				019824E41629CAF500216900 /* Helpers */,
 				010DEFDB1629BDC40080F26B /* Supporting Files */,
+				019824DD1629CA3700216900 /* Resources */,
 			);
+			name = Source;
 			path = RockPack;
 			sourceTree = "<group>";
 		};
 		010DEFDB1629BDC40080F26B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFDC1629BDC40080F26B /* RockPack-Info.plist */,
-				010DEFDD1629BDC40080F26B /* InfoPlist.strings */,
 				010DEFE01629BDC40080F26B /* main.m */,
 				010DEFE21629BDC40080F26B /* RockPack-Prefix.pch */,
-				010DEFE61629BDC40080F26B /* Default.png */,
-				010DEFE81629BDC40080F26B /* Default@2x.png */,
-				010DEFEA1629BDC40080F26B /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		019824DD1629CA3700216900 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				019824DE1629CA5900216900 /* Images */,
+				019824DF1629CA6000216900 /* Property List */,
+				019824E01629CA9400216900 /* Strings */,
+			);
+			name = Resources;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		019824DE1629CA5900216900 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		019824DF1629CA6000216900 /* Property List */ = {
+			isa = PBXGroup;
+			children = (
+				010DEFDC1629BDC40080F26B /* RockPack-Info.plist */,
+			);
+			name = "Property List";
+			sourceTree = "<group>";
+		};
+		019824E01629CA9400216900 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				010DEFDD1629BDC40080F26B /* InfoPlist.strings */,
+			);
+			name = Strings;
+			sourceTree = "<group>";
+		};
+		019824E11629CAB600216900 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				010DEFEC1629BDC40080F26B /* SYNViewController.h */,
+				010DEFED1629BDC40080F26B /* SYNViewController.m */,
+				010DEFEF1629BDC40080F26B /* SYNViewController.xib */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		019824E21629CAC000216900 /* App Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				010DEFE31629BDC40080F26B /* SYNAppDelegate.h */,
+				010DEFE41629BDC40080F26B /* SYNAppDelegate.m */,
+			);
+			name = "App Delegate";
+			sourceTree = "<group>";
+		};
+		019824E31629CADE00216900 /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Custom Views";
+			sourceTree = "<group>";
+		};
+		019824E41629CAF500216900 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				019824ED1629CC6600216900 /* TestFlight */,
+				019824E91629CBD000216900 /* Exception Handler */,
+				019824E51629CB1D00216900 /* Debug */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		019824E51629CB1D00216900 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				019824E61629CB4300216900 /* SYNDebug.h */,
+				019824E71629CB4300216900 /* SYNDebug.m */,
+			);
+			name = Debug;
+			sourceTree = "<group>";
+		};
+		019824E91629CBD000216900 /* Exception Handler */ = {
+			isa = PBXGroup;
+			children = (
+				019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */,
+				019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */,
+			);
+			name = "Exception Handler";
+			sourceTree = "<group>";
+		};
+		019824ED1629CC6600216900 /* TestFlight */ = {
+			isa = PBXGroup;
+			children = (
+				019824EF1629CC7600216900 /* TestFlight.h */,
+			);
+			name = TestFlight;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,9 +261,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */,
-				010DEFE71629BDC40080F26B /* Default.png in Resources */,
-				010DEFE91629BDC40080F26B /* Default@2x.png in Resources */,
-				010DEFEB1629BDC40080F26B /* Default-568h@2x.png in Resources */,
 				010DEFF11629BDC40080F26B /* SYNViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,6 +275,8 @@
 				010DEFE11629BDC40080F26B /* main.m in Sources */,
 				010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */,
 				010DEFEE1629BDC40080F26B /* SYNViewController.m in Sources */,
+				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
+				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +289,7 @@
 				010DEFDE1629BDC40080F26B /* en */,
 			);
 			name = InfoPlist.strings;
+			path = RockPack;
 			sourceTree = "<group>";
 		};
 		010DEFEF1629BDC40080F26B /* SYNViewController.xib */ = {
@@ -260,6 +361,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/RockPack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/RockPack-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/RockPack\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -271,6 +376,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/RockPack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/RockPack-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/RockPack\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -295,6 +404,7 @@
 				010DEFF61629BDC40080F26B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
