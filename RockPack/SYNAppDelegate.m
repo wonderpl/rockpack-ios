@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppContants.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "TestFlight.h"
 #import "UncaughtExceptionHandler.h"
 
+
 @implementation SYNAppDelegate
 
-
-// 7476be3185f5971ed3af8d0c6a136c80_MTQyOTYxMjAxMi0xMC0xMyAxMjoyMTozOS41MDgxNDA
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self performSelector: @selector(installUncaughtExceptionHandler)
@@ -27,6 +27,7 @@
                                                                        bundle: nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
@@ -64,7 +65,7 @@
 {
 	InstallUncaughtExceptionHandler();
     
-    [TestFlight takeOff: @"d5a8ff3d95e248e5e3a6f3282fa3e8e8_ODU2NA"];
+    [TestFlight takeOff: kTestFlightTeamToken];
 }
 
 @end
