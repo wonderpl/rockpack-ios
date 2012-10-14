@@ -7,7 +7,7 @@
 //
 
 #import "SYNBottomTabViewController.h"
-#import "SYNWallPackViewController.h"
+#import "SYNWallPackTopTabViewController.h"
 #import "SYNDiscoverViewController.h"
 #import "SYNMyRockPackViewController.h"
 #import "SYNFriendsViewController.h"
@@ -32,7 +32,7 @@
     [super viewDidLoad];
     
     // Setup our four sub-viewcontrollers, one for each tab
-    SYNWallPackViewController *wallPackViewController = [[SYNWallPackViewController alloc] init];
+    SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
     SYNDiscoverViewController *discoverViewController = [[SYNDiscoverViewController alloc] init];
     SYNMyRockPackViewController *myRockPackViewController = [[SYNMyRockPackViewController alloc] init];
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
@@ -157,7 +157,7 @@
             
 			[self transitionFromViewController: fromViewController
                               toViewController: toViewController
-                                      duration: 0.3
+                                      duration: kTabAnimationDuration
                                        options: UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
                                     animations: ^
              {
