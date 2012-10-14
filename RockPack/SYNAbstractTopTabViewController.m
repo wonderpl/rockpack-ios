@@ -8,11 +8,12 @@
 
 #import "AppContants.h"
 #import "SYNAbstractTopTabViewController.h"
+#import "SYNTabImageView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractTopTabViewController ()
 
-@property (nonatomic, strong) UIImageView *topTabView;
+@property (nonatomic, strong) SYNTabImageView *topTabView;
 @property (nonatomic, strong) UIImageView *topTabHighlightedView;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, weak) UIViewController *selectedViewController;
@@ -31,9 +32,16 @@
     _selectedIndex = NSNotFound;
     
     // Underlying (unselected) tab images
-    self.topTabView = [[UIImageView alloc] initWithFrame: CGRectMake (0, 33, 1024, 65)];
+    self.topTabView = [[SYNTabImageView alloc] initWithFrame: CGRectMake (0, 33, 1024, 65)
+                                                touchHandler: ^(CGPoint touchPoint)
+                                                              {
+                                                                  [self tabButtonTouched: touchPoint];
+                                                              }];
+    
     self.topTabView.contentMode  = UIViewContentModeLeft;
     self.topTabView.image = [UIImage imageNamed: @"TabTop.png"];
+    self.topTabView.userInteractionEnabled = YES;
+    
     [self.view addSubview: self.topTabView];
     
     // Highlighted tab images to craftily overlay (by using a superview to clip)
@@ -127,7 +135,6 @@
         
 		if (_selectedIndex != NSNotFound)
 		{
-			UIButton *fromButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
 			fromViewController = self.selectedViewController;
 		}
         
@@ -151,6 +158,7 @@
 		else if (animated)
 		{
 			self.view.userInteractionEnabled = NO;
+
             
 			[self transitionFromViewController: fromViewController
                               toViewController: toViewController
@@ -167,6 +175,7 @@
                  toViewController.view.alpha = 1.0f;
                  [fromViewController.view removeFromSuperview];
                  self.view.userInteractionEnabled = YES;
+                 self.topTabView.userInteractionEnabled = YES;
              }];
 		}
 		else  // not animated
@@ -222,6 +231,18 @@
 - (IBAction) tabButtonPressed: (UIButton *) sender
 {
 	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
+                  animated: YES];
+}
+
+- (IBAction) tabButtonTouched: (CGPoint) touchPoint
+{
+    CGFloat tabWidth = 1024.0f / kTopTabCount;
+    
+    int tab = trunc(touchPoint.x / tabWidth);
+    
+    self.topTabView.userInteractionEnabled = NO;
+    
+	[self setSelectedIndex: tab
                   animated: YES];
 }
 

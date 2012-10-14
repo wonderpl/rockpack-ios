@@ -52,6 +52,8 @@
 		01982581162B17A900216900 /* SYNWallPackCategoryAViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198257F162B17A900216900 /* SYNWallPackCategoryAViewController.xib */; };
 		01982585162B17B800216900 /* SYNWallPackCategoryBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */; };
 		01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */; };
+		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
+		0198258C162B615D00216900 /* SYNddd.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198258B162B615D00216900 /* SYNddd.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -116,6 +118,10 @@
 		01982582162B17B800216900 /* SYNWallPackCategoryBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallPackCategoryBViewController.h; sourceTree = "<group>"; };
 		01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallPackCategoryBViewController.m; sourceTree = "<group>"; };
 		01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallPackCategoryBViewController.xib; sourceTree = "<group>"; };
+		01982587162B605A00216900 /* SYNTabImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabImageView.h; sourceTree = "<group>"; };
+		01982588162B605A00216900 /* SYNTabImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabImageView.m; sourceTree = "<group>"; };
+		0198258A162B615D00216900 /* SYNddd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNddd.h; sourceTree = "<group>"; };
+		0198258B162B615D00216900 /* SYNddd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNddd.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +260,8 @@
 		019824E31629CADE00216900 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				01982587162B605A00216900 /* SYNTabImageView.h */,
+				01982588162B605A00216900 /* SYNTabImageView.m */,
 			);
 			name = "Custom Views";
 			sourceTree = "<group>";
@@ -424,6 +432,8 @@
 			children = (
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
+				0198258A162B615D00216900 /* SYNddd.h */,
+				0198258B162B615D00216900 /* SYNddd.m */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
@@ -529,6 +539,8 @@
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
 				01982580162B17A900216900 /* SYNWallPackCategoryAViewController.m in Sources */,
 				01982585162B17B800216900 /* SYNWallPackCategoryBViewController.m in Sources */,
+				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
+				0198258C162B615D00216900 /* SYNddd.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
