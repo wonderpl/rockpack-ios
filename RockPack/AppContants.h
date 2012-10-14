@@ -27,6 +27,9 @@
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
 
+// Offset from the bottom of the status bar to the bottom of the top tab bar
+#define kTabTopContentOffset 89
+
 // Amount of overspill for top tab bar
 #define kTopTabOverspill 7
 

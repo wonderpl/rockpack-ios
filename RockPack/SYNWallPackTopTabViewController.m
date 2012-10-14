@@ -6,7 +6,10 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppContants.h"
 #import "SYNWallPackTopTabViewController.h"
+#import "SYNWallPackCategoryAViewController.h"
+#import "SYNWallPackCategoryBViewController.h"
 
 @interface SYNWallPackTopTabViewController ()
 
@@ -14,25 +17,21 @@
 
 @implementation SYNWallPackTopTabViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
+// For the demo version, just set up two view controllers so that we can switch between them when the tabs are selected
+- (void) viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    // Setup our four sub-viewcontrollers, one for each tab
+    SYNWallPackCategoryAViewController *categoryAViewController = [[SYNWallPackCategoryAViewController alloc] init];
+    SYNWallPackCategoryBViewController *categoryBViewController = [[SYNWallPackCategoryBViewController alloc] init];
+    
+    // Using new array syntax
+    self.viewControllers = @[categoryAViewController, categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController,
+                             categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController, categoryAViewController];
+    
+    self.selectedViewController = categoryAViewController;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

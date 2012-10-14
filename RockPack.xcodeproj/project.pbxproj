@@ -48,6 +48,10 @@
 		01982573162AF10B00216900 /* TabTopHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982571162AF10B00216900 /* TabTopHighlighted.png */; };
 		01982574162AF10B00216900 /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982572162AF10B00216900 /* TabTop.png */; };
 		01982576162AFB9700216900 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01982575162AFB9600216900 /* QuartzCore.framework */; };
+		01982580162B17A900216900 /* SYNWallPackCategoryAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198257E162B17A900216900 /* SYNWallPackCategoryAViewController.m */; };
+		01982581162B17A900216900 /* SYNWallPackCategoryAViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198257F162B17A900216900 /* SYNWallPackCategoryAViewController.xib */; };
+		01982585162B17B800216900 /* SYNWallPackCategoryBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */; };
+		01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,6 +110,12 @@
 		01982571162AF10B00216900 /* TabTopHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopHighlighted.png; sourceTree = "<group>"; };
 		01982572162AF10B00216900 /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		01982575162AFB9600216900 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0198257D162B17A900216900 /* SYNWallPackCategoryAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallPackCategoryAViewController.h; sourceTree = "<group>"; };
+		0198257E162B17A900216900 /* SYNWallPackCategoryAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallPackCategoryAViewController.m; sourceTree = "<group>"; };
+		0198257F162B17A900216900 /* SYNWallPackCategoryAViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallPackCategoryAViewController.xib; sourceTree = "<group>"; };
+		01982582162B17B800216900 /* SYNWallPackCategoryBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallPackCategoryBViewController.h; sourceTree = "<group>"; };
+		01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallPackCategoryBViewController.m; sourceTree = "<group>"; };
+		01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallPackCategoryBViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,6 +369,12 @@
 				01982559162ADE1100216900 /* SYNWallPackTopTabViewController.h */,
 				0198255A162ADE1100216900 /* SYNWallPackTopTabViewController.m */,
 				0198255B162ADE1100216900 /* SYNWallPackTopTabViewController.xib */,
+				0198257D162B17A900216900 /* SYNWallPackCategoryAViewController.h */,
+				0198257E162B17A900216900 /* SYNWallPackCategoryAViewController.m */,
+				0198257F162B17A900216900 /* SYNWallPackCategoryAViewController.xib */,
+				01982582162B17B800216900 /* SYNWallPackCategoryBViewController.h */,
+				01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */,
+				01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */,
 			);
 			name = Wallpack;
 			sourceTree = "<group>";
@@ -489,6 +505,8 @@
 				0198256A162AE4B300216900 /* TabTop@2x.png in Resources */,
 				01982573162AF10B00216900 /* TabTopHighlighted.png in Resources */,
 				01982574162AF10B00216900 /* TabTop.png in Resources */,
+				01982581162B17A900216900 /* SYNWallPackCategoryAViewController.xib in Resources */,
+				01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +527,8 @@
 				0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */,
 				0198255C162ADE1200216900 /* SYNWallPackTopTabViewController.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
+				01982580162B17A900216900 /* SYNWallPackCategoryAViewController.m in Sources */,
+				01982585162B17B800216900 /* SYNWallPackCategoryBViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

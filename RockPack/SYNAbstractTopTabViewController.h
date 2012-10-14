@@ -10,4 +10,7 @@
 
 @interface SYNAbstractTopTabViewController : UIViewController
 
+- (void) setViewControllers: (NSArray *) newViewControllers;
+- (void) setSelectedViewController: (UIViewController *) newSelectedViewController;
+
 @end

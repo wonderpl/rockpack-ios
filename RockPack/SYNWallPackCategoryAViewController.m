@@ -1,19 +1,19 @@
 //
-//  SYNDiscoverViewController.m
+//  SYNWallPackCategoryAViewController.m
 //  RockPack
 //
-//  Created by Nick Banks on 13/10/2012.
+//  Created by Nick Banks on 14/10/2012.
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
 #import "AppContants.h"
-#import "SYNDiscoverViewController.h"
+#import "SYNWallPackCategoryAViewController.h"
 
-@interface SYNDiscoverViewController ()
+@interface SYNWallPackCategoryAViewController ()
 
 @end
 
-@implementation SYNDiscoverViewController
+@implementation SYNWallPackCategoryAViewController
 
 - (id) initWithNibName: (NSString *) nibNameOrNil
                 bundle: (NSBundle *) nibBundleOrNil
