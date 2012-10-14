@@ -29,15 +29,15 @@
 {
     [super viewDidLoad];
     
+    // Setup our four sub-viewcontrollers, one for each tab
     SYNWallPackViewController *wallPackViewController = [[SYNWallPackViewController alloc] init];
     SYNDiscoverViewController *discoverViewController = [[SYNDiscoverViewController alloc] init];
     SYNMyRockPackViewController *myRockPackViewController = [[SYNMyRockPackViewController alloc] init];
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
-	
-	self.viewControllers  = [NSArray arrayWithObjects: wallPackViewController,
-                                                       discoverViewController,
-                                                       myRockPackViewController,
-                                                       friendsViewController, nil];  
+    
+    // Using new array syntax
+    self.viewControllers = @[wallPackViewController, discoverViewController, myRockPackViewController, friendsViewController];
+
     _selectedIndex = NSNotFound;
     
     self.selectedViewController = wallPackViewController;
@@ -177,7 +177,7 @@
 {
 	if (self.selectedIndex != NSNotFound)
     {
-		return [self.viewControllers objectAtIndex: self.selectedIndex];
+		return self.viewControllers [self.selectedIndex];
     }
 	else
     {

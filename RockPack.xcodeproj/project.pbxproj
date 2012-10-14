@@ -41,6 +41,7 @@
 		0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockPackViewController.xib */; };
 		0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198254C162A204A00216900 /* SYNFriendsViewController.m */; };
 		0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198254D162A204A00216900 /* SYNFriendsViewController.xib */; };
+		01982552162A2AC300216900 /* PanelMainTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982551162A2AC300216900 /* PanelMainTitle@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +92,7 @@
 		0198254B162A204A00216900 /* SYNFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsViewController.h; sourceTree = "<group>"; };
 		0198254C162A204A00216900 /* SYNFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsViewController.m; sourceTree = "<group>"; };
 		0198254D162A204A00216900 /* SYNFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsViewController.xib; sourceTree = "<group>"; };
+		01982551162A2AC300216900 /* PanelMainTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMainTitle@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				01982550162A2AAC00216900 /* Panels */,
 				0198250F1629E21F00216900 /* Tabs */,
 				019825071629DC9B00216900 /* Backgrounds */,
 				019824F41629CEA200216900 /* App Icons */,
@@ -332,6 +335,14 @@
 			name = Contstants;
 			sourceTree = "<group>";
 		};
+		01982550162A2AAC00216900 /* Panels */ = {
+			isa = PBXGroup;
+			children = (
+				01982551162A2AC300216900 /* PanelMainTitle@2x.png */,
+			);
+			name = Panels;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -404,6 +415,7 @@
 				01982545162A201800216900 /* SYNDiscoverViewController.xib in Resources */,
 				0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
+				01982552162A2AC300216900 /* PanelMainTitle@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
