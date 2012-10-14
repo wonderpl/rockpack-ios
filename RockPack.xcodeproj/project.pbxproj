@@ -42,6 +42,11 @@
 		0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198254C162A204A00216900 /* SYNFriendsViewController.m */; };
 		0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198254D162A204A00216900 /* SYNFriendsViewController.xib */; };
 		01982552162A2AC300216900 /* PanelMainTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982551162A2AC300216900 /* PanelMainTitle@2x.png */; };
+		0198255C162ADE1200216900 /* SYNWallPackTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198255A162ADE1100216900 /* SYNWallPackTopTabViewController.m */; };
+		0198255D162ADE1200216900 /* SYNWallPackTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198255B162ADE1100216900 /* SYNWallPackTopTabViewController.xib */; };
+		01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */; };
+		01982569162AE4B300216900 /* TabTopHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982567162AE4B300216900 /* TabTopHighlighted@2x.png */; };
+		0198256A162AE4B300216900 /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982568162AE4B300216900 /* TabTop@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +98,13 @@
 		0198254C162A204A00216900 /* SYNFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsViewController.m; sourceTree = "<group>"; };
 		0198254D162A204A00216900 /* SYNFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsViewController.xib; sourceTree = "<group>"; };
 		01982551162A2AC300216900 /* PanelMainTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMainTitle@2x.png"; sourceTree = "<group>"; };
+		01982559162ADE1100216900 /* SYNWallPackTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallPackTopTabViewController.h; sourceTree = "<group>"; };
+		0198255A162ADE1100216900 /* SYNWallPackTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallPackTopTabViewController.m; sourceTree = "<group>"; };
+		0198255B162ADE1100216900 /* SYNWallPackTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallPackTopTabViewController.xib; sourceTree = "<group>"; };
+		01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractTopTabViewController.h; sourceTree = "<group>"; };
+		01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractTopTabViewController.m; sourceTree = "<group>"; };
+		01982567162AE4B300216900 /* TabTopHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopHighlighted@2x.png"; sourceTree = "<group>"; };
+		01982568162AE4B300216900 /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,21 +219,12 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0198250A1629DCF100216900 /* SYNBottomTabViewController.h */,
-				0198250B1629DCF100216900 /* SYNBottomTabViewController.m */,
-				0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */,
-				019825201629FDE900216900 /* SYNWallPackViewController.h */,
-				019825211629FDE900216900 /* SYNWallPackViewController.m */,
-				019825221629FDE900216900 /* SYNWallPackViewController.xib */,
-				01982541162A201800216900 /* SYNDiscoverViewController.h */,
-				01982542162A201800216900 /* SYNDiscoverViewController.m */,
-				01982543162A201800216900 /* SYNDiscoverViewController.xib */,
-				01982546162A203600216900 /* SYNMyRockPackViewController.h */,
-				01982547162A203600216900 /* SYNMyRockPackViewController.m */,
-				01982548162A203600216900 /* SYNMyRockPackViewController.xib */,
-				0198254B162A204A00216900 /* SYNFriendsViewController.h */,
-				0198254C162A204A00216900 /* SYNFriendsViewController.m */,
-				0198254D162A204A00216900 /* SYNFriendsViewController.xib */,
+				01982563162ADEAD00216900 /* Abstract */,
+				01982562162ADE5200216900 /* Root */,
+				0198255E162ADE2100216900 /* Wallpack */,
+				0198255F162ADE2900216900 /* Discover */,
+				01982560162ADE3300216900 /* My Rockpack */,
+				01982561162ADE4000216900 /* Friends */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -315,6 +318,8 @@
 		0198250F1629E21F00216900 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				01982567162AE4B300216900 /* TabTopHighlighted@2x.png */,
+				01982568162AE4B300216900 /* TabTop@2x.png */,
 				019825101629E23000216900 /* TabFriendsHighlighted@2x.png */,
 				019825111629E23000216900 /* TabFriends@2x.png */,
 				019825121629E23000216900 /* TabMyRockPackHighlighted@2x.png */,
@@ -341,6 +346,68 @@
 				01982551162A2AC300216900 /* PanelMainTitle@2x.png */,
 			);
 			name = Panels;
+			sourceTree = "<group>";
+		};
+		0198255E162ADE2100216900 /* Wallpack */ = {
+			isa = PBXGroup;
+			children = (
+				019825201629FDE900216900 /* SYNWallPackViewController.h */,
+				019825211629FDE900216900 /* SYNWallPackViewController.m */,
+				019825221629FDE900216900 /* SYNWallPackViewController.xib */,
+				01982559162ADE1100216900 /* SYNWallPackTopTabViewController.h */,
+				0198255A162ADE1100216900 /* SYNWallPackTopTabViewController.m */,
+				0198255B162ADE1100216900 /* SYNWallPackTopTabViewController.xib */,
+			);
+			name = Wallpack;
+			sourceTree = "<group>";
+		};
+		0198255F162ADE2900216900 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				01982541162A201800216900 /* SYNDiscoverViewController.h */,
+				01982542162A201800216900 /* SYNDiscoverViewController.m */,
+				01982543162A201800216900 /* SYNDiscoverViewController.xib */,
+			);
+			name = Discover;
+			sourceTree = "<group>";
+		};
+		01982560162ADE3300216900 /* My Rockpack */ = {
+			isa = PBXGroup;
+			children = (
+				01982546162A203600216900 /* SYNMyRockPackViewController.h */,
+				01982547162A203600216900 /* SYNMyRockPackViewController.m */,
+				01982548162A203600216900 /* SYNMyRockPackViewController.xib */,
+			);
+			name = "My Rockpack";
+			sourceTree = "<group>";
+		};
+		01982561162ADE4000216900 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				0198254B162A204A00216900 /* SYNFriendsViewController.h */,
+				0198254C162A204A00216900 /* SYNFriendsViewController.m */,
+				0198254D162A204A00216900 /* SYNFriendsViewController.xib */,
+			);
+			name = Friends;
+			sourceTree = "<group>";
+		};
+		01982562162ADE5200216900 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				0198250A1629DCF100216900 /* SYNBottomTabViewController.h */,
+				0198250B1629DCF100216900 /* SYNBottomTabViewController.m */,
+				0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */,
+			);
+			name = Root;
+			sourceTree = "<group>";
+		};
+		01982563162ADEAD00216900 /* Abstract */ = {
+			isa = PBXGroup;
+			children = (
+				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
+				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
+			);
+			name = Abstract;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,6 +483,9 @@
 				0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
 				01982552162A2AC300216900 /* PanelMainTitle@2x.png in Resources */,
+				0198255D162ADE1200216900 /* SYNWallPackTopTabViewController.xib in Resources */,
+				01982569162AE4B300216900 /* TabTopHighlighted@2x.png in Resources */,
+				0198256A162AE4B300216900 /* TabTop@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +505,8 @@
 				01982544162A201800216900 /* SYNDiscoverViewController.m in Sources */,
 				01982549162A203600216900 /* SYNMyRockPackViewController.m in Sources */,
 				0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */,
+				0198255C162ADE1200216900 /* SYNWallPackTopTabViewController.m in Sources */,
+				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

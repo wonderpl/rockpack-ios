@@ -25,6 +25,8 @@
 
 @synthesize selectedIndex = _selectedIndex;
 
+// Initialise all the elements common to all 4 tabs
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -62,6 +64,8 @@
 }
 
 
+// Add the four tab view controllers as sub-view controllers of this view controller
+
 - (void) setViewControllers: (NSArray *) newViewControllers
 {
 	NSAssert([newViewControllers count] >= 2, @"MHTabBarController requires at least two view controllers");
@@ -96,12 +100,16 @@
 }
 
 
+// Set the selected tab (with no animation)
+
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
 {
 	[self setSelectedIndex: newSelectedIndex
                   animated: NO];
 }
 
+
+// Set the selected tab (with animation if required)
 
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
                  animated: (BOOL) animated
@@ -173,6 +181,8 @@
 }
 
 
+// Return the currently selected view controller
+
 - (UIViewController *) selectedViewController
 {
 	if (self.selectedIndex != NSNotFound)
@@ -186,12 +196,16 @@
 }
 
 
+// Set the selected tab of a particular view controller (with no animation)
+
 - (void) setSelectedViewController: (UIViewController *) newSelectedViewController
 {
 	[self setSelectedViewController: newSelectedViewController
                            animated: NO];
 }
 
+
+// Set the selected tab of a particular view controller (with animation if required)
 
 - (void) setSelectedViewController: (UIViewController *) newSelectedViewController
                           animated: (BOOL) animated;
@@ -207,6 +221,7 @@
 
 
 // Use the tag index of the button (100 - 103) to calculate the button index
+
 - (IBAction) tabButtonPressed: (UIButton *) sender
 {
 	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
