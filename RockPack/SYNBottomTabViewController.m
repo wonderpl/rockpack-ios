@@ -18,6 +18,7 @@
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 
 @end
 
@@ -149,33 +150,56 @@
 		else if (fromViewController == nil)  // don't animate
 		{
             //			toViewController.view.frame = self.view.bounds;
-			[self.view addSubview: toViewController.view];
+//			[self.view addSubview: toViewController.view];
+            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
 		}
 		else if (animated)
 		{
 			self.view.userInteractionEnabled = NO;
+//            toViewController.view.alpha = 0.0f;
+//            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
+//			[self transitionFromViewController: fromViewController
+//                              toViewController: toViewController
+//                                      duration: kTabAnimationDuration
+//                                       options: UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
+//                                    animations: ^
+//             {
+//                 fromViewController.view.alpha = 0.0f;
+//                 toViewController.view.alpha = 1.0f;
+//             }
+//                                    completion: ^(BOOL finished)
+//             {
+//                 fromViewController.view.alpha = 0.0f;
+//                 toViewController.view.alpha = 1.0f;
+//                 [fromViewController.view removeFromSuperview];
+//                 self.view.userInteractionEnabled = YES;
+//             }];
             
-			[self transitionFromViewController: fromViewController
-                              toViewController: toViewController
-                                      duration: kTabAnimationDuration
-                                       options: UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
-                                    animations: ^
-             {
-                 fromViewController.view.alpha = 0.0f;
-                 toViewController.view.alpha = 1.0f;
-             }
-                                    completion: ^(BOOL finished)
-             {
-                 fromViewController.view.alpha = 0.0f;
-                 toViewController.view.alpha = 1.0f;
-                 [fromViewController.view removeFromSuperview];
-                 self.view.userInteractionEnabled = YES;
-             }];
+            // Set new alpha to 0
+            toViewController.view.alpha = 0.0f;
+            
+            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
+
+             [UIView animateWithDuration: kTabAnimationDuration
+                                   delay: 0.0f
+                                 options: UIViewAnimationOptionCurveEaseInOut
+                              animations: ^
+                                          {
+                                              fromViewController.view.alpha = 0.0f;
+                                              toViewController.view.alpha = 1.0f;
+                                          }
+                              completion: ^(BOOL finished)
+                                          {
+                                              fromViewController.view.alpha = 0.0f;
+                                              [fromViewController.view removeFromSuperview];
+                                              self.view.userInteractionEnabled = YES;
+                                          }];
 		}
 		else  // not animated
 		{
 			[fromViewController.view removeFromSuperview];
-			[self.view addSubview: toViewController.view];
+//			[self.view addSubview: toViewController.view];
+            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
 		}
 	}
 }

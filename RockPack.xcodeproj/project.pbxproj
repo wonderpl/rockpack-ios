@@ -54,6 +54,7 @@
 		01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */; };
 		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
 		0198258C162B615D00216900 /* SYNddd.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198258B162B615D00216900 /* SYNddd.m */; };
+		019825BB162C374900216900 /* PlaceholderFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825BA162C374900216900 /* PlaceholderFriends@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +123,7 @@
 		01982588162B605A00216900 /* SYNTabImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabImageView.m; sourceTree = "<group>"; };
 		0198258A162B615D00216900 /* SYNddd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNddd.h; sourceTree = "<group>"; };
 		0198258B162B615D00216900 /* SYNddd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNddd.m; sourceTree = "<group>"; };
+		019825BA162C374900216900 /* PlaceholderFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderFriends@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				019825B9162C373D00216900 /* Placeholders */,
 				01982550162A2AAC00216900 /* Panels */,
 				0198250F1629E21F00216900 /* Tabs */,
 				019825071629DC9B00216900 /* Backgrounds */,
@@ -438,6 +441,14 @@
 			name = Abstract;
 			sourceTree = "<group>";
 		};
+		019825B9162C373D00216900 /* Placeholders */ = {
+			isa = PBXGroup;
+			children = (
+				019825BA162C374900216900 /* PlaceholderFriends@2x.png */,
+			);
+			name = Placeholders;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -517,6 +528,7 @@
 				01982574162AF10B00216900 /* TabTop.png in Resources */,
 				01982581162B17A900216900 /* SYNWallPackCategoryAViewController.xib in Resources */,
 				01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */,
+				019825BB162C374900216900 /* PlaceholderFriends@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

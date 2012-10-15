@@ -28,10 +28,10 @@
 #define kBottomTabBarHeight 62
 
 // Height of the header bar
-#define kHeaderBarHeight 43
+#define kHeaderBarHeight 44
 
 // Height of the top tab bar
-#define kTopTabBarHeight 46
+#define kTopTabBarHeight 45
 
 // Offset from the bottom of the status bar to the bottom of the top tab bar
 #define kTabTopContentOffset (kHeaderBarHeight + kTopTabBarHeight)
