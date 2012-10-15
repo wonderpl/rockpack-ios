@@ -58,6 +58,9 @@
 		019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F0162C94A300216900 /* UIColor+SYNColor.m */; };
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
 		019825F6162CA70600216900 /* PanelRockieTalkie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825F5162CA70600216900 /* PanelRockieTalkie@2x.png */; };
+		01982612162CC0B200216900 /* BackgroundWallPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982611162CC0B100216900 /* BackgroundWallPack@2x.png */; };
+		01982615162CC4C100216900 /* PlaceholderCategoryB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */; };
+		01982616162CC4C100216900 /* PlaceholderCategoryA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -132,6 +135,9 @@
 		019825F2162C94B500216900 /* UIFont+SYNFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+SYNFont.h"; sourceTree = "<group>"; };
 		019825F3162C94B500216900 /* UIFont+SYNFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+SYNFont.m"; sourceTree = "<group>"; };
 		019825F5162CA70600216900 /* PanelRockieTalkie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelRockieTalkie@2x.png"; sourceTree = "<group>"; };
+		01982611162CC0B100216900 /* BackgroundWallPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundWallPack@2x.png"; sourceTree = "<group>"; };
+		01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderCategoryB@2x.png"; sourceTree = "<group>"; };
+		01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderCategoryA@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -343,6 +349,7 @@
 		019825071629DC9B00216900 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				01982611162CC0B100216900 /* BackgroundWallPack@2x.png */,
 				019825081629DCA700216900 /* BackgroundDiscovery@2x.png */,
 			);
 			name = Backgrounds;
@@ -454,6 +461,8 @@
 		019825B9162C373D00216900 /* Placeholders */ = {
 			isa = PBXGroup;
 			children = (
+				01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */,
+				01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */,
 				019825BA162C374900216900 /* PlaceholderFriends@2x.png */,
 			);
 			name = Placeholders;
@@ -551,6 +560,9 @@
 				01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */,
 				019825BB162C374900216900 /* PlaceholderFriends@2x.png in Resources */,
 				019825F6162CA70600216900 /* PanelRockieTalkie@2x.png in Resources */,
+				01982612162CC0B200216900 /* BackgroundWallPack@2x.png in Resources */,
+				01982615162CC4C100216900 /* PlaceholderCategoryB@2x.png in Resources */,
+				01982616162CC4C100216900 /* PlaceholderCategoryA@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
