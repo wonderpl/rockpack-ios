@@ -20,6 +20,9 @@
 // Tabs
 #define kTabAnimationDuration 0.3f
 
+// Rockie-talkie
+#define kRockieTalkieAnimationDuration 0.3f
+
 //
 // Dimensions
 //

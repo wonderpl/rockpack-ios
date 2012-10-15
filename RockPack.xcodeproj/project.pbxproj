@@ -55,6 +55,9 @@
 		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
 		0198258C162B615D00216900 /* SYNddd.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198258B162B615D00216900 /* SYNddd.m */; };
 		019825BB162C374900216900 /* PlaceholderFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825BA162C374900216900 /* PlaceholderFriends@2x.png */; };
+		019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F0162C94A300216900 /* UIColor+SYNColor.m */; };
+		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
+		019825F6162CA70600216900 /* PanelRockieTalkie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825F5162CA70600216900 /* PanelRockieTalkie@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -124,6 +127,11 @@
 		0198258A162B615D00216900 /* SYNddd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNddd.h; sourceTree = "<group>"; };
 		0198258B162B615D00216900 /* SYNddd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNddd.m; sourceTree = "<group>"; };
 		019825BA162C374900216900 /* PlaceholderFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderFriends@2x.png"; sourceTree = "<group>"; };
+		019825EF162C94A300216900 /* UIColor+SYNColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SYNColor.h"; sourceTree = "<group>"; };
+		019825F0162C94A300216900 /* UIColor+SYNColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SYNColor.m"; sourceTree = "<group>"; };
+		019825F2162C94B500216900 /* UIFont+SYNFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+SYNFont.h"; sourceTree = "<group>"; };
+		019825F3162C94B500216900 /* UIFont+SYNFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+SYNFont.m"; sourceTree = "<group>"; };
+		019825F5162CA70600216900 /* PanelRockieTalkie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelRockieTalkie@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				01982525162A02DD00216900 /* Contstants */,
+				019825EE162C948000216900 /* Categories */,
 				019824E21629CAC000216900 /* App Delegate */,
 				019824E31629CADE00216900 /* Custom Views */,
 				019824E11629CAB600216900 /* View Controllers */,
@@ -369,6 +378,7 @@
 		01982550162A2AAC00216900 /* Panels */ = {
 			isa = PBXGroup;
 			children = (
+				019825F5162CA70600216900 /* PanelRockieTalkie@2x.png */,
 				01982551162A2AC300216900 /* PanelMainTitle@2x.png */,
 			);
 			name = Panels;
@@ -447,6 +457,17 @@
 				019825BA162C374900216900 /* PlaceholderFriends@2x.png */,
 			);
 			name = Placeholders;
+			sourceTree = "<group>";
+		};
+		019825EE162C948000216900 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				019825EF162C94A300216900 /* UIColor+SYNColor.h */,
+				019825F0162C94A300216900 /* UIColor+SYNColor.m */,
+				019825F2162C94B500216900 /* UIFont+SYNFont.h */,
+				019825F3162C94B500216900 /* UIFont+SYNFont.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -529,6 +550,7 @@
 				01982581162B17A900216900 /* SYNWallPackCategoryAViewController.xib in Resources */,
 				01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */,
 				019825BB162C374900216900 /* PlaceholderFriends@2x.png in Resources */,
+				019825F6162CA70600216900 /* PanelRockieTalkie@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,6 +575,8 @@
 				01982585162B17B800216900 /* SYNWallPackCategoryBViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
 				0198258C162B615D00216900 /* SYNddd.m in Sources */,
+				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
+				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

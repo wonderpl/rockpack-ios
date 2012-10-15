@@ -12,6 +12,7 @@
 #import "SYNMyRockPackViewController.h"
 #import "SYNFriendsViewController.h"
 #import "AppContants.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController ()
 
@@ -19,6 +20,8 @@
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *rockieTalkiePanel;
+@property (nonatomic, assign) BOOL didNotSwipe;
 
 @end
 
@@ -27,6 +30,8 @@
 @synthesize selectedIndex = _selectedIndex;
 
 // Initialise all the elements common to all 4 tabs
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {
@@ -62,8 +67,30 @@
          splashView.alpha = 0.0f;
          [splashView removeFromSuperview];
      }];
+    
+    // Add swipe recoginisers for Rockie-Talkie
+    // Right swipe
+    UISwipeGestureRecognizer *swipeRightRecognizer;
+    swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                     action: @selector(swipeRight:)];
+    
+    [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.rockieTalkiePanel addGestureRecognizer: swipeRightRecognizer];
+    
+    // Left swipe
+    UISwipeGestureRecognizer *swipeLeftRecognizer;
+    swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                    action: @selector(swipeleft:)];
+    
+    [swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.rockieTalkiePanel addGestureRecognizer: swipeLeftRecognizer];
+    
+    // Set initial state
+    self.rockieTalkiePanel.userInteractionEnabled = TRUE;
+    self.didNotSwipe = TRUE;
 }
 
+#pragma mark - Tab & Container switching mechanism
 
 // Add the four tab view controllers as sub-view controllers of this view controller
 
@@ -180,20 +207,20 @@
             
             [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
 
-             [UIView animateWithDuration: kTabAnimationDuration
-                                   delay: 0.0f
-                                 options: UIViewAnimationOptionCurveEaseInOut
-                              animations: ^
-                                          {
-                                              fromViewController.view.alpha = 0.0f;
-                                              toViewController.view.alpha = 1.0f;
-                                          }
-                              completion: ^(BOOL finished)
-                                          {
-                                              fromViewController.view.alpha = 0.0f;
-                                              [fromViewController.view removeFromSuperview];
-                                              self.view.userInteractionEnabled = YES;
-                                          }];
+            [UIView animateWithDuration: kTabAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^
+                                         {
+                                             fromViewController.view.alpha = 0.0f;
+                                             toViewController.view.alpha = 1.0f;
+                                         }
+                             completion: ^(BOOL finished)
+                                         {
+                                             fromViewController.view.alpha = 0.0f;
+                                             [fromViewController.view removeFromSuperview];
+                                             self.view.userInteractionEnabled = YES;
+                                         }];
 		}
 		else  // not animated
 		{
@@ -250,6 +277,58 @@
 {
 	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
                   animated: YES];
+}
+
+
+#pragma mark - Rockie-Talkie gesture handlers
+
+-(void) swipeleft: (UISwipeGestureRecognizer *) swipeGesture
+{
+    if (self.didNotSwipe)
+    {
+        self.didNotSwipe = FALSE;
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             rockieTalkiePanelFrame.origin.x = 425;
+             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+
+         }
+                         completion: ^(BOOL finished)
+         {
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             rockieTalkiePanelFrame.origin.x = 425;
+             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+         }];
+    }
+}
+
+
+-(void) swipeRight: (UISwipeGestureRecognizer *) swipeGesture
+{
+    if (!self.didNotSwipe)
+    {
+        self.didNotSwipe = TRUE;
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             rockieTalkiePanelFrame.origin.x = 884;
+             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             rockieTalkiePanelFrame.origin.x = 884;
+             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+         }];
+    }
 }
 
 
