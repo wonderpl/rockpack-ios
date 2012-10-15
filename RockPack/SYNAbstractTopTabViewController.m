@@ -133,56 +133,63 @@
 		UIViewController *fromViewController;
 		UIViewController *toViewController;
         
-		if (_selectedIndex != NSNotFound)
-		{
-			fromViewController = self.selectedViewController;
-		}
+        if (_selectedIndex != NSNotFound)
+        {
+            fromViewController = self.selectedViewController;
+        }
         
-		_selectedIndex = newSelectedIndex;
+        _selectedIndex = newSelectedIndex;
         
-		if (_selectedIndex != NSNotFound)
-		{
-			[self highlightTab: newSelectedIndex];
-			toViewController = self.selectedViewController;
-		}
+        if (_selectedIndex != NSNotFound)
+        {
+            [self highlightTab: newSelectedIndex];
+            toViewController = self.selectedViewController;
+        }
         
-		if (toViewController == nil)  // don't animate
-		{
-			[fromViewController.view removeFromSuperview];
-		}
-		else if (fromViewController == nil)  // don't animate
-		{
+        if (toViewController == nil)  // don't animate
+        {
+            [fromViewController.view removeFromSuperview];
+        }
+        else if (fromViewController == nil)  // don't animate
+        {
             //			toViewController.view.frame = self.view.bounds;
-			[self.view addSubview: toViewController.view];
-		}
-		else if (animated)
-		{
-			self.view.userInteractionEnabled = NO;
-
-            
-			[self transitionFromViewController: fromViewController
-                              toViewController: toViewController
-                                      duration: kTabAnimationDuration
-                                       options: UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
-                                    animations: ^
-             {
-                 fromViewController.view.alpha = 0.0f;
-                 toViewController.view.alpha = 1.0f;
-             }
-                                    completion: ^(BOOL finished)
-             {
-                 fromViewController.view.alpha = 0.0f;
-                 toViewController.view.alpha = 1.0f;
-                 [fromViewController.view removeFromSuperview];
-                 self.view.userInteractionEnabled = YES;
-                 self.topTabView.userInteractionEnabled = YES;
-             }];
-		}
-		else  // not animated
-		{
-			[fromViewController.view removeFromSuperview];
-			[self.view addSubview: toViewController.view];
-		}
+            [self.view addSubview: toViewController.view];
+        }
+        else
+        if (fromViewController == toViewController)
+        {
+            NSLog (@"same");
+        }
+        else
+        {
+            if (animated)
+            {
+                self.view.userInteractionEnabled = NO;
+                
+                [self transitionFromViewController: fromViewController
+                                  toViewController: toViewController
+                                          duration: kTabAnimationDuration
+                                           options: UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
+                                        animations: ^
+                 {
+                     fromViewController.view.alpha = 0.0f;
+                     toViewController.view.alpha = 1.0f;
+                 }
+                                        completion: ^(BOOL finished)
+                 {
+                     fromViewController.view.alpha = 0.0f;
+                     toViewController.view.alpha = 1.0f;
+                     [fromViewController.view removeFromSuperview];
+                     self.view.userInteractionEnabled = YES;
+                     self.topTabView.userInteractionEnabled = YES;
+                 }];
+            }
+            else  // not animated
+            {
+                [fromViewController.view removeFromSuperview];
+                [self.view addSubview: toViewController.view];
+            }
+        }
 	}
 }
 
@@ -236,11 +243,11 @@
 
 - (IBAction) tabButtonTouched: (CGPoint) touchPoint
 {
+    NSLog (@"tabButtonTouched" );
+     
     CGFloat tabWidth = 1024.0f / kTopTabCount;
     
     int tab = trunc(touchPoint.x / tabWidth);
-    
-    self.topTabView.userInteractionEnabled = NO;
     
 	[self setSelectedIndex: tab
                   animated: YES];
