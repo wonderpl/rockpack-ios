@@ -243,8 +243,6 @@
 
 - (IBAction) tabButtonTouched: (CGPoint) touchPoint
 {
-    NSLog (@"tabButtonTouched" );
-     
     CGFloat tabWidth = 1024.0f / kTopTabCount;
     
     int tab = trunc(touchPoint.x / tabWidth);

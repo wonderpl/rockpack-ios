@@ -67,9 +67,9 @@
                                   withScrollingVelocity: (CGPoint) velocity
 {
     CGFloat offsetAdjustment = MAXFLOAT;
-    CGFloat horizontalCenter = proposedContentOffset.y + (CGRectGetWidth(self.collectionView.bounds) / 2.0);
+    CGFloat horizontalCenter = proposedContentOffset.y + (CGRectGetHeight(self.collectionView.bounds) / 2.0);
     
-    CGRect targetRect = CGRectMake(proposedContentOffset.y, 0.0, self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
+    CGRect targetRect = CGRectMake(0.0, proposedContentOffset.y, self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
     NSArray* array = [super layoutAttributesForElementsInRect:targetRect];
     
     for (UICollectionViewLayoutAttributes* layoutAttributes in array)
