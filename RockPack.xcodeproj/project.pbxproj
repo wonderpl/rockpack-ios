@@ -29,6 +29,20 @@
 		012632EB162DF9FB0009FF9C /* Wallpack_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632E1162DF9FB0009FF9C /* Wallpack_7.png */; };
 		012632EC162DF9FB0009FF9C /* Wallpack_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632E2162DF9FB0009FF9C /* Wallpack_8.png */; };
 		012632ED162DF9FB0009FF9C /* Wallpack_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632E3162DF9FB0009FF9C /* Wallpack_9.png */; };
+		012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */; };
+		012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */; };
+		01263303162E18400009FF9C /* ButtonVideoWellAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632F7162E18400009FF9C /* ButtonVideoWellAdd.png */; };
+		01263304162E18400009FF9C /* ButtonVideoWellAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632F8162E18400009FF9C /* ButtonVideoWellAdd@2x.png */; };
+		01263305162E18400009FF9C /* ButtonVideoWellAddHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632F9162E18400009FF9C /* ButtonVideoWellAddHighlighted.png */; };
+		01263306162E18400009FF9C /* ButtonVideoWellAddHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632FA162E18400009FF9C /* ButtonVideoWellAddHighlighted@2x.png */; };
+		01263307162E18400009FF9C /* ButtonVideoWellDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632FB162E18400009FF9C /* ButtonVideoWellDelete.png */; };
+		01263308162E18400009FF9C /* ButtonVideoWellDelete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632FC162E18400009FF9C /* ButtonVideoWellDelete@2x.png */; };
+		01263309162E18400009FF9C /* ButtonVideoWellDeleteHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632FD162E18400009FF9C /* ButtonVideoWellDeleteHighlighted.png */; };
+		0126330A162E18400009FF9C /* ButtonVideoWellDeleteHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632FE162E18400009FF9C /* ButtonVideoWellDeleteHighlighted@2x.png */; };
+		0126330B162E18400009FF9C /* ButtonVideoWellShuffle.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632FF162E18400009FF9C /* ButtonVideoWellShuffle.png */; };
+		0126330C162E18400009FF9C /* ButtonVideoWellShuffle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263300162E18400009FF9C /* ButtonVideoWellShuffle@2x.png */; };
+		0126330D162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263301162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png */; };
+		0126330E162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263302162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -49,8 +63,6 @@
 		0198251D1629E23000216900 /* TabDiscover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825151629E23000216900 /* TabDiscover@2x.png */; };
 		0198251E1629E23000216900 /* TabWallPacksHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */; };
 		0198251F1629E23000216900 /* TabWallPacks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825171629E23000216900 /* TabWallPacks@2x.png */; };
-		01982544162A201800216900 /* SYNDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982542162A201800216900 /* SYNDiscoverViewController.m */; };
-		01982545162A201800216900 /* SYNDiscoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982543162A201800216900 /* SYNDiscoverViewController.xib */; };
 		01982549162A203600216900 /* SYNMyRockPackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982547162A203600216900 /* SYNMyRockPackViewController.m */; };
 		0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockPackViewController.xib */; };
 		0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198254C162A204A00216900 /* SYNFriendsViewController.m */; };
@@ -108,6 +120,21 @@
 		012632E1162DF9FB0009FF9C /* Wallpack_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_7.png; sourceTree = "<group>"; };
 		012632E2162DF9FB0009FF9C /* Wallpack_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_8.png; sourceTree = "<group>"; };
 		012632E3162DF9FB0009FF9C /* Wallpack_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_9.png; sourceTree = "<group>"; };
+		012632F1162E130C0009FF9C /* SYNDiscoverTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDiscoverTopTabViewController.h; sourceTree = "<group>"; };
+		012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDiscoverTopTabViewController.m; sourceTree = "<group>"; };
+		012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNDiscoverTopTabViewController.xib; sourceTree = "<group>"; };
+		012632F7162E18400009FF9C /* ButtonVideoWellAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonVideoWellAdd.png; sourceTree = "<group>"; };
+		012632F8162E18400009FF9C /* ButtonVideoWellAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellAdd@2x.png"; sourceTree = "<group>"; };
+		012632F9162E18400009FF9C /* ButtonVideoWellAddHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonVideoWellAddHighlighted.png; sourceTree = "<group>"; };
+		012632FA162E18400009FF9C /* ButtonVideoWellAddHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellAddHighlighted@2x.png"; sourceTree = "<group>"; };
+		012632FB162E18400009FF9C /* ButtonVideoWellDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonVideoWellDelete.png; sourceTree = "<group>"; };
+		012632FC162E18400009FF9C /* ButtonVideoWellDelete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellDelete@2x.png"; sourceTree = "<group>"; };
+		012632FD162E18400009FF9C /* ButtonVideoWellDeleteHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonVideoWellDeleteHighlighted.png; sourceTree = "<group>"; };
+		012632FE162E18400009FF9C /* ButtonVideoWellDeleteHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellDeleteHighlighted@2x.png"; sourceTree = "<group>"; };
+		012632FF162E18400009FF9C /* ButtonVideoWellShuffle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonVideoWellShuffle.png; sourceTree = "<group>"; };
+		01263300162E18400009FF9C /* ButtonVideoWellShuffle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellShuffle@2x.png"; sourceTree = "<group>"; };
+		01263301162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonVideoWellShuffleHighlighted.png; sourceTree = "<group>"; };
+		01263302162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellShuffleHighlighted@2x.png"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -133,9 +160,6 @@
 		019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabWallPacksHighlighted@2x.png"; sourceTree = "<group>"; };
 		019825171629E23000216900 /* TabWallPacks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabWallPacks@2x.png"; sourceTree = "<group>"; };
 		01982526162A02F700216900 /* AppContants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppContants.h; sourceTree = "<group>"; };
-		01982541162A201800216900 /* SYNDiscoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDiscoverViewController.h; sourceTree = "<group>"; };
-		01982542162A201800216900 /* SYNDiscoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDiscoverViewController.m; sourceTree = "<group>"; };
-		01982543162A201800216900 /* SYNDiscoverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNDiscoverViewController.xib; sourceTree = "<group>"; };
 		01982546162A203600216900 /* SYNMyRockPackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockPackViewController.h; sourceTree = "<group>"; };
 		01982547162A203600216900 /* SYNMyRockPackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockPackViewController.m; sourceTree = "<group>"; };
 		01982548162A203600216900 /* SYNMyRockPackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockPackViewController.xib; sourceTree = "<group>"; };
@@ -292,6 +316,25 @@
 			name = "Wallpack Carousel Thumbnails";
 			sourceTree = "<group>";
 		};
+		012632F6162E18310009FF9C /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				012632F7162E18400009FF9C /* ButtonVideoWellAdd.png */,
+				012632F8162E18400009FF9C /* ButtonVideoWellAdd@2x.png */,
+				012632F9162E18400009FF9C /* ButtonVideoWellAddHighlighted.png */,
+				012632FA162E18400009FF9C /* ButtonVideoWellAddHighlighted@2x.png */,
+				012632FB162E18400009FF9C /* ButtonVideoWellDelete.png */,
+				012632FC162E18400009FF9C /* ButtonVideoWellDelete@2x.png */,
+				012632FD162E18400009FF9C /* ButtonVideoWellDeleteHighlighted.png */,
+				012632FE162E18400009FF9C /* ButtonVideoWellDeleteHighlighted@2x.png */,
+				012632FF162E18400009FF9C /* ButtonVideoWellShuffle.png */,
+				01263300162E18400009FF9C /* ButtonVideoWellShuffle@2x.png */,
+				01263301162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png */,
+				01263302162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png */,
+			);
+			name = Buttons;
+			sourceTree = "<group>";
+		};
 		019824DD1629CA3700216900 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,6 +350,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				012632F6162E18310009FF9C /* Buttons */,
 				012632D9162DF9E50009FF9C /* Wallpack Carousel Thumbnails */,
 				012632CD162DF7E00009FF9C /* Collection Cell Components */,
 				019825B9162C373D00216900 /* Placeholders */,
@@ -494,9 +538,9 @@
 		0198255F162ADE2900216900 /* Discover */ = {
 			isa = PBXGroup;
 			children = (
-				01982541162A201800216900 /* SYNDiscoverViewController.h */,
-				01982542162A201800216900 /* SYNDiscoverViewController.m */,
-				01982543162A201800216900 /* SYNDiscoverViewController.xib */,
+				012632F1162E130C0009FF9C /* SYNDiscoverTopTabViewController.h */,
+				012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */,
+				012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */,
 			);
 			name = Discover;
 			sourceTree = "<group>";
@@ -631,7 +675,6 @@
 				0198251D1629E23000216900 /* TabDiscover@2x.png in Resources */,
 				0198251E1629E23000216900 /* TabWallPacksHighlighted@2x.png in Resources */,
 				0198251F1629E23000216900 /* TabWallPacks@2x.png in Resources */,
-				01982545162A201800216900 /* SYNDiscoverViewController.xib in Resources */,
 				0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
 				01982552162A2AC300216900 /* PanelMainTitle@2x.png in Resources */,
@@ -661,6 +704,19 @@
 				012632EB162DF9FB0009FF9C /* Wallpack_7.png in Resources */,
 				012632EC162DF9FB0009FF9C /* Wallpack_8.png in Resources */,
 				012632ED162DF9FB0009FF9C /* Wallpack_9.png in Resources */,
+				012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */,
+				01263303162E18400009FF9C /* ButtonVideoWellAdd.png in Resources */,
+				01263304162E18400009FF9C /* ButtonVideoWellAdd@2x.png in Resources */,
+				01263305162E18400009FF9C /* ButtonVideoWellAddHighlighted.png in Resources */,
+				01263306162E18400009FF9C /* ButtonVideoWellAddHighlighted@2x.png in Resources */,
+				01263307162E18400009FF9C /* ButtonVideoWellDelete.png in Resources */,
+				01263308162E18400009FF9C /* ButtonVideoWellDelete@2x.png in Resources */,
+				01263309162E18400009FF9C /* ButtonVideoWellDeleteHighlighted.png in Resources */,
+				0126330A162E18400009FF9C /* ButtonVideoWellDeleteHighlighted@2x.png in Resources */,
+				0126330B162E18400009FF9C /* ButtonVideoWellShuffle.png in Resources */,
+				0126330C162E18400009FF9C /* ButtonVideoWellShuffle@2x.png in Resources */,
+				0126330D162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png in Resources */,
+				0126330E162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,7 +732,6 @@
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
 				0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */,
-				01982544162A201800216900 /* SYNDiscoverViewController.m in Sources */,
 				01982549162A203600216900 /* SYNMyRockPackViewController.m in Sources */,
 				0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */,
 				0198255C162ADE1200216900 /* SYNWallPackTopTabViewController.m in Sources */,
@@ -689,6 +744,7 @@
 				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
 				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
 				012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */,
+				012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

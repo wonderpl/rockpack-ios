@@ -8,7 +8,7 @@
 
 #import "SYNBottomTabViewController.h"
 #import "SYNWallPackTopTabViewController.h"
-#import "SYNDiscoverViewController.h"
+#import "SYNDiscoverTopTabViewController.h"
 #import "SYNMyRockPackViewController.h"
 #import "SYNFriendsViewController.h"
 #import "AppContants.h"
@@ -39,7 +39,7 @@
     
     // Setup our four sub-viewcontrollers, one for each tab
     SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
-    SYNDiscoverViewController *discoverViewController = [[SYNDiscoverViewController alloc] init];
+    SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
     SYNMyRockPackViewController *myRockPackViewController = [[SYNMyRockPackViewController alloc] init];
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
     

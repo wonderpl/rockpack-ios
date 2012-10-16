@@ -45,7 +45,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">PlaceholderCategoryB@2x.png</string>
+							<string key="NSResourceName">PlaceholderCategoryA@2x.png</string>
 						</object>
 					</object>
 				</array>
@@ -130,7 +130,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">PlaceholderCategoryB@2x.png</string>
+			<string key="NS.key.0">PlaceholderCategoryA@2x.png</string>
 			<string key="NS.object.0">{2048, 1194}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">1929</string>
