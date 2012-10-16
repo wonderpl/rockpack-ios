@@ -13,6 +13,22 @@
 		010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFDD1629BDC40080F26B /* InfoPlist.strings */; };
 		010DEFE11629BDC40080F26B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE01629BDC40080F26B /* main.m */; };
 		010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE41629BDC40080F26B /* SYNAppDelegate.m */; };
+		012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */; };
+		012632D2162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632CE162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png */; };
+		012632D3162DF7EE0009FF9C /* WallpackCarouselCircleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632CF162DF7EE0009FF9C /* WallpackCarouselCircleBackground.png */; };
+		012632D4162DF7EE0009FF9C /* WallpackCarouselCircleBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632D0162DF7EE0009FF9C /* WallpackCarouselCircleBackground@2x.png */; };
+		012632D5162DF7EE0009FF9C /* WallpackCarouselCircleAlpha@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632D1162DF7EE0009FF9C /* WallpackCarouselCircleAlpha@2x.png */; };
+		012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */; };
+		012632E4162DF9FB0009FF9C /* Wallpack_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632DA162DF9FB0009FF9C /* Wallpack_0.png */; };
+		012632E5162DF9FB0009FF9C /* Wallpack_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632DB162DF9FB0009FF9C /* Wallpack_1.png */; };
+		012632E6162DF9FB0009FF9C /* Wallpack_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632DC162DF9FB0009FF9C /* Wallpack_2.png */; };
+		012632E7162DF9FB0009FF9C /* Wallpack_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632DD162DF9FB0009FF9C /* Wallpack_3.png */; };
+		012632E8162DF9FB0009FF9C /* Wallpack_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632DE162DF9FB0009FF9C /* Wallpack_4.png */; };
+		012632E9162DF9FB0009FF9C /* Wallpack_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632DF162DF9FB0009FF9C /* Wallpack_5.png */; };
+		012632EA162DF9FB0009FF9C /* Wallpack_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632E0162DF9FB0009FF9C /* Wallpack_6.png */; };
+		012632EB162DF9FB0009FF9C /* Wallpack_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632E1162DF9FB0009FF9C /* Wallpack_7.png */; };
+		012632EC162DF9FB0009FF9C /* Wallpack_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632E2162DF9FB0009FF9C /* Wallpack_8.png */; };
+		012632ED162DF9FB0009FF9C /* Wallpack_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632E3162DF9FB0009FF9C /* Wallpack_9.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -74,6 +90,24 @@
 		010DEFE21629BDC40080F26B /* RockPack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RockPack-Prefix.pch"; sourceTree = "<group>"; };
 		010DEFE31629BDC40080F26B /* SYNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
 		010DEFE41629BDC40080F26B /* SYNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
+		012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselVerticalLayout.h; sourceTree = "<group>"; };
+		012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselVerticalLayout.m; sourceTree = "<group>"; };
+		012632CE162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WallpackCarouselCircleAlpha.png; sourceTree = "<group>"; };
+		012632CF162DF7EE0009FF9C /* WallpackCarouselCircleBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WallpackCarouselCircleBackground.png; sourceTree = "<group>"; };
+		012632D0162DF7EE0009FF9C /* WallpackCarouselCircleBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WallpackCarouselCircleBackground@2x.png"; sourceTree = "<group>"; };
+		012632D1162DF7EE0009FF9C /* WallpackCarouselCircleAlpha@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WallpackCarouselCircleAlpha@2x.png"; sourceTree = "<group>"; };
+		012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselCell.h; sourceTree = "<group>"; };
+		012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselCell.m; sourceTree = "<group>"; };
+		012632DA162DF9FB0009FF9C /* Wallpack_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_0.png; sourceTree = "<group>"; };
+		012632DB162DF9FB0009FF9C /* Wallpack_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_1.png; sourceTree = "<group>"; };
+		012632DC162DF9FB0009FF9C /* Wallpack_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_2.png; sourceTree = "<group>"; };
+		012632DD162DF9FB0009FF9C /* Wallpack_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_3.png; sourceTree = "<group>"; };
+		012632DE162DF9FB0009FF9C /* Wallpack_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_4.png; sourceTree = "<group>"; };
+		012632DF162DF9FB0009FF9C /* Wallpack_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_5.png; sourceTree = "<group>"; };
+		012632E0162DF9FB0009FF9C /* Wallpack_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_6.png; sourceTree = "<group>"; };
+		012632E1162DF9FB0009FF9C /* Wallpack_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_7.png; sourceTree = "<group>"; };
+		012632E2162DF9FB0009FF9C /* Wallpack_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_8.png; sourceTree = "<group>"; };
+		012632E3162DF9FB0009FF9C /* Wallpack_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_9.png; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -212,6 +246,52 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		012632C7162DF4C40009FF9C /* Layout Engines */ = {
+			isa = PBXGroup;
+			children = (
+				012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */,
+				012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */,
+			);
+			name = "Layout Engines";
+			sourceTree = "<group>";
+		};
+		012632CC162DF7B30009FF9C /* Collection Cells */ = {
+			isa = PBXGroup;
+			children = (
+				012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */,
+				012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */,
+			);
+			name = "Collection Cells";
+			sourceTree = "<group>";
+		};
+		012632CD162DF7E00009FF9C /* Collection Cell Components */ = {
+			isa = PBXGroup;
+			children = (
+				012632CF162DF7EE0009FF9C /* WallpackCarouselCircleBackground.png */,
+				012632D0162DF7EE0009FF9C /* WallpackCarouselCircleBackground@2x.png */,
+				012632CE162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png */,
+				012632D1162DF7EE0009FF9C /* WallpackCarouselCircleAlpha@2x.png */,
+			);
+			name = "Collection Cell Components";
+			sourceTree = "<group>";
+		};
+		012632D9162DF9E50009FF9C /* Wallpack Carousel Thumbnails */ = {
+			isa = PBXGroup;
+			children = (
+				012632DA162DF9FB0009FF9C /* Wallpack_0.png */,
+				012632DB162DF9FB0009FF9C /* Wallpack_1.png */,
+				012632DC162DF9FB0009FF9C /* Wallpack_2.png */,
+				012632DD162DF9FB0009FF9C /* Wallpack_3.png */,
+				012632DE162DF9FB0009FF9C /* Wallpack_4.png */,
+				012632DF162DF9FB0009FF9C /* Wallpack_5.png */,
+				012632E0162DF9FB0009FF9C /* Wallpack_6.png */,
+				012632E1162DF9FB0009FF9C /* Wallpack_7.png */,
+				012632E2162DF9FB0009FF9C /* Wallpack_8.png */,
+				012632E3162DF9FB0009FF9C /* Wallpack_9.png */,
+			);
+			name = "Wallpack Carousel Thumbnails";
+			sourceTree = "<group>";
+		};
 		019824DD1629CA3700216900 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +307,8 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				012632D9162DF9E50009FF9C /* Wallpack Carousel Thumbnails */,
+				012632CD162DF7E00009FF9C /* Collection Cell Components */,
 				019825B9162C373D00216900 /* Placeholders */,
 				01982550162A2AAC00216900 /* Panels */,
 				0198250F1629E21F00216900 /* Tabs */,
@@ -256,6 +338,8 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				012632CC162DF7B30009FF9C /* Collection Cells */,
+				012632C7162DF4C40009FF9C /* Layout Engines */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01982562162ADE5200216900 /* Root */,
 				0198255E162ADE2100216900 /* Wallpack */,
@@ -563,6 +647,20 @@
 				01982612162CC0B200216900 /* BackgroundWallPack@2x.png in Resources */,
 				01982615162CC4C100216900 /* PlaceholderCategoryB@2x.png in Resources */,
 				01982616162CC4C100216900 /* PlaceholderCategoryA@2x.png in Resources */,
+				012632D2162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png in Resources */,
+				012632D3162DF7EE0009FF9C /* WallpackCarouselCircleBackground.png in Resources */,
+				012632D4162DF7EE0009FF9C /* WallpackCarouselCircleBackground@2x.png in Resources */,
+				012632D5162DF7EE0009FF9C /* WallpackCarouselCircleAlpha@2x.png in Resources */,
+				012632E4162DF9FB0009FF9C /* Wallpack_0.png in Resources */,
+				012632E5162DF9FB0009FF9C /* Wallpack_1.png in Resources */,
+				012632E6162DF9FB0009FF9C /* Wallpack_2.png in Resources */,
+				012632E7162DF9FB0009FF9C /* Wallpack_3.png in Resources */,
+				012632E8162DF9FB0009FF9C /* Wallpack_4.png in Resources */,
+				012632E9162DF9FB0009FF9C /* Wallpack_5.png in Resources */,
+				012632EA162DF9FB0009FF9C /* Wallpack_6.png in Resources */,
+				012632EB162DF9FB0009FF9C /* Wallpack_7.png in Resources */,
+				012632EC162DF9FB0009FF9C /* Wallpack_8.png in Resources */,
+				012632ED162DF9FB0009FF9C /* Wallpack_9.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +687,8 @@
 				0198258C162B615D00216900 /* SYNddd.m in Sources */,
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
 				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
+				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
+				012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

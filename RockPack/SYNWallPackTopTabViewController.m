@@ -10,8 +10,12 @@
 #import "SYNWallPackTopTabViewController.h"
 #import "SYNWallPackCategoryAViewController.h"
 #import "SYNWallPackCategoryBViewController.h"
+#import "SYNWallpackCarouselVerticalLayout.h"
+#import "SYNWallpackCarouselCell.h"
 
 @interface SYNWallPackTopTabViewController ()
+
+@property (nonatomic, strong) IBOutlet UICollectionView *wallpackCarousel;
 
 @end
 
@@ -22,6 +26,10 @@
 {
     [super viewDidLoad];
 
+    // Set up wallpack carousel
+    SYNWallpackCarouselVerticalLayout *wallpackCarouselVerticalLayout = [[SYNWallpackCarouselVerticalLayout alloc] init];
+    self.wallpackCarousel.collectionViewLayout = wallpackCarouselVerticalLayout;
+    
     // Setup our four sub-viewcontrollers, one for each tab
     SYNWallPackCategoryAViewController *categoryAViewController = [[SYNWallPackCategoryAViewController alloc] init];
     SYNWallPackCategoryBViewController *categoryBViewController = [[SYNWallPackCategoryBViewController alloc] init];
@@ -31,6 +39,47 @@
                              categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController, categoryAViewController];
     
     self.selectedViewController = categoryAViewController;
+    
+    // Set up our carousel
+    [self.wallpackCarousel registerClass: [SYNWallpackCarouselCell class] forCellWithReuseIdentifier: @"SYNWallpackCarouselCell"];
+    self.wallpackCarousel.decelerationRate = UIScrollViewDecelerationRateNormal;
+}
+
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear: animated];
+    
+    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1500 inSection: 0];
+    
+//    [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
+//                                atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
+//                                        animated: NO];
+    
+    [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
+                                  atScrollPosition: UICollectionViewScrollPositionCenteredVertically
+                                          animated: NO];
+}
+
+
+// To simulate an endlessly scrolling list, make the number of items very large
+
+- (NSInteger) collectionView: (UICollectionView *) view
+      numberOfItemsInSection: (NSInteger) section;
+{
+    return 5000;
+}
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath;
+{
+    SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
+                                                                  forIndexPath: indexPath];
+    
+    NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 10];
+    cell.image = [UIImage imageNamed: imageName];
+    //    cell.label.text = [NSString stringWithFormat:@"%d",indexPath.item];
+    return cell;
 }
 
 

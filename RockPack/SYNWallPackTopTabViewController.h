@@ -9,6 +9,7 @@
 #import "SYNAbstractTopTabViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNWallPackTopTabViewController : SYNAbstractTopTabViewController
+@interface SYNWallPackTopTabViewController : SYNAbstractTopTabViewController <UICollectionViewDelegate,
+                                                                              UICollectionViewDataSource>
 
 @end
