@@ -26,7 +26,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     NSURL *videoURL = [NSURL fileURLWithPath: [[NSBundle mainBundle]
-                                               pathForResource: @"AngryBirdsStarWarsTrailer"
+                                               pathForResource: @"MonstersUniversityTeaser"
                                                ofType: @"mp4"] isDirectory: NO];
     
     self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
@@ -43,5 +43,15 @@
 {
     [self.mainVideoPlayer pause];
 }
+
+- (void) setSelectedIndex: (NSUInteger) newSelectedIndex
+                 animated: (BOOL) animated
+{
+    if (newSelectedIndex != NSNotFound)
+    {
+        [self highlightTab: newSelectedIndex];
+    }
+}
+
 
 @end
