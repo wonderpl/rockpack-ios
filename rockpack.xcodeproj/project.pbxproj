@@ -46,7 +46,6 @@
 		01263312162E234B0009FF9C /* PlaceholderMainVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263311162E234B0009FF9C /* PlaceholderMainVideo@2x.png */; };
 		01263314162E23570009FF9C /* BackgroundMainVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263313162E23570009FF9C /* BackgroundMainVideo@2x.png */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
-		01263321162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01263320162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -93,17 +92,18 @@
 		01982612162CC0B200216900 /* BackgroundWallPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982611162CC0B100216900 /* BackgroundWallPack@2x.png */; };
 		01982615162CC4C100216900 /* PlaceholderCategoryB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */; };
 		01982616162CC4C100216900 /* PlaceholderCategoryA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */; };
+		01B3723F162EBAB200A9F8F5 /* MonstersUniversityTeaser.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01B3723E162EBAB200A9F8F5 /* MonstersUniversityTeaser.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		010DEFD01629BDC40080F26B /* RockPack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RockPack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		010DEFD81629BDC40080F26B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		010DEFDC1629BDC40080F26B /* RockPack-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "RockPack-Info.plist"; path = "RockPack/RockPack-Info.plist"; sourceTree = "<group>"; };
+		010DEFDC1629BDC40080F26B /* rockpack-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "rockpack-Info.plist"; path = "RockPack/rockpack-Info.plist"; sourceTree = "<group>"; };
 		010DEFDE1629BDC40080F26B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		010DEFE01629BDC40080F26B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		010DEFE21629BDC40080F26B /* RockPack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RockPack-Prefix.pch"; sourceTree = "<group>"; };
+		010DEFE21629BDC40080F26B /* rockpack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rockpack-Prefix.pch"; sourceTree = "<group>"; };
 		010DEFE31629BDC40080F26B /* SYNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
 		010DEFE41629BDC40080F26B /* SYNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
 		012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselVerticalLayout.h; sourceTree = "<group>"; };
@@ -142,7 +142,6 @@
 		01263311162E234B0009FF9C /* PlaceholderMainVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderMainVideo@2x.png"; sourceTree = "<group>"; };
 		01263313162E23570009FF9C /* BackgroundMainVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundMainVideo@2x.png"; sourceTree = "<group>"; };
 		0126331E162E2A060009FF9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		01263320162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = AngryBirdsStarWarsTrailer.mp4; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -204,6 +203,8 @@
 		01982611162CC0B100216900 /* BackgroundWallPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundWallPack@2x.png"; sourceTree = "<group>"; };
 		01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderCategoryB@2x.png"; sourceTree = "<group>"; };
 		01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderCategoryA@2x.png"; sourceTree = "<group>"; };
+		01B3723E162EBAB200A9F8F5 /* MonstersUniversityTeaser.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MonstersUniversityTeaser.mp4; sourceTree = "<group>"; };
+		01B37241162EBAD800A9F8F5 /* RockPack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RockPack.entitlements; path = RockPack/RockPack.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +228,7 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
+				01B37241162EBAD800A9F8F5 /* RockPack.entitlements */,
 				0126331E162E2A060009FF9C /* MediaPlayer.framework */,
 				019824F11629CE1600216900 /* libz.dylib */,
 				010DEFDA1629BDC40080F26B /* Source */,
@@ -238,7 +240,7 @@
 		010DEFD11629BDC40080F26B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFD01629BDC40080F26B /* RockPack.app */,
+				010DEFD01629BDC40080F26B /* rockpack.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -275,7 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				010DEFE01629BDC40080F26B /* main.m */,
-				010DEFE21629BDC40080F26B /* RockPack-Prefix.pch */,
+				010DEFE21629BDC40080F26B /* rockpack-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -348,7 +350,7 @@
 		0126331B162E29770009FF9C /* Videos */ = {
 			isa = PBXGroup;
 			children = (
-				01263320162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 */,
+				01B3723E162EBAB200A9F8F5 /* MonstersUniversityTeaser.mp4 */,
 			);
 			name = Videos;
 			sourceTree = "<group>";
@@ -385,7 +387,7 @@
 		019824DF1629CA6000216900 /* Property List */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFDC1629BDC40080F26B /* RockPack-Info.plist */,
+				010DEFDC1629BDC40080F26B /* rockpack-Info.plist */,
 			);
 			name = "Property List";
 			sourceTree = "<group>";
@@ -631,9 +633,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		010DEFCF1629BDC40080F26B /* RockPack */ = {
+		010DEFCF1629BDC40080F26B /* rockpack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 010DEFF41629BDC40080F26B /* Build configuration list for PBXNativeTarget "RockPack" */;
+			buildConfigurationList = 010DEFF41629BDC40080F26B /* Build configuration list for PBXNativeTarget "rockpack" */;
 			buildPhases = (
 				010DEFCC1629BDC40080F26B /* Sources */,
 				010DEFCD1629BDC40080F26B /* Frameworks */,
@@ -643,9 +645,9 @@
 			);
 			dependencies = (
 			);
-			name = RockPack;
+			name = rockpack;
 			productName = RockPack;
-			productReference = 010DEFD01629BDC40080F26B /* RockPack.app */;
+			productReference = 010DEFD01629BDC40080F26B /* rockpack.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -658,7 +660,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Nick Banks";
 			};
-			buildConfigurationList = 010DEFCA1629BDC40080F26B /* Build configuration list for PBXProject "RockPack" */;
+			buildConfigurationList = 010DEFCA1629BDC40080F26B /* Build configuration list for PBXProject "rockpack" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -670,7 +672,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				010DEFCF1629BDC40080F26B /* RockPack */,
+				010DEFCF1629BDC40080F26B /* rockpack */,
 			);
 		};
 /* End PBXProject section */
@@ -740,7 +742,7 @@
 				0126330E162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png in Resources */,
 				01263312162E234B0009FF9C /* PlaceholderMainVideo@2x.png in Resources */,
 				01263314162E23570009FF9C /* BackgroundMainVideo@2x.png in Resources */,
-				01263321162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 in Resources */,
+				01B3723F162EBAB200A9F8F5 /* MonstersUniversityTeaser.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,14 +844,15 @@
 		010DEFF51629BDC40080F26B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "RockPack/RockPack-Prefix.pch";
-				INFOPLIST_FILE = "RockPack/RockPack-Info.plist";
+				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
+				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = rockpack;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -857,35 +860,79 @@
 		010DEFF61629BDC40080F26B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "RockPack/RockPack-Prefix.pch";
-				INFOPLIST_FILE = "RockPack/RockPack-Info.plist";
+				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
+				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = rockpack;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
+		01B37242162EBAE900A9F8F5 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = AdHoc;
+		};
+		01B37243162EBAE900A9F8F5 /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Synchromation Ltd.";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
+				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/RockPack\"",
+				);
+				PRODUCT_NAME = rockpack;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "065EC995-6E4B-4867-8184-BAE8869D0603";
+				WRAPPER_EXTENSION = app;
+			};
+			name = AdHoc;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		010DEFCA1629BDC40080F26B /* Build configuration list for PBXProject "RockPack" */ = {
+		010DEFCA1629BDC40080F26B /* Build configuration list for PBXProject "rockpack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				010DEFF21629BDC40080F26B /* Debug */,
 				010DEFF31629BDC40080F26B /* Release */,
+				01B37242162EBAE900A9F8F5 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		010DEFF41629BDC40080F26B /* Build configuration list for PBXNativeTarget "RockPack" */ = {
+		010DEFF41629BDC40080F26B /* Build configuration list for PBXNativeTarget "rockpack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				010DEFF51629BDC40080F26B /* Debug */,
 				010DEFF61629BDC40080F26B /* Release */,
+				01B37243162EBAE900A9F8F5 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

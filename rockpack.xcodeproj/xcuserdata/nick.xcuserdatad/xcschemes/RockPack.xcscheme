@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "010DEFCF1629BDC40080F26B"
                BuildableName = "RockPack.app"
-               BlueprintName = "RockPack"
-               ReferencedContainer = "container:RockPack.xcodeproj">
+               BlueprintName = "rockpack"
+               ReferencedContainer = "container:rockpack.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "010DEFCF1629BDC40080F26B"
             BuildableName = "RockPack.app"
-            BlueprintName = "RockPack"
-            ReferencedContainer = "container:RockPack.xcodeproj">
+            BlueprintName = "rockpack"
+            ReferencedContainer = "container:rockpack.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -53,8 +53,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "010DEFCF1629BDC40080F26B"
             BuildableName = "RockPack.app"
-            BlueprintName = "RockPack"
-            ReferencedContainer = "container:RockPack.xcodeproj">
+            BlueprintName = "rockpack"
+            ReferencedContainer = "container:rockpack.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -71,8 +71,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "010DEFCF1629BDC40080F26B"
             BuildableName = "RockPack.app"
-            BlueprintName = "RockPack"
-            ReferencedContainer = "container:RockPack.xcodeproj">
+            BlueprintName = "rockpack"
+            ReferencedContainer = "container:rockpack.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
@@ -80,7 +80,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "AdHoc"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
