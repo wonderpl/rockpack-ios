@@ -21,7 +21,7 @@
                withObject: nil
                afterDelay: 0];
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.viewController = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
                                                                        bundle: nil];

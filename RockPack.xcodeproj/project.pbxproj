@@ -43,6 +43,10 @@
 		0126330C162E18400009FF9C /* ButtonVideoWellShuffle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263300162E18400009FF9C /* ButtonVideoWellShuffle@2x.png */; };
 		0126330D162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263301162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png */; };
 		0126330E162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263302162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png */; };
+		01263312162E234B0009FF9C /* PlaceholderMainVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263311162E234B0009FF9C /* PlaceholderMainVideo@2x.png */; };
+		01263314162E23570009FF9C /* BackgroundMainVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01263313162E23570009FF9C /* BackgroundMainVideo@2x.png */; };
+		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
+		01263321162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01263320162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -135,6 +139,10 @@
 		01263300162E18400009FF9C /* ButtonVideoWellShuffle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellShuffle@2x.png"; sourceTree = "<group>"; };
 		01263301162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonVideoWellShuffleHighlighted.png; sourceTree = "<group>"; };
 		01263302162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonVideoWellShuffleHighlighted@2x.png"; sourceTree = "<group>"; };
+		01263311162E234B0009FF9C /* PlaceholderMainVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderMainVideo@2x.png"; sourceTree = "<group>"; };
+		01263313162E23570009FF9C /* BackgroundMainVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundMainVideo@2x.png"; sourceTree = "<group>"; };
+		0126331E162E2A060009FF9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		01263320162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = AngryBirdsStarWarsTrailer.mp4; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -203,6 +211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */,
 				019824F01629CC7600216900 /* libTestFlight.a in Frameworks */,
 				019824F21629CE1600216900 /* libz.dylib in Frameworks */,
 				010DEFD91629BDC40080F26B /* CoreGraphics.framework in Frameworks */,
@@ -218,6 +227,7 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
+				0126331E162E2A060009FF9C /* MediaPlayer.framework */,
 				019824F11629CE1600216900 /* libz.dylib */,
 				010DEFDA1629BDC40080F26B /* Source */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
@@ -335,9 +345,18 @@
 			name = Buttons;
 			sourceTree = "<group>";
 		};
+		0126331B162E29770009FF9C /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				01263320162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 */,
+			);
+			name = Videos;
+			sourceTree = "<group>";
+		};
 		019824DD1629CA3700216900 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0126331B162E29770009FF9C /* Videos */,
 				019824DE1629CA5900216900 /* Images */,
 				019824FB1629D19600216900 /* Fonts */,
 				019824DF1629CA6000216900 /* Property List */,
@@ -477,6 +496,7 @@
 		019825071629DC9B00216900 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				01263313162E23570009FF9C /* BackgroundMainVideo@2x.png */,
 				01982611162CC0B100216900 /* BackgroundWallPack@2x.png */,
 				019825081629DCA700216900 /* BackgroundDiscovery@2x.png */,
 			);
@@ -589,6 +609,7 @@
 		019825B9162C373D00216900 /* Placeholders */ = {
 			isa = PBXGroup;
 			children = (
+				01263311162E234B0009FF9C /* PlaceholderMainVideo@2x.png */,
 				01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */,
 				01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */,
 				019825BA162C374900216900 /* PlaceholderFriends@2x.png */,
@@ -717,6 +738,9 @@
 				0126330C162E18400009FF9C /* ButtonVideoWellShuffle@2x.png in Resources */,
 				0126330D162E18400009FF9C /* ButtonVideoWellShuffleHighlighted.png in Resources */,
 				0126330E162E18400009FF9C /* ButtonVideoWellShuffleHighlighted@2x.png in Resources */,
+				01263312162E234B0009FF9C /* PlaceholderMainVideo@2x.png in Resources */,
+				01263314162E23570009FF9C /* BackgroundMainVideo@2x.png in Resources */,
+				01263321162E2A760009FF9C /* AngryBirdsStarWarsTrailer.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

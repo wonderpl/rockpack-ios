@@ -7,32 +7,41 @@
 //
 
 #import "SYNDiscoverTopTabViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface SYNDiscoverTopTabViewController ()
+
+@property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
+@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
 
 @end
 
 @implementation SYNDiscoverTopTabViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
 }
 
-- (void)didReceiveMemoryWarning
+- (void) viewWillAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSURL *videoURL = [NSURL fileURLWithPath: [[NSBundle mainBundle]
+                                               pathForResource: @"AngryBirdsStarWarsTrailer"
+                                               ofType: @"mp4"] isDirectory: NO];
+    
+    self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
+    
+    self.mainVideoPlayer.shouldAutoplay = NO;
+    [self.mainVideoPlayer prepareToPlay];
+    
+    [[self.mainVideoPlayer view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
+    
+    [self.videoPlaceholderView addSubview: [self.mainVideoPlayer view]];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [self.mainVideoPlayer pause];
 }
 
 @end
