@@ -9,6 +9,7 @@
 #import "AppContants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "SYNDiscoverTopTabViewController.h"
+#import "SYNThumbnailCell.h"
 #import "SYNVideoDB.h"
 #import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
@@ -275,6 +276,10 @@
         self.largeVideoViewExpanded = TRUE;
     }
 #endif
+    self.currentIndex = indexPath.row;
+    
+    [self setLargeVideoIndex: self.currentIndex
+                  withOffset: self.currentOffset];
 }
 
 - (IBAction) animateLargeVideoViewRight: (id) sender
@@ -338,7 +343,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return 100;
+    return self.videoDB.numberOfVideos;
 }
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
@@ -349,8 +354,11 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
-                                                               forIndexPath: indexPath];
+    SYNThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+                                                           forIndexPath: indexPath];
+    
+    cell.imageView.image = [self.videoDB thumbnailForIndex: indexPath.row
+                                                withOffset: self.currentOffset];
     
     return cell;
 }

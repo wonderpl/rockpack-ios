@@ -107,6 +107,7 @@
 		01363F1F1630AEB400FFAA09 /* ButtonThumbnailRock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F171630AEB400FFAA09 /* ButtonThumbnailRock@2x.png */; };
 		01363F201630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F181630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png */; };
 		01363F211630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F191630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png */; };
+		01363F241630B81400FFAA09 /* SYNThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F231630B81400FFAA09 /* SYNThumbnailCell.m */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -265,6 +266,8 @@
 		01363F171630AEB400FFAA09 /* ButtonThumbnailRock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailRock@2x.png"; sourceTree = "<group>"; };
 		01363F181630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonThumbnailRockHighlighted.png; sourceTree = "<group>"; };
 		01363F191630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailRockHighlighted@2x.png"; sourceTree = "<group>"; };
+		01363F221630B81400FFAA09 /* SYNThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNThumbnailCell.h; sourceTree = "<group>"; };
+		01363F231630B81400FFAA09 /* SYNThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNThumbnailCell.m; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -420,6 +423,8 @@
 			children = (
 				012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */,
 				012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */,
+				01363F221630B81400FFAA09 /* SYNThumbnailCell.h */,
+				01363F231630B81400FFAA09 /* SYNThumbnailCell.m */,
 				01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */,
 			);
 			name = "Collection Cells";
@@ -1071,6 +1076,7 @@
 				012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */,
 				01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */,
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
+				01363F241630B81400FFAA09 /* SYNThumbnailCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

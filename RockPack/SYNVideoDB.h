@@ -12,8 +12,13 @@
 
 + (id) sharedVideoDBManager;
 
+- (int) numberOfVideos;
+
 - (NSURL *) videoURLForIndex: (int) index
                   withOffset: (int) offset;
+
+- (UIImage *) thumbnailForIndex: (int) index
+                     withOffset: (int) offset;
 
 - (NSString *) titleForIndex: (int) index
                   withOffset: (int) offset;

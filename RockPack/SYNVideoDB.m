@@ -169,6 +169,11 @@
     return (index + offset) % self.videoDetailsArray.count;
 }
 
+- (int) numberOfVideos
+{
+    return self.videoDetailsArray.count;
+}
+
 // Video URL accessor
 
 - (NSURL *) videoURLForIndex: (int) index
@@ -181,6 +186,17 @@
                                                                               ofType: @"mp4"] isDirectory: NO];
     
     return videoURL;
+}
+
+- (UIImage *) thumbnailForIndex: (int) index
+                     withOffset: (int) offset
+{
+    NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
+    NSString *thumbnailString = [videoDetails objectForKey: @"thumbnail"];
+    
+    UIImage *thumbnail = [UIImage imageNamed: thumbnailString];
+    
+    return thumbnail;
 }
 
 
