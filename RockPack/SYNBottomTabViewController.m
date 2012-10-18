@@ -6,12 +6,13 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNBottomTabViewController.h"
-#import "SYNWallPackTopTabViewController.h"
-#import "SYNDiscoverTopTabViewController.h"
-#import "SYNMyRockPackViewController.h"
-#import "SYNFriendsViewController.h"
 #import "AppContants.h"
+#import "AudioToolbox/AudioToolbox.h"
+#import "SYNBottomTabViewController.h"
+#import "SYNDiscoverTopTabViewController.h"
+#import "SYNFriendsViewController.h"
+#import "SYNMyRockPackViewController.h"
+#import "SYNWallPackTopTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController ()
@@ -287,6 +288,17 @@
     if (self.didNotSwipe)
     {
         self.didNotSwipe = FALSE;
+        
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_Out"
+                                                               ofType: @"aif"];
+        
+        NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+        AudioServicesPlaySystemSound(sound);
+        
+        // Animate the view out onto the screen
         [UIView animateWithDuration: kRockieTalkieAnimationDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -312,6 +324,17 @@
     if (!self.didNotSwipe)
     {
         self.didNotSwipe = TRUE;
+        
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_In"
+                                                              ofType: @"aif"];
+        
+        NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+        AudioServicesPlaySystemSound(sound);
+        
+        // Animate the view out onto the screen
         [UIView animateWithDuration: kRockieTalkieAnimationDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut

@@ -12,6 +12,7 @@
 #import "SYNWallPackCategoryBViewController.h"
 #import "SYNWallpackCarouselVerticalLayout.h"
 #import "SYNWallpackCarouselCell.h"
+#import "AudioToolbox/AudioToolbox.h"
 
 @interface SYNWallPackTopTabViewController ()
 
@@ -52,10 +53,6 @@
     
     NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1500 inSection: 0];
     
-//    [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
-//                                atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
-//                                        animated: NO];
-    
     [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
                                   atScrollPosition: UICollectionViewScrollPositionCenteredVertically
                                           animated: NO];
@@ -73,12 +70,22 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath;
 {
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+
+
     SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
                                                                   forIndexPath: indexPath];
     
     NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 10];
     cell.image = [UIImage imageNamed: imageName];
-    //    cell.label.text = [NSString stringWithFormat:@"%d",indexPath.item];
+    
     return cell;
 }
 

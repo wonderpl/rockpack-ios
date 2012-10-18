@@ -401,7 +401,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundDiscovery@2x.png">{2048, 1536}</string>
+			<string key="BackgroundDiscovery@2x.png">{2048, 1194}</string>
 			<string key="PanelMainTitle@2x.png">{2048, 108}</string>
 			<string key="PanelRockieTalkie@2x.png">{1198, 1232}</string>
 			<string key="TabDiscover@2x.png">{512, 124}</string>
