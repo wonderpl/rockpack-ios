@@ -86,6 +86,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath;
 {
+#ifdef SOUND_ENABLED
     // Play a suitable sound
     NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
                                                           ofType: @"aif"];
@@ -97,7 +98,7 @@
         AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
         AudioServicesPlaySystemSound(sound);
     }
-
+#endif
 
     SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
                                                                   forIndexPath: indexPath];

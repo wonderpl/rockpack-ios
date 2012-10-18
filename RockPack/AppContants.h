@@ -9,6 +9,14 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+// Major functionality switches
+
+// Enable user interface sounds
+#define SOUND_ENABLED__
+
+// Enable full screen thumbnail view 
+#define FULL_SCREEN_THUMBNAILS__
+
 //
 // Animations
 //

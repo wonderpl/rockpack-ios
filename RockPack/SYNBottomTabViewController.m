@@ -289,6 +289,7 @@
     {
         self.didNotSwipe = FALSE;
         
+#ifdef SOUND_ENABLED
         // Play a suitable sound
         NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_Out"
                                                                ofType: @"aif"];
@@ -297,6 +298,7 @@
         SystemSoundID sound;
         AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
         AudioServicesPlaySystemSound(sound);
+#endif
         
         // Animate the view out onto the screen
         [UIView animateWithDuration: kRockieTalkieAnimationDuration
@@ -324,7 +326,8 @@
     if (!self.didNotSwipe)
     {
         self.didNotSwipe = TRUE;
-        
+
+#ifdef SOUND_ENABLED
         // Play a suitable sound
         NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_In"
                                                               ofType: @"aif"];
@@ -333,6 +336,7 @@
         SystemSoundID sound;
         AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
         AudioServicesPlaySystemSound(sound);
+#endif
         
         // Animate the view out onto the screen
         [UIView animateWithDuration: kRockieTalkieAnimationDuration

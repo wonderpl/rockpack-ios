@@ -25,6 +25,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *packItNumber;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
+@property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 
 @end
 
@@ -33,6 +34,11 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+#ifdef FULL_SCREEN_THUMBNAILS
+
+    }
+#endif
     
     self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -96,7 +102,9 @@
 #pragma mark - Large video view gesture handler
 
 - (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
-{       
+{
+#ifdef FULL_SCREEN_THUMBNAILS
+#ifdef SOUND_ENABLED
     // Play a suitable sound
     NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_In"
                                                           ofType: @"aif"];
@@ -105,6 +113,7 @@
     SystemSoundID sound;
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
     AudioServicesPlaySystemSound(sound);
+#endif
     
     // Animate the view out onto the screen
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
@@ -135,14 +144,32 @@
          thumbailViewFrame.origin.x = 0;
          thumbailViewFrame.size.width = 1024;
          self.thumbnailView.frame =  thumbailViewFrame;
+         
+         // Allow it to be expanded again
+         self.largeVideoViewExpanded = FALSE;
      }];
+#endif
 }
 
 
 #pragma mark - Large video view open animation
 
+- (void) collectionView:(UICollectionView *) collectionView
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+#ifdef FULL_SCREEN_THUMBNAILS
+    if (self.isLargeVideoViewExpanded == FALSE)
+    {
+        [self animateLargeVideoViewRight: nil];
+        self.largeVideoViewExpanded = TRUE;
+    }
+#endif
+}
+
 - (IBAction) animateLargeVideoViewRight: (id) sender
 {
+#ifdef FULL_SCREEN_THUMBNAILS
+#ifdef SOUND_ENABLED
     // Play a suitable sound
     NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_Out"
                                                           ofType: @"aif"];
@@ -151,6 +178,7 @@
     SystemSoundID sound;
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
     AudioServicesPlaySystemSound(sound);
+#endif
     
     // Animate the view out onto the screen
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
@@ -183,6 +211,7 @@
          thumbailViewFrame.size.width = 512;
          self.thumbnailView.frame =  thumbailViewFrame;
      }];
+#endif
 }
 
 // Temp collection view stuff
