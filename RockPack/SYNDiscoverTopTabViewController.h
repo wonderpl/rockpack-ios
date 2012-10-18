@@ -8,6 +8,8 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNDiscoverTopTabViewController : SYNAbstractTopTabViewController <UIGestureRecognizerDelegate>
+@interface SYNDiscoverTopTabViewController : SYNAbstractTopTabViewController <UIGestureRecognizerDelegate,
+                                                                              UICollectionViewDataSource,
+                                                                              UICollectionViewDelegateFlowLayout>
 
 @end
