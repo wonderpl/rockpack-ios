@@ -97,6 +97,16 @@
 		01363F0A1630633E00FFAA09 /* OneDirection.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EFE1630633E00FFAA09 /* OneDirection.png */; };
 		01363F0B1630633E00FFAA09 /* TheDarkKnightRises.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EFF1630633E00FFAA09 /* TheDarkKnightRises.png */; };
 		01363F0C1630633E00FFAA09 /* TheLionKing.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F001630633E00FFAA09 /* TheLionKing.png */; };
+		01363F0F1630AC6300FFAA09 /* BackgroundThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F0D1630AC6300FFAA09 /* BackgroundThumbnail.png */; };
+		01363F101630AC6300FFAA09 /* BackgroundThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F0E1630AC6300FFAA09 /* BackgroundThumbnail@2x.png */; };
+		01363F1A1630AEB400FFAA09 /* ButtonThumbnailPackHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F121630AEB400FFAA09 /* ButtonThumbnailPackHighlighted.png */; };
+		01363F1B1630AEB400FFAA09 /* ButtonThumbnailPack.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F131630AEB400FFAA09 /* ButtonThumbnailPack.png */; };
+		01363F1C1630AEB400FFAA09 /* ButtonThumbnailPackHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F141630AEB400FFAA09 /* ButtonThumbnailPackHighlighted@2x.png */; };
+		01363F1D1630AEB400FFAA09 /* ButtonThumbnailPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F151630AEB400FFAA09 /* ButtonThumbnailPack@2x.png */; };
+		01363F1E1630AEB400FFAA09 /* ButtonThumbnailRock.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F161630AEB400FFAA09 /* ButtonThumbnailRock.png */; };
+		01363F1F1630AEB400FFAA09 /* ButtonThumbnailRock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F171630AEB400FFAA09 /* ButtonThumbnailRock@2x.png */; };
+		01363F201630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F181630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png */; };
+		01363F211630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F191630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -245,6 +255,16 @@
 		01363EFE1630633E00FFAA09 /* OneDirection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OneDirection.png; sourceTree = "<group>"; };
 		01363EFF1630633E00FFAA09 /* TheDarkKnightRises.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TheDarkKnightRises.png; sourceTree = "<group>"; };
 		01363F001630633E00FFAA09 /* TheLionKing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TheLionKing.png; sourceTree = "<group>"; };
+		01363F0D1630AC6300FFAA09 /* BackgroundThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackgroundThumbnail.png; sourceTree = "<group>"; };
+		01363F0E1630AC6300FFAA09 /* BackgroundThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundThumbnail@2x.png"; sourceTree = "<group>"; };
+		01363F121630AEB400FFAA09 /* ButtonThumbnailPackHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonThumbnailPackHighlighted.png; sourceTree = "<group>"; };
+		01363F131630AEB400FFAA09 /* ButtonThumbnailPack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonThumbnailPack.png; sourceTree = "<group>"; };
+		01363F141630AEB400FFAA09 /* ButtonThumbnailPackHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailPackHighlighted@2x.png"; sourceTree = "<group>"; };
+		01363F151630AEB400FFAA09 /* ButtonThumbnailPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailPack@2x.png"; sourceTree = "<group>"; };
+		01363F161630AEB400FFAA09 /* ButtonThumbnailRock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonThumbnailRock.png; sourceTree = "<group>"; };
+		01363F171630AEB400FFAA09 /* ButtonThumbnailRock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailRock@2x.png"; sourceTree = "<group>"; };
+		01363F181630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonThumbnailRockHighlighted.png; sourceTree = "<group>"; };
+		01363F191630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailRockHighlighted@2x.png"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -436,6 +456,7 @@
 		012632F6162E18310009FF9C /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				01363F111630AEA600FFAA09 /* Thumbnail */,
 				01363E8A162EFEAD00FFAA09 /* Large Video */,
 				01363E89162EFE9500FFAA09 /* Video Well */,
 			);
@@ -545,6 +566,21 @@
 				01363F001630633E00FFAA09 /* TheLionKing.png */,
 			);
 			name = "Video Thumbnails";
+			sourceTree = "<group>";
+		};
+		01363F111630AEA600FFAA09 /* Thumbnail */ = {
+			isa = PBXGroup;
+			children = (
+				01363F121630AEB400FFAA09 /* ButtonThumbnailPackHighlighted.png */,
+				01363F131630AEB400FFAA09 /* ButtonThumbnailPack.png */,
+				01363F141630AEB400FFAA09 /* ButtonThumbnailPackHighlighted@2x.png */,
+				01363F151630AEB400FFAA09 /* ButtonThumbnailPack@2x.png */,
+				01363F161630AEB400FFAA09 /* ButtonThumbnailRock.png */,
+				01363F171630AEB400FFAA09 /* ButtonThumbnailRock@2x.png */,
+				01363F181630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png */,
+				01363F191630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png */,
+			);
+			name = Thumbnail;
 			sourceTree = "<group>";
 		};
 		019824DD1629CA3700216900 /* Resources */ = {
@@ -694,6 +730,8 @@
 		019825071629DC9B00216900 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				01363F0D1630AC6300FFAA09 /* BackgroundThumbnail.png */,
+				01363F0E1630AC6300FFAA09 /* BackgroundThumbnail@2x.png */,
 				01263313162E23570009FF9C /* BackgroundMainVideo@2x.png */,
 				01982611162CC0B100216900 /* BackgroundWallPack@2x.png */,
 				019825081629DCA700216900 /* BackgroundDiscovery@2x.png */,
@@ -993,6 +1031,16 @@
 				01363F0A1630633E00FFAA09 /* OneDirection.png in Resources */,
 				01363F0B1630633E00FFAA09 /* TheDarkKnightRises.png in Resources */,
 				01363F0C1630633E00FFAA09 /* TheLionKing.png in Resources */,
+				01363F0F1630AC6300FFAA09 /* BackgroundThumbnail.png in Resources */,
+				01363F101630AC6300FFAA09 /* BackgroundThumbnail@2x.png in Resources */,
+				01363F1A1630AEB400FFAA09 /* ButtonThumbnailPackHighlighted.png in Resources */,
+				01363F1B1630AEB400FFAA09 /* ButtonThumbnailPack.png in Resources */,
+				01363F1C1630AEB400FFAA09 /* ButtonThumbnailPackHighlighted@2x.png in Resources */,
+				01363F1D1630AEB400FFAA09 /* ButtonThumbnailPack@2x.png in Resources */,
+				01363F1E1630AEB400FFAA09 /* ButtonThumbnailRock.png in Resources */,
+				01363F1F1630AEB400FFAA09 /* ButtonThumbnailRock@2x.png in Resources */,
+				01363F201630AEB400FFAA09 /* ButtonThumbnailRockHighlighted.png in Resources */,
+				01363F211630AEB400FFAA09 /* ButtonThumbnailRockHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -79,6 +79,9 @@
 - (void) setLargeVideoIndex: (int) index
                  withOffset: (int) offset
 {
+    self.currentIndex = index;
+    self.currentOffset = offset;
+    
     [self updateLargeVideoDetailsForIndex: index
                                withOffset: offset];
     
@@ -111,19 +114,18 @@
     
     self.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: index
                                                                                         withOffset: offset]];
-    self.packItButton.selected = ([self.videoDB packItNumberForIndex: index
-                                                          withOffset: offset]) ? FALSE : TRUE;
+    self.packItButton.selected = ([self.videoDB packItForIndex: index
+                                                          withOffset: offset]) ? TRUE : FALSE;
     
-    self.rockItButton.selected = ([self.videoDB rockItNumberForIndex: index
-                                                          withOffset: offset]) ? FALSE : TRUE;
+    self.rockItButton.selected = ([self.videoDB rockItForIndex: index
+                                                          withOffset: offset]) ? TRUE : FALSE;
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void) viewDidAppear: (BOOL) animated
 {
-//    [self.mainVideoPlayer pause];
-    
     [self.thumbnailView reloadData];
 }
+
 
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
                  animated: (BOOL) animated
@@ -138,10 +140,74 @@
     }
 }
 
-- (IBAction) toggleButton: (id)sender
+- (IBAction) toggleLargeRockItButton: (id)sender
 {
-    UIButton* button = (UIButton*)sender;
-    button.selected = !button.selected;
+    int number = [self.videoDB rockItNumberForIndex: self.currentIndex
+                                         withOffset: self.currentOffset];
+    
+    BOOL isTrue = [self.videoDB rockItForIndex: self.currentIndex
+                                    withOffset: self.currentOffset];
+    
+    if (isTrue)
+    {
+        number--;
+        
+        [self.videoDB setRockIt: FALSE
+                       forIndex: self.currentIndex
+                     withOffset: self.currentOffset];
+    }
+    else
+    {
+        number++;
+        
+        [self.videoDB setRockIt: TRUE
+                       forIndex: self.currentIndex
+                     withOffset: self.currentOffset];
+    }
+    
+    [self.videoDB setRockItNumber: number
+                         forIndex: self.currentIndex
+                       withOffset: self.currentOffset];
+    
+    [self updateLargeVideoDetailsForIndex: self.currentIndex
+                               withOffset: self.currentOffset];
+    
+    [self.thumbnailView reloadData];
+}
+
+- (IBAction) toggleLargePackItButton: (id)sender
+{
+    int number = [self.videoDB packItNumberForIndex: self.currentIndex
+                                         withOffset: self.currentOffset];
+    
+    BOOL isTrue = [self.videoDB packItForIndex: self.currentIndex
+                                    withOffset: self.currentOffset];
+    
+    if (isTrue)
+    {
+        number--;
+        
+        [self.videoDB setPackIt: FALSE
+                       forIndex: self.currentIndex
+                     withOffset: self.currentOffset];
+    }
+    else
+    {
+        number++;
+        
+        [self.videoDB setPackIt: TRUE
+                       forIndex: self.currentIndex
+                     withOffset: self.currentOffset];
+    }
+    
+    [self.videoDB setPackItNumber: number
+                         forIndex: self.currentIndex
+                       withOffset: self.currentOffset];
+    
+    [self updateLargeVideoDetailsForIndex: self.currentIndex
+                               withOffset: self.currentOffset];
+    
+    [self.thumbnailView reloadData];
 }
 
 #pragma mark - Large video view gesture handler
