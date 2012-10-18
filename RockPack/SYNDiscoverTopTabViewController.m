@@ -9,12 +9,15 @@
 #import "AppContants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "SYNDiscoverTopTabViewController.h"
+#import "SYNVideoDB.h"
+#import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "SYNWallpackCarouselCell.h"
 
 @interface SYNDiscoverTopTabViewController ()
 
+@property (nonatomic, assign) int currentIndex;
+@property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
@@ -24,8 +27,11 @@
 @property (nonatomic, strong) IBOutlet UILabel *rockIt;
 @property (nonatomic, strong) IBOutlet UILabel *packItNumber;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
+@property (nonatomic, strong) IBOutlet UIButton *packItButton;
+@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
+@property (nonatomic, strong) SYNVideoDB *videoDB;
 
 @end
 
@@ -34,6 +40,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.videoDB = [SYNVideoDB sharedVideoDBManager];
     
 #ifdef FULL_SCREEN_THUMBNAILS
 
@@ -59,13 +67,23 @@
 
 }
 
+
 - (void) viewWillAppear: (BOOL) animated
 {
+    // Set the first video
+    [self setLargeVideoIndex: self.currentIndex
+                  withOffset: self.currentOffset];
+}
 
+
+- (void) setLargeVideoIndex: (int) index
+                 withOffset: (int) offset
+{
+    [self updateLargeVideoDetailsForIndex: index
+                               withOffset: offset];
     
-    NSURL *videoURL = [NSURL fileURLWithPath: [[NSBundle mainBundle]
-                                               pathForResource: @"MonstersUniversityTeaser"
-                                               ofType: @"mp4"] isDirectory: NO];
+    NSURL *videoURL = [self.videoDB videoURLForIndex: index
+                                          withOffset: offset];
     
     self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
     
@@ -75,11 +93,34 @@
     [[self.mainVideoPlayer view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
     
     [self.videoPlaceholderView addSubview: [self.mainVideoPlayer view]];
+    [self.mainVideoPlayer pause];
+}
+
+
+- (void) updateLargeVideoDetailsForIndex: (int) index
+                              withOffset: (int) offset
+{
+    self.maintitle.text = [self.videoDB titleForIndex: index
+                                           withOffset: offset];
+    
+    self.subtitle.text = [self.videoDB subtitleForIndex: index
+                                             withOffset: offset];
+    
+    self.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: index
+                                                                                        withOffset: offset]];
+    
+    self.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: index
+                                                                                        withOffset: offset]];
+    self.packItButton.selected = ([self.videoDB packItNumberForIndex: index
+                                                          withOffset: offset]) ? FALSE : TRUE;
+    
+    self.rockItButton.selected = ([self.videoDB rockItNumberForIndex: index
+                                                          withOffset: offset]) ? FALSE : TRUE;
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    [self.mainVideoPlayer pause];
+//    [self.mainVideoPlayer pause];
     
     [self.thumbnailView reloadData];
 }
@@ -90,6 +131,10 @@
     if (newSelectedIndex != NSNotFound)
     {
         [self highlightTab: newSelectedIndex];
+        self.currentOffset = newSelectedIndex;
+        
+        [self setLargeVideoIndex: 0
+                      withOffset: self.currentOffset];
     }
 }
 
