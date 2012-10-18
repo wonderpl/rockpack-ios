@@ -7,6 +7,7 @@
 //
 
 #import "SYNThumbnailCell.h"
+#import "UIFont+SYNFont.h"
 
 @implementation SYNThumbnailCell
 
@@ -21,8 +22,7 @@
 
 - (id) initWithFrame: (CGRect) frame
 {
-    self = [super initWithFrame:frame];
-    if (self)
+    if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
         NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNThumbnail"
@@ -40,11 +40,20 @@
         }
     
         self = [arrayOfViews objectAtIndex: 0];
-    
-}
+    }
     
     return self;
     
+}
+
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.maintitle.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.subtitle.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.packItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
 }
 
 /*
