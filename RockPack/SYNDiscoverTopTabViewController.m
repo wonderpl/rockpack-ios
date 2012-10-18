@@ -138,6 +138,8 @@
         
         [self setLargeVideoIndex: 0
                       withOffset: self.currentOffset];
+        
+        [self.thumbnailView reloadData];
     }
 }
 
@@ -263,24 +265,7 @@
 #endif
 }
 
-
 #pragma mark - Large video view open animation
-
-- (void) collectionView:(UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-#ifdef FULL_SCREEN_THUMBNAILS
-    if (self.isLargeVideoViewExpanded == FALSE)
-    {
-        [self animateLargeVideoViewRight: nil];
-        self.largeVideoViewExpanded = TRUE;
-    }
-#endif
-    self.currentIndex = indexPath.row;
-    
-    [self setLargeVideoIndex: self.currentIndex
-                  withOffset: self.currentOffset];
-}
 
 - (IBAction) animateLargeVideoViewRight: (id) sender
 {
@@ -330,15 +315,8 @@
 #endif
 }
 
-// Temp collection view stuff
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSString *searchTerm = self.searches[indexPath.section]; FlickrPhoto *photo =
-//    self.searchResults[searchTerm][indexPath.row];
-//    // 2
-//    CGSize retval = photo.thumbnail.size.width > 0 ? photo.thumbnail.size : CGSizeMake(100, 100);
-//    retval.height += 35; retval.width += 35; return retval;
-//}
+#pragma mark - Collection view support
 
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
@@ -380,11 +358,21 @@
     return cell;
 }
 
-- (UIEdgeInsets) collectionView: (UICollectionView *) collectionView
-                         layout: (UICollectionViewLayout*) collectionViewLayout
-         insetForSectionAtIndex: (NSInteger) section
+
+- (void) collectionView: (UICollectionView *) collectionView
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+#ifdef FULL_SCREEN_THUMBNAILS
+    if (self.isLargeVideoViewExpanded == FALSE)
+    {
+        [self animateLargeVideoViewRight: nil];
+        self.largeVideoViewExpanded = TRUE;
+    }
+#endif
+    self.currentIndex = indexPath.row;
+    
+    [self setLargeVideoIndex: self.currentIndex
+                  withOffset: self.currentOffset];
 }
 
 @end
