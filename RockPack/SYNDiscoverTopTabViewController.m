@@ -360,6 +360,23 @@
     cell.imageView.image = [self.videoDB thumbnailForIndex: indexPath.row
                                                 withOffset: self.currentOffset];
     
+    cell.maintitle.text = [self.videoDB titleForIndex: indexPath.row
+                                           withOffset: self.currentOffset];
+    
+    cell.subtitle.text = [self.videoDB subtitleForIndex: indexPath.row
+                                             withOffset: self.currentOffset];
+    
+    cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: indexPath.row
+                                                                                        withOffset: self.currentOffset]];
+    
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: indexPath.row
+                                                                                        withOffset: self.currentOffset]];
+    cell.packItButton.selected = ([self.videoDB packItForIndex: indexPath.row
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
+    cell.rockItButton.selected = ([self.videoDB rockItForIndex: indexPath.row
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
     return cell;
 }
 

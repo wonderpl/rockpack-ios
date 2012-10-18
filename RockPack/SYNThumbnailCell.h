@@ -11,7 +11,7 @@
 @interface SYNThumbnailCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
-@property (nonatomic, strong) IBOutlet UILabel *mainTitle;
+@property (nonatomic, strong) IBOutlet UILabel *maintitle;
 @property (nonatomic, strong) IBOutlet UILabel *subtitle;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *packItButton;
