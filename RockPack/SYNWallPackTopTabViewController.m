@@ -7,16 +7,18 @@
 //
 
 #import "AppContants.h"
-#import "SYNWallPackTopTabViewController.h"
+#import "AudioToolbox/AudioToolbox.h"
+#import "NSObject+Blocks.h"
 #import "SYNWallPackCategoryAViewController.h"
 #import "SYNWallPackCategoryBViewController.h"
-#import "SYNWallpackCarouselVerticalLayout.h"
+#import "SYNWallPackTopTabViewController.h"
 #import "SYNWallpackCarouselCell.h"
-#import "AudioToolbox/AudioToolbox.h"
+#import "SYNWallpackCarouselVerticalLayout.h"
 
 @interface SYNWallPackTopTabViewController ()
 
 @property (nonatomic, strong) IBOutlet UICollectionView *wallpackCarousel;
+@property (nonatomic, assign) BOOL shouldPlaySound;
 
 @end
 
@@ -47,7 +49,7 @@
 }
 
 
-- (void) viewDidAppear:(BOOL)animated
+- (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
     
@@ -56,6 +58,20 @@
     [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
                                   atScrollPosition: UICollectionViewScrollPositionCenteredVertically
                                           animated: NO];
+    
+    // Only play the scrolling click (after we have scrolled to the right position in the list,
+    // which might not have finished in this run loop
+    [NSObject performBlock: ^
+                            {
+                                self.shouldPlaySound = TRUE;
+                            }
+                afterDelay: 0.1f];
+}
+
+
+- (void) viewDidDisappear: (BOOL) animated
+{
+    self.shouldPlaySound = FALSE;
 }
 
 
@@ -74,10 +90,13 @@
     NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
                                                           ofType: @"aif"];
     
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
+    if (self.shouldPlaySound == TRUE)
+    {
+        NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+        AudioServicesPlaySystemSound(sound);
+    }
 
 
     SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"

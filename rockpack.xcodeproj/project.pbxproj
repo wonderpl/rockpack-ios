@@ -68,6 +68,7 @@
 		01363EAF162F5C3E00FFAA09 /* Tap.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363EAA162F5C3E00FFAA09 /* Tap.aif */; };
 		01363EB0162F5C3E00FFAA09 /* Trash.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363EAB162F5C3E00FFAA09 /* Trash.aif */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
+		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -186,6 +187,8 @@
 		01363EAA162F5C3E00FFAA09 /* Tap.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tap.aif; sourceTree = "<group>"; };
 		01363EAB162F5C3E00FFAA09 /* Trash.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Trash.aif; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
+		01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -725,6 +728,8 @@
 				019825F0162C94A300216900 /* UIColor+SYNColor.m */,
 				019825F2162C94B500216900 /* UIFont+SYNFont.h */,
 				019825F3162C94B500216900 /* UIFont+SYNFont.m */,
+				01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */,
+				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -891,6 +896,7 @@
 				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
 				012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */,
 				012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */,
+				01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
