@@ -8,6 +8,7 @@
 //
 //  based on code by Zachary Waldowski on 4/12/11.
 //  Copyright 2011 Dizzy Technology. All rights reserved.
+//  https://gist.github.com/955123
 
 #import <Foundation/Foundation.h>
 
@@ -23,7 +24,8 @@
 - (id) performBlock: (void (^)(void)) block
          afterDelay: (NSTimeInterval) delay;
 
-- (id) performBlock: (void (^)(id arg))block withObject: (id) anObject
+- (id) performBlock: (void (^)(id arg))block
+         withObject: (id) anObject
          afterDelay: (NSTimeInterval) delay;
 
 + (void) cancelBlock: (id) block;

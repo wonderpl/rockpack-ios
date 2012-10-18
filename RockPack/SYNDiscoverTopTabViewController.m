@@ -6,14 +6,16 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppContants.h"
+#import "AudioToolbox/AudioToolbox.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "UIFont+SYNFont.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "AudioToolbox/AudioToolbox.h"
 
 @interface SYNDiscoverTopTabViewController ()
 
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
+@property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
 @property (nonatomic, strong) IBOutlet UILabel *maintitle;
 @property (nonatomic, strong) IBOutlet UILabel *subtitle;
@@ -76,6 +78,69 @@
     button.selected = !button.selected;
 }
 
+#pragma mark - Large video view gesture handler
 
+- (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
+{       
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_In"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+    
+    // Animate the view out onto the screen
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = -1024;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = -1024;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+     }];
+}
+
+
+#pragma mark - Large video view open animation
+
+- (void) animateLargeVideoViewRight
+{
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_Out"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+    
+    // Animate the view out onto the screen
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = 0;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = 0;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+     }];
+}
 
 @end

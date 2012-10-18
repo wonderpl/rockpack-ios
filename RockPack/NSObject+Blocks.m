@@ -7,6 +7,7 @@
 //
 //  based on code by Zachary Waldowski on 4/12/11.
 //  Copyright 2011 Dizzy Technology. All rights reserved.
+//  https://gist.github.com/955123
 
 #import "NSObject+Blocks.h"
 #import <dispatch/dispatch.h>
@@ -78,7 +79,7 @@ static inline dispatch_time_t dTimeDelay(NSTimeInterval time)
 }
 
 
-- (id)bperformBlock: (void (^)(void)) block
+- (id) performBlock: (void (^)(void)) block
          afterDelay: (NSTimeInterval) delay
 {
     if (!block) return nil;

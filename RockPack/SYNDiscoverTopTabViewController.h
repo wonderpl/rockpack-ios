@@ -8,6 +8,6 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNDiscoverTopTabViewController : SYNAbstractTopTabViewController
+@interface SYNDiscoverTopTabViewController : SYNAbstractTopTabViewController <UIGestureRecognizerDelegate>
 
 @end

@@ -23,6 +23,9 @@
 // Rockie-talkie
 #define kRockieTalkieAnimationDuration 0.3f
 
+// Large Video panel
+#define kLargeVideoPanelAnimationDuration 0.3f
+
 //
 // Dimensions
 //

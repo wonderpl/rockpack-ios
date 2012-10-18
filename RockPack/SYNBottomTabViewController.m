@@ -73,7 +73,7 @@
     // Right swipe
     UISwipeGestureRecognizer *swipeRightRecognizer;
     swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                     action: @selector(swipeRight:)];
+                                                                     action: @selector(swipeRockieTalkieRight:)];
     
     [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.rockieTalkiePanel addGestureRecognizer: swipeRightRecognizer];
@@ -81,7 +81,7 @@
     // Left swipe
     UISwipeGestureRecognizer *swipeLeftRecognizer;
     swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                    action: @selector(swipeleft:)];
+                                                                    action: @selector(swipeRockieTalkieLeft:)];
     
     [swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.rockieTalkiePanel addGestureRecognizer: swipeLeftRecognizer];
@@ -283,7 +283,7 @@
 
 #pragma mark - Rockie-Talkie gesture handlers
 
--(void) swipeleft: (UISwipeGestureRecognizer *) swipeGesture
+-(void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
     if (self.didNotSwipe)
     {
@@ -319,7 +319,7 @@
 }
 
 
--(void) swipeRight: (UISwipeGestureRecognizer *) swipeGesture
+- (void) swipeRockieTalkieRight: (UISwipeGestureRecognizer *) swipeGesture
 {
     if (!self.didNotSwipe)
     {
@@ -353,7 +353,5 @@
          }];
     }
 }
-
-
 
 @end
