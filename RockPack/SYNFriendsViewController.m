@@ -7,6 +7,7 @@
 //
 
 #import "SYNFriendsViewController.h"
+#import "SYNMovableView.h"
 
 @interface SYNFriendsViewController ()
 
@@ -14,25 +15,16 @@
 
 @implementation SYNFriendsViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+//
+//    CGRect avatarFrame = CGRectMake(250, 250, 94, 94);
+//    SYNMovableView *avatarView = [[SYNMovableView alloc] initWithFrame: avatarFrame];
+//    avatarView.userInteractionEnabled = TRUE;
+//    avatarView.image = [UIImage imageNamed: @"Joker.png"];
+//    
+//    [self.view addSubview: avatarView];
 }
 
 @end
