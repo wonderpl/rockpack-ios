@@ -22,6 +22,8 @@
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *rockieTalkiePanel;
+@property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
+@property (nonatomic, strong) IBOutlet UITextField *searchField;
 @property (nonatomic, assign) BOOL didNotSwipe;
 
 @end
@@ -276,6 +278,8 @@
 
 - (IBAction) tabButtonPressed: (UIButton *) sender
 {
+    self.searchField.text = @"";
+    
 	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
                   animated: YES];
 }
@@ -356,6 +360,13 @@
              self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
          }];
     }
+}
+
+- (IBAction) clearSearchField: (id) sender
+{
+    self.searchField.text = @"";
+    
+    [self.searchField resignFirstResponder];
 }
 
 @end
