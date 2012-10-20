@@ -99,7 +99,6 @@
     
     // Start on discovery screenNewSlideIn
     self.selectedIndex = 1;
-    
 }
 
 #pragma mark - Tab & Container switching mechanism

@@ -35,6 +35,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *rockIt;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 @property (nonatomic, strong) IBOutlet UILabel *subtitle;
+@property (nonatomic, strong) IBOutlet UITextField *channelNameField;
+@property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) IBOutlet UIView *dropZoneView;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
@@ -644,7 +646,36 @@
 
 - (IBAction) addImagewellToRockPack: (id) sender
 {
+    UIViewController *pvc = self.parentViewController;
     
+    [pvc.view addSubview: self.channelChooserView];
+    
+    [self.channelNameField becomeFirstResponder];
+    
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.channelChooserView.alpha = 1.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+}
+
+- (BOOL) textFieldShouldReturn: (UITextField *) textField
+{
+    [self.channelNameField resignFirstResponder];
+    [self clearImageWell];
+    
+    return YES;
+}
+
+- (void) textFieldDidEndEditing: (UITextField *) textField
+{
+    self.channelChooserView.alpha = 0.0f;
 }
 
 @end
