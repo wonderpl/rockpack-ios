@@ -382,8 +382,7 @@
         SYNImageWellCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
                                                                forIndexPath: indexPath];
         
-        cell.imageView.image = [self.videoDB thumbnailForIndex: indexPath.row
-                                                    withOffset: self.currentOffset];
+        cell.imageView.image = [self.imageWell objectAtIndex: indexPath.row];
         
         return cell;
     }
@@ -449,6 +448,10 @@
     self.imageWellView.frame = imageWellView;
     
     [self.imageWellView reloadData];
+    
+    [self.imageWellView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
+                               atScrollPosition: UICollectionViewScrollPositionLeft
+                                       animated: NO];
     
     // Animate the view out onto the screen
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
