@@ -93,6 +93,15 @@
     self.didNotSwipe = TRUE;
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear: animated];
+    
+    // Start on discovery screenNewSlideIn
+    self.selectedIndex = 1;
+    
+}
+
 #pragma mark - Tab & Container switching mechanism
 
 // Add the four tab view controllers as sub-view controllers of this view controller
