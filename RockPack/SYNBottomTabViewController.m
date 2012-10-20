@@ -295,7 +295,7 @@
         
 #ifdef SOUND_ENABLED
         // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideOut"
                                                                ofType: @"aif"];
         
         NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
@@ -333,7 +333,7 @@
 
 #ifdef SOUND_ENABLED
         // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideIn"
                                                               ofType: @"aif"];
         
         NSURL *soundURL = [NSURL fileURLWithPath: soundPath];

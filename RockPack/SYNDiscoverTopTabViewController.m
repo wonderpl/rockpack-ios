@@ -539,7 +539,7 @@
 {
 #ifdef SOUND_ENABLED
     // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Tap"
                                                           ofType: @"aif"];
     
     NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
@@ -609,6 +609,17 @@
 
 - (IBAction) clearImageWell
 {
+#ifdef SOUND_ENABLED
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Trash"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
+    
     [self.imageWell removeAllObjects];
     [self.imageWellView reloadData];
     
