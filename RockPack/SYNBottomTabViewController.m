@@ -21,7 +21,7 @@
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *rockieTalkiePanel;
+@property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanel;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
 @property (nonatomic, strong) IBOutlet UITextField *searchField;
 @property (nonatomic, assign) BOOL didNotSwipe;
@@ -367,6 +367,11 @@
     self.searchField.text = @"";
     
     [self.searchField resignFirstResponder];
+}
+
+- (IBAction) recordAction: (UIButton*) button
+{
+    button.selected = !button.selected;
 }
 
 @end
