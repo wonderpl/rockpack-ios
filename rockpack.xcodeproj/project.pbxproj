@@ -139,6 +139,19 @@
 		01363F7E16327C4C00FFAA09 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7D16327C4C00FFAA09 /* Default-Landscape.png */; };
 		01363F801632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7F1632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png */; };
 		01363F821632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F811632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png */; };
+		01363F841632D34300FFAA09 /* Wallpack_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F831632D34200FFAA09 /* Wallpack_10.png */; };
+		01363F901632D5F500FFAA09 /* LargeWallpack_0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F851632D5E400FFAA09 /* LargeWallpack_0.jpg */; };
+		01363F911632D5F500FFAA09 /* LargeWallpack_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F861632D5E500FFAA09 /* LargeWallpack_1.jpg */; };
+		01363F921632D5F500FFAA09 /* LargeWallpack_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F871632D5E700FFAA09 /* LargeWallpack_2.jpg */; };
+		01363F931632D5F500FFAA09 /* LargeWallpack_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F881632D5E800FFAA09 /* LargeWallpack_3.jpg */; };
+		01363F941632D5F500FFAA09 /* LargeWallpack_4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F891632D5E900FFAA09 /* LargeWallpack_4.jpg */; };
+		01363F951632D5F500FFAA09 /* LargeWallpack_5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F8A1632D5E900FFAA09 /* LargeWallpack_5.jpg */; };
+		01363F961632D5F500FFAA09 /* LargeWallpack_6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F8B1632D5EB00FFAA09 /* LargeWallpack_6.jpg */; };
+		01363F971632D5F500FFAA09 /* LargeWallpack_7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F8C1632D5EE00FFAA09 /* LargeWallpack_7.jpg */; };
+		01363F981632D5F500FFAA09 /* LargeWallpack_8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F8D1632D5EE00FFAA09 /* LargeWallpack_8.jpg */; };
+		01363F991632D5F500FFAA09 /* LargeWallpack_9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F8E1632D5EF00FFAA09 /* LargeWallpack_9.jpg */; };
+		01363F9A1632D5F500FFAA09 /* LargeWallpack_10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01363F8F1632D5F000FFAA09 /* LargeWallpack_10.jpg */; };
+		01363F9C1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F9B1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -332,6 +345,19 @@
 		01363F7D16327C4C00FFAA09 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		01363F7F1632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderChooseChannel@2x.png"; sourceTree = "<group>"; };
 		01363F811632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundChooseChannel@2x.png"; sourceTree = "<group>"; };
+		01363F831632D34200FFAA09 /* Wallpack_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Wallpack_10.png; sourceTree = "<group>"; };
+		01363F851632D5E400FFAA09 /* LargeWallpack_0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_0.jpg; sourceTree = "<group>"; };
+		01363F861632D5E500FFAA09 /* LargeWallpack_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_1.jpg; sourceTree = "<group>"; };
+		01363F871632D5E700FFAA09 /* LargeWallpack_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_2.jpg; sourceTree = "<group>"; };
+		01363F881632D5E800FFAA09 /* LargeWallpack_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_3.jpg; sourceTree = "<group>"; };
+		01363F891632D5E900FFAA09 /* LargeWallpack_4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_4.jpg; sourceTree = "<group>"; };
+		01363F8A1632D5E900FFAA09 /* LargeWallpack_5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_5.jpg; sourceTree = "<group>"; };
+		01363F8B1632D5EB00FFAA09 /* LargeWallpack_6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_6.jpg; sourceTree = "<group>"; };
+		01363F8C1632D5EE00FFAA09 /* LargeWallpack_7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_7.jpg; sourceTree = "<group>"; };
+		01363F8D1632D5EE00FFAA09 /* LargeWallpack_8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_8.jpg; sourceTree = "<group>"; };
+		01363F8E1632D5EF00FFAA09 /* LargeWallpack_9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_9.jpg; sourceTree = "<group>"; };
+		01363F8F1632D5F000FFAA09 /* LargeWallpack_10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LargeWallpack_10.jpg; sourceTree = "<group>"; };
+		01363F9B1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundWallpackOverlay@2x.png"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -511,6 +537,17 @@
 		012632D9162DF9E50009FF9C /* Wallpack Carousel Thumbnails */ = {
 			isa = PBXGroup;
 			children = (
+				01363F851632D5E400FFAA09 /* LargeWallpack_0.jpg */,
+				01363F861632D5E500FFAA09 /* LargeWallpack_1.jpg */,
+				01363F871632D5E700FFAA09 /* LargeWallpack_2.jpg */,
+				01363F881632D5E800FFAA09 /* LargeWallpack_3.jpg */,
+				01363F891632D5E900FFAA09 /* LargeWallpack_4.jpg */,
+				01363F8A1632D5E900FFAA09 /* LargeWallpack_5.jpg */,
+				01363F8B1632D5EB00FFAA09 /* LargeWallpack_6.jpg */,
+				01363F8C1632D5EE00FFAA09 /* LargeWallpack_7.jpg */,
+				01363F8D1632D5EE00FFAA09 /* LargeWallpack_8.jpg */,
+				01363F8E1632D5EF00FFAA09 /* LargeWallpack_9.jpg */,
+				01363F8F1632D5F000FFAA09 /* LargeWallpack_10.jpg */,
 				012632DA162DF9FB0009FF9C /* Wallpack_0.png */,
 				012632DB162DF9FB0009FF9C /* Wallpack_1.png */,
 				012632DC162DF9FB0009FF9C /* Wallpack_2.png */,
@@ -521,6 +558,7 @@
 				012632E1162DF9FB0009FF9C /* Wallpack_7.png */,
 				012632E2162DF9FB0009FF9C /* Wallpack_8.png */,
 				012632E3162DF9FB0009FF9C /* Wallpack_9.png */,
+				01363F831632D34200FFAA09 /* Wallpack_10.png */,
 			);
 			name = "Wallpack Carousel Thumbnails";
 			sourceTree = "<group>";
@@ -852,6 +890,7 @@
 		019825071629DC9B00216900 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				01363F9B1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png */,
 				01363F811632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png */,
 				01363F5816318F4E00FFAA09 /* BackgroundFriends@2x.png */,
 				01363F0D1630AC6300FFAA09 /* BackgroundThumbnail.png */,
@@ -1196,6 +1235,19 @@
 				01363F7E16327C4C00FFAA09 /* Default-Landscape.png in Resources */,
 				01363F801632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png in Resources */,
 				01363F821632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png in Resources */,
+				01363F841632D34300FFAA09 /* Wallpack_10.png in Resources */,
+				01363F901632D5F500FFAA09 /* LargeWallpack_0.jpg in Resources */,
+				01363F911632D5F500FFAA09 /* LargeWallpack_1.jpg in Resources */,
+				01363F921632D5F500FFAA09 /* LargeWallpack_2.jpg in Resources */,
+				01363F931632D5F500FFAA09 /* LargeWallpack_3.jpg in Resources */,
+				01363F941632D5F500FFAA09 /* LargeWallpack_4.jpg in Resources */,
+				01363F951632D5F500FFAA09 /* LargeWallpack_5.jpg in Resources */,
+				01363F961632D5F500FFAA09 /* LargeWallpack_6.jpg in Resources */,
+				01363F971632D5F500FFAA09 /* LargeWallpack_7.jpg in Resources */,
+				01363F981632D5F500FFAA09 /* LargeWallpack_8.jpg in Resources */,
+				01363F991632D5F500FFAA09 /* LargeWallpack_9.jpg in Resources */,
+				01363F9A1632D5F500FFAA09 /* LargeWallpack_10.jpg in Resources */,
+				01363F9C1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

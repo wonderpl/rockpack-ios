@@ -12,7 +12,7 @@
 // Major functionality switches
 
 // Enable user interface sounds
-#define SOUND_ENABLED__
+#define SOUND_ENABLED
 
 // Enable full screen thumbnail view 
 #define FULL_SCREEN_THUMBNAILS__

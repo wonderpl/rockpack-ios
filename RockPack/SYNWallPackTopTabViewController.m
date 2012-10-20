@@ -14,11 +14,19 @@
 #import "SYNWallPackTopTabViewController.h"
 #import "SYNWallpackCarouselCell.h"
 #import "SYNWallpackCarouselVerticalLayout.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNWallPackTopTabViewController ()
 
 @property (nonatomic, strong) IBOutlet UICollectionView *wallpackCarousel;
+@property (nonatomic, strong) IBOutlet UIImageView *wallpackPreview;
 @property (nonatomic, assign) BOOL shouldPlaySound;
+@property (nonatomic, assign) int currentIndex;
+@property (nonatomic, assign) int currentOffset;
+@property (nonatomic, strong) NSArray *wallpackTitles;
+@property (nonatomic, strong) NSArray *wallpackPrices;
+@property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
+@property (nonatomic, strong) IBOutlet UILabel *wallpackPrice;
 
 @end
 
@@ -28,20 +36,47 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.wallpackTitle.font = [UIFont boldRockpackFontOfSize: 21.0f];
+    self.wallpackPrice.font = [UIFont boldRockpackFontOfSize: 25.0f];
+    
+    self.wallpackTitles = @[@"AMAZING ALEX WALLPACK",
+                            @"SPACE WALLPACK",
+                            @"JUSTIN BIEBER WALLPACK",
+                            @"USAIN BOLT WALLPACK",
+                            @"PIXARS 'BRAVE' WALLPACK",
+                            @"STAR WARS WALLPACK",
+                            @"ONE DIRECTION WALLPACK",
+                            @"HARRY POTTER WALLPACK",
+                            @"MONSTERS UNIVERSITY WALLPACK",
+                            @"THE INCREDIBLE HULK WALLPACK",
+                            @"JAMES BOND WALLPACK"];
+    
+    self.wallpackPrices = @[@"100",
+                            @"300",
+                            @"500",
+                            @"200",
+                            @"900",
+                            @"400",
+                            @"700",
+                            @"200",
+                            @"800",
+                            @"100",
+                            @"600"];
 
     // Set up wallpack carousel
     SYNWallpackCarouselVerticalLayout *wallpackCarouselVerticalLayout = [[SYNWallpackCarouselVerticalLayout alloc] init];
     self.wallpackCarousel.collectionViewLayout = wallpackCarouselVerticalLayout;
     
-    // Setup our four sub-viewcontrollers, one for each tab
-    SYNWallPackCategoryAViewController *categoryAViewController = [[SYNWallPackCategoryAViewController alloc] init];
-    SYNWallPackCategoryBViewController *categoryBViewController = [[SYNWallPackCategoryBViewController alloc] init];
-    
-    // Using new array syntax
-    self.viewControllers = @[categoryAViewController, categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController,
-                             categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController, categoryAViewController];
-    
-    self.selectedViewController = categoryAViewController;
+//    // Setup our four sub-viewcontrollers, one for each tab
+//    SYNWallPackCategoryAViewController *categoryAViewController = [[SYNWallPackCategoryAViewController alloc] init];
+//    SYNWallPackCategoryBViewController *categoryBViewController = [[SYNWallPackCategoryBViewController alloc] init];
+//    
+//    // Using new array syntax
+//    self.viewControllers = @[categoryAViewController, categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController,
+//                             categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController, categoryAViewController];
+//    
+//    self.selectedViewController = categoryAViewController;
     
     // Set up our carousel
     [self.wallpackCarousel registerClass: [SYNWallpackCarouselCell class] forCellWithReuseIdentifier: @"SYNWallpackCarouselCell"];
@@ -103,10 +138,33 @@
     SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
                                                                   forIndexPath: indexPath];
     
-    NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 10];
+    NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 11];
     cell.image = [UIImage imageNamed: imageName];
     
     return cell;
+}
+
+- (void) setSelectedIndex: (NSUInteger) newSelectedIndex
+                 animated: (BOOL) animated
+{
+    if (newSelectedIndex != NSNotFound)
+    {
+        [self highlightTab: newSelectedIndex];
+        self.currentOffset = newSelectedIndex;
+    }
+}
+
+- (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
+{
+    NSArray *items = [cv indexPathsForVisibleItems];
+    NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(100.0f, cv.contentOffset.y + 250.0f)];
+//    NSIndexPath *middleItem = [items objectAtIndex: 2];
+    
+    NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", indexPath.row % 11];
+    self.wallpackPreview.image = [UIImage imageNamed: imageName];
+    
+    self.wallpackTitle.text = [self.wallpackTitles objectAtIndex: indexPath.row % 11];
+    self.wallpackPrice.text = [self.wallpackPrices objectAtIndex: indexPath.row % 11];
 }
 
 

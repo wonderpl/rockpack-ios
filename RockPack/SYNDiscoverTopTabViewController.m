@@ -18,13 +18,14 @@
 
 @interface SYNDiscoverTopTabViewController ()
 
+@property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
-@property (nonatomic, strong) IBOutlet UIButton *packItButton;
-@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellDeleteButton;
+@property (nonatomic, strong) IBOutlet UIButton *packItButton;
+@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *imageWellView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UIImageView *imageWellMessage;
@@ -34,15 +35,14 @@
 @property (nonatomic, strong) IBOutlet UILabel *rockIt;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 @property (nonatomic, strong) IBOutlet UILabel *subtitle;
+@property (nonatomic, strong) IBOutlet UIView *dropZoneView;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
+@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) NSMutableArray *imageWell;
 @property (nonatomic, strong) SYNVideoDB *videoDB;
-@property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, strong) UIImageView *draggedView;
-@property (nonatomic, strong) IBOutlet UIView *dropZoneView;
-@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 
 @end
 
@@ -351,7 +351,7 @@
 #ifdef FULL_SCREEN_THUMBNAILS
 #ifdef SOUND_ENABLED
     // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_In"
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
                                                           ofType: @"aif"];
     
     NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
@@ -403,7 +403,7 @@
 #ifdef FULL_SCREEN_THUMBNAILS
 #ifdef SOUND_ENABLED
     // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_Out"
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
                                                           ofType: @"aif"];
     
     NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
@@ -537,6 +537,17 @@
 - (void) animateImageWellAdditionWithVideoForIndex: (int) index          
                                         withOffset: (int) offset
 {
+#ifdef SOUND_ENABLED
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
+    
     // If this is the first thing we are adding then fade out the message
     if (self.imageWell.count == 0)
     {

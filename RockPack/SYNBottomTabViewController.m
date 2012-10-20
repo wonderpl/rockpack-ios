@@ -295,7 +295,7 @@
         
 #ifdef SOUND_ENABLED
         // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_Out"
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
                                                                ofType: @"aif"];
         
         NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
@@ -333,7 +333,7 @@
 
 #ifdef SOUND_ENABLED
         // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"RockieTalkie_Slide_In"
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
                                                               ofType: @"aif"];
         
         NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
