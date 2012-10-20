@@ -23,6 +23,7 @@
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *packItButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
+@property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *imageWellView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UIImageView *imageWellMessage;
@@ -538,6 +539,9 @@
     // If this is the first thing we are adding then fade out the message
     if (self.imageWell.count == 0)
     {
+        self.imageWellAddButton.enabled = TRUE;
+        self.imageWellAddButton.selected = TRUE;
+        
         [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -586,10 +590,6 @@
      }
                      completion: ^(BOOL finished)
      {
-//         CGRect imageWellView = self.imageWellView.frame;
-//         imageWellView.origin.x += 142;
-//         imageWellView.size.width -= 142;
-//         self.imageWellView.frame =  imageWellView;
      }];
 }
 
@@ -597,6 +597,9 @@
 {
     [self.imageWell removeAllObjects];
     [self.imageWellView reloadData];
+    
+    self.imageWellAddButton.enabled = FALSE;
+    self.imageWellAddButton.selected = FALSE;
     
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.0f
