@@ -136,6 +136,9 @@
 		01363F72163191EE00FFAA09 /* sm2.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F66163191EE00FFAA09 /* sm2.png */; };
 		01363F761631922100FFAA09 /* ButtonTalkHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F741631922100FFAA09 /* ButtonTalkHighlighted@2x.png */; };
 		01363F771631922100FFAA09 /* ButtonTalk@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F751631922100FFAA09 /* ButtonTalk@2x.png */; };
+		01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNImageWellCell.m */; };
+		01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */; };
+		01363F7E16327C4C00FFAA09 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7D16327C4C00FFAA09 /* Default-Landscape.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -325,6 +328,10 @@
 		01363F66163191EE00FFAA09 /* sm2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sm2.png; sourceTree = "<group>"; };
 		01363F741631922100FFAA09 /* ButtonTalkHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonTalkHighlighted@2x.png"; sourceTree = "<group>"; };
 		01363F751631922100FFAA09 /* ButtonTalk@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonTalk@2x.png"; sourceTree = "<group>"; };
+		01363F781631A01000FFAA09 /* SYNImageWellCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImageWellCell.h; sourceTree = "<group>"; };
+		01363F791631A01000FFAA09 /* SYNImageWellCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImageWellCell.m; sourceTree = "<group>"; };
+		01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNImageWellCell.xib; sourceTree = "<group>"; };
+		01363F7D16327C4C00FFAA09 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -483,6 +490,9 @@
 				01363F221630B81400FFAA09 /* SYNThumbnailCell.h */,
 				01363F231630B81400FFAA09 /* SYNThumbnailCell.m */,
 				01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */,
+				01363F781631A01000FFAA09 /* SYNImageWellCell.h */,
+				01363F791631A01000FFAA09 /* SYNImageWellCell.m */,
+				01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */,
 			);
 			name = "Collection Cells";
 			sourceTree = "<group>";
@@ -809,6 +819,7 @@
 			isa = PBXGroup;
 			children = (
 				019824F51629CEDC00216900 /* Default-Landscape@2x.png */,
+				01363F7D16327C4C00FFAA09 /* Default-Landscape.png */,
 			);
 			name = "Launch Images";
 			sourceTree = "<group>";
@@ -1183,6 +1194,8 @@
 				01363F72163191EE00FFAA09 /* sm2.png in Resources */,
 				01363F761631922100FFAA09 /* ButtonTalkHighlighted@2x.png in Resources */,
 				01363F771631922100FFAA09 /* ButtonTalk@2x.png in Resources */,
+				01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */,
+				01363F7E16327C4C00FFAA09 /* Default-Landscape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1215,6 +1228,7 @@
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
 				01363F241630B81400FFAA09 /* SYNThumbnailCell.m in Sources */,
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
+				01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

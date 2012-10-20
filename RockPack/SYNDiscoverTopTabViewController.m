@@ -9,6 +9,7 @@
 #import "AppContants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "SYNDiscoverTopTabViewController.h"
+#import "SYNImageWellCell.h"
 #import "SYNThumbnailCell.h"
 #import "SYNVideoDB.h"
 #import "SYNWallpackCarouselCell.h"
@@ -19,19 +20,22 @@
 
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
-@property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
-@property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
-@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
-@property (nonatomic, strong) IBOutlet UILabel *maintitle;
-@property (nonatomic, strong) IBOutlet UILabel *subtitle;
-@property (nonatomic, strong) IBOutlet UILabel *packIt;
-@property (nonatomic, strong) IBOutlet UILabel *rockIt;
-@property (nonatomic, strong) IBOutlet UILabel *packItNumber;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
+@property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *packItButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *imageWellView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
-@property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
+@property (nonatomic, strong) IBOutlet UIImageView *imageWellMessage;
+@property (nonatomic, strong) IBOutlet UILabel *maintitle;
+@property (nonatomic, strong) IBOutlet UILabel *packIt;
+@property (nonatomic, strong) IBOutlet UILabel *packItNumber;
+@property (nonatomic, strong) IBOutlet UILabel *rockIt;
+@property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
+@property (nonatomic, strong) IBOutlet UILabel *subtitle;
+@property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
+@property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
+@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
+@property (nonatomic, strong) NSMutableArray *imageWell;
 @property (nonatomic, strong) SYNVideoDB *videoDB;
 
 @end
@@ -41,6 +45,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.imageWell = [[NSMutableArray alloc] initWithCapacity: 100];
     
     self.videoDB = [SYNVideoDB sharedVideoDBManager];
     
@@ -57,14 +63,17 @@
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
     
     // Init collection view
-    UINib *cellNib = [UINib nibWithNibName: @"SYNThumbnailCell"
-                                    bundle: nil];
-    
-    [self.self.thumbnailView registerNib: cellNib
-              forCellWithReuseIdentifier: @"ThumbnailCell"];
-    
-//    [self.thumbnailView registerClass: [UICollectionViewCell class]
-//            forCellWithReuseIdentifier: @"ThumnailCell"];
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNThumbnailCell"
+                                             bundle: nil];
+
+    [self.thumbnailView registerNib: thumbnailCellNib
+         forCellWithReuseIdentifier: @"ThumbnailCell"];
+
+    UINib *imageWellCellNib = [UINib nibWithNibName: @"SYNImageWellCell"
+                                             bundle: nil];
+
+    [self.imageWellView registerNib: imageWellCellNib
+         forCellWithReuseIdentifier: @"ImageWellCell"];
 
 }
 
@@ -125,6 +134,8 @@
 - (void) viewDidAppear: (BOOL) animated
 {
     [self.thumbnailView reloadData];
+    [self.imageWellView reloadData];
+
 }
 
 
@@ -321,7 +332,14 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return self.videoDB.numberOfVideos;
+    if (view == self.thumbnailView)
+    {
+        return self.videoDB.numberOfVideos;
+    }
+    else
+    {
+        return self.imageWell.count;
+    }
 }
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
@@ -332,30 +350,43 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    SYNThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
-                                                           forIndexPath: indexPath];
+    if (cv == self.thumbnailView)
+    {
+        SYNThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+                                                               forIndexPath: indexPath];
+        
+        cell.imageView.image = [self.videoDB thumbnailForIndex: indexPath.row
+                                                    withOffset: self.currentOffset];
+        
+        cell.maintitle.text = [self.videoDB titleForIndex: indexPath.row
+                                               withOffset: self.currentOffset];
+        
+        cell.subtitle.text = [self.videoDB subtitleForIndex: indexPath.row
+                                                 withOffset: self.currentOffset];
+        
+        cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: indexPath.row
+                                                                                            withOffset: self.currentOffset]];
+        
+        cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: indexPath.row
+                                                                                            withOffset: self.currentOffset]];
+        cell.packItButton.selected = ([self.videoDB packItForIndex: indexPath.row
+                                                        withOffset: self.currentOffset]) ? TRUE : FALSE;
+        
+        cell.rockItButton.selected = ([self.videoDB rockItForIndex: indexPath.row
+                                                        withOffset: self.currentOffset]) ? TRUE : FALSE;
     
-    cell.imageView.image = [self.videoDB thumbnailForIndex: indexPath.row
-                                                withOffset: self.currentOffset];
-    
-    cell.maintitle.text = [self.videoDB titleForIndex: indexPath.row
-                                           withOffset: self.currentOffset];
-    
-    cell.subtitle.text = [self.videoDB subtitleForIndex: indexPath.row
-                                             withOffset: self.currentOffset];
-    
-    cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: indexPath.row
-                                                                                        withOffset: self.currentOffset]];
-    
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: indexPath.row
-                                                                                        withOffset: self.currentOffset]];
-    cell.packItButton.selected = ([self.videoDB packItForIndex: indexPath.row
-                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
-    
-    cell.rockItButton.selected = ([self.videoDB rockItForIndex: indexPath.row
-                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
-    
-    return cell;
+        return cell;
+    }
+    else
+    {
+        SYNImageWellCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
+                                                               forIndexPath: indexPath];
+        
+        cell.imageView.image = [self.videoDB thumbnailForIndex: indexPath.row
+                                                    withOffset: self.currentOffset];
+        
+        return cell;
+    }
 }
 
 
@@ -373,6 +404,91 @@
     
     [self setLargeVideoIndex: self.currentIndex
                   withOffset: self.currentOffset];
+}
+
+#pragma mark - Image well support
+
+
+- (IBAction) addToImageWellFromLargeVideo: (id) sender
+{
+    [self animateImageWellAdditionWithVideoForIndex: self.currentIndex
+                                         withOffset: self.currentOffset];
+}
+
+- (void) animateImageWellAdditionWithVideoForIndex: (int) index          
+                                        withOffset: (int) offset
+{
+    // If this is the first thing we are adding then fade out the message
+    if (self.imageWell.count == 0)
+    {
+        [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Contract thumbnail view
+             self.imageWellMessage.alpha = 0.0f;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
+    }
+
+    
+    // Add image at front
+    UIImage *image = [self.videoDB thumbnailForIndex: index
+                                          withOffset: offset];
+    
+    [self.imageWell insertObject: image
+                         atIndex: 0];
+    
+    CGRect imageWellView = self.imageWellView.frame;
+    imageWellView.origin.x -= 142;
+    imageWellView.size.width += 142;
+    self.imageWellView.frame = imageWellView;
+    
+    [self.imageWellView reloadData];
+    
+    // Animate the view out onto the screen
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.5f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         CGRect imageWellView = self.imageWellView.frame;
+         imageWellView.origin.x += 142;
+         imageWellView.size.width -= 142;
+         self.imageWellView.frame =  imageWellView;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+//         CGRect imageWellView = self.imageWellView.frame;
+//         imageWellView.origin.x += 142;
+//         imageWellView.size.width -= 142;
+//         self.imageWellView.frame =  imageWellView;
+     }];
+}
+
+- (IBAction) clearImageWell
+{
+    [self.imageWell removeAllObjects];
+    [self.imageWellView reloadData];
+    
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.imageWellMessage.alpha = 1.0f;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 @end

@@ -1,15 +1,14 @@
 //
-//  SYNThumbnailCell.m
+//  SYNImageWellCell.m
 //  rockpack
 //
-//  Created by Nick Banks on 18/10/2012.
+//  Created by Nick Banks on 19/10/2012.
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNThumbnailCell.h"
-#import "UIFont+SYNFont.h"
+#import "SYNImageWellCell.h"
 
-@implementation SYNThumbnailCell
+@implementation SYNImageWellCell
 
 - (id) initWithFrame: (CGRect) frame
 {
@@ -34,16 +33,6 @@
     }
     
     return self;
-}
-
-- (void) awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.maintitle.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.subtitle.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.packItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
 }
 
 /*

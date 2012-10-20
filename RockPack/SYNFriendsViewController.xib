@@ -40,8 +40,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 44}, {1024, 642}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="46434764"/>
+						<reference key="NSNextKeyView" ref="51611884"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -50,13 +49,12 @@
 							<string key="NSResourceName">BackgroundFriends@2x.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="259344745">
+					<object class="IBUIImageView" id="996062512">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{819, 441}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="624763423"/>
+						<reference key="NSNextKeyView" ref="642197837"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -64,12 +62,11 @@
 							<string key="NSResourceName">1.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="624763423">
+					<object class="IBUIImageView" id="642197837">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{832, 538}, {69, 69}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -78,13 +75,12 @@
 							<string key="NSResourceName">sm1.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="46434764">
+					<object class="IBUIImageView" id="51611884">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{84, 129}, {69, 69}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="300657588"/>
+						<reference key="NSNextKeyView" ref="664539100"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -92,13 +88,12 @@
 							<string key="NSResourceName">sm2.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="546971617">
+					<object class="IBUIImageView" id="929392161">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{370, 213}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="758289534"/>
+						<reference key="NSNextKeyView" ref="476581384"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -106,13 +101,12 @@
 							<string key="NSResourceName">2.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="603216750">
+					<object class="IBUIImageView" id="147596803">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{326, 305}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="546971617"/>
+						<reference key="NSNextKeyView" ref="929392161"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -120,13 +114,12 @@
 							<string key="NSResourceName">3.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="758289534">
+					<object class="IBUIImageView" id="476581384">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{560, 213}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="433757120"/>
+						<reference key="NSNextKeyView" ref="734789273"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -134,13 +127,12 @@
 							<string key="NSResourceName">4.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="433757120">
+					<object class="IBUIImageView" id="734789273">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{608, 305}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="437569157"/>
+						<reference key="NSNextKeyView" ref="880928031"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -148,13 +140,12 @@
 							<string key="NSResourceName">5.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="333144334">
+					<object class="IBUIImageView" id="584160664">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{560, 400}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="259344745"/>
+						<reference key="NSNextKeyView" ref="996062512"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -162,13 +153,12 @@
 							<string key="NSResourceName">6.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="437569157">
+					<object class="IBUIImageView" id="880928031">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{370, 400}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="45927080"/>
+						<reference key="NSNextKeyView" ref="812054174"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -176,13 +166,12 @@
 							<string key="NSResourceName">7.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="45927080">
+					<object class="IBUIImageView" id="812054174">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{465, 440}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="333144334"/>
+						<reference key="NSNextKeyView" ref="584160664"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -190,13 +179,12 @@
 							<string key="NSResourceName">8.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="623115659">
+					<object class="IBUIImageView" id="935750841">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{465, 168}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="603216750"/>
+						<reference key="NSNextKeyView" ref="147596803"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -204,13 +192,12 @@
 							<string key="NSResourceName">9.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="300657588">
+					<object class="IBUIImageView" id="664539100">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{71, 201}, {94, 94}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="623115659"/>
+						<reference key="NSNextKeyView" ref="935750841"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -221,7 +208,6 @@
 				</array>
 				<string key="NSFrameSize">{1024, 686}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="835850817"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -270,18 +256,18 @@
 						<reference key="object" ref="766721923"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="835850817"/>
-							<reference ref="259344745"/>
-							<reference ref="300657588"/>
-							<reference ref="623115659"/>
-							<reference ref="603216750"/>
-							<reference ref="45927080"/>
-							<reference ref="433757120"/>
-							<reference ref="758289534"/>
-							<reference ref="437569157"/>
-							<reference ref="546971617"/>
-							<reference ref="333144334"/>
-							<reference ref="624763423"/>
-							<reference ref="46434764"/>
+							<reference ref="996062512"/>
+							<reference ref="664539100"/>
+							<reference ref="935750841"/>
+							<reference ref="147596803"/>
+							<reference ref="812054174"/>
+							<reference ref="734789273"/>
+							<reference ref="476581384"/>
+							<reference ref="880928031"/>
+							<reference ref="929392161"/>
+							<reference ref="584160664"/>
+							<reference ref="642197837"/>
+							<reference ref="51611884"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -292,62 +278,62 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
-						<reference key="object" ref="259344745"/>
+						<reference key="object" ref="996062512"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
-						<reference key="object" ref="546971617"/>
+						<reference key="object" ref="929392161"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
-						<reference key="object" ref="603216750"/>
+						<reference key="object" ref="147596803"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="758289534"/>
+						<reference key="object" ref="476581384"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
-						<reference key="object" ref="433757120"/>
+						<reference key="object" ref="734789273"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">13</int>
-						<reference key="object" ref="333144334"/>
+						<reference key="object" ref="584160664"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="437569157"/>
+						<reference key="object" ref="880928031"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">15</int>
-						<reference key="object" ref="45927080"/>
+						<reference key="object" ref="812054174"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">16</int>
-						<reference key="object" ref="623115659"/>
+						<reference key="object" ref="935750841"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">17</int>
-						<reference key="object" ref="300657588"/>
+						<reference key="object" ref="664539100"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
-						<reference key="object" ref="624763423"/>
+						<reference key="object" ref="642197837"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">19</int>
-						<reference key="object" ref="46434764"/>
+						<reference key="object" ref="51611884"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 				</array>
@@ -390,33 +376,14 @@
 			<nil key="sourceID"/>
 			<int key="maxID">19</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNFriendsViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNFriendsViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNMovableView</string>
-					<string key="superclassName">UIImageView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNMovableView.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="1.png">{188, 188}</string>
-			<string key="10.png">{188, 188}</string>
+			<string key="10.png">{188, 189}</string>
 			<string key="2.png">{188, 188}</string>
 			<string key="3.png">{188, 188}</string>
 			<string key="4.png">{188, 188}</string>
