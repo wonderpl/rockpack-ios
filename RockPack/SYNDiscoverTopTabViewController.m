@@ -24,6 +24,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *packItButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
+@property (nonatomic, strong) IBOutlet UIButton *imageWellDeleteButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *imageWellView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UIImageView *imageWellMessage;
@@ -541,6 +542,7 @@
     {
         self.imageWellAddButton.enabled = TRUE;
         self.imageWellAddButton.selected = TRUE;
+        self.imageWellDeleteButton.enabled = TRUE;
         
         [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                               delay: 0.0f
@@ -593,12 +595,14 @@
      }];
 }
 
+
 - (IBAction) clearImageWell
 {
     [self.imageWell removeAllObjects];
     [self.imageWellView reloadData];
     
     self.imageWellAddButton.enabled = FALSE;
+    self.imageWellDeleteButton.enabled = FALSE;
     self.imageWellAddButton.selected = FALSE;
     
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
@@ -613,6 +617,12 @@
                      completion: ^(BOOL finished)
      {
      }];
+}
+
+
+- (IBAction) addImagewellToRockPack: (id) sender
+{
+    
 }
 
 @end

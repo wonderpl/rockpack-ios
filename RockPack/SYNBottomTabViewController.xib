@@ -189,7 +189,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{1024, 54}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="770623461"/>
+						<reference key="NSNextKeyView" ref="922422117"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -212,7 +212,7 @@
 							<string key="NSResourceName">PanelRockieTalkie@2x.png</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="752985586">
+					<object class="IBUIButton" id="5422946">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{992, 9}, {23, 24}}</string>
@@ -238,12 +238,12 @@
 						<reference key="IBUIFontDescription" ref="434646076"/>
 						<reference key="IBUIFont" ref="79313120"/>
 					</object>
-					<object class="IBUITextField" id="770623461">
+					<object class="IBUITextField" id="922422117">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{783, 6}, {202, 30}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="752985586"/>
+						<reference key="NSNextKeyView" ref="5422946"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -323,7 +323,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">cancelSearchButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="752985586"/>
+						<reference key="destination" ref="5422946"/>
 					</object>
 					<int key="connectionID">32</int>
 				</object>
@@ -331,7 +331,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">searchField</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="770623461"/>
+						<reference key="destination" ref="922422117"/>
 					</object>
 					<int key="connectionID">34</int>
 				</object>
@@ -374,7 +374,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">clearSearchField:</string>
-						<reference key="source" ref="752985586"/>
+						<reference key="source" ref="5422946"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -411,8 +411,8 @@
 							<reference ref="581326300"/>
 							<reference ref="492712819"/>
 							<reference ref="629156338"/>
-							<reference ref="752985586"/>
-							<reference ref="770623461"/>
+							<reference ref="5422946"/>
+							<reference ref="922422117"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -459,12 +459,12 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">29</int>
-						<reference key="object" ref="752985586"/>
+						<reference key="object" ref="5422946"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">31</int>
-						<reference key="object" ref="770623461"/>
+						<reference key="object" ref="922422117"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 				</array>

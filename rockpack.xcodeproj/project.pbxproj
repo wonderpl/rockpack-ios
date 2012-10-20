@@ -118,8 +118,6 @@
 		01363F3516316D6F00FFAA09 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F2F16316D6F00FFAA09 /* Icon-Small@2x.png */; };
 		01363F4916316F4400FFAA09 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F4816316F4300FFAA09 /* Icon.png */; };
 		01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F501631789F00FFAA09 /* SYNMovableView.m */; };
-		01363F5416317A2300FFAA09 /* Joker.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F5216317A2300FFAA09 /* Joker.png */; };
-		01363F5516317A2300FFAA09 /* Joker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F5316317A2300FFAA09 /* Joker@2x.png */; };
 		01363F5716317A3100FFAA09 /* PanelMainTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F5616317A3100FFAA09 /* PanelMainTitle.png */; };
 		01363F5916318F4E00FFAA09 /* BackgroundFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F5816318F4E00FFAA09 /* BackgroundFriends@2x.png */; };
 		01363F67163191EE00FFAA09 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F5B163191EE00FFAA09 /* 1.png */; };
@@ -139,6 +137,8 @@
 		01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNImageWellCell.m */; };
 		01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */; };
 		01363F7E16327C4C00FFAA09 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7D16327C4C00FFAA09 /* Default-Landscape.png */; };
+		01363F801632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7F1632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png */; };
+		01363F821632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F811632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -310,8 +310,6 @@
 		01363F4816316F4300FFAA09 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		01363F4F1631789F00FFAA09 /* SYNMovableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMovableView.h; sourceTree = "<group>"; };
 		01363F501631789F00FFAA09 /* SYNMovableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMovableView.m; sourceTree = "<group>"; };
-		01363F5216317A2300FFAA09 /* Joker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Joker.png; sourceTree = "<group>"; };
-		01363F5316317A2300FFAA09 /* Joker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Joker@2x.png"; sourceTree = "<group>"; };
 		01363F5616317A3100FFAA09 /* PanelMainTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PanelMainTitle.png; sourceTree = "<group>"; };
 		01363F5816318F4E00FFAA09 /* BackgroundFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundFriends@2x.png"; sourceTree = "<group>"; };
 		01363F5B163191EE00FFAA09 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
@@ -332,6 +330,8 @@
 		01363F791631A01000FFAA09 /* SYNImageWellCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImageWellCell.m; sourceTree = "<group>"; };
 		01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNImageWellCell.xib; sourceTree = "<group>"; };
 		01363F7D16327C4C00FFAA09 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
+		01363F7F1632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderChooseChannel@2x.png"; sourceTree = "<group>"; };
+		01363F811632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundChooseChannel@2x.png"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -852,6 +852,7 @@
 		019825071629DC9B00216900 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				01363F811632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png */,
 				01363F5816318F4E00FFAA09 /* BackgroundFriends@2x.png */,
 				01363F0D1630AC6300FFAA09 /* BackgroundThumbnail.png */,
 				01363F0E1630AC6300FFAA09 /* BackgroundThumbnail@2x.png */,
@@ -971,8 +972,7 @@
 		019825B9162C373D00216900 /* Placeholders */ = {
 			isa = PBXGroup;
 			children = (
-				01363F5216317A2300FFAA09 /* Joker.png */,
-				01363F5316317A2300FFAA09 /* Joker@2x.png */,
+				01363F7F1632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png */,
 				01363EC21630138C00FFAA09 /* PlaceholderThumbnail.png */,
 				01363EC31630138C00FFAA09 /* PlaceholderThumbnail@2x.png */,
 				01263311162E234B0009FF9C /* PlaceholderMainVideo@2x.png */,
@@ -1176,8 +1176,6 @@
 				01363F3416316D6F00FFAA09 /* Icon-Small.png in Resources */,
 				01363F3516316D6F00FFAA09 /* Icon-Small@2x.png in Resources */,
 				01363F4916316F4400FFAA09 /* Icon.png in Resources */,
-				01363F5416317A2300FFAA09 /* Joker.png in Resources */,
-				01363F5516317A2300FFAA09 /* Joker@2x.png in Resources */,
 				01363F5716317A3100FFAA09 /* PanelMainTitle.png in Resources */,
 				01363F5916318F4E00FFAA09 /* BackgroundFriends@2x.png in Resources */,
 				01363F67163191EE00FFAA09 /* 1.png in Resources */,
@@ -1196,6 +1194,8 @@
 				01363F771631922100FFAA09 /* ButtonTalk@2x.png in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */,
 				01363F7E16327C4C00FFAA09 /* Default-Landscape.png in Resources */,
+				01363F801632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png in Resources */,
+				01363F821632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
