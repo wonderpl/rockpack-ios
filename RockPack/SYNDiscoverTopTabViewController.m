@@ -40,6 +40,7 @@
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (nonatomic, strong) IBOutlet UIView *dropZoneView;
+@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 
 @end
 
@@ -78,8 +79,11 @@
     [self.imageWellView registerNib: imageWellCellNib
          forCellWithReuseIdentifier: @"ImageWellCell"];
 
+    // Add dragging to thumbnail view
+    UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                            action: @selector(longPressThumbnail:)];
 
-
+[self.thumbnailView addGestureRecognizer: longPressOnThumbnailView];
 }
 
 
@@ -116,7 +120,6 @@
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                             action: @selector(longPressLargeVideo:)];
     [self.mainVideoPlayer.view addGestureRecognizer: longPress];
-//    [self.largeVideoPanelView addGestureRecognizer: longPress];
     
     [self.mainVideoPlayer pause];
 }
@@ -141,15 +144,12 @@
                                                       withOffset: self.currentOffset];
 
         // now add the item to the view
-        
         [self.view addSubview: self.draggedView];
     }
     else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
     {
         // we dragged it, so let's update the coordinates of the dragged view
-        
-        UIView *splitView = self.view;
-        CGPoint point = [sender locationInView:splitView];
+        CGPoint point = [sender locationInView: self.view];
         self.draggedView.center = point;
     }
     else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
@@ -166,6 +166,63 @@
 
         {
             [self addToImageWellFromLargeVideo: nil];
+        }
+    }
+}
+
+- (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan)
+    {
+        // figure out which item in the table was selected
+        
+        NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: [sender locationInView: self.thumbnailView]];
+        
+        if (!indexPath)
+        {
+            self.inDrag = NO;
+            return;
+        }
+        
+        self.inDrag = YES;
+        self.draggedIndexPath = indexPath;
+        
+        // get the text of the item to be dragged
+        
+        CGPoint point = [sender locationInView: self.view];
+        
+        // Hardcoded for now, eeek!
+        CGRect frame = CGRectMake(point.x - 63, point.y - 36, 127, 72);
+        self.draggedView = [[UIImageView alloc] initWithFrame: frame];
+        self.draggedView.alpha = 0.7;
+        self.draggedView.image = [self.videoDB thumbnailForIndex: indexPath.row
+                                                      withOffset: self.currentOffset];
+        
+        // now add the item to the view
+        [self.view addSubview: self.draggedView];
+    }
+    else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
+    {
+        // we dragged it, so let's update the coordinates of the dragged view
+        
+        CGPoint point = [sender locationInView: self.view];
+        self.draggedView.center = point;
+    }
+    else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
+    {
+        // we dropped, so remove it from the view
+        
+        [self.draggedView removeFromSuperview];
+        
+        // and let's figure out where we dropped it
+        CGPoint point = [sender locationInView: self.dropZoneView];
+        
+        // If we have dropped it in the right place, then add it to our image well
+        if (CGRectContainsPoint(self.dropZoneView.bounds, point))
+            
+        {
+            [self animateImageWellAdditionWithVideoForIndex: self.draggedIndexPath.row
+                                                 withOffset: self.currentOffset];
         }
     }
 }
