@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNDiscoverTopTabViewController.m"
-         timestampString = "372548790.064648"
+         timestampString = "372550233.073849"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "837"
-         endingLineNumber = "837">
+         startingLineNumber = "834"
+         endingLineNumber = "834">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -110,24 +110,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNMyRockPackViewController.m"
-         timestampString = "372548417.361876"
+         timestampString = "372549956.538351"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "82"
-         endingLineNumber = "82"
-         landmarkName = "-viewWillAppear:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RockPack/SYNMyRockPackViewController.m"
-         timestampString = "372548395.973952"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "40"
-         endingLineNumber = "40"
+         startingLineNumber = "42"
+         endingLineNumber = "42"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -136,11 +123,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNMyRockPackViewController.m"
-         timestampString = "372548467.997851"
+         timestampString = "372549956.538351"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "91"
-         endingLineNumber = "91"
+         startingLineNumber = "112"
+         endingLineNumber = "112"
          landmarkName = "-collectionView:numberOfItemsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -149,12 +136,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNMyRockPackViewController.m"
-         timestampString = "372548568.797651"
+         timestampString = "372549956.538351"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "97"
-         endingLineNumber = "97"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
          landmarkName = "-numberOfSectionsInCollectionView:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNMyRockPackViewController.m"
+         timestampString = "372550092.385317"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "96"
+         endingLineNumber = "96"
+         landmarkName = "-viewWillAppear:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNDiscoverTopTabViewController.m"
+         timestampString = "372550233.073849"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "756"
+         endingLineNumber = "756"
+         landmarkName = "-scrollViewDidEndDecelerating:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

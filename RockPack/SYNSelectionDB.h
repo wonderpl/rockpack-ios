@@ -14,6 +14,6 @@
 
 @property (nonatomic, strong) NSMutableArray *selections;
 @property (nonatomic, strong) NSString *selectionTitle;
-@property (nonatomic, strong) UIImage *wallpackImage;
+@property (nonatomic, assign) int wallpackIndex;
 
 @end

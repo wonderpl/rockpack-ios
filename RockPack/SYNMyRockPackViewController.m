@@ -26,6 +26,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *cute;
 @property (nonatomic, strong) IBOutlet UILabel *strength;
 @property (nonatomic, strong) IBOutlet UILabel *superPowers;
+@property (nonatomic, strong) IBOutlet UIView *infoView;
+@property (nonatomic, strong) IBOutlet UIImageView *wallpackImage;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) SYNVideoDB *videoDB;
 @property (nonatomic, strong) SYNSelectionDB *selectionDB;
@@ -42,7 +44,7 @@
     self.videoDB = [SYNVideoDB sharedVideoDBManager];
     self.selectionDB = [SYNSelectionDB sharedSelectionDBManager];
     
-    self.placeholderText.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    self.placeholderText.font = [UIFont rockpackFontOfSize: 24.0f];
     self.wallpackTitle.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.biogTitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -52,16 +54,16 @@
     self.strength.font = [UIFont rockpackFontOfSize: 15.0f];
     self.superPowers.font = [UIFont rockpackFontOfSize: 15.0f];
 
-    self.titles = @[@"Sulley (Monsters Inc.)",
-                    @"Alex (Madagascar)",
+    self.titles = @[@"Alex (Madagascar)",
+                    @"Lady Gaga",
                     @"Justin Bieber",
                     @"James Bond",
-                    @"Lady Gaga",
-                    @"The Hulk",
-                    @"Jay-Z",
                     @"Miley Cyrus",
                     @"Star Wars: Clone Wars",
-                    @"Lionel Messi"];
+                    @"Jay-Z",
+                    @"Lionel Messi",
+                    @"Sulley (Monsters Inc.)",
+                    @"The Hulk"];
     
     self.biogs  = @[@"Alex is a not-so-ferocious African lion, who calls himself the king of the zoo. Alex was born in Africa, but lost most of his hunting instincts living the easy life in Central Park Zoo! He's friends with animals lower down the food-chain, but old habits can kick in when he's hungry!",
                     @"In a pop-world of imitators and copy-cats, Lady Gaga stands out as a true original. Gaga has written her own mega-hits such a 'Bad Romance' and 'Born This Way', but she's equally famous for her creative and kooky dress-sense! She's a pioneer in both music and fashion.",
@@ -79,7 +81,26 @@
 {
     [super viewWillAppear: animated];
     
-    self.wallpackTitle.text = self.selectionDB.selectionTitle;
+    if (self.selectionDB.selections.count == -99)
+    {
+        self.placeholderText.hidden = FALSE;
+        self.infoView.hidden = TRUE;
+    }
+    else
+    {
+        self.placeholderText.hidden = TRUE;
+        self.infoView.hidden = FALSE;
+        
+        int adjustedIndex = self.selectionDB.wallpackIndex % 10;
+        
+        self.wallpackTitle.text = self.selectionDB.selectionTitle;
+        
+        NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", adjustedIndex];
+        self.wallpackImage.image = [UIImage imageNamed: imageName];
+        
+        self.biogTitle.text = [self.titles objectAtIndex: adjustedIndex];
+        self.biogBody.text = [self.biogs objectAtIndex: adjustedIndex];
+    }
 }
 
 

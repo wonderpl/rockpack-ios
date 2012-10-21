@@ -736,7 +736,7 @@
     NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1500 inSection: 0];
     
     [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
-                                  atScrollPosition: UICollectionViewScrollPositionCenteredVertically
+                                  atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                           animated: NO];
     
     // Only play the scrolling click (after we have scrolled to the right position in the list,
@@ -750,13 +750,10 @@
 
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
-    NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(100.0f, cv.contentOffset.y + 250.0f)];
-    
-    NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", indexPath.row % 10];
-    //    self.wallpackPreview.image = [UIImage imageNamed: imageName];
-    //
-    //    self.wallpackTitle.text = [self.wallpackTitles objectAtIndex: indexPath.row % 11];
-    //    self.wallpackPrice.text = [self.wallpackPrices objectAtIndex: indexPath.row % 11];
+//    NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(100.0f, cv.contentOffset.y + 250.0f)];
+    NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(cv.contentOffset.x + 250.0f, 100.0f)];
+
+    self.selectionDB.wallpackIndex = indexPath.row % 10;
 }
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
