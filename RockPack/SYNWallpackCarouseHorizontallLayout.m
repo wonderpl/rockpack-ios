@@ -1,25 +1,25 @@
 //
-//  SYNWallpackCarouselVerticalLayout.m
-//  RockPack
+//  SYNWallpackCarouseHorizontallLayout.m
+//  rockpack
 //
-//  Created by Nick Banks on 16/10/2012.
+//  Created by Nick Banks on 20/10/2012.
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNWallpackCarouselVerticalLayout.h"
+#import "SYNWallpackCarouseHorizontallLayout.h"
 
 #define ITEM_SIZE 200.0
 
 #define ACTIVE_DISTANCE 200
 
-@implementation SYNWallpackCarouselVerticalLayout
+@implementation SYNWallpackCarouseHorizontallLayout
 
 - (id) init
 {
     if ((self = [super init]))
     {
         self.itemSize = CGSizeMake(ITEM_SIZE, ITEM_SIZE);
-        self.scrollDirection = UICollectionViewScrollDirectionVertical;
+        self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         self.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
         self.minimumLineSpacing = -115.0;
     }
@@ -43,7 +43,7 @@
     {
         if (CGRectIntersectsRect(attributes.frame, rect))
         {
-            CGFloat distance = CGRectGetMidY(visibleRect) - attributes.center.y;
+            CGFloat distance = CGRectGetMidX(visibleRect) - attributes.center.x;
             CGFloat normalizedDistance = distance / ACTIVE_DISTANCE;
             if (ABS(distance) < ACTIVE_DISTANCE)
             {
@@ -65,21 +65,20 @@
                                   withScrollingVelocity: (CGPoint) velocity
 {
     CGFloat offsetAdjustment = MAXFLOAT;
-    CGFloat verticalCenter = proposedContentOffset.y + (CGRectGetHeight(self.collectionView.bounds) / 2.0);
+    CGFloat horizontalCenter = proposedContentOffset.x + (CGRectGetWidth(self.collectionView.bounds) / 2.0);
     
-    CGRect targetRect = CGRectMake(0.0, proposedContentOffset.y, self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
+    CGRect targetRect = CGRectMake(proposedContentOffset.x, 0.0, self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
     NSArray* array = [super layoutAttributesForElementsInRect:targetRect];
     
     for (UICollectionViewLayoutAttributes* layoutAttributes in array)
     {
-        CGFloat itemVerticalCenter = layoutAttributes.center.y;
-        if (ABS(itemVerticalCenter - verticalCenter) < ABS(offsetAdjustment))
+        CGFloat itemHorizontalCenter = layoutAttributes.center.x;
+        if (ABS(itemHorizontalCenter - horizontalCenter) < ABS(offsetAdjustment))
         {
-            offsetAdjustment = itemVerticalCenter - verticalCenter;
+            offsetAdjustment = itemHorizontalCenter - horizontalCenter;
         }
     }
-    return CGPointMake(proposedContentOffset.x, proposedContentOffset.y + offsetAdjustment);
+    return CGPointMake(proposedContentOffset.x + offsetAdjustment, proposedContentOffset.y);
 }
 
 @end
-

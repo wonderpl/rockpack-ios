@@ -63,7 +63,6 @@
 		01363EA2162EFEBC00FFAA09 /* ButtonLargeAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363E96162EFEBC00FFAA09 /* ButtonLargeAdd@2x.png */; };
 		01363EA5162F524C00FFAA09 /* MessageDragAndDrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EA4162F524C00FFAA09 /* MessageDragAndDrop@2x.png */; };
 		01363EAE162F5C3E00FFAA09 /* Scroll.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363EA9162F5C3E00FFAA09 /* Scroll.aif */; };
-		01363EAF162F5C3E00FFAA09 /* Tap.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363EAA162F5C3E00FFAA09 /* Tap.aif */; };
 		01363EB0162F5C3E00FFAA09 /* Trash.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363EAB162F5C3E00FFAA09 /* Trash.aif */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
@@ -152,6 +151,8 @@
 		01363F9C1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363F9B1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png */; };
 		01363F9F1632EDCC00FFAA09 /* NewSlideIn.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363F9D1632EDCC00FFAA09 /* NewSlideIn.aif */; };
 		01363FA01632EDCC00FFAA09 /* NewSlideOut.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363F9E1632EDCC00FFAA09 /* NewSlideOut.aif */; };
+		01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */; };
+		01363FA51633FB8C00FFAA09 /* Select.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363FA41633FB8C00FFAA09 /* Select.aif */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -264,7 +265,6 @@
 		01363E96162EFEBC00FFAA09 /* ButtonLargeAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonLargeAdd@2x.png"; sourceTree = "<group>"; };
 		01363EA4162F524C00FFAA09 /* MessageDragAndDrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MessageDragAndDrop@2x.png"; sourceTree = "<group>"; };
 		01363EA9162F5C3E00FFAA09 /* Scroll.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Scroll.aif; sourceTree = "<group>"; };
-		01363EAA162F5C3E00FFAA09 /* Tap.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tap.aif; sourceTree = "<group>"; };
 		01363EAB162F5C3E00FFAA09 /* Trash.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Trash.aif; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
@@ -358,6 +358,9 @@
 		01363F9B1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundWallpackOverlay@2x.png"; sourceTree = "<group>"; };
 		01363F9D1632EDCC00FFAA09 /* NewSlideIn.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSlideIn.aif; sourceTree = "<group>"; };
 		01363F9E1632EDCC00FFAA09 /* NewSlideOut.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSlideOut.aif; sourceTree = "<group>"; };
+		01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouseHorizontallLayout.h; sourceTree = "<group>"; };
+		01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouseHorizontallLayout.m; sourceTree = "<group>"; };
+		01363FA41633FB8C00FFAA09 /* Select.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Select.aif; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -504,6 +507,8 @@
 			children = (
 				012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */,
 				012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */,
+				01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */,
+				01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */,
 			);
 			name = "Layout Engines";
 			sourceTree = "<group>";
@@ -643,10 +648,10 @@
 		01363EA6162F5C2F00FFAA09 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				01363FA41633FB8C00FFAA09 /* Select.aif */,
 				01363F9D1632EDCC00FFAA09 /* NewSlideIn.aif */,
 				01363F9E1632EDCC00FFAA09 /* NewSlideOut.aif */,
 				01363EA9162F5C3E00FFAA09 /* Scroll.aif */,
-				01363EAA162F5C3E00FFAA09 /* Tap.aif */,
 				01363EAB162F5C3E00FFAA09 /* Trash.aif */,
 			);
 			name = Sounds;
@@ -1165,7 +1170,6 @@
 				01363EA2162EFEBC00FFAA09 /* ButtonLargeAdd@2x.png in Resources */,
 				01363EA5162F524C00FFAA09 /* MessageDragAndDrop@2x.png in Resources */,
 				01363EAE162F5C3E00FFAA09 /* Scroll.aif in Resources */,
-				01363EAF162F5C3E00FFAA09 /* Tap.aif in Resources */,
 				01363EB0162F5C3E00FFAA09 /* Trash.aif in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */,
 				01363EC41630138C00FFAA09 /* PlaceholderThumbnail.png in Resources */,
@@ -1248,6 +1252,7 @@
 				01363F9C1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png in Resources */,
 				01363F9F1632EDCC00FFAA09 /* NewSlideIn.aif in Resources */,
 				01363FA01632EDCC00FFAA09 /* NewSlideOut.aif in Resources */,
+				01363FA51633FB8C00FFAA09 /* Select.aif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1281,6 +1286,7 @@
 				01363F241630B81400FFAA09 /* SYNThumbnailCell.m in Sources */,
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
 				01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */,
+				01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,38 +8,62 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNWallPackTopTabViewController.m"
-         timestampString = "372434911.539836"
+         timestampString = "372503738.330703"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "101"
-         endingLineNumber = "101"
+         startingLineNumber = "92"
+         endingLineNumber = "92"
          landmarkName = "-viewDidAppear:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNDiscoverTopTabViewController.m"
-         timestampString = "372440133.387685"
+         timestampString = "372505296.836398"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "291"
-         endingLineNumber = "291"
-         landmarkName = "-toggleLargeRockItButton:"
+         startingLineNumber = "817"
+         endingLineNumber = "817">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNWallpackCarouseHorizontallLayout.m"
+         timestampString = "372504410.09498"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "37"
+         endingLineNumber = "37"
+         landmarkName = "-layoutAttributesForElementsInRect:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RockPack/SYNDiscoverTopTabViewController.m"
-         timestampString = "372440133.387685"
+         filePath = "RockPack/SYNWallpackCarouselVerticalLayout.m"
+         timestampString = "372504647.958667"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "299"
-         endingLineNumber = "299"
-         landmarkName = "-toggleLargeRockItButton:"
+         startingLineNumber = "37"
+         endingLineNumber = "37"
+         landmarkName = "-layoutAttributesForElementsInRect:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNWallpackCarouselVerticalLayout.m"
+         timestampString = "372504649.60908"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "67"
+         endingLineNumber = "67"
+         landmarkName = "-targetContentOffsetForProposedContentOffset:withScrollingVelocity:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
@@ -54,7 +78,7 @@
    </SymbolicBreakpoints>
    <ExceptionBreakpoints>
       <ExceptionBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          scope = "0"

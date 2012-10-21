@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSArray *wallpackPrices;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackPrice;
+@property (nonatomic, strong) IBOutlet SYNWallpackCarouselVerticalLayout *verticalLayout;
 
 @end
 
@@ -40,17 +41,17 @@
     self.wallpackTitle.font = [UIFont boldRockpackFontOfSize: 21.0f];
     self.wallpackPrice.font = [UIFont boldRockpackFontOfSize: 25.0f];
     
-    self.wallpackTitles = @[@"AMAZING ALEX WALLPACK",
-                            @"SPACE WALLPACK",
-                            @"JUSTIN BIEBER WALLPACK",
-                            @"USAIN BOLT WALLPACK",
-                            @"PIXARS 'BRAVE' WALLPACK",
-                            @"STAR WARS WALLPACK",
-                            @"ONE DIRECTION WALLPACK",
-                            @"HARRY POTTER WALLPACK",
-                            @"MONSTERS UNIVERSITY WALLPACK",
-                            @"THE INCREDIBLE HULK WALLPACK",
-                            @"JAMES BOND WALLPACK"];
+    self.wallpackTitles = @[@"MADAGASCAR 3 - AWESOME ALEX WALLPACK",
+                            @"LOVE SPACE? GET THE NASA WALLPACK",
+                            @"IF YOU ARE A BELIEBER, YOU BETTER PACK THIS JUSTIN WALLPACK!",
+                            @"THE FASTEST MAN ON THE PLANET - USAIN BOLT WALLPACK",
+                            @"MERIDA AND ANGUS STAR IN THIS TOP SELLING 'BRAVE' WALLPACK",
+                            @"MAY THE ROCKPACK BE WITH YOU - STAR WARS WALLPACK",
+                            @"IF YOU <3 ONE DIRECTION, THEN THIS WALLPACK IS FOR YOU",
+                            @"THE KING OF QUIDDITCH IS BACK IN THIS HARRY POTTER WALLPACK",
+                            @"JOIN SULLEY ON THIS MONSTERS UNIVERSITY WALLPACK",
+                            @"SMASH! ITS THE INCREDIBLE HULK WALLPACK",
+                            @"THE NAME'S ROCK. ROCKPACK. - JAMES BOND WALLPACK"];
     
     self.wallpackPrices = @[@"100",
                             @"300",
@@ -67,16 +68,6 @@
     // Set up wallpack carousel
     SYNWallpackCarouselVerticalLayout *wallpackCarouselVerticalLayout = [[SYNWallpackCarouselVerticalLayout alloc] init];
     self.wallpackCarousel.collectionViewLayout = wallpackCarouselVerticalLayout;
-    
-//    // Setup our four sub-viewcontrollers, one for each tab
-//    SYNWallPackCategoryAViewController *categoryAViewController = [[SYNWallPackCategoryAViewController alloc] init];
-//    SYNWallPackCategoryBViewController *categoryBViewController = [[SYNWallPackCategoryBViewController alloc] init];
-//    
-//    // Using new array syntax
-//    self.viewControllers = @[categoryAViewController, categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController,
-//                             categoryBViewController, categoryAViewController, categoryBViewController, categoryAViewController, categoryAViewController];
-//    
-//    self.selectedViewController = categoryAViewController;
     
     // Set up our carousel
     [self.wallpackCarousel registerClass: [SYNWallpackCarouselCell class] forCellWithReuseIdentifier: @"SYNWallpackCarouselCell"];

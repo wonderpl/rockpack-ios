@@ -10,6 +10,7 @@
 
 @interface SYNDiscoverTopTabViewController : SYNAbstractTopTabViewController <UIGestureRecognizerDelegate,
                                                                               UICollectionViewDataSource,
-                                                                              UICollectionViewDelegateFlowLayout>
+                                                                              UICollectionViewDelegateFlowLayout,
+                                                                              UIScrollViewDelegate>
 
 @end

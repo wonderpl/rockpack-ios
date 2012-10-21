@@ -43,7 +43,8 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 89}, {1024, 659}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="107743280"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="222843560"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -52,12 +53,13 @@
 							<string key="NSResourceName">BackgroundWallPack@2x.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="118265985">
+					<object class="IBUIImageView" id="157226359">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{323, 224}, {582, 327}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="833701110"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="518924944"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIAutoresizesSubviews">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -69,11 +71,12 @@
 							<string key="NSResourceName">LargeWallpack_4.jpg</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="107743280">
+					<object class="IBUIImageView" id="222843560">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 89}, {1024, 597}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="984799441"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">2</int>
@@ -90,7 +93,8 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{2, 134}, {200, 500}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="257311699"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="795761876"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="650410832">
 							<int key="NSColorSpace">3</int>
@@ -99,6 +103,8 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+						<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 						<float key="IBUIMinimumZoomScale">0.0</float>
 						<float key="IBUIMaximumZoomScale">0.0</float>
 						<object class="IBUICollectionViewLayout" key="IBUICollectionViewLayout" id="1027652534">
@@ -106,12 +112,13 @@
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
-					<object class="IBUILabel" id="257311699">
+					<object class="IBUILabel" id="795761876">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{323, 155}, {582, 29}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="118265985"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="157226359"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -122,7 +129,7 @@
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="959961775">
+							<object class="NSColorSpace" key="NSCustomColorSpace" id="691118124">
 								<int key="NSID">1</int>
 							</object>
 						</object>
@@ -140,11 +147,12 @@
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
-					<object class="IBUILabel" id="833701110">
+					<object class="IBUILabel" id="518924944">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{578, 542}, {70, 30}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -155,7 +163,7 @@
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
-							<reference key="NSCustomColorSpace" ref="959961775"/>
+							<reference key="NSCustomColorSpace" ref="691118124"/>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
@@ -174,6 +182,7 @@
 				</array>
 				<string key="NSFrameSize">{1024, 748}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="105955276"/>
 				<reference key="IBUIBackgroundColor" ref="650410832"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -206,7 +215,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">wallpackPreview</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="118265985"/>
+						<reference key="destination" ref="157226359"/>
 					</object>
 					<int key="connectionID">13</int>
 				</object>
@@ -214,7 +223,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">wallpackPrice</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="833701110"/>
+						<reference key="destination" ref="518924944"/>
 					</object>
 					<int key="connectionID">16</int>
 				</object>
@@ -222,9 +231,17 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">wallpackTitle</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="257311699"/>
+						<reference key="destination" ref="795761876"/>
 					</object>
 					<int key="connectionID">17</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">verticalLayout</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="1027652534"/>
+					</object>
+					<int key="connectionID">18</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -268,10 +285,10 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="105955276"/>
 							<reference ref="984799441"/>
-							<reference ref="107743280"/>
-							<reference ref="118265985"/>
-							<reference ref="257311699"/>
-							<reference ref="833701110"/>
+							<reference ref="222843560"/>
+							<reference ref="157226359"/>
+							<reference ref="795761876"/>
+							<reference ref="518924944"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -295,24 +312,24 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="107743280"/>
+						<reference key="object" ref="222843560"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
-						<reference key="object" ref="118265985"/>
+						<reference key="object" ref="157226359"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Image View - Wallpack preview</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="257311699"/>
+						<reference key="object" ref="795761876"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Label - Title</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">15</int>
-						<reference key="object" ref="833701110"/>
+						<reference key="object" ref="518924944"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Label - Price</string>
 					</object>
@@ -337,9 +354,95 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">17</int>
+			<int key="maxID">18</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNAbstractTopTabViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="tabButtonPressed:">UIButton</string>
+						<string key="tabButtonTouched:">CGPoint</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="tabButtonPressed:">
+							<string key="name">tabButtonPressed:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="tabButtonTouched:">
+							<string key="name">tabButtonTouched:</string>
+							<string key="candidateClassName">CGPoint</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNAbstractTopTabViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNWallPackTopTabViewController</string>
+					<string key="superclassName">SYNAbstractTopTabViewController</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="verticalLayout">SYNWallpackCarouselVerticalLayout</string>
+						<string key="wallpackCarousel">UICollectionView</string>
+						<string key="wallpackPreview">UIImageView</string>
+						<string key="wallpackPrice">UILabel</string>
+						<string key="wallpackTitle">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="verticalLayout">
+							<string key="name">verticalLayout</string>
+							<string key="candidateClassName">SYNWallpackCarouselVerticalLayout</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="wallpackCarousel">
+							<string key="name">wallpackCarousel</string>
+							<string key="candidateClassName">UICollectionView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="wallpackPreview">
+							<string key="name">wallpackPreview</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="wallpackPrice">
+							<string key="name">wallpackPrice</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="wallpackTitle">
+							<string key="name">wallpackTitle</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNWallPackTopTabViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNWallpackCarouselVerticalLayout</string>
+					<string key="superclassName">UICollectionViewFlowLayout</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNWallpackCarouselVerticalLayout.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICollectionViewFlowLayout</string>
+					<string key="superclassName">UICollectionViewLayout</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICollectionViewLayout</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
