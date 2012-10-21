@@ -11,6 +11,7 @@
 #import "UIColor+SYNColor.h"
 #import "SYNVideoDB.h"
 #import "SYNSelectionDB.h"
+#import "SYNSelection.h"
 #import "SYNMyRockpackCell.h"
 
 @interface SYNMyRockPackViewController ()
@@ -53,6 +54,13 @@
     self.cute.font = [UIFont rockpackFontOfSize: 15.0f];
     self.strength.font = [UIFont rockpackFontOfSize: 15.0f];
     self.superPowers.font = [UIFont rockpackFontOfSize: 15.0f];
+    
+    // Init collection view
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNMyRockpackCell"
+                                             bundle: nil];
+    
+    [self.thumbnailView registerNib: thumbnailCellNib
+         forCellWithReuseIdentifier: @"MyRockpackCell"];
 
     self.titles = @[@"Alex (Madagascar)",
                     @"Lady Gaga",
@@ -81,7 +89,7 @@
 {
     [super viewWillAppear: animated];
     
-    if (self.selectionDB.selections.count == -99)
+    if (self.selectionDB.selections.count == 0)
     {
         self.placeholderText.hidden = FALSE;
         self.infoView.hidden = TRUE;
@@ -100,6 +108,8 @@
         
         self.biogTitle.text = [self.titles objectAtIndex: adjustedIndex];
         self.biogBody.text = [self.biogs objectAtIndex: adjustedIndex];
+        
+        [self.thumbnailView reloadData];
     }
 }
 
@@ -122,10 +132,18 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    SYNMyRockpackCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"MyRockpakCell"
+    SYNMyRockpackCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"MyRockpackCell"
                                                             forIndexPath: indexPath];
     
-    cell.imageView.image = [self.selectionDB.selections objectAtIndex: indexPath.row];
+    SYNSelection *selection = [self.selectionDB.selections objectAtIndex: indexPath.row];
+    
+    UIImage *image = [self.videoDB thumbnailForIndex: selection.index
+                                          withOffset: selection.offset];
+    cell.imageView.image = image;
+    
+//    NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", selection.index];
+//    UIImage *image = [UIImage imageNamed: imageName];
+//    cell.imageView.image = image;
     
     return cell;
 }

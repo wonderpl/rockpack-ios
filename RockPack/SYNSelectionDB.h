@@ -12,7 +12,7 @@
 
 + (id) sharedSelectionDBManager;
 
-@property (nonatomic, strong) NSMutableArray *selections;
+@property (nonatomic, copy) NSMutableArray *selections;
 @property (nonatomic, strong) NSString *selectionTitle;
 @property (nonatomic, assign) int wallpackIndex;
 

@@ -634,8 +634,7 @@
     SYNSelection *selection = [[SYNSelection alloc] initWithIndex: index
                                                         andOffset: offset];
     
-    [self.selections insertObject: selection
-                         atIndex: 0];
+    [self.selections addObject: selection];
     
     // Add image at front
     UIImage *image = [self.videoDB thumbnailForIndex: index
@@ -686,7 +685,6 @@
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
     AudioServicesPlaySystemSound(sound);
 #endif
-    [[SYNSelectionDB sharedSelectionDBManager] setSelections: self.selections];
     
     [self.selections removeAllObjects];
     
@@ -759,6 +757,7 @@
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
     self.selectionDB.selectionTitle = textField.text;
+    self.selectionDB.selections = self.selections;
     
     [self.channelNameField resignFirstResponder];
     [self clearImageWell];

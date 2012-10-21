@@ -42,13 +42,13 @@
     self.wallpackPrice.font = [UIFont boldRockpackFontOfSize: 25.0f];
     
     self.wallpackTitles = @[@"MADAGASCAR 3 - AWESOME ALEX WALLPACK",
-                            @"YOU'LL BE GAGA OVER THIS WALLPACK",
+                            @"ADY GAGA KNOWS HOW TO PARTY - JOIN THE REVOLUTION ON ROCKPACK!",
                             @"IF YOU ARE A BELIEBER, YOU BETTER PACK THIS JUSTIN WALLPACK!",
                             @"THE NAME'S ROCK. ROCKPACK. - JAMES BOND WALLPACK",
-                            @"IF YOU <3 MILEY CYRUS, THEN THIS WALLPACK IS FOR YOU",
+                            @"LOVE MILEY? LOVE THIS AMAZING WALLPACK",
                             @"MAY THE ROCKPACK BE WITH YOU - STAR WARS WALLPACK",
-                            @"BE A HIP HOP SUPERSTAR WITH THE JAY-Z WALLPACK",
-                            @"SCORE A GOAL WITH THE LIONEL MESSI WALLPACK",
+                            @"99 PROBLEMS BUT THIS WALLPACK AINT ONE",
+                            @"HE WORLDS GREATEST PLAYER ON THE WORLDS GREATEST WALLPACK",
                             @"JOIN SULLEY ON THIS MONSTERS UNIVERSITY WALLPACK",
                             @"SMASH! ITS THE INCREDIBLE HULK WALLPACK",
                             @"THE NAME'S ROCK. ROCKPACK. - JAMES BOND WALLPACK"];
