@@ -153,6 +153,11 @@
 		01363FA01632EDCC00FFAA09 /* NewSlideOut.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363F9E1632EDCC00FFAA09 /* NewSlideOut.aif */; };
 		01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */; };
 		01363FA51633FB8C00FFAA09 /* Select.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01363FA41633FB8C00FFAA09 /* Select.aif */; };
+		01363FB91634524A00FFAA09 /* BackgroundMyRockpack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363FB81634524900FFAA09 /* BackgroundMyRockpack@2x.png */; };
+		01363FBC16345ED000FFAA09 /* SYNSelectionDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FBB16345ED000FFAA09 /* SYNSelectionDB.m */; };
+		01363FC0163467CA00FFAA09 /* SYNSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FBF163467C900FFAA09 /* SYNSelection.m */; };
+		01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */; };
+		01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -361,6 +366,14 @@
 		01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouseHorizontallLayout.h; sourceTree = "<group>"; };
 		01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouseHorizontallLayout.m; sourceTree = "<group>"; };
 		01363FA41633FB8C00FFAA09 /* Select.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Select.aif; sourceTree = "<group>"; };
+		01363FB81634524900FFAA09 /* BackgroundMyRockpack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundMyRockpack@2x.png"; sourceTree = "<group>"; };
+		01363FBA16345ED000FFAA09 /* SYNSelectionDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSelectionDB.h; sourceTree = "<group>"; };
+		01363FBB16345ED000FFAA09 /* SYNSelectionDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSelectionDB.m; sourceTree = "<group>"; };
+		01363FBE163467C900FFAA09 /* SYNSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSelection.h; sourceTree = "<group>"; };
+		01363FBF163467C900FFAA09 /* SYNSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSelection.m; sourceTree = "<group>"; };
+		01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackCell.xib; sourceTree = "<group>"; };
+		01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackCell.h; sourceTree = "<group>"; };
+		01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackCell.m; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -524,6 +537,9 @@
 				01363F781631A01000FFAA09 /* SYNImageWellCell.h */,
 				01363F791631A01000FFAA09 /* SYNImageWellCell.m */,
 				01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */,
+				01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */,
+				01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */,
+				01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */,
 			);
 			name = "Collection Cells";
 			sourceTree = "<group>";
@@ -737,6 +753,17 @@
 			name = "Rockie Talkie";
 			sourceTree = "<group>";
 		};
+		01363FBD16345ED700FFAA09 /* Selection Database */ = {
+			isa = PBXGroup;
+			children = (
+				01363FBA16345ED000FFAA09 /* SYNSelectionDB.h */,
+				01363FBB16345ED000FFAA09 /* SYNSelectionDB.m */,
+				01363FBE163467C900FFAA09 /* SYNSelection.h */,
+				01363FBF163467C900FFAA09 /* SYNSelection.m */,
+			);
+			name = "Selection Database";
+			sourceTree = "<group>";
+		};
 		019824DD1629CA3700216900 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -824,6 +851,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				01363FBD16345ED700FFAA09 /* Selection Database */,
 				01363EC616304D5E00FFAA09 /* Video Database */,
 				019824ED1629CC6600216900 /* TestFlight */,
 				019824E91629CBD000216900 /* Exception Handler */,
@@ -895,6 +923,7 @@
 		019825071629DC9B00216900 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				01363FB81634524900FFAA09 /* BackgroundMyRockpack@2x.png */,
 				01363F9B1632DB6100FFAA09 /* BackgroundWallpackOverlay@2x.png */,
 				01363F811632ABFB00FFAA09 /* BackgroundChooseChannel@2x.png */,
 				01363F5816318F4E00FFAA09 /* BackgroundFriends@2x.png */,
@@ -1253,6 +1282,8 @@
 				01363F9F1632EDCC00FFAA09 /* NewSlideIn.aif in Resources */,
 				01363FA01632EDCC00FFAA09 /* NewSlideOut.aif in Resources */,
 				01363FA51633FB8C00FFAA09 /* Select.aif in Resources */,
+				01363FB91634524A00FFAA09 /* BackgroundMyRockpack@2x.png in Resources */,
+				01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1287,6 +1318,9 @@
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
 				01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */,
 				01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */,
+				01363FBC16345ED000FFAA09 /* SYNSelectionDB.m in Sources */,
+				01363FC0163467CA00FFAA09 /* SYNSelection.m in Sources */,
+				01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1425,7 +1459,7 @@
 					"\"$(SRCROOT)/RockPack\"",
 				);
 				PRODUCT_NAME = rockpack;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "065EC995-6E4B-4867-8184-BAE8869D0603";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F69ED49-F8A7-47D0-A2DF-3840624D4641";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;

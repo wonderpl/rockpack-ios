@@ -1,21 +1,21 @@
 //
-//  SYNImageWellCell.m
+//  SYNMyRockpackCell.m
 //  rockpack
 //
-//  Created by Nick Banks on 19/10/2012.
+//  Created by Nick Banks on 21/10/2012.
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNImageWellCell.h"
+#import "SYNMyRockpackCell.h"
 
-@implementation SYNImageWellCell
+@implementation SYNMyRockpackCell
 
 - (id) initWithFrame: (CGRect) frame
 {
     if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNImageWellCell"
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNMyRockpackCell"
                                                               owner: self
                                                             options: nil];
         

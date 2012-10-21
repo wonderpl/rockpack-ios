@@ -91,6 +91,11 @@
     // Set initial state
     self.rockieTalkiePanel.userInteractionEnabled = TRUE;
     self.didNotSwipe = TRUE;
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(selectMyRockPackTab)
+                                                 name: @"SelectMyRockPackTab"
+                                               object: nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -380,6 +385,11 @@
 - (IBAction) recordAction: (UIButton*) button
 {
     button.selected = !button.selected;
+}
+
+- (void) selectMyRockPackTab
+{
+    [self setSelectedIndex: 2];
 }
 
 @end

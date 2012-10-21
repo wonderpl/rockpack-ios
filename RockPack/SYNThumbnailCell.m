@@ -16,7 +16,7 @@
     if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNThumbnail"
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNThumbnailCell"
                                                               owner: self
                                                             options: nil];
         

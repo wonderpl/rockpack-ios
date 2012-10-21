@@ -12,6 +12,9 @@
 
 + (id) sharedVideoDBManager;
 
+- (int) adjustedIndexForIndex: (int) index
+                   withOffset: (int) offset;
+
 - (int) numberOfVideos;
 
 - (NSURL *) videoURLForIndex: (int) index

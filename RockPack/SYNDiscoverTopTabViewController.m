@@ -9,8 +9,11 @@
 #import "AppContants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "NSObject+Blocks.h"
+#import "SYNBottomTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
+#import "SYNSelection.h"
+#import "SYNSelectionDB.h"
 #import "SYNThumbnailCell.h"
 #import "SYNVideoDB.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
@@ -47,7 +50,9 @@
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) NSMutableArray *imageWell;
+@property (nonatomic, strong) NSMutableArray *selections;
 @property (nonatomic, strong) SYNVideoDB *videoDB;
+@property (nonatomic, strong) SYNSelectionDB *selectionDB;
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @end
@@ -59,48 +64,50 @@
     [super viewDidLoad];
     
     self.imageWell = [[NSMutableArray alloc] initWithCapacity: 100];
+    self.selections = [[NSMutableArray alloc] initWithCapacity: 100];
     
     self.videoDB = [SYNVideoDB sharedVideoDBManager];
+    self.selectionDB = [SYNSelectionDB sharedSelectionDBManager];
     
 #ifdef FULL_SCREEN_THUMBNAILS
     
 }
 #endif
 
-self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
-self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
-self.packIt.font = [UIFont boldRockpackFontOfSize: 20.0f];
-self.rockIt.font = [UIFont boldRockpackFontOfSize: 20.0f];
-self.packItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
-self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.packIt.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.rockIt.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.packItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
-// Init collection view
-UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNThumbnailCell"
-                                         bundle: nil];
+    // Init collection view
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNThumbnailCell"
+                                             bundle: nil];
 
-[self.thumbnailView registerNib: thumbnailCellNib
-     forCellWithReuseIdentifier: @"ThumbnailCell"];
+    [self.thumbnailView registerNib: thumbnailCellNib
+         forCellWithReuseIdentifier: @"ThumbnailCell"];
 
-UINib *imageWellCellNib = [UINib nibWithNibName: @"SYNImageWellCell"
-                                         bundle: nil];
+    UINib *imageWellCellNib = [UINib nibWithNibName: @"SYNImageWellCell"
+                                             bundle: nil];
 
-[self.imageWellView registerNib: imageWellCellNib
-     forCellWithReuseIdentifier: @"ImageWellCell"];
+    [self.imageWellView registerNib: imageWellCellNib
+         forCellWithReuseIdentifier: @"ImageWellCell"];
 
-SYNWallpackCarouseHorizontallLayout *wallpackCarouselHorizontalLayout = [[SYNWallpackCarouseHorizontallLayout alloc] init];
-self.wallpackCarousel.collectionViewLayout = wallpackCarouselHorizontalLayout;
+    SYNWallpackCarouseHorizontallLayout *wallpackCarouselHorizontalLayout = [[SYNWallpackCarouseHorizontallLayout alloc] init];
+    self.wallpackCarousel.collectionViewLayout = wallpackCarouselHorizontalLayout;
 
-// Set up our carousel
-[self.wallpackCarousel registerClass: [SYNWallpackCarouselCell class]
-          forCellWithReuseIdentifier: @"SYNWallpackCarouselCell"];
+    // Set up our carousel
+    [self.wallpackCarousel registerClass: [SYNWallpackCarouselCell class]
+              forCellWithReuseIdentifier: @"SYNWallpackCarouselCell"];
 
-self.wallpackCarousel.decelerationRate = UIScrollViewDecelerationRateNormal;
+    self.wallpackCarousel.decelerationRate = UIScrollViewDecelerationRateNormal;
 
-// Add dragging to thumbnail view
-UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-                                                                                                       action: @selector(longPressThumbnail:)];
+    // Add dragging to thumbnail view
+    UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                                           action: @selector(longPressThumbnail:)];
 
-[self.thumbnailView addGestureRecognizer: longPressOnThumbnailView];
+    [self.thumbnailView addGestureRecognizer: longPressOnThumbnailView];
 }
 
 
@@ -508,7 +515,7 @@ UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRec
         SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
                                                                       forIndexPath: indexPath];
         
-        NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 11];
+        NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 10];
         cell.image = [UIImage imageNamed: imageName];
         
         return cell;
@@ -553,7 +560,7 @@ UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRec
 
 
 - (void) collectionView: (UICollectionView *) cv
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (cv == self.wallpackCarousel)
     {
@@ -624,6 +631,11 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
          }];
     }
     
+    SYNSelection *selection = [[SYNSelection alloc] initWithIndex: index
+                                                        andOffset: offset];
+    
+    [self.selections insertObject: selection
+                         atIndex: 0];
     
     // Add image at front
     UIImage *image = [self.videoDB thumbnailForIndex: index
@@ -674,6 +686,9 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
     AudioServicesPlaySystemSound(sound);
 #endif
+    [[SYNSelectionDB sharedSelectionDBManager] setSelections: self.selections];
+    
+    [self.selections removeAllObjects];
     
     [self.imageWell removeAllObjects];
     [self.imageWellView reloadData];
@@ -703,6 +718,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     
     [pvc.view addSubview: self.channelChooserView];
     
+    self.channelNameField.text = @"";
     [self.channelNameField becomeFirstResponder];
     
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
@@ -734,11 +750,9 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
-    NSArray *items = [cv indexPathsForVisibleItems];
     NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(100.0f, cv.contentOffset.y + 250.0f)];
-    //    NSIndexPath *middleItem = [items objectAtIndex: 2];
     
-    NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", indexPath.row % 11];
+    NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", indexPath.row % 10];
     //    self.wallpackPreview.image = [UIImage imageNamed: imageName];
     //
     //    self.wallpackTitle.text = [self.wallpackTitles objectAtIndex: indexPath.row % 11];
@@ -747,8 +761,14 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
+    self.selectionDB.selectionTitle = textField.text;
+    
     [self.channelNameField resignFirstResponder];
     [self clearImageWell];
+    
+    
+//	[[NSNotificationCenter defaultCenter] postNotificationName: @"SelectMyRockPackTab"
+//					             									                object: nil];
     
     return YES;
 }

@@ -42,13 +42,13 @@
     self.wallpackPrice.font = [UIFont boldRockpackFontOfSize: 25.0f];
     
     self.wallpackTitles = @[@"MADAGASCAR 3 - AWESOME ALEX WALLPACK",
-                            @"LOVE SPACE? GET THE NASA WALLPACK",
+                            @"YOU'LL BE GAGA OVER THIS WALLPACK",
                             @"IF YOU ARE A BELIEBER, YOU BETTER PACK THIS JUSTIN WALLPACK!",
-                            @"THE FASTEST MAN ON THE PLANET - USAIN BOLT WALLPACK",
-                            @"MERIDA AND ANGUS STAR IN THIS TOP SELLING 'BRAVE' WALLPACK",
+                            @"THE NAME'S ROCK. ROCKPACK. - JAMES BOND WALLPACK",
+                            @"IF YOU <3 MILEY CYRUS, THEN THIS WALLPACK IS FOR YOU",
                             @"MAY THE ROCKPACK BE WITH YOU - STAR WARS WALLPACK",
-                            @"IF YOU <3 ONE DIRECTION, THEN THIS WALLPACK IS FOR YOU",
-                            @"THE KING OF QUIDDITCH IS BACK IN THIS HARRY POTTER WALLPACK",
+                            @"BE A HIP HOP SUPERSTAR WITH THE JAY-Z WALLPACK",
+                            @"SCORE A GOAL WITH THE LIONEL MESSI WALLPACK",
                             @"JOIN SULLEY ON THIS MONSTERS UNIVERSITY WALLPACK",
                             @"SMASH! ITS THE INCREDIBLE HULK WALLPACK",
                             @"THE NAME'S ROCK. ROCKPACK. - JAMES BOND WALLPACK"];
@@ -79,7 +79,7 @@
 {
     [super viewDidAppear: animated];
     
-    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1500 inSection: 0];
+    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1504 inSection: 0];
     
     [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
                                   atScrollPosition: UICollectionViewScrollPositionCenteredVertically
@@ -129,7 +129,7 @@
     SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
                                                                   forIndexPath: indexPath];
     
-    NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 11];
+    NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 10];
     cell.image = [UIImage imageNamed: imageName];
     
     return cell;
@@ -147,15 +147,13 @@
 
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
-    NSArray *items = [cv indexPathsForVisibleItems];
     NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(100.0f, cv.contentOffset.y + 250.0f)];
-//    NSIndexPath *middleItem = [items objectAtIndex: 2];
     
-    NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", indexPath.row % 11];
+    NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", indexPath.row % 10];
     self.wallpackPreview.image = [UIImage imageNamed: imageName];
     
-    self.wallpackTitle.text = [self.wallpackTitles objectAtIndex: indexPath.row % 11];
-    self.wallpackPrice.text = [self.wallpackPrices objectAtIndex: indexPath.row % 11];
+    self.wallpackTitle.text = [self.wallpackTitles objectAtIndex: indexPath.row % 10];
+    self.wallpackPrice.text = [self.wallpackPrices objectAtIndex: indexPath.row % 10];
 }
 
 
