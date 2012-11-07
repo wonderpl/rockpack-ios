@@ -564,7 +564,7 @@
 {
     if (cv == self.wallpackCarousel)
     {
-#warning "Need to select wallpack here"
+//#warning "Need to select wallpack here"
         NSLog (@"Need to select wallpack here");
     }
     else if (cv == self.thumbnailView)

@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNWallpackCarouselUserLayout.h"
+#import "SYNFriendsUserLayout.h"
 
-@implementation SYNWallpackCarouselUserLayout
+@implementation SYNFriendsUserLayout
 
 @end

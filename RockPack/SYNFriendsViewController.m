@@ -8,8 +8,12 @@
 
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
+#import "SYNCaptureSessionManager.h"
 
 @interface SYNFriendsViewController ()
+
+@property (nonatomic, strong) SYNCaptureSessionManager *captureManager;
+@property (nonatomic, strong) IBOutlet UIView *cameraPreview;
 
 @end
 
@@ -18,13 +22,41 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-//
-//    CGRect avatarFrame = CGRectMake(250, 250, 94, 94);
-//    SYNMovableView *avatarView = [[SYNMovableView alloc] initWithFrame: avatarFrame];
-//    avatarView.userInteractionEnabled = TRUE;
-//    avatarView.image = [UIImage imageNamed: @"Joker.png"];
-//    
-//    [self.view addSubview: avatarView];
+    
+    self.captureManager = [[SYNCaptureSessionManager alloc] init];
+    
+	[[self captureManager] addVideoInput];
+    
+	[[self captureManager] addVideoPreviewLayer];
+	CGRect layerRect = self.cameraPreview.layer.bounds;
+	[[[self captureManager] previewLayer] setBounds: layerRect];
+	[[[self captureManager] previewLayer] setPosition: CGPointMake(CGRectGetMidX(layerRect),
+                                                                  CGRectGetMidY(layerRect))];
+    
+	[self.cameraPreview.layer addSublayer: self.captureManager.previewLayer];
+    
+
+}
+
+- (IBAction) toggleCameraButton: (UIButton *) cameraButton
+{
+    // Flip the state
+    cameraButton.selected = !cameraButton.isSelected;
+    
+    // Start or stop the video overlay (as appropriate)
+    if (cameraButton.selected)
+    {
+        [[self.captureManager captureSession] startRunning];
+    }
+    else
+    {
+       [[self.captureManager captureSession] stopRunning];
+    }
+}
+
+- (IBAction) toggleGridButton: (UIButton *) gridButton
+{
+    gridButton.selected = !gridButton.isSelected; 
 }
 
 @end

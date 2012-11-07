@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNWallpackCarouselUserLayout : UICollectionFlowLayout
+@interface SYNFriendsUserLayout : UICollectionViewFlowLayout
 
 @end

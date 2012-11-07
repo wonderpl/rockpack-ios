@@ -7,7 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface SYNCaptureSessionManager : NSObject
+
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, strong) AVCaptureSession *captureSession;
+
+- (void) addVideoPreviewLayer;
+- (void) addVideoInput;
 
 @end
