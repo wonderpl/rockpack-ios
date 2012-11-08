@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "AppContants.h"
+#import "AppConstants.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "TestFlight.h"

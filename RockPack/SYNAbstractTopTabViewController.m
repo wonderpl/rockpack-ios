@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "AppContants.h"
+#import "AppConstants.h"
 #import "SYNAbstractTopTabViewController.h"
 #import "SYNTabImageView.h"
 #import <QuartzCore/QuartzCore.h>

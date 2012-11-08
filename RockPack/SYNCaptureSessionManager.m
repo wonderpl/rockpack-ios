@@ -14,7 +14,7 @@
 {
 	if ((self = [super init]))
     {
-		[self setCaptureSession: [[AVCaptureSession alloc] init]];
+		self.captureSession = [[AVCaptureSession alloc] init];
 	}
     
 	return self;
@@ -23,8 +23,9 @@
 
 - (void) addVideoPreviewLayer
 {
-	[self setPreviewLayer: [[AVCaptureVideoPreviewLayer alloc] initWithSession: [self captureSession]]];
-	[[self previewLayer] setVideoGravity: AVLayerVideoGravityResizeAspectFill];
+	self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession: [self captureSession]];
+	self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    self.previewLayer.orientation =  AVCaptureVideoOrientationLandscapeRight;
     
 }
 

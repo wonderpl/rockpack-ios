@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "AppContants.h"
+#import "AppConstants.h"
 #import "SYNWallPackCategoryAViewController.h"
 
 @interface SYNWallPackCategoryAViewController ()

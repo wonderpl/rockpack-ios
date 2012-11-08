@@ -7,8 +7,14 @@
 //
 
 #import "SYNFriendsGridLayout.h"
+#import "SYNUserCollectionViewLayoutAttributes.h"
 
 @implementation SYNFriendsGridLayout
+
++ (Class) layoutAttributesClass
+{
+    return [SYNUserCollectionViewLayoutAttributes class];
+}
 
 - (id) init
 {

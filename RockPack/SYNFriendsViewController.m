@@ -9,6 +9,7 @@
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
 #import "SYNCaptureSessionManager.h"
+#import "AppConstants.h"
 
 @interface SYNFriendsViewController ()
 
@@ -25,18 +26,18 @@
     
     self.captureManager = [[SYNCaptureSessionManager alloc] init];
     
-	[[self captureManager] addVideoInput];
+	[self.captureManager addVideoInput];
+	[self.captureManager addVideoPreviewLayer];
     
-	[[self captureManager] addVideoPreviewLayer];
 	CGRect layerRect = self.cameraPreview.layer.bounds;
-	[[[self captureManager] previewLayer] setBounds: layerRect];
-	[[[self captureManager] previewLayer] setPosition: CGPointMake(CGRectGetMidX(layerRect),
-                                                                  CGRectGetMidY(layerRect))];
+	self.captureManager.previewLayer.bounds = layerRect;
+	self.captureManager.previewLayer.position = CGPointMake(CGRectGetMidX(layerRect), CGRectGetMidY(layerRect));
     
 	[self.cameraPreview.layer addSublayer: self.captureManager.previewLayer];
     
 
 }
+
 
 - (IBAction) toggleCameraButton: (UIButton *) cameraButton
 {
@@ -46,13 +47,41 @@
     // Start or stop the video overlay (as appropriate)
     if (cameraButton.selected)
     {
-        [[self.captureManager captureSession] startRunning];
+        self.cameraPreview.hidden = FALSE;
+        [self.captureManager.captureSession startRunning];
+        
+        [UIView animateWithDuration: kCameraPreviewAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Contract thumbnail view
+             self.cameraPreview.alpha = 1.0f;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
     }
     else
     {
-       [[self.captureManager captureSession] stopRunning];
+        [self.captureManager.captureSession stopRunning];
+        [UIView animateWithDuration: kCameraPreviewAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Contract thumbnail view
+             self.cameraPreview.alpha = 0.0f;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+             self.cameraPreview.hidden = TRUE;
+         }];
     }
 }
+
 
 - (IBAction) toggleGridButton: (UIButton *) gridButton
 {

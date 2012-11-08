@@ -7,7 +7,13 @@
 //
 
 #import "SYNFriendsUserLayout.h"
+#import "SYNUserCollectionViewLayoutAttributes.h"
 
 @implementation SYNFriendsUserLayout
+
++ (Class) layoutAttributesClass
+{
+    return [SYNUserCollectionViewLayoutAttributes class];
+}
 
 @end
