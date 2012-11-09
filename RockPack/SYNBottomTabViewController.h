@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNBottomTabViewController : UIViewController <UIGestureRecognizerDelegate>
+@interface SYNBottomTabViewController : UIViewController <UIGestureRecognizerDelegate,
+                                                          UITextViewDelegate>
 
 @end

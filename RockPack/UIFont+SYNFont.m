@@ -16,9 +16,17 @@
                            size: fontSize];
 }
 
+
 + (UIFont *) boldRockpackFontOfSize: (CGFloat) fontSize
 {
     return [UIFont fontWithName: @"DINNextLTPro-Bold"
+                           size: fontSize];
+}
+
+
++ (UIFont *) mediumRockpackFontOfSize: (CGFloat) fontSize
+{
+    return [UIFont fontWithName: @"DINNextLTPro-Medium"
                            size: fontSize];
 }
 

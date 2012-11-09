@@ -32,6 +32,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowView;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
 @property (nonatomic, strong) IBOutlet UITextField *searchField;
+@property (nonatomic, strong) IBOutlet UITextView *messageTextView;
+@property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
 @property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanel;
 @property (nonatomic, strong) NSTimer *levelTimer;
@@ -110,7 +112,15 @@
                                                  name: @"SelectMyRockPackTab"
                                                object: nil];
     
+    // Setup number of messages number font in title bar
     self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    
+    // Setup rockie-talkie message view
+    self.messageTextView.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.messageTextView.delegate = self;
+    
+    // Placeholder for rockie-talkie message view to show message only when no text in main view
+    self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -541,6 +551,53 @@
 //    NSLog (@"Scale %f", scaleFactor);
 
     [self.recordButtonGlowView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
+}
+
+#pragma mark - TextView delegate methods
+
+- (void) textViewDidChange: (UITextView *) textView
+{
+    if (self.messageTextView.text.length == 0)
+    {
+        self.messagePlaceholderTextView.hidden = NO;
+    }
+    else
+    {
+        self.messagePlaceholderTextView.hidden = YES;
+    }
+}
+
+- (BOOL) textView: (UITextView *) textView
+         shouldChangeTextInRange: (NSRange) range
+         replacementText: (NSString *) text
+{
+    if([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+    }
+    
+    return YES;
+}
+
+
+- (void) textViewDidBeginEditing: (UITextView *) textView
+{
+    [textView setText: @""];
+}
+
+
+- (void) textViewDidEndEditing: (UITextView * )textView
+{
+#ifdef SOUND_ENABLED
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Mail Sent"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
 }
 
 @end

@@ -257,8 +257,9 @@
 		01B7F72C164D5AC2009C5CCD /* ButtonTalkHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F72B164D5AC2009C5CCD /* ButtonTalkHighlighted.png */; };
 		01B7F72F164D5AD7009C5CCD /* ButtonTalkStrobe.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F72D164D5AD7009C5CCD /* ButtonTalkStrobe.png */; };
 		01B7F730164D5AD7009C5CCD /* ButtonTalkStrobe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F72E164D5AD7009C5CCD /* ButtonTalkStrobe@2x.png */; };
-		01B7F733164D6654009C5CCD /* rockieTextField.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F731164D6654009C5CCD /* rockieTextField.png */; };
-		01B7F734164D6654009C5CCD /* rockieTextField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F732164D6654009C5CCD /* rockieTextField@2x.png */; };
+		01B7F733164D6654009C5CCD /* TextFieldRockie.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F731164D6654009C5CCD /* TextFieldRockie.png */; };
+		01B7F734164D6654009C5CCD /* TextFieldRockie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F732164D6654009C5CCD /* TextFieldRockie@2x.png */; };
+		01B7F736164D767D009C5CCD /* Mail Sent.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F735164D767C009C5CCD /* Mail Sent.aif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -549,8 +550,9 @@
 		01B7F72B164D5AC2009C5CCD /* ButtonTalkHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonTalkHighlighted.png; sourceTree = "<group>"; };
 		01B7F72D164D5AD7009C5CCD /* ButtonTalkStrobe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonTalkStrobe.png; sourceTree = "<group>"; };
 		01B7F72E164D5AD7009C5CCD /* ButtonTalkStrobe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonTalkStrobe@2x.png"; sourceTree = "<group>"; };
-		01B7F731164D6654009C5CCD /* rockieTextField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rockieTextField.png; sourceTree = "<group>"; };
-		01B7F732164D6654009C5CCD /* rockieTextField@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rockieTextField@2x.png"; sourceTree = "<group>"; };
+		01B7F731164D6654009C5CCD /* TextFieldRockie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TextFieldRockie.png; sourceTree = "<group>"; };
+		01B7F732164D6654009C5CCD /* TextFieldRockie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TextFieldRockie@2x.png"; sourceTree = "<group>"; };
+		01B7F735164D767C009C5CCD /* Mail Sent.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mail Sent.aif"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -668,8 +670,8 @@
 		011CC692164C5C1100F02B6D /* Rockie Talkie */ = {
 			isa = PBXGroup;
 			children = (
-				01B7F731164D6654009C5CCD /* rockieTextField.png */,
-				01B7F732164D6654009C5CCD /* rockieTextField@2x.png */,
+				01B7F731164D6654009C5CCD /* TextFieldRockie.png */,
+				01B7F732164D6654009C5CCD /* TextFieldRockie@2x.png */,
 				011CC6AA164D2F8C00F02B6D /* rockieBackgroundShadowPlaceholder.png */,
 				011CC6AB164D2F8C00F02B6D /* rockieBackgroundShadowPlaceholder@2x.png */,
 				011CC6A3164D0B8E00F02B6D /* rockieBackgroundShadow.png */,
@@ -847,6 +849,7 @@
 		01363EA6162F5C2F00FFAA09 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				01B7F735164D767C009C5CCD /* Mail Sent.aif */,
 				01363FA41633FB8C00FFAA09 /* Select.aif */,
 				01363F9D1632EDCC00FFAA09 /* NewSlideIn.aif */,
 				01363F9E1632EDCC00FFAA09 /* NewSlideOut.aif */,
@@ -1531,8 +1534,9 @@
 				01B7F72C164D5AC2009C5CCD /* ButtonTalkHighlighted.png in Resources */,
 				01B7F72F164D5AD7009C5CCD /* ButtonTalkStrobe.png in Resources */,
 				01B7F730164D5AD7009C5CCD /* ButtonTalkStrobe@2x.png in Resources */,
-				01B7F733164D6654009C5CCD /* rockieTextField.png in Resources */,
-				01B7F734164D6654009C5CCD /* rockieTextField@2x.png in Resources */,
+				01B7F733164D6654009C5CCD /* TextFieldRockie.png in Resources */,
+				01B7F734164D6654009C5CCD /* TextFieldRockie@2x.png in Resources */,
+				01B7F736164D767D009C5CCD /* Mail Sent.aif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
