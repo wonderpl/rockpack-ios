@@ -16,4 +16,9 @@
     return [SYNUserCollectionViewLayoutAttributes class];
 }
 
+- (CGSize)collectionViewContentSize
+{
+    return [self collectionView].frame.size;
+}
+
 @end

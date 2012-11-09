@@ -29,9 +29,16 @@
     return self;
 }
 
+
 - (BOOL) shouldInvalidateLayoutForBoundsChange: (CGRect) oldBounds
 {
     return YES;
+}
+
+
+- (CGSize) collectionViewContentSize
+{
+    return [self collectionView].frame.size;
 }
 
 @end

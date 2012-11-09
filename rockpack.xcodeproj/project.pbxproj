@@ -60,6 +60,18 @@
 		011CC67E164AA41800F02B6D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67D164AA41700F02B6D /* CoreMedia.framework */; };
 		011CC680164AA42300F02B6D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67F164AA42300F02B6D /* AVFoundation.framework */; };
 		011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC682164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m */; };
+		011CC691164C5BDE00F02B6D /* Rockie_Active.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC690164C5BDE00F02B6D /* Rockie_Active.png */; };
+		011CC699164C5C7500F02B6D /* ButtonRockie.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC693164C5C7500F02B6D /* ButtonRockie.png */; };
+		011CC69A164C5C7500F02B6D /* ButtonRockie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC694164C5C7500F02B6D /* ButtonRockie@2x.png */; };
+		011CC69B164C5C7500F02B6D /* ButtonRockieHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC695164C5C7500F02B6D /* ButtonRockieHighlighted.png */; };
+		011CC69C164C5C7500F02B6D /* ButtonRockieHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC696164C5C7500F02B6D /* ButtonRockieHighlighted@2x.png */; };
+		011CC69D164C5C7500F02B6D /* ButtonRockieSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC697164C5C7500F02B6D /* ButtonRockieSelected.png */; };
+		011CC69E164C5C7500F02B6D /* ButtonRockieSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC698164C5C7500F02B6D /* ButtonRockieSelected@2x.png */; };
+		011CC6A1164C5C7F00F02B6D /* IconRockie.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC69F164C5C7F00F02B6D /* IconRockie.png */; };
+		011CC6A2164C5C7F00F02B6D /* IconRockie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC6A0164C5C7F00F02B6D /* IconRockie@2x.png */; };
+		011CC6A5164D0B8F00F02B6D /* rockieBackgroundShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC6A3164D0B8E00F02B6D /* rockieBackgroundShadow.png */; };
+		011CC6A6164D0B8F00F02B6D /* rockieBackgroundShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC6A4164D0B8F00F02B6D /* rockieBackgroundShadow@2x.png */; };
+		011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */; };
 		012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */; };
 		012632D2162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632CE162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png */; };
 		012632D3162DF7EE0009FF9C /* WallpackCarouselCircleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 012632CF162DF7EE0009FF9C /* WallpackCarouselCircleBackground.png */; };
@@ -303,6 +315,19 @@
 		011CC67F164AA42300F02B6D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		011CC681164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
 		011CC682164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
+		011CC690164C5BDE00F02B6D /* Rockie_Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Rockie_Active.png; sourceTree = "<group>"; };
+		011CC693164C5C7500F02B6D /* ButtonRockie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonRockie.png; sourceTree = "<group>"; };
+		011CC694164C5C7500F02B6D /* ButtonRockie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockie@2x.png"; sourceTree = "<group>"; };
+		011CC695164C5C7500F02B6D /* ButtonRockieHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonRockieHighlighted.png; sourceTree = "<group>"; };
+		011CC696164C5C7500F02B6D /* ButtonRockieHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockieHighlighted@2x.png"; sourceTree = "<group>"; };
+		011CC697164C5C7500F02B6D /* ButtonRockieSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonRockieSelected.png; sourceTree = "<group>"; };
+		011CC698164C5C7500F02B6D /* ButtonRockieSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockieSelected@2x.png"; sourceTree = "<group>"; };
+		011CC69F164C5C7F00F02B6D /* IconRockie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconRockie.png; sourceTree = "<group>"; };
+		011CC6A0164C5C7F00F02B6D /* IconRockie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconRockie@2x.png"; sourceTree = "<group>"; };
+		011CC6A3164D0B8E00F02B6D /* rockieBackgroundShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rockieBackgroundShadow.png; sourceTree = "<group>"; };
+		011CC6A4164D0B8F00F02B6D /* rockieBackgroundShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rockieBackgroundShadow@2x.png"; sourceTree = "<group>"; };
+		011CC6A7164D19D800F02B6D /* SYNPassthroughView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNPassthroughView.h; sourceTree = "<group>"; };
+		011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNPassthroughView.m; sourceTree = "<group>"; };
 		012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselVerticalLayout.h; sourceTree = "<group>"; };
 		012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselVerticalLayout.m; sourceTree = "<group>"; };
 		012632CE162DF7EE0009FF9C /* WallpackCarouselCircleAlpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WallpackCarouselCircleAlpha.png; sourceTree = "<group>"; };
@@ -624,6 +649,23 @@
 			name = "Camera Overlay";
 			sourceTree = "<group>";
 		};
+		011CC692164C5C1100F02B6D /* Rockie Talkie */ = {
+			isa = PBXGroup;
+			children = (
+				011CC6A3164D0B8E00F02B6D /* rockieBackgroundShadow.png */,
+				011CC6A4164D0B8F00F02B6D /* rockieBackgroundShadow@2x.png */,
+				011CC693164C5C7500F02B6D /* ButtonRockie.png */,
+				011CC694164C5C7500F02B6D /* ButtonRockie@2x.png */,
+				011CC695164C5C7500F02B6D /* ButtonRockieHighlighted.png */,
+				011CC696164C5C7500F02B6D /* ButtonRockieHighlighted@2x.png */,
+				011CC697164C5C7500F02B6D /* ButtonRockieSelected.png */,
+				011CC698164C5C7500F02B6D /* ButtonRockieSelected@2x.png */,
+				011CC69F164C5C7F00F02B6D /* IconRockie.png */,
+				011CC6A0164C5C7F00F02B6D /* IconRockie@2x.png */,
+			);
+			name = "Rockie Talkie";
+			sourceTree = "<group>";
+		};
 		012632C7162DF4C40009FF9C /* Layout Engine Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -912,6 +954,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				011CC692164C5C1100F02B6D /* Rockie Talkie */,
 				011CC658164A821600F02B6D /* Friends Page */,
 				01363F5A163191D600FFAA09 /* Avatars */,
 				01363EF41630632A00FFAA09 /* Video Thumbnails */,
@@ -974,6 +1017,8 @@
 				01982588162B605A00216900 /* SYNTabImageView.m */,
 				01363F4F1631789F00FFAA09 /* SYNMovableView.h */,
 				01363F501631789F00FFAA09 /* SYNMovableView.m */,
+				011CC6A7164D19D800F02B6D /* SYNPassthroughView.h */,
+				011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */,
 			);
 			name = "Custom Views";
 			sourceTree = "<group>";
@@ -1176,6 +1221,7 @@
 		019825B9162C373D00216900 /* Placeholders */ = {
 			isa = PBXGroup;
 			children = (
+				011CC690164C5BDE00F02B6D /* Rockie_Active.png */,
 				01363F7F1632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png */,
 				01363EC21630138C00FFAA09 /* PlaceholderThumbnail.png */,
 				01363EC31630138C00FFAA09 /* PlaceholderThumbnail@2x.png */,
@@ -1444,6 +1490,17 @@
 				011CC670164A8A8B00F02B6D /* ButtonCameraHighlighted.png in Resources */,
 				011CC671164A8A8B00F02B6D /* ButtonGridHighlighted@2x.png in Resources */,
 				011CC672164A8A8B00F02B6D /* ButtonCameraHighlighted@2x.png in Resources */,
+				011CC691164C5BDE00F02B6D /* Rockie_Active.png in Resources */,
+				011CC699164C5C7500F02B6D /* ButtonRockie.png in Resources */,
+				011CC69A164C5C7500F02B6D /* ButtonRockie@2x.png in Resources */,
+				011CC69B164C5C7500F02B6D /* ButtonRockieHighlighted.png in Resources */,
+				011CC69C164C5C7500F02B6D /* ButtonRockieHighlighted@2x.png in Resources */,
+				011CC69D164C5C7500F02B6D /* ButtonRockieSelected.png in Resources */,
+				011CC69E164C5C7500F02B6D /* ButtonRockieSelected@2x.png in Resources */,
+				011CC6A1164C5C7F00F02B6D /* IconRockie.png in Resources */,
+				011CC6A2164C5C7F00F02B6D /* IconRockie@2x.png in Resources */,
+				011CC6A5164D0B8F00F02B6D /* rockieBackgroundShadow.png in Resources */,
+				011CC6A6164D0B8F00F02B6D /* rockieBackgroundShadow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1485,6 +1542,7 @@
 				011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */,
 				011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */,
 				011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */,
+				011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

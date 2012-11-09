@@ -13,18 +13,24 @@
 #import "SYNFriendsViewController.h"
 #import "SYNMyRockPackViewController.h"
 #import "SYNWallPackTopTabViewController.h"
+#import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController ()
 
-@property (nonatomic, copy) NSArray *viewControllers;
-@property (nonatomic, weak) UIViewController *selectedViewController;
-@property (nonatomic, assign) NSUInteger selectedIndex;
-@property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanel;
-@property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
-@property (nonatomic, strong) IBOutlet UITextField *searchField;
 @property (nonatomic, assign) BOOL didNotSwipe;
+@property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, copy) NSArray *viewControllers;
+@property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
+@property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
+@property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
+@property (nonatomic, strong) IBOutlet UITextField *searchField;
+@property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
+@property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanel;
+@property (nonatomic, weak) UIViewController *selectedViewController;
+@property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *swipeLeftRecognizer;
 
 @end
 
@@ -73,20 +79,20 @@
     
     // Add swipe recoginisers for Rockie-Talkie
     // Right swipe
-    UISwipeGestureRecognizer *swipeRightRecognizer;
-    swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+    self.swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                      action: @selector(swipeRockieTalkieRight:)];
     
-    [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
-    [self.rockieTalkiePanel addGestureRecognizer: swipeRightRecognizer];
+    [self.swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer: self.swipeRightRecognizer];
+    
+//    [self.swipeRightRecognizer setDelegate: self];
     
     // Left swipe
-    UISwipeGestureRecognizer *swipeLeftRecognizer;
-    swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+    self.swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                     action: @selector(swipeRockieTalkieLeft:)];
     
-    [swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.rockieTalkiePanel addGestureRecognizer: swipeLeftRecognizer];
+    [self.swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.rockieTalkiePanel addGestureRecognizer: self.swipeLeftRecognizer];
     
     // Set initial state
     self.rockieTalkiePanel.userInteractionEnabled = TRUE;
@@ -96,6 +102,8 @@
                                              selector: @selector(selectMyRockPackTab)
                                                  name: @"SelectMyRockPackTab"
                                                object: nil];
+    
+    self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -141,6 +149,22 @@
 		[self addChildViewController: viewController];
 		[viewController didMoveToParentViewController: self];
 	}
+}
+
+
+
+
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
+        shouldReceiveTouch: (UITouch *) touch
+{
+    if (self.rockieTalkieButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 
@@ -302,10 +326,10 @@
 
 -(void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
-    if (self.didNotSwipe)
+    if (!self.didNotSwipe)
     {
-        self.didNotSwipe = FALSE;
-        
+        self.didNotSwipe = TRUE;
+    
 #ifdef SOUND_ENABLED
         // Play a suitable sound
         NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideOut"
@@ -324,15 +348,18 @@
                          animations: ^
          {
              CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
-             rockieTalkiePanelFrame.origin.x = 425;
+             rockieTalkiePanelFrame.origin.x = -495;
              self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
 
          }
                          completion: ^(BOOL finished)
          {
              CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
-             rockieTalkiePanelFrame.origin.x = 425;
+             rockieTalkiePanelFrame.origin.x = -495;
              self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+             
+             // Set the button to the appropriate state
+             self.rockieTalkieButton.selected = FALSE;
          }];
     }
 }
@@ -340,9 +367,9 @@
 
 - (void) swipeRockieTalkieRight: (UISwipeGestureRecognizer *) swipeGesture
 {
-    if (!self.didNotSwipe)
+    if (self.didNotSwipe)
     {
-        self.didNotSwipe = TRUE;
+        self.didNotSwipe = FALSE;
 
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -362,15 +389,18 @@
                          animations: ^
          {
              CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
-             rockieTalkiePanelFrame.origin.x = 884;
+             rockieTalkiePanelFrame.origin.x = 0;
              self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
              
          }
                          completion: ^(BOOL finished)
          {
              CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
-             rockieTalkiePanelFrame.origin.x = 884;
+             rockieTalkiePanelFrame.origin.x = 0;
              self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+             
+             // Set the button to the appropriate state
+             self.rockieTalkieButton.selected = TRUE;
          }];
     }
 }
@@ -385,6 +415,22 @@
 - (IBAction) recordAction: (UIButton*) button
 {
     button.selected = !button.selected;
+}
+
+- (IBAction) rockieTalkieAction: (UIButton*) button
+{
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        // Need to slide rockie talkie out
+        [self swipeRockieTalkieRight: nil];
+    }
+    else
+    {
+        // Need to slide rockie talkie back in
+        [self swipeRockieTalkieLeft: nil];
+    }
 }
 
 - (void) selectMyRockPackTab
