@@ -14,23 +14,30 @@
 #import "SYNMyRockPackViewController.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "UIFont+SYNFont.h"
+#import <AVFoundation/AVFoundation.h>
+#import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController ()
 
 @property (nonatomic, assign) BOOL didNotSwipe;
 @property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, copy) NSArray *viewControllers;
+@property (nonatomic, strong) AVAudioRecorder *recorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
+@property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowView;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
 @property (nonatomic, strong) IBOutlet UITextField *searchField;
 @property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
 @property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanel;
-@property (nonatomic, weak) UIViewController *selectedViewController;
-@property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
+@property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeLeftRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
+@property (nonatomic, weak) UIViewController *selectedViewController;
 
 @end
 
@@ -433,9 +440,107 @@
     }
 }
 
+- (IBAction) recordTouchDown
+{
+    [self startRecording];
+}
+
+- (IBAction) recordTouchUp
+{
+    [self endRecording];
+}
+
 - (void) selectMyRockPackTab
 {
     [self setSelectedIndex: 2];
+}
+
+- (void) startRecording
+{
+    // Show button 'volume glow'
+    self.recordButtonGlowView.hidden = FALSE;
+    
+    AVAudioSession *avSession = [AVAudioSession sharedInstance];
+	
+	[avSession setCategory: AVAudioSessionCategoryPlayAndRecord
+					 error: nil];
+	
+	[avSession setActive: YES
+				   error: nil];
+    
+    // Don't actually make a real recording (send to /dev/null)
+    NSURL *url = [NSURL fileURLWithPath: @"/dev/null"];
+    
+    // Mono, 44.1kHz should be fine
+  	NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithFloat: 44100.0],                 AVSampleRateKey,
+                              [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
+                              [NSNumber numberWithInt: 1],                         AVNumberOfChannelsKey,
+                              [NSNumber numberWithInt: AVAudioQualityMax],         AVEncoderAudioQualityKey,
+                              nil];
+    
+  	NSError *error;
+    
+  	self.recorder = [[AVAudioRecorder alloc] initWithURL: url
+                                                settings: settings
+                                                   error: &error];
+    
+  	if (self.recorder)
+    {
+  		[self.recorder prepareToRecord];
+  		self.recorder.meteringEnabled = YES;
+  		[self.recorder record];
+        
+		self.levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.03
+                                                           target: self
+                                                         selector: @selector(levelTimerCallback:)
+                                                         userInfo: nil
+                                                          repeats: YES];
+  	}
+    else
+    {
+  		NSLog(@"%@", [error description]);
+    }
+}
+
+
+- (void) endRecording
+{
+    [self.recorder pause];
+    self.recorder = nil;
+    [self.levelTimer invalidate], self.levelTimer = nil;
+    
+    // Show button 'volume glow' and reset it's scale
+    self.recordButtonGlowView.hidden = TRUE;
+    [self.recordButtonGlowView setTransform: CGAffineTransformMakeScale(1.0f, 1.0f)];
+}
+
+
+- (void) levelTimerCallback: (NSTimer *) timer
+{
+    [self.recorder updateMeters];
+    
+    // Convert from dB to linear
+	double averagePowerForChannel = pow(10, (0.05 * [self.recorder averagePowerForChannel: 0]));
+    
+    NSLog (@"Power %f", averagePowerForChannel);
+    
+    // And clip to 0 > x > 1
+    if (averagePowerForChannel < 0.0)
+    {
+        averagePowerForChannel = 0.0f;
+    }
+    else if (averagePowerForChannel > 1.0)
+    {
+        averagePowerForChannel = 1.0f;
+    }
+    
+    // Adjust size of glow, Adding 1 for the scale factor
+    double scaleFactor = 1.0f + averagePowerForChannel;
+    
+//    NSLog (@"Scale %f", scaleFactor);
+
+    [self.recordButtonGlowView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
 }
 
 @end
