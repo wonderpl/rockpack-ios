@@ -27,6 +27,7 @@
 @property (nonatomic, strong) AVAudioRecorder *recorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
+@property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowView;
@@ -588,6 +589,8 @@
 
 - (void) textViewDidEndEditing: (UITextView * )textView
 {
+    self.writeMessageButton.selected = FALSE;
+    
 #ifdef SOUND_ENABLED
     // Play a suitable sound
     NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Mail Sent"
@@ -599,5 +602,23 @@
     AudioServicesPlaySystemSound(sound);
 #endif
 }
+
+#pragma mark - Write message actions
+
+- (IBAction) writeMessage: (UIButton *) button
+{
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        [self.messageTextView becomeFirstResponder];
+    }
+    else
+    {
+        [self.messageTextView resignFirstResponder];
+    }
+}
+
+
 
 @end

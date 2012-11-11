@@ -260,6 +260,12 @@
 		01B7F733164D6654009C5CCD /* TextFieldRockie.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F731164D6654009C5CCD /* TextFieldRockie.png */; };
 		01B7F734164D6654009C5CCD /* TextFieldRockie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F732164D6654009C5CCD /* TextFieldRockie@2x.png */; };
 		01B7F736164D767D009C5CCD /* Mail Sent.aif in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F735164D767C009C5CCD /* Mail Sent.aif */; };
+		01B7F73D164D7AC5009C5CCD /* ButtonRockiePen.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F737164D7AC4009C5CCD /* ButtonRockiePen.png */; };
+		01B7F73E164D7AC5009C5CCD /* ButtonRockiePen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F738164D7AC4009C5CCD /* ButtonRockiePen@2x.png */; };
+		01B7F73F164D7AC5009C5CCD /* ButtonRockiePenHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F739164D7AC4009C5CCD /* ButtonRockiePenHighlighted.png */; };
+		01B7F740164D7AC5009C5CCD /* ButtonRockiePenHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F73A164D7AC4009C5CCD /* ButtonRockiePenHighlighted@2x.png */; };
+		01B7F741164D7AC5009C5CCD /* ButtonRockiePenSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F73B164D7AC4009C5CCD /* ButtonRockiePenSelected.png */; };
+		01B7F742164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F73C164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -553,6 +559,12 @@
 		01B7F731164D6654009C5CCD /* TextFieldRockie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TextFieldRockie.png; sourceTree = "<group>"; };
 		01B7F732164D6654009C5CCD /* TextFieldRockie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TextFieldRockie@2x.png"; sourceTree = "<group>"; };
 		01B7F735164D767C009C5CCD /* Mail Sent.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mail Sent.aif"; sourceTree = "<group>"; };
+		01B7F737164D7AC4009C5CCD /* ButtonRockiePen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonRockiePen.png; sourceTree = "<group>"; };
+		01B7F738164D7AC4009C5CCD /* ButtonRockiePen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockiePen@2x.png"; sourceTree = "<group>"; };
+		01B7F739164D7AC4009C5CCD /* ButtonRockiePenHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonRockiePenHighlighted.png; sourceTree = "<group>"; };
+		01B7F73A164D7AC4009C5CCD /* ButtonRockiePenHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockiePenHighlighted@2x.png"; sourceTree = "<group>"; };
+		01B7F73B164D7AC4009C5CCD /* ButtonRockiePenSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonRockiePenSelected.png; sourceTree = "<group>"; };
+		01B7F73C164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockiePenSelected@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -690,6 +702,12 @@
 				01363F741631922100FFAA09 /* ButtonTalkHighlighted@2x.png */,
 				01B7F72D164D5AD7009C5CCD /* ButtonTalkStrobe.png */,
 				01B7F72E164D5AD7009C5CCD /* ButtonTalkStrobe@2x.png */,
+				01B7F737164D7AC4009C5CCD /* ButtonRockiePen.png */,
+				01B7F738164D7AC4009C5CCD /* ButtonRockiePen@2x.png */,
+				01B7F739164D7AC4009C5CCD /* ButtonRockiePenHighlighted.png */,
+				01B7F73A164D7AC4009C5CCD /* ButtonRockiePenHighlighted@2x.png */,
+				01B7F73B164D7AC4009C5CCD /* ButtonRockiePenSelected.png */,
+				01B7F73C164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png */,
 			);
 			name = "Rockie Talkie";
 			sourceTree = "<group>";
@@ -1537,6 +1555,12 @@
 				01B7F733164D6654009C5CCD /* TextFieldRockie.png in Resources */,
 				01B7F734164D6654009C5CCD /* TextFieldRockie@2x.png in Resources */,
 				01B7F736164D767D009C5CCD /* Mail Sent.aif in Resources */,
+				01B7F73D164D7AC5009C5CCD /* ButtonRockiePen.png in Resources */,
+				01B7F73E164D7AC5009C5CCD /* ButtonRockiePen@2x.png in Resources */,
+				01B7F73F164D7AC5009C5CCD /* ButtonRockiePenHighlighted.png in Resources */,
+				01B7F740164D7AC5009C5CCD /* ButtonRockiePenHighlighted@2x.png in Resources */,
+				01B7F741164D7AC5009C5CCD /* ButtonRockiePenSelected.png in Resources */,
+				01B7F742164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
