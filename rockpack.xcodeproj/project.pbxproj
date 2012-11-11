@@ -128,8 +128,6 @@
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */; };
-		01363EC41630138C00FFAA09 /* PlaceholderThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC21630138C00FFAA09 /* PlaceholderThumbnail.png */; };
-		01363EC51630138C00FFAA09 /* PlaceholderThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC31630138C00FFAA09 /* PlaceholderThumbnail@2x.png */; };
 		01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EC816304D8D00FFAA09 /* SYNVideoDB.m */; };
 		01363ED616304E5D00FFAA09 /* Adidas.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECA16304E5D00FFAA09 /* Adidas.mp4 */; };
 		01363ED716304E5D00FFAA09 /* AngryBirds.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECB16304E5D00FFAA09 /* AngryBirds.mp4 */; };
@@ -307,6 +305,9 @@
 		01C3F723165060D900CE368C /* ButtonThumbnailAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C3F71F165060D900CE368C /* ButtonThumbnailAdd@2x.png */; };
 		01C3F724165060D900CE368C /* ButtonThumbnailAddHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C3F720165060D900CE368C /* ButtonThumbnailAddHighlighted.png */; };
 		01C3F725165060D900CE368C /* ButtonThumbnailAddHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C3F721165060D900CE368C /* ButtonThumbnailAddHighlighted@2x.png */; };
+		01C3F7291650694B00CE368C /* PanelImageWell.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C3F7261650694B00CE368C /* PanelImageWell.png */; };
+		01C3F72A1650694B00CE368C /* PanelImageWellHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C3F7271650694B00CE368C /* PanelImageWellHighlighted.png */; };
+		01C3F72B1650694B00CE368C /* PanelImageWellHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C3F7281650694B00CE368C /* PanelImageWellHighlighted@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -444,8 +445,6 @@
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
 		01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNThumbnailCell.xib; sourceTree = "<group>"; };
-		01363EC21630138C00FFAA09 /* PlaceholderThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlaceholderThumbnail.png; sourceTree = "<group>"; };
-		01363EC31630138C00FFAA09 /* PlaceholderThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderThumbnail@2x.png"; sourceTree = "<group>"; };
 		01363EC716304D8D00FFAA09 /* SYNVideoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoDB.h; sourceTree = "<group>"; };
 		01363EC816304D8D00FFAA09 /* SYNVideoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoDB.m; sourceTree = "<group>"; };
 		01363ECA16304E5D00FFAA09 /* Adidas.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Adidas.mp4; sourceTree = "<group>"; };
@@ -649,6 +648,9 @@
 		01C3F71F165060D900CE368C /* ButtonThumbnailAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailAdd@2x.png"; sourceTree = "<group>"; };
 		01C3F720165060D900CE368C /* ButtonThumbnailAddHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonThumbnailAddHighlighted.png; sourceTree = "<group>"; };
 		01C3F721165060D900CE368C /* ButtonThumbnailAddHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonThumbnailAddHighlighted@2x.png"; sourceTree = "<group>"; };
+		01C3F7261650694B00CE368C /* PanelImageWell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PanelImageWell.png; sourceTree = "<group>"; };
+		01C3F7271650694B00CE368C /* PanelImageWellHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PanelImageWellHighlighted.png; sourceTree = "<group>"; };
+		01C3F7281650694B00CE368C /* PanelImageWellHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelImageWellHighlighted@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1294,6 +1296,9 @@
 		01982550162A2AAC00216900 /* Panels */ = {
 			isa = PBXGroup;
 			children = (
+				01C3F7261650694B00CE368C /* PanelImageWell.png */,
+				01C3F7271650694B00CE368C /* PanelImageWellHighlighted.png */,
+				01C3F7281650694B00CE368C /* PanelImageWellHighlighted@2x.png */,
 				01363F5616317A3100FFAA09 /* PanelMainTitle.png */,
 				01363E83162EF7A000FFAA09 /* PanelImageWell@2x.png */,
 				019825F5162CA70600216900 /* PanelRockieTalkie@2x.png */,
@@ -1368,8 +1373,6 @@
 			children = (
 				011CC690164C5BDE00F02B6D /* Rockie_Active.png */,
 				01363F7F1632ABD200FFAA09 /* PlaceholderChooseChannel@2x.png */,
-				01363EC21630138C00FFAA09 /* PlaceholderThumbnail.png */,
-				01363EC31630138C00FFAA09 /* PlaceholderThumbnail@2x.png */,
 				01263311162E234B0009FF9C /* PlaceholderMainVideo@2x.png */,
 				01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */,
 				01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */,
@@ -1572,8 +1575,6 @@
 				01363EAE162F5C3E00FFAA09 /* Scroll.aif in Resources */,
 				01363EB0162F5C3E00FFAA09 /* Trash.aif in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */,
-				01363EC41630138C00FFAA09 /* PlaceholderThumbnail.png in Resources */,
-				01363EC51630138C00FFAA09 /* PlaceholderThumbnail@2x.png in Resources */,
 				01363ED616304E5D00FFAA09 /* Adidas.mp4 in Resources */,
 				01363ED716304E5D00FFAA09 /* AngryBirds.mp4 in Resources */,
 				01363ED816304E5D00FFAA09 /* CallOfDuty.mp4 in Resources */,
@@ -1751,6 +1752,9 @@
 				01C3F723165060D900CE368C /* ButtonThumbnailAdd@2x.png in Resources */,
 				01C3F724165060D900CE368C /* ButtonThumbnailAddHighlighted.png in Resources */,
 				01C3F725165060D900CE368C /* ButtonThumbnailAddHighlighted@2x.png in Resources */,
+				01C3F7291650694B00CE368C /* PanelImageWell.png in Resources */,
+				01C3F72A1650694B00CE368C /* PanelImageWellHighlighted.png in Resources */,
+				01C3F72B1650694B00CE368C /* PanelImageWellHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

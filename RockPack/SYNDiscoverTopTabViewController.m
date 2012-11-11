@@ -36,6 +36,7 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UICollectionView *wallpackCarousel;
 @property (nonatomic, strong) IBOutlet UIImageView *imageWellMessage;
+@property (nonatomic, strong) IBOutlet UIImageView *imageWellPanelView;
 @property (nonatomic, strong) IBOutlet UILabel *maintitle;
 @property (nonatomic, strong) IBOutlet UILabel *packIt;
 @property (nonatomic, strong) IBOutlet UILabel *packItNumber;
@@ -219,6 +220,9 @@
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
+        
+        // Highlight the image well
+        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWellHighlighted.png"];
     }
     else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
     {
@@ -229,6 +233,9 @@
     }
     else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
     {
+        // Un-highlight the image well
+        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
+        
         // we dropped, so remove it from the view
         
         [self.draggedView removeFromSuperview];
@@ -237,7 +244,7 @@
         CGPoint point = [sender locationInView: self.dropZoneView];
         
         // If we have dropped it in the right place, then add it to our image well
-        if (CGRectContainsPoint(self.dropZoneView.bounds, point))
+        if (CGRectContainsPoint(self.imageWellPanelView.bounds, point))
             
         {
             [self animateImageWellAdditionWithVideoForIndex: self.draggedIndexPath.row
