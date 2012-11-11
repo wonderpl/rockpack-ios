@@ -276,6 +276,30 @@
 		01B7F75A164FB4A7009C5CCD /* TabWallPacks.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F74E164FB4A7009C5CCD /* TabWallPacks.png */; };
 		01B7F75F164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F75D164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m */; };
 		01B7F760164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F75E164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib */; };
+		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
+		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
+		01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */; };
+		01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */; };
+		01B7F77F164FE480009C5CCD /* ChannelCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F76D164FE480009C5CCD /* ChannelCover1.png */; };
+		01B7F780164FE480009C5CCD /* ChannelCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F76E164FE480009C5CCD /* ChannelCover1@2x.png */; };
+		01B7F781164FE480009C5CCD /* ChannelCover2.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F76F164FE480009C5CCD /* ChannelCover2.png */; };
+		01B7F782164FE480009C5CCD /* ChannelCover2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F770164FE480009C5CCD /* ChannelCover2@2x.png */; };
+		01B7F783164FE480009C5CCD /* ChannelCover3.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F771164FE480009C5CCD /* ChannelCover3.png */; };
+		01B7F784164FE480009C5CCD /* ChannelCover3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F772164FE480009C5CCD /* ChannelCover3@2x.png */; };
+		01B7F785164FE480009C5CCD /* ChannelCover4.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F773164FE480009C5CCD /* ChannelCover4.png */; };
+		01B7F786164FE480009C5CCD /* ChannelCover4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F774164FE480009C5CCD /* ChannelCover4@2x.png */; };
+		01B7F787164FE480009C5CCD /* ChannelCover5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F775164FE480009C5CCD /* ChannelCover5.png */; };
+		01B7F788164FE480009C5CCD /* ChannelCover5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F776164FE480009C5CCD /* ChannelCover5@2x.png */; };
+		01B7F789164FE480009C5CCD /* ChannelCover6.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F777164FE480009C5CCD /* ChannelCover6.png */; };
+		01B7F78A164FE480009C5CCD /* ChannelCover6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F778164FE480009C5CCD /* ChannelCover6@2x.png */; };
+		01B7F78B164FE480009C5CCD /* ChannelCover7.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F779164FE480009C5CCD /* ChannelCover7.png */; };
+		01B7F78C164FE480009C5CCD /* ChannelCover7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F77A164FE480009C5CCD /* ChannelCover7@2x.png */; };
+		01B7F78D164FE480009C5CCD /* ChannelCover8.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F77B164FE480009C5CCD /* ChannelCover8.png */; };
+		01B7F78E164FE480009C5CCD /* ChannelCover8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F77C164FE480009C5CCD /* ChannelCover8@2x.png */; };
+		01B7F78F164FE480009C5CCD /* ChannelCover9.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F77D164FE480009C5CCD /* ChannelCover9.png */; };
+		01B7F790164FE480009C5CCD /* ChannelCover9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F77E164FE480009C5CCD /* ChannelCover9@2x.png */; };
+		01B7F793164FEE7D009C5CCD /* BackgroundChannelThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F791164FEE7D009C5CCD /* BackgroundChannelThumbnail.png */; };
+		01B7F794164FEE7D009C5CCD /* BackgroundChannelThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F792164FEE7D009C5CCD /* BackgroundChannelThumbnail@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -584,6 +608,33 @@
 		01B7F75C164FBFF3009C5CCD /* SYNChannelsTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsTopTabViewController.h; sourceTree = "<group>"; };
 		01B7F75D164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsTopTabViewController.m; sourceTree = "<group>"; };
 		01B7F75E164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsTopTabViewController.xib; sourceTree = "<group>"; };
+		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
+		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
+		01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelThumbnailCell.xib; sourceTree = "<group>"; };
+		01B7F766164FD43F009C5CCD /* SYNAbstractThumbnailDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractThumbnailDB.h; sourceTree = "<group>"; };
+		01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractThumbnailDB.m; sourceTree = "<group>"; };
+		01B7F769164FDA8A009C5CCD /* SYNChannelsDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDB.h; sourceTree = "<group>"; };
+		01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDB.m; sourceTree = "<group>"; };
+		01B7F76D164FE480009C5CCD /* ChannelCover1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover1.png; sourceTree = "<group>"; };
+		01B7F76E164FE480009C5CCD /* ChannelCover1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover1@2x.png"; sourceTree = "<group>"; };
+		01B7F76F164FE480009C5CCD /* ChannelCover2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover2.png; sourceTree = "<group>"; };
+		01B7F770164FE480009C5CCD /* ChannelCover2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover2@2x.png"; sourceTree = "<group>"; };
+		01B7F771164FE480009C5CCD /* ChannelCover3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover3.png; sourceTree = "<group>"; };
+		01B7F772164FE480009C5CCD /* ChannelCover3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover3@2x.png"; sourceTree = "<group>"; };
+		01B7F773164FE480009C5CCD /* ChannelCover4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover4.png; sourceTree = "<group>"; };
+		01B7F774164FE480009C5CCD /* ChannelCover4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover4@2x.png"; sourceTree = "<group>"; };
+		01B7F775164FE480009C5CCD /* ChannelCover5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover5.png; sourceTree = "<group>"; };
+		01B7F776164FE480009C5CCD /* ChannelCover5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover5@2x.png"; sourceTree = "<group>"; };
+		01B7F777164FE480009C5CCD /* ChannelCover6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover6.png; sourceTree = "<group>"; };
+		01B7F778164FE480009C5CCD /* ChannelCover6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover6@2x.png"; sourceTree = "<group>"; };
+		01B7F779164FE480009C5CCD /* ChannelCover7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover7.png; sourceTree = "<group>"; };
+		01B7F77A164FE480009C5CCD /* ChannelCover7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover7@2x.png"; sourceTree = "<group>"; };
+		01B7F77B164FE480009C5CCD /* ChannelCover8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover8.png; sourceTree = "<group>"; };
+		01B7F77C164FE480009C5CCD /* ChannelCover8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover8@2x.png"; sourceTree = "<group>"; };
+		01B7F77D164FE480009C5CCD /* ChannelCover9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelCover9.png; sourceTree = "<group>"; };
+		01B7F77E164FE480009C5CCD /* ChannelCover9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelCover9@2x.png"; sourceTree = "<group>"; };
+		01B7F791164FEE7D009C5CCD /* BackgroundChannelThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackgroundChannelThumbnail.png; sourceTree = "<group>"; };
+		01B7F792164FEE7D009C5CCD /* BackgroundChannelThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundChannelThumbnail@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -756,6 +807,9 @@
 				01363F221630B81400FFAA09 /* SYNThumbnailCell.h */,
 				01363F231630B81400FFAA09 /* SYNThumbnailCell.m */,
 				01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */,
+				01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */,
+				01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */,
+				01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */,
 				01363F781631A01000FFAA09 /* SYNImageWellCell.h */,
 				01363F791631A01000FFAA09 /* SYNImageWellCell.m */,
 				01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */,
@@ -899,8 +953,12 @@
 		01363EC616304D5E00FFAA09 /* Video Database */ = {
 			isa = PBXGroup;
 			children = (
+				01B7F766164FD43F009C5CCD /* SYNAbstractThumbnailDB.h */,
+				01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */,
 				01363EC716304D8D00FFAA09 /* SYNVideoDB.h */,
 				01363EC816304D8D00FFAA09 /* SYNVideoDB.m */,
+				01B7F769164FDA8A009C5CCD /* SYNChannelsDB.h */,
+				01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */,
 			);
 			name = "Video Database";
 			sourceTree = "<group>";
@@ -1019,6 +1077,7 @@
 			isa = PBXGroup;
 			children = (
 				011CC692164C5C1100F02B6D /* Rockie Talkie */,
+				01B7F76C164FE464009C5CCD /* Channels Page */,
 				011CC658164A821600F02B6D /* Friends Page */,
 				01363F5A163191D600FFAA09 /* Avatars */,
 				01363EF41630632A00FFAA09 /* Video Thumbnails */,
@@ -1328,6 +1387,33 @@
 			name = Channels;
 			sourceTree = "<group>";
 		};
+		01B7F76C164FE464009C5CCD /* Channels Page */ = {
+			isa = PBXGroup;
+			children = (
+				01B7F791164FEE7D009C5CCD /* BackgroundChannelThumbnail.png */,
+				01B7F792164FEE7D009C5CCD /* BackgroundChannelThumbnail@2x.png */,
+				01B7F76D164FE480009C5CCD /* ChannelCover1.png */,
+				01B7F76E164FE480009C5CCD /* ChannelCover1@2x.png */,
+				01B7F76F164FE480009C5CCD /* ChannelCover2.png */,
+				01B7F770164FE480009C5CCD /* ChannelCover2@2x.png */,
+				01B7F771164FE480009C5CCD /* ChannelCover3.png */,
+				01B7F772164FE480009C5CCD /* ChannelCover3@2x.png */,
+				01B7F773164FE480009C5CCD /* ChannelCover4.png */,
+				01B7F774164FE480009C5CCD /* ChannelCover4@2x.png */,
+				01B7F775164FE480009C5CCD /* ChannelCover5.png */,
+				01B7F776164FE480009C5CCD /* ChannelCover5@2x.png */,
+				01B7F777164FE480009C5CCD /* ChannelCover6.png */,
+				01B7F778164FE480009C5CCD /* ChannelCover6@2x.png */,
+				01B7F779164FE480009C5CCD /* ChannelCover7.png */,
+				01B7F77A164FE480009C5CCD /* ChannelCover7@2x.png */,
+				01B7F77B164FE480009C5CCD /* ChannelCover8.png */,
+				01B7F77C164FE480009C5CCD /* ChannelCover8@2x.png */,
+				01B7F77D164FE480009C5CCD /* ChannelCover9.png */,
+				01B7F77E164FE480009C5CCD /* ChannelCover9@2x.png */,
+			);
+			name = "Channels Page";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1608,6 +1694,27 @@
 				01B7F759164FB4A7009C5CCD /* TabWallPacksSelected.png in Resources */,
 				01B7F75A164FB4A7009C5CCD /* TabWallPacks.png in Resources */,
 				01B7F760164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib in Resources */,
+				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
+				01B7F77F164FE480009C5CCD /* ChannelCover1.png in Resources */,
+				01B7F780164FE480009C5CCD /* ChannelCover1@2x.png in Resources */,
+				01B7F781164FE480009C5CCD /* ChannelCover2.png in Resources */,
+				01B7F782164FE480009C5CCD /* ChannelCover2@2x.png in Resources */,
+				01B7F783164FE480009C5CCD /* ChannelCover3.png in Resources */,
+				01B7F784164FE480009C5CCD /* ChannelCover3@2x.png in Resources */,
+				01B7F785164FE480009C5CCD /* ChannelCover4.png in Resources */,
+				01B7F786164FE480009C5CCD /* ChannelCover4@2x.png in Resources */,
+				01B7F787164FE480009C5CCD /* ChannelCover5.png in Resources */,
+				01B7F788164FE480009C5CCD /* ChannelCover5@2x.png in Resources */,
+				01B7F789164FE480009C5CCD /* ChannelCover6.png in Resources */,
+				01B7F78A164FE480009C5CCD /* ChannelCover6@2x.png in Resources */,
+				01B7F78B164FE480009C5CCD /* ChannelCover7.png in Resources */,
+				01B7F78C164FE480009C5CCD /* ChannelCover7@2x.png in Resources */,
+				01B7F78D164FE480009C5CCD /* ChannelCover8.png in Resources */,
+				01B7F78E164FE480009C5CCD /* ChannelCover8@2x.png in Resources */,
+				01B7F78F164FE480009C5CCD /* ChannelCover9.png in Resources */,
+				01B7F790164FE480009C5CCD /* ChannelCover9@2x.png in Resources */,
+				01B7F793164FEE7D009C5CCD /* BackgroundChannelThumbnail.png in Resources */,
+				01B7F794164FEE7D009C5CCD /* BackgroundChannelThumbnail@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1649,6 +1756,9 @@
 				011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */,
 				011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */,
 				01B7F75F164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m in Sources */,
+				01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */,
+				01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */,
+				01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

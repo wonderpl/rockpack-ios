@@ -97,8 +97,6 @@
     [self.swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer: self.swipeRightRecognizer];
     
-//    [self.swipeRightRecognizer setDelegate: self];
-    
     // Left swipe
     self.swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                     action: @selector(swipeRockieTalkieLeft:)];
@@ -129,19 +127,14 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-    
-    // Start on discovery screenNewSlideIn
-    self.selectedIndex = 1;
 }
 
 #pragma mark - Tab & Container switching mechanism
 
-// Add the four tab view controllers as sub-view controllers of this view controller
+// Add the five tab view controllers as sub-view controllers of this view controller
 
 - (void) setViewControllers: (NSArray *) newViewControllers
 {
-	NSAssert([newViewControllers count] >= 2, @"MHTabBarController requires at least two view controllers");
-    
 	UIViewController *oldSelectedViewController = self.selectedViewController;
     
 	// Remove the old child view controllers.
@@ -170,8 +163,6 @@
 		[viewController didMoveToParentViewController: self];
 	}
 }
-
-
 
 
 - (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer

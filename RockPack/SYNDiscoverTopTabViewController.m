@@ -68,11 +68,6 @@
     
     self.videoDB = [SYNVideoDB sharedVideoDBManager];
     self.selectionDB = [SYNSelectionDB sharedSelectionDBManager];
-    
-#ifdef FULL_SCREEN_THUMBNAILS
-    
-}
-#endif
 
     self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -480,7 +475,7 @@
     }
     else if (view == self.thumbnailView)
     {
-        return self.videoDB.numberOfVideos;
+        return self.videoDB.numberOfThumbnails;
     }
     else
     {

@@ -10,7 +10,7 @@
 
 @interface SYNVideoDB ()
 
-@property (nonatomic, strong) NSArray *videoDetailsArray;
+@property (nonatomic, strong) NSArray *thumbnailDetailsArray;
 
 @end
 
@@ -154,7 +154,7 @@
                                     @"packIt" : @FALSE,
                                     @"rockIt" : @FALSE}];
         
-        self.videoDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
+        self.thumbnailDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
         
     }
     
@@ -162,159 +162,18 @@
 }
 
 
-// We will need to wrap around
-- (int) adjustedIndexForIndex: (int) index
-                   withOffset: (int) offset
-{
-    return (index + offset) % self.videoDetailsArray.count;
-}
-
-- (int) numberOfVideos
-{
-    return self.videoDetailsArray.count;
-}
-
 // Video URL accessor
 
 - (NSURL *) videoURLForIndex: (int) index
                   withOffset: (int) offset
 {
-    NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
+    NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
     NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
     
     NSURL *videoURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource: videoURLString
                                                                               ofType: @"mp4"] isDirectory: NO];
     
     return videoURL;
-}
-
-- (UIImage *) thumbnailForIndex: (int) index
-                     withOffset: (int) offset
-{
-    NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    NSString *thumbnailString = [videoDetails objectForKey: @"thumbnail"];
-    
-    UIImage *thumbnail = [UIImage imageNamed: thumbnailString];
-    
-    return thumbnail;
-}
-
-
-// Title accessor
-
-- (NSString *) titleForIndex: (int) index
-                  withOffset: (int) offset
-{
-    NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    NSString *videoTitle = [videoDetails objectForKey: @"title"];
-    
-    return videoTitle;
-}
-
-
-// Subtitle accessor
-
-- (NSString *) subtitleForIndex: (int) index
-                     withOffset: (int) offset
-{
-    NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    NSString *videoTitle = [videoDetails objectForKey: @"subtitle"];
-    
-    return videoTitle;
-}
-
-
-// PackIt accessors
-
-- (int) packItNumberForIndex: (int) index
-                  withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    int packItNumber = [(NSNumber *)[videoDetails objectForKey: @"packItNumber"] intValue];
-    
-    return packItNumber;
-}
-
-
-- (void) setPackItNumber: (int) number
-                forIndex: (int) index
-              withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    [videoDetails setObject: [NSNumber numberWithInt: number]
-                     forKey: @"packItNumber"];
-
-}
-
-
-- (BOOL) packItForIndex: (int) index
-             withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    BOOL packIt = [(NSNumber *)[videoDetails objectForKey: @"packIt"] intValue];
-    
-    return packIt;
-}
-
-
-- (void) setPackIt: (BOOL) number
-          forIndex: (int) index
-        withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    [videoDetails setObject: [NSNumber numberWithInt: number]
-                     forKey: @"packIt"];
-    
-}
-
-// RockIt accessors
-
-- (int) rockItNumberForIndex: (int) index
-                  withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    int packItNumber = [(NSNumber *)[videoDetails objectForKey: @"rockItNumber"] intValue];
-    
-    return packItNumber;
-}
-
-
-- (void) setRockItNumber: (int) number
-                forIndex: (int) index
-              withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    [videoDetails setObject: [NSNumber numberWithInt: number]
-                     forKey: @"rockItNumber"];
-    
-}
-
-- (BOOL) rockItForIndex: (int) index
-             withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    BOOL packItNumber = [(NSNumber *)[videoDetails objectForKey: @"rockIt"] intValue];
-    
-    return packItNumber;
-}
-
-
-- (void) setRockIt: (BOOL) number
-          forIndex: (int) index
-        withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    [videoDetails setObject: [NSNumber numberWithInt: number]
-                     forKey: @"rockIt"];
-    
 }
 
 @end
