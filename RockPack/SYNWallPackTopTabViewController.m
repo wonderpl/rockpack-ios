@@ -9,8 +9,6 @@
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "NSObject+Blocks.h"
-#import "SYNWallPackCategoryAViewController.h"
-#import "SYNWallPackCategoryBViewController.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "SYNWallpackCarouselCell.h"
 #import "SYNWallpackCarouselVerticalLayout.h"

@@ -9,6 +9,7 @@
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "SYNBottomTabViewController.h"
+#import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNFriendsViewController.h"
 #import "SYNMyRockPackViewController.h"
@@ -58,12 +59,13 @@
     
     // Setup our four sub-viewcontrollers, one for each tab
     SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
+    SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
     SYNMyRockPackViewController *myRockPackViewController = [[SYNMyRockPackViewController alloc] init];
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
     
     // Using new array syntax
-    self.viewControllers = @[wallPackViewController, discoverViewController, myRockPackViewController, friendsViewController];
+    self.viewControllers = @[wallPackViewController, channelsViewController, discoverViewController, myRockPackViewController, friendsViewController];
 
     _selectedIndex = NSNotFound;
     
@@ -241,24 +243,6 @@
 		else if (animated)
 		{
 			self.view.userInteractionEnabled = NO;
-//            toViewController.view.alpha = 0.0f;
-//            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
-//			[self transitionFromViewController: fromViewController
-//                              toViewController: toViewController
-//                                      duration: kTabAnimationDuration
-//                                       options: UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveEaseOut
-//                                    animations: ^
-//             {
-//                 fromViewController.view.alpha = 0.0f;
-//                 toViewController.view.alpha = 1.0f;
-//             }
-//                                    completion: ^(BOOL finished)
-//             {
-//                 fromViewController.view.alpha = 0.0f;
-//                 toViewController.view.alpha = 1.0f;
-//                 [fromViewController.view removeFromSuperview];
-//                 self.view.userInteractionEnabled = YES;
-//             }];
             
             // Set new alpha to 0
             toViewController.view.alpha = 0.0f;
@@ -465,6 +449,8 @@
 {
     [self setSelectedIndex: 2];
 }
+
+#pragma mark - Rockie-talkie recording actions
 
 - (void) startRecording
 {

@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNWallPackTopTabViewController.m"
-         timestampString = "372503738.330703"
+         timestampString = "374325432.206941"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
          landmarkName = "-viewDidAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -58,11 +58,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNBottomTabViewController.m"
-         timestampString = "374176924.879964"
+         timestampString = "374325432.206941"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "466"
-         endingLineNumber = "466"
+         startingLineNumber = "450"
+         endingLineNumber = "450"
          landmarkName = "-selectMyRockPackTab"
          landmarkType = "5">
       </FileBreakpoint>
@@ -110,7 +110,33 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNBottomTabViewController.m"
-         timestampString = "374176924.879964"
+         timestampString = "374325432.206941"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "182"
+         endingLineNumber = "182"
+         landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNBottomTabViewController.m"
+         timestampString = "374325432.206941"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
+         landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNBottomTabViewController.m"
+         timestampString = "374325432.206941"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "180"
@@ -123,37 +149,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNBottomTabViewController.m"
-         timestampString = "374176924.879964"
+         timestampString = "374325432.206941"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "184"
-         endingLineNumber = "184"
-         landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RockPack/SYNBottomTabViewController.m"
-         timestampString = "374176924.879964"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "178"
-         endingLineNumber = "178"
-         landmarkName = "-gestureRecognizer:shouldReceiveTouch:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RockPack/SYNBottomTabViewController.m"
-         timestampString = "374176924.879964"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "388"
-         endingLineNumber = "388"
+         startingLineNumber = "372"
+         endingLineNumber = "372"
          landmarkName = "-swipeRockieTalkieRight:"
          landmarkType = "5">
       </FileBreakpoint>

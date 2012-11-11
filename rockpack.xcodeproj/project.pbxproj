@@ -219,13 +219,13 @@
 		019825091629DCA700216900 /* BackgroundDiscovery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825081629DCA700216900 /* BackgroundDiscovery@2x.png */; };
 		0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNBottomTabViewController.m */; };
 		0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */; };
-		019825181629E23000216900 /* TabFriendsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825101629E23000216900 /* TabFriendsHighlighted@2x.png */; };
+		019825181629E23000216900 /* TabFriendsSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825101629E23000216900 /* TabFriendsSelected@2x.png */; };
 		019825191629E23000216900 /* TabFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825111629E23000216900 /* TabFriends@2x.png */; };
-		0198251A1629E23000216900 /* TabMyRockPackHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825121629E23000216900 /* TabMyRockPackHighlighted@2x.png */; };
+		0198251A1629E23000216900 /* TabMyRockPackSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825121629E23000216900 /* TabMyRockPackSelected@2x.png */; };
 		0198251B1629E23000216900 /* TabMyRockPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825131629E23000216900 /* TabMyRockPack@2x.png */; };
-		0198251C1629E23000216900 /* TabDiscoverHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825141629E23000216900 /* TabDiscoverHighlighted@2x.png */; };
+		0198251C1629E23000216900 /* TabDiscoverSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825141629E23000216900 /* TabDiscoverSelected@2x.png */; };
 		0198251D1629E23000216900 /* TabDiscover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825151629E23000216900 /* TabDiscover@2x.png */; };
-		0198251E1629E23000216900 /* TabWallPacksHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */; };
+		0198251E1629E23000216900 /* TabWallPacksSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825161629E23000216900 /* TabWallPacksSelected@2x.png */; };
 		0198251F1629E23000216900 /* TabWallPacks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825171629E23000216900 /* TabWallPacks@2x.png */; };
 		01982549162A203600216900 /* SYNMyRockPackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982547162A203600216900 /* SYNMyRockPackViewController.m */; };
 		0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockPackViewController.xib */; };
@@ -240,10 +240,6 @@
 		01982573162AF10B00216900 /* TabTopHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982571162AF10B00216900 /* TabTopHighlighted.png */; };
 		01982574162AF10B00216900 /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982572162AF10B00216900 /* TabTop.png */; };
 		01982576162AFB9700216900 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01982575162AFB9600216900 /* QuartzCore.framework */; };
-		01982580162B17A900216900 /* SYNWallPackCategoryAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198257E162B17A900216900 /* SYNWallPackCategoryAViewController.m */; };
-		01982581162B17A900216900 /* SYNWallPackCategoryAViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198257F162B17A900216900 /* SYNWallPackCategoryAViewController.xib */; };
-		01982585162B17B800216900 /* SYNWallPackCategoryBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */; };
-		01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */; };
 		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
 		0198258C162B615D00216900 /* SYNddd.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198258B162B615D00216900 /* SYNddd.m */; };
 		019825BB162C374900216900 /* PlaceholderFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019825BA162C374900216900 /* PlaceholderFriends@2x.png */; };
@@ -266,6 +262,20 @@
 		01B7F740164D7AC5009C5CCD /* ButtonRockiePenHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F73A164D7AC4009C5CCD /* ButtonRockiePenHighlighted@2x.png */; };
 		01B7F741164D7AC5009C5CCD /* ButtonRockiePenSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F73B164D7AC4009C5CCD /* ButtonRockiePenSelected.png */; };
 		01B7F742164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F73C164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png */; };
+		01B7F74F164FB4A7009C5CCD /* TabFriendsSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F743164FB4A6009C5CCD /* TabFriendsSelected.png */; };
+		01B7F750164FB4A7009C5CCD /* TabFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F744164FB4A6009C5CCD /* TabFriends.png */; };
+		01B7F751164FB4A7009C5CCD /* TabMyRockPackSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F745164FB4A7009C5CCD /* TabMyRockPackSelected.png */; };
+		01B7F752164FB4A7009C5CCD /* TabMyRockPack.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F746164FB4A7009C5CCD /* TabMyRockPack.png */; };
+		01B7F753164FB4A7009C5CCD /* TabDiscoverSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F747164FB4A7009C5CCD /* TabDiscoverSelected.png */; };
+		01B7F754164FB4A7009C5CCD /* TabDiscover.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F748164FB4A7009C5CCD /* TabDiscover.png */; };
+		01B7F755164FB4A7009C5CCD /* TabChannelsSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F749164FB4A7009C5CCD /* TabChannelsSelected.png */; };
+		01B7F756164FB4A7009C5CCD /* TabChannelsSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F74A164FB4A7009C5CCD /* TabChannelsSelected@2x.png */; };
+		01B7F757164FB4A7009C5CCD /* TabChannels.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F74B164FB4A7009C5CCD /* TabChannels.png */; };
+		01B7F758164FB4A7009C5CCD /* TabChannels@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F74C164FB4A7009C5CCD /* TabChannels@2x.png */; };
+		01B7F759164FB4A7009C5CCD /* TabWallPacksSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F74D164FB4A7009C5CCD /* TabWallPacksSelected.png */; };
+		01B7F75A164FB4A7009C5CCD /* TabWallPacks.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F74E164FB4A7009C5CCD /* TabWallPacks.png */; };
+		01B7F75F164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F75D164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m */; };
+		01B7F760164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F75E164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -506,13 +516,13 @@
 		0198250A1629DCF100216900 /* SYNBottomTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBottomTabViewController.h; sourceTree = "<group>"; };
 		0198250B1629DCF100216900 /* SYNBottomTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBottomTabViewController.m; sourceTree = "<group>"; };
 		0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNBottomTabViewController.xib; sourceTree = "<group>"; };
-		019825101629E23000216900 /* TabFriendsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabFriendsHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825101629E23000216900 /* TabFriendsSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabFriendsSelected@2x.png"; sourceTree = "<group>"; };
 		019825111629E23000216900 /* TabFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabFriends@2x.png"; sourceTree = "<group>"; };
-		019825121629E23000216900 /* TabMyRockPackHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabMyRockPackHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825121629E23000216900 /* TabMyRockPackSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabMyRockPackSelected@2x.png"; sourceTree = "<group>"; };
 		019825131629E23000216900 /* TabMyRockPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabMyRockPack@2x.png"; sourceTree = "<group>"; };
-		019825141629E23000216900 /* TabDiscoverHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabDiscoverHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825141629E23000216900 /* TabDiscoverSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabDiscoverSelected@2x.png"; sourceTree = "<group>"; };
 		019825151629E23000216900 /* TabDiscover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabDiscover@2x.png"; sourceTree = "<group>"; };
-		019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabWallPacksHighlighted@2x.png"; sourceTree = "<group>"; };
+		019825161629E23000216900 /* TabWallPacksSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabWallPacksSelected@2x.png"; sourceTree = "<group>"; };
 		019825171629E23000216900 /* TabWallPacks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabWallPacks@2x.png"; sourceTree = "<group>"; };
 		01982526162A02F700216900 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
 		01982546162A203600216900 /* SYNMyRockPackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockPackViewController.h; sourceTree = "<group>"; };
@@ -532,12 +542,6 @@
 		01982571162AF10B00216900 /* TabTopHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopHighlighted.png; sourceTree = "<group>"; };
 		01982572162AF10B00216900 /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		01982575162AFB9600216900 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		0198257D162B17A900216900 /* SYNWallPackCategoryAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallPackCategoryAViewController.h; sourceTree = "<group>"; };
-		0198257E162B17A900216900 /* SYNWallPackCategoryAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallPackCategoryAViewController.m; sourceTree = "<group>"; };
-		0198257F162B17A900216900 /* SYNWallPackCategoryAViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallPackCategoryAViewController.xib; sourceTree = "<group>"; };
-		01982582162B17B800216900 /* SYNWallPackCategoryBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallPackCategoryBViewController.h; sourceTree = "<group>"; };
-		01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallPackCategoryBViewController.m; sourceTree = "<group>"; };
-		01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallPackCategoryBViewController.xib; sourceTree = "<group>"; };
 		01982587162B605A00216900 /* SYNTabImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabImageView.h; sourceTree = "<group>"; };
 		01982588162B605A00216900 /* SYNTabImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabImageView.m; sourceTree = "<group>"; };
 		0198258A162B615D00216900 /* SYNddd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNddd.h; sourceTree = "<group>"; };
@@ -565,6 +569,21 @@
 		01B7F73A164D7AC4009C5CCD /* ButtonRockiePenHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockiePenHighlighted@2x.png"; sourceTree = "<group>"; };
 		01B7F73B164D7AC4009C5CCD /* ButtonRockiePenSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonRockiePenSelected.png; sourceTree = "<group>"; };
 		01B7F73C164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRockiePenSelected@2x.png"; sourceTree = "<group>"; };
+		01B7F743164FB4A6009C5CCD /* TabFriendsSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabFriendsSelected.png; sourceTree = "<group>"; };
+		01B7F744164FB4A6009C5CCD /* TabFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabFriends.png; sourceTree = "<group>"; };
+		01B7F745164FB4A7009C5CCD /* TabMyRockPackSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabMyRockPackSelected.png; sourceTree = "<group>"; };
+		01B7F746164FB4A7009C5CCD /* TabMyRockPack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabMyRockPack.png; sourceTree = "<group>"; };
+		01B7F747164FB4A7009C5CCD /* TabDiscoverSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabDiscoverSelected.png; sourceTree = "<group>"; };
+		01B7F748164FB4A7009C5CCD /* TabDiscover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabDiscover.png; sourceTree = "<group>"; };
+		01B7F749164FB4A7009C5CCD /* TabChannelsSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabChannelsSelected.png; sourceTree = "<group>"; };
+		01B7F74A164FB4A7009C5CCD /* TabChannelsSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabChannelsSelected@2x.png"; sourceTree = "<group>"; };
+		01B7F74B164FB4A7009C5CCD /* TabChannels.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabChannels.png; sourceTree = "<group>"; };
+		01B7F74C164FB4A7009C5CCD /* TabChannels@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabChannels@2x.png"; sourceTree = "<group>"; };
+		01B7F74D164FB4A7009C5CCD /* TabWallPacksSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabWallPacksSelected.png; sourceTree = "<group>"; };
+		01B7F74E164FB4A7009C5CCD /* TabWallPacks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabWallPacks.png; sourceTree = "<group>"; };
+		01B7F75C164FBFF3009C5CCD /* SYNChannelsTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsTopTabViewController.h; sourceTree = "<group>"; };
+		01B7F75D164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsTopTabViewController.m; sourceTree = "<group>"; };
+		01B7F75E164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsTopTabViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1039,6 +1058,7 @@
 				01982563162ADEAD00216900 /* Abstract */,
 				01982562162ADE5200216900 /* Root */,
 				0198255E162ADE2100216900 /* Wallpack */,
+				01B7F75B164FB7A7009C5CCD /* Channels */,
 				0198255F162ADE2900216900 /* Discover */,
 				01982560162ADE3300216900 /* My Rockpack */,
 				01982561162ADE4000216900 /* Friends */,
@@ -1160,18 +1180,30 @@
 		0198250F1629E21F00216900 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				01B7F74E164FB4A7009C5CCD /* TabWallPacks.png */,
+				019825171629E23000216900 /* TabWallPacks@2x.png */,
+				01B7F74D164FB4A7009C5CCD /* TabWallPacksSelected.png */,
+				019825161629E23000216900 /* TabWallPacksSelected@2x.png */,
+				01B7F74B164FB4A7009C5CCD /* TabChannels.png */,
+				01B7F74C164FB4A7009C5CCD /* TabChannels@2x.png */,
+				01B7F749164FB4A7009C5CCD /* TabChannelsSelected.png */,
+				01B7F74A164FB4A7009C5CCD /* TabChannelsSelected@2x.png */,
+				01B7F748164FB4A7009C5CCD /* TabDiscover.png */,
+				019825151629E23000216900 /* TabDiscover@2x.png */,
+				01B7F747164FB4A7009C5CCD /* TabDiscoverSelected.png */,
+				019825141629E23000216900 /* TabDiscoverSelected@2x.png */,
+				01B7F746164FB4A7009C5CCD /* TabMyRockPack.png */,
+				019825131629E23000216900 /* TabMyRockPack@2x.png */,
+				01B7F745164FB4A7009C5CCD /* TabMyRockPackSelected.png */,
+				019825121629E23000216900 /* TabMyRockPackSelected@2x.png */,
+				01B7F744164FB4A6009C5CCD /* TabFriends.png */,
+				019825111629E23000216900 /* TabFriends@2x.png */,
+				01B7F743164FB4A6009C5CCD /* TabFriendsSelected.png */,
+				019825101629E23000216900 /* TabFriendsSelected@2x.png */,
 				01982572162AF10B00216900 /* TabTop.png */,
 				01982568162AE4B300216900 /* TabTop@2x.png */,
 				01982571162AF10B00216900 /* TabTopHighlighted.png */,
 				01982567162AE4B300216900 /* TabTopHighlighted@2x.png */,
-				019825101629E23000216900 /* TabFriendsHighlighted@2x.png */,
-				019825111629E23000216900 /* TabFriends@2x.png */,
-				019825121629E23000216900 /* TabMyRockPackHighlighted@2x.png */,
-				019825131629E23000216900 /* TabMyRockPack@2x.png */,
-				019825141629E23000216900 /* TabDiscoverHighlighted@2x.png */,
-				019825151629E23000216900 /* TabDiscover@2x.png */,
-				019825161629E23000216900 /* TabWallPacksHighlighted@2x.png */,
-				019825171629E23000216900 /* TabWallPacks@2x.png */,
 			);
 			name = Tabs;
 			sourceTree = "<group>";
@@ -1202,12 +1234,6 @@
 				01982559162ADE1100216900 /* SYNWallPackTopTabViewController.h */,
 				0198255A162ADE1100216900 /* SYNWallPackTopTabViewController.m */,
 				0198255B162ADE1100216900 /* SYNWallPackTopTabViewController.xib */,
-				0198257D162B17A900216900 /* SYNWallPackCategoryAViewController.h */,
-				0198257E162B17A900216900 /* SYNWallPackCategoryAViewController.m */,
-				0198257F162B17A900216900 /* SYNWallPackCategoryAViewController.xib */,
-				01982582162B17B800216900 /* SYNWallPackCategoryBViewController.h */,
-				01982583162B17B800216900 /* SYNWallPackCategoryBViewController.m */,
-				01982584162B17B800216900 /* SYNWallPackCategoryBViewController.xib */,
 			);
 			name = Wallpack;
 			sourceTree = "<group>";
@@ -1292,6 +1318,16 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
+		01B7F75B164FB7A7009C5CCD /* Channels */ = {
+			isa = PBXGroup;
+			children = (
+				01B7F75C164FBFF3009C5CCD /* SYNChannelsTopTabViewController.h */,
+				01B7F75D164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m */,
+				01B7F75E164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib */,
+			);
+			name = Channels;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1352,13 +1388,13 @@
 				019824FF1629D1A600216900 /* DINNextLTPro-Regular.otf in Resources */,
 				019825091629DCA700216900 /* BackgroundDiscovery@2x.png in Resources */,
 				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
-				019825181629E23000216900 /* TabFriendsHighlighted@2x.png in Resources */,
+				019825181629E23000216900 /* TabFriendsSelected@2x.png in Resources */,
 				019825191629E23000216900 /* TabFriends@2x.png in Resources */,
-				0198251A1629E23000216900 /* TabMyRockPackHighlighted@2x.png in Resources */,
+				0198251A1629E23000216900 /* TabMyRockPackSelected@2x.png in Resources */,
 				0198251B1629E23000216900 /* TabMyRockPack@2x.png in Resources */,
-				0198251C1629E23000216900 /* TabDiscoverHighlighted@2x.png in Resources */,
+				0198251C1629E23000216900 /* TabDiscoverSelected@2x.png in Resources */,
 				0198251D1629E23000216900 /* TabDiscover@2x.png in Resources */,
-				0198251E1629E23000216900 /* TabWallPacksHighlighted@2x.png in Resources */,
+				0198251E1629E23000216900 /* TabWallPacksSelected@2x.png in Resources */,
 				0198251F1629E23000216900 /* TabWallPacks@2x.png in Resources */,
 				0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
@@ -1368,8 +1404,6 @@
 				0198256A162AE4B300216900 /* TabTop@2x.png in Resources */,
 				01982573162AF10B00216900 /* TabTopHighlighted.png in Resources */,
 				01982574162AF10B00216900 /* TabTop.png in Resources */,
-				01982581162B17A900216900 /* SYNWallPackCategoryAViewController.xib in Resources */,
-				01982586162B17B800216900 /* SYNWallPackCategoryBViewController.xib in Resources */,
 				019825BB162C374900216900 /* PlaceholderFriends@2x.png in Resources */,
 				019825F6162CA70600216900 /* PanelRockieTalkie@2x.png in Resources */,
 				01982612162CC0B200216900 /* BackgroundWallPack@2x.png in Resources */,
@@ -1561,6 +1595,19 @@
 				01B7F740164D7AC5009C5CCD /* ButtonRockiePenHighlighted@2x.png in Resources */,
 				01B7F741164D7AC5009C5CCD /* ButtonRockiePenSelected.png in Resources */,
 				01B7F742164D7AC5009C5CCD /* ButtonRockiePenSelected@2x.png in Resources */,
+				01B7F74F164FB4A7009C5CCD /* TabFriendsSelected.png in Resources */,
+				01B7F750164FB4A7009C5CCD /* TabFriends.png in Resources */,
+				01B7F751164FB4A7009C5CCD /* TabMyRockPackSelected.png in Resources */,
+				01B7F752164FB4A7009C5CCD /* TabMyRockPack.png in Resources */,
+				01B7F753164FB4A7009C5CCD /* TabDiscoverSelected.png in Resources */,
+				01B7F754164FB4A7009C5CCD /* TabDiscover.png in Resources */,
+				01B7F755164FB4A7009C5CCD /* TabChannelsSelected.png in Resources */,
+				01B7F756164FB4A7009C5CCD /* TabChannelsSelected@2x.png in Resources */,
+				01B7F757164FB4A7009C5CCD /* TabChannels.png in Resources */,
+				01B7F758164FB4A7009C5CCD /* TabChannels@2x.png in Resources */,
+				01B7F759164FB4A7009C5CCD /* TabWallPacksSelected.png in Resources */,
+				01B7F75A164FB4A7009C5CCD /* TabWallPacks.png in Resources */,
+				01B7F760164FBFF3009C5CCD /* SYNChannelsTopTabViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1580,8 +1627,6 @@
 				0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */,
 				0198255C162ADE1200216900 /* SYNWallPackTopTabViewController.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
-				01982580162B17A900216900 /* SYNWallPackCategoryAViewController.m in Sources */,
-				01982585162B17B800216900 /* SYNWallPackCategoryBViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
 				0198258C162B615D00216900 /* SYNddd.m in Sources */,
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
@@ -1603,6 +1648,7 @@
 				011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */,
 				011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */,
 				011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */,
+				01B7F75F164FBFF3009C5CCD /* SYNChannelsTopTabViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
