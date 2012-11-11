@@ -158,29 +158,42 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RockPack/SYNPassthroughView.m"
-         timestampString = "374151998.474491"
+         filePath = "RockPack/SYNBottomTabViewController.m"
+         timestampString = "374326128.647204"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "22"
-         endingLineNumber = "22"
-         landmarkName = "-pointInside:withEvent:"
+         startingLineNumber = "287"
+         endingLineNumber = "287"
+         landmarkName = "-selectedViewController"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RockPack/SYNPassthroughView.m"
-         timestampString = "374152000.289258"
+         filePath = "RockPack/SYNBottomTabViewController.m"
+         timestampString = "374326131.010157"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "26"
-         endingLineNumber = "26"
-         landmarkName = "-pointInside:withEvent:"
+         startingLineNumber = "283"
+         endingLineNumber = "283"
+         landmarkName = "-selectedViewController"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNBottomTabViewController.m"
+         timestampString = "374326138.604011"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "308"
+         endingLineNumber = "308"
+         landmarkName = "-setSelectedViewController:animated:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

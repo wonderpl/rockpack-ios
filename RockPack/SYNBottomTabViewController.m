@@ -69,7 +69,7 @@
 
     _selectedIndex = NSNotFound;
     
-    self.selectedViewController = wallPackViewController;
+    self.selectedViewController = discoverViewController;
     
     // Now fade in gracefully from splash screen (do this here as opposed to the app delegate so that the orientation is known)
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
