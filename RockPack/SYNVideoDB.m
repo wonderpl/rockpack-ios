@@ -49,6 +49,7 @@
                                    @{@"videoURL" : @"AngryBirds",
                                    @"thumbnail" : @"AngryBirds",
                                    @"title" : @"ANGRY BIRDS: STAR WARS",
+                                   @"subtitle" : @"TRAILER",
                                    @"packItNumber" : @144,
                                    @"rockItNumber" : @273,
                                    @"packIt" : @FALSE,
