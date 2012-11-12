@@ -368,6 +368,93 @@
     [self.thumbnailView reloadData];
 }
 
+
+// Buttons activated from scrolling list of thumbnails
+
+- (IBAction) toggleThumbnailRockItButton: (UIButton *) rockItButton
+{
+    // Get to cell it self (from button subview)
+    UIView *v = rockItButton.superview.superview;
+    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    
+    if (!indexPath)
+    {
+        return;
+    }
+    
+    int number = [self.videoDB rockItNumberForIndex: indexPath.row
+                                         withOffset: self.currentOffset];
+    
+    BOOL isTrue = [self.videoDB rockItForIndex: indexPath.row
+                                    withOffset: self.currentOffset];
+    
+    if (isTrue)
+    {
+        number--;
+        
+        [self.videoDB setRockIt: FALSE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    else
+    {
+        number++;
+        
+        [self.videoDB setRockIt: TRUE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    
+    [self.videoDB setRockItNumber: number
+                         forIndex: indexPath.row
+                       withOffset: self.currentOffset];
+    
+    [self updateLargeVideoDetailsForIndex: indexPath.row
+                               withOffset: self.currentOffset];
+    
+//    [self.thumbnailView reloadData];
+    [self.thumbnailView reloadItemsAtIndexPaths: @[indexPath]];
+}
+
+- (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
+{
+    UIView *v = packItButton.superview.superview;
+    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    
+    int number = [self.videoDB packItNumberForIndex: indexPath.row
+                                         withOffset: self.currentOffset];
+    
+    BOOL isTrue = [self.videoDB packItForIndex: indexPath.row
+                                    withOffset: self.currentOffset];
+    
+    if (isTrue)
+    {
+        number--;
+        
+        [self.videoDB setPackIt: FALSE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    else
+    {
+        number++;
+        
+        [self.videoDB setPackIt: TRUE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    
+    [self.videoDB setPackItNumber: number
+                         forIndex: indexPath.row
+                       withOffset: self.currentOffset];
+    
+    [self updateLargeVideoDetailsForIndex: indexPath.row
+                               withOffset: self.currentOffset];
+    
+//    [self.thumbnailView reloadData];
+    [self.thumbnailView reloadItemsAtIndexPaths: @[indexPath]];
+}
+
 #pragma mark - Large video view gesture handler
 
 - (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
@@ -546,6 +633,23 @@
         
         cell.rockItButton.selected = ([self.videoDB rockItForIndex: indexPath.row
                                                         withOffset: self.currentOffset]) ? TRUE : FALSE;
+        
+        // Wire the Done button up to the correct method in the sign up controller
+		[cell.packItButton removeTarget: nil
+                                 action: @selector(toggleThumbnailPackItButton:)
+                       forControlEvents: UIControlEventTouchUpInside];
+		
+		[cell.packItButton addTarget: self
+                              action: @selector(toggleThumbnailPackItButton:)
+                    forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.rockItButton removeTarget: nil
+                                 action: @selector(toggleThumbnailRockItButton:)
+                       forControlEvents: UIControlEventTouchUpInside];
+		
+		[cell.rockItButton addTarget: self
+                              action: @selector(toggleThumbnailRockItButton:)
+                    forControlEvents: UIControlEventTouchUpInside];
         
         return cell;
     }

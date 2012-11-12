@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNDiscoverTopTabViewController.m"
-         timestampString = "374368869.078353"
+         timestampString = "374373369.379384"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "835"
-         endingLineNumber = "835">
+         startingLineNumber = "939"
+         endingLineNumber = "939">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -171,20 +171,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RockPack/SYNBottomTabViewController.m"
-         timestampString = "374337708.275121"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "274"
-         endingLineNumber = "274"
-         landmarkName = "-selectedViewController"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RockPack/SYNBottomTabViewController.m"
@@ -194,6 +181,19 @@
          startingLineNumber = "299"
          endingLineNumber = "299"
          landmarkName = "-setSelectedViewController:animated:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "RockPack/SYNDiscoverTopTabViewController.m"
+         timestampString = "374373369.379384"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "378"
+         endingLineNumber = "378"
+         landmarkName = "-toggleThumbnailRockItButton:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
