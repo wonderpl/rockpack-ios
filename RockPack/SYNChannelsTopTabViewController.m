@@ -16,6 +16,16 @@
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
+@property (nonatomic, strong) IBOutlet UILabel *biogBody;
+@property (nonatomic, strong) IBOutlet UIImageView *wallpaper;
+@property (nonatomic, strong) IBOutlet UILabel *biogTitle;
+@property (nonatomic, strong) IBOutlet UILabel *coolFactor;
+@property (nonatomic, strong) IBOutlet UILabel *cute;
+@property (nonatomic, strong) IBOutlet UILabel *scary;
+@property (nonatomic, strong) IBOutlet UILabel *strength;
+@property (nonatomic, strong) IBOutlet UILabel *superPowers;
+@property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
+@property (nonatomic, strong) IBOutlet UIView *drillDownView;
 @property (nonatomic, strong) SYNChannelsDB *channelsDB;
 
 @end
@@ -35,6 +45,14 @@
     
     // Cache the channels DB to make the code clearer
     self.channelsDB = [SYNChannelsDB sharedChannelsDBManager];
+    
+    self.biogTitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.coolFactor.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.scary.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.cute.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.strength.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.superPowers.font = [UIFont rockpackFontOfSize: 15.0f];
 }
 
 
@@ -101,17 +119,29 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-#ifdef FULL_SCREEN_THUMBNAILS
-    if (self.isLargeVideoViewExpanded == FALSE)
-    {
-        [self animateLargeVideoViewRight: nil];
-        self.largeVideoViewExpanded = TRUE;
-    }
-#endif
-    self.currentIndex = indexPath.row;
+//    self.currentIndex = indexPath.row;
     
-//    [self setLargeVideoIndex: self.currentIndex
-//                  withOffset: self.currentOffset];
+    self.wallpaper.image = [self.channelsDB wallpaperForIndex: indexPath.row
+                                                   withOffset: self.currentOffset];
+    
+    self.biogTitle.text = [self.channelsDB titleForIndex: indexPath.row
+                                              withOffset: self.currentOffset];
+    
+    self.biogBody.text = [self.channelsDB biogForIndex: indexPath.row
+                                                withOffset: self.currentOffset];
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.drillDownView.alpha = 1.0f;
+         self.thumbnailView.alpha = 0.0f;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 // Buttons activated from scrolling list of thumbnails
@@ -202,6 +232,23 @@
     
     cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB packItNumberForIndex: indexPath.row
                                                                                         withOffset: self.currentOffset]];
+}
+
+- (IBAction) userTouchedBackButton: (id) sender
+{
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.drillDownView.alpha = 0.0f;
+         self.thumbnailView.alpha = 1.0f;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 

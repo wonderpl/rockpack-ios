@@ -13,4 +13,10 @@
 
 + (id) sharedChannelsDBManager;
 
+- (UIImage *) wallpaperForIndex: (int) index
+                     withOffset: (int) offset;
+
+- (NSString *) biogForIndex: (int) index
+                 withOffset: (int) offset;
+
 @end
