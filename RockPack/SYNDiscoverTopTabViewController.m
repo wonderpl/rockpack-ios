@@ -27,6 +27,7 @@
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
+@property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellDeleteButton;
@@ -152,12 +153,11 @@
         
         self.inDrag = YES;
         
-        // get the text of the item to be dragged
-        
-        CGPoint point = [sender locationInView: self.view];
+        // Store the initial drag point, just in case we have to animate it back if the user misses the drop zone
+        self.initialDragCenter = [sender locationInView: self.view];
         
         // Hardcoded for now, eeek!
-        CGRect frame = CGRectMake(point.x - 63, point.y - 36, 127, 72);
+        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         self.draggedView.image = [self.videoDB thumbnailForIndex: self.currentIndex
@@ -165,6 +165,9 @@
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
+        
+        // Highlight the image well
+        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWellHighlighted.png"];
     }
     else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
     {
@@ -174,18 +177,35 @@
     }
     else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
     {
-        // we dropped, so remove it from the view
-        
-        [self.draggedView removeFromSuperview];
+        // Un-highlight the image well
+        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
         
         // and let's figure out where we dropped it
         CGPoint point = [sender locationInView: self.dropZoneView];
         
         // If we have dropped it in the right place, then add it to our image well
-        if (CGRectContainsPoint(self.dropZoneView.bounds, point))
+        if (CGRectContainsPoint(self.imageWellPanelView.bounds, point))
             
         {
+            // Hide the dragged thumbnail and add new image to image well
+            [self.draggedView removeFromSuperview];
             [self addToImageWellFromLargeVideo: nil];
+        }
+        else
+        {
+            [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^
+             {
+                 // Contract thumbnail view
+                 self.draggedView.center = self.initialDragCenter;
+                 
+             }
+                             completion: ^(BOOL finished)
+             {
+                 [self.draggedView removeFromSuperview];
+             }];
         }
     }
 }
@@ -209,10 +229,11 @@
         
         // get the text of the item to be dragged
         
-        CGPoint point = [sender locationInView: self.view];
+        // Store the initial drag point, just in case we have to animate it back if the user misses the drop zone
+        self.initialDragCenter = [sender locationInView: self.view];
         
         // Hardcoded for now, eeek!
-        CGRect frame = CGRectMake(point.x - 63, point.y - 36, 127, 72);
+        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         self.draggedView.image = [self.videoDB thumbnailForIndex: indexPath.row
@@ -236,10 +257,6 @@
         // Un-highlight the image well
         self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
         
-        // we dropped, so remove it from the view
-        
-        [self.draggedView removeFromSuperview];
-        
         // and let's figure out where we dropped it
         CGPoint point = [sender locationInView: self.dropZoneView];
         
@@ -247,8 +264,26 @@
         if (CGRectContainsPoint(self.imageWellPanelView.bounds, point))
             
         {
+            // Hide the dragged thumbnail and add new image to image well
+            [self.draggedView removeFromSuperview];
             [self animateImageWellAdditionWithVideoForIndex: self.draggedIndexPath.row
                                                  withOffset: self.currentOffset];
+        }
+        else
+        {
+            [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^
+             {
+                 // Contract thumbnail view
+                 self.draggedView.center = self.initialDragCenter;
+                 
+             }
+                             completion: ^(BOOL finished)
+             {
+                 [self.draggedView removeFromSuperview];
+             }];
         }
     }
 }
@@ -472,6 +507,23 @@
                                                                                         withOffset: self.currentOffset]];
 }
 
+
+
+- (IBAction) touchThumbnailAddItButton: (UIButton *) addItButton
+{
+    UIView *v = addItButton.superview.superview;
+    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    
+
+    
+    SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    
+    cell.packItButton.enabled = FALSE;
+    
+    [self animateImageWellAdditionWithVideoForIndex: indexPath.row
+                                         withOffset: self.currentOffset];
+}
+
 #pragma mark - Large video view gesture handler
 
 - (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
@@ -667,6 +719,16 @@
 		[cell.rockItButton addTarget: self
                               action: @selector(toggleThumbnailRockItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.addItButton removeTarget: nil
+                                 action: @selector(toggleThumbnailRockItButton:)
+                       forControlEvents: UIControlEventTouchUpInside];
+		
+		[cell.addItButton addTarget: self
+                              action: @selector(touchThumbnailAddItButton:)
+                    forControlEvents: UIControlEventTouchUpInside];
+        
+        
         
         return cell;
     }
