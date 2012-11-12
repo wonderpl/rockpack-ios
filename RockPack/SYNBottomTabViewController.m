@@ -12,6 +12,7 @@
 #import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNFriendsViewController.h"
+#import "SYNMovableView.h"
 #import "SYNMyRockPackViewController.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "UIFont+SYNFont.h"
@@ -97,6 +98,9 @@
     [self.swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer: self.swipeRightRecognizer];
     
+    // We need this to check that we can swipe
+    self.swipeRightRecognizer.delegate = self;
+    
     // Left swipe
     self.swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                     action: @selector(swipeRockieTalkieLeft:)];
@@ -169,12 +173,25 @@
         shouldReceiveTouch: (UITouch *) touch
 {
     if (self.rockieTalkieButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+//    if (gestureRecognizer == self.swipeRightRecognizer && (self.rockieTalkieButton.selected == TRUE || [SYNMovableView allowDragging]  == TRUE))
     {
         return NO;
     }
     else
     {
         return YES;
+    }
+}
+
+- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
+{
+    if ([SYNMovableView allowDragging]  == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
     }
 }
 

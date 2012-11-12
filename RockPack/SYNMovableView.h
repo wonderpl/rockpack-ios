@@ -10,4 +10,6 @@
 
 @interface SYNMovableView : UIImageView
 
++ (BOOL) allowDragging;
+
 @end

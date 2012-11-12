@@ -16,10 +16,27 @@
 
 @implementation SYNMovableView
 
+// We need to be able to determine whether any of our views is being dragged
+
+static BOOL canDrag = TRUE;
+
++ (BOOL) allowDragging
+{
+    NSLog (@"canDrag %d", canDrag);
+    return canDrag;
+}
+
 - (void) touchesBegan: (NSSet *) touches
             withEvent: (UIEvent *) event
 {
+    canDrag = FALSE;
     self.touchStart = [[touches anyObject] locationInView: self];
+}
+
+- (void) touchesEnded: (NSSet *) touches
+            withEvent: (UIEvent *) event
+{
+    canDrag = TRUE;
 }
 
 - (void) touchesMoved: (NSSet *) touches
