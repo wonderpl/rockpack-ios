@@ -77,6 +77,23 @@
     cell.rockItButton.selected = ([self.channelsDB rockItForIndex: indexPath.row
                                                     withOffset: self.currentOffset]) ? TRUE : FALSE;
     
+    // Wire the Done button up to the correct method in the sign up controller
+    [cell.packItButton removeTarget: nil
+                             action: @selector(toggleThumbnailPackItButton:)
+                   forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.packItButton addTarget: self
+                          action: @selector(toggleThumbnailPackItButton:)
+                forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.rockItButton removeTarget: nil
+                             action: @selector(toggleThumbnailRockItButton:)
+                   forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.rockItButton addTarget: self
+                          action: @selector(toggleThumbnailRockItButton:)
+                forControlEvents: UIControlEventTouchUpInside];
+    
     return cell;
 }
 
@@ -95,6 +112,96 @@
     
 //    [self setLargeVideoIndex: self.currentIndex
 //                  withOffset: self.currentOffset];
+}
+
+// Buttons activated from scrolling list of thumbnails
+
+- (IBAction) toggleThumbnailRockItButton: (UIButton *) rockItButton
+{
+    // Get to cell it self (from button subview)
+    UIView *v = rockItButton.superview.superview;
+    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    
+    if (!indexPath)
+    {
+        return;
+    }
+    
+    int number = [self.channelsDB rockItNumberForIndex: indexPath.row
+                                         withOffset: self.currentOffset];
+    
+    BOOL isTrue = [self.channelsDB rockItForIndex: indexPath.row
+                                    withOffset: self.currentOffset];
+    
+    if (isTrue)
+    {
+        number--;
+        
+        [self.channelsDB setRockIt: FALSE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    else
+    {
+        number++;
+        
+        [self.channelsDB setRockIt: TRUE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    
+    [self.channelsDB setRockItNumber: number
+                         forIndex: indexPath.row
+                       withOffset: self.currentOffset];
+    
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    
+    cell.rockItButton.selected = ([self.channelsDB rockItForIndex: indexPath.row
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB rockItNumberForIndex: indexPath.row
+                                                                                        withOffset: self.currentOffset]];
+}
+
+- (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
+{
+    UIView *v = packItButton.superview.superview;
+    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    
+    int number = [self.channelsDB packItNumberForIndex: indexPath.row
+                                         withOffset: self.currentOffset];
+    
+    BOOL isTrue = [self.channelsDB packItForIndex: indexPath.row
+                                    withOffset: self.currentOffset];
+    
+    if (isTrue)
+    {
+        number--;
+        
+        [self.channelsDB setPackIt: FALSE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    else
+    {
+        number++;
+        
+        [self.channelsDB setPackIt: TRUE
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
+    }
+    
+    [self.channelsDB setPackItNumber: number
+                         forIndex: indexPath.row
+                       withOffset: self.currentOffset];
+    
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    
+    cell.packItButton.selected = ([self.channelsDB packItForIndex: indexPath.row
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
+    cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB packItNumberForIndex: indexPath.row
+                                                                                        withOffset: self.currentOffset]];
 }
 
 

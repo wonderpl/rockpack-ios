@@ -263,6 +263,13 @@
     self.subtitle.text = [self.videoDB subtitleForIndex: index
                                              withOffset: offset];
     
+    [self updateLargeVideoRockPackForIndex: index
+                                withOffset: offset];
+}
+
+- (void) updateLargeVideoRockPackForIndex: (int) index
+                               withOffset: (int) offset
+{    
     self.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: index
                                                                                         withOffset: offset]];
     
@@ -326,7 +333,7 @@
     [self.videoDB setRockItNumber: number
                          forIndex: self.currentIndex
                        withOffset: self.currentOffset];
-    
+
     [self updateLargeVideoDetailsForIndex: self.currentIndex
                                withOffset: self.currentOffset];
     
@@ -409,11 +416,16 @@
                          forIndex: indexPath.row
                        withOffset: self.currentOffset];
     
-    [self updateLargeVideoDetailsForIndex: indexPath.row
-                               withOffset: self.currentOffset];
+    [self updateLargeVideoRockPackForIndex: self.currentIndex
+                                withOffset: self.currentOffset];
     
-//    [self.thumbnailView reloadData];
-    [self.thumbnailView reloadItemsAtIndexPaths: @[indexPath]];
+    SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    
+    cell.rockItButton.selected = ([self.videoDB rockItForIndex: indexPath.row
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: indexPath.row
+                                                                                        withOffset: self.currentOffset]];
 }
 
 - (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
@@ -447,12 +459,17 @@
     [self.videoDB setPackItNumber: number
                          forIndex: indexPath.row
                        withOffset: self.currentOffset];
+
+    [self updateLargeVideoRockPackForIndex: self.currentIndex
+                                withOffset: self.currentOffset];
     
-    [self updateLargeVideoDetailsForIndex: indexPath.row
-                               withOffset: self.currentOffset];
+    SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
     
-//    [self.thumbnailView reloadData];
-    [self.thumbnailView reloadItemsAtIndexPaths: @[indexPath]];
+    cell.packItButton.selected = ([self.videoDB packItForIndex: indexPath.row
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
+    cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: indexPath.row
+                                                                                        withOffset: self.currentOffset]];
 }
 
 #pragma mark - Large video view gesture handler
