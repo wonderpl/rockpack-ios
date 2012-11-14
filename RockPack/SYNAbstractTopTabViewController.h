@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNTabImageView.h"
 
 @interface SYNAbstractTopTabViewController : UIViewController
+
+@property (nonatomic, strong) SYNTabImageView *topTabView;
 
 - (void) setViewControllers: (NSArray *) newViewControllers;
 - (void) setSelectedViewController: (UIViewController *) newSelectedViewController;

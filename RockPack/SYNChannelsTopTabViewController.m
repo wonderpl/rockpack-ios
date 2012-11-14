@@ -173,6 +173,7 @@
              // Contract thumbnail view
              self.drillDownView.alpha = 1.0f;
              self.thumbnailView.alpha = 0.0f;
+             self.topTabView.alpha = 0.0f;
              
          }
                          completion: ^(BOOL finished)
@@ -285,6 +286,7 @@
          // Contract thumbnail view
          self.drillDownView.alpha = 0.0f;
          self.thumbnailView.alpha = 1.0f;
+         self.topTabView.alpha = 1.0f;
          
      }
                      completion: ^(BOOL finished)

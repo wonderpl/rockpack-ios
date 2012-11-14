@@ -8,12 +8,10 @@
 
 #import "AppConstants.h"
 #import "SYNAbstractTopTabViewController.h"
-#import "SYNTabImageView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractTopTabViewController ()
 
-@property (nonatomic, strong) SYNTabImageView *topTabView;
 @property (nonatomic, strong) UIImageView *topTabHighlightedView;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, weak) UIViewController *selectedViewController;
