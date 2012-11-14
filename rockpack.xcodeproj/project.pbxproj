@@ -69,18 +69,6 @@
 		011CC649164A75A800F02B6D /* Avatar8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC630164A75A800F02B6D /* Avatar8@2x.png */; };
 		011CC64A164A75A800F02B6D /* Avatar9.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC631164A75A800F02B6D /* Avatar9.png */; };
 		011CC64B164A75A800F02B6D /* Avatar9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC632164A75A800F02B6D /* Avatar9@2x.png */; };
-		011CC64C164A75A800F02B6D /* Avatar10.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC633164A75A800F02B6D /* Avatar10.png */; };
-		011CC64D164A75A800F02B6D /* Avatar10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC634164A75A800F02B6D /* Avatar10@2x.png */; };
-		011CC64E164A75A800F02B6D /* Avatar11.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC635164A75A800F02B6D /* Avatar11.png */; };
-		011CC64F164A75A800F02B6D /* Avatar11@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC636164A75A800F02B6D /* Avatar11@2x.png */; };
-		011CC650164A75A800F02B6D /* Avatar12.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC637164A75A800F02B6D /* Avatar12.png */; };
-		011CC651164A75A800F02B6D /* Avatar12@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC638164A75A800F02B6D /* Avatar12@2x.png */; };
-		011CC652164A75A800F02B6D /* Avatar13.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC639164A75A800F02B6D /* Avatar13.png */; };
-		011CC653164A75A800F02B6D /* Avatar13@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC63A164A75A800F02B6D /* Avatar13@2x.png */; };
-		011CC654164A75A800F02B6D /* Avatar14.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC63B164A75A800F02B6D /* Avatar14.png */; };
-		011CC655164A75A800F02B6D /* Avatar14@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC63C164A75A800F02B6D /* Avatar14@2x.png */; };
-		011CC656164A75A800F02B6D /* Avatar15.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC63D164A75A800F02B6D /* Avatar15.png */; };
-		011CC657164A75A800F02B6D /* Avatar15@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC63E164A75A800F02B6D /* Avatar15@2x.png */; };
 		011CC661164A823000F02B6D /* ButtonCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC659164A823000F02B6D /* ButtonCamera.png */; };
 		011CC662164A823000F02B6D /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC65A164A823000F02B6D /* ButtonCamera@2x.png */; };
 		011CC663164A823000F02B6D /* ButtonCameraSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 011CC65B164A823000F02B6D /* ButtonCameraSelected.png */; };
@@ -337,6 +325,15 @@
 		019E81E11653E1B100744A03 /* AngryBirds.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D51653E1B100744A03 /* AngryBirds.mp4 */; };
 		019E81E41653F11700744A03 /* ChannelWallpaperGeneric.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E21653F11700744A03 /* ChannelWallpaperGeneric.png */; };
 		019E81E51653F11700744A03 /* ChannelWallpaperGeneric@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E31653F11700744A03 /* ChannelWallpaperGeneric@2x.png */; };
+		019E81EF1653FE0B00744A03 /* Avatar16.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E61653FE0B00744A03 /* Avatar16.png */; };
+		019E81F01653FE0B00744A03 /* Avatar16@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E71653FE0B00744A03 /* Avatar16@2x.png */; };
+		019E81F11653FE0B00744A03 /* Avatar17.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E81653FE0B00744A03 /* Avatar17.png */; };
+		019E81F21653FE0B00744A03 /* Avatar17@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E91653FE0B00744A03 /* Avatar17@2x.png */; };
+		019E81F31653FE0B00744A03 /* Avatar18.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81EA1653FE0B00744A03 /* Avatar18.png */; };
+		019E81F41653FE0B00744A03 /* Avatar18@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81EB1653FE0B00744A03 /* Avatar18@2x.png */; };
+		019E81F51653FE0B00744A03 /* Avatar19.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81EC1653FE0B00744A03 /* Avatar19.png */; };
+		019E81F61653FE0B00744A03 /* Avatar19@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81ED1653FE0B00744A03 /* Avatar19@2x.png */; };
+		019E81F71653FE0B00744A03 /* Avatar20.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81EE1653FE0B00744A03 /* Avatar20.png */; };
 		01B7F72A164D5AB6009C5CCD /* ButtonTalk.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F729164D5AB6009C5CCD /* ButtonTalk.png */; };
 		01B7F72C164D5AC2009C5CCD /* ButtonTalkHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F72B164D5AC2009C5CCD /* ButtonTalkHighlighted.png */; };
 		01B7F72F164D5AD7009C5CCD /* ButtonTalkStrobe.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F72D164D5AD7009C5CCD /* ButtonTalkStrobe.png */; };
@@ -778,6 +775,15 @@
 		019E81D51653E1B100744A03 /* AngryBirds.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = AngryBirds.mp4; path = Assets/Video/AngryBirds.mp4; sourceTree = "<group>"; };
 		019E81E21653F11700744A03 /* ChannelWallpaperGeneric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelWallpaperGeneric.png; sourceTree = "<group>"; };
 		019E81E31653F11700744A03 /* ChannelWallpaperGeneric@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelWallpaperGeneric@2x.png"; sourceTree = "<group>"; };
+		019E81E61653FE0B00744A03 /* Avatar16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Avatar16.png; sourceTree = "<group>"; };
+		019E81E71653FE0B00744A03 /* Avatar16@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Avatar16@2x.png"; sourceTree = "<group>"; };
+		019E81E81653FE0B00744A03 /* Avatar17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Avatar17.png; sourceTree = "<group>"; };
+		019E81E91653FE0B00744A03 /* Avatar17@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Avatar17@2x.png"; sourceTree = "<group>"; };
+		019E81EA1653FE0B00744A03 /* Avatar18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Avatar18.png; sourceTree = "<group>"; };
+		019E81EB1653FE0B00744A03 /* Avatar18@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Avatar18@2x.png"; sourceTree = "<group>"; };
+		019E81EC1653FE0B00744A03 /* Avatar19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Avatar19.png; sourceTree = "<group>"; };
+		019E81ED1653FE0B00744A03 /* Avatar19@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Avatar19@2x.png"; sourceTree = "<group>"; };
+		019E81EE1653FE0B00744A03 /* Avatar20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Avatar20.png; sourceTree = "<group>"; };
 		01B37241162EBAD800A9F8F5 /* RockPack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RockPack.entitlements; path = RockPack/RockPack.entitlements; sourceTree = "<group>"; };
 		01B7F729164D5AB6009C5CCD /* ButtonTalk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonTalk.png; sourceTree = "<group>"; };
 		01B7F72B164D5AC2009C5CCD /* ButtonTalkHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonTalkHighlighted.png; sourceTree = "<group>"; };
@@ -1272,6 +1278,15 @@
 		01363F5A163191D600FFAA09 /* Avatars */ = {
 			isa = PBXGroup;
 			children = (
+				019E81E61653FE0B00744A03 /* Avatar16.png */,
+				019E81E71653FE0B00744A03 /* Avatar16@2x.png */,
+				019E81E81653FE0B00744A03 /* Avatar17.png */,
+				019E81E91653FE0B00744A03 /* Avatar17@2x.png */,
+				019E81EA1653FE0B00744A03 /* Avatar18.png */,
+				019E81EB1653FE0B00744A03 /* Avatar18@2x.png */,
+				019E81EC1653FE0B00744A03 /* Avatar19.png */,
+				019E81ED1653FE0B00744A03 /* Avatar19@2x.png */,
+				019E81EE1653FE0B00744A03 /* Avatar20.png */,
 				011CC626164A75A800F02B6D /* Avatar3@2x.png */,
 				011CC627164A75A800F02B6D /* Avatar4.png */,
 				011CC628164A75A800F02B6D /* Avatar4@2x.png */,
@@ -1962,18 +1977,6 @@
 				011CC649164A75A800F02B6D /* Avatar8@2x.png in Resources */,
 				011CC64A164A75A800F02B6D /* Avatar9.png in Resources */,
 				011CC64B164A75A800F02B6D /* Avatar9@2x.png in Resources */,
-				011CC64C164A75A800F02B6D /* Avatar10.png in Resources */,
-				011CC64D164A75A800F02B6D /* Avatar10@2x.png in Resources */,
-				011CC64E164A75A800F02B6D /* Avatar11.png in Resources */,
-				011CC64F164A75A800F02B6D /* Avatar11@2x.png in Resources */,
-				011CC650164A75A800F02B6D /* Avatar12.png in Resources */,
-				011CC651164A75A800F02B6D /* Avatar12@2x.png in Resources */,
-				011CC652164A75A800F02B6D /* Avatar13.png in Resources */,
-				011CC653164A75A800F02B6D /* Avatar13@2x.png in Resources */,
-				011CC654164A75A800F02B6D /* Avatar14.png in Resources */,
-				011CC655164A75A800F02B6D /* Avatar14@2x.png in Resources */,
-				011CC656164A75A800F02B6D /* Avatar15.png in Resources */,
-				011CC657164A75A800F02B6D /* Avatar15@2x.png in Resources */,
 				011CC661164A823000F02B6D /* ButtonCamera.png in Resources */,
 				011CC662164A823000F02B6D /* ButtonCamera@2x.png in Resources */,
 				011CC663164A823000F02B6D /* ButtonCameraSelected.png in Resources */,
@@ -2166,6 +2169,15 @@
 				019E81E11653E1B100744A03 /* AngryBirds.mp4 in Resources */,
 				019E81E41653F11700744A03 /* ChannelWallpaperGeneric.png in Resources */,
 				019E81E51653F11700744A03 /* ChannelWallpaperGeneric@2x.png in Resources */,
+				019E81EF1653FE0B00744A03 /* Avatar16.png in Resources */,
+				019E81F01653FE0B00744A03 /* Avatar16@2x.png in Resources */,
+				019E81F11653FE0B00744A03 /* Avatar17.png in Resources */,
+				019E81F21653FE0B00744A03 /* Avatar17@2x.png in Resources */,
+				019E81F31653FE0B00744A03 /* Avatar18.png in Resources */,
+				019E81F41653FE0B00744A03 /* Avatar18@2x.png in Resources */,
+				019E81F51653FE0B00744A03 /* Avatar19.png in Resources */,
+				019E81F61653FE0B00744A03 /* Avatar19@2x.png in Resources */,
+				019E81F71653FE0B00744A03 /* Avatar20.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

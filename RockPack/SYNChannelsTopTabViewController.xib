@@ -459,7 +459,7 @@
 							<object class="IBUIButton" id="759401959">
 								<reference key="NSNextResponder" ref="3902179"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{-1, 78}, {47, 25}}</string>
+								<string key="NSFrame">{{0, 77}, {95, 38}}</string>
 								<reference key="NSSuperview" ref="3902179"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="736808322"/>
@@ -539,6 +539,7 @@
 						<string key="NSFrame">{{0, 88}, {1024, 599}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="121210644"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -926,7 +927,7 @@
 				<string key="35.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="38.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="38.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="38.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="44.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1086,8 +1087,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonBack.png">{47, 25}</string>
-			<string key="ButtonBackHighlighted.png">{47, 25}</string>
+			<string key="ButtonBack.png">{95, 38}</string>
+			<string key="ButtonBackHighlighted.png">{95, 38}</string>
 			<string key="ChannelHeader.png">{768, 84}</string>
 			<string key="ChannelSideBar.png">{256, 643}</string>
 			<string key="ChannelStatsPanel.png">{768, 124}</string>
