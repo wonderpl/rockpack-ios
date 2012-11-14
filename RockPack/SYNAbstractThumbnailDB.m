@@ -38,7 +38,6 @@
     NSString *thumbnailString = [videoDetails objectForKey: @"thumbnail"];
     
     UIImage *thumbnail = [UIImage imageNamed: thumbnailString];
-    
     return thumbnail;
 }
 

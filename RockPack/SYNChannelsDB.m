@@ -66,7 +66,7 @@
                                    @"rockIt" : @FALSE}];
         
         NSMutableDictionary *d4 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"CarlyRaeJepsen",
+                                   @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover4",
                                    @"wallpaper" : @"ChannelWallpaper4",
                                    @"title" : @"TES SCIENCE",
@@ -78,7 +78,7 @@
                                    @"rockIt" : @FALSE}];
         
         NSMutableDictionary *d5 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"HotelTransylvania",
+                                   @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover5",
                                    @"wallpaper" : @"ChannelWallpaper5",
                                    @"title" : @"KATY PERRY",
@@ -90,7 +90,7 @@
                                    @"rockIt" : @TRUE}];
         
         NSMutableDictionary *d6 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"JustinBieber",
+                                   @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover6",
                                    @"wallpaper" : @"ChannelWallpaper6",
                                    @"title" : @"JLS",
@@ -102,7 +102,7 @@
                                    @"rockIt" : @TRUE}];
         
         NSMutableDictionary *d7 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"Madagascar3",
+                                   @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover7",
                                    @"wallpaper" : @"ChannelWallpaper7",
                                    @"title" : @"THE HOBBIT",
@@ -114,7 +114,7 @@
                                    @"rockIt" : @FALSE}];
         
         NSMutableDictionary *d8 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"MonstersUniversity",
+                                   @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover8",
                                    @"wallpaper" : @"ChannelWallpaper8",
                                    @"title" : @"HALO",
@@ -126,7 +126,7 @@
                                    @"rockIt" : @TRUE}];
         
         NSMutableDictionary *d9 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"NikeFootball",
+                                   @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover9",
                                    @"wallpaper" : @"ChannelWallpaper9",
                                    @"title" : @"THE X FACTOR",
@@ -137,7 +137,296 @@
                                    @"packIt" : @TRUE,
                                    @"rockIt" : @FALSE}];
         
-        self.thumbnailDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9];
+        NSMutableDictionary *d10 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover10",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"ADIDAS",
+                                   @"subtitle" : @"THE MESSIAH!",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d11 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover11",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"REEBOK",
+                                   @"subtitle" : @"LABRINTH & BLUEY",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d12 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover12",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"TES",
+                                   @"subtitle" : @"HISTORY",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d13 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover13",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"UNIVERSAL STUDIOS",
+                                   @"subtitle" : @"DESPICABLE ME 2",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d14 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover14",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"WARNER BROS.",
+                                   @"subtitle" : @"JACK THE GIANT KILLER",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d15 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover15",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"MARVEL",
+                                   @"subtitle" : @"THE AVENGERS 2",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d16 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover16",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"CARTOON NETWORK",
+                                   @"subtitle" : @"ADVENTURE TIME",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d17 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover17",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"VICTORIOUS",
+                                   @"subtitle" : @"TORI AND JADE ROCK!",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d18 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover18",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"MERLIN",
+                                   @"subtitle" : @"SERIES 5",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d19 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover19",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"ONE DIRECTION",
+                                   @"subtitle" : @"LIVE WHILE WE'RE YOUNG",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d20 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover20",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"ENGLAND FOOTBALL TEAM",
+                                   @"subtitle" : @"ROAD TO RIO",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @FALSE,
+                                   @"rockIt" : @TRUE}];
+        
+        NSMutableDictionary *d21 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover21",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"RED BULL",
+                                   @"subtitle" : @"THE ATHLETE MACHINE",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @FALSE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d22 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover22",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"PLAYSTATION",
+                                   @"subtitle" : @"LITTLE BIG PLANET KARTING",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d23 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover23",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"GAMELOFT",
+                                   @"subtitle" : @"ZOMBIEWOOD",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @FALSE,
+                                   @"rockIt" : @TRUE}];
+        
+        NSMutableDictionary *d24 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover24",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"ROVIO",
+                                   @"subtitle" : @"ANGRY BIRDS STAR WARS",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d25 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover25",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"COCA-COLA",
+                                   @"subtitle" : @"CELEBRATE LONDON",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @FALSE,
+                                   @"rockIt" : @TRUE}];
+        
+        
+        NSMutableDictionary *d26 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover26",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"OLD SPICE",
+                                   @"subtitle" : @"BELIEVE IN YOUR SMELLF",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d27 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover27",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"YOGSCAST",
+                                   @"subtitle" : @"FAN FRIDAY!",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @TRUE}];
+        
+        NSMutableDictionary *d28 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover28",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"GAP",
+                                   @"subtitle" : @"LOVE COMES IN EVERY SHADE",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @FALSE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d29 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover29",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"OFFICIAL PSY",
+                                   @"subtitle" : @"GANGNAM STYLE",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d30 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover30",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"EXPERT VILLAGE",
+                                   @"subtitle" : @"WATCH. LEARN. DO",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @TRUE}];
+        
+        NSMutableDictionary *d31 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover31",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"ANNOYING ORANGE",
+                                   @"subtitle" : @"TIME TO BURN",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @FALSE,
+                                   @"rockIt" : @FALSE}];
+        
+        NSMutableDictionary *d32 = [NSMutableDictionary dictionaryWithDictionary:
+                                   @{@"videoURL" : @"",
+                                   @"thumbnail" : @"ChannelCover32",
+                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"title" : @"NBA",
+                                   @"subtitle" : @"HEROICS IN TORONTO!",
+                                   @"biog" : @"",
+                                   @"packItNumber" : @883,
+                                   @"rockItNumber" : @653,
+                                   @"packIt" : @TRUE,
+                                   @"rockIt" : @TRUE}];
+        
+        NSMutableDictionary *d33 = [NSMutableDictionary dictionaryWithDictionary:
+                                    @{@"videoURL" : @"",
+                                    @"thumbnail" : @"ChannelCover33",
+                                    @"wallpaper" : @"ChannelWallpaper9",
+                                    @"title" : @"DOCTOR WHO",
+                                    @"subtitle" : @"SERIES 7",
+                                    @"biog" : @"",
+                                    @"packItNumber" : @883,
+                                    @"rockItNumber" : @653,
+                                    @"packIt" : @FALSE,
+                                    @"rockIt" : @FALSE}];
+        
+        self.thumbnailDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d33, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, d32];
     }
     
     return self;
