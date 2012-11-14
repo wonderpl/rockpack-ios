@@ -20,6 +20,7 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView2;
 @property (nonatomic, strong) IBOutlet UILabel *biogBody;
+@property (nonatomic, strong) IBOutlet UILabel *fullTitle;
 @property (nonatomic, strong) IBOutlet UIImageView *wallpaper;
 @property (nonatomic, strong) IBOutlet UILabel *biogTitle;
 @property (nonatomic, strong) IBOutlet UILabel *coolFactor;
@@ -57,6 +58,7 @@
     self.channelsDB = [SYNChannelsDB sharedChannelsDBManager];
     self.videoDB = [SYNVideoDB sharedVideoDBManager];
     
+    self.fullTitle.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.biogTitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
     self.coolFactor.font = [UIFont rockpackFontOfSize: 15.0f];
@@ -157,6 +159,8 @@
 {
     if (cv == self.thumbnailView)
     {
+        self.fullTitle.text = [NSString stringWithFormat: @"%@ - %@", [self.channelsDB titleForIndex: indexPath.row withOffset: self.currentOffset], [self.channelsDB subtitleForIndex: indexPath.row withOffset: self.currentOffset]];
+        
         self.wallpaper.image = [self.channelsDB wallpaperForIndex: indexPath.row
                                                        withOffset: self.currentOffset];
         
