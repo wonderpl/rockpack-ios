@@ -140,7 +140,7 @@
         NSMutableDictionary *d10 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover10",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"ADIDAS",
                                    @"subtitle" : @"THE MESSIAH!",
                                    @"biog" : @"",
@@ -152,7 +152,7 @@
         NSMutableDictionary *d11 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover11",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"REEBOK",
                                    @"subtitle" : @"LABRINTH & BLUEY",
                                    @"biog" : @"",
@@ -164,7 +164,7 @@
         NSMutableDictionary *d12 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover12",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"TES",
                                    @"subtitle" : @"HISTORY",
                                    @"biog" : @"",
@@ -176,7 +176,7 @@
         NSMutableDictionary *d13 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover13",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"UNIVERSAL STUDIOS",
                                    @"subtitle" : @"DESPICABLE ME 2",
                                    @"biog" : @"",
@@ -188,7 +188,7 @@
         NSMutableDictionary *d14 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover14",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"WARNER BROS.",
                                    @"subtitle" : @"JACK THE GIANT KILLER",
                                    @"biog" : @"",
@@ -200,7 +200,7 @@
         NSMutableDictionary *d15 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover15",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"MARVEL",
                                    @"subtitle" : @"THE AVENGERS 2",
                                    @"biog" : @"",
@@ -212,7 +212,7 @@
         NSMutableDictionary *d16 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover16",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"CARTOON NETWORK",
                                    @"subtitle" : @"ADVENTURE TIME",
                                    @"biog" : @"",
@@ -224,7 +224,7 @@
         NSMutableDictionary *d17 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover17",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"VICTORIOUS",
                                    @"subtitle" : @"TORI AND JADE ROCK!",
                                    @"biog" : @"",
@@ -236,7 +236,7 @@
         NSMutableDictionary *d18 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover18",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"MERLIN",
                                    @"subtitle" : @"SERIES 5",
                                    @"biog" : @"",
@@ -248,7 +248,7 @@
         NSMutableDictionary *d19 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover19",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"ONE DIRECTION",
                                    @"subtitle" : @"LIVE WHILE WE'RE YOUNG",
                                    @"biog" : @"",
@@ -260,7 +260,7 @@
         NSMutableDictionary *d20 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover20",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"ENGLAND FOOTBALL TEAM",
                                    @"subtitle" : @"ROAD TO RIO",
                                    @"biog" : @"",
@@ -272,7 +272,7 @@
         NSMutableDictionary *d21 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover21",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"RED BULL",
                                    @"subtitle" : @"THE ATHLETE MACHINE",
                                    @"biog" : @"",
@@ -284,7 +284,7 @@
         NSMutableDictionary *d22 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover22",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"PLAYSTATION",
                                    @"subtitle" : @"LITTLE BIG PLANET KARTING",
                                    @"biog" : @"",
@@ -296,7 +296,7 @@
         NSMutableDictionary *d23 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover23",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"GAMELOFT",
                                    @"subtitle" : @"ZOMBIEWOOD",
                                    @"biog" : @"",
@@ -308,7 +308,7 @@
         NSMutableDictionary *d24 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover24",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"ROVIO",
                                    @"subtitle" : @"ANGRY BIRDS STAR WARS",
                                    @"biog" : @"",
@@ -320,7 +320,7 @@
         NSMutableDictionary *d25 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover25",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"COCA-COLA",
                                    @"subtitle" : @"CELEBRATE LONDON",
                                    @"biog" : @"",
@@ -333,7 +333,7 @@
         NSMutableDictionary *d26 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover26",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"OLD SPICE",
                                    @"subtitle" : @"BELIEVE IN YOUR SMELLF",
                                    @"biog" : @"",
@@ -345,7 +345,7 @@
         NSMutableDictionary *d27 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover27",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"YOGSCAST",
                                    @"subtitle" : @"FAN FRIDAY!",
                                    @"biog" : @"",
@@ -357,7 +357,7 @@
         NSMutableDictionary *d28 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover28",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"GAP",
                                    @"subtitle" : @"LOVE COMES IN EVERY SHADE",
                                    @"biog" : @"",
@@ -369,7 +369,7 @@
         NSMutableDictionary *d29 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover29",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"OFFICIAL PSY",
                                    @"subtitle" : @"GANGNAM STYLE",
                                    @"biog" : @"",
@@ -381,7 +381,7 @@
         NSMutableDictionary *d30 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover30",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"EXPERT VILLAGE",
                                    @"subtitle" : @"WATCH. LEARN. DO",
                                    @"biog" : @"",
@@ -393,7 +393,7 @@
         NSMutableDictionary *d31 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover31",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"ANNOYING ORANGE",
                                    @"subtitle" : @"TIME TO BURN",
                                    @"biog" : @"",
@@ -405,7 +405,7 @@
         NSMutableDictionary *d32 = [NSMutableDictionary dictionaryWithDictionary:
                                    @{@"videoURL" : @"",
                                    @"thumbnail" : @"ChannelCover32",
-                                   @"wallpaper" : @"ChannelWallpaper9",
+                                   @"wallpaper" : @"ChannelWallpaperGeneric",
                                    @"title" : @"NBA",
                                    @"subtitle" : @"HEROICS IN TORONTO!",
                                    @"biog" : @"",
@@ -417,7 +417,7 @@
         NSMutableDictionary *d33 = [NSMutableDictionary dictionaryWithDictionary:
                                     @{@"videoURL" : @"",
                                     @"thumbnail" : @"ChannelCover33",
-                                    @"wallpaper" : @"ChannelWallpaper9",
+                                    @"wallpaper" : @"ChannelWallpaperGeneric",
                                     @"title" : @"DOCTOR WHO",
                                     @"subtitle" : @"SERIES 7",
                                     @"biog" : @"",

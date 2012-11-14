@@ -169,18 +169,6 @@
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */; };
 		01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EC816304D8D00FFAA09 /* SYNVideoDB.m */; };
-		01363ED616304E5D00FFAA09 /* Adidas.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECA16304E5D00FFAA09 /* Adidas.mp4 */; };
-		01363ED716304E5D00FFAA09 /* AngryBirds.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECB16304E5D00FFAA09 /* AngryBirds.mp4 */; };
-		01363ED816304E5D00FFAA09 /* CallOfDuty.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECC16304E5D00FFAA09 /* CallOfDuty.mp4 */; };
-		01363ED916304E5D00FFAA09 /* CarlyRaeJepsen.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECD16304E5D00FFAA09 /* CarlyRaeJepsen.mp4 */; };
-		01363EDA16304E5D00FFAA09 /* HotelTransylvania.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECE16304E5D00FFAA09 /* HotelTransylvania.mp4 */; };
-		01363EDB16304E5D00FFAA09 /* JustinBieber.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ECF16304E5D00FFAA09 /* JustinBieber.mp4 */; };
-		01363EDC16304E5D00FFAA09 /* Madagascar3.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ED016304E5D00FFAA09 /* Madagascar3.mp4 */; };
-		01363EDD16304E5D00FFAA09 /* MonstersUniversity.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ED116304E5D00FFAA09 /* MonstersUniversity.mp4 */; };
-		01363EDE16304E5D00FFAA09 /* NikeFootball.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ED216304E5D00FFAA09 /* NikeFootball.mp4 */; };
-		01363EDF16304E5D00FFAA09 /* OneDirection.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ED316304E5D00FFAA09 /* OneDirection.mp4 */; };
-		01363EE016304E5D00FFAA09 /* TheDarkKnightRises.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ED416304E5D00FFAA09 /* TheDarkKnightRises.mp4 */; };
-		01363EE116304E5D00FFAA09 /* TheLionKing.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 01363ED516304E5D00FFAA09 /* TheLionKing.mp4 */; };
 		01363F011630633E00FFAA09 /* Adidas.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EF51630633E00FFAA09 /* Adidas.png */; };
 		01363F021630633E00FFAA09 /* AngryBirds.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EF61630633E00FFAA09 /* AngryBirds.png */; };
 		01363F031630633E00FFAA09 /* CallOfDuty.png in Resources */ = {isa = PBXBuildFile; fileRef = 01363EF71630633E00FFAA09 /* CallOfDuty.png */; };
@@ -335,6 +323,20 @@
 		01982612162CC0B200216900 /* BackgroundWallPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982611162CC0B100216900 /* BackgroundWallPack@2x.png */; };
 		01982615162CC4C100216900 /* PlaceholderCategoryB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */; };
 		01982616162CC4C100216900 /* PlaceholderCategoryA@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */; };
+		019E81D61653E1B100744A03 /* TheLionKing.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CA1653E1B100744A03 /* TheLionKing.mp4 */; };
+		019E81D71653E1B100744A03 /* TheDarkKnightRises.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CB1653E1B100744A03 /* TheDarkKnightRises.mp4 */; };
+		019E81D81653E1B100744A03 /* CallOfDuty.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CC1653E1B100744A03 /* CallOfDuty.mp4 */; };
+		019E81D91653E1B100744A03 /* OneDirection.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CD1653E1B100744A03 /* OneDirection.mp4 */; };
+		019E81DA1653E1B100744A03 /* NikeFootball.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CE1653E1B100744A03 /* NikeFootball.mp4 */; };
+		019E81DB1653E1B100744A03 /* MonstersUniversity.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CF1653E1B100744A03 /* MonstersUniversity.mp4 */; };
+		019E81DC1653E1B100744A03 /* Madagascar3.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D01653E1B100744A03 /* Madagascar3.mp4 */; };
+		019E81DD1653E1B100744A03 /* JustinBieber.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D11653E1B100744A03 /* JustinBieber.mp4 */; };
+		019E81DE1653E1B100744A03 /* HotelTransylvania.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D21653E1B100744A03 /* HotelTransylvania.mp4 */; };
+		019E81DF1653E1B100744A03 /* CarlyRaeJepsen.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D31653E1B100744A03 /* CarlyRaeJepsen.mp4 */; };
+		019E81E01653E1B100744A03 /* Adidas.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D41653E1B100744A03 /* Adidas.mp4 */; };
+		019E81E11653E1B100744A03 /* AngryBirds.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D51653E1B100744A03 /* AngryBirds.mp4 */; };
+		019E81E41653F11700744A03 /* ChannelWallpaperGeneric.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E21653F11700744A03 /* ChannelWallpaperGeneric.png */; };
+		019E81E51653F11700744A03 /* ChannelWallpaperGeneric@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E81E31653F11700744A03 /* ChannelWallpaperGeneric@2x.png */; };
 		01B7F72A164D5AB6009C5CCD /* ButtonTalk.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F729164D5AB6009C5CCD /* ButtonTalk.png */; };
 		01B7F72C164D5AC2009C5CCD /* ButtonTalkHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F72B164D5AC2009C5CCD /* ButtonTalkHighlighted.png */; };
 		01B7F72F164D5AD7009C5CCD /* ButtonTalkStrobe.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F72D164D5AD7009C5CCD /* ButtonTalkStrobe.png */; };
@@ -588,18 +590,6 @@
 		01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNThumbnailCell.xib; sourceTree = "<group>"; };
 		01363EC716304D8D00FFAA09 /* SYNVideoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoDB.h; sourceTree = "<group>"; };
 		01363EC816304D8D00FFAA09 /* SYNVideoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoDB.m; sourceTree = "<group>"; };
-		01363ECA16304E5D00FFAA09 /* Adidas.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Adidas.mp4; sourceTree = "<group>"; };
-		01363ECB16304E5D00FFAA09 /* AngryBirds.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = AngryBirds.mp4; sourceTree = "<group>"; };
-		01363ECC16304E5D00FFAA09 /* CallOfDuty.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CallOfDuty.mp4; sourceTree = "<group>"; };
-		01363ECD16304E5D00FFAA09 /* CarlyRaeJepsen.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CarlyRaeJepsen.mp4; sourceTree = "<group>"; };
-		01363ECE16304E5D00FFAA09 /* HotelTransylvania.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HotelTransylvania.mp4; sourceTree = "<group>"; };
-		01363ECF16304E5D00FFAA09 /* JustinBieber.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JustinBieber.mp4; sourceTree = "<group>"; };
-		01363ED016304E5D00FFAA09 /* Madagascar3.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Madagascar3.mp4; sourceTree = "<group>"; };
-		01363ED116304E5D00FFAA09 /* MonstersUniversity.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = MonstersUniversity.mp4; sourceTree = "<group>"; };
-		01363ED216304E5D00FFAA09 /* NikeFootball.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = NikeFootball.mp4; sourceTree = "<group>"; };
-		01363ED316304E5D00FFAA09 /* OneDirection.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = OneDirection.mp4; sourceTree = "<group>"; };
-		01363ED416304E5D00FFAA09 /* TheDarkKnightRises.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TheDarkKnightRises.mp4; sourceTree = "<group>"; };
-		01363ED516304E5D00FFAA09 /* TheLionKing.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TheLionKing.mp4; sourceTree = "<group>"; };
 		01363EF51630633E00FFAA09 /* Adidas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Adidas.png; sourceTree = "<group>"; };
 		01363EF61630633E00FFAA09 /* AngryBirds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AngryBirds.png; sourceTree = "<group>"; };
 		01363EF71630633E00FFAA09 /* CallOfDuty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CallOfDuty.png; sourceTree = "<group>"; };
@@ -774,6 +764,20 @@
 		01982611162CC0B100216900 /* BackgroundWallPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundWallPack@2x.png"; sourceTree = "<group>"; };
 		01982613162CC4C100216900 /* PlaceholderCategoryB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderCategoryB@2x.png"; sourceTree = "<group>"; };
 		01982614162CC4C100216900 /* PlaceholderCategoryA@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PlaceholderCategoryA@2x.png"; sourceTree = "<group>"; };
+		019E81CA1653E1B100744A03 /* TheLionKing.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = TheLionKing.mp4; path = Assets/Video/TheLionKing.mp4; sourceTree = "<group>"; };
+		019E81CB1653E1B100744A03 /* TheDarkKnightRises.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = TheDarkKnightRises.mp4; path = Assets/Video/TheDarkKnightRises.mp4; sourceTree = "<group>"; };
+		019E81CC1653E1B100744A03 /* CallOfDuty.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = CallOfDuty.mp4; path = Assets/Video/CallOfDuty.mp4; sourceTree = "<group>"; };
+		019E81CD1653E1B100744A03 /* OneDirection.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = OneDirection.mp4; path = Assets/Video/OneDirection.mp4; sourceTree = "<group>"; };
+		019E81CE1653E1B100744A03 /* NikeFootball.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = NikeFootball.mp4; path = Assets/Video/NikeFootball.mp4; sourceTree = "<group>"; };
+		019E81CF1653E1B100744A03 /* MonstersUniversity.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = MonstersUniversity.mp4; path = Assets/Video/MonstersUniversity.mp4; sourceTree = "<group>"; };
+		019E81D01653E1B100744A03 /* Madagascar3.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Madagascar3.mp4; path = Assets/Video/Madagascar3.mp4; sourceTree = "<group>"; };
+		019E81D11653E1B100744A03 /* JustinBieber.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = JustinBieber.mp4; path = Assets/Video/JustinBieber.mp4; sourceTree = "<group>"; };
+		019E81D21653E1B100744A03 /* HotelTransylvania.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = HotelTransylvania.mp4; path = Assets/Video/HotelTransylvania.mp4; sourceTree = "<group>"; };
+		019E81D31653E1B100744A03 /* CarlyRaeJepsen.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = CarlyRaeJepsen.mp4; path = Assets/Video/CarlyRaeJepsen.mp4; sourceTree = "<group>"; };
+		019E81D41653E1B100744A03 /* Adidas.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Adidas.mp4; path = Assets/Video/Adidas.mp4; sourceTree = "<group>"; };
+		019E81D51653E1B100744A03 /* AngryBirds.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = AngryBirds.mp4; path = Assets/Video/AngryBirds.mp4; sourceTree = "<group>"; };
+		019E81E21653F11700744A03 /* ChannelWallpaperGeneric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelWallpaperGeneric.png; sourceTree = "<group>"; };
+		019E81E31653F11700744A03 /* ChannelWallpaperGeneric@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelWallpaperGeneric@2x.png"; sourceTree = "<group>"; };
 		01B37241162EBAD800A9F8F5 /* RockPack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RockPack.entitlements; path = RockPack/RockPack.entitlements; sourceTree = "<group>"; };
 		01B7F729164D5AB6009C5CCD /* ButtonTalk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonTalk.png; sourceTree = "<group>"; };
 		01B7F72B164D5AC2009C5CCD /* ButtonTalkHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonTalkHighlighted.png; sourceTree = "<group>"; };
@@ -1128,18 +1132,18 @@
 		0126331B162E29770009FF9C /* Videos */ = {
 			isa = PBXGroup;
 			children = (
-				01363ECA16304E5D00FFAA09 /* Adidas.mp4 */,
-				01363ECB16304E5D00FFAA09 /* AngryBirds.mp4 */,
-				01363ECC16304E5D00FFAA09 /* CallOfDuty.mp4 */,
-				01363ECD16304E5D00FFAA09 /* CarlyRaeJepsen.mp4 */,
-				01363ECE16304E5D00FFAA09 /* HotelTransylvania.mp4 */,
-				01363ECF16304E5D00FFAA09 /* JustinBieber.mp4 */,
-				01363ED016304E5D00FFAA09 /* Madagascar3.mp4 */,
-				01363ED116304E5D00FFAA09 /* MonstersUniversity.mp4 */,
-				01363ED216304E5D00FFAA09 /* NikeFootball.mp4 */,
-				01363ED316304E5D00FFAA09 /* OneDirection.mp4 */,
-				01363ED416304E5D00FFAA09 /* TheDarkKnightRises.mp4 */,
-				01363ED516304E5D00FFAA09 /* TheLionKing.mp4 */,
+				019E81CA1653E1B100744A03 /* TheLionKing.mp4 */,
+				019E81CB1653E1B100744A03 /* TheDarkKnightRises.mp4 */,
+				019E81CC1653E1B100744A03 /* CallOfDuty.mp4 */,
+				019E81CD1653E1B100744A03 /* OneDirection.mp4 */,
+				019E81CE1653E1B100744A03 /* NikeFootball.mp4 */,
+				019E81CF1653E1B100744A03 /* MonstersUniversity.mp4 */,
+				019E81D01653E1B100744A03 /* Madagascar3.mp4 */,
+				019E81D11653E1B100744A03 /* JustinBieber.mp4 */,
+				019E81D21653E1B100744A03 /* HotelTransylvania.mp4 */,
+				019E81D31653E1B100744A03 /* CarlyRaeJepsen.mp4 */,
+				019E81D41653E1B100744A03 /* Adidas.mp4 */,
+				019E81D51653E1B100744A03 /* AngryBirds.mp4 */,
 			);
 			name = Videos;
 			sourceTree = "<group>";
@@ -1670,6 +1674,8 @@
 				0106E8611651399500DC5173 /* ChannelWallpaper7.png */,
 				0106E8621651399500DC5173 /* ChannelWallpaper8.png */,
 				0106E8631651399500DC5173 /* ChannelWallpaper9.png */,
+				019E81E21653F11700744A03 /* ChannelWallpaperGeneric.png */,
+				019E81E31653F11700744A03 /* ChannelWallpaperGeneric@2x.png */,
 				01B7F791164FEE7D009C5CCD /* BackgroundChannelThumbnail.png */,
 				01B7F792164FEE7D009C5CCD /* BackgroundChannelThumbnail@2x.png */,
 				01B7F76D164FE480009C5CCD /* ChannelCover1.png */,
@@ -1883,18 +1889,6 @@
 				01363EAE162F5C3E00FFAA09 /* Scroll.aif in Resources */,
 				01363EB0162F5C3E00FFAA09 /* Trash.aif in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */,
-				01363ED616304E5D00FFAA09 /* Adidas.mp4 in Resources */,
-				01363ED716304E5D00FFAA09 /* AngryBirds.mp4 in Resources */,
-				01363ED816304E5D00FFAA09 /* CallOfDuty.mp4 in Resources */,
-				01363ED916304E5D00FFAA09 /* CarlyRaeJepsen.mp4 in Resources */,
-				01363EDA16304E5D00FFAA09 /* HotelTransylvania.mp4 in Resources */,
-				01363EDB16304E5D00FFAA09 /* JustinBieber.mp4 in Resources */,
-				01363EDC16304E5D00FFAA09 /* Madagascar3.mp4 in Resources */,
-				01363EDD16304E5D00FFAA09 /* MonstersUniversity.mp4 in Resources */,
-				01363EDE16304E5D00FFAA09 /* NikeFootball.mp4 in Resources */,
-				01363EDF16304E5D00FFAA09 /* OneDirection.mp4 in Resources */,
-				01363EE016304E5D00FFAA09 /* TheDarkKnightRises.mp4 in Resources */,
-				01363EE116304E5D00FFAA09 /* TheLionKing.mp4 in Resources */,
 				01363F011630633E00FFAA09 /* Adidas.png in Resources */,
 				01363F021630633E00FFAA09 /* AngryBirds.png in Resources */,
 				01363F031630633E00FFAA09 /* CallOfDuty.png in Resources */,
@@ -2158,6 +2152,20 @@
 				017E2EEC1652BE7900CA27A0 /* ChannelCover32@2x.png in Resources */,
 				017E2EEF1653086E00CA27A0 /* ChannelCover33.png in Resources */,
 				017E2EF01653086E00CA27A0 /* ChannelCover33@2x.png in Resources */,
+				019E81D61653E1B100744A03 /* TheLionKing.mp4 in Resources */,
+				019E81D71653E1B100744A03 /* TheDarkKnightRises.mp4 in Resources */,
+				019E81D81653E1B100744A03 /* CallOfDuty.mp4 in Resources */,
+				019E81D91653E1B100744A03 /* OneDirection.mp4 in Resources */,
+				019E81DA1653E1B100744A03 /* NikeFootball.mp4 in Resources */,
+				019E81DB1653E1B100744A03 /* MonstersUniversity.mp4 in Resources */,
+				019E81DC1653E1B100744A03 /* Madagascar3.mp4 in Resources */,
+				019E81DD1653E1B100744A03 /* JustinBieber.mp4 in Resources */,
+				019E81DE1653E1B100744A03 /* HotelTransylvania.mp4 in Resources */,
+				019E81DF1653E1B100744A03 /* CarlyRaeJepsen.mp4 in Resources */,
+				019E81E01653E1B100744A03 /* Adidas.mp4 in Resources */,
+				019E81E11653E1B100744A03 /* AngryBirds.mp4 in Resources */,
+				019E81E41653F11700744A03 /* ChannelWallpaperGeneric.png in Resources */,
+				019E81E51653F11700744A03 /* ChannelWallpaperGeneric@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
