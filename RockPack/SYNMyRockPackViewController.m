@@ -141,10 +141,6 @@
                                           withOffset: selection.offset];
     cell.imageView.image = image;
     
-//    NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", selection.index];
-//    UIImage *image = [UIImage imageNamed: imageName];
-//    cell.imageView.image = image;
-    
     return cell;
 }
 

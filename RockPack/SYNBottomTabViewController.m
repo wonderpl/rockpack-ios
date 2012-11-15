@@ -14,7 +14,6 @@
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
 #import "SYNMyRockPackViewController.h"
-#import "SYNOldWallPackTopTabViewController.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "UIFont+SYNFont.h"
 #import <AVFoundation/AVFoundation.h>

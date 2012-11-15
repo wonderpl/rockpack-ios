@@ -152,7 +152,6 @@
 		01677EBC16554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB316554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png */; };
 		01677EBD16554C5800B1B1D8 /* PanelMainTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB416554C5800B1B1D8 /* PanelMainTitle.png */; };
 		01677EBE16554C5800B1B1D8 /* PanelMainTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB516554C5800B1B1D8 /* PanelMainTitle@2x.png */; };
-		01677EBF16554C5800B1B1D8 /* PanelRockieTalkie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB616554C5800B1B1D8 /* PanelRockieTalkie@2x.png */; };
 		01677EC016554C5800B1B1D8 /* PanelWallpackTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB716554C5800B1B1D8 /* PanelWallpackTitle.png */; };
 		01677EC116554C5800B1B1D8 /* PanelWallpackTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB816554C5800B1B1D8 /* PanelWallpackTitle@2x.png */; };
 		01677EDA16554C7700B1B1D8 /* TabChannels.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EC216554C7700B1B1D8 /* TabChannels.png */; };
@@ -183,7 +182,6 @@
 		01677EF916554C9D00B1B1D8 /* BackgroundDiscovery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */; };
 		01677EFA16554C9D00B1B1D8 /* BackgroundFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */; };
 		01677EFB16554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF516554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png */; };
-		01677EFC16554C9D00B1B1D8 /* BackgroundWallPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF616554C9D00B1B1D8 /* BackgroundWallPack@2x.png */; };
 		01677EFD16554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF716554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png */; };
 		01677F0616554CC700B1B1D8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EFE16554CC700B1B1D8 /* Icon-72.png */; };
 		01677F0716554CC700B1B1D8 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EFF16554CC700B1B1D8 /* Icon-72@2x.png */; };
@@ -218,8 +216,6 @@
 		0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockPackViewController.xib */; };
 		0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198254C162A204A00216900 /* SYNFriendsViewController.m */; };
 		0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198254D162A204A00216900 /* SYNFriendsViewController.xib */; };
-		0198255C162ADE1200216900 /* SYNOldWallPackTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198255A162ADE1100216900 /* SYNOldWallPackTopTabViewController.m */; };
-		0198255D162ADE1200216900 /* SYNOldWallPackTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198255B162ADE1100216900 /* SYNOldWallPackTopTabViewController.xib */; };
 		01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */; };
 		01982576162AFB9700216900 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01982575162AFB9600216900 /* QuartzCore.framework */; };
 		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
@@ -386,18 +382,6 @@
 		019E8333165405E500744A03 /* Avatar8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E830C165405E500744A03 /* Avatar8@2x.png */; };
 		019E8334165405E500744A03 /* Avatar9.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E830D165405E500744A03 /* Avatar9.png */; };
 		019E8335165405E500744A03 /* Avatar9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E830E165405E500744A03 /* Avatar9@2x.png */; };
-		019E8336165405E500744A03 /* Avatar10.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E830F165405E500744A03 /* Avatar10.png */; };
-		019E8337165405E500744A03 /* Avatar10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8310165405E500744A03 /* Avatar10@2x.png */; };
-		019E8338165405E500744A03 /* Avatar11.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8311165405E500744A03 /* Avatar11.png */; };
-		019E8339165405E500744A03 /* Avatar11@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8312165405E500744A03 /* Avatar11@2x.png */; };
-		019E833A165405E500744A03 /* Avatar12.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8313165405E500744A03 /* Avatar12.png */; };
-		019E833B165405E500744A03 /* Avatar12@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8314165405E500744A03 /* Avatar12@2x.png */; };
-		019E833C165405E500744A03 /* Avatar13.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8315165405E500744A03 /* Avatar13.png */; };
-		019E833D165405E500744A03 /* Avatar13@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8316165405E500744A03 /* Avatar13@2x.png */; };
-		019E833E165405E500744A03 /* Avatar14.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8317165405E500744A03 /* Avatar14.png */; };
-		019E833F165405E500744A03 /* Avatar14@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8318165405E500744A03 /* Avatar14@2x.png */; };
-		019E8340165405E500744A03 /* Avatar15.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E8319165405E500744A03 /* Avatar15.png */; };
-		019E8341165405E500744A03 /* Avatar15@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E831A165405E500744A03 /* Avatar15@2x.png */; };
 		019E8342165405E500744A03 /* Avatar16.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E831B165405E500744A03 /* Avatar16.png */; };
 		019E8343165405E500744A03 /* Avatar16@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E831C165405E500744A03 /* Avatar16@2x.png */; };
 		019E8344165405E500744A03 /* Avatar17.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E831D165405E500744A03 /* Avatar17.png */; };
@@ -598,7 +582,6 @@
 		01677EB316554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelImageWellHighlighted@2x.png"; path = "Assets/Images/PanelImageWellHighlighted@2x.png"; sourceTree = "<group>"; };
 		01677EB416554C5800B1B1D8 /* PanelMainTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelMainTitle.png; path = Assets/Images/PanelMainTitle.png; sourceTree = "<group>"; };
 		01677EB516554C5800B1B1D8 /* PanelMainTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelMainTitle@2x.png"; path = "Assets/Images/PanelMainTitle@2x.png"; sourceTree = "<group>"; };
-		01677EB616554C5800B1B1D8 /* PanelRockieTalkie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelRockieTalkie@2x.png"; path = "Assets/Images/PanelRockieTalkie@2x.png"; sourceTree = "<group>"; };
 		01677EB716554C5800B1B1D8 /* PanelWallpackTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelWallpackTitle.png; path = Assets/Images/PanelWallpackTitle.png; sourceTree = "<group>"; };
 		01677EB816554C5800B1B1D8 /* PanelWallpackTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelWallpackTitle@2x.png"; path = "Assets/Images/PanelWallpackTitle@2x.png"; sourceTree = "<group>"; };
 		01677EC216554C7700B1B1D8 /* TabChannels.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TabChannels.png; path = Assets/Images/TabChannels.png; sourceTree = "<group>"; };
@@ -629,7 +612,6 @@
 		01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundDiscovery@2x.png"; path = "Assets/Images/BackgroundDiscovery@2x.png"; sourceTree = "<group>"; };
 		01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundFriends@2x.png"; path = "Assets/Images/BackgroundFriends@2x.png"; sourceTree = "<group>"; };
 		01677EF516554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundMyRockpack@2x.png"; path = "Assets/Images/BackgroundMyRockpack@2x.png"; sourceTree = "<group>"; };
-		01677EF616554C9D00B1B1D8 /* BackgroundWallPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundWallPack@2x.png"; path = "Assets/Images/BackgroundWallPack@2x.png"; sourceTree = "<group>"; };
 		01677EF716554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundWallpackOverlay@2x.png"; path = "Assets/Images/BackgroundWallpackOverlay@2x.png"; sourceTree = "<group>"; };
 		01677EFE16554CC700B1B1D8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Assets/Images/Icon-72.png"; sourceTree = "<group>"; };
 		01677EFF16554CC700B1B1D8 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "Assets/Images/Icon-72@2x.png"; sourceTree = "<group>"; };
@@ -682,9 +664,6 @@
 		0198254B162A204A00216900 /* SYNFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsViewController.h; sourceTree = "<group>"; };
 		0198254C162A204A00216900 /* SYNFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsViewController.m; sourceTree = "<group>"; };
 		0198254D162A204A00216900 /* SYNFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsViewController.xib; sourceTree = "<group>"; };
-		01982559162ADE1100216900 /* SYNOldWallPackTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOldWallPackTopTabViewController.h; sourceTree = "<group>"; };
-		0198255A162ADE1100216900 /* SYNOldWallPackTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOldWallPackTopTabViewController.m; sourceTree = "<group>"; };
-		0198255B162ADE1100216900 /* SYNOldWallPackTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOldWallPackTopTabViewController.xib; sourceTree = "<group>"; };
 		01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractTopTabViewController.h; sourceTree = "<group>"; };
 		01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractTopTabViewController.m; sourceTree = "<group>"; };
 		01982575162AFB9600216900 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -856,18 +835,6 @@
 		019E830C165405E500744A03 /* Avatar8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar8@2x.png"; path = "Assets/Images/Avatar8@2x.png"; sourceTree = "<group>"; };
 		019E830D165405E500744A03 /* Avatar9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar9.png; path = Assets/Images/Avatar9.png; sourceTree = "<group>"; };
 		019E830E165405E500744A03 /* Avatar9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar9@2x.png"; path = "Assets/Images/Avatar9@2x.png"; sourceTree = "<group>"; };
-		019E830F165405E500744A03 /* Avatar10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar10.png; path = Assets/Images/Avatar10.png; sourceTree = "<group>"; };
-		019E8310165405E500744A03 /* Avatar10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar10@2x.png"; path = "Assets/Images/Avatar10@2x.png"; sourceTree = "<group>"; };
-		019E8311165405E500744A03 /* Avatar11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar11.png; path = Assets/Images/Avatar11.png; sourceTree = "<group>"; };
-		019E8312165405E500744A03 /* Avatar11@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar11@2x.png"; path = "Assets/Images/Avatar11@2x.png"; sourceTree = "<group>"; };
-		019E8313165405E500744A03 /* Avatar12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar12.png; path = Assets/Images/Avatar12.png; sourceTree = "<group>"; };
-		019E8314165405E500744A03 /* Avatar12@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar12@2x.png"; path = "Assets/Images/Avatar12@2x.png"; sourceTree = "<group>"; };
-		019E8315165405E500744A03 /* Avatar13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar13.png; path = Assets/Images/Avatar13.png; sourceTree = "<group>"; };
-		019E8316165405E500744A03 /* Avatar13@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar13@2x.png"; path = "Assets/Images/Avatar13@2x.png"; sourceTree = "<group>"; };
-		019E8317165405E500744A03 /* Avatar14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar14.png; path = Assets/Images/Avatar14.png; sourceTree = "<group>"; };
-		019E8318165405E500744A03 /* Avatar14@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar14@2x.png"; path = "Assets/Images/Avatar14@2x.png"; sourceTree = "<group>"; };
-		019E8319165405E500744A03 /* Avatar15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar15.png; path = Assets/Images/Avatar15.png; sourceTree = "<group>"; };
-		019E831A165405E500744A03 /* Avatar15@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar15@2x.png"; path = "Assets/Images/Avatar15@2x.png"; sourceTree = "<group>"; };
 		019E831B165405E500744A03 /* Avatar16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar16.png; path = Assets/Images/Avatar16.png; sourceTree = "<group>"; };
 		019E831C165405E500744A03 /* Avatar16@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar16@2x.png"; path = "Assets/Images/Avatar16@2x.png"; sourceTree = "<group>"; };
 		019E831D165405E500744A03 /* Avatar17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar17.png; path = Assets/Images/Avatar17.png; sourceTree = "<group>"; };
@@ -1340,18 +1307,6 @@
 				019E830C165405E500744A03 /* Avatar8@2x.png */,
 				019E830D165405E500744A03 /* Avatar9.png */,
 				019E830E165405E500744A03 /* Avatar9@2x.png */,
-				019E830F165405E500744A03 /* Avatar10.png */,
-				019E8310165405E500744A03 /* Avatar10@2x.png */,
-				019E8311165405E500744A03 /* Avatar11.png */,
-				019E8312165405E500744A03 /* Avatar11@2x.png */,
-				019E8313165405E500744A03 /* Avatar12.png */,
-				019E8314165405E500744A03 /* Avatar12@2x.png */,
-				019E8315165405E500744A03 /* Avatar13.png */,
-				019E8316165405E500744A03 /* Avatar13@2x.png */,
-				019E8317165405E500744A03 /* Avatar14.png */,
-				019E8318165405E500744A03 /* Avatar14@2x.png */,
-				019E8319165405E500744A03 /* Avatar15.png */,
-				019E831A165405E500744A03 /* Avatar15@2x.png */,
 				019E831B165405E500744A03 /* Avatar16.png */,
 				019E831C165405E500744A03 /* Avatar16@2x.png */,
 				019E831D165405E500744A03 /* Avatar17.png */,
@@ -1592,7 +1547,6 @@
 				01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */,
 				01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */,
 				01677EF516554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png */,
-				01677EF616554C9D00B1B1D8 /* BackgroundWallPack@2x.png */,
 				01677EF716554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png */,
 			);
 			name = Backgrounds;
@@ -1646,7 +1600,6 @@
 				01677EB316554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png */,
 				01677EB416554C5800B1B1D8 /* PanelMainTitle.png */,
 				01677EB516554C5800B1B1D8 /* PanelMainTitle@2x.png */,
-				01677EB616554C5800B1B1D8 /* PanelRockieTalkie@2x.png */,
 				01677EB716554C5800B1B1D8 /* PanelWallpackTitle.png */,
 				01677EB816554C5800B1B1D8 /* PanelWallpackTitle@2x.png */,
 			);
@@ -1656,9 +1609,6 @@
 		0198255E162ADE2100216900 /* Wallpack */ = {
 			isa = PBXGroup;
 			children = (
-				01982559162ADE1100216900 /* SYNOldWallPackTopTabViewController.h */,
-				0198255A162ADE1100216900 /* SYNOldWallPackTopTabViewController.m */,
-				0198255B162ADE1100216900 /* SYNOldWallPackTopTabViewController.xib */,
 				0106E818165104CE00DC5173 /* SYNWallPackTopTabViewController.h */,
 				0106E819165104CE00DC5173 /* SYNWallPackTopTabViewController.m */,
 				0106E81A165104CE00DC5173 /* SYNWallPackTopTabViewController.xib */,
@@ -1920,7 +1870,6 @@
 				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
 				0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
-				0198255D162ADE1200216900 /* SYNOldWallPackTopTabViewController.xib in Resources */,
 				012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */,
@@ -2089,18 +2038,6 @@
 				019E8333165405E500744A03 /* Avatar8@2x.png in Resources */,
 				019E8334165405E500744A03 /* Avatar9.png in Resources */,
 				019E8335165405E500744A03 /* Avatar9@2x.png in Resources */,
-				019E8336165405E500744A03 /* Avatar10.png in Resources */,
-				019E8337165405E500744A03 /* Avatar10@2x.png in Resources */,
-				019E8338165405E500744A03 /* Avatar11.png in Resources */,
-				019E8339165405E500744A03 /* Avatar11@2x.png in Resources */,
-				019E833A165405E500744A03 /* Avatar12.png in Resources */,
-				019E833B165405E500744A03 /* Avatar12@2x.png in Resources */,
-				019E833C165405E500744A03 /* Avatar13.png in Resources */,
-				019E833D165405E500744A03 /* Avatar13@2x.png in Resources */,
-				019E833E165405E500744A03 /* Avatar14.png in Resources */,
-				019E833F165405E500744A03 /* Avatar14@2x.png in Resources */,
-				019E8340165405E500744A03 /* Avatar15.png in Resources */,
-				019E8341165405E500744A03 /* Avatar15@2x.png in Resources */,
 				019E8342165405E500744A03 /* Avatar16.png in Resources */,
 				019E8343165405E500744A03 /* Avatar16@2x.png in Resources */,
 				019E8344165405E500744A03 /* Avatar17.png in Resources */,
@@ -2232,7 +2169,6 @@
 				01677EBC16554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png in Resources */,
 				01677EBD16554C5800B1B1D8 /* PanelMainTitle.png in Resources */,
 				01677EBE16554C5800B1B1D8 /* PanelMainTitle@2x.png in Resources */,
-				01677EBF16554C5800B1B1D8 /* PanelRockieTalkie@2x.png in Resources */,
 				01677EC016554C5800B1B1D8 /* PanelWallpackTitle.png in Resources */,
 				01677EC116554C5800B1B1D8 /* PanelWallpackTitle@2x.png in Resources */,
 				01677EDA16554C7700B1B1D8 /* TabChannels.png in Resources */,
@@ -2263,7 +2199,6 @@
 				01677EF916554C9D00B1B1D8 /* BackgroundDiscovery@2x.png in Resources */,
 				01677EFA16554C9D00B1B1D8 /* BackgroundFriends@2x.png in Resources */,
 				01677EFB16554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png in Resources */,
-				01677EFC16554C9D00B1B1D8 /* BackgroundWallPack@2x.png in Resources */,
 				01677EFD16554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png in Resources */,
 				01677F0616554CC700B1B1D8 /* Icon-72.png in Resources */,
 				01677F0716554CC700B1B1D8 /* Icon-72@2x.png in Resources */,
@@ -2294,7 +2229,6 @@
 				0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */,
 				01982549162A203600216900 /* SYNMyRockPackViewController.m in Sources */,
 				0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */,
-				0198255C162ADE1200216900 /* SYNOldWallPackTopTabViewController.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
 				0198258C162B615D00216900 /* SYNddd.m in Sources */,

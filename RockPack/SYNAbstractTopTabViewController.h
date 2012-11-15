@@ -13,7 +13,7 @@
 
 @property (nonatomic, strong) SYNTabImageView *topTabView;
 
-- (void) setViewControllers: (NSArray *) newViewControllers;
-- (void) setSelectedViewController: (UIViewController *) newSelectedViewController;
+//- (void) setViewControllers: (NSArray *) newViewControllers;
+//- (void) setSelectedViewController: (UIViewController *) newSelectedViewController;
 - (void) highlightTab: (int) tabIndex;
 @end
