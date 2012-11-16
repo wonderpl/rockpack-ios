@@ -15,6 +15,7 @@
 	if ((self = [super init]))
     {
 		self.captureSession = [[AVCaptureSession alloc] init];
+
 	}
     
 	return self;
@@ -25,7 +26,7 @@
 {
 	self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession: [self captureSession]];
 	self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    self.previewLayer.orientation =  AVCaptureVideoOrientationLandscapeRight;
+    self.previewLayer.connection.videoOrientation= UIInterfaceOrientationLandscapeRight;
     
 }
 
