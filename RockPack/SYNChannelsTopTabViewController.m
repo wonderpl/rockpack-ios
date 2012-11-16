@@ -369,7 +369,7 @@
         }
         
         // we dragged it, so let's update the coordinates of the dragged view
-        [self.pinchedView setTransform: CGAffineTransformMakeScale(scale, scale)];
+        self.pinchedView.transform = CGAffineTransformMakeScale(scale, scale);
     }
     else if (sender.state == UIGestureRecognizerStateEnded)
     {
@@ -380,7 +380,8 @@
                          animations: ^
          {
              // Contract thumbnail view
-             self.pinchedView.frame = self.thumbnailView.frame;
+//             self.pinchedView.frame = self.thumbnailView.frame;
+             self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
              self.pinchedView.alpha = 0.0f;
              
          }
