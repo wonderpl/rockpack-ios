@@ -215,7 +215,6 @@
     if (sender.state == UIGestureRecognizerStateBegan)
     {
         // figure out which item in the table was selected
-        
         NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: [sender locationInView: self.thumbnailView]];
         
         if (!indexPath)
@@ -321,7 +320,6 @@
 {
     [self.thumbnailView reloadData];
     [self.imageWellView reloadData];
-    
 }
 
 
@@ -933,7 +931,6 @@
 
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
-//    NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(100.0f, cv.contentOffset.y + 250.0f)];
     NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(cv.contentOffset.x + 250.0f, 100.0f)];
 
     self.selectionDB.wallpackIndex = indexPath.row % 10;
@@ -946,11 +943,7 @@
     
     [self.channelNameField resignFirstResponder];
     [self clearImageWell];
-    
-    
-//	[[NSNotificationCenter defaultCenter] postNotificationName: @"SelectMyRockPackTab"
-//					             									                object: nil];
-    
+
     return YES;
 }
 

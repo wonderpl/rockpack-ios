@@ -12,7 +12,6 @@
 
 @interface SYNAbstractTopTabViewController ()
 
-@property (nonatomic, strong) UIImageView *topTabHighlightedView;
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 

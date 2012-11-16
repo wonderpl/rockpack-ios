@@ -32,6 +32,8 @@
 @property (nonatomic, strong) IBOutlet UIView *drillDownView;
 @property (nonatomic, strong) SYNChannelsDB *channelsDB;
 @property (nonatomic, strong) SYNVideoDB *videoDB;
+@property (nonatomic, strong) UIImageView *pinchedView;
+@property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 
 @end
 
@@ -66,6 +68,11 @@
     self.cute.font = [UIFont rockpackFontOfSize: 15.0f];
     self.strength.font = [UIFont rockpackFontOfSize: 15.0f];
     self.superPowers.font = [UIFont rockpackFontOfSize: 15.0f];
+
+    UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
+                                                                                             action: @selector(handlePinchGesture:)];
+    
+    [self.view addGestureRecognizer: pinchOnChannelView];
 }
 
 
@@ -155,36 +162,47 @@
 {
     if (cv == self.thumbnailView)
     {
-        self.fullTitle.text = [NSString stringWithFormat: @"%@ - %@", [self.channelsDB titleForIndex: indexPath.row withOffset: self.currentOffset], [self.channelsDB subtitleForIndex: indexPath.row withOffset: self.currentOffset]];
-        
-        self.wallpaper.image = [self.channelsDB wallpaperForIndex: indexPath.row
-                                                       withOffset: self.currentOffset];
-        
-        self.biogTitle.text = [self.channelsDB titleForIndex: indexPath.row
-                                                  withOffset: self.currentOffset];
-        
-        self.biogBody.text = [self.channelsDB biogForIndex: indexPath.row
-                                                    withOffset: self.currentOffset];
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Contract thumbnail view
-             self.drillDownView.alpha = 1.0f;
-             self.thumbnailView.alpha = 0.0f;
-             self.topTabView.alpha = 0.0f;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-         }];
+        [self transitionToItemAtIndexPath: indexPath];
     }
     else
     {
         
     }
 }
+
+
+- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    self.fullTitle.text = [NSString stringWithFormat: @"%@ - %@", [self.channelsDB titleForIndex: indexPath.row withOffset: self.currentOffset], [self.channelsDB subtitleForIndex: indexPath.row withOffset: self.currentOffset]];
+    
+    self.wallpaper.image = [self.channelsDB wallpaperForIndex: indexPath.row
+                                                   withOffset: self.currentOffset];
+    
+    self.biogTitle.text = [self.channelsDB titleForIndex: indexPath.row
+                                              withOffset: self.currentOffset];
+    
+    self.biogBody.text = [self.channelsDB biogForIndex: indexPath.row
+                                            withOffset: self.currentOffset];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.drillDownView.alpha = 1.0f;
+         self.thumbnailView.alpha = 0.0f;
+         self.topTabView.alpha = 0.0f;
+         self.topTabHighlightedView.alpha = 0.0f;
+         self.pinchedView.alpha = 0.0f;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         [self.pinchedView removeFromSuperview];
+     }];
+}
+
 
 // Buttons activated from scrolling list of thumbnails
 
@@ -287,6 +305,7 @@
          self.drillDownView.alpha = 0.0f;
          self.thumbnailView.alpha = 1.0f;
          self.topTabView.alpha = 1.0f;
+         self.topTabHighlightedView.alpha = 1.0f;
          
      }
                      completion: ^(BOOL finished)
@@ -294,5 +313,86 @@
      }];
 }
 
+- (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
+{
+    // Bail if not a two finger pinch
+//    if ([sender numberOfTouches] < 2)
+//    {
+//        return;
+//    }
+    
+    if (sender.state == UIGestureRecognizerStateBegan)
+    {
+        NSLog (@"UIGestureRecognizerStateBegan");
+        // figure out which item in the table was selected
+        NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: [sender locationInView: self.thumbnailView]];
+        
+        if (!indexPath)
+        {
+            return;
+        }
+        
+        self.pinchedIndexPath = indexPath;
+        
+        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+        
+        // Get the various frames we need to calculate the actual position
+        CGRect imageViewFrame = channelCell.imageView.frame;
+        CGRect viewFrame = channelCell.superview.frame;
+        CGRect cellFrame = channelCell.frame;
+        
+        CGPoint offset = self.thumbnailView.contentOffset;
+        
+        // Now add them together to get the real pos in the top view
+        imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
+        imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
+        
+        // Now create a new UIImageView to overlay
+        UIImage *cellImage = [self.channelsDB thumbnailForIndex: indexPath.row
+                                                     withOffset: self.currentOffset];
+        
+        self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
+        self.pinchedView.alpha = 0.7f;
+        self.pinchedView.image = cellImage;
+        
+        // now add the item to the view
+        [self.view addSubview: self.pinchedView];
+    }
+    else if (sender.state == UIGestureRecognizerStateChanged)
+    {
+        NSLog (@"UIGestureRecognizerStateChanged");
+        float scale = sender.scale;
+        
+        if (scale < 1.0)
+        {
+            return;
+        }
+        
+        // we dragged it, so let's update the coordinates of the dragged view
+        [self.pinchedView setTransform: CGAffineTransformMakeScale(scale, scale)];
+    }
+    else if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        NSLog (@"UIGestureRecognizerStateEnded");
+        [UIView animateWithDuration: 0.3f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Contract thumbnail view
+             self.pinchedView.frame = self.thumbnailView.frame;
+             self.pinchedView.alpha = 0.0f;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+             [self transitionToItemAtIndexPath: self.pinchedIndexPath];
+         }];
+    }
+    else if (sender.state == UIGestureRecognizerStateCancelled)
+    {
+        NSLog (@"UIGestureRecognizerStateCancelled");
+    }
+}
 
 @end
