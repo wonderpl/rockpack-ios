@@ -16,6 +16,7 @@
 @interface SYNChannelsTopTabViewController ()
 
 @property (nonatomic, assign) int currentIndex;
+@property (nonatomic, assign, getter = isTopLevel) BOOL topLevel;
 @property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView2;
@@ -73,6 +74,8 @@
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
+    
+    self.topLevel = TRUE;
 }
 
 
@@ -195,11 +198,14 @@
          self.topTabView.alpha = 0.0f;
          self.topTabHighlightedView.alpha = 0.0f;
          self.pinchedView.alpha = 0.0f;
+         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
+         self.pinchedView.alpha = 0.0f;
          
      }
                      completion: ^(BOOL finished)
      {
          [self.pinchedView removeFromSuperview];
+         self.topLevel = FALSE;
      }];
 }
 
@@ -296,6 +302,11 @@
 
 - (IBAction) userTouchedBackButton: (id) sender
 {
+    [self transitionBackToTopLevel];
+}
+
+- (void) transitionBackToTopLevel
+{
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -310,6 +321,7 @@
      }
                      completion: ^(BOOL finished)
      {
+         self.topLevel = TRUE;
      }];
 }
 
@@ -332,67 +344,73 @@
             return;
         }
         
-        self.pinchedIndexPath = indexPath;
-        
-        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
-        
-        // Get the various frames we need to calculate the actual position
-        CGRect imageViewFrame = channelCell.imageView.frame;
-        CGRect viewFrame = channelCell.superview.frame;
-        CGRect cellFrame = channelCell.frame;
-        
-        CGPoint offset = self.thumbnailView.contentOffset;
-        
-        // Now add them together to get the real pos in the top view
-        imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
-        imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
-        
-        // Now create a new UIImageView to overlay
-        UIImage *cellImage = [self.channelsDB thumbnailForIndex: indexPath.row
-                                                     withOffset: self.currentOffset];
-        
-        self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
-        self.pinchedView.alpha = 0.7f;
-        self.pinchedView.image = cellImage;
-        
-        // now add the item to the view
-        [self.view addSubview: self.pinchedView];
+        if (self.isTopLevel == TRUE)
+        {
+            self.pinchedIndexPath = indexPath;
+            
+            SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+            
+            // Get the various frames we need to calculate the actual position
+            CGRect imageViewFrame = channelCell.imageView.frame;
+            CGRect viewFrame = channelCell.superview.frame;
+            CGRect cellFrame = channelCell.frame;
+            
+            CGPoint offset = self.thumbnailView.contentOffset;
+            
+            // Now add them together to get the real pos in the top view
+            imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
+            imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
+            
+            // Now create a new UIImageView to overlay
+            UIImage *cellImage = [self.channelsDB thumbnailForIndex: indexPath.row
+                                                         withOffset: self.currentOffset];
+            
+            self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
+            self.pinchedView.alpha = 0.7f;
+            self.pinchedView.image = cellImage;
+            
+            // now add the item to the view
+            [self.view addSubview: self.pinchedView];
+        }
+
     }
     else if (sender.state == UIGestureRecognizerStateChanged)
     {
         NSLog (@"UIGestureRecognizerStateChanged");
         float scale = sender.scale;
         
-        if (scale < 1.0)
+        if (self.isTopLevel == TRUE)
         {
-            return;
+            if (scale < 1.0)
+            {
+                return;
+            }
+            else
+            {
+                // we zoomed it, so let's update the coordinates of the dragged view
+                self.pinchedView.transform = CGAffineTransformMakeScale(scale, scale);
+            }
         }
-        
-        // we dragged it, so let's update the coordinates of the dragged view
-        self.pinchedView.transform = CGAffineTransformMakeScale(scale, scale);
+        else
+        {
+            if (scale < 1.0)
+            {
+                [self transitionBackToTopLevel];
+            }
+        }
     }
     else if (sender.state == UIGestureRecognizerStateEnded)
     {
         NSLog (@"UIGestureRecognizerStateEnded");
-        [UIView animateWithDuration: 0.3f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Contract thumbnail view
-//             self.pinchedView.frame = self.thumbnailView.frame;
-             self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
-             self.pinchedView.alpha = 0.0f;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-             [self transitionToItemAtIndexPath: self.pinchedIndexPath];
-         }];
+        if (self.isTopLevel == TRUE)
+        {
+            [self transitionToItemAtIndexPath: self.pinchedIndexPath];
+        }
     }
     else if (sender.state == UIGestureRecognizerStateCancelled)
     {
         NSLog (@"UIGestureRecognizerStateCancelled");
+        [self.pinchedView removeFromSuperview];
     }
 }
 

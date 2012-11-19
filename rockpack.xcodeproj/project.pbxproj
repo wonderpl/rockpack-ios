@@ -30,6 +30,7 @@
 		012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */; };
 		012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
+		012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA3F165AF1E400A60980 /* SYNSwitch.m */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */; };
@@ -451,6 +452,8 @@
 		012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDiscoverTopTabViewController.m; sourceTree = "<group>"; };
 		012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNDiscoverTopTabViewController.xib; sourceTree = "<group>"; };
 		0126331E162E2A060009FF9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		012ECA3E165AF1E400A60980 /* SYNSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSwitch.h; sourceTree = "<group>"; };
+		012ECA3F165AF1E400A60980 /* SYNSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSwitch.m; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
@@ -1456,6 +1459,8 @@
 		019824E31629CADE00216900 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				012ECA3E165AF1E400A60980 /* SYNSwitch.h */,
+				012ECA3F165AF1E400A60980 /* SYNSwitch.m */,
 				01982587162B605A00216900 /* SYNTabImageView.h */,
 				01982588162B605A00216900 /* SYNTabImageView.m */,
 				01363F4F1631789F00FFAA09 /* SYNMovableView.h */,
@@ -2267,6 +2272,7 @@
 				0170717916554E9B00A3C7C4 /* MKNetworkEngine.m in Sources */,
 				0170717A16554E9B00A3C7C4 /* MKNetworkOperation.m in Sources */,
 				0170717B16554E9B00A3C7C4 /* Reachability.m in Sources */,
+				012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2396,7 +2402,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Synchromation Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Rockpack Ltd.";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
@@ -2405,7 +2411,7 @@
 					"\"$(SRCROOT)/RockPack\"",
 				);
 				PRODUCT_NAME = rockpack;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F69ED49-F8A7-47D0-A2DF-3840624D4641";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F86CC11B-1736-4582-99BF-0CFFA3C673C9";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;
