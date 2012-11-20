@@ -12,4 +12,6 @@
                                                                               UICollectionViewDataSource,
                                                                               UIScrollViewDelegate>
 
+- (IBAction) userTouchedBackButton: (id) sender;
+
 @end

@@ -26,11 +26,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *fullTitle;
 @property (nonatomic, strong) IBOutlet UIImageView *wallpaper;
 @property (nonatomic, strong) IBOutlet UILabel *biogTitle;
-@property (nonatomic, strong) IBOutlet UILabel *coolFactor;
-@property (nonatomic, strong) IBOutlet UILabel *cute;
-@property (nonatomic, strong) IBOutlet UILabel *scary;
-@property (nonatomic, strong) IBOutlet UILabel *strength;
-@property (nonatomic, strong) IBOutlet UILabel *superPowers;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
 @property (nonatomic, strong) IBOutlet UIView *drillDownView;
 @property (nonatomic, strong) SYNChannelsDB *channelsDB;
@@ -66,11 +61,6 @@
     self.fullTitle.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.biogTitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
-    self.coolFactor.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.scary.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.cute.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.strength.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.superPowers.font = [UIFont rockpackFontOfSize: 15.0f];
 
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
