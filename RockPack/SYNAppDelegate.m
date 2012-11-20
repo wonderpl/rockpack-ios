@@ -24,7 +24,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
 	// Create a dictionary of defaults to add and register them (if they have not already been set)
-	NSDictionary *initDefaults = [NSDictionary dictionaryWithObjectsAndKeys: @(YES), kDownloadedVideoContentBool,
+	NSDictionary *initDefaults = [NSDictionary dictionaryWithObjectsAndKeys: @(NO), kDownloadedVideoContentBool,
                                                                              nil];
 	[defaults registerDefaults: initDefaults];
 

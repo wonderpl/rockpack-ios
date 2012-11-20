@@ -11,6 +11,7 @@
 #import "MKNetworkEngine.h"
 #import "SYNAppDelegate.h"
 #import "MBProgressHUD.h"
+#import "AppConstants.h"
 
 @interface SYNVideoDB () <MBProgressHUDDelegate>
 
@@ -171,66 +172,79 @@
 }
 
 - (void) downloadContentIfRequiredDisplayingHUDInView: (UIView *) view;
-{    
-    self.HUD = [[MBProgressHUD alloc] initWithView: view];
-	[view addSubview: self.HUD];
+{
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
-	self.HUD.delegate = self;
-	self.HUD.labelText = @"Downloading";
-    self.HUD.mode = MBProgressHUDModeAnnularDeterminate;
-    self.HUD.color = [UIColor colorWithRed: 25.0f/255.0f green: 82.0f/255.0f blue: 112.0f/255.0f alpha: 1.0f];
-    self.HUD.removeFromSuperViewOnHide = YES;
-    
-    [self.HUD show: YES];
-    
-    // Set up networking
-    self.downloadEngine = [[SYNVideoDownloadEngine alloc] initWithHostName: @"rockpack.discover.video.s3.amazonaws.com"
-                                                        customHeaderFields: nil];
-    
-    self.progressArray = [[NSMutableArray alloc] initWithCapacity: self.thumbnailDetailsArray.count];
-    
-    
-            // Initialise percentage array
-    for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+	// Check to see if we hace already successfully downloaded the content
+	if ([userDefaults boolForKey: kDownloadedVideoContentBool]  == FALSE)
     {
-        [self.progressArray addObject: [NSNumber numberWithDouble: 0.0f]];
-    }
-    
-    __block int numberDownloaded = 0;
-         
-    for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
-    {        
-        NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: videoFileIndex];
-        NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
+        self.HUD = [[MBProgressHUD alloc] initWithView: view];
+        [view addSubview: self.HUD];
         
-        NSString *downloadPath = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
+        self.HUD.delegate = self;
+        self.HUD.labelText = @"Downloading";
+        self.HUD.mode = MBProgressHUDModeAnnularDeterminate;
+        self.HUD.color = [UIColor colorWithRed: 25.0f/255.0f green: 82.0f/255.0f blue: 112.0f/255.0f alpha: 1.0f];
+        self.HUD.removeFromSuperViewOnHide = YES;
         
-        self.downloadOperation = [self.downloadEngine downloadFileFrom: [NSString stringWithFormat: @"%@.mp4", videoURLString, nil]
-                                                                toFile: downloadPath];
+        [self.HUD show: YES];
         
-        [self.downloadOperation onDownloadProgressChanged: ^(double progress)
-         {
-             [self.progressArray replaceObjectAtIndex: videoFileIndex
-                                           withObject: [NSNumber numberWithDouble: progress]];
+        // Set up networking
+        self.downloadEngine = [[SYNVideoDownloadEngine alloc] initWithHostName: @"rockpack.discover.video.s3.amazonaws.com"
+                                                            customHeaderFields: nil];
+        
+        self.progressArray = [[NSMutableArray alloc] initWithCapacity: self.thumbnailDetailsArray.count];
+        
+        
+                // Initialise percentage array
+        for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+        {
+            [self.progressArray addObject: [NSNumber numberWithDouble: 0.0f]];
+        }
+        
+        __block int numberDownloaded = 0;
              
-             [self updateProgressIndicator];
+        for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+        {        
+            NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: videoFileIndex];
+            NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
+            
+            NSString *downloadPath = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
+            
+            self.downloadOperation = [self.downloadEngine downloadFileFrom: [NSString stringWithFormat: @"%@.mp4", videoURLString, nil]
+                                                                    toFile: downloadPath];
+            
+            [self.downloadOperation onDownloadProgressChanged: ^(double progress)
+             {
+                 [self.progressArray replaceObjectAtIndex: videoFileIndex
+                                               withObject: [NSNumber numberWithDouble: progress]];
+                 
+                 [self updateProgressIndicator];
 
-             DLog(@"%.2f", progress*100.0);
-         }];
-        
-        [self.downloadOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
-         {
-             if (++numberDownloaded == self.thumbnailDetailsArray.count)
+                 DLog(@"%.2f", progress*100.0);
+             }];
+            
+            [self.downloadOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
+             {
+                 if (++numberDownloaded == self.thumbnailDetailsArray.count)
+                 {
+                     [self.HUD hide: NO];
+                     
+                     // Indicate that we don't need to do this again
+                     [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool: TRUE]
+                                                               forKey: kDownloadedVideoContentBool];
+                     
+                     [[NSUserDefaults standardUserDefaults] synchronize];
+                 }
+             }
+             errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
              {
                  [self.HUD hide: NO];
-             }
-         }
-         errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
-         {
-             [self.HUD hide: NO];
-             DLog(@"%@", error);
-             [UIAlertView showWithError: error];
-         }];
+                 DLog(@"%@", error);
+                 [UIAlertView showWithError: error];
+             }];
+        }
     }
 }
 

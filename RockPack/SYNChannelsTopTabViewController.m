@@ -186,8 +186,8 @@
     self.biogTitle.text = [self.channelsDB titleForIndex: indexPath.row
                                               withOffset: self.currentOffset];
     
-    self.biogBody.text = [self.channelsDB biogForIndex: indexPath.row
-                                            withOffset: self.currentOffset];
+    self.biogBody.text = [NSString stringWithFormat: @"%@\n\n\n", [self.channelsDB biogForIndex: indexPath.row
+                                            withOffset: self.currentOffset]];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
