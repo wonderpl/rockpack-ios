@@ -171,6 +171,9 @@
     return self;
 }
 
+
+// Attempt to download all of the videos into the /Documents directory
+
 - (void) downloadContentIfRequiredDisplayingHUDInView: (UIView *) view;
 {
     
@@ -248,6 +251,7 @@
     }
 }
 
+
 - (void) updateProgressIndicator
 {
     double cumulativeProgress = 0.0f;
@@ -262,35 +266,17 @@
 }
 
 
-// Video URL accessor
-
-//- (NSURL *) videoURLForIndex: (int) index
-//                  withOffset: (int) offset
-//{
-//    NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-//    NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
-//    
-//    NSURL *videoURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource: videoURLString
-//                                                                              ofType: @"mp4"] isDirectory: NO];
-//    
-//    return videoURL;
-//}
-
 - (NSURL *) videoURLForIndex: (int) index
                   withOffset: (int) offset
 {
     NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
     NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
     
-//    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent: @"/Documents/HotelTransylvania.mp4"];
     NSString *path = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
     
     NSURL *videoURL = [NSURL fileURLWithPath: path];
     
     return videoURL;
 }
-
-;
-//    UIImage * result = [UIImage imageWithContentsOfFile:path];
 
 @end

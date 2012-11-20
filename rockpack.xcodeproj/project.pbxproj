@@ -184,8 +184,6 @@
 		01677EF816554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF216554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png */; };
 		01677EF916554C9D00B1B1D8 /* BackgroundDiscovery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */; };
 		01677EFA16554C9D00B1B1D8 /* BackgroundFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */; };
-		01677EFB16554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF516554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png */; };
-		01677EFD16554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF716554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png */; };
 		01677F0616554CC700B1B1D8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EFE16554CC700B1B1D8 /* Icon-72.png */; };
 		01677F0716554CC700B1B1D8 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EFF16554CC700B1B1D8 /* Icon-72@2x.png */; };
 		01677F0816554CC700B1B1D8 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677F0016554CC700B1B1D8 /* Icon-Small-50.png */; };
@@ -608,8 +606,6 @@
 		01677EF216554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundChooseChannel@2x.png"; path = "Assets/Images/BackgroundChooseChannel@2x.png"; sourceTree = "<group>"; };
 		01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundDiscovery@2x.png"; path = "Assets/Images/BackgroundDiscovery@2x.png"; sourceTree = "<group>"; };
 		01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundFriends@2x.png"; path = "Assets/Images/BackgroundFriends@2x.png"; sourceTree = "<group>"; };
-		01677EF516554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundMyRockpack@2x.png"; path = "Assets/Images/BackgroundMyRockpack@2x.png"; sourceTree = "<group>"; };
-		01677EF716554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundWallpackOverlay@2x.png"; path = "Assets/Images/BackgroundWallpackOverlay@2x.png"; sourceTree = "<group>"; };
 		01677EFE16554CC700B1B1D8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Assets/Images/Icon-72.png"; sourceTree = "<group>"; };
 		01677EFF16554CC700B1B1D8 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "Assets/Images/Icon-72@2x.png"; sourceTree = "<group>"; };
 		01677F0016554CC700B1B1D8 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-50.png"; path = "Assets/Images/Icon-Small-50.png"; sourceTree = "<group>"; };
@@ -1565,8 +1561,6 @@
 				01677EF216554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png */,
 				01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */,
 				01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */,
-				01677EF516554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png */,
-				01677EF716554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png */,
 			);
 			name = Backgrounds;
 			sourceTree = "<group>";
@@ -2205,8 +2199,6 @@
 				01677EF816554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png in Resources */,
 				01677EF916554C9D00B1B1D8 /* BackgroundDiscovery@2x.png in Resources */,
 				01677EFA16554C9D00B1B1D8 /* BackgroundFriends@2x.png in Resources */,
-				01677EFB16554C9D00B1B1D8 /* BackgroundMyRockpack@2x.png in Resources */,
-				01677EFD16554C9D00B1B1D8 /* BackgroundWallpackOverlay@2x.png in Resources */,
 				01677F0616554CC700B1B1D8 /* Icon-72.png in Resources */,
 				01677F0716554CC700B1B1D8 /* Icon-72@2x.png in Resources */,
 				01677F0816554CC700B1B1D8 /* Icon-Small-50.png in Resources */,

@@ -79,10 +79,10 @@
 							<object class="IBUIImageView" id="14812627">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{1042, 642}</string>
+								<string key="NSFrameSize">{1024, 642}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="141610062"/>
+								<reference key="NSNextKeyView" ref="12347397"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -92,43 +92,28 @@
 									<string key="NSResourceName">ChannelWallpaper1.png</string>
 								</object>
 							</object>
-							<object class="IBUIImageView" id="1003511602">
+							<object class="IBUIImageView" id="12347397">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{768, 0}, {256, 641}}</string>
+								<string key="NSFrameSize">{768, 84}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="30565013"/>
+								<reference key="NSNextKeyView" ref="141610062"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ChannelSideBar.png</string>
-								</object>
-							</object>
-							<object class="IBUIImageView" id="175875188">
-								<reference key="NSNextResponder" ref="498465811"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 517}, {768, 124}}</string>
-								<reference key="NSSuperview" ref="498465811"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="97073582"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ChannelStatsPanel.png</string>
+									<string key="NSResourceName">ChannelHeader.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="141610062">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{58, 44}, {727, 36}}</string>
+								<string key="NSFrame">{{21, 29}, {747, 36}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="175875188"/>
+								<reference key="NSNextKeyView" ref="524521487"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -156,10 +141,40 @@
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
+							<object class="IBUIImageView" id="1035861291">
+								<reference key="NSNextResponder" ref="498465811"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{768, 0}, {256, 642}}</string>
+								<reference key="NSSuperview" ref="498465811"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="30565013"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ChannelSideBar.png</string>
+								</object>
+							</object>
+							<object class="IBUIImageView" id="524521487">
+								<reference key="NSNextResponder" ref="498465811"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{0, 518}, {768, 124}}</string>
+								<reference key="NSSuperview" ref="498465811"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="97073582"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ChannelStatsPanel.png</string>
+								</object>
+							</object>
 							<object class="IBUILabel" id="97073582">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{18, 532}, {491, 27}}</string>
+								<string key="NSFrame">{{18, 532}, {742, 27}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="171048591"/>
@@ -194,10 +209,10 @@
 							<object class="IBUILabel" id="171048591">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{18, 557}, {491, 86}}</string>
+								<string key="NSFrame">{{18, 557}, {742, 86}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1003511602"/>
+								<reference key="NSNextKeyView" ref="1035861291"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="325445717"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -224,13 +239,13 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-								<double key="preferredMaxLayoutWidth">491</double>
+								<double key="preferredMaxLayoutWidth">742</double>
 							</object>
 							<object class="IBUICollectionView" id="30565013">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">274</int>
 								<array class="NSMutableArray" key="NSSubviews"/>
-								<string key="NSFrame">{{768, 20}, {256, 642}}</string>
+								<string key="NSFrame">{{768, 0}, {198, 597}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="973631628"/>
@@ -256,7 +271,7 @@
 								<array key="IBUICells" id="0"/>
 							</object>
 						</array>
-						<string key="NSFrame">{{0, 43}, {1082, 684}}</string>
+						<string key="NSFrame">{{0, 43}, {1024, 642}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="14812627"/>
@@ -407,10 +422,11 @@
 							<reference ref="30565013"/>
 							<reference ref="171048591"/>
 							<reference ref="97073582"/>
-							<reference ref="141610062"/>
 							<reference ref="14812627"/>
-							<reference ref="1003511602"/>
-							<reference ref="175875188"/>
+							<reference ref="1035861291"/>
+							<reference ref="524521487"/>
+							<reference ref="141610062"/>
+							<reference ref="12347397"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 					</object>
@@ -418,7 +434,7 @@
 						<int key="objectID">11</int>
 						<reference key="object" ref="14812627"/>
 						<reference key="parent" ref="498465811"/>
-						<string key="objectName">Image View - Rockpack</string>
+						<string key="objectName">Image View - Wallpaper</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
@@ -453,13 +469,21 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">39</int>
-						<reference key="object" ref="1003511602"/>
+						<reference key="object" ref="1035861291"/>
 						<reference key="parent" ref="498465811"/>
+						<string key="objectName">Image View - Sidebar background</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">40</int>
-						<reference key="object" ref="175875188"/>
+						<reference key="object" ref="524521487"/>
 						<reference key="parent" ref="498465811"/>
+						<string key="objectName">Image View - Bio panel</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">41</int>
+						<reference key="object" ref="12347397"/>
+						<reference key="parent" ref="498465811"/>
+						<string key="objectName">Image View - Channel header background</string>
 					</object>
 				</array>
 			</object>
@@ -478,13 +502,14 @@
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="39.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="40.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">40</int>
+			<int key="maxID">41</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -583,6 +608,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="ChannelHeader.png">{768, 84}</string>
 			<string key="ChannelSideBar.png">{256, 643}</string>
 			<string key="ChannelStatsPanel.png">{768, 124}</string>
 			<string key="ChannelWallpaper1.png">{2048, 1286}</string>
