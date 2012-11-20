@@ -25,6 +25,9 @@
 // Animations
 //
 
+// Switch label
+#define kSwitchLabelAnimation 0.25f
+
 // Splash screen
 #define kSplashViewDuration 2.0f
 #define kSplashAnimationDuration  0.75f

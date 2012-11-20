@@ -37,8 +37,8 @@
     
     self.on = FALSE;
 
-    self.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Background.png"]];
-    self.thumbView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Thumb.png"]];
+    self.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"SliderBackground.png"]];
+    self.thumbView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"SliderThumb.png"]];
     
     [self addSubview: self.backgroundView];
     [self addSubview: self.thumbView];
