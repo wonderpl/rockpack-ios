@@ -16,4 +16,7 @@
 - (NSURL *) videoURLForIndex: (int) index
                   withOffset: (int) offset;
 
+- (void) downloadContentIfRequiredDisplayingHUDInView: (UIView *) view;
+
+
 @end

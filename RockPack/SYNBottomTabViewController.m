@@ -8,17 +8,20 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "MKNetworkEngine.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
 #import "SYNMyRockPackViewController.h"
+#import "SYNVideoDownloadEngine.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "UIFont+SYNFont.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
+#import "SYNVideoDB.h"
 
 @interface SYNBottomTabViewController ()
 
@@ -28,21 +31,23 @@
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) AVAudioRecorder *recorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
+@property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
-@property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowView;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
 @property (nonatomic, strong) IBOutlet UITextField *searchField;
-@property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
+@property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
 @property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanel;
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeLeftRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
 @property (nonatomic, weak) UIViewController *selectedViewController;
+@property (strong, nonatomic) MKNetworkOperation *downloadOperation;
+@property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
 
 @end
 

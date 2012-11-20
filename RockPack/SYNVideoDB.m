@@ -7,10 +7,18 @@
 //
 
 #import "SYNVideoDB.h"
+#import "SYNVideoDownloadEngine.h"
+#import "MKNetworkEngine.h"
+#import "SYNAppDelegate.h"
+#import "MBProgressHUD.h"
 
-@interface SYNVideoDB ()
+@interface SYNVideoDB () <MBProgressHUDDelegate>
 
 @property (nonatomic, strong) NSArray *thumbnailDetailsArray;
+@property (strong, nonatomic) MKNetworkOperation *downloadOperation;
+@property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
+@property (strong, nonatomic) MBProgressHUD *HUD;
+@property (strong, nonatomic) NSMutableArray *progressArray;
 
 @end
 
@@ -162,8 +170,97 @@
     return self;
 }
 
+- (void) downloadContentIfRequiredDisplayingHUDInView: (UIView *) view;
+{    
+    self.HUD = [[MBProgressHUD alloc] initWithView: view];
+	[view addSubview: self.HUD];
+	
+	self.HUD.delegate = self;
+	self.HUD.labelText = @"Downloading";
+    self.HUD.mode = MBProgressHUDModeAnnularDeterminate;
+    self.HUD.color = [UIColor colorWithRed: 25.0f/255.0f green: 82.0f/255.0f blue: 112.0f/255.0f alpha: 1.0f];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    
+    [self.HUD show: YES];
+    
+    // Set up networking
+    self.downloadEngine = [[SYNVideoDownloadEngine alloc] initWithHostName: @"rockpack.discover.video.s3.amazonaws.com"
+                                                        customHeaderFields: nil];
+    
+    self.progressArray = [[NSMutableArray alloc] initWithCapacity: self.thumbnailDetailsArray.count];
+    
+    
+            // Initialise percentage array
+    for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+    {
+        [self.progressArray addObject: [NSNumber numberWithDouble: 0.0f]];
+    }
+    
+    __block int numberDownloaded = 0;
+         
+    for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+    {        
+        NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: videoFileIndex];
+        NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
+        
+        NSString *downloadPath = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
+        
+        self.downloadOperation = [self.downloadEngine downloadFileFrom: [NSString stringWithFormat: @"%@.mp4", videoURLString, nil]
+                                                                toFile: downloadPath];
+        
+        [self.downloadOperation onDownloadProgressChanged: ^(double progress)
+         {
+             [self.progressArray replaceObjectAtIndex: videoFileIndex
+                                           withObject: [NSNumber numberWithDouble: progress]];
+             
+             [self updateProgressIndicator];
+
+             DLog(@"%.2f", progress*100.0);
+         }];
+        
+        [self.downloadOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
+         {
+             if (++numberDownloaded == self.thumbnailDetailsArray.count)
+             {
+                 [self.HUD hide: NO];
+             }
+         }
+         errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
+         {
+             [self.HUD hide: NO];
+             DLog(@"%@", error);
+             [UIAlertView showWithError: error];
+         }];
+    }
+}
+
+- (void) updateProgressIndicator
+{
+    double cumulativeProgress = 0.0f;
+    
+    for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+    {
+        NSNumber *progress = [self.progressArray objectAtIndex: videoFileIndex];
+        cumulativeProgress += progress.doubleValue;
+    }
+    
+    self.HUD.progress = cumulativeProgress / (double) self.thumbnailDetailsArray.count;
+}
+
 
 // Video URL accessor
+
+//- (NSURL *) videoURLForIndex: (int) index
+//                  withOffset: (int) offset
+//{
+//    NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
+//    NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
+//    
+//    NSURL *videoURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource: videoURLString
+//                                                                              ofType: @"mp4"] isDirectory: NO];
+//    
+//    return videoURL;
+//}
 
 - (NSURL *) videoURLForIndex: (int) index
                   withOffset: (int) offset
@@ -171,10 +268,15 @@
     NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
     NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
     
-    NSURL *videoURL = [NSURL fileURLWithPath: [[NSBundle mainBundle] pathForResource: videoURLString
-                                                                              ofType: @"mp4"] isDirectory: NO];
+//    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent: @"/Documents/HotelTransylvania.mp4"];
+    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
+    
+    NSURL *videoURL = [NSURL fileURLWithPath: path];
     
     return videoURL;
 }
+
+;
+//    UIImage * result = [UIImage imageWithContentsOfFile:path];
 
 @end

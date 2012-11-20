@@ -21,6 +21,14 @@
                withObject: nil
                afterDelay: 0];
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+	// Create a dictionary of defaults to add and register them (if they have not already been set)
+	NSDictionary *initDefaults = [NSDictionary dictionaryWithObjectsAndKeys: @(YES), kDownloadedVideoContentBool,
+                                                                             nil];
+	[defaults registerDefaults: initDefaults];
+
+    
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.viewController = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"

@@ -31,6 +31,8 @@
 		012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
 		012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA3F165AF1E400A60980 /* SYNSwitch.m */; };
+		012ECA5F165B9D4300A60980 /* SYNVideoDownloadEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */; };
+		012ECA7B165BAEA400A60980 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA7A165BAEA400A60980 /* MBProgressHUD.m */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNThumbnailCell.xib */; };
@@ -223,18 +225,6 @@
 		0198258C162B615D00216900 /* SYNddd.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198258B162B615D00216900 /* SYNddd.m */; };
 		019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F0162C94A300216900 /* UIColor+SYNColor.m */; };
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
-		019E81D61653E1B100744A03 /* TheLionKing.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CA1653E1B100744A03 /* TheLionKing.mp4 */; };
-		019E81D71653E1B100744A03 /* TheDarkKnightRises.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CB1653E1B100744A03 /* TheDarkKnightRises.mp4 */; };
-		019E81D81653E1B100744A03 /* CallOfDuty.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CC1653E1B100744A03 /* CallOfDuty.mp4 */; };
-		019E81D91653E1B100744A03 /* OneDirection.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CD1653E1B100744A03 /* OneDirection.mp4 */; };
-		019E81DA1653E1B100744A03 /* NikeFootball.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CE1653E1B100744A03 /* NikeFootball.mp4 */; };
-		019E81DB1653E1B100744A03 /* MonstersUniversity.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81CF1653E1B100744A03 /* MonstersUniversity.mp4 */; };
-		019E81DC1653E1B100744A03 /* Madagascar3.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D01653E1B100744A03 /* Madagascar3.mp4 */; };
-		019E81DD1653E1B100744A03 /* JustinBieber.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D11653E1B100744A03 /* JustinBieber.mp4 */; };
-		019E81DE1653E1B100744A03 /* HotelTransylvania.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D21653E1B100744A03 /* HotelTransylvania.mp4 */; };
-		019E81DF1653E1B100744A03 /* CarlyRaeJepsen.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D31653E1B100744A03 /* CarlyRaeJepsen.mp4 */; };
-		019E81E01653E1B100744A03 /* Adidas.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D41653E1B100744A03 /* Adidas.mp4 */; };
-		019E81E11653E1B100744A03 /* AngryBirds.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 019E81D51653E1B100744A03 /* AngryBirds.mp4 */; };
 		019E81FF1654043A00744A03 /* Mail Sent.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81F91654043A00744A03 /* Mail Sent.aif */; };
 		019E82001654043A00744A03 /* NewSlideIn.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FA1654043A00744A03 /* NewSlideIn.aif */; };
 		019E82011654043A00744A03 /* NewSlideOut.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FB1654043A00744A03 /* NewSlideOut.aif */; };
@@ -454,6 +444,10 @@
 		0126331E162E2A060009FF9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		012ECA3E165AF1E400A60980 /* SYNSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSwitch.h; sourceTree = "<group>"; };
 		012ECA3F165AF1E400A60980 /* SYNSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSwitch.m; sourceTree = "<group>"; };
+		012ECA5D165B9D4300A60980 /* SYNVideoDownloadEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoDownloadEngine.h; sourceTree = "<group>"; };
+		012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoDownloadEngine.m; sourceTree = "<group>"; };
+		012ECA79165BAEA400A60980 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		012ECA7A165BAEA400A60980 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
@@ -1171,8 +1165,19 @@
 		012ECA42165B8EE700A60980 /* HUD */ = {
 			isa = PBXGroup;
 			children = (
+				012ECA79165BAEA400A60980 /* MBProgressHUD.h */,
+				012ECA7A165BAEA400A60980 /* MBProgressHUD.m */,
 			);
 			name = HUD;
+			sourceTree = "<group>";
+		};
+		012ECA5C165B9D1A00A60980 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				012ECA5D165B9D4300A60980 /* SYNVideoDownloadEngine.h */,
+				012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */,
+			);
+			name = Custom;
 			sourceTree = "<group>";
 		};
 		01363E89162EFE9500FFAA09 /* Video Well */ = {
@@ -1234,7 +1239,7 @@
 			name = Audio;
 			sourceTree = "<group>";
 		};
-		01363EC616304D5E00FFAA09 /* Video Database */ = {
+		01363EC616304D5E00FFAA09 /* Databases */ = {
 			isa = PBXGroup;
 			children = (
 				01B7F766164FD43F009C5CCD /* SYNAbstractThumbnailDB.h */,
@@ -1246,7 +1251,7 @@
 				0106E81E165106D000DC5173 /* SYNWallpacksDB.h */,
 				0106E81F165106D000DC5173 /* SYNWallpacksDB.m */,
 			);
-			name = "Video Database";
+			name = Databases;
 			sourceTree = "<group>";
 		};
 		01363EF41630632A00FFAA09 /* Video Thumbnails */ = {
@@ -1344,6 +1349,7 @@
 		01677DDA1655491100B1B1D8 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				012ECA5C165B9D1A00A60980 /* Custom */,
 				0170715E16554E9B00A3C7C4 /* Categories */,
 				0170716B16554E9B00A3C7C4 /* MKNetworkEngine.h */,
 				0170716C16554E9B00A3C7C4 /* MKNetworkEngine.m */,
@@ -1485,7 +1491,7 @@
 				01677DDA1655491100B1B1D8 /* Networking */,
 				011CC679164A9E9C00F02B6D /* Camera Overlay */,
 				01363FBD16345ED700FFAA09 /* Selection Database */,
-				01363EC616304D5E00FFAA09 /* Video Database */,
+				01363EC616304D5E00FFAA09 /* Databases */,
 				019824ED1629CC6600216900 /* TestFlight */,
 				019824E91629CBD000216900 /* Exception Handler */,
 				019824E51629CB1D00216900 /* Debug */,
@@ -1891,18 +1897,6 @@
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
 				0106E81C165104CE00DC5173 /* SYNWallPackTopTabViewController.xib in Resources */,
 				0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */,
-				019E81D61653E1B100744A03 /* TheLionKing.mp4 in Resources */,
-				019E81D71653E1B100744A03 /* TheDarkKnightRises.mp4 in Resources */,
-				019E81D81653E1B100744A03 /* CallOfDuty.mp4 in Resources */,
-				019E81D91653E1B100744A03 /* OneDirection.mp4 in Resources */,
-				019E81DA1653E1B100744A03 /* NikeFootball.mp4 in Resources */,
-				019E81DB1653E1B100744A03 /* MonstersUniversity.mp4 in Resources */,
-				019E81DC1653E1B100744A03 /* Madagascar3.mp4 in Resources */,
-				019E81DD1653E1B100744A03 /* JustinBieber.mp4 in Resources */,
-				019E81DE1653E1B100744A03 /* HotelTransylvania.mp4 in Resources */,
-				019E81DF1653E1B100744A03 /* CarlyRaeJepsen.mp4 in Resources */,
-				019E81E01653E1B100744A03 /* Adidas.mp4 in Resources */,
-				019E81E11653E1B100744A03 /* AngryBirds.mp4 in Resources */,
 				019E81FF1654043A00744A03 /* Mail Sent.aif in Resources */,
 				019E82001654043A00744A03 /* NewSlideIn.aif in Resources */,
 				019E82011654043A00744A03 /* NewSlideOut.aif in Resources */,
@@ -2281,6 +2275,8 @@
 				0170717A16554E9B00A3C7C4 /* MKNetworkOperation.m in Sources */,
 				0170717B16554E9B00A3C7C4 /* Reachability.m in Sources */,
 				012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */,
+				012ECA5F165B9D4300A60980 /* SYNVideoDownloadEngine.m in Sources */,
+				012ECA7B165BAEA400A60980 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2419,7 +2415,7 @@
 					"\"$(SRCROOT)/RockPack\"",
 				);
 				PRODUCT_NAME = rockpack;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F86CC11B-1736-4582-99BF-0CFFA3C673C9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "AD1A6ECE-D209-438E-9EF7-9CE96FF48460";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;

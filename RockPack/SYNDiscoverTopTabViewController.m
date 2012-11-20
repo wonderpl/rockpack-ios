@@ -105,6 +105,8 @@
                                                                                                            action: @selector(longPressThumbnail:)];
 
     [self.thumbnailView addGestureRecognizer: longPressOnThumbnailView];
+    
+    
 }
 
 
@@ -113,6 +115,8 @@
     // Set the first video
     [self setLargeVideoIndex: self.currentIndex
                   withOffset: self.currentOffset];
+    
+    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
 }
 
 

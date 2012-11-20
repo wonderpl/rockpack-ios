@@ -13,6 +13,8 @@
 #import "UIFont+SYNFont.h"
 #import "SYNMyRockpackCell.h"
 
+#import "MBProgressHUD.h"
+
 @interface SYNChannelsTopTabViewController ()
 
 @property (nonatomic, assign) int currentIndex;

@@ -9,6 +9,10 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+// Settings
+
+#define kDownloadedVideoContentBool @"kDownloadedVideoContentBool"
+
 // Major functionality switches
 
 // Enable user interface sounds
