@@ -1168,6 +1168,13 @@
 			name = Videos;
 			sourceTree = "<group>";
 		};
+		012ECA42165B8EE700A60980 /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = HUD;
+			sourceTree = "<group>";
+		};
 		01363E89162EFE9500FFAA09 /* Video Well */ = {
 			isa = PBXGroup;
 			children = (
@@ -1474,6 +1481,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				012ECA42165B8EE700A60980 /* HUD */,
 				01677DDA1655491100B1B1D8 /* Networking */,
 				011CC679164A9E9C00F02B6D /* Camera Overlay */,
 				01363FBD16345ED700FFAA09 /* Selection Database */,
