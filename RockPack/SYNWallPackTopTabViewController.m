@@ -113,7 +113,6 @@
 
 - (void) animateOut
 {
-             self.avatarView.alpha = 1.0f;
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
