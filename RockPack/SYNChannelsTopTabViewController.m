@@ -364,7 +364,6 @@
             // now add the item to the view
             [self.view addSubview: self.pinchedView];
         }
-
     }
     else if (sender.state == UIGestureRecognizerStateChanged)
     {
