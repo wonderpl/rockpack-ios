@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign, getter = isTopLevel) BOOL topLevel;
+@property (nonatomic, assign) BOOL userPinchedIn;
 @property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView2;
@@ -318,15 +319,12 @@
 }
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
-{
-    // Bail if not a two finger pinch
-//    if ([sender numberOfTouches] < 2)
-//    {
-//        return;
-//    }
-    
+{    
     if (sender.state == UIGestureRecognizerStateBegan)
     {
+        // At this stage, we don't know whether the user is pinching in or out
+        self.userPinchedIn = FALSE;
+        
         NSLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: [sender locationInView: self.thumbnailView]];
@@ -386,14 +384,18 @@
         {
             if (scale < 1.0)
             {
-                [self transitionBackToTopLevel];
+                if (self.userPinchedIn == FALSE)
+                {
+                    self.userPinchedIn = TRUE;
+                    [self transitionBackToTopLevel];
+                }
             }
         }
     }
     else if (sender.state == UIGestureRecognizerStateEnded)
     {
         NSLog (@"UIGestureRecognizerStateEnded");
-        if (self.isTopLevel == TRUE)
+        if (self.isTopLevel == TRUE && self.userPinchedIn == FALSE)
         {
             [self transitionToItemAtIndexPath: self.pinchedIndexPath];
         }
