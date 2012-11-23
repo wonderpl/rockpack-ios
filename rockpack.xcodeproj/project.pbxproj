@@ -32,7 +32,6 @@
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
 		012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA3F165AF1E400A60980 /* SYNSwitch.m */; };
 		012ECA5F165B9D4300A60980 /* SYNVideoDownloadEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */; };
-		012ECA7B165BAEA400A60980 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA7A165BAEA400A60980 /* MBProgressHUD.m */; };
 		012ECAC8165C120900A60980 /* PanelWallpackTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 012ECAC7165C120900A60980 /* PanelWallpackTitle.png */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
@@ -224,6 +223,10 @@
 		0198258C162B615D00216900 /* SYNddd.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198258B162B615D00216900 /* SYNddd.m */; };
 		019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F0162C94A300216900 /* UIColor+SYNColor.m */; };
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
+		019E6A5A165FD7D1002B312A /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A59165FD7D1002B312A /* SSKeychain.m */; };
+		019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A5C165FD800002B312A /* MBProgressHUD.m */; };
+		019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */; };
+		019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */; };
 		019E81FF1654043A00744A03 /* Mail Sent.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81F91654043A00744A03 /* Mail Sent.aif */; };
 		019E82001654043A00744A03 /* NewSlideIn.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FA1654043A00744A03 /* NewSlideIn.aif */; };
 		019E82011654043A00744A03 /* NewSlideOut.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FB1654043A00744A03 /* NewSlideOut.aif */; };
@@ -470,8 +473,6 @@
 		012ECA3F165AF1E400A60980 /* SYNSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSwitch.m; sourceTree = "<group>"; };
 		012ECA5D165B9D4300A60980 /* SYNVideoDownloadEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoDownloadEngine.h; sourceTree = "<group>"; };
 		012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoDownloadEngine.m; sourceTree = "<group>"; };
-		012ECA79165BAEA400A60980 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		012ECA7A165BAEA400A60980 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		012ECAC7165C120900A60980 /* PanelWallpackTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelWallpackTitle.png; path = Assets/Images/PanelWallpackTitle.png; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
@@ -695,6 +696,14 @@
 		019825F0162C94A300216900 /* UIColor+SYNColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SYNColor.m"; sourceTree = "<group>"; };
 		019825F2162C94B500216900 /* UIFont+SYNFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+SYNFont.h"; sourceTree = "<group>"; };
 		019825F3162C94B500216900 /* UIFont+SYNFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+SYNFont.m"; sourceTree = "<group>"; };
+		019E6A58165FD7D1002B312A /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = sskeychain/SSKeychain.h; sourceTree = SOURCE_ROOT; };
+		019E6A59165FD7D1002B312A /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = sskeychain/SSKeychain.m; sourceTree = SOURCE_ROOT; };
+		019E6A5B165FD800002B312A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
+		019E6A5C165FD800002B312A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
+		019E6A5F165FD99A002B312A /* SYNOAuth2Credential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOAuth2Credential.h; sourceTree = "<group>"; };
+		019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOAuth2Credential.m; sourceTree = "<group>"; };
+		019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOAuthNetworkEngine.h; sourceTree = "<group>"; };
+		019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOAuthNetworkEngine.m; sourceTree = "<group>"; };
 		019E81CA1653E1B100744A03 /* TheLionKing.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = TheLionKing.mp4; path = Assets/Video/TheLionKing.mp4; sourceTree = "<group>"; };
 		019E81CB1653E1B100744A03 /* TheDarkKnightRises.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = TheDarkKnightRises.mp4; path = Assets/Video/TheDarkKnightRises.mp4; sourceTree = "<group>"; };
 		019E81CC1653E1B100744A03 /* CallOfDuty.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = CallOfDuty.mp4; path = Assets/Video/CallOfDuty.mp4; sourceTree = "<group>"; };
@@ -1232,19 +1241,21 @@
 		012ECA42165B8EE700A60980 /* HUD */ = {
 			isa = PBXGroup;
 			children = (
-				012ECA79165BAEA400A60980 /* MBProgressHUD.h */,
-				012ECA7A165BAEA400A60980 /* MBProgressHUD.m */,
+				019E6A5B165FD800002B312A /* MBProgressHUD.h */,
+				019E6A5C165FD800002B312A /* MBProgressHUD.m */,
 			);
 			name = HUD;
 			sourceTree = "<group>";
 		};
-		012ECA5C165B9D1A00A60980 /* Custom */ = {
+		012ECA5C165B9D1A00A60980 /* Custom Engines */ = {
 			isa = PBXGroup;
 			children = (
+				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
+				019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */,
 				012ECA5D165B9D4300A60980 /* SYNVideoDownloadEngine.h */,
 				012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */,
 			);
-			name = Custom;
+			name = "Custom Engines";
 			sourceTree = "<group>";
 		};
 		01363E89162EFE9500FFAA09 /* Video Well */ = {
@@ -1418,7 +1429,7 @@
 		01677DDA1655491100B1B1D8 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				012ECA5C165B9D1A00A60980 /* Custom */,
+				012ECA5C165B9D1A00A60980 /* Custom Engines */,
 				0170715E16554E9B00A3C7C4 /* Categories */,
 				0170716B16554E9B00A3C7C4 /* MKNetworkEngine.h */,
 				0170716C16554E9B00A3C7C4 /* MKNetworkEngine.m */,
@@ -1557,6 +1568,8 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				019E6A5E165FD958002B312A /* OAuth2 */,
+				019E6A56165FD7A2002B312A /* Keychain */,
 				012ECA42165B8EE700A60980 /* HUD */,
 				01677DDA1655491100B1B1D8 /* Networking */,
 				011CC679164A9E9C00F02B6D /* Camera Overlay */,
@@ -1777,6 +1790,24 @@
 				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		019E6A56165FD7A2002B312A /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				019E6A58165FD7D1002B312A /* SSKeychain.h */,
+				019E6A59165FD7D1002B312A /* SSKeychain.m */,
+			);
+			name = Keychain;
+			sourceTree = "<group>";
+		};
+		019E6A5E165FD958002B312A /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				019E6A5F165FD99A002B312A /* SYNOAuth2Credential.h */,
+				019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */,
+			);
+			name = OAuth2;
 			sourceTree = "<group>";
 		};
 		019E81F8165402EE00744A03 /* My RockPack Page */ = {
@@ -2380,7 +2411,10 @@
 				0170717B16554E9B00A3C7C4 /* Reachability.m in Sources */,
 				012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */,
 				012ECA5F165B9D4300A60980 /* SYNVideoDownloadEngine.m in Sources */,
-				012ECA7B165BAEA400A60980 /* MBProgressHUD.m in Sources */,
+				019E6A5A165FD7D1002B312A /* SSKeychain.m in Sources */,
+				019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */,
+				019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */,
+				019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
