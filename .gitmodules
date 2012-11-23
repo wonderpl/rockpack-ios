@@ -4,3 +4,6 @@
 [submodule "MBProgressHUD"]
 	path = MBProgressHUD
 	url = https://synchromation@github.com/synchromation/MBProgressHUD.git
+[submodule "sskeychain"]
+	path = sskeychain
+	url = https://github.com/soffes/sskeychain.git
