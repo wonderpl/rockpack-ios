@@ -377,6 +377,7 @@
     [self.thumbnailView reloadData];
 }
 
+
 - (IBAction) toggleLargePackItButton: (id)sender
 {
     int number = [self.videoDB packItNumberForIndex: self.currentIndex

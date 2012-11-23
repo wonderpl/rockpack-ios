@@ -245,7 +245,7 @@
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">274</int>
 								<array class="NSMutableArray" key="NSSubviews"/>
-								<string key="NSFrame">{{768, 0}, {210, 642}}</string>
+								<string key="NSFrame">{{768, 0}, {256, 642}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="973631628"/>
