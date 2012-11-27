@@ -25,10 +25,11 @@
 
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) BOOL shouldPlaySound;
+@property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
-@property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
+@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellDeleteButton;
 @property (nonatomic, strong) IBOutlet UIButton *packItButton;
@@ -53,13 +54,15 @@
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) NSMutableArray *imageWell;
 @property (nonatomic, strong) NSMutableArray *selections;
-@property (nonatomic, strong) SYNVideoDB *videoDB;
 @property (nonatomic, strong) SYNSelectionDB *selectionDB;
+@property (nonatomic, strong) SYNVideoDB *videoDB;
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @end
 
 @implementation SYNDiscoverTopTabViewController
+
+@synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -109,7 +112,7 @@
     
 }
 
-
+#pragma mark - CoreDate support
 - (void) viewWillAppear: (BOOL) animated
 {
     // Set the first video
@@ -118,6 +121,54 @@
     
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
 }
+
+// This pretty much uses the latest example code, so works fine
+- (NSFetchedResultsController *) videoFetchedResultsController
+{
+    // Return cached version if we have already created one
+    if (_videoFetchedResultsController != nil)
+    {
+        return _videoFetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
+                                              inManagedObjectContext: self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+//    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
+    
+    NSArray *sortDescriptors = @[sortDescriptor];
+    
+    [fetchRequest setSortDescriptors: sortDescriptors];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                                  managedObjectContext: self.managedObjectContext
+                                                                                                    sectionNameKeyPath: nil
+                                                                                                             cacheName: @"Discover"];
+    newFetchedResultsController.delegate = self;
+    self.videoFetchedResultsController = newFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![_videoFetchedResultsController performFetch: &error])
+    {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _videoFetchedResultsController;
+}
+
 
 
 - (void) setLargeVideoIndex: (int) index
@@ -148,6 +199,7 @@
     
     [self.mainVideoPlayer pause];
 }
+
 
 - (IBAction) longPressLargeVideo: (UIGestureRecognizer *) sender
 {
@@ -213,6 +265,7 @@
         }
     }
 }
+
 
 - (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender
 {
@@ -641,7 +694,8 @@
     }
     else if (view == self.thumbnailView)
     {
-        return self.videoDB.numberOfThumbnails;
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+        return [sectionInfo numberOfObjects];
     }
     else
     {
@@ -683,6 +737,8 @@
     }
     else if (cv == self.thumbnailView)
     {
+        NSManagedObject *object = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        
         SYNThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                forIndexPath: indexPath];
         

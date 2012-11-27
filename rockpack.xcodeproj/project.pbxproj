@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		01E427E61664EC9F009B941F /* Mogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 01E427E71664EC9F009B941F /* Build configuration list for PBXAggregateTarget "Mogenerator" */;
+			buildPhases = (
+				01E427EB1664ECB3009B941F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Mogenerator;
+			productName = Mogenerator;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		0106E81B165104CE00DC5173 /* SYNWallPackTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0106E819165104CE00DC5173 /* SYNWallPackTopTabViewController.m */; };
 		0106E81C165104CE00DC5173 /* SYNWallPackTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0106E81A165104CE00DC5173 /* SYNWallPackTopTabViewController.xib */; };
@@ -407,6 +421,8 @@
 		01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D81664CDA5009B941F /* SYNAbstractViewController.m */; };
 		01E427E21664DF21009B941F /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427E11664DF21009B941F /* Video.m */; };
 		01E427E51664DF21009B941F /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427E41664DF21009B941F /* Channel.m */; };
+		01E427F01664EE52009B941F /* _Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427ED1664EE52009B941F /* _Channel.m */; };
+		01E427F11664EE52009B941F /* _Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427EF1664EE52009B941F /* _Video.m */; };
 		01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */; };
 		01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
@@ -909,6 +925,10 @@
 		01E427E11664DF21009B941F /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
 		01E427E31664DF21009B941F /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
 		01E427E41664DF21009B941F /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Channel.m; sourceTree = "<group>"; };
+		01E427EC1664EE52009B941F /* _Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Channel.h; sourceTree = "<group>"; };
+		01E427ED1664EE52009B941F /* _Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Channel.m; sourceTree = "<group>"; };
+		01E427EE1664EE52009B941F /* _Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Video.h; sourceTree = "<group>"; };
+		01E427EF1664EE52009B941F /* _Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Video.m; sourceTree = "<group>"; };
 		01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackViewController.h; sourceTree = "<group>"; };
 		01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackViewController.m; sourceTree = "<group>"; };
 		01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackViewController.xib; sourceTree = "<group>"; };
@@ -1958,12 +1978,32 @@
 			isa = PBXGroup;
 			children = (
 				01E427D11664C726009B941F /* Rockpack.xcdatamodeld */,
+				01E427F21664F32D009B941F /* Auto generated files */,
+				01E427F31664F346009B941F /* Editable files */,
+			);
+			name = "Data Model";
+			sourceTree = "<group>";
+		};
+		01E427F21664F32D009B941F /* Auto generated files */ = {
+			isa = PBXGroup;
+			children = (
+				01E427EC1664EE52009B941F /* _Channel.h */,
+				01E427ED1664EE52009B941F /* _Channel.m */,
+				01E427EE1664EE52009B941F /* _Video.h */,
+				01E427EF1664EE52009B941F /* _Video.m */,
+			);
+			name = "Auto generated files";
+			sourceTree = "<group>";
+		};
+		01E427F31664F346009B941F /* Editable files */ = {
+			isa = PBXGroup;
+			children = (
 				01E427E31664DF21009B941F /* Channel.h */,
 				01E427E41664DF21009B941F /* Channel.m */,
 				01E427E01664DF21009B941F /* Video.h */,
 				01E427E11664DF21009B941F /* Video.m */,
 			);
-			name = "Data Model";
+			name = "Editable files";
 			sourceTree = "<group>";
 		};
 		01E98D6E165C13610079FD7A /* Slider */ = {
@@ -2020,6 +2060,7 @@
 			projectRoot = "";
 			targets = (
 				010DEFCF1629BDC40080F26B /* rockpack */,
+				01E427E61664EC9F009B941F /* Mogenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -2393,6 +2434,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		01E427EB1664ECB3009B941F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd RockPack\nmogenerator --model Rockpack.xcdatamodeld/Rockpack.xcdatamodel --template-var arc=YES\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		010DEFCC1629BDC40080F26B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -2453,6 +2510,8 @@
 				01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */,
 				01E427E21664DF21009B941F /* Video.m in Sources */,
 				01E427E51664DF21009B941F /* Channel.m in Sources */,
+				01E427F01664EE52009B941F /* _Channel.m in Sources */,
+				01E427F11664EE52009B941F /* _Video.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2596,6 +2655,27 @@
 			};
 			name = AdHoc;
 		};
+		01E427E81664EC9F009B941F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		01E427E91664EC9F009B941F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		01E427EA1664EC9F009B941F /* AdHoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = AdHoc;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2618,6 +2698,15 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		01E427E71664EC9F009B941F /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01E427E81664EC9F009B941F /* Debug */,
+				01E427E91664EC9F009B941F /* Release */,
+				01E427EA1664EC9F009B941F /* AdHoc */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 

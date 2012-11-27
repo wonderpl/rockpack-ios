@@ -1,14 +1,14 @@
-#import "Video.h"
+#import "Test.h"
 
 
-@interface Video ()
+@interface Test ()
 
 // Private interface goes here.
 
 @end
 
 
-@implementation Video
+@implementation Test
 
 // Custom logic goes here.
 

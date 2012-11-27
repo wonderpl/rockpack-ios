@@ -8,8 +8,9 @@
 //  Abstract view controller to provide functionality common to all Rockpack view controllers
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
-@interface SYNAbstractViewController : UIViewController
+@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate>
 
 @property (readonly, weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 
