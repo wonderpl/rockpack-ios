@@ -178,7 +178,7 @@
     [self updateLargeVideoDetailsForIndexPath: indexPath];
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    NSURL *videoURL = [NSURL URLWithString: video.videoURL];
+    NSURL *videoURL = video.localVideoURL;
     
     self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
     
@@ -784,10 +784,7 @@
          {
          }];
     }
-    
-//    SYNSelection *selection = [[SYNSelection alloc] initWithIndex: index
-//                                                        andOffset: offset];
-    
+
     [self.selections addObject: indexPath];
     
     // Add image at front

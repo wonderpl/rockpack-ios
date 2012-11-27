@@ -135,11 +135,11 @@
     SYNMyRockpackCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"MyRockpackCell"
                                                             forIndexPath: indexPath];
     
-    SYNSelection *selection = [self.selectionDB.selections objectAtIndex: indexPath.row];
+//    SYNSelection *selection = [self.selectionDB.selections objectAtIndex: indexPath.row];
     
-    UIImage *image = [self.videoDB thumbnailForIndex: selection.index
-                                          withOffset: selection.offset];
-    cell.imageView.image = image;
+//    UIImage *image = [self.videoDB thumbnailForIndex: selection.index
+//                                          withOffset: selection.offset];
+//    cell.imageView.image = image;
     
     return cell;
 }

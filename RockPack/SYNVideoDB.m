@@ -18,7 +18,6 @@
 @interface SYNVideoDB () <MBProgressHUDDelegate>
 
 @property (nonatomic, strong) NSArray *videoDetailsArray;
-@property (nonatomic, strong) NSArray *thumbnailDetailsArray;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
 @property (strong, nonatomic) MBProgressHUD *HUD;
@@ -60,6 +59,7 @@
     
     return videoDBManager;
 }
+
 
 - (id) init
 {
@@ -203,7 +203,6 @@
                                         @"packedByUser" : @FALSE,
                                         @"rockedByUser" : @FALSE}];
             
-            self.thumbnailDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
             self.videoDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
             
             // Now create the NSManaged Video objects corresponding to these details
@@ -342,21 +341,5 @@
     
     self.HUD.progress = cumulativeProgress / (double) self.videoDetailsArray.count;
 }
-
-
-- (NSURL *) videoURLForIndex: (int) index
-                  withOffset: (int) offset
-{
-    NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
-    
-    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
-    
-    NSURL *videoURL = [NSURL fileURLWithPath: path];
-    
-    return videoURL;
-}
-
-
 
 @end

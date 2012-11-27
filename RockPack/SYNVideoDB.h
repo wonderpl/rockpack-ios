@@ -7,15 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SYNAbstractThumbnailDB.h"
 
-@interface SYNVideoDB : SYNAbstractThumbnailDB
+@interface SYNVideoDB : NSObject
 
 + (id) sharedVideoDBManager;
-
-- (NSURL *) videoURLForIndex: (int) index
-                  withOffset: (int) offset;
-
 - (void) downloadContentIfRequiredDisplayingHUDInView: (UIView *) view;
 
 

@@ -144,9 +144,9 @@
         SYNMyRockpackCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"MyRockpackCell"
                                                                 forIndexPath: indexPath];
         
-        UIImage *image = [self.videoDB thumbnailForIndex: indexPath.row
-                                              withOffset: self.currentOffset];
-        cell.imageView.image = image;
+//        UIImage *image = [self.videoDB thumbnailForIndex: indexPath.row
+//                                              withOffset: self.currentOffset];
+//        cell.imageView.image = image;
         
         return cell;
     }
