@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SYNTabImageView.h"
+#import "SYNAbstractViewController.h"
 
-@interface SYNAbstractTopTabViewController : UIViewController
+@interface SYNAbstractTopTabViewController : SYNAbstractViewController
 
 @property (nonatomic, strong) SYNTabImageView *topTabView;
 @property (nonatomic, strong) UIImageView *topTabHighlightedView;

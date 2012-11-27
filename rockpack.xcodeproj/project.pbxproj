@@ -404,6 +404,9 @@
 		01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
+		01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D81664CDA5009B941F /* SYNAbstractViewController.m */; };
+		01E427E21664DF21009B941F /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427E11664DF21009B941F /* Video.m */; };
+		01E427E51664DF21009B941F /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427E41664DF21009B941F /* Channel.m */; };
 		01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */; };
 		01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
@@ -900,6 +903,12 @@
 		01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDB.m; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		01E427D21664C726009B941F /* Rockpack.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Rockpack.xcdatamodel; sourceTree = "<group>"; };
+		01E427D71664CDA5009B941F /* SYNAbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractViewController.h; sourceTree = "<group>"; };
+		01E427D81664CDA5009B941F /* SYNAbstractViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractViewController.m; sourceTree = "<group>"; };
+		01E427E01664DF21009B941F /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
+		01E427E11664DF21009B941F /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
+		01E427E31664DF21009B941F /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
+		01E427E41664DF21009B941F /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Channel.m; sourceTree = "<group>"; };
 		01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackViewController.h; sourceTree = "<group>"; };
 		01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackViewController.m; sourceTree = "<group>"; };
 		01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackViewController.xib; sourceTree = "<group>"; };
@@ -1772,6 +1781,8 @@
 		01982563162ADEAD00216900 /* Abstract */ = {
 			isa = PBXGroup;
 			children = (
+				01E427D71664CDA5009B941F /* SYNAbstractViewController.h */,
+				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
 			);
@@ -1947,6 +1958,10 @@
 			isa = PBXGroup;
 			children = (
 				01E427D11664C726009B941F /* Rockpack.xcdatamodeld */,
+				01E427E31664DF21009B941F /* Channel.h */,
+				01E427E41664DF21009B941F /* Channel.m */,
+				01E427E01664DF21009B941F /* Video.h */,
+				01E427E11664DF21009B941F /* Video.m */,
 			);
 			name = "Data Model";
 			sourceTree = "<group>";
@@ -2435,6 +2450,9 @@
 				019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */,
 				01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */,
 				01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */,
+				01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */,
+				01E427E21664DF21009B941F /* Video.m in Sources */,
+				01E427E51664DF21009B941F /* Channel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

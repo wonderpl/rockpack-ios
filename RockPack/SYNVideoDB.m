@@ -12,18 +12,40 @@
 #import "SYNAppDelegate.h"
 #import "MBProgressHUD.h"
 #import "AppConstants.h"
+#import "SYNAppDelegate.h"
+#import "Video.h"
 
 @interface SYNVideoDB () <MBProgressHUDDelegate>
 
+@property (nonatomic, strong) NSArray *videoDetailsArray;
 @property (nonatomic, strong) NSArray *thumbnailDetailsArray;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
 @property (strong, nonatomic) MBProgressHUD *HUD;
 @property (strong, nonatomic) NSMutableArray *progressArray;
 
+// New CoreData support
+
+// We don't need to retain this as it is already retained by the app delegate
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
 @end
 
 @implementation SYNVideoDB
+
+// Need to explicitly synthesise these as we are using the real ivars below
+@synthesize managedObjectContext = _managedObjectContext;
+
+- (NSManagedObjectContext *) managedObjectContext
+{
+	if (!_managedObjectContext)
+	{
+        SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.managedObjectContext = delegate.managedObjectContext;
+    }
+    
+    return _managedObjectContext;
+}
 
 // Singleton
 + (id) sharedVideoDBManager
@@ -43,129 +65,185 @@
 {
     if ((self = [super init]))
     {
-        // Nasty, but only for demo
-        NSMutableDictionary *d1 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"Adidas",
-                                   @"thumbnail" : @"Adidas",
-                                   @"title" : @"ADIDAS | TEAM GB",
-                                   @"subtitle" : @"DON'T STOP ME NOW",
-                                   @"packItNumber" : @214,
-                                   @"rockItNumber" : @453,
-                                   @"packIt" : @FALSE,
-                                   @"rockIt" : @FALSE}];
-    
-        NSMutableDictionary *d2 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"AngryBirds",
-                                   @"thumbnail" : @"AngryBirds",
-                                   @"title" : @"ANGRY BIRDS: STAR WARS",
-                                   @"subtitle" : @"TRAILER",
-                                   @"packItNumber" : @144,
-                                   @"rockItNumber" : @273,
-                                   @"packIt" : @FALSE,
-                                   @"rockIt" : @FALSE}];
+        NSError *error = nil;
         
-        NSMutableDictionary *d3 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"CallOfDuty",
-                                   @"thumbnail" : @"CallOfDuty",
-                                   @"title" : @"CALL OF DUTY: BLACK OPS 2",
-                                   @"subtitle" : @"TRAILER",
-                                   @"packItNumber" : @341,
-                                   @"rockItNumber" : @886,
-                                   @"packIt" : @TRUE,
-                                   @"rockIt" : @FALSE}];
+        // Create a Video entity (to allow us to manipulate Video objects in the DB)
+        NSEntityDescription *videoEntity = [NSEntityDescription entityForName: @"Video"
+                                                       inManagedObjectContext: self.managedObjectContext];
         
-        NSMutableDictionary *d4 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"CarlyRaeJepsen",
-                                   @"thumbnail" : @"CarlyRaeJepsen",
-                                   @"title" : @"CARLY RAE JEPSEN",
-                                   @"subtitle" : @"CALL ME MAYBE",
-                                   @"packItNumber" : @553,
-                                   @"rockItNumber" : @132,
-                                   @"packIt" : @FALSE,
-                                   @"rockIt" : @FALSE}];
+        // Find out how many Video objects we have in the database
+        NSFetchRequest *countFetchRequest = [[NSFetchRequest alloc] init];
+        [countFetchRequest setEntity: videoEntity];
         
-        NSMutableDictionary *d5 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"HotelTransylvania",
-                                   @"thumbnail" : @"HotelTransylvania",
-                                   @"title" : @"HOTEL TRANSYLVANIA",
-                                   @"subtitle" : @"TRAILER",
-                                   @"packItNumber" : @987,
-                                   @"rockItNumber" : @613,
-                                   @"packIt" : @FALSE,
-                                   @"rockIt" : @TRUE}];
+        NSArray *videoEntries = [self.managedObjectContext executeFetchRequest: countFetchRequest
+                                                                         error: &error];
         
-        NSMutableDictionary *d6 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"JustinBieber",
-                                   @"thumbnail" : @"JustinBieber",
-                                   @"title" : @"JUSTIN BEIBER",
-                                   @"subtitle" : @"BOYFRIEND",
-                                   @"packItNumber" : @921,
-                                   @"rockItNumber" : @277,
-                                   @"packIt" : @TRUE,
-                                   @"rockIt" : @TRUE}];
+        // If we don't have any Video entries in our database, then create some
+        // (replace this with API sooner rather than later)
+        if ([videoEntries count] == 0)
+        {
+            // Nasty, but only for demo
+            NSMutableDictionary *d1 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"Adidas",
+                                       @"keyframeURL" : @"Adidas",
+                                       @"title" : @"ADIDAS | TEAM GB",
+                                       @"subtitle" : @"DON'T STOP ME NOW",
+                                       @"totalPacks" : @214,
+                                       @"totalRocks" : @453,
+                                       @"packedByUser" : @FALSE,
+                                       @"rockedByUser" : @FALSE}];
         
-        NSMutableDictionary *d7 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"Madagascar3",
-                                   @"thumbnail" : @"Madagascar3",
-                                   @"title" : @"MADAGASCAR 3: EUROPE'S MOST WANTED",
-                                   @"subtitle" : @"TRAILER",
-                                   @"packItNumber" : @158,
-                                   @"rockItNumber" : @323,
-                                   @"packIt" : @FALSE,
-                                   @"rockIt" : @FALSE}];
-        
-        NSMutableDictionary *d8 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"MonstersUniversity",
-                                   @"thumbnail" : @"MonstersUniversity",
-                                   @"title" : @"MONSTERS UNIVERSITY",
-                                   @"subtitle" : @"TRAILER",
-                                   @"packItNumber" : @110,
-                                   @"rockItNumber" : @245,
-                                   @"packIt" : @FALSE,
-                                   @"rockIt" : @TRUE}];
-        
-        NSMutableDictionary *d9 = [NSMutableDictionary dictionaryWithDictionary:
-                                   @{@"videoURL" : @"NikeFootball",
-                                   @"thumbnail" : @"NikeFootball",
-                                   @"title" : @"NIKE FOOTBALL: MERCURIAL VAPOR VIII",
-                                   @"subtitle" : @"CRISTIANO RONALDO VS RAFA NADAL",
-                                   @"packItNumber" : @883,
-                                   @"rockItNumber" : @653,
-                                   @"packIt" : @TRUE,
-                                   @"rockIt" : @FALSE}];
-        
-        NSMutableDictionary *d10 = [NSMutableDictionary dictionaryWithDictionary:
-                                    @{@"videoURL" : @"OneDirection",
-                                    @"thumbnail" : @"OneDirection",
-                                    @"title" : @"ONE DIRECTION",
-                                    @"subtitle" : @"LIVE WHILE WE'RE YOUNG",
-                                    @"packItNumber" : @101,
-                                    @"rockItNumber" : @121,
-                                    @"packIt" : @FALSE,
-                                    @"rockIt" : @FALSE}];
-        
-        NSMutableDictionary *d11 = [NSMutableDictionary dictionaryWithDictionary:
-                                    @{@"videoURL" : @"TheDarkKnightRises",
-                                    @"thumbnail" : @"TheDarkKnightRises",
-                                    @"title" : @"THE DARK KNIGHT RISES",
-                                    @"subtitle" : @"TRAILER",
-                                    @"packItNumber" : @334,
-                                    @"rockItNumber" : @271,
-                                    @"packIt" : @TRUE,
-                                    @"rockIt" : @TRUE}];
-        
-        NSMutableDictionary *d12 = [NSMutableDictionary dictionaryWithDictionary:
-                                    @{@"videoURL" : @"TheLionKing",
-                                    @"thumbnail" : @"TheLionKing",
-                                    @"title" : @"THE LION KING",
-                                    @"subtitle" : @"MOVIE",
-                                    @"packItNumber" : @646,
-                                    @"rockItNumber" : @978,
-                                    @"packIt" : @FALSE,
-                                    @"rockIt" : @FALSE}];
-        
-        self.thumbnailDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
-        
+            NSMutableDictionary *d2 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"AngryBirds",
+                                       @"keyframeURL" : @"AngryBirds",
+                                       @"title" : @"ANGRY BIRDS: STAR WARS",
+                                       @"subtitle" : @"TRAILER",
+                                       @"totalPacks" : @144,
+                                       @"totalRocks" : @273,
+                                       @"packedByUser" : @FALSE,
+                                       @"rockedByUser" : @FALSE}];
+            
+            NSMutableDictionary *d3 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"CallOfDuty",
+                                       @"keyframeURL" : @"CallOfDuty",
+                                       @"title" : @"CALL OF DUTY: BLACK OPS 2",
+                                       @"subtitle" : @"TRAILER",
+                                       @"totalPacks" : @341,
+                                       @"totalRocks" : @886,
+                                       @"packedByUser" : @TRUE,
+                                       @"rockedByUser" : @FALSE}];
+            
+            NSMutableDictionary *d4 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"CarlyRaeJepsen",
+                                       @"keyframeURL" : @"CarlyRaeJepsen",
+                                       @"title" : @"CARLY RAE JEPSEN",
+                                       @"subtitle" : @"CALL ME MAYBE",
+                                       @"totalPacks" : @553,
+                                       @"totalRocks" : @132,
+                                       @"packedByUser" : @FALSE,
+                                       @"rockedByUser" : @FALSE}];
+            
+            NSMutableDictionary *d5 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"HotelTransylvania",
+                                       @"keyframeURL" : @"HotelTransylvania",
+                                       @"title" : @"HOTEL TRANSYLVANIA",
+                                       @"subtitle" : @"TRAILER",
+                                       @"totalPacks" : @987,
+                                       @"totalRocks" : @613,
+                                       @"packedByUser" : @FALSE,
+                                       @"rockedByUser" : @TRUE}];
+            
+            NSMutableDictionary *d6 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"JustinBieber",
+                                       @"keyframeURL" : @"JustinBieber",
+                                       @"title" : @"JUSTIN BEIBER",
+                                       @"subtitle" : @"BOYFRIEND",
+                                       @"totalPacks" : @921,
+                                       @"totalRocks" : @277,
+                                       @"packedByUser" : @TRUE,
+                                       @"rockedByUser" : @TRUE}];
+            
+            NSMutableDictionary *d7 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"Madagascar3",
+                                       @"keyframeURL" : @"Madagascar3",
+                                       @"title" : @"MADAGASCAR 3: EUROPE'S MOST WANTED",
+                                       @"subtitle" : @"TRAILER",
+                                       @"totalPacks" : @158,
+                                       @"totalRocks" : @323,
+                                       @"packedByUser" : @FALSE,
+                                       @"rockedByUser" : @FALSE}];
+            
+            NSMutableDictionary *d8 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"MonstersUniversity",
+                                       @"keyframeURL" : @"MonstersUniversity",
+                                       @"title" : @"MONSTERS UNIVERSITY",
+                                       @"subtitle" : @"TRAILER",
+                                       @"totalPacks" : @110,
+                                       @"totalRocks" : @245,
+                                       @"packedByUser" : @FALSE,
+                                       @"rockedByUser" : @TRUE}];
+            
+            NSMutableDictionary *d9 = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{@"videoURL" : @"NikeFootball",
+                                       @"keyframeURL" : @"NikeFootball",
+                                       @"title" : @"NIKE FOOTBALL: MERCURIAL VAPOR VIII",
+                                       @"subtitle" : @"CRISTIANO RONALDO VS RAFA NADAL",
+                                       @"totalPacks" : @883,
+                                       @"totalRocks" : @653,
+                                       @"packedByUser" : @TRUE,
+                                       @"rockedByUser" : @FALSE}];
+            
+            NSMutableDictionary *d10 = [NSMutableDictionary dictionaryWithDictionary:
+                                        @{@"videoURL" : @"OneDirection",
+                                        @"keyframeURL" : @"OneDirection",
+                                        @"title" : @"ONE DIRECTION",
+                                        @"subtitle" : @"LIVE WHILE WE'RE YOUNG",
+                                        @"totalPacks" : @101,
+                                        @"totalRocks" : @121,
+                                        @"packedByUser" : @FALSE,
+                                        @"rockedByUser" : @FALSE}];
+            
+            NSMutableDictionary *d11 = [NSMutableDictionary dictionaryWithDictionary:
+                                        @{@"videoURL" : @"TheDarkKnightRises",
+                                        @"keyframeURL" : @"TheDarkKnightRises",
+                                        @"title" : @"THE DARK KNIGHT RISES",
+                                        @"subtitle" : @"TRAILER",
+                                        @"totalRocks" : @334,
+                                        @"rockItNumber" : @271,
+                                        @"packedByUser" : @TRUE,
+                                        @"rockedByUser" : @TRUE}];
+            
+            NSMutableDictionary *d12 = [NSMutableDictionary dictionaryWithDictionary:
+                                        @{@"videoURL" : @"TheLionKing",
+                                        @"keyframeURL" : @"TheLionKing",
+                                        @"title" : @"THE LION KING",
+                                        @"subtitle" : @"MOVIE",
+                                        @"totalPacks" : @646,
+                                        @"totalRocks" : @978,
+                                        @"packedByUser" : @FALSE,
+                                        @"rockedByUser" : @FALSE}];
+            
+            self.thumbnailDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
+            self.videoDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
+            
+            // Now create the NSManaged Video objects corresponding to these details
+            for (NSDictionary *videoDetailsDictionary in self.videoDetailsArray)
+            {           
+                Video *video = (Video *)[[NSManagedObject alloc] initWithEntity: videoEntity
+                                                   insertIntoManagedObjectContext: self.managedObjectContext];
+                
+                video.videoURL = [videoDetailsDictionary objectForKey: @"videoURL"];
+                video.keyframeURL = [videoDetailsDictionary objectForKey: @"keyframeURL"];
+                video.title = [videoDetailsDictionary objectForKey: @"title"];
+                video.subtitle = [videoDetailsDictionary objectForKey: @"subtitle"];
+                video.packedByUser = [videoDetailsDictionary objectForKey: @"packedByUser"];
+                video.rockedByUser = [videoDetailsDictionary objectForKey: @"rockedByUser"];
+                video.totalPacks = [videoDetailsDictionary objectForKey: @"totalPacks"];
+                video.totalRocks = [videoDetailsDictionary objectForKey: @"totalRocks"];
+            }
+            
+            // Now we have created all our Video objects, save them...
+            if (![self.managedObjectContext save: &error])
+            {
+                NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+                
+                if ([detailedErrors count] > 0)
+                {
+                    for(NSError* detailedError in detailedErrors)
+                    {
+                        NSLog(@" DetailedError: %@", [detailedError userInfo]);
+                    }
+                }
+                
+                // Bail out if save failed
+                error = [NSError errorWithDomain: NSURLErrorDomain
+                                            code: NSURLErrorCannotDecodeContentData
+                                        userInfo: nil];
+                
+                @throw NSGenericException;
+            }
+
+        }
     }
     
     return self;
@@ -197,20 +275,20 @@
         self.downloadEngine = [[SYNVideoDownloadEngine alloc] initWithHostName: @"rockpack.discover.video.s3.amazonaws.com"
                                                             customHeaderFields: nil];
         
-        self.progressArray = [[NSMutableArray alloc] initWithCapacity: self.thumbnailDetailsArray.count];
+        self.progressArray = [[NSMutableArray alloc] initWithCapacity: self.videoDetailsArray.count];
         
         
                 // Initialise percentage array
-        for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+        for (int videoFileIndex = 0; videoFileIndex < self.videoDetailsArray.count; videoFileIndex++)
         {
             [self.progressArray addObject: [NSNumber numberWithDouble: 0.0f]];
         }
         
         __block int numberDownloaded = 0;
              
-        for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+        for (int videoFileIndex = 0; videoFileIndex < self.videoDetailsArray.count; videoFileIndex++)
         {        
-            NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: videoFileIndex];
+            NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: videoFileIndex];
             NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
             
             NSString *downloadPath = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
@@ -230,7 +308,7 @@
             
             [self.downloadOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
              {
-                 if (++numberDownloaded == self.thumbnailDetailsArray.count)
+                 if (++numberDownloaded == self.videoDetailsArray.count)
                  {
                      [self.HUD hide: NO];
                      
@@ -256,20 +334,20 @@
 {
     double cumulativeProgress = 0.0f;
     
-    for (int videoFileIndex = 0; videoFileIndex < self.thumbnailDetailsArray.count; videoFileIndex++)
+    for (int videoFileIndex = 0; videoFileIndex < self.videoDetailsArray.count; videoFileIndex++)
     {
         NSNumber *progress = [self.progressArray objectAtIndex: videoFileIndex];
         cumulativeProgress += progress.doubleValue;
     }
     
-    self.HUD.progress = cumulativeProgress / (double) self.thumbnailDetailsArray.count;
+    self.HUD.progress = cumulativeProgress / (double) self.videoDetailsArray.count;
 }
 
 
 - (NSURL *) videoURLForIndex: (int) index
                   withOffset: (int) offset
 {
-    NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
+    NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
     NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
     
     NSString *path = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
@@ -278,5 +356,7 @@
     
     return videoURL;
 }
+
+
 
 @end

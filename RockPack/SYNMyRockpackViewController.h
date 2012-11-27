@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNAbstractViewController.h"
 
-@interface SYNMyRockpackViewController : UIViewController <UICollectionViewDataSource,
-                                                           UICollectionViewDelegateFlowLayout,
-                                                           UIScrollViewDelegate>
+@interface SYNMyRockpackViewController : SYNAbstractViewController <UICollectionViewDataSource,
+                                                                    UICollectionViewDelegateFlowLayout,
+                                                                    UIScrollViewDelegate>
 
 @end

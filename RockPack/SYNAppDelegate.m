@@ -11,7 +11,6 @@
 #import "SYNBottomTabViewController.h"
 #import "TestFlight.h"
 #import "UncaughtExceptionHandler.h"
-#import <CoreData/CoreData.h>
 
 @implementation SYNAppDelegate
 

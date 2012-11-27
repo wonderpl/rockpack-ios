@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNAbstractViewController.h"
 
-@interface SYNBottomTabViewController : UIViewController <UIGestureRecognizerDelegate,
-                                                          UITextViewDelegate>
+@interface SYNBottomTabViewController : SYNAbstractViewController <UIGestureRecognizerDelegate,
+                                                                   UITextViewDelegate>
 
 @end
