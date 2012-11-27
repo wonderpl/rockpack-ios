@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Channel" syncable="YES">
+        <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="packedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalPacks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalRocks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
+    </entity>
+    <entity name="Video" syncable="YES">
+        <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="packedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="rockedByUser" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalPacks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalRocks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="videoURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Channel" inverseName="videos" inverseEntity="Channel" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="Channel" positionX="160" positionY="192" width="128" height="165"/>
+    </elements>
+</model>
