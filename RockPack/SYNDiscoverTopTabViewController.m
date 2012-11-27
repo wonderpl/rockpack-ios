@@ -27,9 +27,7 @@
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) CGPoint initialDragCenter;
-@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
-@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellDeleteButton;
 @property (nonatomic, strong) IBOutlet UIButton *packItButton;
@@ -51,6 +49,8 @@
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
+@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) NSMutableArray *imageWell;
 @property (nonatomic, strong) NSMutableArray *selections;

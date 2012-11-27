@@ -423,6 +423,8 @@
 		01E427E51664DF21009B941F /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427E41664DF21009B941F /* Channel.m */; };
 		01E427F01664EE52009B941F /* _Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427ED1664EE52009B941F /* _Channel.m */; };
 		01E427F11664EE52009B941F /* _Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427EF1664EE52009B941F /* _Video.m */; };
+		01E427F7166551F7009B941F /* SYNMyRockPackMovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427F5166551F6009B941F /* SYNMyRockPackMovieViewController.m */; };
+		01E427F8166551F7009B941F /* SYNMyRockPackMovieViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E427F6166551F6009B941F /* SYNMyRockPackMovieViewController.xib */; };
 		01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */; };
 		01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
@@ -929,6 +931,9 @@
 		01E427ED1664EE52009B941F /* _Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Channel.m; sourceTree = "<group>"; };
 		01E427EE1664EE52009B941F /* _Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Video.h; sourceTree = "<group>"; };
 		01E427EF1664EE52009B941F /* _Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Video.m; sourceTree = "<group>"; };
+		01E427F4166551F6009B941F /* SYNMyRockPackMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockPackMovieViewController.h; sourceTree = "<group>"; };
+		01E427F5166551F6009B941F /* SYNMyRockPackMovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockPackMovieViewController.m; sourceTree = "<group>"; };
+		01E427F6166551F6009B941F /* SYNMyRockPackMovieViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockPackMovieViewController.xib; sourceTree = "<group>"; };
 		01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackViewController.h; sourceTree = "<group>"; };
 		01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackViewController.m; sourceTree = "<group>"; };
 		01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackViewController.xib; sourceTree = "<group>"; };
@@ -1774,6 +1779,9 @@
 				01982546162A203600216900 /* SYNMyRockpackDetailViewController.h */,
 				01982547162A203600216900 /* SYNMyRockackDetailViewController.m */,
 				01982548162A203600216900 /* SYNMyRockackDetailViewController.xib */,
+				01E427F4166551F6009B941F /* SYNMyRockPackMovieViewController.h */,
+				01E427F5166551F6009B941F /* SYNMyRockPackMovieViewController.m */,
+				01E427F6166551F6009B941F /* SYNMyRockPackMovieViewController.xib */,
 			);
 			name = "My Rockpack";
 			sourceTree = "<group>";
@@ -2429,6 +2437,7 @@
 				01E98DAC165C39050079FD7A /* CardHarry.png in Resources */,
 				01E98DAD165C39050079FD7A /* CardHarry@2x.png in Resources */,
 				01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */,
+				01E427F8166551F7009B941F /* SYNMyRockPackMovieViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2512,6 +2521,7 @@
 				01E427E51664DF21009B941F /* Channel.m in Sources */,
 				01E427F01664EE52009B941F /* _Channel.m in Sources */,
 				01E427F11664EE52009B941F /* _Video.m in Sources */,
+				01E427F7166551F7009B941F /* SYNMyRockPackMovieViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

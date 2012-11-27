@@ -6,10 +6,11 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "SYNChannelThumbnailCell.h"
+#import "SYNMyRockPackMovieViewController.h"
 #import "SYNMyRockpackDetailViewController.h"
 #import "SYNMyRockpackViewController.h"
 #import "SYNSwitch.h"
-#import "SYNChannelThumbnailCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
@@ -212,7 +213,28 @@
 {
     if (cv == self.rockedVideoThumbnailCollection)
     {
-//        [self transitionToItemAtIndexPath: indexPath];
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        
+        SYNMyRockPackMovieViewController *movieController = [[SYNMyRockPackMovieViewController alloc] initWithVideoURL: video.localVideoURL];
+        
+        movieController.view.alpha = 0.0f;
+        
+        [self.navigationController pushViewController: movieController
+                                             animated: NO];
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Contract thumbnail view
+             self.view.alpha = 0.0f;
+             movieController.view.alpha = 1.0f;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
     }
     else
     {
