@@ -188,8 +188,8 @@
                                         @"keyframeURL" : @"TheDarkKnightRises",
                                         @"title" : @"THE DARK KNIGHT RISES",
                                         @"subtitle" : @"TRAILER",
-                                        @"totalRocks" : @334,
-                                        @"rockItNumber" : @271,
+                                        @"totalPacks" : @334,
+                                        @"totalRocks" : @271,
                                         @"packedByUser" : @TRUE,
                                         @"rockedByUser" : @TRUE}];
             

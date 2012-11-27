@@ -12,9 +12,6 @@
 
 @interface SYNAbstractViewController ()
 
-// We don't need to retain this as it is already retained by the app delegate
-@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 @end
 
 @implementation SYNAbstractViewController
@@ -22,15 +19,46 @@
 // Need to explicitly synthesise these as we are using the real ivars below
 @synthesize managedObjectContext = _managedObjectContext;
 
+// Single cached MOC for all the view controllers
 - (NSManagedObjectContext *) managedObjectContext
 {
-	if (!_managedObjectContext)
-	{
-		SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-		self.managedObjectContext = delegate.managedObjectContext;
-	}
+    static dispatch_once_t onceQueue;
+    static NSManagedObjectContext *managedObjectContext = nil;
     
-    return _managedObjectContext;
+    dispatch_once(&onceQueue, ^
+                  {
+                      SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+                      managedObjectContext = delegate.managedObjectContext;
+                  });
+    
+    return managedObjectContext;
+}
+
+
+// Helper method: Save the current DB state
+- (void) saveDB
+{
+    NSError *error = nil;
+    
+    if (![self.managedObjectContext save: &error])
+    {
+        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+        
+        if ([detailedErrors count] > 0)
+        {
+            for(NSError* detailedError in detailedErrors)
+            {
+                NSLog(@" DetailedError: %@", [detailedError userInfo]);
+            }
+        }
+        
+        // Bail out if save failed
+        error = [NSError errorWithDomain: NSURLErrorDomain
+                                    code: NSCoreDataError
+                                userInfo: nil];
+        
+        @throw error;
+    }  
 }
 
 @end

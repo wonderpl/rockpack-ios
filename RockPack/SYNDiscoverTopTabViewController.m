@@ -479,7 +479,6 @@
 }
 
 
-
 - (IBAction) touchThumbnailAddItButton: (UIButton *) addItButton
 {
     UIView *v = addItButton.superview.superview;
@@ -688,14 +687,12 @@
                     forControlEvents: UIControlEventTouchUpInside];
         
         [cell.addItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailRockItButton:)
+                                 action: @selector(touchThumbnailAddItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
 		
 		[cell.addItButton addTarget: self
                               action: @selector(touchThumbnailAddItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
-        
-        
         
         return cell;
     }

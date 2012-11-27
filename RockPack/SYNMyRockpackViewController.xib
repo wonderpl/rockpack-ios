@@ -205,7 +205,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<object class="NSColor" key="IBUIBackgroundColor" id="275901875">
+						<object class="NSColor" key="IBUIBackgroundColor" id="522286806">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
@@ -217,7 +217,11 @@
 						<float key="IBUIMaximumZoomScale">0.0</float>
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="1073670732">
 							<reference key="IBUICollectionView" ref="428274017"/>
-							<string key="IBUIItemSize">{256, 246}</string>
+							<string key="IBUIItemSize">{336, 192}</string>
+							<double key="IBUISectionInset.top">10</double>
+							<double key="IBUISectionInset.bottom">0.0</double>
+							<double key="IBUISectionInset.left">6</double>
+							<double key="IBUISectionInset.right">6</double>
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
@@ -226,7 +230,7 @@
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="644842173"/>
-				<reference key="IBUIBackgroundColor" ref="275901875"/>
+				<reference key="IBUIBackgroundColor" ref="522286806"/>
 				<bool key="IBUIAutoresizesSubviews">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -279,6 +283,30 @@
 						<reference key="destination" ref="631227373"/>
 					</object>
 					<int key="connectionID">55</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">rockedVideoThumbnailCollection</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="428274017"/>
+					</object>
+					<int key="connectionID">58</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="428274017"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">56</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="428274017"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">57</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -383,31 +411,47 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">55</int>
+			<int key="maxID">58</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
-					<string key="className">SYNMyRockpackViewController</string>
+					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">transition:</string>
-						<string key="NS.object.0">id</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNAbstractViewController.h</string>
 					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">transition:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNMyRockpackViewController</string>
+					<string key="superclassName">SYNAbstractViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="toggleThumbnailPackItButton:">UIButton</string>
+						<string key="toggleThumbnailRockItButton:">UIButton</string>
+						<string key="transition:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="toggleThumbnailPackItButton:">
+							<string key="name">toggleThumbnailPackItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="toggleThumbnailRockItButton:">
+							<string key="name">toggleThumbnailRockItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="transition:">
 							<string key="name">transition:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="avatarView">UIView</string>
 						<string key="backButton">UIButton</string>
 						<string key="cardsView">UIView</string>
 						<string key="channelLabel">UILabel</string>
-						<string key="collectionView">UICollectionView</string>
 						<string key="packedVideosLabel">UILabel</string>
+						<string key="rockedVideoThumbnailCollection">UICollectionView</string>
 						<string key="toggleSwitch">SYNSwitch</string>
 						<string key="userAvatar">UIImageView</string>
 						<string key="userName">UILabel</string>
@@ -429,13 +473,13 @@
 							<string key="name">channelLabel</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="collectionView">
-							<string key="name">collectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="packedVideosLabel">
 							<string key="name">packedVideosLabel</string>
 							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="rockedVideoThumbnailCollection">
+							<string key="name">rockedVideoThumbnailCollection</string>
+							<string key="candidateClassName">UICollectionView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="toggleSwitch">
 							<string key="name">toggleSwitch</string>

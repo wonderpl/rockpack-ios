@@ -12,6 +12,12 @@
 
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate>
 
-@property (readonly, weak, nonatomic) NSManagedObjectContext *managedObjectContext;
+// Public properties
+
+@property (readonly) NSManagedObjectContext *managedObjectContext;
+
+// Public methods
+
+- (void) saveDB;
 
 @end

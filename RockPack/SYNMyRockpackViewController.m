@@ -6,34 +6,38 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNMyRockpackViewController.h"
 #import "SYNMyRockpackDetailViewController.h"
+#import "SYNMyRockpackViewController.h"
 #import "SYNSwitch.h"
+#import "SYNChannelThumbnailCell.h"
 #import "UIFont+SYNFont.h"
+#import "Video.h"
 
 @interface SYNMyRockpackViewController ()
 
+@property (nonatomic, assign) CGPoint originalOrigin;
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) IBOutlet SYNSwitch *toggleSwitch;
-@property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) IBOutlet UIButton *backButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *rockedVideoThumbnailCollection;
+@property (nonatomic, strong) IBOutlet UIImageView *userAvatar;
+@property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *packedVideosLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userName;
-@property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UIView *avatarView;
 @property (nonatomic, strong) IBOutlet UIView *cardsView;
-//@property (nonatomic, strong) SYNWallpacksDB *wallpacksDB;
+@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) UIColor *darkSwitchColor;
 @property (nonatomic, strong) UIColor *lightSwitchColor;
-@property (nonatomic, assign) CGPoint originalOrigin;
-@property (nonatomic, strong) IBOutlet UIButton *backButton;
-@property (nonatomic, strong) IBOutlet UIImageView *userAvatar;
 
 @end
 
 @implementation SYNMyRockpackViewController
 
-- (void)viewDidLoad
+@synthesize videoFetchedResultsController = _videoFetchedResultsController;
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
@@ -57,16 +61,12 @@
     self.channelLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
     self.userAvatar.image = [UIImage imageNamed: @"EddieTaylor.png"];
     
-    // Init collection view
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNWallpackThumbnailCell"
+    // Init collection view    
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.collectionView registerNib: thumbnailCellNib
-         forCellWithReuseIdentifier: @"ChannelWallpackCell"];
-    
-    // Cache the channels DB to make the code clearer
-//    self.wallpacksDB = [SYNWallpacksDB sharedWallpacksDBManager];
-
+    [self.rockedVideoThumbnailCollection registerNib: thumbnailCellNib
+                          forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -74,6 +74,154 @@
     [super viewWillAppear: animated];
 
 }
+
+
+#pragma mark - CoreData support
+
+- (NSFetchedResultsController *) videoFetchedResultsController
+{
+    // Return cached version if we have already created one
+    if (_videoFetchedResultsController != nil)
+    {
+        return _videoFetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
+                                              inManagedObjectContext: self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
+    
+    NSArray *sortDescriptors = @[sortDescriptor];
+    [fetchRequest setSortDescriptors: sortDescriptors];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"packedByUser == TRUE"];
+    [fetchRequest setPredicate: predicate];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                                  managedObjectContext: self.managedObjectContext
+                                                                                                    sectionNameKeyPath: nil
+                                                                                                             cacheName: nil];
+    newFetchedResultsController.delegate = self;
+    self.videoFetchedResultsController = newFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![_videoFetchedResultsController performFetch: &error])
+    {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _videoFetchedResultsController;
+}
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    [self.rockedVideoThumbnailCollection reloadData];
+}
+
+#pragma mark - Collection view support
+
+- (NSInteger) collectionView: (UICollectionView *) cv
+      numberOfItemsInSection: (NSInteger) section
+{
+    if (cv == self.rockedVideoThumbnailCollection)
+    {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+        return [sectionInfo numberOfObjects];
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+{
+    if (cv == self.rockedVideoThumbnailCollection)
+    {
+        return self.videoFetchedResultsController.sections.count;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    if (cv == self.rockedVideoThumbnailCollection)
+    {
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        
+        SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
+                                                                      forIndexPath: indexPath];
+        
+        cell.imageView.image = video.keyframeImage;
+        
+        cell.maintitle.text = video.title;
+        
+        cell.subtitle.text = video.subtitle;
+        
+        cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
+        
+        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+        
+        cell.packItButton.selected = video.packedByUserValue;
+        
+        cell.rockItButton.selected = video.rockedByUserValue;
+        
+        // Wire the Done button up to the correct method in the sign up controller
+        [cell.packItButton removeTarget: nil
+                                 action: @selector(toggleThumbnailPackItButton:)
+                       forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.packItButton addTarget: self
+                              action: @selector(toggleThumbnailPackItButton:)
+                    forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.rockItButton removeTarget: nil
+                                 action: @selector(toggleThumbnailRockItButton:)
+                       forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.rockItButton addTarget: self
+                              action: @selector(toggleThumbnailRockItButton:)
+                    forControlEvents: UIControlEventTouchUpInside];
+        
+        return cell;
+
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+
+- (void) collectionView: (UICollectionView *) cv
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    if (cv == self.rockedVideoThumbnailCollection)
+    {
+//        [self transitionToItemAtIndexPath: indexPath];
+    }
+    else
+    {
+        
+    }
+}
+
+
+#pragma mark - UI Stuff
 
 - (void) switchChanged: (id)sender
               forEvent: (UIEvent *) event
@@ -83,21 +231,17 @@
         // Set wallpack store label to light and my wallpacks to dark
         self.packedVideosLabel.textColor = self.darkSwitchColor;
         self.channelLabel.textColor = self.lightSwitchColor;
-        [self.collectionView moveItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0] toIndexPath: [NSIndexPath indexPathForRow: 4 inSection: 0]];
-        [self.collectionView moveItemAtIndexPath: [NSIndexPath indexPathForRow: 7 inSection: 0] toIndexPath: [NSIndexPath indexPathForRow: 2 inSection: 0]];
     }
     else
     {
         // Set wallpack store label to light and my wallpacks to dark
         self.packedVideosLabel.textColor = self.lightSwitchColor;
         self.channelLabel.textColor = self.darkSwitchColor;
-        [self.collectionView moveItemAtIndexPath: [NSIndexPath indexPathForRow: 2 inSection: 0] toIndexPath: [NSIndexPath indexPathForRow: 7 inSection: 0]];
-        [self.collectionView moveItemAtIndexPath: [NSIndexPath indexPathForRow: 4 inSection: 0] toIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }
 }
 
 
-- (IBAction)transition:(id)sender
+- (IBAction) transition: (id) sender
 {
     SYNMyRockpackDetailViewController *vc = [[SYNMyRockpackDetailViewController alloc] init];
     
@@ -120,4 +264,96 @@
      {
      }];
 }
+
+- (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (video.rockedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        video.rockedByUserValue = FALSE;
+        video.totalRocksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        video.rockedByUserValue = TRUE;
+        video.totalRocksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+- (void) togglePackItAtIndex: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (video.packedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        video.packedByUserValue = FALSE;
+        video.totalPacksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        video.packedByUserValue = TRUE;
+        video.totalPacksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+// Buttons activated from scrolling list of thumbnails
+- (IBAction) toggleThumbnailRockItButton: (UIButton *) rockItButton
+{
+    // Get to cell it self (from button subview)
+    UIView *v = rockItButton.superview.superview;
+    NSIndexPath *indexPath = [self.rockedVideoThumbnailCollection indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (!indexPath)
+    {
+        return;
+    }
+    
+    [self toggleRockItAtIndex: indexPath];
+    
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.rockedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
+    
+    cell.rockItButton.selected = video.rockedByUserValue;
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+    
+//    [self.rockedVideoThumbnailCollection reloadData];
+}
+
+- (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
+{
+    UIView *v = packItButton.superview.superview;
+    NSIndexPath *indexPath = [self.rockedVideoThumbnailCollection indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (!indexPath)
+    {
+        return;
+    }
+    
+    [self togglePackItAtIndex: indexPath];
+    
+    // We don't need to update the UI as this cell can only be deselected
+    // (Otherwise a race-condition will occur if deleting the last cell)
+//    
+//    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+//    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.rockedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
+//    
+//    cell.packItButton.selected = video.packedByUserValue;
+//    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
+    
+//    [self.rockedVideoThumbnailCollection reloadData];
+}
+
 @end
