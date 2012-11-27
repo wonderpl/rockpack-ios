@@ -6,37 +6,40 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDB.h"
-#import "SYNVideoDB.h"
 #import "SYNChannelsTopTabViewController.h"
-#import "UIFont+SYNFont.h"
 #import "SYNMyRockpackCell.h"
-
-#import "MBProgressHUD.h"
+#import "SYNVideoDB.h"
+#import "UIFont+SYNFont.h"
+#import "Video.h"
 
 @interface SYNChannelsTopTabViewController ()
 
-@property (nonatomic, assign) int currentIndex;
-@property (nonatomic, assign, getter = isTopLevel) BOOL topLevel;
 @property (nonatomic, assign) BOOL userPinchedIn;
+@property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
-@property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
-@property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView2;
-@property (nonatomic, strong) IBOutlet UILabel *biogBody;
-@property (nonatomic, strong) IBOutlet UILabel *fullTitle;
+@property (nonatomic, assign, getter = isTopLevel) BOOL topLevel;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
+@property (nonatomic, strong) IBOutlet UICollectionView *sideVideoThumbnailCollection;
 @property (nonatomic, strong) IBOutlet UIImageView *wallpaper;
+@property (nonatomic, strong) IBOutlet UILabel *biogBody;
 @property (nonatomic, strong) IBOutlet UILabel *biogTitle;
+@property (nonatomic, strong) IBOutlet UILabel *fullTitle;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
 @property (nonatomic, strong) IBOutlet UIView *drillDownView;
+@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
+@property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) SYNChannelsDB *channelsDB;
 @property (nonatomic, strong) SYNVideoDB *videoDB;
 @property (nonatomic, strong) UIImageView *pinchedView;
-@property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 
 @end
 
 @implementation SYNChannelsTopTabViewController
+
+@synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -46,13 +49,13 @@
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.thumbnailView registerNib: thumbnailCellNib
+    [self.channelThumbnailCollection registerNib: thumbnailCellNib
          forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
     
     UINib *thumbnailCellNib2 = [UINib nibWithNibName: @"SYNMyRockpackCell"
                                              bundle: nil];
     
-    [self.thumbnailView2 registerNib: thumbnailCellNib2
+    [self.sideVideoThumbnailCollection registerNib: thumbnailCellNib2
          forCellWithReuseIdentifier: @"MyRockpackCell"];
     
     // Cache the channels DB to make the code clearer
@@ -77,13 +80,14 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    if (view == self.thumbnailView)
+    if (view == self.channelThumbnailCollection)
     {
         return self.channelsDB.numberOfThumbnails;
     }
     else
     {
-        return self.channelsDB.numberOfThumbnails;
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+        return [sectionInfo numberOfObjects];
     }
 }
 
@@ -95,7 +99,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.thumbnailView)
+    if (cv == self.channelThumbnailCollection)
     {
         SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
                                                                forIndexPath: indexPath];
@@ -144,9 +148,8 @@
         SYNMyRockpackCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"MyRockpackCell"
                                                                 forIndexPath: indexPath];
         
-//        UIImage *image = [self.videoDB thumbnailForIndex: indexPath.row
-//                                              withOffset: self.currentOffset];
-//        cell.imageView.image = image;
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        cell.imageView.image = video.keyframeImage;
         
         return cell;
     }
@@ -156,7 +159,7 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.thumbnailView)
+    if (cv == self.channelThumbnailCollection)
     {
         [self transitionToItemAtIndexPath: indexPath];
     }
@@ -187,7 +190,7 @@
      {
          // Contract thumbnail view
          self.drillDownView.alpha = 1.0f;
-         self.thumbnailView.alpha = 0.0f;
+         self.channelThumbnailCollection.alpha = 0.0f;
          self.topTabView.alpha = 0.0f;
          self.topTabHighlightedView.alpha = 0.0f;
          self.pinchedView.alpha = 0.0f;
@@ -209,7 +212,7 @@
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
     
     if (!indexPath)
     {
@@ -243,7 +246,7 @@
                          forIndex: indexPath.row
                        withOffset: self.currentOffset];
     
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = ([self.channelsDB rockItForIndex: indexPath.row
                                                     withOffset: self.currentOffset]) ? TRUE : FALSE;
@@ -255,7 +258,7 @@
 - (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
 {
     UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
     
     int number = [self.channelsDB packItNumberForIndex: indexPath.row
                                          withOffset: self.currentOffset];
@@ -284,7 +287,7 @@
                          forIndex: indexPath.row
                        withOffset: self.currentOffset];
     
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.packItButton.selected = ([self.channelsDB packItForIndex: indexPath.row
                                                     withOffset: self.currentOffset]) ? TRUE : FALSE;
@@ -307,7 +310,7 @@
      {
          // Contract thumbnail view
          self.drillDownView.alpha = 0.0f;
-         self.thumbnailView.alpha = 1.0f;
+         self.channelThumbnailCollection.alpha = 1.0f;
          self.topTabView.alpha = 1.0f;
          self.topTabHighlightedView.alpha = 1.0f;
          
@@ -327,7 +330,7 @@
         
         NSLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: [sender locationInView: self.thumbnailView]];
+        NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollection]];
         
         if (!indexPath)
         {
@@ -338,14 +341,14 @@
         {
             self.pinchedIndexPath = indexPath;
             
-            SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+            SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
             
             // Get the various frames we need to calculate the actual position
             CGRect imageViewFrame = channelCell.imageView.frame;
             CGRect viewFrame = channelCell.superview.frame;
             CGRect cellFrame = channelCell.frame;
             
-            CGPoint offset = self.thumbnailView.contentOffset;
+            CGPoint offset = self.channelThumbnailCollection.contentOffset;
             
             // Now add them together to get the real pos in the top view
             imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
@@ -405,6 +408,52 @@
         NSLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
+}
+
+
+#pragma mark - Core Data Support
+
+- (NSFetchedResultsController *) videoFetchedResultsController
+{
+    // Return cached version if we have already created one
+    if (_videoFetchedResultsController != nil)
+    {
+        return _videoFetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
+                                              inManagedObjectContext: self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
+    
+    NSArray *sortDescriptors = @[sortDescriptor];
+    
+    [fetchRequest setSortDescriptors: sortDescriptors];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                                  managedObjectContext: self.managedObjectContext
+                                                                                                    sectionNameKeyPath: nil
+                                                                                                             cacheName: @"Discover"];
+    newFetchedResultsController.delegate = self;
+    self.videoFetchedResultsController = newFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![_videoFetchedResultsController performFetch: &error])
+    {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _videoFetchedResultsController;
 }
 
 @end

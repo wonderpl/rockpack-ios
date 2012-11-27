@@ -6,17 +6,17 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNThumbnailCell.h"
+#import "SYNVideoThumbnailCell.h"
 #import "UIFont+SYNFont.h"
 
-@implementation SYNThumbnailCell
+@implementation SYNVideoThumbnailCell
 
 - (id) initWithFrame: (CGRect) frame
 {
     if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNThumbnailCell"
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNVideoThumbnailCell"
                                                               owner: self
                                                             options: nil];
         

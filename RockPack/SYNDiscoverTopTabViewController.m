@@ -14,7 +14,7 @@
 #import "SYNImageWellCell.h"
 #import "SYNSelection.h"
 #import "SYNSelectionDB.h"
-#import "SYNThumbnailCell.h"
+#import "SYNVideoThumbnailCell.h"
 #import "SYNVideoDB.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
 #import "SYNWallpackCarouselCell.h"
@@ -27,8 +27,6 @@
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) CGPoint initialDragCenter;
-//@property (nonatomic, assign) int currentIndex;
-//@property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
@@ -84,7 +82,7 @@
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
     // Init collection view
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNThumbnailCell"
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
                                              bundle: nil];
 
     [self.thumbnailView registerNib: thumbnailCellNib
@@ -123,7 +121,7 @@
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
 }
 
-// This pretty much uses the latest example code, so works fine
+
 - (NSFetchedResultsController *) videoFetchedResultsController
 {
     // Return cached version if we have already created one
@@ -137,9 +135,6 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
                                               inManagedObjectContext: self.managedObjectContext];
     [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-//    [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
@@ -456,7 +451,7 @@
     [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = video.rockedByUserValue;
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
@@ -477,7 +472,7 @@
     [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
     
     cell.packItButton.selected = video.packedByUserValue;
     cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
@@ -492,7 +487,7 @@
     
 
     
-    SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
     
     cell.packItButton.enabled = FALSE;
     
@@ -658,7 +653,7 @@
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+        SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                forIndexPath: indexPath];
         
         cell.imageView.image = video.keyframeImage;
