@@ -19,6 +19,7 @@
 #import "SYNWallpackCarouseHorizontallLayout.h"
 #import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
+#import "Video.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface SYNDiscoverTopTabViewController ()
@@ -26,8 +27,9 @@
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) CGPoint initialDragCenter;
-@property (nonatomic, assign) int currentIndex;
-@property (nonatomic, assign) int currentOffset;
+//@property (nonatomic, assign) int currentIndex;
+//@property (nonatomic, assign) int currentOffset;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
@@ -116,8 +118,7 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     // Set the first video
-    [self setLargeVideoIndex: self.currentIndex
-                  withOffset: self.currentOffset];
+    [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
 }
@@ -170,18 +171,14 @@
 }
 
 
-
-- (void) setLargeVideoIndex: (int) index
-                 withOffset: (int) offset
+- (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath
 {
-    self.currentIndex = index;
-    self.currentOffset = offset;
+    self.currentIndexPath = indexPath;
     
-    [self updateLargeVideoDetailsForIndex: index
-                               withOffset: offset];
+    [self updateLargeVideoDetailsForIndexPath: indexPath];
     
-    NSURL *videoURL = [self.videoDB videoURLForIndex: index
-                                          withOffset: offset];
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    NSURL *videoURL = [NSURL URLWithString: video.videoURL];
     
     self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
     
@@ -198,6 +195,7 @@
     [self.mainVideoPlayer.view addGestureRecognizer: longPress];
     
     [self.mainVideoPlayer pause];
+    
 }
 
 
@@ -216,8 +214,8 @@
         CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
-        self.draggedView.image = [self.videoDB thumbnailForIndex: self.currentIndex
-                                                      withOffset: self.currentOffset];
+        
+        self.draggedView.image = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
@@ -273,6 +271,7 @@
     {
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: [sender locationInView: self.thumbnailView]];
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
         if (!indexPath)
         {
@@ -292,8 +291,7 @@
         CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
-        self.draggedView.image = [self.videoDB thumbnailForIndex: indexPath.row
-                                                      withOffset: self.currentOffset];
+        self.draggedView.image = video.keyframeImage;
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
@@ -322,8 +320,9 @@
         {
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
-            [self animateImageWellAdditionWithVideoForIndex: self.draggedIndexPath.row
-                                                 withOffset: self.currentOffset];
+
+            [self animateImageWellAdditionWithVideoForIndexPath: self.draggedIndexPath];
+
         }
         else
         {
@@ -345,32 +344,24 @@
 }
 
 
-- (void) updateLargeVideoDetailsForIndex: (int) index
-                              withOffset: (int) offset
+- (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
-    self.maintitle.text = [self.videoDB titleForIndex: index
-                                           withOffset: offset];
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.subtitle.text = [self.videoDB subtitleForIndex: index
-                                             withOffset: offset];
+    self.maintitle.text = video.title;
+    self.subtitle.text = video.subtitle;
     
-    [self updateLargeVideoRockPackForIndex: index
-                                withOffset: offset];
+    [self updateLargeVideoRockpackForIndexPath: indexPath];
 }
 
-- (void) updateLargeVideoRockPackForIndex: (int) index
-                               withOffset: (int) offset
-{    
-    self.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: index
-                                                                                        withOffset: offset]];
+- (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: index
-                                                                                        withOffset: offset]];
-    self.packItButton.selected = ([self.videoDB packItForIndex: index
-                                                    withOffset: offset]) ? TRUE : FALSE;
-    
-    self.rockItButton.selected = ([self.videoDB rockItForIndex: index
-                                                    withOffset: offset]) ? TRUE : FALSE;
+    self.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
+    self.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+    self.packItButton.selected = video.packedByUserValue;
+    self.rockItButton.selected = video.rockedByUserValue;
 }
 
 - (void) viewDidAppear: (BOOL) animated
@@ -386,83 +377,63 @@
     if (newSelectedIndex != NSNotFound)
     {
         [self highlightTab: newSelectedIndex];
-        self.currentOffset = newSelectedIndex;
         
-        [self setLargeVideoIndex: 0
-                      withOffset: self.currentOffset];
+        // We need to change the search criteria here to relect the change in genre
         
         [self.thumbnailView reloadData];
     }
 }
 
-- (IBAction) toggleLargeRockItButton: (id)sender
+- (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
 {
-    int number = [self.videoDB rockItNumberForIndex: self.currentIndex
-                                         withOffset: self.currentOffset];
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    BOOL isTrue = [self.videoDB rockItForIndex: self.currentIndex
-                                    withOffset: self.currentOffset];
-    
-    if (isTrue)
+    if (video.rockedByUserValue == TRUE)
     {
-        number--;
-        
-        [self.videoDB setRockIt: FALSE
-                       forIndex: self.currentIndex
-                     withOffset: self.currentOffset];
+        // Currently highlighted, so decrement
+        video.rockedByUserValue = FALSE;
+        video.totalRocksValue -= 1;
     }
     else
     {
-        number++;
-        
-        [self.videoDB setRockIt: TRUE
-                       forIndex: self.currentIndex
-                     withOffset: self.currentOffset];
+        // Currently highlighted, so increment
+        video.rockedByUserValue = TRUE;
+        video.totalRocksValue += 1;
     }
-    
-    [self.videoDB setRockItNumber: number
-                         forIndex: self.currentIndex
-                       withOffset: self.currentOffset];
+}
 
-    [self updateLargeVideoDetailsForIndex: self.currentIndex
-                               withOffset: self.currentOffset];
-    
+
+- (IBAction) toggleLargeRockItButton: (id)sender
+{
+    [self toggleRockItAtIndex: self.currentIndexPath];
+    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     [self.thumbnailView reloadData];
+}
+
+
+- (void) togglePackItAtIndex: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (video.packedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        video.packedByUserValue = FALSE;
+        video.totalPacksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        video.packedByUserValue = TRUE;
+        video.totalPacksValue += 1;
+    }
 }
 
 
 - (IBAction) toggleLargePackItButton: (id)sender
 {
-    int number = [self.videoDB packItNumberForIndex: self.currentIndex
-                                         withOffset: self.currentOffset];
-    
-    BOOL isTrue = [self.videoDB packItForIndex: self.currentIndex
-                                    withOffset: self.currentOffset];
-    
-    if (isTrue)
-    {
-        number--;
-        
-        [self.videoDB setPackIt: FALSE
-                       forIndex: self.currentIndex
-                     withOffset: self.currentOffset];
-    }
-    else
-    {
-        number++;
-        
-        [self.videoDB setPackIt: TRUE
-                       forIndex: self.currentIndex
-                     withOffset: self.currentOffset];
-    }
-    
-    [self.videoDB setPackItNumber: number
-                         forIndex: self.currentIndex
-                       withOffset: self.currentOffset];
-    
-    [self updateLargeVideoDetailsForIndex: self.currentIndex
-                               withOffset: self.currentOffset];
-    
+    [self togglePackItAtIndex: self.currentIndexPath];
+    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     [self.thumbnailView reloadData];
 }
 
@@ -475,48 +446,20 @@
     UIView *v = rockItButton.superview.superview;
     NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
     
+    // Bail if we don't have an index path
     if (!indexPath)
     {
         return;
     }
     
-    int number = [self.videoDB rockItNumberForIndex: indexPath.row
-                                         withOffset: self.currentOffset];
+    [self toggleRockItAtIndex: indexPath];
+    [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
     
-    BOOL isTrue = [self.videoDB rockItForIndex: indexPath.row
-                                    withOffset: self.currentOffset];
-    
-    if (isTrue)
-    {
-        number--;
-        
-        [self.videoDB setRockIt: FALSE
-                       forIndex: indexPath.row
-                     withOffset: self.currentOffset];
-    }
-    else
-    {
-        number++;
-        
-        [self.videoDB setRockIt: TRUE
-                       forIndex: indexPath.row
-                     withOffset: self.currentOffset];
-    }
-    
-    [self.videoDB setRockItNumber: number
-                         forIndex: indexPath.row
-                       withOffset: self.currentOffset];
-    
-    [self updateLargeVideoRockPackForIndex: self.currentIndex
-                                withOffset: self.currentOffset];
-    
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
     
-    cell.rockItButton.selected = ([self.videoDB rockItForIndex: indexPath.row
-                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
-    
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: indexPath.row
-                                                                                        withOffset: self.currentOffset]];
+    cell.rockItButton.selected = video.rockedByUserValue;
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
 - (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
@@ -524,43 +467,20 @@
     UIView *v = packItButton.superview.superview;
     NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
     
-    int number = [self.videoDB packItNumberForIndex: indexPath.row
-                                         withOffset: self.currentOffset];
-    
-    BOOL isTrue = [self.videoDB packItForIndex: indexPath.row
-                                    withOffset: self.currentOffset];
-    
-    if (isTrue)
+    // Bail if we don't have an index path
+    if (!indexPath)
     {
-        number--;
-        
-        [self.videoDB setPackIt: FALSE
-                       forIndex: indexPath.row
-                     withOffset: self.currentOffset];
-    }
-    else
-    {
-        number++;
-        
-        [self.videoDB setPackIt: TRUE
-                       forIndex: indexPath.row
-                     withOffset: self.currentOffset];
+        return;
     }
     
-    [self.videoDB setPackItNumber: number
-                         forIndex: indexPath.row
-                       withOffset: self.currentOffset];
-
-    [self updateLargeVideoRockPackForIndex: self.currentIndex
-                                withOffset: self.currentOffset];
+    [self togglePackItAtIndex: indexPath];
+    [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
     
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     SYNThumbnailCell *cell = (SYNThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
     
-    cell.packItButton.selected = ([self.videoDB packItForIndex: indexPath.row
-                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
-    
-    cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: indexPath.row
-                                                                                        withOffset: self.currentOffset]];
+    cell.packItButton.selected = video.packedByUserValue;
+    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
 }
 
 
@@ -576,8 +496,7 @@
     
     cell.packItButton.enabled = FALSE;
     
-    [self animateImageWellAdditionWithVideoForIndex: indexPath.row
-                                         withOffset: self.currentOffset];
+    [self animateImageWellAdditionWithVideoForIndexPath: indexPath];
 }
 
 #pragma mark - Large video view gesture handler
@@ -737,30 +656,24 @@
     }
     else if (cv == self.thumbnailView)
     {
-        NSManagedObject *object = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
         SYNThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                forIndexPath: indexPath];
         
-        cell.imageView.image = [self.videoDB thumbnailForIndex: indexPath.row
-                                                    withOffset: self.currentOffset];
+        cell.imageView.image = video.keyframeImage;
         
-        cell.maintitle.text = [self.videoDB titleForIndex: indexPath.row
-                                               withOffset: self.currentOffset];
+        cell.maintitle.text = video.title;
         
-        cell.subtitle.text = [self.videoDB subtitleForIndex: indexPath.row
-                                                 withOffset: self.currentOffset];
+        cell.subtitle.text = video.subtitle;
         
-        cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB packItNumberForIndex: indexPath.row
-                                                                                            withOffset: self.currentOffset]];
+        cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
         
-        cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.videoDB rockItNumberForIndex: indexPath.row
-                                                                                            withOffset: self.currentOffset]];
-        cell.packItButton.selected = ([self.videoDB packItForIndex: indexPath.row
-                                                        withOffset: self.currentOffset]) ? TRUE : FALSE;
+        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
         
-        cell.rockItButton.selected = ([self.videoDB rockItForIndex: indexPath.row
-                                                        withOffset: self.currentOffset]) ? TRUE : FALSE;
+        cell.packItButton.selected = video.packedByUserValue;
+        
+        cell.rockItButton.selected = video.rockedByUserValue;
         
         // Wire the Done button up to the correct method in the sign up controller
 		[cell.packItButton removeTarget: nil
@@ -820,10 +733,9 @@
             self.largeVideoViewExpanded = TRUE;
         }
 #endif
-        self.currentIndex = indexPath.row;
+        self.currentIndexPath = indexPath;
         
-        [self setLargeVideoIndex: self.currentIndex
-                      withOffset: self.currentOffset];
+        [self setLargeVideoToIndexPath: indexPath];
     }
     else
     {
@@ -836,12 +748,10 @@
 
 - (IBAction) addToImageWellFromLargeVideo: (id) sender
 {
-    [self animateImageWellAdditionWithVideoForIndex: self.currentIndex
-                                         withOffset: self.currentOffset];
+    [self animateImageWellAdditionWithVideoForIndexPath: self.currentIndexPath];
 }
 
-- (void) animateImageWellAdditionWithVideoForIndex: (int) index
-                                        withOffset: (int) offset
+- (void) animateImageWellAdditionWithVideoForIndexPath: (NSIndexPath *) indexPath
 {
 #ifdef SOUND_ENABLED
     // Play a suitable sound
@@ -875,14 +785,14 @@
          }];
     }
     
-    SYNSelection *selection = [[SYNSelection alloc] initWithIndex: index
-                                                        andOffset: offset];
+//    SYNSelection *selection = [[SYNSelection alloc] initWithIndex: index
+//                                                        andOffset: offset];
     
-    [self.selections addObject: selection];
+    [self.selections addObject: indexPath];
     
     // Add image at front
-    UIImage *image = [self.videoDB thumbnailForIndex: index
-                                          withOffset: offset];
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    UIImage *image = video.keyframeImage;
     
     [self.imageWell insertObject: image
                          atIndex: 0];

@@ -1,5 +1,9 @@
 #import "_Video.h"
 
 @interface Video : _Video {}
-// Custom logic goes here.
+
+
+// Returns keyframe image
+- (UIImage *) keyframeImage;
+
 @end

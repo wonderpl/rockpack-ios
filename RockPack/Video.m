@@ -10,6 +10,9 @@
 
 @implementation Video
 
-// Custom logic goes here.
+- (UIImage *) keyframeImage
+{
+    return [UIImage imageNamed: self.keyframeURL];
+}
 
 @end
