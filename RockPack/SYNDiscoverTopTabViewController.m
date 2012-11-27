@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "Channel.h"
 #import "NSObject+Blocks.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
@@ -898,8 +899,32 @@
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
-    self.selectionDB.selectionTitle = textField.text;
-    self.selectionDB.selections = self.selections;
+//    self.selectionDB.selectionTitle = textField.text;
+//    self.selectionDB.selections = self.selections;
+    
+    // Now create the a Channel that represents all of the selected video entries
+//    NSEntityDescription *channelEntity = [NSEntityDescription entityForName: @"Channel"
+//                                                     inManagedObjectContext: self.managedObjectContext];
+//    
+//    Channel *channel = (Channel *)[[NSManagedObject alloc] initWithEntity: channelEntity
+//                                           insertIntoManagedObjectContext: self.managedObjectContext];
+    
+    Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
+    
+    channel.title = textField.text;
+    channel.title = @"Entertainment";
+    channel.packedByUserValue = TRUE;
+    channel.rockedByUserValue = FALSE;
+    channel.totalPacks = 0;
+    channel.totalRocks = 0;
+    
+    for (NSIndexPath *indexPath in self.selections)
+    {
+        // Get video 
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+
+        [channel addVideosObject: video];
+    }
     
     [self.channelNameField resignFirstResponder];
     [self clearImageWell];
