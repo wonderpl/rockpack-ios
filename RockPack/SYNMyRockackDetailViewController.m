@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNMyRockPackViewController.h"
+#import "SYNMyRockPackDetailViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIColor+SYNColor.h"
 #import "SYNVideoDB.h"
@@ -14,7 +14,7 @@
 #import "SYNSelection.h"
 #import "SYNMyRockpackCell.h"
 
-@interface SYNMyRockPackViewController ()
+@interface SYNMyRockpackDetailViewController ()
 
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) NSArray *biogs;
@@ -36,7 +36,7 @@
 
 @end
 
-@implementation SYNMyRockPackViewController
+@implementation SYNMyRockpackDetailViewController
 
 - (void) viewDidLoad
 {

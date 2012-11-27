@@ -12,8 +12,19 @@
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 
+// Main app window
 @property (strong, nonatomic) UIWindow *window;
 
+// Support for Core Data
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+
+// Root view controller
 @property (strong, nonatomic) SYNBottomTabViewController *viewController;
+
+- (void) saveContext;
+- (NSURL *) applicationDocumentsDirectory;
 
 @end

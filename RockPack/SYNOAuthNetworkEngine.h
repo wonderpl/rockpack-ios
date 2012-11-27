@@ -9,6 +9,7 @@
 #import "MKNetworkEngine.h"
 
 typedef void (^SYNOAuth2CompletionBlock)(NSError *error);
+typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
 @interface SYNOAuthNetworkEngine : MKNetworkEngine
 

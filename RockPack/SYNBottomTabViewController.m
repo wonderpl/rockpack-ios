@@ -14,7 +14,7 @@
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
-#import "SYNMyRockPackViewController.h"
+#import "SYNMyRockpackViewController.h"
 #import "SYNVideoDownloadEngine.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "UIFont+SYNFont.h"
@@ -67,11 +67,15 @@
     SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
     SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
-    SYNMyRockPackViewController *myRockPackViewController = [[SYNMyRockPackViewController alloc] init];
+//    SYNMyRockPackDetailViewController *myRockPackViewController = [[SYNMyRockPackDetailViewController alloc] init];
+    
+    SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];   
+    
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
     
     // Using new array syntax
-    self.viewControllers = @[wallPackViewController, channelsViewController, discoverViewController, myRockPackViewController, friendsViewController];
+    self.viewControllers = @[wallPackViewController, channelsViewController, discoverViewController, nc, friendsViewController];
 
     _selectedIndex = NSNotFound;
     
@@ -178,7 +182,6 @@
         shouldReceiveTouch: (UITouch *) touch
 {
     if (self.rockieTalkieButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
-//    if (gestureRecognizer == self.swipeRightRecognizer && (self.rockieTalkieButton.selected == TRUE || [SYNMovableView allowDragging]  == TRUE))
     {
         return NO;
     }

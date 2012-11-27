@@ -213,14 +213,13 @@
 		019824F21629CE1600216900 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824F11629CE1600216900 /* libz.dylib */; };
 		0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNBottomTabViewController.m */; };
 		0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */; };
-		01982549162A203600216900 /* SYNMyRockPackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982547162A203600216900 /* SYNMyRockPackViewController.m */; };
-		0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockPackViewController.xib */; };
+		01982549162A203600216900 /* SYNMyRockackDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982547162A203600216900 /* SYNMyRockackDetailViewController.m */; };
+		0198254A162A203600216900 /* SYNMyRockackDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockackDetailViewController.xib */; };
 		0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198254C162A204A00216900 /* SYNFriendsViewController.m */; };
 		0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198254D162A204A00216900 /* SYNFriendsViewController.xib */; };
 		01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */; };
 		01982576162AFB9700216900 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01982575162AFB9600216900 /* QuartzCore.framework */; };
 		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
-		0198258C162B615D00216900 /* SYNddd.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198258B162B615D00216900 /* SYNddd.m */; };
 		019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F0162C94A300216900 /* UIColor+SYNColor.m */; };
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
 		019E6A5A165FD7D1002B312A /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A59165FD7D1002B312A /* SSKeychain.m */; };
@@ -403,6 +402,9 @@
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
 		01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */; };
 		01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */; };
+		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
+		01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */; };
+		01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
 		01E98D7F165C13F10079FD7A /* EddieTaylor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7D165C13F10079FD7A /* EddieTaylor@2x.png */; };
 		01E98D84165C142C0079FD7A /* WallpacksHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D80165C142C0079FD7A /* WallpacksHeader.png */; };
@@ -679,9 +681,9 @@
 		0198250B1629DCF100216900 /* SYNBottomTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBottomTabViewController.m; sourceTree = "<group>"; };
 		0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNBottomTabViewController.xib; sourceTree = "<group>"; };
 		01982526162A02F700216900 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
-		01982546162A203600216900 /* SYNMyRockPackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockPackViewController.h; sourceTree = "<group>"; };
-		01982547162A203600216900 /* SYNMyRockPackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockPackViewController.m; sourceTree = "<group>"; };
-		01982548162A203600216900 /* SYNMyRockPackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockPackViewController.xib; sourceTree = "<group>"; };
+		01982546162A203600216900 /* SYNMyRockpackDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackDetailViewController.h; sourceTree = "<group>"; };
+		01982547162A203600216900 /* SYNMyRockackDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockackDetailViewController.m; sourceTree = "<group>"; };
+		01982548162A203600216900 /* SYNMyRockackDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockackDetailViewController.xib; sourceTree = "<group>"; };
 		0198254B162A204A00216900 /* SYNFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsViewController.h; sourceTree = "<group>"; };
 		0198254C162A204A00216900 /* SYNFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsViewController.m; sourceTree = "<group>"; };
 		0198254D162A204A00216900 /* SYNFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsViewController.xib; sourceTree = "<group>"; };
@@ -690,8 +692,6 @@
 		01982575162AFB9600216900 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		01982587162B605A00216900 /* SYNTabImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabImageView.h; sourceTree = "<group>"; };
 		01982588162B605A00216900 /* SYNTabImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabImageView.m; sourceTree = "<group>"; };
-		0198258A162B615D00216900 /* SYNddd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNddd.h; sourceTree = "<group>"; };
-		0198258B162B615D00216900 /* SYNddd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNddd.m; sourceTree = "<group>"; };
 		019825EF162C94A300216900 /* UIColor+SYNColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SYNColor.h"; sourceTree = "<group>"; };
 		019825F0162C94A300216900 /* UIColor+SYNColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SYNColor.m"; sourceTree = "<group>"; };
 		019825F2162C94B500216900 /* UIFont+SYNFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+SYNFont.h"; sourceTree = "<group>"; };
@@ -897,6 +897,10 @@
 		01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractThumbnailDB.m; sourceTree = "<group>"; };
 		01B7F769164FDA8A009C5CCD /* SYNChannelsDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDB.h; sourceTree = "<group>"; };
 		01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDB.m; sourceTree = "<group>"; };
+		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackViewController.h; sourceTree = "<group>"; };
+		01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackViewController.m; sourceTree = "<group>"; };
+		01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackViewController.xib; sourceTree = "<group>"; };
 		01E98D7C165C13F10079FD7A /* EddieTaylor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EddieTaylor.png; path = Assets/Images/EddieTaylor.png; sourceTree = "<group>"; };
 		01E98D7D165C13F10079FD7A /* EddieTaylor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EddieTaylor@2x.png"; path = "Assets/Images/EddieTaylor@2x.png"; sourceTree = "<group>"; };
 		01E98D80165C142C0079FD7A /* WallpacksHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WallpacksHeader.png; path = Assets/Images/WallpacksHeader.png; sourceTree = "<group>"; };
@@ -929,6 +933,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */,
 				019824F01629CC7600216900 /* libTestFlight.a in Frameworks */,
 				019824F21629CE1600216900 /* libz.dylib in Frameworks */,
 				01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */,
@@ -1000,6 +1005,7 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
+				01E427BB1664C5F1009B941F /* CoreData.framework */,
 				010DEFDA1629BDC40080F26B /* Source */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
 				010DEFD11629BDC40080F26B /* Products */,
@@ -1730,9 +1736,12 @@
 		01982560162ADE3300216900 /* My Rockpack */ = {
 			isa = PBXGroup;
 			children = (
-				01982546162A203600216900 /* SYNMyRockPackViewController.h */,
-				01982547162A203600216900 /* SYNMyRockPackViewController.m */,
-				01982548162A203600216900 /* SYNMyRockPackViewController.xib */,
+				01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */,
+				01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */,
+				01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */,
+				01982546162A203600216900 /* SYNMyRockpackDetailViewController.h */,
+				01982547162A203600216900 /* SYNMyRockackDetailViewController.m */,
+				01982548162A203600216900 /* SYNMyRockackDetailViewController.xib */,
 			);
 			name = "My Rockpack";
 			sourceTree = "<group>";
@@ -1762,8 +1771,6 @@
 			children = (
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
-				0198258A162B615D00216900 /* SYNddd.h */,
-				0198258B162B615D00216900 /* SYNddd.m */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
@@ -1998,7 +2005,7 @@
 			files = (
 				010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */,
 				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
-				0198254A162A203600216900 /* SYNMyRockPackViewController.xib in Resources */,
+				0198254A162A203600216900 /* SYNMyRockackDetailViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
 				012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNThumbnailCell.xib in Resources */,
@@ -2354,6 +2361,7 @@
 				01E98DA9165C32D10079FD7A /* TemplateX.png in Resources */,
 				01E98DAC165C39050079FD7A /* CardHarry.png in Resources */,
 				01E98DAD165C39050079FD7A /* CardHarry@2x.png in Resources */,
+				01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2369,11 +2377,10 @@
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
 				0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */,
-				01982549162A203600216900 /* SYNMyRockPackViewController.m in Sources */,
+				01982549162A203600216900 /* SYNMyRockackDetailViewController.m in Sources */,
 				0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
-				0198258C162B615D00216900 /* SYNddd.m in Sources */,
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
 				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
 				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
@@ -2415,6 +2422,7 @@
 				019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */,
 				019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */,
 				019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */,
+				01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

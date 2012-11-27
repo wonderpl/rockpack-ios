@@ -17,7 +17,7 @@
 
 @property (nonatomic, assign) int currentIndex;
 @property (nonatomic, assign) int currentOffset;
-@property (nonatomic, strong) IBOutlet SYNSwitch *slider;
+@property (nonatomic, strong) IBOutlet SYNSwitch *toggleSwitch;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
 @property (nonatomic, strong) IBOutlet UIImageView *audioMessage;
 @property (nonatomic, strong) IBOutlet UIImageView *infoBox;
@@ -47,13 +47,19 @@
     [super viewDidLoad];
     
     // Add custom slider
-    self.slider = [[SYNSwitch alloc] initWithFrame: CGRectMake(767, 112, 95, 42)];
-    self.slider.on = NO;
-    [self.slider addTarget: self
+    self.toggleSwitch = [[SYNSwitch alloc] initWithFrame: CGRectMake(767, 112, 95, 42)];
+    self.toggleSwitch.on = NO;
+    [self.toggleSwitch addTarget: self
                     action: @selector(switchChanged:forEvent:)
           forControlEvents: (UIControlEventValueChanged)];
     
-    [self.view addSubview: self.slider];
+    // Set switch label colours
+    self.lightSwitchColor = [UIColor colorWithRed: 213.0f/255.0f green: 233.0f/255.0f blue: 238.0f/255.0f alpha: 1.0f];
+    self.darkSwitchColor = [UIColor colorWithRed: 129.0f/255.0f green: 154.0f/255.0f blue: 162.0f/255.0f alpha: 1.0f];
+    self.myWallpacks.textColor = self.lightSwitchColor;
+    self.wallpackStore.textColor = self.darkSwitchColor;
+    
+    [self.view addSubview: self.toggleSwitch];
     
     self.userName.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.availableCredit.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -63,8 +69,6 @@
     self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
     self.userAvatar.image = [UIImage imageNamed: @"EddieTaylor.png"];
     
-    self.lightSwitchColor = [UIColor colorWithRed: 213.0f/255.0f green: 233.0f/255.0f blue: 238.0f/255.0f alpha: 1.0f];
-    self.darkSwitchColor = [UIColor colorWithRed: 129.0f/255.0f green: 154.0f/255.0f blue: 162.0f/255.0f alpha: 1.0f];
 
     
     // Init collection view
@@ -81,7 +85,7 @@
 - (void) switchChanged: (id)sender
               forEvent: (UIEvent *) event
 {
-    if (self.slider.on == YES)
+    if (self.toggleSwitch.on == YES)
     {
          // Set wallpack store label to light and my wallpacks to dark
          self.myWallpacks.textColor = self.darkSwitchColor;

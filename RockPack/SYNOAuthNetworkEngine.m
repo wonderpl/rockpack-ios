@@ -23,8 +23,9 @@
 // OAuth2 and refresh tokens
 @property (nonatomic, strong) SYNOAuth2Credential *oAuth2Credential;
 
-// Used for authentication callback
+// Used for authentication callbacks
 @property (nonatomic, copy) SYNOAuth2CompletionBlock oAuthCompletionBlock;
+@property (nonatomic, copy) SYNOAuth2RefreshCompletionBlock oAuthRefreshCompletionBlock;
 
 @end
 
@@ -93,8 +94,8 @@
                                    @"password" : @"password"};
     
     MKNetworkOperation *op = [self operationWithPath: @"oauth2/token"
-                                                            params: headerFields
-                                                        httpMethod: @"GET"];
+                                              params: headerFields
+                                          httpMethod: @"GET"];
     
     // Set Basic Authentication username and password
     [op setUsername: kOAuth2ClientId
@@ -117,6 +118,53 @@
          self.oAuthCompletionBlock(nil);
      }
      errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
+     {
+         // Something went wrong, so return the error to the completion block
+         self.oAuthCompletionBlock(error);
+     }];
+    
+    // Queue the authentication operation
+    [self enqueueOperation: op];
+}
+
+
+- (void) refreshAuthenticationWithCompletionBlock: (SYNOAuth2RefreshCompletionBlock) completionBlock
+{
+	// Store the Completion Block to call after authentication
+	self.oAuthRefreshCompletionBlock = completionBlock;
+    
+    NSDictionary *headerFields = @{@"grant_type" : @"refresh_token",
+                                   @"client_id" : kOAuth2ClientId,
+                                   @"client_password" : kOAuth2ClientSecret,
+                                   @"refresh_token" : self.oAuth2Credential.refreshToken};
+    
+    MKNetworkOperation *op = [self operationWithPath: @"oauth2/token"
+                                              params: headerFields
+                                          httpMethod: @"GET"];
+    
+    // Set Basic Authentication username and password
+    [op setUsername: kOAuth2ClientId
+           password: kOAuth2ClientSecret
+          basicAuth: YES];
+    
+    [op addCompletionHandler: ^(MKNetworkOperation *completedOperation)
+     {
+         NSDictionary *response = [completedOperation responseJSON];
+         
+         // Create a new credential from the returned data
+         self.oAuth2Credential = [SYNOAuth2Credential credentialWithAccessToken: response[@"access_token"]
+                                                                   refreshToken: response[@"refresh_token"]
+                                                                      tokenType: response[@"token_type"]
+                                                                      expiresIn: response[@"expires_in"]];
+         
+         // Save the updated credentials to the keychain
+         [self.oAuth2Credential saveToKeychainForService: kOAuth2ClientId
+                                                 account: kOAuth2ClientId];
+         
+         // Then, call our completion block (indicating that there were no errors)
+         self.oAuthCompletionBlock(nil);
+     }
+                errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
      {
          // Something went wrong, so return the error to the completion block
          self.oAuthCompletionBlock(error);

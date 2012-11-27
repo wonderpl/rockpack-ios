@@ -46,17 +46,6 @@
 
 #pragma mark - Initialization
 
-// Used by copy function
-- (id) initWithAccessToken: (NSString *) accessToken
-              refreshToken: (NSString *) refreshToken
-                 tokenType: (NSString *) tokenType
-{
-    return [self initWithAccessToken: accessToken
-                        refreshToken: refreshToken
-                           tokenType: tokenType
-                           expiresIn: nil];
-}
-
 - (id) initWithAccessToken: (NSString *) accessToken
               refreshToken: (NSString *) refreshToken
                  tokenType: (NSString *) tokenType
@@ -81,6 +70,23 @@
             
             self.expirationDate = [NSDate dateWithTimeIntervalSinceNow: timeIntervalSeconds];
         }
+    }
+    
+    return self;
+}
+
+
+- (id) initWithAccessToken: (NSString *) accessToken
+              refreshToken: (NSString *) refreshToken
+                 tokenType: (NSString *) tokenType
+            expirationDate: (NSDate *) expirationDate
+{
+    if ((self = [super init]))
+    {
+        self.accessToken = accessToken;
+        self.refreshToken = refreshToken;
+        self.tokenType = tokenType;
+        self.expirationDate = expirationDate;
     }
     
     return self;
@@ -158,7 +164,8 @@
 {
     SYNOAuth2Credential *credential = [[SYNOAuth2Credential allocWithZone: zone] initWithAccessToken: self.accessToken
                                                                                         refreshToken: self.refreshToken
-                                                                                           tokenType: self.tokenType];
+                                                                                           tokenType: self.tokenType
+                                                                                      expirationDate: self.expirationDate];
     // Copy the one that the init function doesn't initialise
     credential.expirationDate = self.expirationDate;
     

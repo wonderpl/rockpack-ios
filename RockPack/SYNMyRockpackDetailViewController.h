@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNMyRockPackViewController : UIViewController <UICollectionViewDataSource,
+@interface SYNMyRockpackDetailViewController : UIViewController <UICollectionViewDataSource,
                                                            UICollectionViewDelegateFlowLayout,
                                                            UIScrollViewDelegate>
 @end
