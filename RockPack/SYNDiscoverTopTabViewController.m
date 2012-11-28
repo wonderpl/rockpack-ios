@@ -396,6 +396,8 @@
         video.rockedByUserValue = TRUE;
         video.totalRocksValue += 1;
     }
+    
+    [self saveDB];
 }
 
 
@@ -423,6 +425,8 @@
         video.packedByUserValue = TRUE;
         video.totalPacksValue += 1;
     }
+    
+    [self saveDB];
 }
 
 

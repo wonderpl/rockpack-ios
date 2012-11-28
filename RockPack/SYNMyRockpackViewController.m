@@ -240,6 +240,8 @@
         SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                     forIndexPath: indexPath];
         
+        [cell setThirdButtonType: kShowShareButton];
+        
         cell.imageView.image = video.keyframeImage;
         
         cell.maintitle.text = video.title;

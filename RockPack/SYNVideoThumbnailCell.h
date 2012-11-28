@@ -25,4 +25,6 @@ enum {
 @property (nonatomic, strong) IBOutlet UILabel *packItNumber;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 
+- (void) setThirdButtonType: (int) buttonType;
+
 @end
