@@ -7,27 +7,27 @@
 //
 
 #import "SYNAppDelegate.h"
-#import "SYNMyRockPackMovieViewController.h"
+#import "SYNMyRockpackMovieViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "Video.h"
 
 
-@interface SYNMyRockPackMovieViewController ()
+@interface SYNMyRockpackMovieViewController ()
 
-@property (nonatomic, strong) NSURL *videoURL;
-
+@property (nonatomic, strong) Video *video;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
 
 @end
 
 
-@implementation SYNMyRockPackMovieViewController
+@implementation SYNMyRockpackMovieViewController
 
-- (id) initWithVideoURL: (NSURL *) videoURL
+- (id) initWithVideo: (Video *) video
 {
 	
 	if ((self = [super init]))
     {
-		self.videoURL = videoURL;
+		self.video = video;
 	}
     
 	return self;
@@ -43,7 +43,7 @@
 {
     [super viewWillAppear: animated];
 
-    self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: self.videoURL];
+    self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: self.video.localVideoURL];
     
     self.mainVideoPlayer.shouldAutoplay = NO;
     [self.mainVideoPlayer prepareToPlay];

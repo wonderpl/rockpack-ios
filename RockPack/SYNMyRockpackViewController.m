@@ -7,7 +7,7 @@
 //
 
 #import "SYNChannelThumbnailCell.h"
-#import "SYNMyRockPackMovieViewController.h"
+#import "SYNMyRockpackMovieViewController.h"
 #import "SYNMyRockpackDetailViewController.h"
 #import "SYNMyRockpackViewController.h"
 #import "SYNSwitch.h"
@@ -21,6 +21,7 @@
 @property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) IBOutlet SYNSwitch *toggleSwitch;
 @property (nonatomic, strong) IBOutlet UIButton *backButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
 @property (nonatomic, strong) IBOutlet UICollectionView *rockedVideoThumbnailCollection;
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatar;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *userName;
 @property (nonatomic, strong) IBOutlet UIView *avatarView;
 @property (nonatomic, strong) IBOutlet UIView *cardsView;
+@property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) UIColor *darkSwitchColor;
 @property (nonatomic, strong) UIColor *lightSwitchColor;
@@ -37,6 +39,7 @@
 @implementation SYNMyRockpackViewController
 
 @synthesize videoFetchedResultsController = _videoFetchedResultsController;
+@synthesize channelFetchedResultsController = _channelFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -62,15 +65,23 @@
     self.channelLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
     self.userAvatar.image = [UIImage imageNamed: @"EddieTaylor.png"];
     
-    // Init collection view    
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
+    // Init collection views
+    // Video thumbnails
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.rockedVideoThumbnailCollection registerNib: thumbnailCellNib
+    [self.rockedVideoThumbnailCollection registerNib: videoThumbnailCellNib
+                          forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
+    
+    // Channel thumbnails
+    UINib *channelThumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
+                                             bundle: nil];
+    
+    [self.channelThumbnailCollection registerNib: channelThumbnailCellNib
                           forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
 
@@ -124,10 +135,65 @@
     return _videoFetchedResultsController;
 }
 
+
+- (NSFetchedResultsController *) channelFetchedResultsController
+{
+    // Return cached version if we have already created one
+    if (_channelFetchedResultsController != nil)
+    {
+        return _channelFetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
+                                              inManagedObjectContext: self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
+    
+    NSArray *sortDescriptors = @[sortDescriptor];
+    [fetchRequest setSortDescriptors: sortDescriptors];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"packedByUser == TRUE"];
+    [fetchRequest setPredicate: predicate];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                                  managedObjectContext: self.managedObjectContext
+                                                                                                    sectionNameKeyPath: nil
+                                                                                                             cacheName: nil];
+    newFetchedResultsController.delegate = self;
+    self.channelFetchedResultsController = newFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![_channelFetchedResultsController performFetch: &error])
+    {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _channelFetchedResultsController;
+}
+
+
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    [self.rockedVideoThumbnailCollection reloadData];
+    if (controller == self.videoFetchedResultsController)
+    {
+        [self.rockedVideoThumbnailCollection reloadData];
+    }
+    else
+    {
+        [self.channelThumbnailCollection reloadData];
+    }
 }
+
 
 #pragma mark - Collection view support
 
@@ -141,7 +207,8 @@
     }
     else
     {
-        return 0;
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
+        return [sectionInfo numberOfObjects];
     }
 }
 
@@ -153,7 +220,7 @@
     }
     else
     {
-        return 0;
+        return self.channelFetchedResultsController.sections.count;
     }
 }
 
@@ -203,7 +270,43 @@
     }
     else
     {
-        return nil;
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        
+        SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
+                                                                      forIndexPath: indexPath];
+        
+        cell.imageView.image = video.keyframeImage;
+        
+        cell.maintitle.text = video.title;
+        
+        cell.subtitle.text = video.subtitle;
+        
+        cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
+        
+        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+        
+        cell.packItButton.selected = video.packedByUserValue;
+        
+        cell.rockItButton.selected = video.rockedByUserValue;
+        
+        // Wire the Done button up to the correct method in the sign up controller
+        [cell.packItButton removeTarget: nil
+                                 action: @selector(toggleThumbnailPackItButton:)
+                       forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.packItButton addTarget: self
+                              action: @selector(toggleThumbnailPackItButton:)
+                    forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.rockItButton removeTarget: nil
+                                 action: @selector(toggleThumbnailRockItButton:)
+                       forControlEvents: UIControlEventTouchUpInside];
+        
+        [cell.rockItButton addTarget: self
+                              action: @selector(toggleThumbnailRockItButton:)
+                    forControlEvents: UIControlEventTouchUpInside];
+        
+        return cell;
     }
 }
 
@@ -215,7 +318,7 @@
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNMyRockPackMovieViewController *movieController = [[SYNMyRockPackMovieViewController alloc] initWithVideoURL: video.localVideoURL];
+        SYNMyRockpackMovieViewController *movieController = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
         
         movieController.view.alpha = 0.0f;
         
@@ -238,7 +341,28 @@
     }
     else
     {
+        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
         
+        SYNMyRockpackDetailViewController *movieController = [[SYNMyRockpackDetailViewController alloc] initWithChannel: channel];
+        
+        movieController.view.alpha = 0.0f;
+        
+        [self.navigationController pushViewController: movieController
+                                             animated: NO];
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Contract thumbnail view
+             self.view.alpha = 0.0f;
+             movieController.view.alpha = 1.0f;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
     }
 }
 

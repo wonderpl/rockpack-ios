@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNMyRockPackMovieViewController : UIViewController
+@class Video;
 
-- (id) initWithVideoURL: (NSURL *) videoURL;
+@interface SYNMyRockpackMovieViewController : UIViewController
+
+- (id) initWithVideo: (Video *) video;
 
 @end

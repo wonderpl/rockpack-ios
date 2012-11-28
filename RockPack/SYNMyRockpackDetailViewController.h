@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
 
+@class Channel;
+
 @interface SYNMyRockpackDetailViewController : SYNAbstractViewController <UICollectionViewDataSource,
                                                                           UICollectionViewDelegateFlowLayout,
                                                                           UIScrollViewDelegate>
+
+- (id) initWithChannel: (Channel *) channel;
+
 @end

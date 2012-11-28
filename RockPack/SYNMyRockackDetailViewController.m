@@ -6,37 +6,45 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "Channel.h"
 #import "SYNMyRockPackDetailViewController.h"
-#import "UIFont+SYNFont.h"
-#import "UIColor+SYNColor.h"
-#import "SYNVideoDB.h"
-#import "SYNSelectionDB.h"
-#import "SYNSelection.h"
 #import "SYNMyRockpackCell.h"
+#import "SYNSelection.h"
+#import "SYNSelectionDB.h"
+#import "SYNVideoDB.h"
+#import "UIColor+SYNColor.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNMyRockpackDetailViewController ()
 
-@property (nonatomic, strong) NSArray *titles;
-@property (nonatomic, strong) NSArray *biogs;
+@property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
+@property (nonatomic, strong) IBOutlet UIImageView *wallpackImage;
+@property (nonatomic, strong) IBOutlet UILabel *biogBody;
+@property (nonatomic, strong) IBOutlet UILabel *biogTitle;
 @property (nonatomic, strong) IBOutlet UILabel *placeholderText;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
-@property (nonatomic, strong) IBOutlet UILabel *biogTitle;
-@property (nonatomic, strong) IBOutlet UILabel *biogBody;
-@property (nonatomic, strong) IBOutlet UILabel *coolFactor;
-@property (nonatomic, strong) IBOutlet UILabel *scary;
-@property (nonatomic, strong) IBOutlet UILabel *cute;
-@property (nonatomic, strong) IBOutlet UILabel *strength;
-@property (nonatomic, strong) IBOutlet UILabel *superPowers;
 @property (nonatomic, strong) IBOutlet UIView *infoView;
-@property (nonatomic, strong) IBOutlet UIImageView *wallpackImage;
-@property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
-@property (nonatomic, strong) SYNVideoDB *videoDB;
+@property (nonatomic, strong) NSArray *biogs;
+@property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) SYNSelectionDB *selectionDB;
-
+@property (nonatomic, strong) SYNVideoDB *videoDB;
 
 @end
 
 @implementation SYNMyRockpackDetailViewController
+
+- (id) initWithChannel: (Channel *) channel
+{
+	
+	if ((self = [super init]))
+    {
+		self.channel = channel;
+	}
+    
+	return self;
+}
+
 
 - (void) viewDidLoad
 {
@@ -49,11 +57,6 @@
     self.wallpackTitle.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.biogTitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
-    self.coolFactor.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.scary.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.cute.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.strength.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.superPowers.font = [UIFont rockpackFontOfSize: 15.0f];
     
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNMyRockpackCell"
