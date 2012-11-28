@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+enum {
+    kShowAddButton = 0,
+    kShowShareButton = 1
+};
+
 @interface SYNVideoThumbnailCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
@@ -16,6 +21,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *packItButton;
 @property (nonatomic, strong) IBOutlet UIButton *addItButton;
+@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UILabel *packItNumber;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 

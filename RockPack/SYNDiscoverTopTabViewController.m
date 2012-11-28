@@ -912,11 +912,14 @@
     Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
     
     channel.title = textField.text;
-    channel.title = @"Entertainment";
+    channel.subtitle = @"CHANNEL";
     channel.packedByUserValue = TRUE;
     channel.rockedByUserValue = FALSE;
-    channel.totalPacks = 0;
-    channel.totalRocks = 0;
+    channel.totalPacksValue = 0;
+    channel.totalRocksValue = 0;
+    
+    // TODO: Need to think about what keyframe image we use
+    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
     
     for (NSIndexPath *indexPath in self.selections)
     {
