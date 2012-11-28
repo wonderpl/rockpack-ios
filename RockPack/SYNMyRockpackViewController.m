@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNMyRockpackMovieViewController.h"
 #import "SYNMyRockpackDetailViewController.h"
@@ -146,7 +147,7 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Channel"
                                               inManagedObjectContext: self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
@@ -377,12 +378,25 @@
         // Set wallpack store label to light and my wallpacks to dark
         self.packedVideosLabel.textColor = self.darkSwitchColor;
         self.channelLabel.textColor = self.lightSwitchColor;
+        
+        [UIView animateWithDuration: kSwitchLabelAnimation
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Swap collection views
+             self.channelThumbnailCollection.alpha = 1.0f;
+             self.rockedVideoThumbnailCollection.alpha = 0.0f;
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
     }
     else
     {
         // Set wallpack store label to light and my wallpacks to dark
-        self.packedVideosLabel.textColor = self.lightSwitchColor;
-        self.channelLabel.textColor = self.darkSwitchColor;
+        self.channelThumbnailCollection.alpha = 0.0f;
+        self.rockedVideoThumbnailCollection.alpha = 1.0f;
     }
 }
 

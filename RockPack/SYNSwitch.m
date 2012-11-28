@@ -7,6 +7,7 @@
 //
 
 #import "SYNSwitch.h"
+#import "AppConstants.h"
 
 @interface SYNSwitch () <UIGestureRecognizerDelegate>
 
@@ -189,10 +190,13 @@
             xOffset = kOnXOffset;
         }
         
+        // Send off an event *before* starting the switch animation
+        [self sendActionsForControlEvents: UIControlEventValueChanged];
+        
         CGRect currentFrame = self.thumbView.frame;
         currentFrame.origin.x = xOffset;
         
-        [UIView animateWithDuration: 0.25f
+        [UIView animateWithDuration: kSwitchLabelAnimation
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
@@ -204,8 +208,6 @@
          completion: ^(BOOL finished)
          {
              self.ignoreTap = NO;
-             
-             [self sendActionsForControlEvents: UIControlEventValueChanged];
          }];
     }
 }
