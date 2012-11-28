@@ -108,11 +108,12 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
-								<object class="NSCustomResource" key="IBUISelectedBackgroundImage">
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="19701350">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonThumbnailPackHighlighted.png</string>
 								</object>
-								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+								<reference key="IBUISelectedImage" ref="19701350"/>
+								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonThumbnailPack.png</string>
 								</object>
@@ -146,11 +147,12 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="597543538"/>
-								<object class="NSCustomResource" key="IBUISelectedBackgroundImage">
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="1043410953">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonThumbnailRockHighlighted.png</string>
 								</object>
-								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+								<reference key="IBUISelectedImage" ref="1043410953"/>
+								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonThumbnailRock.png</string>
 								</object>
@@ -163,7 +165,7 @@
 								<string key="NSFrame">{{445, 81}, {31, 31}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="926806554"/>
+								<reference key="NSNextKeyView" ref="458129219"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -187,7 +189,7 @@
 								<reference key="IBUIFontDescription" ref="504477185"/>
 								<reference key="IBUIFont" ref="586593328"/>
 							</object>
-							<object class="IBUIButton" id="926806554">
+							<object class="IBUIButton" id="458129219">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{445, 81}, {31, 31}}</string>
@@ -435,7 +437,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">shareItButton</string>
 						<reference key="source" ref="182925985"/>
-						<reference key="destination" ref="926806554"/>
+						<reference key="destination" ref="458129219"/>
 					</object>
 					<int key="connectionID">46</int>
 				</object>
@@ -473,7 +475,7 @@
 							<reference ref="513092959"/>
 							<reference ref="886759980"/>
 							<reference ref="182689996"/>
-							<reference ref="926806554"/>
+							<reference ref="458129219"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -538,7 +540,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">45</int>
-						<reference key="object" ref="926806554"/>
+						<reference key="object" ref="458129219"/>
 						<reference key="parent" ref="182925985"/>
 						<string key="objectName">Button - Share It</string>
 					</object>
@@ -551,9 +553,9 @@
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="2" key="26.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="26.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="2" key="27.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="27.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.CustomClassName">SYNVideoThumbnailCell</string>

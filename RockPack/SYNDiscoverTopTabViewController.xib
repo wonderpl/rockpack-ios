@@ -187,6 +187,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{913, 614}, {50, 42}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -590,7 +591,7 @@
 								<reference key="NSNextResponder" ref="868366693"/>
 								<int key="NSvFlags">274</int>
 								<array class="NSMutableArray" key="NSSubviews"/>
-								<string key="NSFrame">{{261, 61}, {500, 200}}</string>
+								<string key="NSFrame">{{82, 61}, {860, 200}}</string>
 								<reference key="NSSuperview" ref="868366693"/>
 								<reference key="NSNextKeyView" ref="268957018"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -598,11 +599,13 @@
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+								<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 								<float key="IBUIMinimumZoomScale">0.0</float>
 								<float key="IBUIMaximumZoomScale">0.0</float>
 								<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="565441314">
 									<reference key="IBUICollectionView" ref="178114601"/>
-									<string key="IBUIItemSize">{50, 50}</string>
+									<string key="IBUIItemSize">{242, 136}</string>
 									<float key="IBUIMinimumLineSpacing">10</float>
 									<float key="IBUIMinimumInteritemSpacing">10</float>
 								</object>

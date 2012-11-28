@@ -23,10 +23,10 @@
 {
     if ((self = [super initWithFrame:frame]))
     {
-        UIImageView *circleBackground = [[UIImageView alloc] initWithFrame: CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
-        circleBackground.image = [UIImage imageNamed: @"WallpackCarouselCircleBackground.png"];
-        
-        [self.contentView addSubview: circleBackground];
+//        UIImageView *circleBackground = [[UIImageView alloc] initWithFrame: CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
+//        circleBackground.image = [UIImage imageNamed: @"WallpackCarouselCircleBackground.png"];
+//        
+//        [self.contentView addSubview: circleBackground];
         
         self.mainImage = [[UIImageView alloc] initWithFrame: CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
         [self.contentView addSubview: self.mainImage];
@@ -39,11 +39,11 @@
 {
     self.mainImage.contentMode = UIViewContentModeCenter;
     self.mainImage.image = image;
-    CALayer *mask = [CALayer layer];
-    mask.contents = (id)[[UIImage imageNamed: @"WallpackCarouselCircleAlpha.png"] CGImage];
-    mask.frame = CGRectMake(0, 0, 200, 200);
-    self.mainImage.layer.mask = mask;
-    self.mainImage.layer.masksToBounds = YES;
+//    CALayer *mask = [CALayer layer];
+//    mask.contents = (id)[[UIImage imageNamed: @"WallpackCarouselCircleAlpha.png"] CGImage];
+//    mask.frame = CGRectMake(0, 0, 200, 200);
+//    self.mainImage.layer.mask = mask;
+//    self.mainImage.layer.masksToBounds = YES;
 }
 
 

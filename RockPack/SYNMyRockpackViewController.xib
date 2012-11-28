@@ -217,7 +217,11 @@
 						<float key="IBUIMaximumZoomScale">0.0</float>
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="1073670732">
 							<reference key="IBUICollectionView" ref="428274017"/>
-							<string key="IBUIItemSize">{512, 154}</string>
+							<string key="IBUIItemSize">{508, 154}</string>
+							<double key="IBUISectionInset.top">0.0</double>
+							<double key="IBUISectionInset.bottom">0.0</double>
+							<double key="IBUISectionInset.left">8</double>
+							<double key="IBUISectionInset.right">0.0</double>
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
@@ -228,6 +232,7 @@
 						<string key="NSFrame">{{0, 99}, {1024, 543}}</string>
 						<reference key="NSSuperview" ref="180058539"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="674789222"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -239,7 +244,7 @@
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="120901570">
 							<reference key="IBUICollectionView" ref="243409965"/>
 							<string key="IBUIItemSize">{336, 192}</string>
-							<double key="IBUISectionInset.top">10</double>
+							<double key="IBUISectionInset.top">3</double>
 							<double key="IBUISectionInset.bottom">0.0</double>
 							<double key="IBUISectionInset.left">6</double>
 							<double key="IBUISectionInset.right">6</double>
@@ -579,14 +584,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewLayout</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
 					</object>
 				</object>
 			</array>

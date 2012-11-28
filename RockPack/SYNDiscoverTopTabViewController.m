@@ -401,8 +401,10 @@
 }
 
 
-- (IBAction) toggleLargeRockItButton: (id)sender
+- (IBAction) toggleLargeRockItButton: (UIButton *) button
 {
+    button.selected = !button.selected;
+    
     [self toggleRockItAtIndex: self.currentIndexPath];
     [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     [self.thumbnailView reloadData];
@@ -430,8 +432,10 @@
 }
 
 
-- (IBAction) toggleLargePackItButton: (id)sender
+- (IBAction) toggleLargePackItButton: (UIButton *) button
 {
+    button.selected = !button.selected;
+
     [self togglePackItAtIndex: self.currentIndexPath];
     [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     [self.thumbnailView reloadData];
@@ -442,6 +446,8 @@
 
 - (IBAction) toggleThumbnailRockItButton: (UIButton *) rockItButton
 {
+    rockItButton.selected = !rockItButton.selected;
+    
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
     NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
@@ -464,6 +470,8 @@
 
 - (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
 {
+    packItButton.selected = !packItButton.selected;
+    
     UIView *v = packItButton.superview.superview;
     NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
     
@@ -648,7 +656,7 @@
         SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
                                                                       forIndexPath: indexPath];
         
-        NSString *imageName = [NSString stringWithFormat: @"Wallpack_%d.png", indexPath.row % 10];
+        NSString *imageName = [NSString stringWithFormat: @"ChannelCover%d.png", indexPath.row % 10];
         cell.image = [UIImage imageNamed: imageName];
         
         return cell;
