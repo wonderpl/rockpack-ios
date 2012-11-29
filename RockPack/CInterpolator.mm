@@ -114,51 +114,51 @@
 @implementation CInterpolator (Convenience)
 
 - (NSArray *)items
-	{
+{
 	NSMutableArray *theItems = [NSMutableArray array];
 	[self enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
 		[theItems addObject:@[ key, value ]];
-		}];
+    }];
 	return(theItems);
-	}
+}
 
 - (void)enumerateKeysAndObjectsOptions:(NSEnumerationOptions)opts usingBlock:(void (^)(id key, id value, BOOL *stop))block
-	{
+{
 	NSParameterAssert(block != NULL);
 	[self.keys enumerateObjectsWithOptions:opts usingBlock:^(id key, NSUInteger idx, BOOL *stop) {
 		id value = self.values[idx];
 		block(key, value, stop);
-		}];
-	}
+    }];
+}
 
 - (void)enumerateKeysAndObjectsUsingBlock:(void (^)(id key, id value, BOOL *stop))block
-	{
+{
 	[self enumerateKeysAndObjectsOptions:0 usingBlock:block];
-	}
+}
 
 - (CInterpolator *)interpolatorWithReflection:(BOOL)inInvertValues
-	{
+{
 	NSMutableArray *theKeys = [self.keys mutableCopy];
 	NSMutableArray *theValues = [self.values mutableCopy];
-
+    
 	[self enumerateKeysAndObjectsOptions:NSEnumerationReverse usingBlock:^(id key, id value, BOOL *stop) {
 		[theKeys addObject:@(-[key doubleValue])];
 		[theValues addObject:@(inInvertValues ? -[value doubleValue] : [value doubleValue])];
-		}];
-
+    }];
+    
 	CInterpolator *theInterpolator = [CInterpolator interpolatorWithValues:theValues forKeys:theKeys];
 	return(theInterpolator);
-	}
+}
 
 - (NSArray *)interpolatedValuesForKeys:(NSArray *)inKeys
-    {
+{
     NSMutableArray *theValues = [NSMutableArray array];
     for (NSNumber *theKey in inKeys)
-        {
+    {
         CGFloat theValue = [self interpolatedValueForKey:[theKey floatValue]];
         [theValues addObject:@(theValue)];
-        }
-    return(theValues);
     }
+    return(theValues);
+}
 
 @end
