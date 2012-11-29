@@ -70,7 +70,7 @@
 {
 //	[self.navigationController popViewControllerAnimated: YES];
     
-    UIViewController *parentVC = self.navigationController.viewControllers[0];
+    UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
     parentVC.view.alpha = 0.0f;
     
     [self.navigationController popViewControllerAnimated: NO];

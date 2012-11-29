@@ -12,6 +12,7 @@
 #import "UIColor+SYNColor.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "SYNMyRockpackMovieViewController.h"
 
 @interface SYNMyRockpackDetailViewController ()
 
@@ -104,7 +105,29 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    NSLog (@"Selecting image well cell does nothing");
+    Video *video = [self.videos objectAtIndex: indexPath.row];
+    
+    SYNMyRockpackMovieViewController *movieController = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
+    
+    movieController.view.alpha = 0.0f;
+    
+    [self.navigationController pushViewController: movieController
+                                         animated: NO];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.view.alpha = 0.0f;
+         movieController.view.alpha = 1.0f;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+
 }
 
 
@@ -132,6 +155,5 @@
      {
      }];
 }
-
 
 @end
