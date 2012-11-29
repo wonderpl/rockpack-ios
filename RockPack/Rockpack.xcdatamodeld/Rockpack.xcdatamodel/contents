@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Channel" representedClassName="Channel" syncable="YES">
+        <attribute name="biog" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="biogTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="packedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -24,6 +26,6 @@
     </entity>
     <elements>
         <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
-        <element name="Channel" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="Channel" positionX="160" positionY="192" width="128" height="210"/>
     </elements>
 </model>

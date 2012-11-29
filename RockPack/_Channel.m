@@ -4,6 +4,8 @@
 #import "_Channel.h"
 
 const struct ChannelAttributes ChannelAttributes = {
+	.biog = @"biog",
+	.biogTitle = @"biogTitle",
 	.keyframeURL = @"keyframeURL",
 	.packedByUser = @"packedByUser",
 	.rockedByUser = @"rockedByUser",
@@ -70,6 +72,20 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic biog;
+
+
+
+
+
+
+@dynamic biogTitle;
+
+
 
 
 

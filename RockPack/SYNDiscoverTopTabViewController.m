@@ -970,6 +970,17 @@
     channel.wallpaperURL = [[SYNChannelsDB sharedChannelsDBManager] wallpaperURLForIndex: currentSelection.row
                                                                             withOffset: 0];
     
+    channel.biog = [[SYNChannelsDB sharedChannelsDBManager] biogForIndex: currentSelection.row
+                                                                              withOffset: 0];
+    
+    NSString *biogTitle = [[SYNChannelsDB sharedChannelsDBManager] titleForIndex: currentSelection.row
+                                                                     withOffset: 0];
+    
+    NSString *biogSubtitle = [[SYNChannelsDB sharedChannelsDBManager] subtitleForIndex: currentSelection.row
+                                                                      withOffset: 0];
+    
+    channel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
+    
 //    // TODO: Need to think about what keyframe image we use
 //    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
     

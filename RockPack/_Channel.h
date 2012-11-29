@@ -5,6 +5,8 @@
 
 
 extern const struct ChannelAttributes {
+	__unsafe_unretained NSString *biog;
+	__unsafe_unretained NSString *biogTitle;
 	__unsafe_unretained NSString *keyframeURL;
 	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
@@ -33,6 +35,8 @@ extern const struct ChannelFetchedProperties {
 
 
 
+
+
 @interface ChannelID : NSManagedObjectID {}
 @end
 
@@ -41,6 +45,26 @@ extern const struct ChannelFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (ChannelID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSString* biog;
+
+
+
+//- (BOOL)validateBiog:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* biogTitle;
+
+
+
+//- (BOOL)validateBiogTitle:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -162,6 +186,18 @@ extern const struct ChannelFetchedProperties {
 @end
 
 @interface _Channel (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSString*)primitiveBiog;
+- (void)setPrimitiveBiog:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveBiogTitle;
+- (void)setPrimitiveBiogTitle:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveKeyframeURL;
