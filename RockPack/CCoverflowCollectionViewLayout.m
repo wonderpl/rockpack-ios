@@ -73,7 +73,7 @@
 
 - (void)setup
 	{
-    self.cellSize = (CGSize){ 200.0f, 300.0f };
+    self.cellSize = (CGSize){ 242.0f, 136.0f };
     self.cellSpacing = 40.0f;
 	self.snapToCells = YES;
 
@@ -91,12 +91,6 @@
 		@(-1.0f): @(0.9),
 		@(-0.5f): @(1.0f),
 		}] interpolatorWithReflection:NO];
-
-//	self.zOffsetInterpolator = [[CInterpolator interpolatorWithDictionary:@{
-//		@(-9.0f):               @(9.0f),
-//		@(-1.0f - FLT_EPSILON): @(1.0f),
-//		@(-1.0f):               @(0.0f),
-//		}] interpolatorWithReflection:NO];
 
 	self.darknessInterpolator = [[CInterpolator interpolatorWithDictionary:@{
 		@(-2.5f): @(0.5f),

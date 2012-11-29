@@ -8,15 +8,17 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
 #import "NSObject+Blocks.h"
 #import "SYNBottomTabViewController.h"
+#import "SYNChannelSelectorCell.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
 #import "SYNSelection.h"
 #import "SYNSelectionDB.h"
-#import "SYNVideoThumbnailCell.h"
 #import "SYNVideoDB.h"
+#import "SYNVideoThumbnailCell.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
 #import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
@@ -35,7 +37,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *imageWellView;
 @property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
-@property (nonatomic, strong) IBOutlet UICollectionView *wallpackCarousel;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarousel;
 @property (nonatomic, strong) IBOutlet UIImageView *imageWellMessage;
 @property (nonatomic, strong) IBOutlet UIImageView *imageWellPanelView;
 @property (nonatomic, strong) IBOutlet UILabel *maintitle;
@@ -95,14 +97,14 @@
     [self.imageWellView registerNib: imageWellCellNib
          forCellWithReuseIdentifier: @"ImageWellCell"];
 
-    SYNWallpackCarouseHorizontallLayout *wallpackCarouselHorizontalLayout = [[SYNWallpackCarouseHorizontallLayout alloc] init];
-    self.wallpackCarousel.collectionViewLayout = wallpackCarouselHorizontalLayout;
+    CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
+    self.channelCoverCarousel.collectionViewLayout = channelCoverCarouselHorizontalLayout;
 
     // Set up our carousel
-    [self.wallpackCarousel registerClass: [SYNWallpackCarouselCell class]
-              forCellWithReuseIdentifier: @"SYNWallpackCarouselCell"];
+    [self.channelCoverCarousel registerClass: [SYNChannelSelectorCell class]
+              forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
 
-    self.wallpackCarousel.decelerationRate = UIScrollViewDecelerationRateNormal;
+    self.channelCoverCarousel.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     // Add dragging to thumbnail view
     UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRecognizer alloc] initWithTarget: self
@@ -614,9 +616,9 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    if (view == self.wallpackCarousel)
+    if (view == self.channelCoverCarousel)
     {
-        return 5000;
+        return 10;
     }
     else if (view == self.thumbnailView)
     {
@@ -637,7 +639,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.wallpackCarousel)
+    if (cv == self.channelCoverCarousel)
     {
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -653,11 +655,11 @@
         }
 #endif
         
-        SYNWallpackCarouselCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNWallpackCarouselCell"
+        SYNChannelSelectorCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                       forIndexPath: indexPath];
         
         NSString *imageName = [NSString stringWithFormat: @"ChannelCover%d.png", indexPath.row % 10];
-        cell.image = [UIImage imageNamed: imageName];
+        cell.imageView.image = [UIImage imageNamed: imageName];
         
         return cell;
     }
@@ -724,7 +726,7 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.wallpackCarousel)
+    if (cv == self.channelCoverCarousel)
     {
 //#warning "Need to select wallpack here"
         NSLog (@"Need to select wallpack here");
@@ -887,9 +889,9 @@
      {
      }];
     
-    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1500 inSection: 0];
+    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 5 inSection: 0];
     
-    [self.wallpackCarousel scrollToItemAtIndexPath: startIndexPath
+    [self.channelCoverCarousel scrollToItemAtIndexPath: startIndexPath
                                   atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                           animated: NO];
     

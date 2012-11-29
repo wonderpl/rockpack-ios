@@ -429,6 +429,13 @@
 		01E427FE16664EB3009B941F /* ButtonThumbnailShare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E427FA16664EB2009B941F /* ButtonThumbnailShare@2x.png */; };
 		01E427FF16664EB3009B941F /* ButtonThumbnailShareHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E427FB16664EB2009B941F /* ButtonThumbnailShareHighlighted.png */; };
 		01E4280016664EB3009B941F /* ButtonThumbnailShareHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E427FC16664EB2009B941F /* ButtonThumbnailShareHighlighted@2x.png */; };
+		01E428121666671D009B941F /* CBetterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E428071666671D009B941F /* CBetterCollectionViewCell.m */; };
+		01E428131666671D009B941F /* CBetterCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E428091666671D009B941F /* CBetterCollectionViewLayoutAttributes.m */; };
+		01E428141666671D009B941F /* CCoverflowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280B1666671D009B941F /* CCoverflowCollectionViewLayout.m */; };
+		01E428151666671D009B941F /* CInterpolator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280D1666671D009B941F /* CInterpolator.mm */; };
+		01E428161666671D009B941F /* Interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280E1666671D009B941F /* Interpolator.cpp */; };
+		01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4281916666F09009B941F /* SYNChannelSelectorCell.m */; };
+		01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */; };
 		01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */; };
 		01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
@@ -942,6 +949,19 @@
 		01E427FA16664EB2009B941F /* ButtonThumbnailShare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonThumbnailShare@2x.png"; path = "Assets/Images/ButtonThumbnailShare@2x.png"; sourceTree = "<group>"; };
 		01E427FB16664EB2009B941F /* ButtonThumbnailShareHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonThumbnailShareHighlighted.png; path = Assets/Images/ButtonThumbnailShareHighlighted.png; sourceTree = "<group>"; };
 		01E427FC16664EB2009B941F /* ButtonThumbnailShareHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonThumbnailShareHighlighted@2x.png"; path = "Assets/Images/ButtonThumbnailShareHighlighted@2x.png"; sourceTree = "<group>"; };
+		01E428061666671D009B941F /* CBetterCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBetterCollectionViewCell.h; sourceTree = "<group>"; };
+		01E428071666671D009B941F /* CBetterCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBetterCollectionViewCell.m; sourceTree = "<group>"; };
+		01E428081666671D009B941F /* CBetterCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBetterCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
+		01E428091666671D009B941F /* CBetterCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBetterCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
+		01E4280A1666671D009B941F /* CCoverflowCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoverflowCollectionViewLayout.h; sourceTree = "<group>"; };
+		01E4280B1666671D009B941F /* CCoverflowCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoverflowCollectionViewLayout.m; sourceTree = "<group>"; };
+		01E4280C1666671D009B941F /* CInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInterpolator.h; sourceTree = "<group>"; };
+		01E4280D1666671D009B941F /* CInterpolator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CInterpolator.mm; sourceTree = "<group>"; };
+		01E4280E1666671D009B941F /* Interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Interpolator.cpp; sourceTree = "<group>"; };
+		01E4280F1666671D009B941F /* Interpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interpolator.h; sourceTree = "<group>"; };
+		01E4281816666F09009B941F /* SYNChannelSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelSelectorCell.h; sourceTree = "<group>"; };
+		01E4281916666F09009B941F /* SYNChannelSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelSelectorCell.m; sourceTree = "<group>"; };
+		01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelSelectorCell.xib; sourceTree = "<group>"; };
 		01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackViewController.h; sourceTree = "<group>"; };
 		01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackViewController.m; sourceTree = "<group>"; };
 		01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackViewController.xib; sourceTree = "<group>"; };
@@ -1193,6 +1213,9 @@
 				01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */,
 				01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */,
 				01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */,
+				01E4281816666F09009B941F /* SYNChannelSelectorCell.h */,
+				01E4281916666F09009B941F /* SYNChannelSelectorCell.m */,
+				01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */,
 			);
 			name = "Collection Cells";
 			sourceTree = "<group>";
@@ -1623,6 +1646,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				01E42805166666F4009B941F /* Coverflow */,
 				019E6A5E165FD958002B312A /* OAuth2 */,
 				019E6A56165FD7A2002B312A /* Keychain */,
 				012ECA42165B8EE700A60980 /* HUD */,
@@ -2024,6 +2048,23 @@
 				01E427E11664DF21009B941F /* Video.m */,
 			);
 			name = "Editable files";
+			sourceTree = "<group>";
+		};
+		01E42805166666F4009B941F /* Coverflow */ = {
+			isa = PBXGroup;
+			children = (
+				01E428061666671D009B941F /* CBetterCollectionViewCell.h */,
+				01E428071666671D009B941F /* CBetterCollectionViewCell.m */,
+				01E428081666671D009B941F /* CBetterCollectionViewLayoutAttributes.h */,
+				01E428091666671D009B941F /* CBetterCollectionViewLayoutAttributes.m */,
+				01E4280A1666671D009B941F /* CCoverflowCollectionViewLayout.h */,
+				01E4280B1666671D009B941F /* CCoverflowCollectionViewLayout.m */,
+				01E4280C1666671D009B941F /* CInterpolator.h */,
+				01E4280D1666671D009B941F /* CInterpolator.mm */,
+				01E4280F1666671D009B941F /* Interpolator.h */,
+				01E4280E1666671D009B941F /* Interpolator.cpp */,
+			);
+			name = Coverflow;
 			sourceTree = "<group>";
 		};
 		01E98D6E165C13610079FD7A /* Slider */ = {
@@ -2454,6 +2495,7 @@
 				01E427FE16664EB3009B941F /* ButtonThumbnailShare@2x.png in Resources */,
 				01E427FF16664EB3009B941F /* ButtonThumbnailShareHighlighted.png in Resources */,
 				01E4280016664EB3009B941F /* ButtonThumbnailShareHighlighted@2x.png in Resources */,
+				01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2538,6 +2580,12 @@
 				01E427F01664EE52009B941F /* _Channel.m in Sources */,
 				01E427F11664EE52009B941F /* _Video.m in Sources */,
 				01E427F7166551F7009B941F /* SYNMyRockpackMovieViewController.m in Sources */,
+				01E428121666671D009B941F /* CBetterCollectionViewCell.m in Sources */,
+				01E428131666671D009B941F /* CBetterCollectionViewLayoutAttributes.m in Sources */,
+				01E428141666671D009B941F /* CCoverflowCollectionViewLayout.m in Sources */,
+				01E428151666671D009B941F /* CInterpolator.mm in Sources */,
+				01E428161666671D009B941F /* Interpolator.cpp in Sources */,
+				01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

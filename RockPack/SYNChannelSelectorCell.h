@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNChannelSelectorCell : UICollectionViewCell
+#import "CBetterCollectionViewCell.h"
+
+@interface SYNChannelSelectorCell : CBetterCollectionViewCell
+
+@property (readwrite, nonatomic, weak) IBOutlet UIImageView *imageView;
+
 
 @end
