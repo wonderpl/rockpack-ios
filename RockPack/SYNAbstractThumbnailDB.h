@@ -18,6 +18,9 @@
 
 - (int) numberOfThumbnails;
 
+- (NSString *) keyframeURLForIndex: (int) index
+                        withOffset: (int) offset;
+
 - (int) adjustedIndexForIndex: (int) index
                    withOffset: (int) offset;
 

@@ -12,6 +12,7 @@
 #import "Channel.h"
 #import "NSObject+Blocks.h"
 #import "SYNBottomTabViewController.h"
+#import "SYNChannelsDB.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
@@ -659,7 +660,7 @@
         SYNChannelSelectorCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                       forIndexPath: indexPath];
         
-        NSString *imageName = [NSString stringWithFormat: @"ChannelCover%d.png", indexPath.row % 10];
+        NSString *imageName = [NSString stringWithFormat: @"ChannelCover%d.png", (indexPath.row % 10) + 1];
 
         // Now add a 2 pixel transparent edge on the image (which dramatically reduces jaggies on transformation)        
         UIImage *image = [UIImage imageNamed: imageName];
@@ -908,8 +909,8 @@
      {
      }];
     
-    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 5 inSection: 0];
-    
+    // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
+    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1 inSection: 0];
     [self.channelCoverCarousel scrollToItemAtIndexPath: startIndexPath
                                   atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                           animated: NO];
@@ -950,9 +951,13 @@
     channel.rockedByUserValue = FALSE;
     channel.totalPacksValue = 0;
     channel.totalRocksValue = 0;
+
+    NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (self.channelCoverCarousel.center.x, self.channelCoverCarousel.center.y)];
+    channel.keyframeURL = [[SYNChannelsDB sharedChannelsDBManager] keyframeURLForIndex: currentSelection.row
+                                                    withOffset: 0];
     
-    // TODO: Need to think about what keyframe image we use
-    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
+//    // TODO: Need to think about what keyframe image we use
+//    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
     
     for (NSIndexPath *indexPath in self.selections)
     {
