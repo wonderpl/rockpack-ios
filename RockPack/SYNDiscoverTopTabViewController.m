@@ -24,6 +24,7 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNDiscoverTopTabViewController ()
 
@@ -659,7 +660,25 @@
                                                                       forIndexPath: indexPath];
         
         NSString *imageName = [NSString stringWithFormat: @"ChannelCover%d.png", indexPath.row % 10];
-        cell.imageView.image = [UIImage imageNamed: imageName];
+
+        // Now add a 2 pixel transparent edge on the image (which dramatically reduces jaggies on transformation)        
+        UIImage *image = [UIImage imageNamed: imageName];
+        CGRect imageRect = CGRectMake( 0 , 0 , image.size.width + 4 , image.size.height + 4 );
+        
+        UIGraphicsBeginImageContext(imageRect.size);
+        [image drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
+        CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    
+        cell.imageView.image = image;
+        
+        cell.imageView.layer.shouldRasterize = YES;
+        cell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
+        cell.imageView.clipsToBounds = NO;
+        cell.imageView.layer.masksToBounds = NO;
+        
+        // End of clever jaggie reduction
         
         return cell;
     }
