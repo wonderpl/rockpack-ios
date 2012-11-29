@@ -3,5 +3,6 @@
 @interface Channel : _Channel {}
 
 - (UIImage *) keyframeImage;
+- (UIImage *) wallpaperImage;
 
 @end

@@ -967,6 +967,9 @@
     channel.keyframeURL = [[SYNChannelsDB sharedChannelsDBManager] keyframeURLForIndex: currentSelection.row
                                                                             withOffset: 0];
     
+    channel.wallpaperURL = [[SYNChannelsDB sharedChannelsDBManager] wallpaperURLForIndex: currentSelection.row
+                                                                            withOffset: 0];
+    
 //    // TODO: Need to think about what keyframe image we use
 //    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
     

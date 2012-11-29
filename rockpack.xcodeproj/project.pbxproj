@@ -227,8 +227,8 @@
 		019824F21629CE1600216900 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824F11629CE1600216900 /* libz.dylib */; };
 		0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNBottomTabViewController.m */; };
 		0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */; };
-		01982549162A203600216900 /* SYNMyRockackDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982547162A203600216900 /* SYNMyRockackDetailViewController.m */; };
-		0198254A162A203600216900 /* SYNMyRockackDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockackDetailViewController.xib */; };
+		01982549162A203600216900 /* SYNMyRockpackDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982547162A203600216900 /* SYNMyRockpackDetailViewController.m */; };
+		0198254A162A203600216900 /* SYNMyRockpackDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01982548162A203600216900 /* SYNMyRockpackDetailViewController.xib */; };
 		0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198254C162A204A00216900 /* SYNFriendsViewController.m */; };
 		0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198254D162A204A00216900 /* SYNFriendsViewController.xib */; };
 		01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */; };
@@ -715,8 +715,8 @@
 		0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNBottomTabViewController.xib; sourceTree = "<group>"; };
 		01982526162A02F700216900 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
 		01982546162A203600216900 /* SYNMyRockpackDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackDetailViewController.h; sourceTree = "<group>"; };
-		01982547162A203600216900 /* SYNMyRockackDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockackDetailViewController.m; sourceTree = "<group>"; };
-		01982548162A203600216900 /* SYNMyRockackDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockackDetailViewController.xib; sourceTree = "<group>"; };
+		01982547162A203600216900 /* SYNMyRockpackDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackDetailViewController.m; sourceTree = "<group>"; };
+		01982548162A203600216900 /* SYNMyRockpackDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackDetailViewController.xib; sourceTree = "<group>"; };
 		0198254B162A204A00216900 /* SYNFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsViewController.h; sourceTree = "<group>"; };
 		0198254C162A204A00216900 /* SYNFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsViewController.m; sourceTree = "<group>"; };
 		0198254D162A204A00216900 /* SYNFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsViewController.xib; sourceTree = "<group>"; };
@@ -1813,8 +1813,8 @@
 				01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */,
 				01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */,
 				01982546162A203600216900 /* SYNMyRockpackDetailViewController.h */,
-				01982547162A203600216900 /* SYNMyRockackDetailViewController.m */,
-				01982548162A203600216900 /* SYNMyRockackDetailViewController.xib */,
+				01982547162A203600216900 /* SYNMyRockpackDetailViewController.m */,
+				01982548162A203600216900 /* SYNMyRockpackDetailViewController.xib */,
 				01E427F4166551F6009B941F /* SYNMyRockpackMovieViewController.h */,
 				01E427F5166551F6009B941F /* SYNMyRockpackMovieViewController.m */,
 				01E427F6166551F6009B941F /* SYNMyRockpackMovieViewController.xib */,
@@ -2133,7 +2133,7 @@
 			files = (
 				010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */,
 				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
-				0198254A162A203600216900 /* SYNMyRockackDetailViewController.xib in Resources */,
+				0198254A162A203600216900 /* SYNMyRockpackDetailViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
 				012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailCell.xib in Resources */,
@@ -2527,7 +2527,7 @@
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
 				0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */,
-				01982549162A203600216900 /* SYNMyRockackDetailViewController.m in Sources */,
+				01982549162A203600216900 /* SYNMyRockpackDetailViewController.m in Sources */,
 				0198254E162A204A00216900 /* SYNFriendsViewController.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,

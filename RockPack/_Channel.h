@@ -12,6 +12,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *totalPacks;
 	__unsafe_unretained NSString *totalRocks;
+	__unsafe_unretained NSString *wallpaperURL;
 } ChannelAttributes;
 
 extern const struct ChannelRelationships {
@@ -22,6 +23,7 @@ extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
 @class Video;
+
 
 
 
@@ -130,6 +132,16 @@ extern const struct ChannelFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* wallpaperURL;
+
+
+
+//- (BOOL)validateWallpaperURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSSet *videos;
 
 - (NSMutableSet*)videosSet;
@@ -202,6 +214,12 @@ extern const struct ChannelFetchedProperties {
 
 - (int64_t)primitiveTotalRocksValue;
 - (void)setPrimitiveTotalRocksValue:(int64_t)value_;
+
+
+
+
+- (NSString*)primitiveWallpaperURL;
+- (void)setPrimitiveWallpaperURL:(NSString*)value;
 
 
 

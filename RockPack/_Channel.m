@@ -11,6 +11,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.title = @"title",
 	.totalPacks = @"totalPacks",
 	.totalRocks = @"totalRocks",
+	.wallpaperURL = @"wallpaperURL",
 };
 
 const struct ChannelRelationships ChannelRelationships = {
@@ -193,6 +194,13 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 - (void)setPrimitiveTotalRocksValue:(int64_t)value_ {
 	[self setPrimitiveTotalRocks:[NSNumber numberWithLongLong:value_]];
 }
+
+
+
+
+
+@dynamic wallpaperURL;
+
 
 
 

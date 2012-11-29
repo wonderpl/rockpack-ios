@@ -8,6 +8,7 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalPacks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="totalRocks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="wallpaperURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">
@@ -23,6 +24,6 @@
     </entity>
     <elements>
         <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
-        <element name="Channel" positionX="160" positionY="192" width="128" height="165"/>
+        <element name="Channel" positionX="160" positionY="192" width="128" height="180"/>
     </elements>
 </model>

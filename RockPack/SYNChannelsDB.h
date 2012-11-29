@@ -19,4 +19,7 @@
 - (NSString *) biogForIndex: (int) index
                  withOffset: (int) offset;
 
+- (NSString *) wallpaperURLForIndex: (int) index
+                        withOffset: (int) offset;
+
 @end

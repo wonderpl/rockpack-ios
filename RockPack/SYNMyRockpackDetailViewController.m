@@ -22,7 +22,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *wallpackImage;
 @property (nonatomic, strong) IBOutlet UILabel *biogBody;
 @property (nonatomic, strong) IBOutlet UILabel *biogTitle;
-@property (nonatomic, strong) IBOutlet UILabel *placeholderText;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
 @property (nonatomic, strong) IBOutlet UIView *infoView;
 @property (nonatomic, strong) NSArray *biogs;
@@ -53,7 +52,6 @@
     self.videoDB = [SYNVideoDB sharedVideoDBManager];
     self.selectionDB = [SYNSelectionDB sharedSelectionDBManager];
     
-    self.placeholderText.font = [UIFont rockpackFontOfSize: 24.0f];
     self.wallpackTitle.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.biogTitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -91,29 +89,17 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+
+    self.wallpackTitle.text = self.channel.title;
+    self.wallpackImage.image = self.channel.wallpaperImage;
     
-    if (self.selectionDB.selections.count == 0)
-    {
-        self.placeholderText.hidden = FALSE;
-        self.infoView.hidden = TRUE;
-    }
-    else
-    {
-        self.placeholderText.hidden = TRUE;
-        self.infoView.hidden = FALSE;
-        
-        int adjustedIndex = self.selectionDB.wallpackIndex % 10;
-        
-        self.wallpackTitle.text = self.selectionDB.selectionTitle;
-        
-        NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", adjustedIndex];
-        self.wallpackImage.image = [UIImage imageNamed: imageName];
-        
-        self.biogTitle.text = [self.titles objectAtIndex: adjustedIndex];
-        self.biogBody.text = [self.biogs objectAtIndex: adjustedIndex];
-        
-        [self.thumbnailView reloadData];
-    }
+//    NSString *imageName = [NSString stringWithFormat: @"LargeWallpack_%d.jpg", self.channel.];
+//    self.wallpackImage.image = [UIImage imageNamed: imageName];
+//    
+//    self.biogTitle.text = [self.titles objectAtIndex: adjustedIndex];
+//    self.biogBody.text = [self.biogs objectAtIndex: adjustedIndex];
+    
+    [self.thumbnailView reloadData];
 }
 
 

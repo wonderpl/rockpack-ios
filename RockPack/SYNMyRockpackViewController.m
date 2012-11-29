@@ -358,11 +358,11 @@
     {
         Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNMyRockpackDetailViewController *movieController = [[SYNMyRockpackDetailViewController alloc] initWithChannel: channel];
+        SYNMyRockpackDetailViewController *channelDetailViewController = [[SYNMyRockpackDetailViewController alloc] initWithChannel: channel];
         
-        movieController.view.alpha = 0.0f;
+        channelDetailViewController.view.alpha = 0.0f;
         
-        [self.navigationController pushViewController: movieController
+        [self.navigationController pushViewController: channelDetailViewController
                                              animated: NO];
         
         [UIView animateWithDuration: 0.5f
@@ -372,7 +372,7 @@
          {
              // Contract thumbnail view
              self.view.alpha = 0.0f;
-             movieController.view.alpha = 1.0f;
+             channelDetailViewController.view.alpha = 1.0f;
              
          }
                          completion: ^(BOOL finished)

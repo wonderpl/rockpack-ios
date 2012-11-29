@@ -452,4 +452,11 @@
     return videoTitle;
 }
 
+- (NSString *) wallpaperURLForIndex: (int) index
+                        withOffset: (int) offset
+{
+    NSDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
+    return [videoDetails objectForKey: @"wallpaper"];
+}
+
 @end

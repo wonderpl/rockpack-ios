@@ -15,4 +15,9 @@
     return [UIImage imageNamed: self.keyframeURL];
 }
 
+- (UIImage *) wallpaperImage
+{
+    return [UIImage imageNamed: self.wallpaperURL];
+}
+
 @end
