@@ -910,7 +910,7 @@
      }];
     
     // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
-    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 1 inSection: 0];
+    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
     [self.channelCoverCarousel scrollToItemAtIndexPath: startIndexPath
                                   atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                           animated: NO];
@@ -951,10 +951,21 @@
     channel.rockedByUserValue = FALSE;
     channel.totalPacksValue = 0;
     channel.totalRocksValue = 0;
-
-    NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (self.channelCoverCarousel.center.x, self.channelCoverCarousel.center.y)];
+    
+//    NSLog (@"Carousel center: %.2f,%.2f", self.channelCoverCarousel.center.x, self.channelCoverCarousel.center.y);
+//    NSLog (@"Content offset: %.2f,%.2f", self.channelCoverCarousel.contentOffset.x, self.channelCoverCarousel.contentOffset.y);
+    
+    // TODO: Make these window offsets less hard-coded
+    NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
+                                                                                                     70 + self.channelCoverCarousel.contentOffset.y)];
+    
+//    NSLog (@"Current Selection: %@", currentSelection);
+    
+    //        NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (380.0f, 8)];
+    //            NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (725.0f, 70)];
+    
     channel.keyframeURL = [[SYNChannelsDB sharedChannelsDBManager] keyframeURLForIndex: currentSelection.row
-                                                    withOffset: 0];
+                                                                            withOffset: 0];
     
 //    // TODO: Need to think about what keyframe image we use
 //    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
