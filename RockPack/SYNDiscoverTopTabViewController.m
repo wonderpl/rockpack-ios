@@ -660,7 +660,7 @@
         SYNChannelSelectorCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                       forIndexPath: indexPath];
         
-        NSString *imageName = [NSString stringWithFormat: @"ChannelCover%d.png", (indexPath.row % 10) + 1];
+        NSString *imageName = [NSString stringWithFormat: @"ChannelCreationCover%d.png", (indexPath.row % 10) + 1];
 
         // Now add a 2 pixel transparent edge on the image (which dramatically reduces jaggies on transformation)        
         UIImage *image = [UIImage imageNamed: imageName];
