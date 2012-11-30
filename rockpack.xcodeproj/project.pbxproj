@@ -82,6 +82,8 @@
 		014A45351668C9180091E4E5 /* ChannelCreationCover2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A45201668C9180091E4E5 /* ChannelCreationCover2@2x.png */; };
 		014A45361668C9180091E4E5 /* ChannelCreationCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A45211668C9180091E4E5 /* ChannelCreationCover1.png */; };
 		014A45371668C9180091E4E5 /* ChannelCreationCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A45221668C9180091E4E5 /* ChannelCreationCover1@2x.png */; };
+		014A4557166903860091E4E5 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A4554166903860091E4E5 /* _User.m */; };
+		014A4558166903860091E4E5 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A4556166903860091E4E5 /* User.m */; };
 		01677DE816554A0600B1B1D8 /* Adidas.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DDC16554A0500B1B1D8 /* Adidas.png */; };
 		01677DE916554A0600B1B1D8 /* AngryBirds.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DDD16554A0500B1B1D8 /* AngryBirds.png */; };
 		01677DEA16554A0600B1B1D8 /* CallOfDuty.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DDE16554A0500B1B1D8 /* CallOfDuty.png */; };
@@ -217,7 +219,6 @@
 		01677EEF16554C7700B1B1D8 /* TabWallPacks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677ED716554C7700B1B1D8 /* TabWallPacks@2x.png */; };
 		01677EF016554C7700B1B1D8 /* TabWallPacksSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677ED816554C7700B1B1D8 /* TabWallPacksSelected.png */; };
 		01677EF116554C7700B1B1D8 /* TabWallPacksSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677ED916554C7700B1B1D8 /* TabWallPacksSelected@2x.png */; };
-		01677EF816554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF216554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png */; };
 		01677EF916554C9D00B1B1D8 /* BackgroundDiscovery@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */; };
 		01677EFA16554C9D00B1B1D8 /* BackgroundFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */; };
 		01677F0616554CC700B1B1D8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EFE16554CC700B1B1D8 /* Icon-72.png */; };
@@ -575,6 +576,10 @@
 		014A45201668C9180091E4E5 /* ChannelCreationCover2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCreationCover2@2x.png"; path = "Assets/Images/ChannelCreationCover2@2x.png"; sourceTree = "<group>"; };
 		014A45211668C9180091E4E5 /* ChannelCreationCover1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCreationCover1.png; path = Assets/Images/ChannelCreationCover1.png; sourceTree = "<group>"; };
 		014A45221668C9180091E4E5 /* ChannelCreationCover1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCreationCover1@2x.png"; path = "Assets/Images/ChannelCreationCover1@2x.png"; sourceTree = "<group>"; };
+		014A4553166903860091E4E5 /* _User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _User.h; sourceTree = "<group>"; };
+		014A4554166903860091E4E5 /* _User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _User.m; sourceTree = "<group>"; };
+		014A4555166903860091E4E5 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		014A4556166903860091E4E5 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		01677DDC16554A0500B1B1D8 /* Adidas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adidas.png; path = Assets/Images/Adidas.png; sourceTree = "<group>"; };
 		01677DDD16554A0500B1B1D8 /* AngryBirds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AngryBirds.png; path = Assets/Images/AngryBirds.png; sourceTree = "<group>"; };
 		01677DDE16554A0500B1B1D8 /* CallOfDuty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CallOfDuty.png; path = Assets/Images/CallOfDuty.png; sourceTree = "<group>"; };
@@ -710,7 +715,6 @@
 		01677ED716554C7700B1B1D8 /* TabWallPacks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TabWallPacks@2x.png"; path = "Assets/Images/TabWallPacks@2x.png"; sourceTree = "<group>"; };
 		01677ED816554C7700B1B1D8 /* TabWallPacksSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TabWallPacksSelected.png; path = Assets/Images/TabWallPacksSelected.png; sourceTree = "<group>"; };
 		01677ED916554C7700B1B1D8 /* TabWallPacksSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TabWallPacksSelected@2x.png"; path = "Assets/Images/TabWallPacksSelected@2x.png"; sourceTree = "<group>"; };
-		01677EF216554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundChooseChannel@2x.png"; path = "Assets/Images/BackgroundChooseChannel@2x.png"; sourceTree = "<group>"; };
 		01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundDiscovery@2x.png"; path = "Assets/Images/BackgroundDiscovery@2x.png"; sourceTree = "<group>"; };
 		01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundFriends@2x.png"; path = "Assets/Images/BackgroundFriends@2x.png"; sourceTree = "<group>"; };
 		01677EFE16554CC700B1B1D8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Assets/Images/Icon-72.png"; sourceTree = "<group>"; };
@@ -1768,7 +1772,6 @@
 		019825071629DC9B00216900 /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
-				01677EF216554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png */,
 				01677EF316554C9D00B1B1D8 /* BackgroundDiscovery@2x.png */,
 				01677EF416554C9D00B1B1D8 /* BackgroundFriends@2x.png */,
 			);
@@ -2101,6 +2104,8 @@
 				01E427ED1664EE52009B941F /* _Channel.m */,
 				01E427EE1664EE52009B941F /* _Video.h */,
 				01E427EF1664EE52009B941F /* _Video.m */,
+				014A4553166903860091E4E5 /* _User.h */,
+				014A4554166903860091E4E5 /* _User.m */,
 			);
 			name = "Auto generated files";
 			sourceTree = "<group>";
@@ -2112,6 +2117,8 @@
 				01E427E41664DF21009B941F /* Channel.m */,
 				01E427E01664DF21009B941F /* Video.h */,
 				01E427E11664DF21009B941F /* Video.m */,
+				014A4555166903860091E4E5 /* User.h */,
+				014A4556166903860091E4E5 /* User.m */,
 			);
 			name = "Editable files";
 			sourceTree = "<group>";
@@ -2514,7 +2521,6 @@
 				01677EEF16554C7700B1B1D8 /* TabWallPacks@2x.png in Resources */,
 				01677EF016554C7700B1B1D8 /* TabWallPacksSelected.png in Resources */,
 				01677EF116554C7700B1B1D8 /* TabWallPacksSelected@2x.png in Resources */,
-				01677EF816554C9D00B1B1D8 /* BackgroundChooseChannel@2x.png in Resources */,
 				01677EF916554C9D00B1B1D8 /* BackgroundDiscovery@2x.png in Resources */,
 				01677EFA16554C9D00B1B1D8 /* BackgroundFriends@2x.png in Resources */,
 				01677F0616554CC700B1B1D8 /* Icon-72.png in Resources */,
@@ -2674,6 +2680,8 @@
 				01E428151666671D009B941F /* CInterpolator.mm in Sources */,
 				01E428161666671D009B941F /* Interpolator.cpp in Sources */,
 				01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */,
+				014A4557166903860091E4E5 /* _User.m in Sources */,
+				014A4558166903860091E4E5 /* User.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

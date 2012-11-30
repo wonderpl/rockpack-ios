@@ -13,6 +13,12 @@
         <attribute name="wallpaperURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
     </entity>
+    <entity name="User" representedClassName="User" syncable="YES">
+        <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateJoined" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">
         <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="packedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -25,7 +31,8 @@
         <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Channel" inverseName="videos" inverseEntity="Channel" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
         <element name="Channel" positionX="160" positionY="192" width="128" height="210"/>
+        <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="User" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>
