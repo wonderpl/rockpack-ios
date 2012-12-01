@@ -2,33 +2,44 @@
 //  SYNChannelsTopTabViewController.m
 //  rockpack
 //
-//  Created by Nick Banks on 01/12/2012.
+//  Created by Nick Banks on 11/11/2012.
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
 #import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNChannelsChannelViewController.h"
 #import "SYNChannelsDB.h"
-#import "SYNChannelsTopTabViewController.h"
+#import "SYNOldChannelsTopTabViewController.h"
 #import "SYNMyRockpackCell.h"
 #import "SYNVideoDB.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
-@interface SYNChannelsTopTabViewController ()
+@interface SYNOldChannelsTopTabViewController ()
 
 @property (nonatomic, assign) BOOL userPinchedIn;
+@property (nonatomic, assign) int currentIndex;
+@property (nonatomic, assign) int currentOffset;
+@property (nonatomic, assign, getter = isTopLevel) BOOL topLevel;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
-@property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
+@property (nonatomic, strong) IBOutlet UICollectionView *sideVideoThumbnailCollection;
+@property (nonatomic, strong) IBOutlet UIImageView *wallpaper;
+@property (nonatomic, strong) IBOutlet UILabel *biogBody;
+@property (nonatomic, strong) IBOutlet UILabel *biogTitle;
+@property (nonatomic, strong) IBOutlet UILabel *fullTitle;
+@property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
+@property (nonatomic, strong) IBOutlet UIView *drillDownView;
+@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
+@property (nonatomic, strong) SYNChannelsDB *channelsDB;
+@property (nonatomic, strong) SYNVideoDB *videoDB;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
 @end
 
-@implementation SYNChannelsTopTabViewController
+@implementation SYNOldChannelsTopTabViewController
 
-@synthesize channelFetchedResultsController = _channelFetchedResultsController;
+@synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -39,13 +50,30 @@
                                              bundle: nil];
     
     [self.channelThumbnailCollection registerNib: thumbnailCellNib
-                      forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
+         forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
+    
+    UINib *thumbnailCellNib2 = [UINib nibWithNibName: @"SYNMyRockpackCell"
+                                             bundle: nil];
+    
+    [self.sideVideoThumbnailCollection registerNib: thumbnailCellNib2
+         forCellWithReuseIdentifier: @"MyRockpackCell"];
+    
+    // Cache the channels DB to make the code clearer
+    self.channelsDB = [SYNChannelsDB sharedChannelsDBManager];
+    self.videoDB = [SYNVideoDB sharedVideoDBManager];
+    
+    self.fullTitle.font = [UIFont boldRockpackFontOfSize: 28.0f];
+    self.biogTitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    self.biogBody.font = [UIFont rockpackFontOfSize: 17.0f];
 
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
+    
+    self.topLevel = TRUE;
 }
+
 
 #pragma mark - Collection view support
 
@@ -74,27 +102,27 @@
     if (cv == self.channelThumbnailCollection)
     {
         SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
-                                                                      forIndexPath: indexPath];
+                                                               forIndexPath: indexPath];
         
         cell.imageView.image = [self.channelsDB thumbnailForIndex: indexPath.row
-                                                       withOffset: self.currentOffset];
-        
-        cell.maintitle.text = [self.channelsDB titleForIndex: indexPath.row
-                                                  withOffset: self.currentOffset];
-        
-        cell.subtitle.text = [self.channelsDB subtitleForIndex: indexPath.row
                                                     withOffset: self.currentOffset];
         
+        cell.maintitle.text = [self.channelsDB titleForIndex: indexPath.row
+                                               withOffset: self.currentOffset];
+        
+        cell.subtitle.text = [self.channelsDB subtitleForIndex: indexPath.row
+                                                 withOffset: self.currentOffset];
+        
         cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB packItNumberForIndex: indexPath.row
-                                                                                               withOffset: self.currentOffset]];
+                                                                                            withOffset: self.currentOffset]];
         
         cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB rockItNumberForIndex: indexPath.row
-                                                                                               withOffset: self.currentOffset]];
+                                                                                            withOffset: self.currentOffset]];
         cell.packItButton.selected = ([self.channelsDB packItForIndex: indexPath.row
-                                                           withOffset: self.currentOffset]) ? TRUE : FALSE;
+                                                        withOffset: self.currentOffset]) ? TRUE : FALSE;
         
         cell.rockItButton.selected = ([self.channelsDB rockItForIndex: indexPath.row
-                                                           withOffset: self.currentOffset]) ? TRUE : FALSE;
+                                                        withOffset: self.currentOffset]) ? TRUE : FALSE;
         
         // Wire the Done button up to the correct method in the sign up controller
         [cell.packItButton removeTarget: nil
@@ -131,11 +159,14 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *video = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    SYNChannelsChannelViewController *movieController = [[SYNChannelsChannelViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: modf(<#double#>, <#double *#>)
+    if (cv == self.channelThumbnailCollection)
+    {
+        [self transitionToItemAtIndexPath: indexPath];
+    }
+    else
+    {
+        
+    }
 }
 
 
@@ -150,7 +181,7 @@
                                               withOffset: self.currentOffset];
     
     self.biogBody.text = [NSString stringWithFormat: @"%@\n\n\n", [self.channelsDB biogForIndex: indexPath.row
-                                                                                     withOffset: self.currentOffset]];
+                                            withOffset: self.currentOffset]];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -189,39 +220,39 @@
     }
     
     int number = [self.channelsDB rockItNumberForIndex: indexPath.row
-                                            withOffset: self.currentOffset];
+                                         withOffset: self.currentOffset];
     
     BOOL isTrue = [self.channelsDB rockItForIndex: indexPath.row
-                                       withOffset: self.currentOffset];
+                                    withOffset: self.currentOffset];
     
     if (isTrue)
     {
         number--;
         
         [self.channelsDB setRockIt: FALSE
-                          forIndex: indexPath.row
-                        withOffset: self.currentOffset];
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
     }
     else
     {
         number++;
         
         [self.channelsDB setRockIt: TRUE
-                          forIndex: indexPath.row
-                        withOffset: self.currentOffset];
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
     }
     
     [self.channelsDB setRockItNumber: number
-                            forIndex: indexPath.row
-                          withOffset: self.currentOffset];
+                         forIndex: indexPath.row
+                       withOffset: self.currentOffset];
     
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = ([self.channelsDB rockItForIndex: indexPath.row
-                                                       withOffset: self.currentOffset]) ? TRUE : FALSE;
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
     
     cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB rockItNumberForIndex: indexPath.row
-                                                                                           withOffset: self.currentOffset]];
+                                                                                        withOffset: self.currentOffset]];
 }
 
 - (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
@@ -230,44 +261,68 @@
     NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
     
     int number = [self.channelsDB packItNumberForIndex: indexPath.row
-                                            withOffset: self.currentOffset];
+                                         withOffset: self.currentOffset];
     
     BOOL isTrue = [self.channelsDB packItForIndex: indexPath.row
-                                       withOffset: self.currentOffset];
+                                    withOffset: self.currentOffset];
     
     if (isTrue)
     {
         number--;
         
         [self.channelsDB setPackIt: FALSE
-                          forIndex: indexPath.row
-                        withOffset: self.currentOffset];
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
     }
     else
     {
         number++;
         
         [self.channelsDB setPackIt: TRUE
-                          forIndex: indexPath.row
-                        withOffset: self.currentOffset];
+                       forIndex: indexPath.row
+                     withOffset: self.currentOffset];
     }
     
     [self.channelsDB setPackItNumber: number
-                            forIndex: indexPath.row
-                          withOffset: self.currentOffset];
+                         forIndex: indexPath.row
+                       withOffset: self.currentOffset];
     
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.packItButton.selected = ([self.channelsDB packItForIndex: indexPath.row
-                                                       withOffset: self.currentOffset]) ? TRUE : FALSE;
+                                                    withOffset: self.currentOffset]) ? TRUE : FALSE;
     
     cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB packItNumberForIndex: indexPath.row
-                                                                                           withOffset: self.currentOffset]];
+                                                                                        withOffset: self.currentOffset]];
 }
 
+- (IBAction) userTouchedBackButton: (id) sender
+{
+    [self transitionBackToTopLevel];
+}
+
+- (void) transitionBackToTopLevel
+{
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.drillDownView.alpha = 0.0f;
+         self.channelThumbnailCollection.alpha = 1.0f;
+         self.topTabView.alpha = 1.0f;
+         self.topTabHighlightedView.alpha = 1.0f;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         self.topLevel = TRUE;
+     }];
+}
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
-{
+{    
     if (sender.state == UIGestureRecognizerStateBegan)
     {
         // At this stage, we don't know whether the user is pinching in or out
@@ -358,12 +413,12 @@
 
 #pragma mark - Core Data Support
 
-- (NSFetchedResultsController *) channelFetchedResultsController
+- (NSFetchedResultsController *) videoFetchedResultsController
 {
     // Return cached version if we have already created one
-    if (_channelFetchedResultsController != nil)
+    if (_videoFetchedResultsController != nil)
     {
-        return _channelFetchedResultsController;
+        return _videoFetchedResultsController;
     }
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -387,20 +442,16 @@
                                                                                                     sectionNameKeyPath: nil
                                                                                                              cacheName: @"Discover"];
     newFetchedResultsController.delegate = self;
-    self.channelFetchedResultsController = newFetchedResultsController;
+    self.videoFetchedResultsController = newFetchedResultsController;
     
     NSError *error = nil;
-    if (![_channelFetchedResultsController performFetch: &error])
+    if (![_videoFetchedResultsController performFetch: &error])
     {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        // TODO: Put some more error handling in here
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
     }
     
-    return _channelFetchedResultsController;
+    return _videoFetchedResultsController;
 }
-
-
 
 @end

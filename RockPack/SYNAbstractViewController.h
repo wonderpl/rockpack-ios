@@ -18,6 +18,11 @@
 
 // Public methods
 
+// Persist the current state of CoreData to the mySQL DB
 - (void) saveDB;
+
+// Push new view controller onto UINavigationController stack using a custom animation
+// Fade old VC out, fade new VC in (as opposed to regular push animation)
+- (void) animatedPushViewController: (UIViewController *) vc;
 
 @end
