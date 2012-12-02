@@ -84,13 +84,13 @@
 // Abstract functions, should be overidden in subclasses
 - (NSPredicate *) videoFetchedResultsControllerPredicate
 {
-    Alog (@"videoFetchedResultsControllerPredicate:Abstract function called");
+    AssertOrLog (@"videoFetchedResultsControllerPredicate:Abstract function called");
     return nil;
 }
 
 - (NSArray *) videoFetchedResultsControllerSortDescriptors
 {
-    Alog (@"videoFetchedResultsControllerSortDescriptors:Abstract function called");
+    AssertOrLog (@"videoFetchedResultsControllerSortDescriptors:Abstract function called");
     return nil;
 }
 
@@ -133,14 +133,14 @@
 // Abstract functions, should be overidden in subclasses
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    Alog (@"channelFetchedResultsControllerPredicate:Abstract function called");
+    AssertOrLog (@"channelFetchedResultsControllerPredicate:Abstract function called");
     return nil;
 }
 
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
-    Alog (@"channelFetchedResultsControllerSortDescriptors:Abstract function called");
+    AssertOrLog (@"channelFetchedResultsControllerSortDescriptors:Abstract function called");
     return nil;
 }
 
