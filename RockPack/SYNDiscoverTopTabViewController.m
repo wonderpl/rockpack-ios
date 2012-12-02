@@ -12,7 +12,6 @@
 #import "Channel.h"
 #import "NSObject+Blocks.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelsDB.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
@@ -912,44 +911,36 @@
 //    Channel *channel = (Channel *)[[NSManagedObject alloc] initWithEntity: channelEntity
 //                                           insertIntoManagedObjectContext: self.managedObjectContext];
     
-    Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
+    Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
     
-    channel.title = textField.text;
-    channel.subtitle = @"CHANNEL";
-    channel.packedByUserValue = TRUE;
-    channel.rockedByUserValue = FALSE;
-    channel.totalPacksValue = 0;
-    channel.totalRocksValue = 0;
-    channel.userGeneratedValue = TRUE;
+    newChannel.title = textField.text;
+    newChannel.subtitle = @"CHANNEL";
+    newChannel.packedByUserValue = TRUE;
+    newChannel.rockedByUserValue = FALSE;
+    newChannel.totalPacksValue = 0;
+    newChannel.totalRocksValue = 0;
+    newChannel.userGeneratedValue = TRUE;
     
 //    NSLog (@"Carousel center: %.2f,%.2f", self.channelCoverCarousel.center.x, self.channelCoverCarousel.center.y);
 //    NSLog (@"Content offset: %.2f,%.2f", self.channelCoverCarousel.contentOffset.x, self.channelCoverCarousel.contentOffset.y);
     
     // TODO: Make these window offsets less hard-coded
-    NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
+    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
                                                                                                      70 + self.channelCoverCarousel.contentOffset.y)];
     
-//    NSLog (@"Current Selection: %@", currentSelection);
+    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    //        NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (380.0f, 8)];
-    //            NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (725.0f, 70)];
+    newChannel.keyframeURL = coverChannel.keyframeURL;
     
-    channel.keyframeURL = [[SYNChannelsDB sharedChannelsDBManager] keyframeURLForIndex: currentSelection.row
-                                                                            withOffset: 0];
+    newChannel.wallpaperURL = coverChannel.wallpaperURL;
     
-    channel.wallpaperURL = [[SYNChannelsDB sharedChannelsDBManager] wallpaperURLForIndex: currentSelection.row
-                                                                            withOffset: 0];
+    newChannel.biog = coverChannel.biog;
     
-    channel.biog = [[SYNChannelsDB sharedChannelsDBManager] biogForIndex: currentSelection.row
-                                                                              withOffset: 0];
+    NSString *biogTitle = coverChannel.title;
     
-    NSString *biogTitle = [[SYNChannelsDB sharedChannelsDBManager] titleForIndex: currentSelection.row
-                                                                     withOffset: 0];
+    NSString *biogSubtitle = coverChannel.subtitle;;
     
-    NSString *biogSubtitle = [[SYNChannelsDB sharedChannelsDBManager] subtitleForIndex: currentSelection.row
-                                                                      withOffset: 0];
-    
-    channel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
+    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
     
 //    // TODO: Need to think about what keyframe image we use
 //    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
@@ -959,7 +950,7 @@
         // Get video 
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
 
-        [channel addVideosObject: video];
+        [newChannel addVideosObject: video];
     }
     
     [self.channelNameField resignFirstResponder];

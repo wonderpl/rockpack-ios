@@ -10,7 +10,7 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "MKNetworkEngine.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNOldChannelsTopTabViewController.h"
+#import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
@@ -65,7 +65,7 @@
     
     // Setup our four sub-viewcontrollers, one for each tab
     SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
-    SYNOldChannelsTopTabViewController *channelsViewController = [[SYNOldChannelsTopTabViewController alloc] init];
+    SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
 //    SYNMyRockPackDetailViewController *myRockPackViewController = [[SYNMyRockPackDetailViewController alloc] init];
     

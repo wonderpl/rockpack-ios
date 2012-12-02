@@ -407,8 +407,6 @@
 		019E83621654064D00744A03 /* ButtonGridHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E83551654064D00744A03 /* ButtonGridHighlighted@2x.png */; };
 		019E83631654064D00744A03 /* ButtonGridSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E83561654064D00744A03 /* ButtonGridSelected.png */; };
 		019E83641654064D00744A03 /* ButtonGridSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E83571654064D00744A03 /* ButtonGridSelected@2x.png */; };
-		01B7F75F164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F75D164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.m */; };
-		01B7F760164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F75E164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.xib */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
 		01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */; };
@@ -921,9 +919,6 @@
 		019E83561654064D00744A03 /* ButtonGridSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonGridSelected.png; path = Assets/Images/ButtonGridSelected.png; sourceTree = "<group>"; };
 		019E83571654064D00744A03 /* ButtonGridSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonGridSelected@2x.png"; path = "Assets/Images/ButtonGridSelected@2x.png"; sourceTree = "<group>"; };
 		01B37241162EBAD800A9F8F5 /* RockPack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RockPack.entitlements; path = RockPack/RockPack.entitlements; sourceTree = "<group>"; };
-		01B7F75C164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOldChannelsTopTabViewController.h; sourceTree = "<group>"; };
-		01B7F75D164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOldChannelsTopTabViewController.m; sourceTree = "<group>"; };
-		01B7F75E164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOldChannelsTopTabViewController.xib; sourceTree = "<group>"; };
 		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
 		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
 		01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelThumbnailCell.xib; sourceTree = "<group>"; };
@@ -1870,9 +1865,6 @@
 		01B7F75B164FB7A7009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
-				01B7F75C164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.h */,
-				01B7F75D164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.m */,
-				01B7F75E164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.xib */,
 				014A456D166A39E60091E4E5 /* SYNChannelsTopTabViewController.h */,
 				014A456E166A39E60091E4E5 /* SYNChannelsTopTabViewController.m */,
 				014A456F166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib */,
@@ -2136,7 +2128,6 @@
 				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailCell.xib in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */,
 				01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */,
-				01B7F760164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.xib in Resources */,
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
 				0106E81C165104CE00DC5173 /* SYNWallPackTopTabViewController.xib in Resources */,
 				0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */,
@@ -2539,7 +2530,6 @@
 				011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */,
 				011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */,
 				011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */,
-				01B7F75F164FBFF3009C5CCD /* SYNOldChannelsTopTabViewController.m in Sources */,
 				01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */,
 				01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */,
 				01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */,

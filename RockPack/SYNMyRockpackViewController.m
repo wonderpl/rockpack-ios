@@ -190,27 +190,27 @@
         
         // Wire the Done button up to the correct method in the sign up controller
 		[cell.packItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailPackItButton:)
+                                 action: @selector(toggleVideoThumbnailPackItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
 		
 		[cell.packItButton addTarget: self
-                              action: @selector(toggleThumbnailPackItButton:)
+                              action: @selector(toggleVideoThumbnailPackItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailRockItButton:)
+                                 action: @selector(toggleVideoThumbnailRockItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
 		
 		[cell.rockItButton addTarget: self
-                              action: @selector(toggleThumbnailRockItButton:)
+                              action: @selector(toggleVideoThumbnailRockItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         [cell.addItButton removeTarget: nil
-                                action: @selector(touchThumbnailAddItButton:)
+                                action: @selector(touchVideoThumbnailShareButton:)
                       forControlEvents: UIControlEventTouchUpInside];
 		
 		[cell.addItButton addTarget: self
-                             action: @selector(touchThumbnailAddItButton:)
+                             action: @selector(touchVideoThumbnailShareButton:)
                    forControlEvents: UIControlEventTouchUpInside];
         
         return cell;
@@ -238,19 +238,19 @@
         
         // Wire the Done button up to the correct method in the sign up controller
         [cell.packItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailPackItButton:)
+                                 action: @selector(toggleChannelThumbnailPackItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
         
         [cell.packItButton addTarget: self
-                              action: @selector(toggleThumbnailPackItButton:)
+                              action: @selector(toggleChannelThumbnailPackItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailRockItButton:)
+                                 action: @selector(toggleChannelThumbnailRockItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton addTarget: self
-                              action: @selector(toggleThumbnailRockItButton:)
+                              action: @selector(toggleChannelThumbnailRockItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         return cell;
@@ -357,7 +357,7 @@
      }];
 }
 
-- (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
+- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
@@ -378,7 +378,7 @@
 }
 
 
-- (void) togglePackItAtIndex: (NSIndexPath *) indexPath
+- (void) toggleVideoPackItAtIndex: (NSIndexPath *) indexPath
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
@@ -400,7 +400,7 @@
 
 
 // Buttons activated from scrolling list of thumbnails
-- (IBAction) toggleThumbnailRockItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoThumbnailRockItButton: (UIButton *) rockItButton
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
@@ -412,16 +412,16 @@
         return;
     }
     
-    [self toggleRockItAtIndex: indexPath];
+    [self toggleVideoRockItAtIndex: indexPath];
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.packedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.packedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = video.rockedByUserValue;
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
-- (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
+- (IBAction) toggleVideoThumbnailPackItButton: (UIButton *) packItButton
 {
     UIView *v = packItButton.superview.superview;
     NSIndexPath *indexPath = [self.packedVideoThumbnailCollection indexPathForItemAtPoint: v.center];
@@ -432,7 +432,7 @@
         return;
     }
     
-    [self togglePackItAtIndex: indexPath];
+    [self toggleVideoPackItAtIndex: indexPath];
     
     // We don't need to update the UI as this cell can only be deselected
     // (Otherwise a race-condition will occur if deleting the last cell)
@@ -444,6 +444,97 @@
 //    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
     
 //    [self.rockedVideoThumbnailCollection reloadData];
+}
+
+- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (channel.rockedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        channel.rockedByUserValue = FALSE;
+        channel.totalRocksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        channel.rockedByUserValue = TRUE;
+        channel.totalRocksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+- (void) toggleChannelPackItAtIndex: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (channel.packedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        channel.packedByUserValue = FALSE;
+        channel.totalPacksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        channel.packedByUserValue = TRUE;
+        channel.totalPacksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+// Buttons activated from scrolling list of thumbnails
+- (IBAction) toggleChannelRockItButton: (UIButton *) rockItButton
+{
+    // Get to cell it self (from button subview)
+    UIView *v = rockItButton.superview.superview;
+    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (!indexPath)
+    {
+        return;
+    }
+    
+    [self toggleChannelRockItAtIndex: indexPath];
+    
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+    
+    cell.rockItButton.selected = channel.rockedByUserValue;
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+}
+
+- (IBAction) toggleChannelPackItButton: (UIButton *) packItButton
+{
+    UIView *v = packItButton.superview.superview;
+    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (!indexPath)
+    {
+        return;
+    }
+    
+    [self toggleChannelPackItAtIndex: indexPath];
+    
+    // We don't need to update the UI as this cell can only be deselected
+    // (Otherwise a race-condition will occur if deleting the last cell)
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+
+    cell.packItButton.selected = channel.packedByUserValue;
+    cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
+}
+
+- (IBAction) touchThumbnailShareButton: (UIButton *) addItButton
+{
+    // TODO: Add share
 }
 
 @end
