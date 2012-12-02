@@ -20,15 +20,12 @@
 
 @property (nonatomic, assign) BOOL userPinchedIn;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
-@property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
 @end
 
 @implementation SYNChannelsTopTabViewController
-
-@synthesize channelFetchedResultsController = _channelFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -52,15 +49,9 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    if (view == self.channelThumbnailCollection)
-    {
-        return self.channelsDB.numberOfThumbnails;
-    }
-    else
-    {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
-        return [sectionInfo numberOfObjects];
-    }
+
+    return self.channelsDB.numberOfThumbnails;
+
 }
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
@@ -71,71 +62,59 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.channelThumbnailCollection)
-    {
-        SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
-                                                                      forIndexPath: indexPath];
-        
-        cell.imageView.image = [self.channelsDB thumbnailForIndex: indexPath.row
-                                                       withOffset: self.currentOffset];
-        
-        cell.maintitle.text = [self.channelsDB titleForIndex: indexPath.row
-                                                  withOffset: self.currentOffset];
-        
-        cell.subtitle.text = [self.channelsDB subtitleForIndex: indexPath.row
-                                                    withOffset: self.currentOffset];
-        
-        cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB packItNumberForIndex: indexPath.row
-                                                                                               withOffset: self.currentOffset]];
-        
-        cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB rockItNumberForIndex: indexPath.row
-                                                                                               withOffset: self.currentOffset]];
-        cell.packItButton.selected = ([self.channelsDB packItForIndex: indexPath.row
-                                                           withOffset: self.currentOffset]) ? TRUE : FALSE;
-        
-        cell.rockItButton.selected = ([self.channelsDB rockItForIndex: indexPath.row
-                                                           withOffset: self.currentOffset]) ? TRUE : FALSE;
-        
-        // Wire the Done button up to the correct method in the sign up controller
-        [cell.packItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailPackItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-        
-        [cell.packItButton addTarget: self
-                              action: @selector(toggleThumbnailPackItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
-        [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailRockItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-        
-        [cell.rockItButton addTarget: self
-                              action: @selector(toggleThumbnailRockItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
-        return cell;
-    }
-    else
-    {
-        SYNMyRockpackCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"MyRockpackCell"
-                                                                forIndexPath: indexPath];
-        
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-        cell.imageView.image = video.keyframeImage;
-        
-        return cell;
-    }
+
+    SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
+                                                                  forIndexPath: indexPath];
+    
+    cell.imageView.image = [self.channelsDB thumbnailForIndex: indexPath.row
+                                                   withOffset: self.currentOffset];
+    
+    cell.maintitle.text = [self.channelsDB titleForIndex: indexPath.row
+                                              withOffset: self.currentOffset];
+    
+    cell.subtitle.text = [self.channelsDB subtitleForIndex: indexPath.row
+                                                withOffset: self.currentOffset];
+    
+    cell.packItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB packItNumberForIndex: indexPath.row
+                                                                                           withOffset: self.currentOffset]];
+    
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%d", [self.channelsDB rockItNumberForIndex: indexPath.row
+                                                                                           withOffset: self.currentOffset]];
+    cell.packItButton.selected = ([self.channelsDB packItForIndex: indexPath.row
+                                                       withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
+    cell.rockItButton.selected = ([self.channelsDB rockItForIndex: indexPath.row
+                                                       withOffset: self.currentOffset]) ? TRUE : FALSE;
+    
+    // Wire the Done button up to the correct method in the sign up controller
+    [cell.packItButton removeTarget: nil
+                             action: @selector(toggleThumbnailPackItButton:)
+                   forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.packItButton addTarget: self
+                          action: @selector(toggleThumbnailPackItButton:)
+                forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.rockItButton removeTarget: nil
+                             action: @selector(toggleThumbnailRockItButton:)
+                   forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.rockItButton addTarget: self
+                          action: @selector(toggleThumbnailRockItButton:)
+                forControlEvents: UIControlEventTouchUpInside];
+    
+    return cell;
 }
 
 
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *video = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelsChannelViewController *movieController = [[SYNChannelsChannelViewController alloc] initWithChannel: channel];
+    SYNChannelsChannelViewController *channelVC = [[SYNChannelsChannelViewController alloc] initWithChannel: channel];
     
-    [self animatedPushViewController: modf(<#double#>, <#double *#>)
+    [self animatedPushViewController: channelVC];
 }
 
 
@@ -358,47 +337,16 @@
 
 #pragma mark - Core Data Support
 
-- (NSFetchedResultsController *) channelFetchedResultsController
+- (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    // Return cached version if we have already created one
-    if (_channelFetchedResultsController != nil)
-    {
-        return _channelFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
-                                              inManagedObjectContext: self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Edit the sort key as appropriate.
+    return [NSPredicate predicateWithFormat: @"userGenerated == FALSE"];
+}
+
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
+{
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
-    
-    NSArray *sortDescriptors = @[sortDescriptor];
-    
-    [fetchRequest setSortDescriptors: sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                                  managedObjectContext: self.managedObjectContext
-                                                                                                    sectionNameKeyPath: nil
-                                                                                                             cacheName: @"Discover"];
-    newFetchedResultsController.delegate = self;
-    self.channelFetchedResultsController = newFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![_channelFetchedResultsController performFetch: &error])
-    {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    
-    return _channelFetchedResultsController;
+    return @[sortDescriptor];
 }
 
 

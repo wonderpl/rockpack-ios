@@ -54,7 +54,6 @@
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
-@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) NSMutableArray *imageWell;
@@ -66,8 +65,6 @@
 @end
 
 @implementation SYNDiscoverTopTabViewController
-
-@synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -127,45 +124,19 @@
 }
 
 
-- (NSFetchedResultsController *) videoFetchedResultsController
+// The following 2 methods are called by the abstract class' getFetchedResults controller methods
+- (NSPredicate *) videoFetchedResultsControllerPredicate
 {
-    // Return cached version if we have already created one
-    if (_videoFetchedResultsController != nil)
-    {
-        return _videoFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
-                                              inManagedObjectContext: self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Edit the sort key as appropriate.
+    // No predicate
+    return nil;
+}
+
+
+- (NSArray *) videoFetchedResultsControllerSortDescriptors
+{
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
-    
-    NSArray *sortDescriptors = @[sortDescriptor];
-    
-    [fetchRequest setSortDescriptors: sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                                  managedObjectContext: self.managedObjectContext
-                                                                                                    sectionNameKeyPath: nil
-                                                                                                             cacheName: @"Discover"];
-    newFetchedResultsController.delegate = self;
-    self.videoFetchedResultsController = newFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![_videoFetchedResultsController performFetch: &error])
-    {
-        // TODO: Put some more error handling in here
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    return _videoFetchedResultsController;
+    return @[sortDescriptor];
 }
 
 
@@ -949,6 +920,7 @@
     channel.rockedByUserValue = FALSE;
     channel.totalPacksValue = 0;
     channel.totalRocksValue = 0;
+    channel.userGeneratedValue = TRUE;
     
 //    NSLog (@"Carousel center: %.2f,%.2f", self.channelCoverCarousel.center.x, self.channelCoverCarousel.center.y);
 //    NSLog (@"Content offset: %.2f,%.2f", self.channelCoverCarousel.contentOffset.x, self.channelCoverCarousel.contentOffset.y);

@@ -29,7 +29,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *fullTitle;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
 @property (nonatomic, strong) IBOutlet UIView *drillDownView;
-@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) SYNChannelsDB *channelsDB;
 @property (nonatomic, strong) SYNVideoDB *videoDB;
@@ -38,8 +37,6 @@
 @end
 
 @implementation SYNOldChannelsTopTabViewController
-
-@synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -411,47 +408,20 @@
 }
 
 
-#pragma mark - Core Data Support
+#pragma mark - CoreData support
 
-- (NSFetchedResultsController *) videoFetchedResultsController
+// The following 4 methods are called by the abstract class' getFetchedResults controller methods
+- (NSPredicate *) videoFetchedResultsControllerPredicate
 {
-    // Return cached version if we have already created one
-    if (_videoFetchedResultsController != nil)
-    {
-        return _videoFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
-                                              inManagedObjectContext: self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Edit the sort key as appropriate.
+    return nil;
+}
+
+
+- (NSArray *) videoFetchedResultsControllerSortDescriptors
+{
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
-    
-    NSArray *sortDescriptors = @[sortDescriptor];
-    
-    [fetchRequest setSortDescriptors: sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                                  managedObjectContext: self.managedObjectContext
-                                                                                                    sectionNameKeyPath: nil
-                                                                                                             cacheName: @"Discover"];
-    newFetchedResultsController.delegate = self;
-    self.videoFetchedResultsController = newFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![_videoFetchedResultsController performFetch: &error])
-    {
-        // TODO: Put some more error handling in here
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    return _videoFetchedResultsController;
+    return @[sortDescriptor];
 }
 
 @end

@@ -6,8 +6,12 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+@class Channel;
+
 #import "SYNAbstractTopTabViewController.h"
 
 @interface SYNChannelsChannelViewController : SYNAbstractTopTabViewController
+
+- (id) initWithChannel: (Channel *) channel;
 
 @end

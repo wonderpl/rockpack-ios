@@ -6,33 +6,28 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "Channel.h"
 #import "SYNChannelsChannelViewController.h"
 
 @interface SYNChannelsChannelViewController ()
+
+@property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) NSArray *videos;
 
 @end
 
 @implementation SYNChannelsChannelViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id) initWithChannel: (Channel *) channel
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	
+	if ((self = [super init]))
+    {
+		self.channel = channel;
+        self.videos = [self.channel.videos allObjects];
+	}
+    
+	return self;
 }
 
 @end

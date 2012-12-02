@@ -32,17 +32,12 @@
 @property (nonatomic, strong) IBOutlet UILabel *userName;
 @property (nonatomic, strong) IBOutlet UIView *avatarView;
 @property (nonatomic, strong) IBOutlet UIView *cardsView;
-@property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) UIColor *darkSwitchColor;
 @property (nonatomic, strong) UIColor *lightSwitchColor;
 
 @end
 
 @implementation SYNMyRockpackViewController
-
-@synthesize videoFetchedResultsController = _videoFetchedResultsController;
-@synthesize channelFetchedResultsController = _channelFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -96,91 +91,32 @@
 
 #pragma mark - CoreData support
 
-- (NSFetchedResultsController *) videoFetchedResultsController
+// The following 4 methods are called by the abstract class' getFetchedResults controller methods
+- (NSPredicate *) videoFetchedResultsControllerPredicate
 {
-    // Return cached version if we have already created one
-    if (_videoFetchedResultsController != nil)
-    {
-        return _videoFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
-                                              inManagedObjectContext: self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                   ascending: YES];
-    
-    NSArray *sortDescriptors = @[sortDescriptor];
-    [fetchRequest setSortDescriptors: sortDescriptors];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"packedByUser == TRUE"];
-    [fetchRequest setPredicate: predicate];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                                  managedObjectContext: self.managedObjectContext
-                                                                                                    sectionNameKeyPath: nil
-                                                                                                             cacheName: nil];
-    newFetchedResultsController.delegate = self;
-    self.videoFetchedResultsController = newFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![_videoFetchedResultsController performFetch: &error])
-    {
-        // TODO: Put some more error handling in here
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    return _videoFetchedResultsController;
+    return [NSPredicate predicateWithFormat: @"packedByUser == TRUE"];
 }
 
 
-- (NSFetchedResultsController *) channelFetchedResultsController
+- (NSArray *) videoFetchedResultsControllerSortDescriptors
 {
-    // Return cached version if we have already created one
-    if (_channelFetchedResultsController != nil)
-    {
-        return _channelFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Channel"
-                                              inManagedObjectContext: self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
-    
-    NSArray *sortDescriptors = @[sortDescriptor];
-    [fetchRequest setSortDescriptors: sortDescriptors];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"packedByUser == TRUE"];
-    [fetchRequest setPredicate: predicate];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                                  managedObjectContext: self.managedObjectContext
-                                                                                                    sectionNameKeyPath: nil
-                                                                                                             cacheName: nil];
-    newFetchedResultsController.delegate = self;
-    self.channelFetchedResultsController = newFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![_channelFetchedResultsController performFetch: &error])
-    {
-        // TODO: Put some more error handling in here
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    return _channelFetchedResultsController;
+    return @[sortDescriptor];
+}
+
+
+- (NSPredicate *) channelFetchedResultsControllerPredicate
+{
+    return [NSPredicate predicateWithFormat: @"(packedByUser == TRUE) AND (userGenerated == TRUE)"];
+}
+
+
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
+{
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
+    return @[sortDescriptor];
 }
 
 
@@ -329,51 +265,17 @@
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNMyRockpackMovieViewController *movieController = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
+        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
         
-        movieController.view.alpha = 0.0f;
-        
-        [self.navigationController pushViewController: movieController
-                                             animated: NO];
-        
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Contract thumbnail view
-             self.view.alpha = 0.0f;
-             movieController.view.alpha = 1.0f;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-         }];
+        [self animatedPushViewController: movieVC];
     }
     else
     {
         Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNMyRockpackDetailViewController *channelDetailViewController = [[SYNMyRockpackDetailViewController alloc] initWithChannel: channel];
+        SYNMyRockpackDetailViewController *channelDetailVC = [[SYNMyRockpackDetailViewController alloc] initWithChannel: channel];
         
-        channelDetailViewController.view.alpha = 0.0f;
-        
-        [self.navigationController pushViewController: channelDetailViewController
-                                             animated: NO];
-        
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Contract thumbnail view
-             self.view.alpha = 0.0f;
-             channelDetailViewController.view.alpha = 1.0f;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-         }];
+        [self animatedPushViewController: channelDetailVC];
     }
 }
 
@@ -391,7 +293,6 @@
         self.channelThumbnailCollection.alpha = 0.0f;
         self.channelThumbnailCollection.hidden = FALSE;
 
-        
         [UIView animateWithDuration: kSwitchLabelAnimation
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut

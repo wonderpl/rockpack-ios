@@ -90,8 +90,7 @@
     {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save: &error])
         {
-            // TODO: Put some more error handling in here
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            NSAssert2(FALSE, @"Unresolved error %@, %@", error, [error userInfo]);
         }
     }
 }

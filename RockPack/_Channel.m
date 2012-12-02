@@ -13,6 +13,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.title = @"title",
 	.totalPacks = @"totalPacks",
 	.totalRocks = @"totalRocks",
+	.userGenerated = @"userGenerated",
 	.wallpaperURL = @"wallpaperURL",
 };
 
@@ -66,6 +67,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 	}
 	if ([key isEqualToString:@"totalRocksValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"totalRocks"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"userGeneratedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"userGenerated"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -209,6 +215,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 - (void)setPrimitiveTotalRocksValue:(int64_t)value_ {
 	[self setPrimitiveTotalRocks:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
+@dynamic userGenerated;
+
+
+
+- (BOOL)userGeneratedValue {
+	NSNumber *result = [self userGenerated];
+	return [result boolValue];
+}
+
+- (void)setUserGeneratedValue:(BOOL)value_ {
+	[self setUserGenerated:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveUserGeneratedValue {
+	NSNumber *result = [self primitiveUserGenerated];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveUserGeneratedValue:(BOOL)value_ {
+	[self setPrimitiveUserGenerated:[NSNumber numberWithBool:value_]];
 }
 
 
