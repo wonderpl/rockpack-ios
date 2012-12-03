@@ -7,6 +7,7 @@
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *biog;
 	__unsafe_unretained NSString *biogTitle;
+	__unsafe_unretained NSString *index;
 	__unsafe_unretained NSString *keyframeURL;
 	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
@@ -26,6 +27,7 @@ extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
 @class Video;
+
 
 
 
@@ -67,6 +69,20 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateBiogTitle:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* index;
+
+
+
+@property int64_t indexValue;
+- (int64_t)indexValue;
+- (void)setIndexValue:(int64_t)value_;
+
+//- (BOOL)validateIndex:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -212,6 +228,15 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveBiogTitle;
 - (void)setPrimitiveBiogTitle:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveIndex;
+- (void)setPrimitiveIndex:(NSNumber*)value;
+
+- (int64_t)primitiveIndexValue;
+- (void)setPrimitiveIndexValue:(int64_t)value_;
 
 
 

@@ -5,6 +5,7 @@
 
 
 extern const struct VideoAttributes {
+	__unsafe_unretained NSString *index;
 	__unsafe_unretained NSString *keyframeURL;
 	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
@@ -33,6 +34,7 @@ extern const struct VideoFetchedProperties {
 
 
 
+
 @interface VideoID : NSManagedObjectID {}
 @end
 
@@ -41,6 +43,20 @@ extern const struct VideoFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (VideoID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* index;
+
+
+
+@property int64_t indexValue;
+- (int64_t)indexValue;
+- (void)setIndexValue:(int64_t)value_;
+
+//- (BOOL)validateIndex:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -162,6 +178,15 @@ extern const struct VideoFetchedProperties {
 @end
 
 @interface _Video (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveIndex;
+- (void)setPrimitiveIndex:(NSNumber*)value;
+
+- (int64_t)primitiveIndexValue;
+- (void)setPrimitiveIndexValue:(int64_t)value_;
+
+
 
 
 - (NSString*)primitiveKeyframeURL;

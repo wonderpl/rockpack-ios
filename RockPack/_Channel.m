@@ -6,6 +6,7 @@
 const struct ChannelAttributes ChannelAttributes = {
 	.biog = @"biog",
 	.biogTitle = @"biogTitle",
+	.index = @"index",
 	.keyframeURL = @"keyframeURL",
 	.packedByUser = @"packedByUser",
 	.rockedByUser = @"rockedByUser",
@@ -50,6 +51,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"indexValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"index"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"packedByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"packedByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -91,6 +97,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 @dynamic biogTitle;
 
+
+
+
+
+
+@dynamic index;
+
+
+
+- (int64_t)indexValue {
+	NSNumber *result = [self index];
+	return [result longLongValue];
+}
+
+- (void)setIndexValue:(int64_t)value_ {
+	[self setIndex:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveIndexValue {
+	NSNumber *result = [self primitiveIndex];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveIndexValue:(int64_t)value_ {
+	[self setPrimitiveIndex:[NSNumber numberWithLongLong:value_]];
+}
 
 
 

@@ -17,6 +17,7 @@
 #import "SYNImageWellCell.h"
 #import "SYNSelection.h"
 #import "SYNSelectionDB.h"
+#import "SYNChannelsDB.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoThumbnailCell.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
@@ -58,7 +59,6 @@
 @property (nonatomic, strong) NSMutableArray *imageWell;
 @property (nonatomic, strong) NSMutableArray *selections;
 @property (nonatomic, strong) SYNSelectionDB *selectionDB;
-@property (nonatomic, strong) SYNVideoDB *videoDB;
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @end
@@ -72,7 +72,7 @@
     self.imageWell = [[NSMutableArray alloc] initWithCapacity: 100];
     self.selections = [[NSMutableArray alloc] initWithCapacity: 100];
     
-    self.videoDB = [SYNVideoDB sharedVideoDBManager];
+//    self.videoDB = [SYNVideoDB sharedVideoDBManager];
     self.selectionDB = [SYNSelectionDB sharedSelectionDBManager];
 
     self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
@@ -116,10 +116,11 @@
 #pragma mark - CoreDate support
 - (void) viewWillAppear: (BOOL) animated
 {
+    [SYNChannelsDB sharedChannelsDBManager];
+    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
+    
     // Set the first video
     [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
-    
-    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
 }
 
 

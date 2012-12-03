@@ -190,27 +190,27 @@
         
         // Wire the Done button up to the correct method in the sign up controller
 		[cell.packItButton removeTarget: nil
-                                 action: @selector(toggleVideoThumbnailPackItButton:)
+                                 action: @selector(toggleVideoPackItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
 		
 		[cell.packItButton addTarget: self
-                              action: @selector(toggleVideoThumbnailPackItButton:)
+                              action: @selector(toggleVideoPackItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleVideoThumbnailRockItButton:)
+                                 action: @selector(toggleVideoRockItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
 		
 		[cell.rockItButton addTarget: self
-                              action: @selector(toggleVideoThumbnailRockItButton:)
+                              action: @selector(toggleVideoRockItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         [cell.addItButton removeTarget: nil
-                                action: @selector(touchVideoThumbnailShareButton:)
+                                action: @selector(touchVideoShareButton:)
                       forControlEvents: UIControlEventTouchUpInside];
 		
 		[cell.addItButton addTarget: self
-                             action: @selector(touchVideoThumbnailShareButton:)
+                             action: @selector(touchVideoShareButton:)
                    forControlEvents: UIControlEventTouchUpInside];
         
         return cell;
@@ -238,19 +238,19 @@
         
         // Wire the Done button up to the correct method in the sign up controller
         [cell.packItButton removeTarget: nil
-                                 action: @selector(toggleChannelThumbnailPackItButton:)
+                                 action: @selector(toggleChannelPackItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
         
         [cell.packItButton addTarget: self
-                              action: @selector(toggleChannelThumbnailPackItButton:)
+                              action: @selector(toggleChannelPackItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleChannelThumbnailRockItButton:)
+                                 action: @selector(toggleChannelRockItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton addTarget: self
-                              action: @selector(toggleChannelThumbnailRockItButton:)
+                              action: @selector(toggleChannelRockItButton:)
                     forControlEvents: UIControlEventTouchUpInside];
         
         return cell;
@@ -400,7 +400,7 @@
 
 
 // Buttons activated from scrolling list of thumbnails
-- (IBAction) toggleVideoThumbnailRockItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoRockItButton: (UIButton *) rockItButton
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
@@ -421,7 +421,7 @@
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
-- (IBAction) toggleVideoThumbnailPackItButton: (UIButton *) packItButton
+- (IBAction) toggleVideoPackItButton: (UIButton *) packItButton
 {
     UIView *v = packItButton.superview.superview;
     NSIndexPath *indexPath = [self.packedVideoThumbnailCollection indexPathForItemAtPoint: v.center];
@@ -532,7 +532,7 @@
     cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
 }
 
-- (IBAction) touchThumbnailShareButton: (UIButton *) addItButton
+- (IBAction) touchVideoShareButton: (UIButton *) addItButton
 {
     // TODO: Add share
 }

@@ -73,7 +73,7 @@
     self.videoFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                              managedObjectContext: self.managedObjectContext
                                                                                sectionNameKeyPath: nil
-                                                                                        cacheName: @"Discover"];
+                                                                                        cacheName: nil];
     _videoFetchedResultsController.delegate = self;
     
     ZAssert([_videoFetchedResultsController performFetch: &error], @"videoFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
@@ -121,7 +121,7 @@
     self.channelFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                managedObjectContext: self.managedObjectContext
                                                                                  sectionNameKeyPath: nil
-                                                                                          cacheName: @"Discover"];
+                                                                                          cacheName: nil];
     _channelFetchedResultsController.delegate = self;
     
     ZAssert([_channelFetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);

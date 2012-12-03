@@ -85,19 +85,19 @@
     
     // Wire the Done button up to the correct method in the sign up controller
     [cell.packItButton removeTarget: nil
-                             action: @selector(toggleChannelThumbnailPackItButton:)
+                             action: @selector(toggleChannelPackItButton:)
                    forControlEvents: UIControlEventTouchUpInside];
     
     [cell.packItButton addTarget: self
-                          action: @selector(toggleTChannelhumbnailPackItButton:)
+                          action: @selector(toggleChannelPackItButton:)
                 forControlEvents: UIControlEventTouchUpInside];
     
     [cell.rockItButton removeTarget: nil
-                             action: @selector(toggleChannelThumbnailRockItButton:)
+                             action: @selector(toggleChannelRockItButton:)
                    forControlEvents: UIControlEventTouchUpInside];
     
     [cell.rockItButton addTarget: self
-                          action: @selector(toggleChannelThumbnailRockItButton:)
+                          action: @selector(toggleChannelRockItButton:)
                 forControlEvents: UIControlEventTouchUpInside];
     
     return cell;
@@ -321,7 +321,7 @@
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }
