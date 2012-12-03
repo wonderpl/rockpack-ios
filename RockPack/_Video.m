@@ -4,7 +4,6 @@
 #import "_Video.h"
 
 const struct VideoAttributes VideoAttributes = {
-	.dummySortKey = @"dummySortKey",
 	.keyframeURL = @"keyframeURL",
 	.packedByUser = @"packedByUser",
 	.rockedByUser = @"rockedByUser",
@@ -48,11 +47,6 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"dummySortKeyValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"dummySortKey"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
 	if ([key isEqualToString:@"packedByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"packedByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -76,32 +70,6 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 	return keyPaths;
 }
-
-
-
-
-@dynamic dummySortKey;
-
-
-
-- (int64_t)dummySortKeyValue {
-	NSNumber *result = [self dummySortKey];
-	return [result longLongValue];
-}
-
-- (void)setDummySortKeyValue:(int64_t)value_ {
-	[self setDummySortKey:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveDummySortKeyValue {
-	NSNumber *result = [self primitiveDummySortKey];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveDummySortKeyValue:(int64_t)value_ {
-	[self setPrimitiveDummySortKey:[NSNumber numberWithLongLong:value_]];
-}
-
 
 
 

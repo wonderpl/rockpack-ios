@@ -22,7 +22,6 @@
         <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">
-        <attribute name="dummySortKey" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="packedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -36,6 +35,6 @@
     <elements>
         <element name="Channel" positionX="160" positionY="192" width="128" height="240"/>
         <element name="User" positionX="160" positionY="192" width="128" height="105"/>
-        <element name="Video" positionX="160" positionY="192" width="128" height="195"/>
+        <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
     </elements>
 </model>

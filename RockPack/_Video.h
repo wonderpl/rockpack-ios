@@ -5,7 +5,6 @@
 
 
 extern const struct VideoAttributes {
-	__unsafe_unretained NSString *dummySortKey;
 	__unsafe_unretained NSString *keyframeURL;
 	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
@@ -34,7 +33,6 @@ extern const struct VideoFetchedProperties {
 
 
 
-
 @interface VideoID : NSManagedObjectID {}
 @end
 
@@ -43,20 +41,6 @@ extern const struct VideoFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (VideoID*)objectID;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* dummySortKey;
-
-
-
-@property int64_t dummySortKeyValue;
-- (int64_t)dummySortKeyValue;
-- (void)setDummySortKeyValue:(int64_t)value_;
-
-//- (BOOL)validateDummySortKey:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -178,15 +162,6 @@ extern const struct VideoFetchedProperties {
 @end
 
 @interface _Video (CoreDataGeneratedPrimitiveAccessors)
-
-
-- (NSNumber*)primitiveDummySortKey;
-- (void)setPrimitiveDummySortKey:(NSNumber*)value;
-
-- (int64_t)primitiveDummySortKeyValue;
-- (void)setPrimitiveDummySortKeyValue:(int64_t)value_;
-
-
 
 
 - (NSString*)primitiveKeyframeURL;
