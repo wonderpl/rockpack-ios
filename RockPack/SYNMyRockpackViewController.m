@@ -282,6 +282,16 @@
 
 #pragma mark - UI Stuff
 
+- (IBAction) userTouchedRockedVideoButton: (id) sender
+{
+    self.toggleSwitch.on = FALSE;
+}
+
+- (IBAction) userTouchedMyChannelsButton: (id) sender
+{
+    self.toggleSwitch.on = TRUE;
+}
+
 - (void) switchChanged: (id)sender
               forEvent: (UIEvent *) event
 {

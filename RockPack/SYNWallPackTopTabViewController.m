@@ -82,6 +82,16 @@
     self.wallpacksDB = [SYNWallpacksDB sharedWallpacksDBManager];
 }
 
+- (IBAction) userTouchedMyWallpacksButton: (id) sender
+{
+    self.toggleSwitch.on = FALSE;
+}
+
+- (IBAction) userTouchedWallpackStoreButton: (id) sender
+{
+    self.toggleSwitch.on = TRUE;
+}
+
 - (void) switchChanged: (id)sender
               forEvent: (UIEvent *) event
 {
