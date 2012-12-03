@@ -249,7 +249,6 @@
 								<array class="NSMutableArray" key="NSSubviews"/>
 								<string key="NSFrame">{{768, 0}, {256, 642}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="325445717"/>
 								<bool key="IBUIClipsSubviews">YES</bool>

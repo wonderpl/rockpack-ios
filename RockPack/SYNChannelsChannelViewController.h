@@ -10,7 +10,7 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNChannelsChannelViewController : SYNAbstractTopTabViewController
+@interface SYNChannelsChannelViewController : SYNAbstractTopTabViewController <UICollectionViewDataSource>
 
 - (id) initWithChannel: (Channel *) channel;
 

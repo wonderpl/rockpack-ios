@@ -9,7 +9,6 @@
 #import "Channel.h"
 #import "SYNMyRockPackDetailViewController.h"
 #import "SYNMyRockpackCell.h"
-#import "UIColor+SYNColor.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "SYNMyRockpackMovieViewController.h"
@@ -22,9 +21,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *biogBody;
 @property (nonatomic, strong) IBOutlet UILabel *biogTitle;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitle;
-@property (nonatomic, strong) IBOutlet UIView *infoView;
-@property (nonatomic, strong) NSArray *biogs;
-@property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) NSArray *videos;
 
 @end
