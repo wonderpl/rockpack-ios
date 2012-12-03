@@ -46,7 +46,7 @@
 							<object class="IBUIImageView" id="14812627">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{1024, 642}</string>
+								<string key="NSFrameSize">{1024, 598}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="12347397"/>
@@ -126,7 +126,7 @@
 							<object class="IBUIImageView" id="524521487">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 518}, {768, 124}}</string>
+								<string key="NSFrame">{{0, 474}, {768, 124}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="97073582"/>
@@ -141,7 +141,7 @@
 							<object class="IBUILabel" id="97073582">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{18, 532}, {742, 27}}</string>
+								<string key="NSFrame">{{18, 488}, {742, 27}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="171048591"/>
@@ -176,7 +176,7 @@
 							<object class="IBUILabel" id="171048591">
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{18, 557}, {742, 86}}</string>
+								<string key="NSFrame">{{18, 513}, {742, 86}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1035861291"/>
@@ -255,7 +255,7 @@
 								<reference key="NSNextResponder" ref="498465811"/>
 								<int key="NSvFlags">274</int>
 								<array class="NSMutableArray" key="NSSubviews"/>
-								<string key="NSFrame">{{768, 0}, {256, 642}}</string>
+								<string key="NSFrame">{{768, 0}, {256, 598}}</string>
 								<reference key="NSSuperview" ref="498465811"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -281,7 +281,7 @@
 								<array key="IBUICells" id="0"/>
 							</object>
 						</array>
-						<string key="NSFrameSize">{1024, 642}</string>
+						<string key="NSFrame">{{0, 44}, {1024, 598}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="14812627"/>

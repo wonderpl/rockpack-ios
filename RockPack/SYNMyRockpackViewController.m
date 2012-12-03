@@ -44,7 +44,7 @@
     [super viewDidLoad];
     
     // Add custom slider
-    self.toggleSwitch = [[SYNSwitch alloc] initWithFrame: CGRectMake(780, 24, 95, 42)];
+    self.toggleSwitch = [[SYNSwitch alloc] initWithFrame: CGRectMake(780, 24 + 44, 95, 42)];
     self.toggleSwitch.on = NO;
     [self.toggleSwitch addTarget: self
                           action: @selector(switchChanged:forEvent:)

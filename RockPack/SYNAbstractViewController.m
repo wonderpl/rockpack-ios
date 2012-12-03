@@ -177,8 +177,6 @@
 // Special animation of pushing new view controller onto UINavigationController's stack
 - (void) animatedPushViewController: (UIViewController *) vc
 {
-    vc.view.alpha = 0.0f;
-    
     [self.navigationController pushViewController: vc
                                          animated: NO];
     

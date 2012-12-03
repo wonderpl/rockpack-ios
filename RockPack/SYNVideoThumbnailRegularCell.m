@@ -40,8 +40,8 @@
 {
     [super awakeFromNib];
     
-    self.title.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.subtitle.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.subtitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.addItButton.enabled = TRUE;
     self.addItButton.hidden = FALSE;

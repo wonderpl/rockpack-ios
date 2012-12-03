@@ -15,6 +15,7 @@
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
 #import "SYNMyRockpackViewController.h"
+#import "SYNNavigationController.h"
 #import "SYNVideoDownloadEngine.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "UIFont+SYNFont.h"
@@ -59,6 +60,7 @@
 
 #pragma mark - View lifecycle
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -68,7 +70,11 @@
     
     // Channels tab
     SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
-    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsViewController];
+    SYNNavigationController *channelsRootNavigationViewController = [[SYNNavigationController alloc] initWithRootViewController: channelsViewController];
+    channelsRootNavigationViewController.navigationBarHidden = TRUE;
+    channelsRootNavigationViewController.view.autoresizesSubviews = FALSE;
+    
+
     
     // Discover tab
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
@@ -77,7 +83,7 @@
     // My Rockpack tab
     SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
     UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
-    
+    myRockpackRootNavigationViewController.navigationBarHidden = TRUE;
     
     // Friends tab
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];

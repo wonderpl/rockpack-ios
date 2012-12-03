@@ -95,6 +95,8 @@
     
     Video *video = [self.videos objectAtIndex: indexPath.row];
     cell.imageView.image = video.keyframeImage;
+    cell.titleLabel.text = video.title;
+    cell.subtitleLabel.text = video.subtitle;
     
     return cell;
 }

@@ -27,12 +27,12 @@
     
     _selectedIndex = NSNotFound;
     
-    // Underlying (unselected) tab images
+    //Underlying (unselected) tab images
     self.topTabView = [[SYNTabImageView alloc] initWithFrame: CGRectMake (0, 33, 1024, 65)
-                                                touchHandler: ^(CGPoint touchPoint)
-                                                              {
-                                                                  [self tabButtonTouched: touchPoint];
-                                                              }];
+                                            touchHandler: ^(CGPoint touchPoint)
+                                                          {
+                                                              [self tabButtonTouched: touchPoint];
+                                                          }];
     
     self.topTabView.contentMode  = UIViewContentModeLeft;
     self.topTabView.image = [UIImage imageNamed: @"TabTop.png"];
