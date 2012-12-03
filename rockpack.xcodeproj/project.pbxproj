@@ -56,8 +56,6 @@
 		01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNImageWellCell.m */; };
 		01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */; };
 		01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */; };
-		01363FBC16345ED000FFAA09 /* SYNSelectionDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FBB16345ED000FFAA09 /* SYNSelectionDB.m */; };
-		01363FC0163467CA00FFAA09 /* SYNSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FBF163467C900FFAA09 /* SYNSelection.m */; };
 		01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */; };
 		01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */; };
 		014A450C1668C8FD0091E4E5 /* OverlayChannelCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450B1668C8FD0091E4E5 /* OverlayChannelCreate.png */; };
@@ -526,10 +524,6 @@
 		01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNImageWellCell.xib; sourceTree = "<group>"; };
 		01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouseHorizontallLayout.h; sourceTree = "<group>"; };
 		01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouseHorizontallLayout.m; sourceTree = "<group>"; };
-		01363FBA16345ED000FFAA09 /* SYNSelectionDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSelectionDB.h; sourceTree = "<group>"; };
-		01363FBB16345ED000FFAA09 /* SYNSelectionDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSelectionDB.m; sourceTree = "<group>"; };
-		01363FBE163467C900FFAA09 /* SYNSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSelection.h; sourceTree = "<group>"; };
-		01363FBF163467C900FFAA09 /* SYNSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSelection.m; sourceTree = "<group>"; };
 		01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackCell.xib; sourceTree = "<group>"; };
 		01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackCell.h; sourceTree = "<group>"; };
 		01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackCell.m; sourceTree = "<group>"; };
@@ -1477,17 +1471,6 @@
 			name = Avatars;
 			sourceTree = "<group>";
 		};
-		01363FBD16345ED700FFAA09 /* Selection Database */ = {
-			isa = PBXGroup;
-			children = (
-				01363FBA16345ED000FFAA09 /* SYNSelectionDB.h */,
-				01363FBB16345ED000FFAA09 /* SYNSelectionDB.m */,
-				01363FBE163467C900FFAA09 /* SYNSelection.h */,
-				01363FBF163467C900FFAA09 /* SYNSelection.m */,
-			);
-			name = "Selection Database";
-			sourceTree = "<group>";
-		};
 		01677DDA1655491100B1B1D8 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -1636,7 +1619,6 @@
 				012ECA42165B8EE700A60980 /* HUD */,
 				01677DDA1655491100B1B1D8 /* Networking */,
 				011CC679164A9E9C00F02B6D /* Camera Overlay */,
-				01363FBD16345ED700FFAA09 /* Selection Database */,
 				01363EC616304D5E00FFAA09 /* Databases */,
 				019824ED1629CC6600216900 /* TestFlight */,
 				019824E91629CBD000216900 /* Exception Handler */,
@@ -2575,8 +2557,6 @@
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
 				01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */,
 				01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */,
-				01363FBC16345ED000FFAA09 /* SYNSelectionDB.m in Sources */,
-				01363FC0163467CA00FFAA09 /* SYNSelection.m in Sources */,
 				01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */,
 				011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */,
 				011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */,

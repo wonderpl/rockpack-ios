@@ -15,8 +15,6 @@
 #import "SYNChannelSelectorCell.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
-#import "SYNSelection.h"
-#import "SYNSelectionDB.h"
 #import "SYNChannelsDB.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoThumbnailCell.h"
@@ -58,7 +56,6 @@
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) NSMutableArray *imageWell;
 @property (nonatomic, strong) NSMutableArray *selections;
-@property (nonatomic, strong) SYNSelectionDB *selectionDB;
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @end
@@ -71,9 +68,6 @@
     
     self.imageWell = [[NSMutableArray alloc] initWithCapacity: 100];
     self.selections = [[NSMutableArray alloc] initWithCapacity: 100];
-    
-//    self.videoDB = [SYNVideoDB sharedVideoDBManager];
-    self.selectionDB = [SYNSelectionDB sharedSelectionDBManager];
 
     self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -116,9 +110,9 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    [SYNChannelsDB sharedChannelsDBManager];
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
-    
+    [SYNChannelsDB sharedChannelsDBManager];
+
     // Set the first video
     [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
 }
@@ -911,23 +905,12 @@
 
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
-    NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(cv.contentOffset.x + 250.0f, 100.0f)];
-
-    self.selectionDB.wallpackIndex = indexPath.row % 10;
+//    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
+//                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
 }
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
-{
-//    self.selectionDB.selectionTitle = textField.text;
-//    self.selectionDB.selections = self.selections;
-    
-    // Now create the a Channel that represents all of the selected video entries
-//    NSEntityDescription *channelEntity = [NSEntityDescription entityForName: @"Channel"
-//                                                     inManagedObjectContext: self.managedObjectContext];
-//    
-//    Channel *channel = (Channel *)[[NSManagedObject alloc] initWithEntity: channelEntity
-//                                           insertIntoManagedObjectContext: self.managedObjectContext];
-    
+{    
     Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
     
     newChannel.title = textField.text;
@@ -937,9 +920,6 @@
     newChannel.totalPacksValue = 0;
     newChannel.totalRocksValue = 0;
     newChannel.userGeneratedValue = TRUE;
-    
-//    NSLog (@"Carousel center: %.2f,%.2f", self.channelCoverCarousel.center.x, self.channelCoverCarousel.center.y);
-//    NSLog (@"Content offset: %.2f,%.2f", self.channelCoverCarousel.contentOffset.x, self.channelCoverCarousel.contentOffset.y);
     
     // TODO: Make these window offsets less hard-coded
     NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
@@ -959,17 +939,12 @@
     
     newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
     
-//    // TODO: Need to think about what keyframe image we use
-//    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
-    
     int index = 0;
     
     for (NSIndexPath *indexPath in self.selections)
     {
         // Get video 
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-
-//        [newChannel addVideosObject: video];        
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];      
         [[newChannel videosSet] addObject: video];
     }
     
