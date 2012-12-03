@@ -109,31 +109,4 @@
 
 }
 
-
-
-- (IBAction) popCurrentView: (id) sender
-{
-    //	[self.navigationController popViewControllerAnimated: YES];
-    
-    UIViewController *parentVC = self.navigationController.viewControllers[0];
-    parentVC.view.alpha = 0.0f;
-    
-    [self.navigationController popViewControllerAnimated: NO];
-    
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         parentVC.view.alpha = 1.0f;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-}
-
 @end

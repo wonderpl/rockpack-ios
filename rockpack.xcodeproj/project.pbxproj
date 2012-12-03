@@ -412,6 +412,8 @@
 		01B0A970166CEE0700CAA235 /* GlossVideoThumbnailRegular.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96E166CEE0700CAA235 /* GlossVideoThumbnailRegular.png */; };
 		01B0A971166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96F166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png */; };
 		01B0A975166CF00C00CAA235 /* Placeholder1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A974166CF00C00CAA235 /* Placeholder1.png */; };
+		01B0A978166CF58100CAA235 /* Adidas.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A976166CF58100CAA235 /* Adidas.png */; };
+		01B0A979166CF58100CAA235 /* AngryBirds.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A977166CF58100CAA235 /* AngryBirds.png */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
 		01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */; };
@@ -927,6 +929,8 @@
 		01B0A96E166CEE0700CAA235 /* GlossVideoThumbnailRegular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossVideoThumbnailRegular.png; path = Assets/Images/GlossVideoThumbnailRegular.png; sourceTree = "<group>"; };
 		01B0A96F166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossVideoThumbnailRegular@2x.png"; path = "Assets/Images/GlossVideoThumbnailRegular@2x.png"; sourceTree = "<group>"; };
 		01B0A974166CF00C00CAA235 /* Placeholder1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Placeholder1.png; path = Assets/Images/Placeholder1.png; sourceTree = "<group>"; };
+		01B0A976166CF58100CAA235 /* Adidas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adidas.png; path = Assets/Images/Adidas.png; sourceTree = "<group>"; };
+		01B0A977166CF58100CAA235 /* AngryBirds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AngryBirds.png; path = Assets/Images/AngryBirds.png; sourceTree = "<group>"; };
 		01B37241162EBAD800A9F8F5 /* RockPack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RockPack.entitlements; path = RockPack/RockPack.entitlements; sourceTree = "<group>"; };
 		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
 		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
@@ -1074,7 +1078,6 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				01E427BB1664C5F1009B941F /* CoreData.framework */,
 				010DEFDA1629BDC40080F26B /* Source */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
 				010DEFD11629BDC40080F26B /* Products */,
@@ -1096,6 +1099,7 @@
 				019824F11629CE1600216900 /* libz.dylib */,
 				01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */,
 				011CC67F164AA42300F02B6D /* AVFoundation.framework */,
+				01E427BB1664C5F1009B941F /* CoreData.framework */,
 				010DEFD81629BDC40080F26B /* CoreGraphics.framework */,
 				011CC67D164AA41700F02B6D /* CoreMedia.framework */,
 				010DEFD61629BDC40080F26B /* Foundation.framework */,
@@ -1389,6 +1393,8 @@
 		01363EF41630632A00FFAA09 /* Video Thumbnails */ = {
 			isa = PBXGroup;
 			children = (
+				01B0A976166CF58100CAA235 /* Adidas.png */,
+				01B0A977166CF58100CAA235 /* AngryBirds.png */,
 				01677DDE16554A0500B1B1D8 /* CallOfDuty.png */,
 				01677DDF16554A0500B1B1D8 /* CarlyRaeJepsen.png */,
 				01677DE016554A0500B1B1D8 /* HotelTransylvania.png */,
@@ -2511,6 +2517,8 @@
 				01B0A970166CEE0700CAA235 /* GlossVideoThumbnailRegular.png in Resources */,
 				01B0A971166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png in Resources */,
 				01B0A975166CF00C00CAA235 /* Placeholder1.png in Resources */,
+				01B0A978166CF58100CAA235 /* Adidas.png in Resources */,
+				01B0A979166CF58100CAA235 /* AngryBirds.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

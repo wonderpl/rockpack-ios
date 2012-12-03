@@ -938,9 +938,6 @@
     NSString *biogSubtitle = coverChannel.subtitle;;
     
     newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
-    
-    int index = 0;
-    
     for (NSIndexPath *indexPath in self.selections)
     {
         // Get video 

@@ -63,19 +63,31 @@
 {
     [super viewDidLoad];
     
-    // Setup our four sub-viewcontrollers, one for each tab
+    // Wallpack tab
     SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
+    
+    // Channels tab
     SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
+    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsViewController];
+    
+    // Discover tab
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
-//    SYNMyRockPackDetailViewController *myRockPackViewController = [[SYNMyRockPackDetailViewController alloc] init];
     
+    
+    // My Rockpack tab
     SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];   
+    UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
     
+    
+    // Friends tab
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
     
     // Using new array syntax
-    self.viewControllers = @[wallPackViewController, channelsViewController, discoverViewController, nc, friendsViewController];
+    self.viewControllers = @[wallPackViewController,
+                             channelsRootNavigationViewController,
+                             discoverViewController,
+                             myRockpackRootNavigationViewController,
+                             friendsViewController];
 
     _selectedIndex = NSNotFound;
     

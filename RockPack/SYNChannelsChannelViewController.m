@@ -36,6 +36,7 @@
 	if ((self = [super init]))
     {
 		self.channel = channel;
+        self.videos = self.channel.videos.array;
 	}
     
 	return self;
@@ -45,7 +46,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
     
     self.wallpackTitleLabel.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.biogTitleLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
@@ -101,7 +101,7 @@
 
 
 - (void) collectionView: (UICollectionView *) cv
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Video *video = [self.videos objectAtIndex: indexPath.row];
     
@@ -109,33 +109,6 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     
     [self animatedPushViewController: movieVC];
     
-}
-
-
-
-- (IBAction) popCurrentView: (id) sender
-{
-    //	[self.navigationController popViewControllerAnimated: YES];
-    
-    UIViewController *parentVC = self.navigationController.viewControllers[0];
-    parentVC.view.alpha = 0.0f;
-    
-    [self.navigationController popViewControllerAnimated: NO];
-    
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         parentVC.view.alpha = 1.0f;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
 }
 
 @end
