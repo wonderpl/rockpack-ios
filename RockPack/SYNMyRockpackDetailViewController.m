@@ -37,7 +37,7 @@
 	if ((self = [super init]))
     {
 		self.channel = channel;
-        self.videos = [self.channel.videos allObjects];
+        self.videos = self.channel.videos.array;
 	}
     
 	return self;

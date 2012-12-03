@@ -113,7 +113,7 @@
     
 }
 
-#pragma mark - CoreDate support
+
 - (void) viewWillAppear: (BOOL) animated
 {
     [SYNChannelsDB sharedChannelsDBManager];
@@ -123,6 +123,8 @@
     [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
 }
 
+
+#pragma mark - Core Data support
 
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoFetchedResultsControllerPredicate
@@ -135,6 +137,20 @@
 - (NSArray *) videoFetchedResultsControllerSortDescriptors
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
+    return @[sortDescriptor];
+}
+
+
+- (NSPredicate *) channelFetchedResultsControllerPredicate
+{
+    return [NSPredicate predicateWithFormat: @"userGenerated == FALSE"];
+}
+
+
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
+{
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }
@@ -946,12 +962,15 @@
 //    // TODO: Need to think about what keyframe image we use
 //    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
     
+    int index = 0;
+    
     for (NSIndexPath *indexPath in self.selections)
     {
         // Get video 
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
 
-        [newChannel addVideosObject: video];
+//        [newChannel addVideosObject: video];        
+        [[newChannel videosSet] addObject: video];
     }
     
     [self.channelNameField resignFirstResponder];

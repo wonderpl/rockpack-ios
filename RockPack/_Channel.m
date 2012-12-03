@@ -289,10 +289,10 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 @dynamic videos;
 
 	
-- (NSMutableSet*)videosSet {
+- (NSMutableOrderedSet*)videosSet {
 	[self willAccessValueForKey:@"videos"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"videos"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"videos"];
   
 	[self didAccessValueForKey:@"videos"];
 	return result;

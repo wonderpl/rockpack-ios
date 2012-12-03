@@ -12,7 +12,6 @@
 @interface SYNChannelsChannelViewController ()
 
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) NSArray *videos;
 
 @end
 
@@ -24,7 +23,6 @@
 	if ((self = [super init]))
     {
 		self.channel = channel;
-        self.videos = [self.channel.videos allObjects];
 	}
     
 	return self;

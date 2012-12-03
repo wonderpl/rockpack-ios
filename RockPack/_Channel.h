@@ -198,9 +198,9 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *videos;
+@property (nonatomic, strong) NSOrderedSet *videos;
 
-- (NSMutableSet*)videosSet;
+- (NSMutableOrderedSet*)videosSet;
 
 
 
@@ -210,8 +210,8 @@ extern const struct ChannelFetchedProperties {
 
 @interface _Channel (CoreDataGeneratedAccessors)
 
-- (void)addVideos:(NSSet*)value_;
-- (void)removeVideos:(NSSet*)value_;
+- (void)addVideos:(NSOrderedSet*)value_;
+- (void)removeVideos:(NSOrderedSet*)value_;
 - (void)addVideosObject:(Video*)value_;
 - (void)removeVideosObject:(Video*)value_;
 
@@ -311,8 +311,8 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveVideos;
-- (void)setPrimitiveVideos:(NSMutableSet*)value;
+- (NSMutableOrderedSet*)primitiveVideos;
+- (void)setPrimitiveVideos:(NSMutableOrderedSet*)value;
 
 
 @end

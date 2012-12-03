@@ -13,7 +13,7 @@
         <attribute name="totalRocks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="userGenerated" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="wallpaperURL" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
+        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -22,7 +22,7 @@
         <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">
-        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="dummySortKey" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="packedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>

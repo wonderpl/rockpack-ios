@@ -5,7 +5,7 @@
 
 
 extern const struct VideoAttributes {
-	__unsafe_unretained NSString *index;
+	__unsafe_unretained NSString *dummySortKey;
 	__unsafe_unretained NSString *keyframeURL;
 	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
@@ -48,15 +48,15 @@ extern const struct VideoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* index;
+@property (nonatomic, strong) NSNumber* dummySortKey;
 
 
 
-@property int64_t indexValue;
-- (int64_t)indexValue;
-- (void)setIndexValue:(int64_t)value_;
+@property int64_t dummySortKeyValue;
+- (int64_t)dummySortKeyValue;
+- (void)setDummySortKeyValue:(int64_t)value_;
 
-//- (BOOL)validateIndex:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateDummySortKey:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -180,11 +180,11 @@ extern const struct VideoFetchedProperties {
 @interface _Video (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveIndex;
-- (void)setPrimitiveIndex:(NSNumber*)value;
+- (NSNumber*)primitiveDummySortKey;
+- (void)setPrimitiveDummySortKey:(NSNumber*)value;
 
-- (int64_t)primitiveIndexValue;
-- (void)setPrimitiveIndexValue:(int64_t)value_;
+- (int64_t)primitiveDummySortKeyValue;
+- (void)setPrimitiveDummySortKeyValue:(int64_t)value_;
 
 
 
