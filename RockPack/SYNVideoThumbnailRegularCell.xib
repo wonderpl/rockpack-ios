@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
 		<string key="IBDocument.SystemVersion">12C3006</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3081</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1930</string>
+			<string key="NS.object.0">2080</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -39,7 +39,7 @@
 					<object class="IBUIImageView" id="848599038">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{256, 188}</string>
+						<string key="NSFrameSize">{256, 193}</string>
 						<reference key="NSSuperview" ref="485139548"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1046021116"/>
@@ -54,7 +54,7 @@
 					<object class="IBUIImageView" id="3438973">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{18, 12}, {220, 129}}</string>
+						<string key="NSFrame">{{18, 15}, {220, 129}}</string>
 						<reference key="NSSuperview" ref="485139548"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="67122024"/>
@@ -65,7 +65,7 @@
 					<object class="IBUIImageView" id="1046021116">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{256, 188}</string>
+						<string key="NSFrameSize">{256, 193}</string>
 						<reference key="NSSuperview" ref="485139548"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="3438973"/>
@@ -80,7 +80,7 @@
 					<object class="IBUILabel" id="67122024">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{17, 144}, {216, 26}}</string>
+						<string key="NSFrame">{{17, 147}, {216, 26}}</string>
 						<reference key="NSSuperview" ref="485139548"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="178527909"/>
@@ -115,9 +115,10 @@
 					<object class="IBUILabel" id="178527909">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{17, 163}, {216, 21}}</string>
+						<string key="NSFrame">{{17, 166}, {216, 21}}</string>
 						<reference key="NSSuperview" ref="485139548"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="1001499349"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -144,12 +145,15 @@
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 				</array>
-				<string key="NSFrameSize">{256, 188}</string>
+				<string key="NSFrameSize">{256, 193}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="848599038"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
-				<reference key="IBUIBackgroundColor" ref="1001499349"/>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MCAwLjYAA</bytes>
+				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 		</array>
@@ -331,9 +335,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundVideoThumbnailRegular.png">{256, 188}</string>
-			<string key="GlossVideoThumbnailRegular.png">{256, 188}</string>
+			<string key="BackgroundVideoThumbnailRegular.png">{256, 193}</string>
+			<string key="GlossVideoThumbnailRegular.png">{256, 193}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1930</string>
+		<string key="IBCocoaTouchPluginVersion">2080</string>
 	</data>
 </archive>

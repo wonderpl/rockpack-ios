@@ -9,7 +9,7 @@
 #import "Channel.h"
 #import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNChannelsChannelViewController.h"
+#import "SYNChannelsDetailViewController.h"
 #import "SYNChannelsDB.h"
 #import "SYNChannelsTopTabViewController.h"
 #import "SYNMyRockpackCell.h"
@@ -31,7 +31,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
@@ -110,7 +110,7 @@
 {
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelsChannelViewController *channelVC = [[SYNChannelsChannelViewController alloc] initWithChannel: channel];
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelVC];
 }
@@ -121,7 +121,7 @@
 {
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelsChannelViewController *channelVC = [[SYNChannelsChannelViewController alloc] initWithChannel: channel];
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
     
     channelVC.view.alpha = 0.0f;
     

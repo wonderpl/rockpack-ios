@@ -7,19 +7,21 @@
 //
 
 #import "Channel.h"
-#import "SYNChannelsChannelViewController.h"
+#import "SYNChannelsDetailViewController.h"
+#import "SYNChannelHeaderView.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "SYNMyRockpackMovieViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
 
-@interface SYNChannelsChannelViewController ()
+@interface SYNChannelsDetailViewController ()
 
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *wallpackImageView;
 @property (nonatomic, strong) IBOutlet UILabel *biogBodyLabel;
 @property (nonatomic, strong) IBOutlet UILabel *biogTitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *wallpackTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *infoView;
 @property (nonatomic, strong) NSArray *biogs;
@@ -28,7 +30,7 @@
 
 @end
 
-@implementation SYNChannelsChannelViewController
+@implementation SYNChannelsDetailViewController
 
 - (id) initWithChannel: (Channel *) channel
 {
@@ -50,13 +52,21 @@
     self.wallpackTitleLabel.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.biogTitleLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.biogBodyLabel.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.userNameLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
     
-    // Init collection view
+    // Register video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
                                                   bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
+    
+    // Register collection view header view
+    UINib *headerViewNib = [UINib nibWithNibName: @"SYNChannelHeaderView"
+                                                  bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: headerViewNib
+                        forCellWithReuseIdentifier: @"SYNChannelHeaderView"];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -102,6 +112,18 @@
 }
 
 
+// Used for the collection view header
+- (UICollectionReusableView *) collectionView: (UICollectionView *) cv
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    SYNChannelHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelHeaderView"
+                                                                       forIndexPath: indexPath];
+    
+    return reusableView;
+}
+
+
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
@@ -111,6 +133,18 @@
     
     [self animatedPushViewController: movieVC];
     
+}
+
+- (CGSize) collectionView: (UICollectionView *) cv
+                   layout: (UICollectionViewLayout*) cvLayout
+                   referenceSizeForHeaderInSection: (NSInteger) section
+{
+    if (section == 0)
+    {
+        return CGSizeMake(0, 372);
+    }
+    
+    return CGSizeZero;
 }
 
 @end

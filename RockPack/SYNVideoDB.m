@@ -303,8 +303,6 @@
                                                withObject: [NSNumber numberWithDouble: progress]];
                  
                  [self updateProgressIndicator];
-
-                 DLog(@"%.2f", progress*100.0);
              }];
             
             [self.downloadOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
@@ -323,7 +321,6 @@
              errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
              {
                  [self.HUD hide: NO];
-                 DLog(@"%@", error);
                  [UIAlertView showWithError: error];
              }];
         }
