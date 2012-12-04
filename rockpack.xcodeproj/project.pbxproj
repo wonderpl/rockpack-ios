@@ -86,7 +86,6 @@
 		014A4570166A39E60091E4E5 /* SYNChannelsTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456E166A39E60091E4E5 /* SYNChannelsTopTabViewController.m */; };
 		014A4571166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 014A456F166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib */; };
 		014A4575166A56720091E4E5 /* SYNChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A4573166A56720091E4E5 /* SYNChannelsDetailViewController.m */; };
-		014A4576166A56720091E4E5 /* SYNChannelsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 014A4574166A56720091E4E5 /* SYNChannelsDetailViewController.xib */; };
 		01677DEA16554A0600B1B1D8 /* CallOfDuty.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DDE16554A0500B1B1D8 /* CallOfDuty.png */; };
 		01677DEB16554A0600B1B1D8 /* CarlyRaeJepsen.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DDF16554A0500B1B1D8 /* CarlyRaeJepsen.png */; };
 		01677DEC16554A0600B1B1D8 /* HotelTransylvania.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DE016554A0500B1B1D8 /* HotelTransylvania.png */; };
@@ -405,6 +404,8 @@
 		019E83621654064D00744A03 /* ButtonGridHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E83551654064D00744A03 /* ButtonGridHighlighted@2x.png */; };
 		019E83631654064D00744A03 /* ButtonGridSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E83561654064D00744A03 /* ButtonGridSelected.png */; };
 		019E83641654064D00744A03 /* ButtonGridSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E83571654064D00744A03 /* ButtonGridSelected@2x.png */; };
+		01A1126C166E8B7A0076B145 /* SYNAbstractDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A1126A166E8B7A0076B145 /* SYNAbstractDetailViewController.m */; };
+		01A1126D166E8B7A0076B145 /* SYNAbstractDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01A1126B166E8B7A0076B145 /* SYNAbstractDetailViewController.xib */; };
 		01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */; };
 		01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */; };
 		01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96A166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png */; };
@@ -570,7 +571,6 @@
 		014A456F166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsTopTabViewController.xib; sourceTree = "<group>"; };
 		014A4572166A56720091E4E5 /* SYNChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDetailViewController.h; sourceTree = "<group>"; };
 		014A4573166A56720091E4E5 /* SYNChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDetailViewController.m; sourceTree = "<group>"; };
-		014A4574166A56720091E4E5 /* SYNChannelsDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsDetailViewController.xib; sourceTree = "<group>"; };
 		01677DDE16554A0500B1B1D8 /* CallOfDuty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CallOfDuty.png; path = Assets/Images/CallOfDuty.png; sourceTree = "<group>"; };
 		01677DDF16554A0500B1B1D8 /* CarlyRaeJepsen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CarlyRaeJepsen.png; path = Assets/Images/CarlyRaeJepsen.png; sourceTree = "<group>"; };
 		01677DE016554A0500B1B1D8 /* HotelTransylvania.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HotelTransylvania.png; path = Assets/Images/HotelTransylvania.png; sourceTree = "<group>"; };
@@ -929,6 +929,9 @@
 		019E83551654064D00744A03 /* ButtonGridHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonGridHighlighted@2x.png"; path = "Assets/Images/ButtonGridHighlighted@2x.png"; sourceTree = "<group>"; };
 		019E83561654064D00744A03 /* ButtonGridSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonGridSelected.png; path = Assets/Images/ButtonGridSelected.png; sourceTree = "<group>"; };
 		019E83571654064D00744A03 /* ButtonGridSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonGridSelected@2x.png"; path = "Assets/Images/ButtonGridSelected@2x.png"; sourceTree = "<group>"; };
+		01A11269166E8B7A0076B145 /* SYNAbstractDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractDetailViewController.h; sourceTree = "<group>"; };
+		01A1126A166E8B7A0076B145 /* SYNAbstractDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractDetailViewController.m; sourceTree = "<group>"; };
+		01A1126B166E8B7A0076B145 /* SYNAbstractDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAbstractDetailViewController.xib; sourceTree = "<group>"; };
 		01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailRegularCell.h; sourceTree = "<group>"; };
 		01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailRegularCell.m; sourceTree = "<group>"; };
 		01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailRegularCell.xib; sourceTree = "<group>"; };
@@ -1824,6 +1827,9 @@
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
+				01A11269166E8B7A0076B145 /* SYNAbstractDetailViewController.h */,
+				01A1126A166E8B7A0076B145 /* SYNAbstractDetailViewController.m */,
+				01A1126B166E8B7A0076B145 /* SYNAbstractDetailViewController.xib */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
@@ -1960,7 +1966,6 @@
 				014A456F166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib */,
 				014A4572166A56720091E4E5 /* SYNChannelsDetailViewController.h */,
 				014A4573166A56720091E4E5 /* SYNChannelsDetailViewController.m */,
-				014A4574166A56720091E4E5 /* SYNChannelsDetailViewController.xib */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -2568,7 +2573,6 @@
 				014A45361668C9180091E4E5 /* ChannelCreationCover1.png in Resources */,
 				014A45371668C9180091E4E5 /* ChannelCreationCover1@2x.png in Resources */,
 				014A4571166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib in Resources */,
-				014A4576166A56720091E4E5 /* SYNChannelsDetailViewController.xib in Resources */,
 				01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */,
 				01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */,
 				01B0A96D166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png in Resources */,
@@ -2584,6 +2588,7 @@
 				01B7CDA6166E1CF7001F4AF0 /* PanelChannelDetailsHeader.png in Resources */,
 				01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */,
 				01B7CDA8166E1CF7001F4AF0 /* Placeholder3.png in Resources */,
+				01A1126D166E8B7A0076B145 /* SYNAbstractDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2678,6 +2683,7 @@
 				014A4575166A56720091E4E5 /* SYNChannelsDetailViewController.m in Sources */,
 				01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */,
 				01B7CD97166E0FD6001F4AF0 /* SYNChannelHeaderView.m in Sources */,
+				01A1126C166E8B7A0076B145 /* SYNAbstractDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

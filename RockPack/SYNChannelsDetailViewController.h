@@ -8,10 +8,8 @@
 
 @class Channel;
 
-#import "SYNAbstractTopTabViewController.h"
+#import "SYNAbstractDetailViewController.h"
 
-@interface SYNChannelsDetailViewController : SYNAbstractViewController <UICollectionViewDataSource>
-
-- (id) initWithChannel: (Channel *) channel;
+@interface SYNChannelsDetailViewController : SYNAbstractDetailViewController 
 
 @end
