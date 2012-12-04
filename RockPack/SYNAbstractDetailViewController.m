@@ -7,6 +7,7 @@
 //
 
 #import "Channel.h"
+#import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractDetailViewController.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelsDetailViewController.h"
@@ -69,6 +70,12 @@
     
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forCellWithReuseIdentifier: @"SYNChannelHeaderView"];
+    
+    UICollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(256.0f , 193.0f);
+    layout.minimumInteritemSpacing = 0.0f;
+    layout.minimumLineSpacing = 0.0f;
+    self.videoThumbnailCollectionView.collectionViewLayout = layout;
 }
 
 - (void) viewWillAppear: (BOOL) animated
