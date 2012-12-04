@@ -18,11 +18,11 @@
 
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *wallpackImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
 @property (nonatomic, strong) IBOutlet UILabel *biogBodyLabel;
 @property (nonatomic, strong) IBOutlet UILabel *biogTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet UILabel *wallpackTitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *infoView;
 @property (nonatomic, strong) NSArray *biogs;
 @property (nonatomic, strong) NSArray *titles;
@@ -49,10 +49,11 @@
 {
     [super viewDidLoad];
     
-    self.wallpackTitleLabel.font = [UIFont boldRockpackFontOfSize: 28.0f];
+    self.channelTitleLabel.font = [UIFont boldRockpackFontOfSize: 29.0f];
+    self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.biogTitleLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.biogBodyLabel.font = [UIFont rockpackFontOfSize: 17.0f];
-    self.userNameLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
+
     
     // Register video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
@@ -73,8 +74,8 @@
 {
     [super viewWillAppear: animated];
     
-    self.wallpackTitleLabel.text = self.channel.title;
-    self.wallpackImageView.image = self.channel.wallpaperImage;
+    self.channelTitleLabel.text = self.channel.title;
+    self.channelWallpaperImageView.image = self.channel.wallpaperImage;
     self.biogTitleLabel.text = self.channel.biogTitle;
     self.biogBodyLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.biog];
     
