@@ -8,8 +8,8 @@
 
 @class Channel;
 
-#import "SYNAbstractDetailViewController.h"
+#import "SYNADetailViewController.h"
 
-@interface SYNChannelsDetailViewController : SYNAbstractDetailViewController 
+@interface SYNChannelsDetailViewController : SYNADetailViewController
 
 @end

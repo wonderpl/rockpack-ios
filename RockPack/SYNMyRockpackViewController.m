@@ -10,7 +10,7 @@
 #import "SYNChannelThumbnailCell.h"
 #import "SYNVideoThumbnailCell.h"
 #import "SYNMyRockpackMovieViewController.h"
-#import "SYNViewController2.h"
+#import "SYNMyRockpackChannelDetailViewController.h"
 #import "SYNMyRockpackViewController.h"
 #import "SYNSwitch.h"
 #import "UIFont+SYNFont.h"
@@ -273,7 +273,7 @@
     {
         Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNViewController2 *channelDetailVC = [[SYNViewController2 alloc] initWithChannel: channel];
+        SYNMyRockpackChannelDetailViewController *channelDetailVC = [[SYNMyRockpackChannelDetailViewController alloc] initWithChannel: channel];
         
 
         [self animatedPushViewController: channelDetailVC];

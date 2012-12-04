@@ -1,5 +1,5 @@
 //
-//  SYNAbstractDetailViewController.m
+//  SYNADetailViewController.m
 //  rockpack
 //
 //  Created by Nick Banks on 04/12/2012.
@@ -7,7 +7,7 @@
 //
 
 #import "Channel.h"
-#import "SYNAbstractDetailViewController.h"
+#import "SYNADetailViewController.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNMyRockpackMovieViewController.h"
@@ -15,7 +15,7 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
-@interface SYNAbstractDetailViewController ()
+@interface SYNADetailViewController ()
 
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
@@ -24,19 +24,19 @@
 @property (nonatomic, strong) IBOutlet UILabel *biogTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView *infoView;
 @property (nonatomic, strong) NSArray *biogs;
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) NSArray *videos;
 
 @end
 
-@implementation SYNAbstractDetailViewController
+
+@implementation SYNADetailViewController
 
 - (id) initWithChannel: (Channel *) channel
 {
 	
-	if ((self = [super init]))
+	if ((self = [super initWithNibName: @"SYNADetailViewController" bundle: nil]))
     {
 		self.channel = channel;
         self.videos = self.channel.videos.array;
