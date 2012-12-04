@@ -15,7 +15,6 @@
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
 #import "SYNMyRockpackViewController.h"
-#import "SYNNavigationController.h"
 #import "SYNVideoDownloadEngine.h"
 #import "SYNWallPackTopTabViewController.h"
 #import "UIFont+SYNFont.h"
@@ -49,6 +48,7 @@
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
+@property (weak, nonatomic) IBOutlet UIView *navControllerPlaceholderView;
 
 @end
 
@@ -70,10 +70,10 @@
     
     // Channels tab
     SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
-    SYNNavigationController *channelsRootNavigationViewController = [[SYNNavigationController alloc] initWithRootViewController: channelsViewController];
+    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsViewController];
     channelsRootNavigationViewController.navigationBarHidden = TRUE;
-    channelsRootNavigationViewController.view.autoresizesSubviews = FALSE;
-    
+    channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
 
     
     // Discover tab
@@ -84,6 +84,8 @@
     SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
     UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
     myRockpackRootNavigationViewController.navigationBarHidden = TRUE;
+    myRockpackRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    myRockpackRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // Friends tab
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
@@ -270,8 +272,8 @@
 		}
 		else if (fromViewController == nil)  // don't animate
 		{
-            //			toViewController.view.frame = self.view.bounds;
-//			[self.view addSubview: toViewController.view];
+//            toViewController.view.frame = self.navControllerPlaceholderView.bounds;
+            
             [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
 		}
 		else if (animated)

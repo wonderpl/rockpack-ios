@@ -50,7 +50,7 @@
     
     // TODO: Hardcoded size for now, but need to find a way to get correct window size (and orientation!)
 //    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [[self.mainVideoPlayer view] setFrame: CGRectMake (0, 0, 1024, 642)]; // Frame must match parent view
+    [[self.mainVideoPlayer view] setFrame: CGRectMake (0, 44, 1024, 642)]; // Frame must match parent view
     
     [self.view insertSubview: self.mainVideoPlayer.view atIndex: 0];
         
