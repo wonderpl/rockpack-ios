@@ -49,13 +49,13 @@
     [self.mainVideoPlayer prepareToPlay];
     
     // TODO: Hardcoded size for now, but need to find a way to get correct window size (and orientation!)
-//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     [[self.mainVideoPlayer view] setFrame: CGRectMake (0, 44, 1024, 642)]; // Frame must match parent view
     
     [self.view insertSubview: self.mainVideoPlayer.view atIndex: 0];
         
     [self.mainVideoPlayer pause];
 }
+
 
 // Don't call these here as called when going full-screen
 

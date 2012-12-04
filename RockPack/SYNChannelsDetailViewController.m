@@ -121,6 +121,9 @@
     SYNChannelHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelHeaderView"
                                                                        forIndexPath: indexPath];
     
+    reusableView.titleLabel.text = self.channel.biogTitle;
+    reusableView.subtitleLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.biog];
+    
     return reusableView;
 }
 
