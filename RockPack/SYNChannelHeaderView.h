@@ -10,4 +10,7 @@
 
 @interface SYNChannelHeaderView : UICollectionReusableView
 
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *subtitleLabel;
+
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "UIFont+SYNFont.h"
 #import "SYNChannelHeaderView.h"
 
 @implementation SYNChannelHeaderView
@@ -33,6 +34,14 @@
     }
     
     return self;
+}
+
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.subtitleLabel.font = [UIFont rockpackFontOfSize: 17.0f];
 }
 
 @end

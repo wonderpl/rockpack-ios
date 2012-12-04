@@ -305,11 +305,13 @@
                  [self updateProgressIndicator];
              }];
             
+            __block SYNVideoDB *weakSelf = self;
+            
             [self.downloadOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
              {
-                 if (++numberDownloaded == self.videoDetailsArray.count)
+                 if (++numberDownloaded == weakSelf.videoDetailsArray.count)
                  {
-                     [self.HUD hide: NO];
+                     [weakSelf.HUD hide: NO];
                      
                      // Indicate that we don't need to do this again
                      [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithBool: TRUE]
@@ -320,7 +322,7 @@
              }
              errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
              {
-                 [self.HUD hide: NO];
+                 [weakSelf.HUD hide: NO];
                  [UIAlertView showWithError: error];
              }];
         }
