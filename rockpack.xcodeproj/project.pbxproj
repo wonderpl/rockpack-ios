@@ -471,8 +471,8 @@
 		01E98DAC165C39050079FD7A /* CardHarry.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98DAA165C39040079FD7A /* CardHarry.png */; };
 		01E98DAD165C39050079FD7A /* CardHarry@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98DAB165C39040079FD7A /* CardHarry@2x.png */; };
 		01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */; };
-		01EC6237166EAAA6003154B1 /* SYNADetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNADetailViewController.m */; };
-		01EC6238166EAAA6003154B1 /* SYNADetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EC6236166EAAA6003154B1 /* SYNADetailViewController.xib */; };
+		01EC6237166EAAA6003154B1 /* SYNAbstractDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNAbstractDetailViewController.m */; };
+		01EC6238166EAAA6003154B1 /* SYNAbstractDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EC6236166EAAA6003154B1 /* SYNAbstractDetailViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1014,9 +1014,9 @@
 		01E98DAB165C39040079FD7A /* CardHarry@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CardHarry@2x.png"; path = "Assets/Images/CardHarry@2x.png"; sourceTree = "<group>"; };
 		01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackChannelDetailViewController.h; sourceTree = "<group>"; };
 		01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackChannelDetailViewController.m; sourceTree = "<group>"; };
-		01EC6234166EAAA5003154B1 /* SYNADetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNADetailViewController.h; sourceTree = "<group>"; };
-		01EC6235166EAAA6003154B1 /* SYNADetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNADetailViewController.m; sourceTree = "<group>"; };
-		01EC6236166EAAA6003154B1 /* SYNADetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNADetailViewController.xib; sourceTree = "<group>"; };
+		01EC6234166EAAA5003154B1 /* SYNAbstractDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractDetailViewController.h; sourceTree = "<group>"; };
+		01EC6235166EAAA6003154B1 /* SYNAbstractDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractDetailViewController.m; sourceTree = "<group>"; };
+		01EC6236166EAAA6003154B1 /* SYNAbstractDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAbstractDetailViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1824,9 +1824,9 @@
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
-				01EC6234166EAAA5003154B1 /* SYNADetailViewController.h */,
-				01EC6235166EAAA6003154B1 /* SYNADetailViewController.m */,
-				01EC6236166EAAA6003154B1 /* SYNADetailViewController.xib */,
+				01EC6234166EAAA5003154B1 /* SYNAbstractDetailViewController.h */,
+				01EC6235166EAAA6003154B1 /* SYNAbstractDetailViewController.m */,
+				01EC6236166EAAA6003154B1 /* SYNAbstractDetailViewController.xib */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
@@ -2584,7 +2584,7 @@
 				01B7CDA6166E1CF7001F4AF0 /* PanelChannelDetailsHeader.png in Resources */,
 				01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */,
 				01B7CDA8166E1CF7001F4AF0 /* Placeholder3.png in Resources */,
-				01EC6238166EAAA6003154B1 /* SYNADetailViewController.xib in Resources */,
+				01EC6238166EAAA6003154B1 /* SYNAbstractDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2679,7 +2679,7 @@
 				01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */,
 				01B7CD97166E0FD6001F4AF0 /* SYNChannelHeaderView.m in Sources */,
 				01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */,
-				01EC6237166EAAA6003154B1 /* SYNADetailViewController.m in Sources */,
+				01EC6237166EAAA6003154B1 /* SYNAbstractDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

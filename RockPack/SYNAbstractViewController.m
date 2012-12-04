@@ -177,10 +177,11 @@
 // Special animation of pushing new view controller onto UINavigationController's stack
 - (void) animatedPushViewController: (UIViewController *) vc
 {
-//    vc.view.alpha = 0.0f;
+    self.view.alpha = 1.0f;
+    vc.view.alpha = 0.0f;
     
-    [self.navigationController pushViewController: vc
-                                         animated: NO];
+//    [self.navigationController pushViewController: vc
+//                                         animated: NO];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -195,6 +196,9 @@
                      completion: ^(BOOL finished)
      {
      }];
+    
+    [self.navigationController pushViewController: vc
+                                         animated: NO];
 }
 
 - (IBAction) animatedPopViewController
@@ -205,7 +209,6 @@
     parentVC.view.alpha = 0.0f;
     
     [self.navigationController popViewControllerAnimated: NO];
-    
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f

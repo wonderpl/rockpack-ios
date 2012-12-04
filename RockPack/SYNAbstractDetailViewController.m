@@ -7,7 +7,7 @@
 //
 
 #import "Channel.h"
-#import "SYNADetailViewController.h"
+#import "SYNAbstractDetailViewController.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNMyRockpackMovieViewController.h"
@@ -15,7 +15,7 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
-@interface SYNADetailViewController ()
+@interface SYNAbstractDetailViewController ()
 
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
@@ -31,12 +31,12 @@
 @end
 
 
-@implementation SYNADetailViewController
+@implementation SYNAbstractDetailViewController
 
 - (id) initWithChannel: (Channel *) channel
 {
 	
-	if ((self = [super initWithNibName: @"SYNADetailViewController" bundle: nil]))
+	if ((self = [super initWithNibName: @"SYNAbstractDetailViewController" bundle: nil]))
     {
 		self.channel = channel;
         self.videos = self.channel.videos.array;

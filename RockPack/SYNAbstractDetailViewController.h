@@ -10,7 +10,7 @@
 
 #import "SYNAbstractViewController.h"
 
-@interface SYNADetailViewController : SYNAbstractViewController <UICollectionViewDataSource,
+@interface SYNAbstractDetailViewController : SYNAbstractViewController <UICollectionViewDataSource,
                                                                  UICollectionViewDelegateFlowLayout,
                                                                  UIScrollViewDelegate>
 - (id) initWithChannel: (Channel *) channel;
