@@ -8,11 +8,13 @@
 
 @class Channel;
 
+#import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractViewController.h"
 
-@interface SYNAbstractDetailViewController : SYNAbstractViewController <UICollectionViewDataSource,
-                                                                 UICollectionViewDelegateFlowLayout,
-                                                                 UIScrollViewDelegate>
+@interface SYNAbstractDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,
+                                                                        UICollectionViewDataSource,
+                                                                        UICollectionViewDelegateFlowLayout,
+                                                                        UIScrollViewDelegate>
 - (id) initWithChannel: (Channel *) channel;
 
 @end

@@ -71,11 +71,14 @@
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forCellWithReuseIdentifier: @"SYNChannelHeaderView"];
     
-    UICollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(256.0f , 193.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
+    
+    [layout setUpGestureRecognizersOnCollectionView];
+
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -137,7 +140,7 @@
 
 
 - (void) collectionView: (UICollectionView *) cv
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Video *video = [self.videos objectAtIndex: indexPath.row];
     
@@ -149,7 +152,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 - (CGSize) collectionView: (UICollectionView *) cv
                    layout: (UICollectionViewLayout*) cvLayout
-referenceSizeForHeaderInSection: (NSInteger) section
+                   referenceSizeForHeaderInSection: (NSInteger) section
 {
     if (section == 0)
     {
@@ -157,6 +160,17 @@ referenceSizeForHeaderInSection: (NSInteger) section
     }
     
     return CGSizeZero;
+}
+
+- (void) collectionView: (UICollectionView *) cv
+                 layout: (UICollectionViewLayout *) layout
+        itemAtIndexPath: (NSIndexPath *) fromIndexPath
+    willMoveToIndexPath: (NSIndexPath *) toIndexPath
+{
+    NSLog (@"Moving");
+//    id theFromItem = [self.deck objectAtIndex:theFromIndexPath.item];
+//    [self.deck removeObjectAtIndex:theFromIndexPath.item];
+//    [self.deck insertObject:theFromItem atIndex:theToIndexPath.item];
 }
 
 @end
