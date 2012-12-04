@@ -10,7 +10,7 @@
 #import "SYNChannelThumbnailCell.h"
 #import "SYNVideoThumbnailCell.h"
 #import "SYNMyRockpackMovieViewController.h"
-#import "SYNMyRockpackDetailViewController.h"
+#import "SYNViewController2.h"
 #import "SYNMyRockpackViewController.h"
 #import "SYNSwitch.h"
 #import "UIFont+SYNFont.h"
@@ -273,8 +273,9 @@
     {
         Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNMyRockpackDetailViewController *channelDetailVC = [[SYNMyRockpackDetailViewController alloc] initWithChannel: channel];
+        SYNViewController2 *channelDetailVC = [[SYNViewController2 alloc] initWithChannel: channel];
         
+
         [self animatedPushViewController: channelDetailVC];
     }
 }
@@ -343,29 +344,29 @@
 }
 
 
-- (IBAction) transition: (id) sender
-{
-    SYNMyRockpackDetailViewController *vc = [[SYNMyRockpackDetailViewController alloc] init];
-    
-    vc.view.alpha = 0.0f;
-    
-    [self.navigationController pushViewController: vc
-                                         animated: NO];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         vc.view.alpha = 1.0f;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-}
+//- (IBAction) transition: (id) sender
+//{
+//    SYNMyRockpackDetailViewController *vc = [[SYNMyRockpackDetailViewController alloc] init];
+//    
+//    vc.view.alpha = 0.0f;
+//    
+//    [self.navigationController pushViewController: vc
+//                                         animated: NO];
+//    
+//    [UIView animateWithDuration: 0.5f
+//                          delay: 0.0f
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations: ^
+//     {
+//         // Contract thumbnail view
+//         self.view.alpha = 0.0f;
+//         vc.view.alpha = 1.0f;
+//         
+//     }
+//                     completion: ^(BOOL finished)
+//     {
+//     }];
+//}
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
