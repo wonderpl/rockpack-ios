@@ -27,7 +27,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) NSArray *biogs;
 @property (nonatomic, strong) NSArray *titles;
-@property (nonatomic, strong) NSArray *videos;
+@property (nonatomic, strong) NSMutableArray *videos;
 
 @end
 
@@ -40,7 +40,7 @@
 	if ((self = [super initWithNibName: @"SYNAbstractDetailViewController" bundle: nil]))
     {
 		self.channel = channel;
-        self.videos = self.channel.videos.array;
+        self.videos = [NSMutableArray arrayWithArray: self.channel.videos.array];
 	}
     
 	return self;
@@ -51,6 +51,7 @@
 {
     [super viewDidLoad];
     
+    // Set all the labels to use the custom font
     self.channelTitleLabel.font = [UIFont boldRockpackFontOfSize: 29.0f];
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.biogTitleLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
@@ -71,12 +72,14 @@
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forCellWithReuseIdentifier: @"SYNChannelHeaderView"];
     
+    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(256.0f , 193.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
+    // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
 
 }
@@ -85,11 +88,13 @@
 {
     [super viewWillAppear: animated];
     
+    // Set all labels and images to correspond to the selected channel
     self.channelTitleLabel.text = self.channel.title;
     self.channelWallpaperImageView.image = self.channel.wallpaperImage;
     self.biogTitleLabel.text = self.channel.biogTitle;
     self.biogBodyLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.biog];
     
+    // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
 }
 
@@ -115,7 +120,7 @@
     SYNVideoThumbnailRegularCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                        forIndexPath: indexPath];
     
-    Video *video = [self.videos objectAtIndex: indexPath.row];
+    Video *video = [self.videos objectAtIndex: indexPath.item];
     cell.imageView.image = video.keyframeImage;
     cell.titleLabel.text = video.title;
     cell.subtitleLabel.text = video.subtitle;
@@ -168,9 +173,25 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
     NSLog (@"Moving");
-//    id theFromItem = [self.deck objectAtIndex:theFromIndexPath.item];
-//    [self.deck removeObjectAtIndex:theFromIndexPath.item];
-//    [self.deck insertObject:theFromItem atIndex:theToIndexPath.item];
+
+    // Actually swap the video thumbnails around in the visible list
+    id fromItem = [self.videos objectAtIndex: fromIndexPath.item];
+    id fromObject = [self.channel.videosSet objectAtIndex: fromIndexPath.item];
+    
+    [self.videos removeObjectAtIndex: fromIndexPath.item];
+    [self.channel.videosSet removeObjectAtIndex: fromIndexPath.item];
+    
+    [self.videos insertObject: fromItem atIndex: toIndexPath.item];
+    [self.channel.videosSet insertObject: fromObject atIndex: toIndexPath.item];
+    
+//    [self.channel.videosSet exchangeObjectAtIndex: fromIndexPath.item
+//         withObjectAtIndex: toIndexPath.item];
+    
+//    [self.channel.videosSet moveObjectsAtIndexes: [NSIndexSet indexSetWithIndex: toIndexPath.item] toIndex: fromIndexPath.item];
+    
+//    [cv reloadData];
+    
+    [self saveDB];
 }
 
 @end
