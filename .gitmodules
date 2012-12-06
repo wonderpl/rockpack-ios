@@ -4,6 +4,3 @@
 [submodule "sskeychain"]
 	path = sskeychain
 	url = https://github.com/soffes/sskeychain.git
-[submodule "MKNetworkKit"]
-	path = MKNetworkKit
-	url = https://synchromation@github.com/synchromation/MKNetworkKit.git
