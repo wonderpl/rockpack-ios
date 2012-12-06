@@ -867,7 +867,7 @@
 }
 
 
-- (IBAction) addImagewellToRockPack: (id) sender
+- (IBAction) addImagewellToRockpack: (id) sender
 {
     UIViewController *pvc = self.parentViewController;
     

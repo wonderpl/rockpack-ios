@@ -9,6 +9,7 @@
 #import "Channel.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractDetailViewController.h"
+#import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNMyRockpackMovieViewController.h"
@@ -77,6 +78,7 @@
     layout.itemSize = CGSizeMake(256.0f , 193.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
+    [layout registerClass: [SYNChannelCollectionBackgroundView class]  forDecorationViewOfKind: @"SemiOpaqueBackground"];
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     // Now add the long-press gesture recognizers to the custom flow layout
@@ -183,13 +185,6 @@
     
     [self.videos insertObject: fromItem atIndex: toIndexPath.item];
     [self.channel.videosSet insertObject: fromObject atIndex: toIndexPath.item];
-    
-//    [self.channel.videosSet exchangeObjectAtIndex: fromIndexPath.item
-//         withObjectAtIndex: toIndexPath.item];
-    
-//    [self.channel.videosSet moveObjectsAtIndexes: [NSIndexSet indexSetWithIndex: toIndexPath.item] toIndex: fromIndexPath.item];
-    
-//    [cv reloadData];
     
     [self saveDB];
 }

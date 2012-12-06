@@ -142,8 +142,8 @@
     self.didNotSwipe = TRUE;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(selectMyRockPackTab)
-                                                 name: @"SelectMyRockPackTab"
+                                             selector: @selector(selectMyRockpackTab)
+                                                 name: @"SelectMyRockpackTab"
                                                object: nil];
     
     // Setup number of messages number font in title bar
@@ -481,7 +481,7 @@
     [self endRecording];
 }
 
-- (void) selectMyRockPackTab
+- (void) selectMyRockpackTab
 {
     [self setSelectedIndex: 2];
 }
