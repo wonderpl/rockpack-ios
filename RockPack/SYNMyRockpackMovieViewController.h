@@ -6,11 +6,12 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "SYNAbstractViewController.h"
 #import <UIKit/UIKit.h>
 
 @class Video;
 
-@interface SYNMyRockpackMovieViewController : UIViewController
+@interface SYNMyRockpackMovieViewController : SYNAbstractViewController
 
 - (id) initWithVideo: (Video *) video;
 

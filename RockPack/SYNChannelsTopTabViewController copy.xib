@@ -55,14 +55,11 @@
 						<bool key="IBUIAlwaysBounceVertical">YES</bool>
 						<float key="IBUIMinimumZoomScale">0.0</float>
 						<float key="IBUIMaximumZoomScale">0.0</float>
-						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="866908859">
+						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="90300952">
 							<reference key="IBUICollectionView" ref="587295558"/>
-							<string key="IBUIItemSize">{336, 192}</string>
-							<float key="IBUIMinimumLineSpacing">3</float>
-							<double key="IBUISectionInset.top">10</double>
-							<double key="IBUISectionInset.bottom">0.0</double>
-							<double key="IBUISectionInset.left">6</double>
-							<double key="IBUISectionInset.right">6</double>
+							<string key="IBUIItemSize">{256, 188}</string>
+							<float key="IBUIMinimumLineSpacing">10</float>
+							<float key="IBUIMinimumInteritemSpacing">10</float>
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
@@ -148,13 +145,13 @@
 						<int key="objectID">5</int>
 						<reference key="object" ref="587295558"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="866908859"/>
+							<reference ref="90300952"/>
 						</array>
 						<reference key="parent" ref="57497229"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">17</int>
-						<reference key="object" ref="866908859"/>
+						<int key="objectID">23</int>
+						<reference key="object" ref="90300952"/>
 						<reference key="parent" ref="587295558"/>
 					</object>
 				</array>
@@ -164,7 +161,7 @@
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -172,7 +169,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">21</int>
+			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -206,6 +203,20 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelsTopTabViewController</string>
 					<string key="superclassName">SYNAbstractTopTabViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="toggleChannelPackItButton:">UIButton</string>
+						<string key="toggleChannelRockItButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="toggleChannelPackItButton:">
+							<string key="name">toggleChannelPackItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="toggleChannelRockItButton:">
+							<string key="name">toggleChannelRockItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">channelThumbnailCollection</string>
 						<string key="NS.object.0">UICollectionView</string>

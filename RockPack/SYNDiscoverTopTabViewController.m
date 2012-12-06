@@ -12,12 +12,10 @@
 #import "Channel.h"
 #import "NSObject+Blocks.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelsDB.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
-#import "SYNSelection.h"
-#import "SYNSelectionDB.h"
+#import "SYNChannelsDB.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoThumbnailCell.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
@@ -54,20 +52,15 @@
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
-@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) NSMutableArray *imageWell;
 @property (nonatomic, strong) NSMutableArray *selections;
-@property (nonatomic, strong) SYNSelectionDB *selectionDB;
-@property (nonatomic, strong) SYNVideoDB *videoDB;
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @end
 
 @implementation SYNDiscoverTopTabViewController
-
-@synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
 - (void) viewDidLoad
 {
@@ -75,9 +68,6 @@
     
     self.imageWell = [[NSMutableArray alloc] initWithCapacity: 100];
     self.selections = [[NSMutableArray alloc] initWithCapacity: 100];
-    
-    self.videoDB = [SYNVideoDB sharedVideoDBManager];
-    self.selectionDB = [SYNSelectionDB sharedSelectionDBManager];
 
     self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -117,55 +107,46 @@
     
 }
 
-#pragma mark - CoreDate support
+
 - (void) viewWillAppear: (BOOL) animated
 {
+    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
+    [SYNChannelsDB sharedChannelsDBManager];
+
     // Set the first video
     [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
-    
-    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
 }
 
 
-- (NSFetchedResultsController *) videoFetchedResultsController
+#pragma mark - Core Data support
+
+// The following 2 methods are called by the abstract class' getFetchedResults controller methods
+- (NSPredicate *) videoFetchedResultsControllerPredicate
 {
-    // Return cached version if we have already created one
-    if (_videoFetchedResultsController != nil)
-    {
-        return _videoFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Video"
-                                              inManagedObjectContext: self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Edit the sort key as appropriate.
+    // No predicate
+    return nil;
+}
+
+
+- (NSArray *) videoFetchedResultsControllerSortDescriptors
+{
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
-    
-    NSArray *sortDescriptors = @[sortDescriptor];
-    
-    [fetchRequest setSortDescriptors: sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *newFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                                  managedObjectContext: self.managedObjectContext
-                                                                                                    sectionNameKeyPath: nil
-                                                                                                             cacheName: @"Discover"];
-    newFetchedResultsController.delegate = self;
-    self.videoFetchedResultsController = newFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![_videoFetchedResultsController performFetch: &error])
-    {
-        // TODO: Put some more error handling in here
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    return _videoFetchedResultsController;
+    return @[sortDescriptor];
+}
+
+
+- (NSPredicate *) channelFetchedResultsControllerPredicate
+{
+    return [NSPredicate predicateWithFormat: @"userGenerated == FALSE"];
+}
+
+
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
+{
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
+                                                                   ascending: YES];
+    return @[sortDescriptor];
 }
 
 
@@ -886,7 +867,7 @@
 }
 
 
-- (IBAction) addImagewellToRockPack: (id) sender
+- (IBAction) addImagewellToRockpack: (id) sender
 {
     UIViewController *pvc = self.parentViewController;
     
@@ -924,70 +905,44 @@
 
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
-    NSIndexPath *indexPath = [cv indexPathForItemAtPoint: CGPointMake(cv.contentOffset.x + 250.0f, 100.0f)];
-
-    self.selectionDB.wallpackIndex = indexPath.row % 10;
+//    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
+//                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
 }
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
-{
-//    self.selectionDB.selectionTitle = textField.text;
-//    self.selectionDB.selections = self.selections;
+{    
+    Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
     
-    // Now create the a Channel that represents all of the selected video entries
-//    NSEntityDescription *channelEntity = [NSEntityDescription entityForName: @"Channel"
-//                                                     inManagedObjectContext: self.managedObjectContext];
-//    
-//    Channel *channel = (Channel *)[[NSManagedObject alloc] initWithEntity: channelEntity
-//                                           insertIntoManagedObjectContext: self.managedObjectContext];
-    
-    Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
-    
-    channel.title = textField.text;
-    channel.subtitle = @"CHANNEL";
-    channel.packedByUserValue = TRUE;
-    channel.rockedByUserValue = FALSE;
-    channel.totalPacksValue = 0;
-    channel.totalRocksValue = 0;
-    
-//    NSLog (@"Carousel center: %.2f,%.2f", self.channelCoverCarousel.center.x, self.channelCoverCarousel.center.y);
-//    NSLog (@"Content offset: %.2f,%.2f", self.channelCoverCarousel.contentOffset.x, self.channelCoverCarousel.contentOffset.y);
+    newChannel.title = textField.text;
+    newChannel.subtitle = @"CHANNEL";
+    newChannel.packedByUserValue = TRUE;
+    newChannel.rockedByUserValue = FALSE;
+    newChannel.totalPacksValue = 0;
+    newChannel.totalRocksValue = 0;
+    newChannel.userGeneratedValue = TRUE;
     
     // TODO: Make these window offsets less hard-coded
-    NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
+    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
                                                                                                      70 + self.channelCoverCarousel.contentOffset.y)];
     
-//    NSLog (@"Current Selection: %@", currentSelection);
+    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    //        NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (380.0f, 8)];
-    //            NSIndexPath *currentSelection = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (725.0f, 70)];
+    newChannel.keyframeURL = coverChannel.keyframeURL;
     
-    channel.keyframeURL = [[SYNChannelsDB sharedChannelsDBManager] keyframeURLForIndex: currentSelection.row
-                                                                            withOffset: 0];
+    newChannel.wallpaperURL = coverChannel.wallpaperURL;
     
-    channel.wallpaperURL = [[SYNChannelsDB sharedChannelsDBManager] wallpaperURLForIndex: currentSelection.row
-                                                                            withOffset: 0];
+    newChannel.biog = coverChannel.biog;
     
-    channel.biog = [[SYNChannelsDB sharedChannelsDBManager] biogForIndex: currentSelection.row
-                                                                              withOffset: 0];
+    NSString *biogTitle = coverChannel.title;
     
-    NSString *biogTitle = [[SYNChannelsDB sharedChannelsDBManager] titleForIndex: currentSelection.row
-                                                                     withOffset: 0];
+    NSString *biogSubtitle = coverChannel.subtitle;;
     
-    NSString *biogSubtitle = [[SYNChannelsDB sharedChannelsDBManager] subtitleForIndex: currentSelection.row
-                                                                      withOffset: 0];
-    
-    channel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
-    
-//    // TODO: Need to think about what keyframe image we use
-//    channel.keyframeURL = [(Video *)[self.videoFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]] keyframeURL];
-    
+    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
     for (NSIndexPath *indexPath in self.selections)
     {
         // Get video 
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-
-        [channel addVideosObject: video];
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];      
+        [[newChannel videosSet] addObject: video];
     }
     
     [self.channelNameField resignFirstResponder];

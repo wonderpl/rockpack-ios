@@ -3,6 +3,7 @@
     <entity name="Channel" representedClassName="Channel" syncable="YES">
         <attribute name="biog" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="biogTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="packedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -10,8 +11,9 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalPacks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="totalRocks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="userGenerated" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="wallpaperURL" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
+        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -31,8 +33,8 @@
         <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Channel" inverseName="videos" inverseEntity="Channel" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Channel" positionX="160" positionY="192" width="128" height="210"/>
-        <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="Channel" positionX="160" positionY="192" width="128" height="240"/>
         <element name="User" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="Video" positionX="160" positionY="192" width="128" height="180"/>
     </elements>
 </model>

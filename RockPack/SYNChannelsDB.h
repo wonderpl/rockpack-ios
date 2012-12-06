@@ -9,17 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "SYNAbstractThumbnailDB.h"
 
-@interface SYNChannelsDB : SYNAbstractThumbnailDB
+@interface SYNChannelsDB : NSObject
 
 + (id) sharedChannelsDBManager;
-
-- (UIImage *) wallpaperForIndex: (int) index
-                     withOffset: (int) offset;
-
-- (NSString *) biogForIndex: (int) index
-                 withOffset: (int) offset;
-
-- (NSString *) wallpaperURLForIndex: (int) index
-                        withOffset: (int) offset;
 
 @end

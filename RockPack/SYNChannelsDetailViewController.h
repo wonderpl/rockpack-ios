@@ -6,8 +6,10 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractTopTabViewController.h"
+@class Channel;
 
-@interface SYNChannelsChannelViewController : SYNAbstractTopTabViewController
+#import "SYNAbstractDetailViewController.h"
+
+@interface SYNChannelsDetailViewController : SYNAbstractDetailViewController
 
 @end

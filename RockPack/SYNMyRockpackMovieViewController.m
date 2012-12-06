@@ -49,13 +49,13 @@
     [self.mainVideoPlayer prepareToPlay];
     
     // TODO: Hardcoded size for now, but need to find a way to get correct window size (and orientation!)
-//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [[self.mainVideoPlayer view] setFrame: CGRectMake (0, 0, 1024, 642)]; // Frame must match parent view
+    [[self.mainVideoPlayer view] setFrame: CGRectMake (0, 44, 1024, 642)]; // Frame must match parent view
     
     [self.view insertSubview: self.mainVideoPlayer.view atIndex: 0];
         
     [self.mainVideoPlayer pause];
 }
+
 
 // Don't call these here as called when going full-screen
 
@@ -76,29 +76,6 @@
 
 
 
-- (IBAction) popCurrentView: (id) sender
-{
-//	[self.navigationController popViewControllerAnimated: YES];
-    
-    UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
-    parentVC.view.alpha = 0.0f;
-    
-    [self.navigationController popViewControllerAnimated: NO];
 
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         parentVC.view.alpha = 1.0f;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-}
 
 @end

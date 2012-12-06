@@ -7,6 +7,7 @@
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *biog;
 	__unsafe_unretained NSString *biogTitle;
+	__unsafe_unretained NSString *index;
 	__unsafe_unretained NSString *keyframeURL;
 	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
@@ -14,6 +15,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *totalPacks;
 	__unsafe_unretained NSString *totalRocks;
+	__unsafe_unretained NSString *userGenerated;
 	__unsafe_unretained NSString *wallpaperURL;
 } ChannelAttributes;
 
@@ -25,6 +27,8 @@ extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
 @class Video;
+
+
 
 
 
@@ -65,6 +69,20 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateBiogTitle:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* index;
+
+
+
+@property int64_t indexValue;
+- (int64_t)indexValue;
+- (void)setIndexValue:(int64_t)value_;
+
+//- (BOOL)validateIndex:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -156,6 +174,20 @@ extern const struct ChannelFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* userGenerated;
+
+
+
+@property BOOL userGeneratedValue;
+- (BOOL)userGeneratedValue;
+- (void)setUserGeneratedValue:(BOOL)value_;
+
+//- (BOOL)validateUserGenerated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* wallpaperURL;
 
 
@@ -166,9 +198,9 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *videos;
+@property (nonatomic, strong) NSOrderedSet *videos;
 
-- (NSMutableSet*)videosSet;
+- (NSMutableOrderedSet*)videosSet;
 
 
 
@@ -178,8 +210,8 @@ extern const struct ChannelFetchedProperties {
 
 @interface _Channel (CoreDataGeneratedAccessors)
 
-- (void)addVideos:(NSSet*)value_;
-- (void)removeVideos:(NSSet*)value_;
+- (void)addVideos:(NSOrderedSet*)value_;
+- (void)removeVideos:(NSOrderedSet*)value_;
 - (void)addVideosObject:(Video*)value_;
 - (void)removeVideosObject:(Video*)value_;
 
@@ -196,6 +228,15 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveBiogTitle;
 - (void)setPrimitiveBiogTitle:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveIndex;
+- (void)setPrimitiveIndex:(NSNumber*)value;
+
+- (int64_t)primitiveIndexValue;
+- (void)setPrimitiveIndexValue:(int64_t)value_;
 
 
 
@@ -254,6 +295,15 @@ extern const struct ChannelFetchedProperties {
 
 
 
+- (NSNumber*)primitiveUserGenerated;
+- (void)setPrimitiveUserGenerated:(NSNumber*)value;
+
+- (BOOL)primitiveUserGeneratedValue;
+- (void)setPrimitiveUserGeneratedValue:(BOOL)value_;
+
+
+
+
 - (NSString*)primitiveWallpaperURL;
 - (void)setPrimitiveWallpaperURL:(NSString*)value;
 
@@ -261,8 +311,8 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveVideos;
-- (void)setPrimitiveVideos:(NSMutableSet*)value;
+- (NSMutableOrderedSet*)primitiveVideos;
+- (void)setPrimitiveVideos:(NSMutableOrderedSet*)value;
 
 
 @end

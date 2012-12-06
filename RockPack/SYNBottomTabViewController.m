@@ -10,7 +10,7 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "MKNetworkEngine.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNOldChannelsTopTabViewController.h"
+#import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNFriendsViewController.h"
 #import "SYNMovableView.h"
@@ -48,6 +48,7 @@
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
+@property (weak, nonatomic) IBOutlet UIView *navControllerPlaceholderView;
 
 @end
 
@@ -59,23 +60,42 @@
 
 #pragma mark - View lifecycle
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    // Setup our four sub-viewcontrollers, one for each tab
+    // Wallpack tab
     SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
-    SYNOldChannelsTopTabViewController *channelsViewController = [[SYNOldChannelsTopTabViewController alloc] init];
+    
+    // Channels tab
+    SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
+    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsViewController];
+    channelsRootNavigationViewController.navigationBarHidden = TRUE;
+    channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+
+    
+    // Discover tab
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
-//    SYNMyRockPackDetailViewController *myRockPackViewController = [[SYNMyRockPackDetailViewController alloc] init];
     
+    
+    // My Rockpack tab
     SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];   
+    UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
+    myRockpackRootNavigationViewController.navigationBarHidden = TRUE;
+    myRockpackRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    myRockpackRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
+    // Friends tab
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
     
     // Using new array syntax
-    self.viewControllers = @[wallPackViewController, channelsViewController, discoverViewController, nc, friendsViewController];
+    self.viewControllers = @[wallPackViewController,
+                             channelsRootNavigationViewController,
+                             discoverViewController,
+                             myRockpackRootNavigationViewController,
+                             friendsViewController];
 
     _selectedIndex = NSNotFound;
     
@@ -122,8 +142,8 @@
     self.didNotSwipe = TRUE;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(selectMyRockPackTab)
-                                                 name: @"SelectMyRockPackTab"
+                                             selector: @selector(selectMyRockpackTab)
+                                                 name: @"SelectMyRockpackTab"
                                                object: nil];
     
     // Setup number of messages number font in title bar
@@ -252,8 +272,8 @@
 		}
 		else if (fromViewController == nil)  // don't animate
 		{
-            //			toViewController.view.frame = self.view.bounds;
-//			[self.view addSubview: toViewController.view];
+//            toViewController.view.frame = self.navControllerPlaceholderView.bounds;
+            
             [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
 		}
 		else if (animated)
@@ -461,7 +481,7 @@
     [self endRecording];
 }
 
-- (void) selectMyRockPackTab
+- (void) selectMyRockpackTab
 {
     [self setSelectedIndex: 2];
 }

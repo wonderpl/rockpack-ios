@@ -172,7 +172,6 @@
     const CGFloat thePosition = (theRow + 0.5f) * (self.cellSpacing) + [self.positionoffsetInterpolator interpolatedValueForKey:theDelta];
 	theAttributes.center = (CGPoint){ thePosition + self.centerOffset, CGRectGetMidY(theViewBounds) };
     
-    NSLog (@"Index %@ Center: %.2f, %.2f", indexPath, theAttributes.center.x, theAttributes.center.y);
 	// #########################################################################
     
 	CATransform3D theTransform = CATransform3DIdentity;

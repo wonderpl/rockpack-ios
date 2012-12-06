@@ -49,7 +49,7 @@ public:
     
     T interpolate(const CGFloat key) const
     {
-        CGFloat theHighKey;
+        CGFloat theHighKey = 0.0f;
         
         typename std::vector <KV>::const_iterator theIterator = _kv.begin();
         for(; theIterator != _kv.end(); ++theIterator)

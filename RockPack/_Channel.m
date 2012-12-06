@@ -6,6 +6,7 @@
 const struct ChannelAttributes ChannelAttributes = {
 	.biog = @"biog",
 	.biogTitle = @"biogTitle",
+	.index = @"index",
 	.keyframeURL = @"keyframeURL",
 	.packedByUser = @"packedByUser",
 	.rockedByUser = @"rockedByUser",
@@ -13,6 +14,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.title = @"title",
 	.totalPacks = @"totalPacks",
 	.totalRocks = @"totalRocks",
+	.userGenerated = @"userGenerated",
 	.wallpaperURL = @"wallpaperURL",
 };
 
@@ -49,6 +51,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"indexValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"index"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"packedByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"packedByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -69,6 +76,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"userGeneratedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"userGenerated"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -85,6 +97,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 @dynamic biogTitle;
 
+
+
+
+
+
+@dynamic index;
+
+
+
+- (int64_t)indexValue {
+	NSNumber *result = [self index];
+	return [result longLongValue];
+}
+
+- (void)setIndexValue:(int64_t)value_ {
+	[self setIndex:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveIndexValue {
+	NSNumber *result = [self primitiveIndex];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveIndexValue:(int64_t)value_ {
+	[self setPrimitiveIndex:[NSNumber numberWithLongLong:value_]];
+}
 
 
 
@@ -215,6 +253,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
+@dynamic userGenerated;
+
+
+
+- (BOOL)userGeneratedValue {
+	NSNumber *result = [self userGenerated];
+	return [result boolValue];
+}
+
+- (void)setUserGeneratedValue:(BOOL)value_ {
+	[self setUserGenerated:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveUserGeneratedValue {
+	NSNumber *result = [self primitiveUserGenerated];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveUserGeneratedValue:(BOOL)value_ {
+	[self setPrimitiveUserGenerated:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
 @dynamic wallpaperURL;
 
 
@@ -225,10 +289,10 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 @dynamic videos;
 
 	
-- (NSMutableSet*)videosSet {
+- (NSMutableOrderedSet*)videosSet {
 	[self willAccessValueForKey:@"videos"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"videos"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"videos"];
   
 	[self didAccessValueForKey:@"videos"];
 	return result;
