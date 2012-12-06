@@ -95,19 +95,19 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
                         itemAtIndexPath: thePreviousSelectedIndexPath
                     willMoveToIndexPath: theIndexPathOfSelectedItem];
         }
-//        [self.collectionView performBatchUpdates: ^
-//        {
-//            //[self.collectionView moveItemAtIndexPath:thePreviousSelectedIndexPath toIndexPath:theIndexPathOfSelectedItem];
-//            [self.collectionView deleteItemsAtIndexPaths: @[thePreviousSelectedIndexPath]];
-//            [self.collectionView insertItemsAtIndexPaths: @[theIndexPathOfSelectedItem]];
-//        }
-//                                      completion: ^(BOOL finished)
-//        {
-//        }];
+        [self.collectionView performBatchUpdates: ^
+        {
+            //[self.collectionView moveItemAtIndexPath:thePreviousSelectedIndexPath toIndexPath:theIndexPathOfSelectedItem];
+            [self.collectionView deleteItemsAtIndexPaths: @[thePreviousSelectedIndexPath]];
+            [self.collectionView insertItemsAtIndexPaths: @[theIndexPathOfSelectedItem]];
+        }
+                                      completion: ^(BOOL finished)
+        {
+        }];
         
 
-        [self.collectionView moveItemAtIndexPath: thePreviousSelectedIndexPath
-                                     toIndexPath: theIndexPathOfSelectedItem];
+//        [self.collectionView moveItemAtIndexPath: thePreviousSelectedIndexPath
+//                                     toIndexPath: theIndexPathOfSelectedItem];
 
     }
 }
@@ -482,33 +482,7 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
 
 #pragma mark - UICollectionViewFlowLayoutDelegate methods
 
-- (UICollectionViewLayoutAttributes *) initialLayoutAttributesForAppearingDecorationElementOfKind: (NSString *) elementKind
-                                                                                      atIndexPath: (NSIndexPath *) elementIndexPath
-{
-    NSLog (@"initial");
-    UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind: elementKind
-                                                                                                                     withIndexPath: elementIndexPath];
-    
-    layoutAttributes.frame = CGRectZero;
-    layoutAttributes.hidden = TRUE;
-    
-    return layoutAttributes;
-}
-
-- (UICollectionViewLayoutAttributes *) finalLayoutAttributesForDisappearingDecorationElementOfKind: (NSString *) elementKind
-                                                                                       atIndexPath: (NSIndexPath *) elementIndexPath
-{
-    NSLog (@"final");
-    
-    UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind: elementKind
-                                                                                                                     withIndexPath: elementIndexPath];
-    
-    layoutAttributes.frame = CGRectZero;
-    layoutAttributes.hidden = TRUE;
-
-    return nil;
-}
-
+#ifdef USE_DECORATION_VIEWS
 - (UICollectionViewLayoutAttributes *) layoutAttributesForDecorationViewOfKind: (NSString *) decorationViewKind
                                                                    atIndexPath: (NSIndexPath *) indexPath
 {
@@ -527,6 +501,7 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
     
     return layoutAttributes;
 }
+#endif
 
 
 - (NSArray *) layoutAttributesForElementsInRect: (CGRect) theRect
@@ -534,9 +509,11 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
     // Convert to mutable array
     NSMutableArray *theLayoutAttributesForElementsInRect = [NSMutableArray arrayWithArray: [super layoutAttributesForElementsInRect: theRect]];
     
+#ifdef USE_DECORATION_VIEWS
     [theLayoutAttributesForElementsInRect addObject: [self layoutAttributesForDecorationViewOfKind: @"SemiOpaqueBackground"
                                                                                        atIndexPath: [NSIndexPath indexPathForItem: 0
                                                                                                                         inSection: 0]]];
+#endif
     
     for (UICollectionViewLayoutAttributes *theLayoutAttributes in theLayoutAttributesForElementsInRect)
     {

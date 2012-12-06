@@ -15,10 +15,10 @@
     if ((self = [super initWithFrame:frame]))
     {
         // Simply set the background colour to 60% Black
-        self.backgroundColor = [UIColor colorWithRed: 1.0f
+        self.backgroundColor = [UIColor colorWithRed: 0.0f
                                                green: 0.0f
                                                 blue: 0.0f
-                                               alpha: 0.1f];
+                                               alpha: 0.6f];
     }
     
     return self;

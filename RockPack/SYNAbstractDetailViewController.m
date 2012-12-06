@@ -78,7 +78,9 @@
     layout.itemSize = CGSizeMake(256.0f , 193.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
+#ifdef USE_DECORATION_VIEWS
     [layout registerClass: [SYNChannelCollectionBackgroundView class]  forDecorationViewOfKind: @"SemiOpaqueBackground"];
+#endif
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     // Now add the long-press gesture recognizers to the custom flow layout
