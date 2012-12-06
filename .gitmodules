@@ -4,6 +4,3 @@
 [submodule "MKNetworkKit"]
 	path = MKNetworkKit
 	url = https://synchromation@github.com/synchromation/MKNetworkKit.git
-[submodule "MBProgressHUD"]
-	path = MBProgressHUD
-	url = https://synchromation@github.com/synchromation/MBProgressHUD.git
