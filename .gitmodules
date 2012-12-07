@@ -7,3 +7,6 @@
 [submodule "MBProgressHUD"]
 	path = MBProgressHUD
 	url = https://github.com/synchromation/MBProgressHUD.git
+[submodule "MTLabel"]
+	path = MTLabel
+	url = https://synchromation@github.com/synchromation/MTLabel.git
