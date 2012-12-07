@@ -9,6 +9,13 @@
 #import "UIFont+SYNFont.h"
 #import "SYNHomeSectionHeaderView.h"
 
+@interface SYNHomeSectionHeaderView ()
+
+@property (nonatomic, strong) IBOutlet UIImageView *highlightedSectionView;
+@property (nonatomic, strong) IBOutlet UIImageView *sectionView;
+
+@end
+
 @implementation SYNHomeSectionHeaderView
 
 - (id) initWithFrame: (CGRect) frame
@@ -36,11 +43,29 @@
     return self;
 }
 
+
 - (void) awakeFromNib
 {
     [super awakeFromNib];
     
     self.sectionTitleLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.highlightedSectionView.hidden = TRUE;
+    self.sectionView.hidden = FALSE;
+}
+
+
+- (void) highlighted: (BOOL) highlighted
+{
+    if (highlighted)
+    {
+        self.highlightedSectionView.hidden = FALSE;
+        self.sectionView.hidden = TRUE;
+    }
+    else
+    {
+        self.highlightedSectionView.hidden = TRUE;
+        self.sectionView.hidden = FALSE;
+    }
 }
 
 @end

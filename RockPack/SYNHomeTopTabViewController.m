@@ -164,11 +164,13 @@
     SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNHomeSectionHeaderView"
                                                                            forIndexPath: indexPath];
     NSString *sectionText;
+    BOOL highlighted = FALSE;
     
     switch (indexPath.section)
     {
         case 0:
             sectionText = @"TODAY";
+            highlighted = TRUE;
             break;
             
         case 1:
@@ -190,6 +192,8 @@
         default:
             break;
     }
+    
+    [reusableView highlighted: highlighted];
     reusableView.sectionTitleLabel.text = sectionText;
     
     return reusableView;

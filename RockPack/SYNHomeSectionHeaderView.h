@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *sectionTitleLabel;
 
+- (void) highlighted: (BOOL) highlighted;
+
 @end
