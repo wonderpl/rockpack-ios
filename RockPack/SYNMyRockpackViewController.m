@@ -344,33 +344,6 @@
 }
 
 
-//- (IBAction) transition: (id) sender
-//{
-//    SYNMyRockpackDetailViewController *vc = [[SYNMyRockpackDetailViewController alloc] init];
-//    
-//    vc.view.alpha = 0.0f;
-//    
-//    [self.navigationController pushViewController: vc
-//                                         animated: NO];
-//    
-//    [UIView animateWithDuration: 0.5f
-//                          delay: 0.0f
-//                        options: UIViewAnimationOptionCurveEaseInOut
-//                     animations: ^
-//     {
-//         // Contract thumbnail view
-//         self.view.alpha = 0.0f;
-//         vc.view.alpha = 1.0f;
-//         
-//     }
-//                     completion: ^(BOOL finished)
-//     {
-//     }];
-//}
-
-
-
-
 // Buttons activated from scrolling list of thumbnails
 - (IBAction) toggleVideoRockItButton: (UIButton *) rockItButton
 {

@@ -8,15 +8,19 @@
 
 #import "SYNHomeTopTabViewController.h"
 #import "SYNHomeSectionHeaderView.h"
+#import "SYNVideoThumbnailCell.h"
+#import "Video.h"
+
+#define FAKE_MULTIPLE_SECTIONS
 
 @interface SYNHomeTopTabViewController ()
 
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
+@property (nonatomic, strong) NSMutableArray *videos;
 
 @end
 
 @implementation SYNHomeTopTabViewController
-
 
 - (void)viewDidLoad
 {
@@ -54,6 +58,101 @@
     return @[sortDescriptor];
 }
 
+#pragma mark - Collection view support
+
+- (NSInteger) collectionView: (UICollectionView *) view
+      numberOfItemsInSection: (NSInteger) section
+{
+    NSInteger adjustedSection;
+#ifdef FAKE_MULTIPLE_SECTIONS
+    adjustedSection = 0;
+#else
+    adjustedSection = section;
+#endif
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][adjustedSection];
+
+    return [sectionInfo numberOfObjects];
+}
+
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+{
+#ifdef FAKE_MULTIPLE_SECTIONS
+    return 5;
+#else
+    return self.videoFetchedResultsController.sections.count;
+#endif
+}
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    NSIndexPath *adjustedIndexPath;
+#ifdef FAKE_MULTIPLE_SECTIONS
+    adjustedIndexPath = [NSIndexPath indexPathForItem: indexPath.row inSection: 0];
+#else
+    adjustedIndexPath = indexPath;
+#endif
+    
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: adjustedIndexPath];
+    
+    SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+                                                                forIndexPath: indexPath];
+    
+    cell.imageView.image = video.keyframeImage;
+    
+    cell.maintitle.text = video.title;
+    
+    cell.subtitle.text = video.subtitle;
+    
+    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
+    
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+    
+    cell.packItButton.selected = video.packedByUserValue;
+    
+    cell.rockItButton.selected = video.rockedByUserValue;
+    
+    // Wire the Done button up to the correct method in the sign up controller
+    [cell.packItButton removeTarget: nil
+                             action: @selector(toggleThumbnailPackItButton:)
+                   forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.packItButton addTarget: self
+                          action: @selector(toggleThumbnailPackItButton:)
+                forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.rockItButton removeTarget: nil
+                             action: @selector(toggleThumbnailRockItButton:)
+                   forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.rockItButton addTarget: self
+                          action: @selector(toggleThumbnailRockItButton:)
+                forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.addItButton removeTarget: nil
+                            action: @selector(touchThumbnailAddItButton:)
+                  forControlEvents: UIControlEventTouchUpInside];
+    
+    [cell.addItButton addTarget: self
+                         action: @selector(touchThumbnailAddItButton:)
+               forControlEvents: UIControlEventTouchUpInside];
+    
+    return cell;
+}
+
+
+- (void) collectionView: (UICollectionView *) cv
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    NSLog (@"Selecting image well cell does nothing");
+}
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+                   referenceSizeForHeaderInSection: (NSInteger) section
+{
+    return CGSizeMake(0, 44);
+}
 
 
 // Used for the collection view header
@@ -63,8 +162,34 @@
 {
     SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNHomeSectionHeaderView"
                                                                            forIndexPath: indexPath];
+    NSString *sectionText;
     
-    reusableView.sectionTitleLabel.text = @"TODAY";
+    switch (indexPath.section)
+    {
+        case 0:
+            sectionText = @"TODAY";
+            break;
+            
+        case 1:
+            sectionText = @"YESTERDAY";
+            break;
+            
+        case 2:
+            sectionText = @"SUNDAY";
+            break;
+            
+        case 3:
+            sectionText = @"3rd DEC";
+            break;
+            
+        case 4:
+            sectionText = @"28th NOV";
+            break;
+            
+        default:
+            break;
+    }
+    reusableView.sectionTitleLabel.text = sectionText;
     
     return reusableView;
 }

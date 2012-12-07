@@ -220,6 +220,8 @@
 		018919F91672236D00AB07BB /* PanelHomeTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 018919F71672236D00AB07BB /* PanelHomeTitle@2x.png */; };
 		018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */; };
 		01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */; };
+		01891A031672333700AB07BB /* PanelSectionHeaderHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A011672333700AB07BB /* PanelSectionHeaderHighlighted.png */; };
+		01891A041672333700AB07BB /* PanelSectionHeaderHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A021672333700AB07BB /* PanelSectionHeaderHighlighted@2x.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -722,6 +724,8 @@
 		018919FA1672253E00AB07BB /* SYNHomeSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeSectionHeaderView.h; sourceTree = "<group>"; };
 		018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeSectionHeaderView.m; sourceTree = "<group>"; };
 		018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeSectionHeaderView.xib; sourceTree = "<group>"; };
+		01891A011672333700AB07BB /* PanelSectionHeaderHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelSectionHeaderHighlighted.png; path = Assets/Images/PanelSectionHeaderHighlighted.png; sourceTree = "<group>"; };
+		01891A021672333700AB07BB /* PanelSectionHeaderHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelSectionHeaderHighlighted@2x.png"; path = "Assets/Images/PanelSectionHeaderHighlighted@2x.png"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -1541,6 +1545,8 @@
 		018919F51672235000AB07BB /* Home Page */ = {
 			isa = PBXGroup;
 			children = (
+				01891A011672333700AB07BB /* PanelSectionHeaderHighlighted.png */,
+				01891A021672333700AB07BB /* PanelSectionHeaderHighlighted@2x.png */,
 				018919F61672236D00AB07BB /* PanelHomeTitle.png */,
 				018919F71672236D00AB07BB /* PanelHomeTitle@2x.png */,
 			);
@@ -2664,6 +2670,8 @@
 				018919F81672236D00AB07BB /* PanelHomeTitle.png in Resources */,
 				018919F91672236D00AB07BB /* PanelHomeTitle@2x.png in Resources */,
 				01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */,
+				01891A031672333700AB07BB /* PanelSectionHeaderHighlighted.png in Resources */,
+				01891A041672333700AB07BB /* PanelSectionHeaderHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
