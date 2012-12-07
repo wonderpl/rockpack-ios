@@ -207,7 +207,6 @@
 		01677F1616554D2700B1B1D8 /* DINNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1416554D2700B1B1D8 /* DINNextLTPro-Bold.otf */; };
 		01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */; };
 		0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */; };
-		0170717416554E9B00A3C7C4 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716216554E9B00A3C7C4 /* NSData+Base64.m */; };
 		0170717516554E9B00A3C7C4 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716416554E9B00A3C7C4 /* NSDate+RFC1123.m */; };
 		0170717616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m */; };
 		0170717716554E9B00A3C7C4 /* NSString+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716816554E9B00A3C7C4 /* NSString+MKNetworkKitAdditions.m */; };
@@ -231,6 +230,7 @@
 		019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F0162C94A300216900 /* UIColor+SYNColor.m */; };
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
 		0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */; };
+		0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F135167215BE00E479C6 /* NSData+MKBase64.m */; };
 		019E6A5A165FD7D1002B312A /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A59165FD7D1002B312A /* SSKeychain.m */; };
 		019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A5C165FD800002B312A /* MBProgressHUD.m */; };
 		019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */; };
@@ -694,8 +694,6 @@
 		01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DINNextLTPro-Regular.otf"; path = "Assets/Fonts/DINNextLTPro-Regular.otf"; sourceTree = "<group>"; };
 		0170715F16554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAlert+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
 		0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
-		0170716116554E9B00A3C7C4 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
-		0170716216554E9B00A3C7C4 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		0170716316554E9B00A3C7C4 /* NSDate+RFC1123.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RFC1123.h"; sourceTree = "<group>"; };
 		0170716416554E9B00A3C7C4 /* NSDate+RFC1123.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RFC1123.m"; sourceTree = "<group>"; };
 		0170716516554E9B00A3C7C4 /* NSDictionary+RequestEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RequestEncoding.h"; sourceTree = "<group>"; };
@@ -738,6 +736,8 @@
 		019825F3162C94B500216900 /* UIFont+SYNFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+SYNFont.m"; sourceTree = "<group>"; };
 		0199F12F166F997C00E479C6 /* SYNChannelCollectionBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCollectionBackgroundView.h; sourceTree = "<group>"; };
 		0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCollectionBackgroundView.m; sourceTree = "<group>"; };
+		0199F134167215BE00E479C6 /* NSData+MKBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MKBase64.h"; sourceTree = "<group>"; };
+		0199F135167215BE00E479C6 /* NSData+MKBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MKBase64.m"; sourceTree = "<group>"; };
 		019E6A58165FD7D1002B312A /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = sskeychain/SSKeychain.h; sourceTree = SOURCE_ROOT; };
 		019E6A59165FD7D1002B312A /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = sskeychain/SSKeychain.m; sourceTree = SOURCE_ROOT; };
 		019E6A5B165FD800002B312A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
@@ -1497,10 +1497,10 @@
 		0170715E16554E9B00A3C7C4 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				0199F134167215BE00E479C6 /* NSData+MKBase64.h */,
+				0199F135167215BE00E479C6 /* NSData+MKBase64.m */,
 				0170715F16554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.h */,
 				0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */,
-				0170716116554E9B00A3C7C4 /* NSData+Base64.h */,
-				0170716216554E9B00A3C7C4 /* NSData+Base64.m */,
 				0170716316554E9B00A3C7C4 /* NSDate+RFC1123.h */,
 				0170716416554E9B00A3C7C4 /* NSDate+RFC1123.m */,
 				0170716516554E9B00A3C7C4 /* NSDictionary+RequestEncoding.h */,
@@ -1747,7 +1747,6 @@
 			children = (
 				01B7CDA3166E1CF6001F4AF0 /* PanelChannelDetailsHeader.png */,
 				01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */,
-				01B7CDA5166E1CF7001F4AF0 /* Placeholder3.png */,
 				01677EB016554C5800B1B1D8 /* PanelImageWell.png */,
 				01677EB116554C5800B1B1D8 /* PanelImageWell@2x.png */,
 				01677EB216554C5800B1B1D8 /* PanelImageWellHighlighted.png */,
@@ -1832,6 +1831,7 @@
 		019825B9162C373D00216900 /* Placeholders */ = {
 			isa = PBXGroup;
 			children = (
+				01B7CDA5166E1CF7001F4AF0 /* Placeholder3.png */,
 			);
 			name = Placeholders;
 			sourceTree = "<group>";
@@ -2680,7 +2680,6 @@
 				0106E820165106D100DC5173 /* SYNWallpacksDB.m in Sources */,
 				0106E82316510A5900DC5173 /* SYNWallpackThumbnailCell.m in Sources */,
 				0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
-				0170717416554E9B00A3C7C4 /* NSData+Base64.m in Sources */,
 				0170717516554E9B00A3C7C4 /* NSDate+RFC1123.m in Sources */,
 				0170717616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m in Sources */,
 				0170717716554E9B00A3C7C4 /* NSString+MKNetworkKitAdditions.m in Sources */,
@@ -2718,6 +2717,7 @@
 				01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */,
 				01EC6237166EAAA6003154B1 /* SYNAbstractDetailViewController.m in Sources */,
 				0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */,
+				0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

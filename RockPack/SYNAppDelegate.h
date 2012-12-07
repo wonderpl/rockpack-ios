@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+// Something new!
+
 @class SYNBottomTabViewController;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
