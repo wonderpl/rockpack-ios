@@ -1747,7 +1747,6 @@
 			children = (
 				01B7CDA3166E1CF6001F4AF0 /* PanelChannelDetailsHeader.png */,
 				01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */,
-				01B7CDA5166E1CF7001F4AF0 /* Placeholder3.png */,
 				01677EB016554C5800B1B1D8 /* PanelImageWell.png */,
 				01677EB116554C5800B1B1D8 /* PanelImageWell@2x.png */,
 				01677EB216554C5800B1B1D8 /* PanelImageWellHighlighted.png */,
@@ -1832,6 +1831,7 @@
 		019825B9162C373D00216900 /* Placeholders */ = {
 			isa = PBXGroup;
 			children = (
+				01B7CDA5166E1CF7001F4AF0 /* Placeholder3.png */,
 			);
 			name = Placeholders;
 			sourceTree = "<group>";
