@@ -39,4 +39,9 @@
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
 
+- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
+- (void) toggleVideoPackItAtIndex: (NSIndexPath *) indexPath;
+- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
+- (void) toggleChannelPackItAtIndex: (NSIndexPath *) indexPath;
+
 @end

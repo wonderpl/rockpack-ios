@@ -7,32 +7,66 @@
 //
 
 #import "SYNHomeTopTabViewController.h"
+#import "SYNHomeSectionHeaderView.h"
 
 @interface SYNHomeTopTabViewController ()
+
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 
 @end
 
 @implementation SYNHomeTopTabViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    // Init collection view
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
+                                             bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+         forCellWithReuseIdentifier: @"ThumbnailCell"];
+    
+    // Register collection view header view
+    UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: headerViewNib
+                        forCellWithReuseIdentifier: @"SYNHomeSectionHeaderView"];
 }
 
-- (void)didReceiveMemoryWarning
+#pragma mark - Core Data support
+
+// The following 2 methods are called by the abstract class' getFetchedResults controller methods
+- (NSPredicate *) videoFetchedResultsControllerPredicate
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // No predicate
+    return nil;
+}
+
+
+- (NSArray *) videoFetchedResultsControllerSortDescriptors
+{
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
+    return @[sortDescriptor];
+}
+
+
+
+// Used for the collection view header
+- (UICollectionReusableView *) collectionView: (UICollectionView *) cv
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNHomeSectionHeaderView"
+                                                                           forIndexPath: indexPath];
+    
+    reusableView.sectionTitleLabel.text = @"TODAY";
+    
+    return reusableView;
 }
 
 @end

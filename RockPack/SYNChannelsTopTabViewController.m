@@ -150,49 +150,6 @@
 
 
 // Buttons activated from scrolling list of thumbnails
-- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.rockedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.rockedByUserValue = FALSE;
-        channel.totalRocksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.rockedByUserValue = TRUE;
-        channel.totalRocksValue += 1;
-    }
-    
-    [self saveDB];
-}
-
-
-- (void) toggleChannelPackItAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.packedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.packedByUserValue = FALSE;
-        channel.totalPacksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.packedByUserValue = TRUE;
-        channel.totalPacksValue += 1;
-    }
-    
-    [self saveDB];
-}
-
-
-// Buttons activated from scrolling list of thumbnails
 - (IBAction) toggleChannelRockItButton: (UIButton *) rockItButton
 {
     // Get to cell it self (from button subview)

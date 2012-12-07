@@ -11,6 +11,8 @@
 
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
+#import "Video.h"
+#import "Channel.h"
 
 @interface SYNAbstractViewController ()
 
@@ -224,5 +226,88 @@
      {
      }];
 }
+
+- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (video.rockedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        video.rockedByUserValue = FALSE;
+        video.totalRocksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        video.rockedByUserValue = TRUE;
+        video.totalRocksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+- (void) toggleVideoPackItAtIndex: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (video.packedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        video.packedByUserValue = FALSE;
+        video.totalPacksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        video.packedByUserValue = TRUE;
+        video.totalPacksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (channel.rockedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        channel.rockedByUserValue = FALSE;
+        channel.totalRocksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        channel.rockedByUserValue = TRUE;
+        channel.totalRocksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+- (void) toggleChannelPackItAtIndex: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (channel.packedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        channel.packedByUserValue = FALSE;
+        channel.totalPacksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        channel.packedByUserValue = TRUE;
+        channel.totalPacksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
 
 @end
