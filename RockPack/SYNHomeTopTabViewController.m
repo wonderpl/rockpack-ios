@@ -63,15 +63,14 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    NSInteger adjustedSection;
 #ifdef FAKE_MULTIPLE_SECTIONS
-    adjustedSection = 0;
+    return 6;
 #else
-    adjustedSection = section;
-#endif
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][adjustedSection];
-
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+    
     return [sectionInfo numberOfObjects];
+#endif
+
 }
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
@@ -88,7 +87,9 @@
 {
     NSIndexPath *adjustedIndexPath;
 #ifdef FAKE_MULTIPLE_SECTIONS
-    adjustedIndexPath = [NSIndexPath indexPathForItem: indexPath.row inSection: 0];
+    int section = (indexPath.section % 2) ? 0 : 6;
+    adjustedIndexPath = [NSIndexPath indexPathForItem: indexPath.row + section
+                                            inSection: 0];
 #else
     adjustedIndexPath = indexPath;
 #endif
