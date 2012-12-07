@@ -16,7 +16,7 @@
 #import "SYNMovableView.h"
 #import "SYNMyRockpackViewController.h"
 #import "SYNVideoDownloadEngine.h"
-#import "SYNWallPackTopTabViewController.h"
+#import "SYNHomeTopTabViewController.h"
 #import "UIFont+SYNFont.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudioTypes.h>
@@ -66,7 +66,7 @@
     [super viewDidLoad];
     
     // Wallpack tab
-    SYNWallPackTopTabViewController *wallPackViewController = [[SYNWallPackTopTabViewController alloc] init];
+    SYNHomeTopTabViewController *wallPackViewController = [[SYNHomeTopTabViewController alloc] init];
     
     // Channels tab
     SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];

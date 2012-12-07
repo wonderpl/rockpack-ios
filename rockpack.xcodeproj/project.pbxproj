@@ -216,6 +216,10 @@
 		0170717B16554E9B00A3C7C4 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170717216554E9B00A3C7C4 /* Reachability.m */; };
 		0170717E165550A900A3C7C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170717D165550A900A3C7C4 /* SystemConfiguration.framework */; };
 		01707180165550BE00A3C7C4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0170717F165550BE00A3C7C4 /* Security.framework */; };
+		018919F81672236D00AB07BB /* PanelHomeTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 018919F61672236D00AB07BB /* PanelHomeTitle.png */; };
+		018919F91672236D00AB07BB /* PanelHomeTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 018919F71672236D00AB07BB /* PanelHomeTitle@2x.png */; };
+		018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */; };
+		01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -231,6 +235,8 @@
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
 		0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */; };
 		0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F135167215BE00E479C6 /* NSData+MKBase64.m */; };
+		0199F13B16721A4500E479C6 /* SYNHomeTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F13916721A4500E479C6 /* SYNHomeTopTabViewController.m */; };
+		0199F13C16721A4500E479C6 /* SYNHomeTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0199F13A16721A4500E479C6 /* SYNHomeTopTabViewController.xib */; };
 		019E6A5A165FD7D1002B312A /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A59165FD7D1002B312A /* SSKeychain.m */; };
 		019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A5C165FD800002B312A /* MBProgressHUD.m */; };
 		019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */; };
@@ -711,6 +717,11 @@
 		0170717216554E9B00A3C7C4 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		0170717D165550A900A3C7C4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0170717F165550BE00A3C7C4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		018919F61672236D00AB07BB /* PanelHomeTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelHomeTitle.png; path = Assets/Images/PanelHomeTitle.png; sourceTree = "<group>"; };
+		018919F71672236D00AB07BB /* PanelHomeTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelHomeTitle@2x.png"; path = "Assets/Images/PanelHomeTitle@2x.png"; sourceTree = "<group>"; };
+		018919FA1672253E00AB07BB /* SYNHomeSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeSectionHeaderView.h; sourceTree = "<group>"; };
+		018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeSectionHeaderView.m; sourceTree = "<group>"; };
+		018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeSectionHeaderView.xib; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -738,6 +749,9 @@
 		0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCollectionBackgroundView.m; sourceTree = "<group>"; };
 		0199F134167215BE00E479C6 /* NSData+MKBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MKBase64.h"; sourceTree = "<group>"; };
 		0199F135167215BE00E479C6 /* NSData+MKBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MKBase64.m"; sourceTree = "<group>"; };
+		0199F13816721A4500E479C6 /* SYNHomeTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeTopTabViewController.h; sourceTree = "<group>"; };
+		0199F13916721A4500E479C6 /* SYNHomeTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeTopTabViewController.m; sourceTree = "<group>"; };
+		0199F13A16721A4500E479C6 /* SYNHomeTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeTopTabViewController.xib; sourceTree = "<group>"; };
 		019E6A58165FD7D1002B312A /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = sskeychain/SSKeychain.h; sourceTree = SOURCE_ROOT; };
 		019E6A59165FD7D1002B312A /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = sskeychain/SSKeychain.m; sourceTree = SOURCE_ROOT; };
 		019E6A5B165FD800002B312A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
@@ -1524,6 +1538,15 @@
 			path = MKNetworkKit/MKNetworkKit/Reachability;
 			sourceTree = SOURCE_ROOT;
 		};
+		018919F51672235000AB07BB /* Home Page */ = {
+			isa = PBXGroup;
+			children = (
+				018919F61672236D00AB07BB /* PanelHomeTitle.png */,
+				018919F71672236D00AB07BB /* PanelHomeTitle@2x.png */,
+			);
+			name = "Home Page";
+			sourceTree = "<group>";
+		};
 		019824DD1629CA3700216900 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1543,6 +1566,7 @@
 			children = (
 				01B0A969166CEC3400CAA235 /* Cell Assets */,
 				011CC692164C5C1100F02B6D /* Rockie Talkie */,
+				018919F51672235000AB07BB /* Home Page */,
 				0106E82A1651119000DC5173 /* Wallpack Page */,
 				01B7F76C164FE464009C5CCD /* Channels Page */,
 				01C3F71616505A7700CE368C /* Discovery Page */,
@@ -1583,6 +1607,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0199F1371672199F00E479C6 /* Home */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01982562162ADE5200216900 /* Bottom Tab */,
 				0198255E162ADE2100216900 /* Wallpack */,
@@ -1866,6 +1891,9 @@
 				01B7CD95166E0FD6001F4AF0 /* SYNChannelHeaderView.h */,
 				01B7CD96166E0FD6001F4AF0 /* SYNChannelHeaderView.m */,
 				01B7CDA1166E16C7001F4AF0 /* SYNChannelHeaderView.xib */,
+				018919FA1672253E00AB07BB /* SYNHomeSectionHeaderView.h */,
+				018919FB1672253E00AB07BB /* SYNHomeSectionHeaderView.m */,
+				018919FF1672255F00AB07BB /* SYNHomeSectionHeaderView.xib */,
 			);
 			name = Supplementary;
 			sourceTree = "<group>";
@@ -1886,6 +1914,16 @@
 				0199F12B166F95A200E479C6 /* Supplementary */,
 			);
 			name = Collections;
+			sourceTree = "<group>";
+		};
+		0199F1371672199F00E479C6 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				0199F13816721A4500E479C6 /* SYNHomeTopTabViewController.h */,
+				0199F13916721A4500E479C6 /* SYNHomeTopTabViewController.m */,
+				0199F13A16721A4500E479C6 /* SYNHomeTopTabViewController.xib */,
+			);
+			name = Home;
 			sourceTree = "<group>";
 		};
 		019E6A56165FD7A2002B312A /* Keychain */ = {
@@ -2622,6 +2660,10 @@
 				01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */,
 				01B7CDA8166E1CF7001F4AF0 /* Placeholder3.png in Resources */,
 				01EC6238166EAAA6003154B1 /* SYNAbstractDetailViewController.xib in Resources */,
+				0199F13C16721A4500E479C6 /* SYNHomeTopTabViewController.xib in Resources */,
+				018919F81672236D00AB07BB /* PanelHomeTitle.png in Resources */,
+				018919F91672236D00AB07BB /* PanelHomeTitle@2x.png in Resources */,
+				01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2718,6 +2760,8 @@
 				01EC6237166EAAA6003154B1 /* SYNAbstractDetailViewController.m in Sources */,
 				0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */,
 				0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */,
+				0199F13B16721A4500E479C6 /* SYNHomeTopTabViewController.m in Sources */,
+				018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
