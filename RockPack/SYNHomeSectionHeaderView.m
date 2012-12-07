@@ -54,7 +54,7 @@
 }
 
 
-- (void) highlighted: (BOOL) highlighted
+- (void) setHighlighted: (BOOL) highlighted
 {
     if (highlighted)
     {

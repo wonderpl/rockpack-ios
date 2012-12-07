@@ -9,6 +9,13 @@
 #import "SYNVideoThumbnailCell.h"
 #import "UIFont+SYNFont.h"
 
+@interface SYNVideoThumbnailCell ()
+
+@property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
+@property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
+
+@end
+
 @implementation SYNVideoThumbnailCell
 
 - (id) initWithFrame: (CGRect) frame
@@ -48,6 +55,20 @@
     self.addItButton.hidden = FALSE;
     self.shareItButton.enabled = FALSE;
     self.shareItButton.hidden = TRUE;
+    self.highlightedBackgroundView.hidden = TRUE;
+}
+
+
+- (void) setHighlighted: (BOOL) highlighted
+{
+    if (highlighted)
+    {
+        self.highlightedBackgroundView.hidden = FALSE;
+    }
+    else
+    {
+        self.highlightedBackgroundView.hidden = TRUE;
+    }
 }
 
 - (void) setThirdButtonType: (int) buttonType

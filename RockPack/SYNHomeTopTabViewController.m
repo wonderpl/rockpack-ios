@@ -98,6 +98,10 @@
     
     SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                 forIndexPath: indexPath];
+    if ((indexPath.row < 3) && (indexPath.section == 0))
+    {
+        cell.highlighted = TRUE;
+    }
     
     cell.imageView.image = video.keyframeImage;
     
@@ -193,7 +197,7 @@
             break;
     }
     
-    [reusableView highlighted: highlighted];
+    reusableView.highlighted = highlighted;
     reusableView.sectionTitleLabel.text = sectionText;
     
     return reusableView;

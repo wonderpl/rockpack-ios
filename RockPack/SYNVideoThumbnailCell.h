@@ -26,5 +26,6 @@ enum {
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 
 - (void) setThirdButtonType: (int) buttonType;
+- (void) setHighlighted: (BOOL) highlighted;
 
 @end

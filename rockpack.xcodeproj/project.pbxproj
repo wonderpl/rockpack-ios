@@ -234,6 +234,8 @@
 		01891A3E16725A3400AB07BB /* PanelDay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3A16725A3400AB07BB /* PanelDay@2x.png */; };
 		01891A3F16725A3400AB07BB /* PanelDayHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3B16725A3400AB07BB /* PanelDayHighlighted.png */; };
 		01891A4016725A3400AB07BB /* PanelDayHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A3C16725A3400AB07BB /* PanelDayHighlighted@2x.png */; };
+		01891A431672615D00AB07BB /* BackgroundThumbnailGlow.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A411672615D00AB07BB /* BackgroundThumbnailGlow.png */; };
+		01891A441672615D00AB07BB /* BackgroundThumbnailGlow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01891A421672615D00AB07BB /* BackgroundThumbnailGlow@2x.png */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -750,6 +752,8 @@
 		01891A3A16725A3400AB07BB /* PanelDay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelDay@2x.png"; path = "Assets/Images/PanelDay@2x.png"; sourceTree = "<group>"; };
 		01891A3B16725A3400AB07BB /* PanelDayHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelDayHighlighted.png; path = Assets/Images/PanelDayHighlighted.png; sourceTree = "<group>"; };
 		01891A3C16725A3400AB07BB /* PanelDayHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelDayHighlighted@2x.png"; path = "Assets/Images/PanelDayHighlighted@2x.png"; sourceTree = "<group>"; };
+		01891A411672615D00AB07BB /* BackgroundThumbnailGlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundThumbnailGlow.png; path = Assets/Images/BackgroundThumbnailGlow.png; sourceTree = "<group>"; };
+		01891A421672615D00AB07BB /* BackgroundThumbnailGlow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundThumbnailGlow@2x.png"; path = "Assets/Images/BackgroundThumbnailGlow@2x.png"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -1569,12 +1573,16 @@
 		018919F51672235000AB07BB /* Home Page */ = {
 			isa = PBXGroup;
 			children = (
+				01891A411672615D00AB07BB /* BackgroundThumbnailGlow.png */,
+				01891A421672615D00AB07BB /* BackgroundThumbnailGlow@2x.png */,
 				01891A3916725A3400AB07BB /* PanelDay.png */,
 				01891A3A16725A3400AB07BB /* PanelDay@2x.png */,
 				01891A3B16725A3400AB07BB /* PanelDayHighlighted.png */,
 				01891A3C16725A3400AB07BB /* PanelDayHighlighted@2x.png */,
 				018919F61672236D00AB07BB /* PanelHomeTitle.png */,
 				018919F71672236D00AB07BB /* PanelHomeTitle@2x.png */,
+				019E82F01654055D00744A03 /* BackgroundThumbnail.png */,
+				019E82F11654055D00744A03 /* BackgroundThumbnail@2x.png */,
 			);
 			name = "Home Page";
 			sourceTree = "<group>";
@@ -2205,8 +2213,6 @@
 				014A45211668C9180091E4E5 /* ChannelCreationCover1.png */,
 				014A45221668C9180091E4E5 /* ChannelCreationCover1@2x.png */,
 				019E82EF1654055D00744A03 /* BackgroundMainVideo@2x.png */,
-				019E82F01654055D00744A03 /* BackgroundThumbnail.png */,
-				019E82F11654055D00744A03 /* BackgroundThumbnail@2x.png */,
 				019E82F21654055D00744A03 /* OverlayGlossThumbnail.png */,
 				019E82F31654055D00744A03 /* OverlayGlossThumbnail@2x.png */,
 				019E82F41654055D00744A03 /* PanelLargeVideoView.png */,
@@ -2720,6 +2726,8 @@
 				01891A3E16725A3400AB07BB /* PanelDay@2x.png in Resources */,
 				01891A3F16725A3400AB07BB /* PanelDayHighlighted.png in Resources */,
 				01891A4016725A3400AB07BB /* PanelDayHighlighted@2x.png in Resources */,
+				01891A431672615D00AB07BB /* BackgroundThumbnailGlow.png in Resources */,
+				01891A441672615D00AB07BB /* BackgroundThumbnailGlow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
