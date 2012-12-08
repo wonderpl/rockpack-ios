@@ -1650,9 +1650,9 @@
 				01982563162ADEAD00216900 /* Abstract */,
 				01982562162ADE5200216900 /* Bottom Tab */,
 				0199F1371672199F00E479C6 /* Home */,
-				0198255E162ADE2100216900 /* Wallpack */,
+				0198255E162ADE2100216900 /* Wallpack (delete) */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
-				0198255F162ADE2900216900 /* Discover */,
+				0198255F162ADE2900216900 /* Video */,
 				01982560162ADE3300216900 /* My Rockpack */,
 				01982561162ADE4000216900 /* Friends */,
 			);
@@ -1834,24 +1834,24 @@
 			name = Panels;
 			sourceTree = "<group>";
 		};
-		0198255E162ADE2100216900 /* Wallpack */ = {
+		0198255E162ADE2100216900 /* Wallpack (delete) */ = {
 			isa = PBXGroup;
 			children = (
 				0106E818165104CE00DC5173 /* SYNWallPackTopTabViewController.h */,
 				0106E819165104CE00DC5173 /* SYNWallPackTopTabViewController.m */,
 				0106E81A165104CE00DC5173 /* SYNWallPackTopTabViewController.xib */,
 			);
-			name = Wallpack;
+			name = "Wallpack (delete)";
 			sourceTree = "<group>";
 		};
-		0198255F162ADE2900216900 /* Discover */ = {
+		0198255F162ADE2900216900 /* Video */ = {
 			isa = PBXGroup;
 			children = (
 				012632F1162E130C0009FF9C /* SYNDiscoverTopTabViewController.h */,
 				012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */,
 				012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */,
 			);
-			name = Discover;
+			name = Video;
 			sourceTree = "<group>";
 		};
 		01982560162ADE3300216900 /* My Rockpack */ = {

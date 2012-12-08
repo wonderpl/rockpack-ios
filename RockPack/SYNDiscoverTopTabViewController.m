@@ -451,29 +451,6 @@
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
-- (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
-{
-    packItButton.selected = !packItButton.selected;
-    
-    UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self togglePackItAtIndex: indexPath];
-    [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
-    
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
-    
-    cell.packItButton.selected = video.packedByUserValue;
-    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-}
-
 
 - (IBAction) touchThumbnailAddItButton: (UIButton *) addItButton
 {
@@ -484,7 +461,7 @@
     
     SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
     
-    cell.packItButton.enabled = FALSE;
+//    cell.addItButton.enabled = FALSE;
     
     [self animateImageWellAdditionWithVideoForIndexPath: indexPath];
 }
@@ -675,22 +652,11 @@
         
         cell.subtitle.text = video.subtitle;
         
-        cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-        
         cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        
-        cell.packItButton.selected = video.packedByUserValue;
         
         cell.rockItButton.selected = video.rockedByUserValue;
         
         // Wire the Done button up to the correct method in the sign up controller
-		[cell.packItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailPackItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.packItButton addTarget: self
-                              action: @selector(toggleThumbnailPackItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton removeTarget: nil
                                  action: @selector(toggleThumbnailRockItButton:)

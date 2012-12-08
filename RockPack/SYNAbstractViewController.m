@@ -248,26 +248,6 @@
 }
 
 
-- (void) toggleVideoPackItAtIndex: (NSIndexPath *) indexPath
-{
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (video.packedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        video.packedByUserValue = FALSE;
-        video.totalPacksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        video.packedByUserValue = TRUE;
-        video.totalPacksValue += 1;
-    }
-    
-    [self saveDB];
-}
-
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
 {
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];

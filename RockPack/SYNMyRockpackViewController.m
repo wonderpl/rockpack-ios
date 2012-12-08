@@ -172,31 +172,17 @@
         SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                     forIndexPath: indexPath];
         
-        [cell setThirdButtonType: kShowShareButton];
-        
         cell.imageView.image = video.keyframeImage;
         
         cell.maintitle.text = video.title;
         
         cell.subtitle.text = video.subtitle;
         
-        cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-        
         cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        
-        cell.packItButton.selected = video.packedByUserValue;
         
         cell.rockItButton.selected = video.rockedByUserValue;
         
-        // Wire the Done button up to the correct method in the sign up controller
-		[cell.packItButton removeTarget: nil
-                                 action: @selector(toggleVideoPackItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.packItButton addTarget: self
-                              action: @selector(toggleVideoPackItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
+        // Wire the Done button up to the correct method in the sign up controller      
         [cell.rockItButton removeTarget: nil
                                  action: @selector(toggleVideoRockItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
@@ -364,31 +350,6 @@
     
     cell.rockItButton.selected = video.rockedByUserValue;
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-}
-
-- (IBAction) toggleVideoPackItButton: (UIButton *) packItButton
-{
-    UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.packedVideoThumbnailCollection indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleVideoPackItAtIndex: indexPath];
-    
-    // We don't need to update the UI as this cell can only be deselected
-    // (Otherwise a race-condition will occur if deleting the last cell)
-//    
-//    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-//    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.rockedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
-//    
-//    cell.packItButton.selected = video.packedByUserValue;
-//    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-    
-//    [self.rockedVideoThumbnailCollection reloadData];
 }
 
 

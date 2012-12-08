@@ -19,13 +19,10 @@ enum {
 @property (nonatomic, strong) IBOutlet UILabel *maintitle;
 @property (nonatomic, strong) IBOutlet UILabel *subtitle;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
-@property (nonatomic, strong) IBOutlet UIButton *packItButton;
 @property (nonatomic, strong) IBOutlet UIButton *addItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
-@property (nonatomic, strong) IBOutlet UILabel *packItNumber;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 
-- (void) setThirdButtonType: (int) buttonType;
 - (void) setHighlighted: (BOOL) highlighted;
 
 @end
