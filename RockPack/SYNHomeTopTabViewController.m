@@ -63,7 +63,7 @@
                            repeats: NO];
     
     NSRunLoop * theRunLoop = [NSRunLoop currentRunLoop];
-    3
+    
     [theRunLoop addTimer: self.timer
                  forMode: NSDefaultRunLoopMode];
 }
