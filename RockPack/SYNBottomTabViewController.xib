@@ -1060,7 +1060,7 @@
 			<string key="TabHomeSelected.png">{204, 62}</string>
 			<string key="TabMyRockpackDefault.png">{205, 62}</string>
 			<string key="TabMyRockpackHighlighted.png">{205, 62}</string>
-			<string key="TabMyRockpackSelected.png">{16, 16}</string>
+			<string key="TabMyRockpackSelected.png">{205, 62}</string>
 			<string key="TabVideosDefault.png">{205, 62}</string>
 			<string key="TabVideosHighlighted.png">{205, 62}</string>
 			<string key="TabVideosSelected.png">{205, 62}</string>
