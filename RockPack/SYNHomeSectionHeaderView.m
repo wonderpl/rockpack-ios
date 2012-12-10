@@ -54,9 +54,9 @@
 }
 
 
-- (void) setHighlighted: (BOOL) highlighted
+- (void) setFocus: (BOOL) focus
 {
-    if (highlighted)
+    if (focus)
     {
         self.highlightedSectionView.hidden = FALSE;
         self.sectionView.hidden = TRUE;

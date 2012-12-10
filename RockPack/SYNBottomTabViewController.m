@@ -141,10 +141,10 @@
     self.rockieTalkiePanel.userInteractionEnabled = TRUE;
     self.didNotSwipe = TRUE;
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(selectMyRockpackTab)
-                                                 name: @"SelectMyRockpackTab"
-                                               object: nil];
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(selectMyRockpackTab)
+//                                                 name: @"SelectMyRockpackTab"
+//                                               object: nil];
     
     // Setup number of messages number font in title bar
     self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
@@ -481,10 +481,10 @@
     [self endRecording];
 }
 
-- (void) selectMyRockpackTab
-{
-    [self setSelectedIndex: 2];
-}
+//- (void) selectMyRockpackTab
+//{
+//    [self setSelectedIndex: 2];
+//}
 
 #pragma mark - Rockie-talkie recording actions
 

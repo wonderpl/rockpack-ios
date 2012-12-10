@@ -22,7 +22,7 @@
 
 @implementation SYNHomeTopTabViewController
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
 
@@ -31,14 +31,15 @@
                                              bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-         forCellWithReuseIdentifier: @"ThumbnailCell"];
+         forCellWithReuseIdentifier: @"SYNVideoThumbnailCell"];
     
     // Register collection view header view
     UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
                                           bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: headerViewNib
-                        forCellWithReuseIdentifier: @"SYNHomeSectionHeaderView"];
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                               withReuseIdentifier: @"SYNHomeSectionHeaderView"];
 }
 
 #pragma mark - Core Data support
@@ -96,11 +97,11 @@
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: adjustedIndexPath];
     
-    SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+    SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailCell"
                                                                 forIndexPath: indexPath];
     if ((indexPath.row < 3) && (indexPath.section == 0))
     {
-        cell.highlighted = TRUE;
+        cell.focus = TRUE;
     }
     
     cell.imageView.image = video.keyframeImage;
@@ -153,16 +154,22 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNHomeSectionHeaderView"
+    SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableSupplementaryViewOfKind: kind
+                                                                    withReuseIdentifier: @"SYNHomeSectionHeaderView"
                                                                            forIndexPath: indexPath];
+    
+////    NSLog (@"About to display supplementary view %@, %@, %@", cv,kind,indexPath);
+//    SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: 
+//                                                                           forIndexPath: indexPath];
+////    NSLog (@"Displayed supplementary");
     NSString *sectionText;
-    BOOL highlighted = FALSE;
+    BOOL focus = FALSE;
     
     switch (indexPath.section)
     {
         case 0:
             sectionText = @"TODAY";
-            highlighted = TRUE;
+            focus = TRUE;
             break;
             
         case 1:
@@ -185,7 +192,7 @@
             break;
     }
     
-    reusableView.highlighted = highlighted;
+    reusableView.focus = focus;
     reusableView.sectionTitleLabel.text = sectionText;
     
     return reusableView;

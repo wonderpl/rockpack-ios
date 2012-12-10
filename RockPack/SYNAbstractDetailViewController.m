@@ -70,8 +70,9 @@
     UINib *headerViewNib = [UINib nibWithNibName: @"SYNChannelHeaderView"
                                           bundle: nil];
     
-    [self.videoThumbnailCollectionView registerNib: headerViewNib
-                        forCellWithReuseIdentifier: @"SYNChannelHeaderView"];
+     [self.videoThumbnailCollectionView registerNib: headerViewNib
+                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                                withReuseIdentifier: @"SYNChannelHeaderView"];
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
@@ -138,9 +139,9 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    SYNChannelHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelHeaderView"
+    SYNChannelHeaderView *reusableView = [cv dequeueReusableSupplementaryViewOfKind: kind
+                                                                withReuseIdentifier: @"SYNChannelHeaderView"
                                                                        forIndexPath: indexPath];
-    
     reusableView.titleLabel.text = self.channel.biogTitle;
     reusableView.subtitleLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.biog];
     

@@ -23,6 +23,6 @@ enum {
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 
-- (void) setHighlighted: (BOOL) highlighted;
+- (void) setFocus: (BOOL) focus;
 
 @end
