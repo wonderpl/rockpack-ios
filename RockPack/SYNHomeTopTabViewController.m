@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSMutableArray *videos;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -25,6 +27,14 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
+    
+    [self.refreshControl addTarget: self
+                            action: @selector(refreshVideoThumbnails)
+                  forControlEvents: UIControlEventValueChanged];
+    
+    [self.videoThumbnailCollectionView addSubview: self.refreshControl];
 
     // Init collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
@@ -40,6 +50,27 @@
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+}
+
+- (void) refreshVideoThumbnails
+{
+    [self.refreshControl beginRefreshing];
+    
+    self.timer = [NSTimer timerWithTimeInterval: 2.0f
+                            target: self
+                          selector: @selector(refreshVideoThumbnailsFinished)
+                          userInfo: nil
+                           repeats: NO];
+    
+    NSRunLoop * theRunLoop = [NSRunLoop currentRunLoop];
+    3
+    [theRunLoop addTimer: self.timer
+                 forMode: NSDefaultRunLoopMode];
+}
+
+- (void) refreshVideoThumbnailsFinished
+{
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - Core Data support

@@ -102,10 +102,10 @@
 							<object class="IBUIButton" id="513092959">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{293, 90}, {17, 26}}</string>
+								<string key="NSFrame">{{280, 80}, {43, 43}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="182689996"/>
+								<reference key="NSNextKeyView" ref="458129219"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -125,14 +125,14 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
-								<object class="NSCustomResource" key="IBUIHighlightedImage" id="1043410953">
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="1060462842">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonThumbnailRockHighlighted.png</string>
+									<string key="NSResourceName">ButtonStarHighlighted.png</string>
 								</object>
-								<reference key="IBUISelectedImage" ref="1043410953"/>
+								<reference key="IBUISelectedImage" ref="1060462842"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonThumbnailRock.png</string>
+									<string key="NSResourceName">ButtonStar.png</string>
 								</object>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="504477185">
 									<int key="type">2</int>
@@ -147,10 +147,10 @@
 							<object class="IBUIButton" id="182689996">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{448, 86}, {31, 31}}</string>
+								<string key="NSFrame">{{442, 78}, {43, 43}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="458129219"/>
+								<reference key="NSNextKeyView" ref="646752382"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -165,11 +165,11 @@
 								<reference key="IBUINormalTitleShadowColor" ref="597543538"/>
 								<object class="NSCustomResource" key="IBUIHighlightedImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonThumbnailAddHighlighted.png</string>
+									<string key="NSResourceName">ButtonAddHighlighted.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonThumbnailAdd.png</string>
+									<string key="NSResourceName">ButtonAdd.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="504477185"/>
 								<reference key="IBUIFont" ref="989050147"/>
@@ -177,10 +177,10 @@
 							<object class="IBUIButton" id="458129219">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{368, 84}, {31, 31}}</string>
+								<string key="NSFrame">{{361, 80}, {43, 43}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="182689996"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -195,11 +195,11 @@
 								<reference key="IBUINormalTitleShadowColor" ref="597543538"/>
 								<object class="NSCustomResource" key="IBUIHighlightedImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonThumbnailShareHighlighted.png</string>
+									<string key="NSResourceName">ButtonShareHighlighted.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonThumbnailShare.png</string>
+									<string key="NSResourceName">ButtonShare.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="504477185"/>
 								<reference key="IBUIFont" ref="989050147"/>
@@ -207,7 +207,7 @@
 							<object class="IBUILabel" id="863100514">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{267, 17}, {225, 21}}</string>
+								<string key="NSFrame">{{272, 18}, {225, 21}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="484622644"/>
@@ -241,10 +241,10 @@
 							<object class="IBUILabel" id="484622644">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{267, 37}, {225, 21}}</string>
+								<string key="NSFrame">{{272, 38}, {225, 21}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="513092959"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="67368057">
 									<int key="NSColorSpace">3</int>
@@ -276,9 +276,10 @@
 							<object class="IBUILabel" id="646752382">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{280, 128}, {42, 21}}</string>
+								<string key="NSFrame">{{280, 126}, {42, 21}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -453,7 +454,7 @@
 						<int key="objectID">27</int>
 						<reference key="object" ref="513092959"/>
 						<reference key="parent" ref="182925985"/>
-						<string key="objectName">Button - Rock It</string>
+						<string key="objectName">Button - Star It</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">28</int>
@@ -505,7 +506,7 @@
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="27.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="2" key="27.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="28.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.CustomClassName">SYNVideoThumbnailCell</string>
@@ -513,9 +514,9 @@
 				<string key="31.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="42.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="2" key="43.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="43.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="2" key="45.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="45.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="47.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
@@ -535,8 +536,6 @@
 						<string key="highlightedBackgroundView">UIImageView</string>
 						<string key="imageView">UIImageView</string>
 						<string key="maintitle">UILabel</string>
-						<string key="packItButton">UIButton</string>
-						<string key="packItNumber">UILabel</string>
 						<string key="rockItButton">UIButton</string>
 						<string key="rockItNumber">UILabel</string>
 						<string key="shareItButton">UIButton</string>
@@ -561,14 +560,6 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="maintitle">
 							<string key="name">maintitle</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="packItButton">
-							<string key="name">packItButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="packItNumber">
-							<string key="name">packItNumber</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="rockItButton">
@@ -618,12 +609,12 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="BackgroundThumbnail.png">{512, 156}</string>
 			<string key="BackgroundThumbnailGlow.png">{512, 156}</string>
-			<string key="ButtonThumbnailAdd.png">{31, 31}</string>
-			<string key="ButtonThumbnailAddHighlighted.png">{31, 31}</string>
-			<string key="ButtonThumbnailRock.png">{17, 28}</string>
-			<string key="ButtonThumbnailRockHighlighted.png">{17, 28}</string>
-			<string key="ButtonThumbnailShare.png">{31, 31}</string>
-			<string key="ButtonThumbnailShareHighlighted.png">{31, 31}</string>
+			<string key="ButtonAdd.png">{43, 43}</string>
+			<string key="ButtonAddHighlighted.png">{43, 43}</string>
+			<string key="ButtonShare.png">{43, 43}</string>
+			<string key="ButtonShareHighlighted.png">{16, 16}</string>
+			<string key="ButtonStar.png">{43, 43}</string>
+			<string key="ButtonStarHighlighted.png">{43, 43}</string>
 			<string key="OverlayGlossThumbnail.png">{512, 154}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2080</string>
