@@ -71,11 +71,11 @@
     
     cell.imageView.image = channel.keyframeImage;
     
-    cell.maintitle.text = channel.title;
+    cell.titleLabel.text = channel.title;
     
-    cell.subtitle.text = channel.subtitle;
+    cell.subtitleLabel.text = channel.subtitle;
 
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
     
@@ -156,7 +156,7 @@
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
 }
 
 

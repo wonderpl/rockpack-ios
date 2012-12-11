@@ -11,9 +11,10 @@
 @interface SYNChannelThumbnailCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
-@property (nonatomic, strong) IBOutlet UILabel *maintitle;
-@property (nonatomic, strong) IBOutlet UILabel *subtitle;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *subtitleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
+@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
+@property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 
 @end

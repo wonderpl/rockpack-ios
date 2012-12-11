@@ -108,7 +108,8 @@
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"(rockedByUser == TRUE) AND (userGenerated == TRUE)"];
+    return [NSPredicate predicateWithFormat: @"userGenerated == TRUE"];
+//    return [NSPredicate predicateWithFormat: @"(rockedByUser == TRUE) AND (userGenerated == TRUE)"];
 }
 
 
@@ -210,11 +211,11 @@
         
         cell.imageView.image = channel.keyframeImage;
         
-        cell.maintitle.text = channel.title;
+        cell.titleLabel.text = channel.title;
         
-        cell.subtitle.text = channel.subtitle;
+        cell.subtitleLabel.text = channel.subtitle;
         
-        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+        cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
         
         cell.rockItButton.selected = channel.rockedByUserValue;
         
@@ -333,11 +334,11 @@
     
     [self toggleVideoRockItAtIndex: indexPath];
     
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.packedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
-    
-    cell.rockItButton.selected = video.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+//    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+//    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.packedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
+//    
+//    cell.rockItButton.selected = video.rockedByUserValue;
+//    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
 
@@ -360,7 +361,7 @@
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
 }
 
 

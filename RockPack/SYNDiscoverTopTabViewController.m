@@ -382,6 +382,8 @@
         video.totalRocksValue += 1;
     }
     
+//    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
+    
     [self saveDB];
 }
 
@@ -393,6 +395,8 @@
     [self toggleRockItAtIndex: self.currentIndexPath];
     [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     [self.videoThumbnailCollectionView reloadData];
+    
+    [self saveDB];
 }
 
 
