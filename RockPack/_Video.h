@@ -6,11 +6,10 @@
 
 extern const struct VideoAttributes {
 	__unsafe_unretained NSString *keyframeURL;
-	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
+	__unsafe_unretained NSString *sourceIndex;
 	__unsafe_unretained NSString *subtitle;
 	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *totalPacks;
 	__unsafe_unretained NSString *totalRocks;
 	__unsafe_unretained NSString *videoURL;
 } VideoAttributes;
@@ -23,7 +22,6 @@ extern const struct VideoFetchedProperties {
 } VideoFetchedProperties;
 
 @class Channel;
-
 
 
 
@@ -56,20 +54,6 @@ extern const struct VideoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* packedByUser;
-
-
-
-@property BOOL packedByUserValue;
-- (BOOL)packedByUserValue;
-- (void)setPackedByUserValue:(BOOL)value_;
-
-//- (BOOL)validatePackedByUser:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSNumber* rockedByUser;
 
 
@@ -79,6 +63,20 @@ extern const struct VideoFetchedProperties {
 - (void)setRockedByUserValue:(BOOL)value_;
 
 //- (BOOL)validateRockedByUser:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* sourceIndex;
+
+
+
+@property int64_t sourceIndexValue;
+- (int64_t)sourceIndexValue;
+- (void)setSourceIndexValue:(int64_t)value_;
+
+//- (BOOL)validateSourceIndex:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -99,20 +97,6 @@ extern const struct VideoFetchedProperties {
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* totalPacks;
-
-
-
-@property int64_t totalPacksValue;
-- (int64_t)totalPacksValue;
-- (void)setTotalPacksValue:(int64_t)value_;
-
-//- (BOOL)validateTotalPacks:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -170,20 +154,20 @@ extern const struct VideoFetchedProperties {
 
 
 
-- (NSNumber*)primitivePackedByUser;
-- (void)setPrimitivePackedByUser:(NSNumber*)value;
-
-- (BOOL)primitivePackedByUserValue;
-- (void)setPrimitivePackedByUserValue:(BOOL)value_;
-
-
-
-
 - (NSNumber*)primitiveRockedByUser;
 - (void)setPrimitiveRockedByUser:(NSNumber*)value;
 
 - (BOOL)primitiveRockedByUserValue;
 - (void)setPrimitiveRockedByUserValue:(BOOL)value_;
+
+
+
+
+- (NSNumber*)primitiveSourceIndex;
+- (void)setPrimitiveSourceIndex:(NSNumber*)value;
+
+- (int64_t)primitiveSourceIndexValue;
+- (void)setPrimitiveSourceIndexValue:(int64_t)value_;
 
 
 
@@ -196,15 +180,6 @@ extern const struct VideoFetchedProperties {
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
-- (NSNumber*)primitiveTotalPacks;
-- (void)setPrimitiveTotalPacks:(NSNumber*)value;
-
-- (int64_t)primitiveTotalPacksValue;
-- (void)setPrimitiveTotalPacksValue:(int64_t)value_;
 
 
 

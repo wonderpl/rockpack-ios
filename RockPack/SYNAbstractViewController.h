@@ -41,6 +41,5 @@
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
-- (void) toggleChannelPackItAtIndex: (NSIndexPath *) indexPath;
 
 @end

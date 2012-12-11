@@ -78,9 +78,7 @@
                                        @"title" : @"NIKE SUPERSTARS",
                                        @"subtitle" : @"JUST DO IT",
                                        @"biog" : @"Nike has sponsored more superstars than you’ve had hot dinners. Wayne Rooney, Kobe Bryant, Maria Sharapova, Cristiano Ronaldo, Rafael Nadal, Victoria Azarenka, Roger Federer, Tiger Woods, Drew Brees… the list is almost endless. We can’t guarantee you’ll emulate their achievements, but you’ll be closer to your heroes!",
-                                       @"totalPacks" : @214,
                                        @"totalRocks" : @453,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d2 = [NSMutableDictionary dictionaryWithDictionary:
@@ -90,9 +88,7 @@
                                        @"title" : @"H & M",
                                        @"subtitle" : @"THE TREND SETTERS",
                                        @"biog" : @"If you want to stand out in the fashion crowd, there’s only one place to shop – H&M. Whatever style tribe you belong to, H&M’s colourful clothes are fun, playful and always cool. Stay on trend this season and head to the High Street’s most stylish shop.",
-                                       @"totalPacks" : @144,
                                        @"totalRocks" : @273,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d3 = [NSMutableDictionary dictionaryWithDictionary:
@@ -102,9 +98,7 @@
                                        @"title" : @"ITUNES",
                                        @"subtitle" : @"WHAT'S ON",
                                        @"biog" : @"TThe iTunes Store has been redesigned for your Mac, PC, iPad, iPhone and iPod touch, so it looks and works the same wherever you shop. Easy-to-browse shelves serve up popular music, films, TV programmes and more. And all the features you know and love are even easier to get to. It’s the best kind of shopping — simple.",
-                                       @"totalPacks" : @341,
                                        @"totalRocks" : @886,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d4 = [NSMutableDictionary dictionaryWithDictionary:
@@ -114,9 +108,7 @@
                                        @"title" : @"TES SCIENCE",
                                        @"subtitle" : @"EXCITING EXPERIMENTS",
                                        @"biog" : @"Make learning fun with the TES Science channel. Featuring a whole host of teaching resources designed to make physics, chemistry and co, informative as well as entertaining, the dynamic TES Science channel will inspire a legion of wannabe scientists and professors. The next Brian Cox is just around the corner!",
-                                       @"totalPacks" : @553,
                                        @"totalRocks" : @132,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d5 = [NSMutableDictionary dictionaryWithDictionary:
@@ -126,9 +118,7 @@
                                        @"title" : @"KATY PERRY",
                                        @"subtitle" : @"PART OF HER",
                                        @"biog" : @"Katy Perry is one of the most colourful pop stars in the world. Instantly recognisable thanks to her captivating looks, humorous behaviour and exciting music, Perry has won legions of fans since bursting onto the scene in 2008. We listen to Katy Perry and we like it.",
-                                       @"totalPacks" : @987,
                                        @"totalRocks" : @613,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d6 = [NSMutableDictionary dictionaryWithDictionary:
@@ -138,9 +128,7 @@
                                        @"title" : @"JLS",
                                        @"subtitle" : @"JACK THE LADS",
                                        @"biog" : @"Not winning X Factor certainly hasn’t held JLS back. Ortise, Marvin, J.B. and Aston’s infectious brand of R&B has seen them rise to the top of the global pop pile. Not only have they registered multiple number ones, but they’ve been awarded numerous accolades too. They are Outta This World.",
-                                       @"totalPacks" : @921,
                                        @"totalRocks" : @277,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d7 = [NSMutableDictionary dictionaryWithDictionary:
@@ -150,9 +138,7 @@
                                        @"title" : @"THE HOBBIT",
                                        @"subtitle" : @"THE JOURNEY BEGINS",
                                        @"biog" : @"J. R. R. Tolkien’s fantasy novel follows the various adventures of Bilbo Baggins and friends as they seek to reclaim the Lonely Mountain and its treasure from the evil dragon Smaug. Their quest across Middle-earth sees them encounter wizards, warriors and a strange creature called Gollum. Peter Jackson’s movie adaptation breathes new life into this enduring classic.",
-                                       @"totalPacks" : @158,
                                        @"totalRocks" : @323,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d8 = [NSMutableDictionary dictionaryWithDictionary:
@@ -162,9 +148,7 @@
                                        @"title" : @"HALO",
                                        @"subtitle" : @"THE HALO NATION",
                                        @"biog" : @"Good versus evil is at the heart of the classic science fiction video game series Halo. Will humanity triumph in its battles with the Covenant? The impact of the franchise can’t be underestimated. Numerous spin-offs confirm the popularity of the game, and the latest in the saga, Halo 4, is fantastic.",
-                                       @"totalPacks" : @110,
                                        @"totalRocks" : @245,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d9 = [NSMutableDictionary dictionaryWithDictionary:
@@ -174,9 +158,7 @@
                                        @"title" : @"THE X FACTOR",
                                        @"subtitle" : @"SING WHEN YOU'RE WINNING",
                                        @"biog" : @"The original all-singing, all-dancing reality television talent show. The X Factor has given us Leona Lewis, Alexander Burke and JLS, and made a star of the show’s creator Simon Cowell. Have you got what it takes to impress the judges? Have you got The X Factor?",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d10 = [NSMutableDictionary dictionaryWithDictionary:
@@ -186,9 +168,7 @@
                                        @"title" : @"ADIDAS",
                                        @"subtitle" : @"THE MESSIAH!",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d11 = [NSMutableDictionary dictionaryWithDictionary:
@@ -198,9 +178,7 @@
                                        @"title" : @"REEBOK",
                                        @"subtitle" : @"LABRINTH & BLUEY",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d12 = [NSMutableDictionary dictionaryWithDictionary:
@@ -210,10 +188,8 @@
                                        @"title" : @"TES",
                                        @"subtitle" : @"HISTORY",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
-                                       @"rockedByUser" : @FALSE}];
+                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d13 = [NSMutableDictionary dictionaryWithDictionary:
                                        @{@"videoURL" : @"",
@@ -222,9 +198,7 @@
                                        @"title" : @"UNIVERSAL STUDIOS",
                                        @"subtitle" : @"DESPICABLE ME 2",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d14 = [NSMutableDictionary dictionaryWithDictionary:
@@ -234,9 +208,7 @@
                                        @"title" : @"WARNER BROS.",
                                        @"subtitle" : @"JACK THE GIANT KILLER",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d15 = [NSMutableDictionary dictionaryWithDictionary:
@@ -246,9 +218,7 @@
                                        @"title" : @"MARVEL",
                                        @"subtitle" : @"THE AVENGERS 2",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d16 = [NSMutableDictionary dictionaryWithDictionary:
@@ -258,9 +228,7 @@
                                        @"title" : @"CARTOON NETWORK",
                                        @"subtitle" : @"ADVENTURE TIME",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d17 = [NSMutableDictionary dictionaryWithDictionary:
@@ -270,9 +238,7 @@
                                        @"title" : @"VICTORIOUS",
                                        @"subtitle" : @"TORI AND JADE ROCK!",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d18 = [NSMutableDictionary dictionaryWithDictionary:
@@ -282,9 +248,7 @@
                                        @"title" : @"MERLIN",
                                        @"subtitle" : @"SERIES 5",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d19 = [NSMutableDictionary dictionaryWithDictionary:
@@ -294,9 +258,7 @@
                                        @"title" : @"ONE DIRECTION",
                                        @"subtitle" : @"LIVE WHILE WE'RE YOUNG",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d20 = [NSMutableDictionary dictionaryWithDictionary:
@@ -306,9 +268,7 @@
                                        @"title" : @"ENGLAND FOOTBALL TEAM",
                                        @"subtitle" : @"ROAD TO RIO",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d21 = [NSMutableDictionary dictionaryWithDictionary:
@@ -318,9 +278,7 @@
                                        @"title" : @"RED BULL",
                                        @"subtitle" : @"THE ATHLETE MACHINE",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d22 = [NSMutableDictionary dictionaryWithDictionary:
@@ -330,9 +288,7 @@
                                        @"title" : @"PLAYSTATION",
                                        @"subtitle" : @"LITTLE BIG PLANET KARTING",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d23 = [NSMutableDictionary dictionaryWithDictionary:
@@ -342,9 +298,7 @@
                                        @"title" : @"GAMELOFT",
                                        @"subtitle" : @"ZOMBIEWOOD",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d24 = [NSMutableDictionary dictionaryWithDictionary:
@@ -354,9 +308,7 @@
                                        @"title" : @"ROVIO",
                                        @"subtitle" : @"ANGRY BIRDS STAR WARS",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d25 = [NSMutableDictionary dictionaryWithDictionary:
@@ -366,9 +318,7 @@
                                        @"title" : @"COCA-COLA",
                                        @"subtitle" : @"CELEBRATE LONDON",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @TRUE}];
             
             
@@ -379,9 +329,7 @@
                                        @"title" : @"OLD SPICE",
                                        @"subtitle" : @"BELIEVE IN YOUR SMELLF",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d27 = [NSMutableDictionary dictionaryWithDictionary:
@@ -391,9 +339,7 @@
                                        @"title" : @"YOGSCAST",
                                        @"subtitle" : @"FAN FRIDAY!",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d28 = [NSMutableDictionary dictionaryWithDictionary:
@@ -403,9 +349,7 @@
                                        @"title" : @"GAP",
                                        @"subtitle" : @"LOVE COMES IN EVERY SHADE",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d29 = [NSMutableDictionary dictionaryWithDictionary:
@@ -415,9 +359,7 @@
                                        @"title" : @"OFFICIAL PSY",
                                        @"subtitle" : @"GANGNAM STYLE",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d30 = [NSMutableDictionary dictionaryWithDictionary:
@@ -427,9 +369,7 @@
                                        @"title" : @"EXPERT VILLAGE",
                                        @"subtitle" : @"WATCH. LEARN. DO",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d31 = [NSMutableDictionary dictionaryWithDictionary:
@@ -439,9 +379,7 @@
                                        @"title" : @"ANNOYING ORANGE",
                                        @"subtitle" : @"TIME TO BURN",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d32 = [NSMutableDictionary dictionaryWithDictionary:
@@ -451,9 +389,7 @@
                                        @"title" : @"NBA",
                                        @"subtitle" : @"HEROICS IN TORONTO!",
                                        @"biog" : @"",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d33 = [NSMutableDictionary dictionaryWithDictionary:
@@ -463,9 +399,7 @@
                                         @"title" : @"DOCTOR WHO",
                                         @"subtitle" : @"SERIES 7",
                                         @"biog" : @"",
-                                        @"totalPacks" : @883,
                                         @"totalRocks" : @653,
-                                        @"packedByUser" : @FALSE,
                                         @"rockedByUser" : @FALSE}];
             
             self.channelDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d33, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, d32];
@@ -499,9 +433,7 @@
                 channel.subtitle = [channelDetailsDictionary objectForKey: @"subtitle"];
                 channel.biog = [channelDetailsDictionary objectForKey: @"biog"];
                 channel.biogTitle = [channelDetailsDictionary objectForKey: @"title"];
-                channel.packedByUser = [channelDetailsDictionary objectForKey: @"packedByUser"];
                 channel.rockedByUser = [channelDetailsDictionary objectForKey: @"rockedByUser"];
-                channel.totalPacks = [channelDetailsDictionary objectForKey: @"totalPacks"];
                 channel.totalRocks = [channelDetailsDictionary objectForKey: @"totalRocks"];
                 channel.userGeneratedValue = FALSE;
                 

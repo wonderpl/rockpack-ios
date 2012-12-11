@@ -88,9 +88,7 @@
                                        @"keyframeURL" : @"Adidas",
                                        @"title" : @"ADIDAS | TEAM GB",
                                        @"subtitle" : @"DON'T STOP ME NOW",
-                                       @"totalPacks" : @214,
                                        @"totalRocks" : @453,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
         
             NSMutableDictionary *d2 = [NSMutableDictionary dictionaryWithDictionary:
@@ -98,9 +96,7 @@
                                        @"keyframeURL" : @"AngryBirds",
                                        @"title" : @"ANGRY BIRDS: STAR WARS",
                                        @"subtitle" : @"TRAILER",
-                                       @"totalPacks" : @144,
                                        @"totalRocks" : @273,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d3 = [NSMutableDictionary dictionaryWithDictionary:
@@ -108,9 +104,7 @@
                                        @"keyframeURL" : @"CallOfDuty",
                                        @"title" : @"CALL OF DUTY: BLACK OPS 2",
                                        @"subtitle" : @"TRAILER",
-                                       @"totalPacks" : @341,
                                        @"totalRocks" : @886,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d4 = [NSMutableDictionary dictionaryWithDictionary:
@@ -118,9 +112,7 @@
                                        @"keyframeURL" : @"CarlyRaeJepsen",
                                        @"title" : @"CARLY RAE JEPSEN",
                                        @"subtitle" : @"CALL ME MAYBE",
-                                       @"totalPacks" : @553,
                                        @"totalRocks" : @132,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d5 = [NSMutableDictionary dictionaryWithDictionary:
@@ -128,19 +120,15 @@
                                        @"keyframeURL" : @"HotelTransylvania",
                                        @"title" : @"HOTEL TRANSYLVANIA",
                                        @"subtitle" : @"TRAILER",
-                                       @"totalPacks" : @987,
                                        @"totalRocks" : @613,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d6 = [NSMutableDictionary dictionaryWithDictionary:
                                        @{@"videoURL" : @"JustinBieber",
                                        @"keyframeURL" : @"JustinBieber",
-                                       @"title" : @"JUSTIN BEIBER",
+                                       @"title" : @"JUSTIN BIEBER",
                                        @"subtitle" : @"BOYFRIEND",
-                                       @"totalPacks" : @921,
                                        @"totalRocks" : @277,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d7 = [NSMutableDictionary dictionaryWithDictionary:
@@ -148,9 +136,7 @@
                                        @"keyframeURL" : @"Madagascar3",
                                        @"title" : @"MADAGASCAR 3: EUROPE'S MOST WANTED",
                                        @"subtitle" : @"TRAILER",
-                                       @"totalPacks" : @158,
                                        @"totalRocks" : @323,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d8 = [NSMutableDictionary dictionaryWithDictionary:
@@ -158,9 +144,7 @@
                                        @"keyframeURL" : @"MonstersUniversity",
                                        @"title" : @"MONSTERS UNIVERSITY",
                                        @"subtitle" : @"TRAILER",
-                                       @"totalPacks" : @110,
                                        @"totalRocks" : @245,
-                                       @"packedByUser" : @FALSE,
                                        @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d9 = [NSMutableDictionary dictionaryWithDictionary:
@@ -168,9 +152,7 @@
                                        @"keyframeURL" : @"NikeFootball",
                                        @"title" : @"NIKE FOOTBALL: MERCURIAL VAPOR VIII",
                                        @"subtitle" : @"CRISTIANO RONALDO VS RAFA NADAL",
-                                       @"totalPacks" : @883,
                                        @"totalRocks" : @653,
-                                       @"packedByUser" : @TRUE,
                                        @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d10 = [NSMutableDictionary dictionaryWithDictionary:
@@ -178,9 +160,7 @@
                                         @"keyframeURL" : @"OneDirection",
                                         @"title" : @"ONE DIRECTION",
                                         @"subtitle" : @"LIVE WHILE WE'RE YOUNG",
-                                        @"totalPacks" : @101,
                                         @"totalRocks" : @121,
-                                        @"packedByUser" : @FALSE,
                                         @"rockedByUser" : @FALSE}];
             
             NSMutableDictionary *d11 = [NSMutableDictionary dictionaryWithDictionary:
@@ -188,9 +168,7 @@
                                         @"keyframeURL" : @"TheDarkKnightRises",
                                         @"title" : @"THE DARK KNIGHT RISES",
                                         @"subtitle" : @"TRAILER",
-                                        @"totalPacks" : @334,
                                         @"totalRocks" : @271,
-                                        @"packedByUser" : @TRUE,
                                         @"rockedByUser" : @TRUE}];
             
             NSMutableDictionary *d12 = [NSMutableDictionary dictionaryWithDictionary:
@@ -198,9 +176,7 @@
                                         @"keyframeURL" : @"TheLionKing",
                                         @"title" : @"THE LION KING",
                                         @"subtitle" : @"MOVIE",
-                                        @"totalPacks" : @646,
                                         @"totalRocks" : @978,
-                                        @"packedByUser" : @FALSE,
                                         @"rockedByUser" : @FALSE}];
             
             self.videoDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12];
@@ -217,9 +193,7 @@
                 video.keyframeURL = [videoDetailsDictionary objectForKey: @"keyframeURL"];
                 video.title = [videoDetailsDictionary objectForKey: @"title"];
                 video.subtitle = [videoDetailsDictionary objectForKey: @"subtitle"];
-                video.packedByUser = [videoDetailsDictionary objectForKey: @"packedByUser"];
                 video.rockedByUser = [videoDetailsDictionary objectForKey: @"rockedByUser"];
-                video.totalPacks = [videoDetailsDictionary objectForKey: @"totalPacks"];
                 video.totalRocks = [videoDetailsDictionary objectForKey: @"totalRocks"];
             }
             

@@ -5,11 +5,10 @@
 
 const struct VideoAttributes VideoAttributes = {
 	.keyframeURL = @"keyframeURL",
-	.packedByUser = @"packedByUser",
 	.rockedByUser = @"rockedByUser",
+	.sourceIndex = @"sourceIndex",
 	.subtitle = @"subtitle",
 	.title = @"title",
-	.totalPacks = @"totalPacks",
 	.totalRocks = @"totalRocks",
 	.videoURL = @"videoURL",
 };
@@ -47,18 +46,13 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"packedByUserValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"packedByUser"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
 	if ([key isEqualToString:@"rockedByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"rockedByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"totalPacksValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"totalPacks"];
+	if ([key isEqualToString:@"sourceIndexValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"sourceIndex"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -76,32 +70,6 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 @dynamic keyframeURL;
 
-
-
-
-
-
-@dynamic packedByUser;
-
-
-
-- (BOOL)packedByUserValue {
-	NSNumber *result = [self packedByUser];
-	return [result boolValue];
-}
-
-- (void)setPackedByUserValue:(BOOL)value_ {
-	[self setPackedByUser:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitivePackedByUserValue {
-	NSNumber *result = [self primitivePackedByUser];
-	return [result boolValue];
-}
-
-- (void)setPrimitivePackedByUserValue:(BOOL)value_ {
-	[self setPrimitivePackedByUser:[NSNumber numberWithBool:value_]];
-}
 
 
 
@@ -133,6 +101,32 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 
+@dynamic sourceIndex;
+
+
+
+- (int64_t)sourceIndexValue {
+	NSNumber *result = [self sourceIndex];
+	return [result longLongValue];
+}
+
+- (void)setSourceIndexValue:(int64_t)value_ {
+	[self setSourceIndex:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveSourceIndexValue {
+	NSNumber *result = [self primitiveSourceIndex];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveSourceIndexValue:(int64_t)value_ {
+	[self setPrimitiveSourceIndex:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
 @dynamic subtitle;
 
 
@@ -142,32 +136,6 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 @dynamic title;
 
-
-
-
-
-
-@dynamic totalPacks;
-
-
-
-- (int64_t)totalPacksValue {
-	NSNumber *result = [self totalPacks];
-	return [result longLongValue];
-}
-
-- (void)setTotalPacksValue:(int64_t)value_ {
-	[self setTotalPacks:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveTotalPacksValue {
-	NSNumber *result = [self primitiveTotalPacks];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveTotalPacksValue:(int64_t)value_ {
-	[self setPrimitiveTotalPacks:[NSNumber numberWithLongLong:value_]];
-}
 
 
 

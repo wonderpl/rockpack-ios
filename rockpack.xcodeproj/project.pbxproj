@@ -21,8 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0106E81B165104CE00DC5173 /* SYNWallPackTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0106E819165104CE00DC5173 /* SYNWallPackTopTabViewController.m */; };
-		0106E81C165104CE00DC5173 /* SYNWallPackTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0106E81A165104CE00DC5173 /* SYNWallPackTopTabViewController.xib */; };
 		0106E820165106D100DC5173 /* SYNWallpacksDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 0106E81F165106D000DC5173 /* SYNWallpacksDB.m */; };
 		0106E82316510A5900DC5173 /* SYNWallpackThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0106E82216510A5900DC5173 /* SYNWallpackThumbnailCell.m */; };
 		0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */; };
@@ -441,6 +439,8 @@
 		01A0768F1676295C00E1CDAD /* ButtonAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A0768E1676295B00E1CDAD /* ButtonAdd.png */; };
 		01A0769216762C9000E1CDAD /* ButtonStarHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A0769016762C8400E1CDAD /* ButtonStarHighlighted.png */; };
 		01A0769316762C9000E1CDAD /* ButtonStarHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A0769116762C8700E1CDAD /* ButtonStarHighlighted@2x.png */; };
+		01A9BE1D16763E800098EA0C /* ButtonShareHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A9BE1B16763E800098EA0C /* ButtonShareHighlighted.png */; };
+		01A9BE1E16763E800098EA0C /* ButtonShareHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A9BE1C16763E800098EA0C /* ButtonShareHighlighted@2x.png */; };
 		01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */; };
 		01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */; };
 		01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96A166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png */; };
@@ -515,9 +515,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0106E818165104CE00DC5173 /* SYNWallPackTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallPackTopTabViewController.h; sourceTree = "<group>"; };
-		0106E819165104CE00DC5173 /* SYNWallPackTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallPackTopTabViewController.m; sourceTree = "<group>"; };
-		0106E81A165104CE00DC5173 /* SYNWallPackTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallPackTopTabViewController.xib; sourceTree = "<group>"; };
 		0106E81E165106D000DC5173 /* SYNWallpacksDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpacksDB.h; sourceTree = "<group>"; };
 		0106E81F165106D000DC5173 /* SYNWallpacksDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpacksDB.m; sourceTree = "<group>"; };
 		0106E82116510A5900DC5173 /* SYNWallpackThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackThumbnailCell.h; sourceTree = "<group>"; };
@@ -1006,6 +1003,8 @@
 		01A0768E1676295B00E1CDAD /* ButtonAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAdd.png; path = Assets/Images/ButtonAdd.png; sourceTree = "<group>"; };
 		01A0769016762C8400E1CDAD /* ButtonStarHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonStarHighlighted.png; path = Assets/Images/ButtonStarHighlighted.png; sourceTree = "<group>"; };
 		01A0769116762C8700E1CDAD /* ButtonStarHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonStarHighlighted@2x.png"; path = "Assets/Images/ButtonStarHighlighted@2x.png"; sourceTree = "<group>"; };
+		01A9BE1B16763E800098EA0C /* ButtonShareHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShareHighlighted.png; path = Assets/Images/ButtonShareHighlighted.png; sourceTree = "<group>"; };
+		01A9BE1C16763E800098EA0C /* ButtonShareHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShareHighlighted@2x.png"; path = "Assets/Images/ButtonShareHighlighted@2x.png"; sourceTree = "<group>"; };
 		01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailRegularCell.h; sourceTree = "<group>"; };
 		01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailRegularCell.m; sourceTree = "<group>"; };
 		01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailRegularCell.xib; sourceTree = "<group>"; };
@@ -1492,6 +1491,10 @@
 		01363F111630AEA600FFAA09 /* Thumbnail */ = {
 			isa = PBXGroup;
 			children = (
+				01A0767F1676293100E1CDAD /* ButtonShare.png */,
+				01A076801676293100E1CDAD /* ButtonShare@2x.png */,
+				01A9BE1B16763E800098EA0C /* ButtonShareHighlighted.png */,
+				01A9BE1C16763E800098EA0C /* ButtonShareHighlighted@2x.png */,
 				01A0768E1676295B00E1CDAD /* ButtonAdd.png */,
 				01A076781676292F00E1CDAD /* ButtonAdd@2x.png */,
 				01A076791676292F00E1CDAD /* ButtonAddHighlighted.png */,
@@ -1500,8 +1503,6 @@
 				01A0767C1676293000E1CDAD /* ButtonRock@2x.png */,
 				01A0767D1676293000E1CDAD /* ButtonRockHighlighted.png */,
 				01A0767E1676293100E1CDAD /* ButtonRockHighlighted@2x.png */,
-				01A0767F1676293100E1CDAD /* ButtonShare.png */,
-				01A076801676293100E1CDAD /* ButtonShare@2x.png */,
 				01A07670167625FD00E1CDAD /* ButtonStar.png */,
 				01A07671167625FD00E1CDAD /* ButtonStar@2x.png */,
 				01A07672167625FD00E1CDAD /* ButtonStarSelected.png */,
@@ -1698,9 +1699,8 @@
 				01982563162ADEAD00216900 /* Abstract */,
 				01982562162ADE5200216900 /* Bottom Tab */,
 				0199F1371672199F00E479C6 /* Home */,
-				0198255E162ADE2100216900 /* Wallpack (delete) */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
-				0198255F162ADE2900216900 /* Video */,
+				0198255F162ADE2900216900 /* Video (Discover) */,
 				01982560162ADE3300216900 /* My Rockpack */,
 				01982561162ADE4000216900 /* Friends */,
 			);
@@ -1882,24 +1882,14 @@
 			name = Panels;
 			sourceTree = "<group>";
 		};
-		0198255E162ADE2100216900 /* Wallpack (delete) */ = {
-			isa = PBXGroup;
-			children = (
-				0106E818165104CE00DC5173 /* SYNWallPackTopTabViewController.h */,
-				0106E819165104CE00DC5173 /* SYNWallPackTopTabViewController.m */,
-				0106E81A165104CE00DC5173 /* SYNWallPackTopTabViewController.xib */,
-			);
-			name = "Wallpack (delete)";
-			sourceTree = "<group>";
-		};
-		0198255F162ADE2900216900 /* Video */ = {
+		0198255F162ADE2900216900 /* Video (Discover) */ = {
 			isa = PBXGroup;
 			children = (
 				012632F1162E130C0009FF9C /* SYNDiscoverTopTabViewController.h */,
 				012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */,
 				012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */,
 			);
-			name = Video;
+			name = "Video (Discover)";
 			sourceTree = "<group>";
 		};
 		01982560162ADE3300216900 /* My Rockpack */ = {
@@ -2394,7 +2384,6 @@
 				01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */,
 				01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */,
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
-				0106E81C165104CE00DC5173 /* SYNWallPackTopTabViewController.xib in Resources */,
 				0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */,
 				019E81FF1654043A00744A03 /* Mail Sent.aif in Resources */,
 				019E82001654043A00744A03 /* NewSlideIn.aif in Resources */,
@@ -2792,6 +2781,8 @@
 				01A0768F1676295C00E1CDAD /* ButtonAdd.png in Resources */,
 				01A0769216762C9000E1CDAD /* ButtonStarHighlighted.png in Resources */,
 				01A0769316762C9000E1CDAD /* ButtonStarHighlighted@2x.png in Resources */,
+				01A9BE1D16763E800098EA0C /* ButtonShareHighlighted.png in Resources */,
+				01A9BE1E16763E800098EA0C /* ButtonShareHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2846,7 +2837,6 @@
 				01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */,
 				01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */,
 				01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */,
-				0106E81B165104CE00DC5173 /* SYNWallPackTopTabViewController.m in Sources */,
 				0106E820165106D100DC5173 /* SYNWallpacksDB.m in Sources */,
 				0106E82316510A5900DC5173 /* SYNWallpackThumbnailCell.m in Sources */,
 				0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */,

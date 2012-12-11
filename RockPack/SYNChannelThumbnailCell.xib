@@ -34,7 +34,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUICollectionViewCell" id="887741211">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="915651722">
@@ -46,7 +46,6 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrameSize">{336, 192}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="251601124"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -63,7 +62,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{9, 6}, {242, 136}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="428156086"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -77,7 +75,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{8, 150}, {316, 21}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="508641349"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="255104461">
@@ -115,7 +112,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{8, 167}, {316, 21}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="255104461"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -146,7 +142,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{281, 18}, {25, 25}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="338905516"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -190,7 +185,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{285, 90}, {17, 26}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="541878383"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -221,7 +215,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{273, 124}, {42, 21}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="931377772"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="255104461"/>
@@ -255,7 +248,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{273, 53}, {42, 21}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="370910392"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="255104461"/>
@@ -280,7 +272,6 @@
 						</array>
 						<string key="NSFrameSize">{336, 192}</string>
 						<reference key="NSSuperview" ref="887741211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="372991500"/>
 						<reference key="IBUIBackgroundColor" ref="255104461"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -291,8 +282,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{336, 192}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="915651722"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="255104461"/>

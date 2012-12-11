@@ -147,19 +147,19 @@
     
     // Wire the Done button up to the correct method in the sign up controller    
     [cell.rockItButton removeTarget: nil
-                             action: @selector(toggleThumbnailRockItButton:)
+                             action: @selector(toggleVideoThumbnailRockItButton:)
                    forControlEvents: UIControlEventTouchUpInside];
     
     [cell.rockItButton addTarget: self
-                          action: @selector(toggleThumbnailRockItButton:)
+                          action: @selector(toggleVideoThumbnailRockItButton:)
                 forControlEvents: UIControlEventTouchUpInside];
     
     [cell.addItButton removeTarget: nil
-                            action: @selector(touchThumbnailAddItButton:)
+                            action: @selector(touchVideoThumbnailAddItButton:)
                   forControlEvents: UIControlEventTouchUpInside];
     
     [cell.addItButton addTarget: self
-                         action: @selector(touchThumbnailAddItButton:)
+                         action: @selector(touchVideoThumbnailAddItButton:)
                forControlEvents: UIControlEventTouchUpInside];
     
     return cell;
@@ -229,27 +229,27 @@
     return reusableView;
 }
 
-- (IBAction) toggleThumbnailRockItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoThumbnailRockItButton: (UIButton *) rockItButton
 {
-//    rockItButton.selected = !rockItButton.selected;
-//    
-//    // Get to cell it self (from button subview)
-//    UIView *v = rockItButton.superview.superview;
-//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-//    
-//    // Bail if we don't have an index path
-//    if (!indexPath)
-//    {
-//        return;
-//    }
-//    
-//    [self toggleVideoRockItAtIndex: indexPath];
-//    
-//    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-//    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-//    
-//    cell.rockItButton.selected = video.rockedByUserValue;
-//    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+    rockItButton.selected = !rockItButton.selected;
+    
+    // Get to cell it self (from button subview)
+    UIView *v = rockItButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (!indexPath)
+    {
+        return;
+    }
+    
+    [self toggleVideoRockItAtIndex: indexPath];
+    
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+    
+    cell.rockItButton.selected = video.rockedByUserValue;
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
 - (IBAction) toggleThumbnailShareItButton: (UIButton *) rockItButton
@@ -257,7 +257,7 @@
 }
 
 
-- (IBAction) touchThumbnailAddItButton: (UIButton *) addItButton
+- (IBAction) touchVideoThumbnailAddItButton: (UIButton *) addItButton
 {
     NSLog (@"No implementation yet");
 }

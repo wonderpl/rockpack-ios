@@ -74,24 +74,12 @@
     cell.maintitle.text = channel.title;
     
     cell.subtitle.text = channel.subtitle;
-    
-    cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
-    
+
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
-    
-    cell.packItButton.selected = channel.packedByUserValue;
     
     cell.rockItButton.selected = channel.rockedByUserValue;
     
-    // Wire the Done button up to the correct method in the sign up controller
-    [cell.packItButton removeTarget: nil
-                             action: @selector(toggleChannelPackItButton:)
-                   forControlEvents: UIControlEventTouchUpInside];
-    
-    [cell.packItButton addTarget: self
-                          action: @selector(toggleChannelPackItButton:)
-                forControlEvents: UIControlEventTouchUpInside];
-    
+    // Wire the Done button up to the correct method in the sign up controller  
     [cell.rockItButton removeTarget: nil
                              action: @selector(toggleChannelRockItButton:)
                    forControlEvents: UIControlEventTouchUpInside];
@@ -171,27 +159,6 @@
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
 }
 
-- (IBAction) toggleChannelPackItButton: (UIButton *) packItButton
-{
-    UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleChannelPackItAtIndex: indexPath];
-    
-    // We don't need to update the UI as this cell can only be deselected
-    // (Otherwise a race-condition will occur if deleting the last cell)
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
-    
-    cell.packItButton.selected = channel.packedByUserValue;
-    cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
-}
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
 {

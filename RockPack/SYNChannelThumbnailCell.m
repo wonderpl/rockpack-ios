@@ -42,7 +42,6 @@
     
     self.maintitle.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
-    self.packItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
 }
 

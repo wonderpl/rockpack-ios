@@ -9,11 +9,9 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *biogTitle;
 	__unsafe_unretained NSString *index;
 	__unsafe_unretained NSString *keyframeURL;
-	__unsafe_unretained NSString *packedByUser;
 	__unsafe_unretained NSString *rockedByUser;
 	__unsafe_unretained NSString *subtitle;
 	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *totalPacks;
 	__unsafe_unretained NSString *totalRocks;
 	__unsafe_unretained NSString *userGenerated;
 	__unsafe_unretained NSString *wallpaperURL;
@@ -27,8 +25,6 @@ extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
 @class Video;
-
-
 
 
 
@@ -98,20 +94,6 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* packedByUser;
-
-
-
-@property BOOL packedByUserValue;
-- (BOOL)packedByUserValue;
-- (void)setPackedByUserValue:(BOOL)value_;
-
-//- (BOOL)validatePackedByUser:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSNumber* rockedByUser;
 
 
@@ -141,20 +123,6 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* totalPacks;
-
-
-
-@property int64_t totalPacksValue;
-- (int64_t)totalPacksValue;
-- (void)setTotalPacksValue:(int64_t)value_;
-
-//- (BOOL)validateTotalPacks:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -247,15 +215,6 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSNumber*)primitivePackedByUser;
-- (void)setPrimitivePackedByUser:(NSNumber*)value;
-
-- (BOOL)primitivePackedByUserValue;
-- (void)setPrimitivePackedByUserValue:(BOOL)value_;
-
-
-
-
 - (NSNumber*)primitiveRockedByUser;
 - (void)setPrimitiveRockedByUser:(NSNumber*)value;
 
@@ -273,15 +232,6 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
-- (NSNumber*)primitiveTotalPacks;
-- (void)setPrimitiveTotalPacks:(NSNumber*)value;
-
-- (int64_t)primitiveTotalPacksValue;
-- (void)setPrimitiveTotalPacksValue:(int64_t)value_;
 
 
 

@@ -72,54 +72,6 @@
 }
 
 
-
-// PackIt accessors
-
-- (int) packItNumberForIndex: (int) index
-                  withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    int packItNumber = [(NSNumber *)[videoDetails objectForKey: @"packItNumber"] intValue];
-    
-    return packItNumber;
-}
-
-
-- (void) setPackItNumber: (int) number
-                forIndex: (int) index
-              withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    [videoDetails setObject: [NSNumber numberWithInt: number]
-                     forKey: @"packItNumber"];
-    
-}
-
-
-- (BOOL) packItForIndex: (int) index
-             withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    BOOL packIt = [(NSNumber *)[videoDetails objectForKey: @"packIt"] intValue];
-    
-    return packIt;
-}
-
-
-- (void) setPackIt: (BOOL) number
-          forIndex: (int) index
-        withOffset: (int) offset
-{
-    NSMutableDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
-    
-    [videoDetails setObject: [NSNumber numberWithInt: number]
-                     forKey: @"packIt"];
-    
-}
-
 // RockIt accessors
 
 - (int) rockItNumberForIndex: (int) index
@@ -127,9 +79,9 @@
 {
     NSMutableDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
     
-    int packItNumber = [(NSNumber *)[videoDetails objectForKey: @"rockItNumber"] intValue];
+    int rockItNumber = [(NSNumber *)[videoDetails objectForKey: @"rockItNumber"] intValue];
     
-    return packItNumber;
+    return rockItNumber;
 }
 
 
@@ -149,9 +101,9 @@
 {
     NSMutableDictionary *videoDetails = [self.thumbnailDetailsArray objectAtIndex: [self adjustedIndexForIndex: index withOffset: offset]];
     
-    BOOL packItNumber = [(NSNumber *)[videoDetails objectForKey: @"rockIt"] intValue];
+    BOOL rockIt = [(NSNumber *)[videoDetails objectForKey: @"rockIt"] intValue];
     
-    return packItNumber;
+    return rockIt;
 }
 
 
