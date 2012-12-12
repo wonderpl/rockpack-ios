@@ -26,9 +26,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *biogTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
-@property (nonatomic, strong) NSArray *biogs;
-@property (nonatomic, strong) NSArray *titles;
-@property (nonatomic, strong) NSMutableArray *videos;
+@property (nonatomic, strong) NSMutableArray *videosArray;
 
 @end
 
@@ -41,7 +39,7 @@
 	if ((self = [super initWithNibName: @"SYNAbstractDetailViewController" bundle: nil]))
     {
 		self.channel = channel;
-        self.videos = [NSMutableArray arrayWithArray: self.channel.videos.array];
+        self.videosArray = [NSMutableArray arrayWithArray: self.channel.videos.array];
 	}
     
 	return self;
@@ -70,8 +68,9 @@
     UINib *headerViewNib = [UINib nibWithNibName: @"SYNChannelHeaderView"
                                           bundle: nil];
     
-    [self.videoThumbnailCollectionView registerNib: headerViewNib
-                        forCellWithReuseIdentifier: @"SYNChannelHeaderView"];
+     [self.videoThumbnailCollectionView registerNib: headerViewNib
+                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                                withReuseIdentifier: @"SYNChannelHeaderView"];
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
@@ -108,7 +107,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return self.videos.count;
+    return self.videosArray.count;
 }
 
 
@@ -124,7 +123,7 @@
     SYNVideoThumbnailRegularCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                        forIndexPath: indexPath];
     
-    Video *video = [self.videos objectAtIndex: indexPath.item];
+    Video *video = [self.videosArray objectAtIndex: indexPath.item];
     cell.imageView.image = video.keyframeImage;
     cell.titleLabel.text = video.title;
     cell.subtitleLabel.text = video.subtitle;
@@ -138,9 +137,9 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    SYNChannelHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelHeaderView"
+    SYNChannelHeaderView *reusableView = [cv dequeueReusableSupplementaryViewOfKind: kind
+                                                                withReuseIdentifier: @"SYNChannelHeaderView"
                                                                        forIndexPath: indexPath];
-    
     reusableView.titleLabel.text = self.channel.biogTitle;
     reusableView.subtitleLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.biog];
     
@@ -151,7 +150,7 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videos objectAtIndex: indexPath.row];
+    Video *video = [self.videosArray objectAtIndex: indexPath.row];
     
     SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
     
@@ -179,13 +178,13 @@
     NSLog (@"Moving");
 
     // Actually swap the video thumbnails around in the visible list
-    id fromItem = [self.videos objectAtIndex: fromIndexPath.item];
+    id fromItem = [self.videosArray objectAtIndex: fromIndexPath.item];
     id fromObject = [self.channel.videosSet objectAtIndex: fromIndexPath.item];
     
-    [self.videos removeObjectAtIndex: fromIndexPath.item];
+    [self.videosArray removeObjectAtIndex: fromIndexPath.item];
     [self.channel.videosSet removeObjectAtIndex: fromIndexPath.item];
     
-    [self.videos insertObject: fromItem atIndex: toIndexPath.item];
+    [self.videosArray insertObject: fromItem atIndex: toIndexPath.item];
     [self.channel.videosSet insertObject: fromObject atIndex: toIndexPath.item];
     
     [self saveDB];

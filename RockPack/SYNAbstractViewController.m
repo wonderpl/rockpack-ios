@@ -9,8 +9,10 @@
 //
 //  To keep the code as DRY as possible, we put as much common stuff in here as possible
 
+#import "Channel.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
+#import "Video.h"
 
 @interface SYNAbstractViewController ()
 
@@ -224,5 +226,48 @@
      {
      }];
 }
+
+- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (video.rockedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        video.rockedByUserValue = FALSE;
+        video.totalRocksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        video.rockedByUserValue = TRUE;
+        video.totalRocksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (channel.rockedByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        channel.rockedByUserValue = FALSE;
+        channel.totalRocksValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        channel.rockedByUserValue = TRUE;
+        channel.totalRocksValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
 
 @end

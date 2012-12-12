@@ -8,14 +8,14 @@
 
 #import "SYNAppDelegate.h"
 #import "SYNMyRockpackMovieViewController.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import "Video.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 
 @interface SYNMyRockpackMovieViewController ()
 
+@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
 @property (nonatomic, strong) Video *video;
-@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
 
 @end
 
@@ -43,17 +43,17 @@
 {
     [super viewWillAppear: animated];
 
-    self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: self.video.localVideoURL];
+    self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: self.video.localVideoURL];
     
-    self.mainVideoPlayer.shouldAutoplay = NO;
-    [self.mainVideoPlayer prepareToPlay];
+    self.mainVideoPlayerController.shouldAutoplay = NO;
+    [self.mainVideoPlayerController prepareToPlay];
     
     // TODO: Hardcoded size for now, but need to find a way to get correct window size (and orientation!)
-    [[self.mainVideoPlayer view] setFrame: CGRectMake (0, 44, 1024, 642)]; // Frame must match parent view
+    [[self.mainVideoPlayerController view] setFrame: CGRectMake (0, 44, 1024, 642)]; // Frame must match parent view
     
-    [self.view insertSubview: self.mainVideoPlayer.view atIndex: 0];
+    [self.view insertSubview: self.mainVideoPlayerController.view atIndex: 0];
         
-    [self.mainVideoPlayer pause];
+    [self.mainVideoPlayerController pause];
 }
 
 
@@ -67,7 +67,7 @@
 //    [self.mainVideoPlayer pause];
 //
 //    self.mainVideoPlayer.view.hidden = TRUE;
-    [self.mainVideoPlayer.view removeFromSuperview];
+    [self.mainVideoPlayerController.view removeFromSuperview];
     
 //    self.mainVideoPlayer = nil;
     

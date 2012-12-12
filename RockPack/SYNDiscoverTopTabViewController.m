@@ -13,9 +13,9 @@
 #import "NSObject+Blocks.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelSelectorCell.h"
+#import "SYNChannelsDB.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
-#import "SYNChannelsDB.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoThumbnailCell.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
@@ -25,7 +25,10 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNDiscoverTopTabViewController ()
+@interface SYNDiscoverTopTabViewController () <UIGestureRecognizerDelegate,
+                                               UICollectionViewDataSource,
+                                               UICollectionViewDelegateFlowLayout,
+                                               UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) BOOL shouldPlaySound;
@@ -33,29 +36,28 @@
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
 @property (nonatomic, strong) IBOutlet UIButton *imageWellDeleteButton;
-@property (nonatomic, strong) IBOutlet UIButton *packItButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *imageWellView;
-@property (nonatomic, strong) IBOutlet UICollectionView *thumbnailView;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarousel;
-@property (nonatomic, strong) IBOutlet UIImageView *imageWellMessage;
+@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
+@property (nonatomic, strong) IBOutlet UICollectionView *imageWellCollectionView;
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
+@property (nonatomic, strong) IBOutlet UIImageView *imageWellMessageView;
 @property (nonatomic, strong) IBOutlet UIImageView *imageWellPanelView;
-@property (nonatomic, strong) IBOutlet UILabel *maintitle;
-@property (nonatomic, strong) IBOutlet UILabel *packIt;
-@property (nonatomic, strong) IBOutlet UILabel *packItNumber;
-@property (nonatomic, strong) IBOutlet UILabel *rockIt;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
-@property (nonatomic, strong) IBOutlet UILabel *subtitle;
-@property (nonatomic, strong) IBOutlet UITextField *channelNameField;
+@property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
+@property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
+@property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
+@property (nonatomic, strong) IBOutlet UILabel *subtitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) IBOutlet UIView *dropZoneView;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
-@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayer;
+@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
-@property (nonatomic, strong) NSMutableArray *imageWell;
-@property (nonatomic, strong) NSMutableArray *selections;
+@property (nonatomic, strong) NSMutableArray *imageWellArray;
+@property (nonatomic, strong) NSMutableArray *selectionsArray;
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @end
@@ -66,55 +68,58 @@
 {
     [super viewDidLoad];
     
-    self.imageWell = [[NSMutableArray alloc] initWithCapacity: 100];
-    self.selections = [[NSMutableArray alloc] initWithCapacity: 100];
+    // Initialise arrays with default capacities
+    self.imageWellArray = [[NSMutableArray alloc] initWithCapacity: 100];
+    self.selectionsArray = [[NSMutableArray alloc] initWithCapacity: 100];
 
-    self.maintitle.font = [UIFont boldRockpackFontOfSize: 24.0f];
-    self.subtitle.font = [UIFont rockpackFontOfSize: 17.0f];
-    self.packIt.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.rockIt.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.packItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    // Set the labels to use the custom font
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    self.subtitleLabel.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
-    // Init collection view
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
+    // Init video thumbnail collection view
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
                                              bundle: nil];
 
-    [self.thumbnailView registerNib: thumbnailCellNib
+    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
          forCellWithReuseIdentifier: @"ThumbnailCell"];
+    
+    // Add dragging to video thumbnail view
+    UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                                           action: @selector(longPressThumbnail:)];
+    
+    [self.videoThumbnailCollectionView addGestureRecognizer: longPressOnThumbnailView];
 
+    // Init image well collection view
     UINib *imageWellCellNib = [UINib nibWithNibName: @"SYNImageWellCell"
                                              bundle: nil];
 
-    [self.imageWellView registerNib: imageWellCellNib
+    [self.imageWellCollectionView registerNib: imageWellCellNib
          forCellWithReuseIdentifier: @"ImageWellCell"];
 
+    // Set caroulsel collection view to use custom layout algorithm
     CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
-    self.channelCoverCarousel.collectionViewLayout = channelCoverCarouselHorizontalLayout;
+    self.channelCoverCarouselCollectionView.collectionViewLayout = channelCoverCarouselHorizontalLayout;
 
     // Set up our carousel
-    [self.channelCoverCarousel registerClass: [SYNChannelSelectorCell class]
+    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
               forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
 
-    self.channelCoverCarousel.decelerationRate = UIScrollViewDecelerationRateNormal;
-
-    // Add dragging to thumbnail view
-    UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-                                                                                                           action: @selector(longPressThumbnail:)];
-
-    [self.thumbnailView addGestureRecognizer: longPressOnThumbnailView];
-    
-    
+    self.channelCoverCarouselCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal; 
 }
 
 
 - (void) viewWillAppear: (BOOL) animated
 {
+    // TODO: Remove this video download hack once we have real data from the API
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
     [SYNChannelsDB sharedChannelsDBManager];
 
     // Set the first video
-    [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
+    [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
+                                                       inSection: 0]];
 }
 
 
@@ -130,6 +135,7 @@
 
 - (NSArray *) videoFetchedResultsControllerSortDescriptors
 {
+    // TODO: This is currently sorted by title, but I suspect that we need to be more sophisticated
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
     return @[sortDescriptor];
@@ -138,12 +144,14 @@
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
+    // Don't show any user generated channels
     return [NSPredicate predicateWithFormat: @"userGenerated == FALSE"];
 }
 
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
+    // Sort by index
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
                                                                    ascending: YES];
     return @[sortDescriptor];
@@ -159,21 +167,21 @@
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     NSURL *videoURL = video.localVideoURL;
     
-    self.mainVideoPlayer = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
+    self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
     
-    self.mainVideoPlayer.shouldAutoplay = NO;
-    [self.mainVideoPlayer prepareToPlay];
+    self.mainVideoPlayerController.shouldAutoplay = NO;
+    [self.mainVideoPlayerController prepareToPlay];
     
-    [[self.mainVideoPlayer view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
+    [[self.mainVideoPlayerController view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
     
-    [self.videoPlaceholderView addSubview: [self.mainVideoPlayer view]];
+    [self.videoPlaceholderView addSubview: [self.mainVideoPlayerController view]];
     
     // Add dragging to large video view
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                             action: @selector(longPressLargeVideo:)];
-    [self.mainVideoPlayer.view addGestureRecognizer: longPress];
+    [self.mainVideoPlayerController.view addGestureRecognizer: longPress];
     
-    [self.mainVideoPlayer pause];
+    [self.mainVideoPlayerController pause];
     
 }
 
@@ -249,7 +257,7 @@
     if (sender.state == UIGestureRecognizerStateBegan)
     {
         // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: [sender locationInView: self.thumbnailView]];
+        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
         if (!indexPath)
@@ -260,9 +268,7 @@
         
         self.inDrag = YES;
         self.draggedIndexPath = indexPath;
-        
-        // get the text of the item to be dragged
-        
+
         // Store the initial drag point, just in case we have to animate it back if the user misses the drop zone
         self.initialDragCenter = [sender locationInView: self.view];
         
@@ -327,8 +333,8 @@
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.maintitle.text = video.title;
-    self.subtitle.text = video.subtitle;
+    self.titleLabel.text = video.title;
+    self.subtitleLabel.text = video.subtitle;
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
 }
@@ -337,16 +343,15 @@
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-    self.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-    self.packItButton.selected = video.packedByUserValue;
+    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", video.totalRocks];
     self.rockItButton.selected = video.rockedByUserValue;
 }
 
+
 - (void) viewDidAppear: (BOOL) animated
 {
-    [self.thumbnailView reloadData];
-    [self.imageWellView reloadData];
+    [self.videoThumbnailCollectionView reloadData];
+    [self.imageWellCollectionView reloadData];
 }
 
 
@@ -359,7 +364,7 @@
         
         // We need to change the search criteria here to relect the change in genre
         
-        [self.thumbnailView reloadData];
+        [self.videoThumbnailCollectionView reloadData];
     }
 }
 
@@ -380,6 +385,8 @@
         video.totalRocksValue += 1;
     }
     
+//    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
+    
     [self saveDB];
 }
 
@@ -390,38 +397,9 @@
     
     [self toggleRockItAtIndex: self.currentIndexPath];
     [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
-    [self.thumbnailView reloadData];
-}
-
-
-- (void) togglePackItAtIndex: (NSIndexPath *) indexPath
-{
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (video.packedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        video.packedByUserValue = FALSE;
-        video.totalPacksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        video.packedByUserValue = TRUE;
-        video.totalPacksValue += 1;
-    }
+    [self.videoThumbnailCollectionView reloadData];
     
     [self saveDB];
-}
-
-
-- (IBAction) toggleLargePackItButton: (UIButton *) button
-{
-    button.selected = !button.selected;
-
-    [self togglePackItAtIndex: self.currentIndexPath];
-    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
-    [self.thumbnailView reloadData];
 }
 
 
@@ -433,7 +411,7 @@
     
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (!indexPath)
@@ -445,46 +423,22 @@
     [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = video.rockedByUserValue;
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-}
-
-- (IBAction) toggleThumbnailPackItButton: (UIButton *) packItButton
-{
-    packItButton.selected = !packItButton.selected;
-    
-    UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self togglePackItAtIndex: indexPath];
-    [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
-    
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
-    
-    cell.packItButton.selected = video.packedByUserValue;
-    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
 }
 
 
 - (IBAction) touchThumbnailAddItButton: (UIButton *) addItButton
 {
     UIView *v = addItButton.superview.superview;
-    NSIndexPath *indexPath = [self.thumbnailView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-
     
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.thumbnailView cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.packItButton.enabled = FALSE;
+//    cell.addItButton.enabled = FALSE;
     
     [self animateImageWellAdditionWithVideoForIndexPath: indexPath];
 }
@@ -597,18 +551,18 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    if (view == self.channelCoverCarousel)
+    if (view == self.channelCoverCarouselCollectionView)
     {
         return 10;
     }
-    else if (view == self.thumbnailView)
+    else if (view == self.videoThumbnailCollectionView)
     {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
         return [sectionInfo numberOfObjects];
     }
     else
     {
-        return self.imageWell.count;
+        return self.imageWellArray.count;
     }
 }
 
@@ -620,7 +574,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.channelCoverCarousel)
+    if (cv == self.channelCoverCarouselCollectionView)
     {
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -662,7 +616,7 @@
         
         return cell;
     }
-    else if (cv == self.thumbnailView)
+    else if (cv == self.videoThumbnailCollectionView)
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
@@ -675,22 +629,11 @@
         
         cell.subtitle.text = video.subtitle;
         
-        cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-        
         cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        
-        cell.packItButton.selected = video.packedByUserValue;
         
         cell.rockItButton.selected = video.rockedByUserValue;
         
         // Wire the Done button up to the correct method in the sign up controller
-		[cell.packItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailPackItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.packItButton addTarget: self
-                              action: @selector(toggleThumbnailPackItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
         
         [cell.rockItButton removeTarget: nil
                                  action: @selector(toggleThumbnailRockItButton:)
@@ -715,7 +658,7 @@
         SYNImageWellCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
                                                                forIndexPath: indexPath];
         
-        cell.imageView.image = [self.imageWell objectAtIndex: indexPath.row];
+        cell.imageView.image = [self.imageWellArray objectAtIndex: indexPath.row];
         
         return cell;
     }
@@ -725,12 +668,12 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.channelCoverCarousel)
+    if (cv == self.channelCoverCarouselCollectionView)
     {
 //#warning "Need to select wallpack here"
         NSLog (@"Need to select wallpack here");
     }
-    else if (cv == self.thumbnailView)
+    else if (cv == self.videoThumbnailCollectionView)
     {
 #ifdef FULL_SCREEN_THUMBNAILS
         if (self.isLargeVideoViewExpanded == FALSE)
@@ -771,7 +714,7 @@
 #endif
     
     // If this is the first thing we are adding then fade out the message
-    if (self.imageWell.count == 0)
+    if (self.imageWellArray.count == 0)
     {
         self.imageWellAddButton.enabled = TRUE;
         self.imageWellAddButton.selected = TRUE;
@@ -783,7 +726,7 @@
                          animations: ^
          {
              // Contract thumbnail view
-             self.imageWellMessage.alpha = 0.0f;
+             self.imageWellMessageView.alpha = 0.0f;
              
          }
                          completion: ^(BOOL finished)
@@ -791,23 +734,23 @@
          }];
     }
 
-    [self.selections addObject: indexPath];
+    [self.selectionsArray addObject: indexPath];
     
     // Add image at front
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     UIImage *image = video.keyframeImage;
     
-    [self.imageWell insertObject: image
+    [self.imageWellArray insertObject: image
                          atIndex: 0];
     
-    CGRect imageWellView = self.imageWellView.frame;
+    CGRect imageWellView = self.imageWellCollectionView.frame;
     imageWellView.origin.x -= 142;
     imageWellView.size.width += 142;
-    self.imageWellView.frame = imageWellView;
+    self.imageWellCollectionView.frame = imageWellView;
     
-    [self.imageWellView reloadData];
+    [self.imageWellCollectionView reloadData];
     
-    [self.imageWellView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
+    [self.imageWellCollectionView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
                                atScrollPosition: UICollectionViewScrollPositionLeft
                                        animated: NO];
     
@@ -818,10 +761,10 @@
                      animations: ^
      {
          // Contract thumbnail view
-         CGRect imageWellView = self.imageWellView.frame;
+         CGRect imageWellView = self.imageWellCollectionView.frame;
          imageWellView.origin.x += 142;
          imageWellView.size.width -= 142;
-         self.imageWellView.frame =  imageWellView;
+         self.imageWellCollectionView.frame =  imageWellView;
          
      }
                      completion: ^(BOOL finished)
@@ -843,10 +786,10 @@
     AudioServicesPlaySystemSound(sound);
 #endif
     
-    [self.selections removeAllObjects];
+    [self.selectionsArray removeAllObjects];
     
-    [self.imageWell removeAllObjects];
-    [self.imageWellView reloadData];
+    [self.imageWellArray removeAllObjects];
+    [self.imageWellCollectionView reloadData];
     
     self.imageWellAddButton.enabled = FALSE;
     self.imageWellDeleteButton.enabled = FALSE;
@@ -858,7 +801,7 @@
                      animations: ^
      {
          // Contract thumbnail view
-         self.imageWellMessage.alpha = 1.0f;
+         self.imageWellMessageView.alpha = 1.0f;
          
      }
                      completion: ^(BOOL finished)
@@ -873,8 +816,8 @@
     
     [pvc.view addSubview: self.channelChooserView];
     
-    self.channelNameField.text = @"";
-    [self.channelNameField becomeFirstResponder];
+    self.channelNameTextField.text = @"";
+    [self.channelNameTextField becomeFirstResponder];
     
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.0f
@@ -890,7 +833,7 @@
     
     // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
     NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
-    [self.channelCoverCarousel scrollToItemAtIndexPath: startIndexPath
+    [self.channelCoverCarouselCollectionView scrollToItemAtIndexPath: startIndexPath
                                   atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                           animated: NO];
     
@@ -909,51 +852,50 @@
 //                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
 }
 
+
+// User has pressed the Done button, so create a new channel
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {    
-    Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
+    [self addChannelWithTitle: textField.text];
     
-    newChannel.title = textField.text;
-    newChannel.subtitle = @"CHANNEL";
-    newChannel.packedByUserValue = TRUE;
-    newChannel.rockedByUserValue = FALSE;
-    newChannel.totalPacksValue = 0;
-    newChannel.totalRocksValue = 0;
-    newChannel.userGeneratedValue = TRUE;
-    
-    // TODO: Make these window offsets less hard-coded
-    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
-                                                                                                     70 + self.channelCoverCarousel.contentOffset.y)];
-    
-    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    newChannel.keyframeURL = coverChannel.keyframeURL;
-    
-    newChannel.wallpaperURL = coverChannel.wallpaperURL;
-    
-    newChannel.biog = coverChannel.biog;
-    
-    NSString *biogTitle = coverChannel.title;
-    
-    NSString *biogSubtitle = coverChannel.subtitle;;
-    
-    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
-    for (NSIndexPath *indexPath in self.selections)
-    {
-        // Get video 
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];      
-        [[newChannel videosSet] addObject: video];
-    }
-    
-    [self.channelNameField resignFirstResponder];
-    [self clearImageWell];
-
     return YES;
 }
 
 - (void) textFieldDidEndEditing: (UITextField *) textField
 {
     self.channelChooserView.alpha = 0.0f;
+}
+
+- (void) addChannelWithTitle: (NSString *) title
+{
+    Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
+    
+    newChannel.title = title;
+    newChannel.subtitle = @"CHANNEL";
+    newChannel.rockedByUserValue = FALSE;
+    newChannel.totalRocksValue = 0;
+    newChannel.userGeneratedValue = TRUE;
+    
+    // TODO: Make these window offsets less hard-coded
+    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
+                                                                                                            70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
+    
+    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    newChannel.keyframeURL = coverChannel.keyframeURL;
+    newChannel.wallpaperURL = coverChannel.wallpaperURL;
+    newChannel.biog = coverChannel.biog;
+    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", coverChannel.title, coverChannel.subtitle];
+    
+    for (NSIndexPath *indexPath in self.selectionsArray)
+    {
+        // Get video
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        [[newChannel videosSet] addObject: video];
+    }
+    
+    [self.channelNameTextField resignFirstResponder];
+    [self clearImageWell];
 }
 
 @end

@@ -7,8 +7,8 @@
 //
 //  Abstract view controller to provide functionality common to all Rockpack view controllers
 
-#import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
 
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate>
 
@@ -38,5 +38,8 @@
 // Fade old VC out, fade new VC in (as opposed to regular push animation)
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
+
+- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
+- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
 
 @end

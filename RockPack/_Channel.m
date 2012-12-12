@@ -8,11 +8,9 @@ const struct ChannelAttributes ChannelAttributes = {
 	.biogTitle = @"biogTitle",
 	.index = @"index",
 	.keyframeURL = @"keyframeURL",
-	.packedByUser = @"packedByUser",
 	.rockedByUser = @"rockedByUser",
 	.subtitle = @"subtitle",
 	.title = @"title",
-	.totalPacks = @"totalPacks",
 	.totalRocks = @"totalRocks",
 	.userGenerated = @"userGenerated",
 	.wallpaperURL = @"wallpaperURL",
@@ -56,18 +54,8 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"packedByUserValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"packedByUser"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
 	if ([key isEqualToString:@"rockedByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"rockedByUser"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-	if ([key isEqualToString:@"totalPacksValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"totalPacks"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -135,32 +123,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
-@dynamic packedByUser;
-
-
-
-- (BOOL)packedByUserValue {
-	NSNumber *result = [self packedByUser];
-	return [result boolValue];
-}
-
-- (void)setPackedByUserValue:(BOOL)value_ {
-	[self setPackedByUser:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitivePackedByUserValue {
-	NSNumber *result = [self primitivePackedByUser];
-	return [result boolValue];
-}
-
-- (void)setPrimitivePackedByUserValue:(BOOL)value_ {
-	[self setPrimitivePackedByUser:[NSNumber numberWithBool:value_]];
-}
-
-
-
-
-
 @dynamic rockedByUser;
 
 
@@ -196,32 +158,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 @dynamic title;
 
-
-
-
-
-
-@dynamic totalPacks;
-
-
-
-- (int64_t)totalPacksValue {
-	NSNumber *result = [self totalPacks];
-	return [result longLongValue];
-}
-
-- (void)setTotalPacksValue:(int64_t)value_ {
-	[self setTotalPacks:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveTotalPacksValue {
-	NSNumber *result = [self primitiveTotalPacks];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveTotalPacksValue:(int64_t)value_ {
-	[self setPrimitiveTotalPacks:[NSNumber numberWithLongLong:value_]];
-}
 
 
 

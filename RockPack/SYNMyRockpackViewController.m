@@ -7,29 +7,29 @@
 //
 
 #import "AppConstants.h"
+#import "Channel.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNVideoThumbnailCell.h"
-#import "SYNMyRockpackMovieViewController.h"
 #import "SYNMyRockpackChannelDetailViewController.h"
+#import "SYNMyRockpackMovieViewController.h"
 #import "SYNMyRockpackViewController.h"
 #import "SYNSwitch.h"
+#import "SYNVideoThumbnailCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
-#import "Channel.h"
 
-@interface SYNMyRockpackViewController ()
+@interface SYNMyRockpackViewController () <UICollectionViewDataSource,
+                                           UICollectionViewDelegateFlowLayout,
+                                           UIScrollViewDelegate>
 
 @property (nonatomic, assign) CGPoint originalOrigin;
-@property (nonatomic, assign) int currentIndex;
-@property (nonatomic, assign) int currentOffset;
 @property (nonatomic, strong) IBOutlet SYNSwitch *toggleSwitch;
 @property (nonatomic, strong) IBOutlet UIButton *backButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
-@property (nonatomic, strong) IBOutlet UICollectionView *packedVideoThumbnailCollection;
-@property (nonatomic, strong) IBOutlet UIImageView *userAvatar;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
+@property (nonatomic, strong) IBOutlet UICollectionView *starredVideoThumbnailCollectionView;
+@property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *packedVideosLabel;
-@property (nonatomic, strong) IBOutlet UILabel *userName;
+@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *avatarView;
 @property (nonatomic, strong) IBOutlet UIView *cardsView;
 @property (nonatomic, strong) UIColor *darkSwitchColor;
@@ -58,28 +58,28 @@
     
     [self.view addSubview: self.toggleSwitch];
     
-    self.userName.font = [UIFont boldRockpackFontOfSize: 25.0f];
+    self.userNameLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
     self.packedVideosLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
     self.channelLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
-    self.userAvatar.image = [UIImage imageNamed: @"EddieTaylor.png"];
+    self.userAvatarImageView.image = [UIImage imageNamed: @"EddieTaylor.png"];
     
     // Init collection views
     // Video thumbnails
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
                                              bundle: nil];
     
-    [self.packedVideoThumbnailCollection registerNib: videoThumbnailCellNib
+    [self.starredVideoThumbnailCollectionView registerNib: videoThumbnailCellNib
                           forCellWithReuseIdentifier: @"ThumbnailCell"];
     
     // Channel thumbnails
     UINib *channelThumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.channelThumbnailCollection registerNib: channelThumbnailCellNib
+    [self.channelThumbnailCollectionView registerNib: channelThumbnailCellNib
                           forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
     
-    self.channelThumbnailCollection.alpha = 0.0f;
-    self.channelThumbnailCollection.hidden = TRUE;
+    self.channelThumbnailCollectionView.alpha = 0.0f;
+    self.channelThumbnailCollectionView.hidden = TRUE;
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -94,7 +94,7 @@
 // The following 4 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"packedByUser == TRUE"];
+    return [NSPredicate predicateWithFormat: @"rockedByUser == TRUE"];
 }
 
 
@@ -108,7 +108,8 @@
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"(packedByUser == TRUE) AND (userGenerated == TRUE)"];
+    return [NSPredicate predicateWithFormat: @"userGenerated == TRUE"];
+//    return [NSPredicate predicateWithFormat: @"(rockedByUser == TRUE) AND (userGenerated == TRUE)"];
 }
 
 
@@ -124,11 +125,11 @@
 {
     if (controller == self.videoFetchedResultsController)
     {
-        [self.packedVideoThumbnailCollection reloadData];
+        [self.starredVideoThumbnailCollectionView reloadData];
     }
     else
     {
-        [self.channelThumbnailCollection reloadData];
+        [self.channelThumbnailCollectionView reloadData];
     }
 }
 
@@ -138,7 +139,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
-    if (cv == self.packedVideoThumbnailCollection)
+    if (cv == self.starredVideoThumbnailCollectionView)
     {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
         return [sectionInfo numberOfObjects];
@@ -152,7 +153,7 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
 {
-    if (cv == self.packedVideoThumbnailCollection)
+    if (cv == self.starredVideoThumbnailCollectionView)
     {
         return self.videoFetchedResultsController.sections.count;
     }
@@ -165,14 +166,12 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.packedVideoThumbnailCollection)
+    if (cv == self.starredVideoThumbnailCollectionView)
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
         SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                     forIndexPath: indexPath];
-        
-        [cell setThirdButtonType: kShowShareButton];
         
         cell.imageView.image = video.keyframeImage;
         
@@ -180,23 +179,11 @@
         
         cell.subtitle.text = video.subtitle;
         
-        cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-        
         cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        
-        cell.packItButton.selected = video.packedByUserValue;
         
         cell.rockItButton.selected = video.rockedByUserValue;
         
-        // Wire the Done button up to the correct method in the sign up controller
-		[cell.packItButton removeTarget: nil
-                                 action: @selector(toggleVideoPackItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.packItButton addTarget: self
-                              action: @selector(toggleVideoPackItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
+        // Wire the Done button up to the correct method in the sign up controller      
         [cell.rockItButton removeTarget: nil
                                  action: @selector(toggleVideoRockItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
@@ -224,27 +211,15 @@
         
         cell.imageView.image = channel.keyframeImage;
         
-        cell.maintitle.text = channel.title;
+        cell.titleLabel.text = channel.title;
         
-        cell.subtitle.text = channel.subtitle;
+        cell.subtitleLabel.text = channel.subtitle;
         
-        cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
-        
-        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
-        
-        cell.packItButton.selected = channel.packedByUserValue;
+        cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
         
         cell.rockItButton.selected = channel.rockedByUserValue;
         
-        // Wire the Done button up to the correct method in the sign up controller
-        [cell.packItButton removeTarget: nil
-                                 action: @selector(toggleChannelPackItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-        
-        [cell.packItButton addTarget: self
-                              action: @selector(toggleChannelPackItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
+        // Wire the Done button up to the correct method in the sign up controller       
         [cell.rockItButton removeTarget: nil
                                  action: @selector(toggleChannelRockItButton:)
                        forControlEvents: UIControlEventTouchUpInside];
@@ -261,7 +236,7 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.packedVideoThumbnailCollection)
+    if (cv == self.starredVideoThumbnailCollectionView)
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
@@ -301,8 +276,8 @@
         // Set packed videos label to light and channel label to dark
         self.packedVideosLabel.textColor = self.darkSwitchColor;
         self.channelLabel.textColor = self.lightSwitchColor;
-        self.channelThumbnailCollection.alpha = 0.0f;
-        self.channelThumbnailCollection.hidden = FALSE;
+        self.channelThumbnailCollectionView.alpha = 0.0f;
+        self.channelThumbnailCollectionView.hidden = FALSE;
 
         [UIView animateWithDuration: kSwitchLabelAnimation
                               delay: 0.0f
@@ -310,12 +285,12 @@
                          animations: ^
          {
              // Swap collection views
-             self.channelThumbnailCollection.alpha = 1.0f;
-             self.packedVideoThumbnailCollection.alpha = 0.0f;
+             self.channelThumbnailCollectionView.alpha = 1.0f;
+             self.starredVideoThumbnailCollectionView.alpha = 0.0f;
          }
                          completion: ^(BOOL finished)
          {
-             self.packedVideoThumbnailCollection.hidden = TRUE;
+             self.starredVideoThumbnailCollectionView.hidden = TRUE;
          }];
     }
     else
@@ -323,8 +298,8 @@
         // Set packed videos label to dark and channel label to light
         self.packedVideosLabel.textColor = self.lightSwitchColor;
         self.channelLabel.textColor = self.darkSwitchColor;
-        self.packedVideoThumbnailCollection.alpha = 0.0f;
-        self.packedVideoThumbnailCollection.hidden = FALSE;
+        self.starredVideoThumbnailCollectionView.alpha = 0.0f;
+        self.starredVideoThumbnailCollectionView.hidden = FALSE;
         
         
         [UIView animateWithDuration: kSwitchLabelAnimation
@@ -333,80 +308,14 @@
                          animations: ^
          {
              // Swap collection views
-             self.channelThumbnailCollection.alpha = 0.0f;
-             self.packedVideoThumbnailCollection.alpha = 1.0f;
+             self.channelThumbnailCollectionView.alpha = 0.0f;
+             self.starredVideoThumbnailCollectionView.alpha = 1.0f;
          }
                          completion: ^(BOOL finished)
          {
-             self.channelThumbnailCollection.hidden = TRUE;
+             self.channelThumbnailCollectionView.hidden = TRUE;
          }];
     }
-}
-
-
-//- (IBAction) transition: (id) sender
-//{
-//    SYNMyRockpackDetailViewController *vc = [[SYNMyRockpackDetailViewController alloc] init];
-//    
-//    vc.view.alpha = 0.0f;
-//    
-//    [self.navigationController pushViewController: vc
-//                                         animated: NO];
-//    
-//    [UIView animateWithDuration: 0.5f
-//                          delay: 0.0f
-//                        options: UIViewAnimationOptionCurveEaseInOut
-//                     animations: ^
-//     {
-//         // Contract thumbnail view
-//         self.view.alpha = 0.0f;
-//         vc.view.alpha = 1.0f;
-//         
-//     }
-//                     completion: ^(BOOL finished)
-//     {
-//     }];
-//}
-
-- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
-{
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (video.rockedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        video.rockedByUserValue = FALSE;
-        video.totalRocksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        video.rockedByUserValue = TRUE;
-        video.totalRocksValue += 1;
-    }
-    
-    [self saveDB];
-}
-
-
-- (void) toggleVideoPackItAtIndex: (NSIndexPath *) indexPath
-{
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (video.packedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        video.packedByUserValue = FALSE;
-        video.totalPacksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        video.packedByUserValue = TRUE;
-        video.totalPacksValue += 1;
-    }
-    
-    [self saveDB];
 }
 
 
@@ -415,7 +324,7 @@
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.packedVideoThumbnailCollection indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.starredVideoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (!indexPath)
@@ -425,77 +334,11 @@
     
     [self toggleVideoRockItAtIndex: indexPath];
     
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.packedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
-    
-    cell.rockItButton.selected = video.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-}
-
-- (IBAction) toggleVideoPackItButton: (UIButton *) packItButton
-{
-    UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.packedVideoThumbnailCollection indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleVideoPackItAtIndex: indexPath];
-    
-    // We don't need to update the UI as this cell can only be deselected
-    // (Otherwise a race-condition will occur if deleting the last cell)
-//    
 //    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-//    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.rockedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
+//    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.packedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
 //    
-//    cell.packItButton.selected = video.packedByUserValue;
-//    cell.packItNumber.text = [NSString stringWithFormat: @"%@", video.totalPacks];
-    
-//    [self.rockedVideoThumbnailCollection reloadData];
-}
-
-- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.rockedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.rockedByUserValue = FALSE;
-        channel.totalRocksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.rockedByUserValue = TRUE;
-        channel.totalRocksValue += 1;
-    }
-    
-    [self saveDB];
-}
-
-
-- (void) toggleChannelPackItAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.packedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.packedByUserValue = FALSE;
-        channel.totalPacksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.packedByUserValue = TRUE;
-        channel.totalPacksValue += 1;
-    }
-    
-    [self saveDB];
+//    cell.rockItButton.selected = video.rockedByUserValue;
+//    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
 
@@ -504,7 +347,7 @@
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (!indexPath)
@@ -515,33 +358,12 @@
     [self toggleChannelRockItAtIndex: indexPath];
     
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
 }
 
-- (IBAction) toggleChannelPackItButton: (UIButton *) packItButton
-{
-    UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleChannelPackItAtIndex: indexPath];
-    
-    // We don't need to update the UI as this cell can only be deselected
-    // (Otherwise a race-condition will occur if deleting the last cell)
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
-
-    cell.packItButton.selected = channel.packedByUserValue;
-    cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
-}
 
 - (IBAction) touchVideoShareButton: (UIButton *) addItButton
 {

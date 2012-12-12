@@ -17,7 +17,9 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
-@interface SYNChannelsTopTabViewController ()
+@interface SYNChannelsTopTabViewController () <UICollectionViewDelegate,
+                                               UICollectionViewDataSource,
+                                               UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
@@ -71,27 +73,15 @@
     
     cell.imageView.image = channel.keyframeImage;
     
-    cell.maintitle.text = channel.title;
+    cell.titleLabel.text = channel.title;
     
-    cell.subtitle.text = channel.subtitle;
-    
-    cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
-    
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
-    
-    cell.packItButton.selected = channel.packedByUserValue;
+    cell.subtitleLabel.text = channel.subtitle;
+
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
     
-    // Wire the Done button up to the correct method in the sign up controller
-    [cell.packItButton removeTarget: nil
-                             action: @selector(toggleChannelPackItButton:)
-                   forControlEvents: UIControlEventTouchUpInside];
-    
-    [cell.packItButton addTarget: self
-                          action: @selector(toggleChannelPackItButton:)
-                forControlEvents: UIControlEventTouchUpInside];
-    
+    // Wire the Done button up to the correct method in the sign up controller  
     [cell.rockItButton removeTarget: nil
                              action: @selector(toggleChannelRockItButton:)
                    forControlEvents: UIControlEventTouchUpInside];
@@ -150,49 +140,6 @@
 
 
 // Buttons activated from scrolling list of thumbnails
-- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.rockedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.rockedByUserValue = FALSE;
-        channel.totalRocksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.rockedByUserValue = TRUE;
-        channel.totalRocksValue += 1;
-    }
-    
-    [self saveDB];
-}
-
-
-- (void) toggleChannelPackItAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.packedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.packedByUserValue = FALSE;
-        channel.totalPacksValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.packedByUserValue = TRUE;
-        channel.totalPacksValue += 1;
-    }
-    
-    [self saveDB];
-}
-
-
-// Buttons activated from scrolling list of thumbnails
 - (IBAction) toggleChannelRockItButton: (UIButton *) rockItButton
 {
     // Get to cell it self (from button subview)
@@ -211,30 +158,9 @@
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
 }
 
-- (IBAction) toggleChannelPackItButton: (UIButton *) packItButton
-{
-    UIView *v = packItButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleChannelPackItAtIndex: indexPath];
-    
-    // We don't need to update the UI as this cell can only be deselected
-    // (Otherwise a race-condition will occur if deleting the last cell)
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
-    
-    cell.packItButton.selected = channel.packedByUserValue;
-    cell.packItNumber.text = [NSString stringWithFormat: @"%@", channel.totalPacks];
-}
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
 {

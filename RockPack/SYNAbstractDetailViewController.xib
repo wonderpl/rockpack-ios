@@ -36,7 +36,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="65885460">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIImageView" id="915393374">
@@ -205,7 +205,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{1024, 686}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="915393374"/>
 				<reference key="IBUIBackgroundColor" ref="381457900"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>

@@ -33,19 +33,6 @@
 - (NSString *) subtitleForIndex: (int) index
                      withOffset: (int) offset;
 
-- (int) packItNumberForIndex: (int) index
-                  withOffset: (int) offset;
-
-- (void) setPackItNumber: (int) number
-                forIndex: (int) index
-              withOffset: (int) offset;
-
-- (BOOL) packItForIndex: (int) index
-             withOffset: (int) offset;
-
-- (void) setPackIt: (BOOL) number
-          forIndex: (int) index
-        withOffset: (int) offset;
 
 - (int) rockItNumberForIndex: (int) index
                   withOffset: (int) offset;
