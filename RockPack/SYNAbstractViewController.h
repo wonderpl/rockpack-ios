@@ -7,8 +7,8 @@
 //
 //  Abstract view controller to provide functionality common to all Rockpack view controllers
 
-#import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
 
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate>
 

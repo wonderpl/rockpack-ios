@@ -9,10 +9,10 @@
 //
 //  To keep the code as DRY as possible, we put as much common stuff in here as possible
 
+#import "Channel.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
 #import "Video.h"
-#import "Channel.h"
 
 @interface SYNAbstractViewController ()
 

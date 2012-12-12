@@ -8,8 +8,6 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNChannelsTopTabViewController : SYNAbstractTopTabViewController <UICollectionViewDelegate,
-                                                                              UICollectionViewDataSource,
-                                                                              UIScrollViewDelegate>
+@interface SYNChannelsTopTabViewController : SYNAbstractTopTabViewController 
 
 @end

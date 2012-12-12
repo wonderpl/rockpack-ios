@@ -13,35 +13,36 @@
 #import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNFriendsViewController.h"
+#import "SYNHomeTopTabViewController.h"
 #import "SYNMovableView.h"
 #import "SYNMyRockpackViewController.h"
+#import "SYNVideoDB.h"
 #import "SYNVideoDownloadEngine.h"
-#import "SYNHomeTopTabViewController.h"
 #import "UIFont+SYNFont.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
-#import "SYNVideoDB.h"
 
-@interface SYNBottomTabViewController ()
+@interface SYNBottomTabViewController () <UIGestureRecognizerDelegate,
+                                          UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL didNotSwipe;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, copy) NSArray *viewControllers;
-@property (nonatomic, strong) AVAudioRecorder *recorder;
+@property (nonatomic, strong) AVAudioRecorder *avRecorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowView;
+@property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
-@property (nonatomic, strong) IBOutlet UITextField *searchField;
+@property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
-@property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanel;
+@property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanelView;
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeLeftRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
@@ -59,7 +60,7 @@
 // Initialise all the elements common to all 4 tabs
 
 #pragma mark - View lifecycle
-
+ 	
 
 - (void) viewDidLoad
 {
@@ -76,7 +77,7 @@
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
 
     
-    // Discover tab
+    // Discover tab 
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
     
     
@@ -135,10 +136,10 @@
                                                                     action: @selector(swipeRockieTalkieLeft:)];
     
     [self.swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.rockieTalkiePanel addGestureRecognizer: self.swipeLeftRecognizer];
+    [self.rockieTalkiePanelView addGestureRecognizer: self.swipeLeftRecognizer];
     
     // Set initial state
-    self.rockieTalkiePanel.userInteractionEnabled = TRUE;
+    self.rockieTalkiePanelView.userInteractionEnabled = TRUE;
     self.didNotSwipe = TRUE;
     
 //    [[NSNotificationCenter defaultCenter] addObserver: self
@@ -353,7 +354,7 @@
 
 - (IBAction) tabButtonPressed: (UIButton *) sender
 {
-    self.searchField.text = @"";
+    self.searchTextField.text = @"";
     
 	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
                   animated: YES];
@@ -385,16 +386,16 @@
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
              rockieTalkiePanelFrame.origin.x = -495;
-             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
 
          }
                          completion: ^(BOOL finished)
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
              rockieTalkiePanelFrame.origin.x = -495;
-             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
              
              // Set the button to the appropriate state
              self.rockieTalkieButton.selected = FALSE;
@@ -426,16 +427,16 @@
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
              rockieTalkiePanelFrame.origin.x = 0;
-             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
              
          }
                          completion: ^(BOOL finished)
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanel.frame;
+             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
              rockieTalkiePanelFrame.origin.x = 0;
-             self.rockieTalkiePanel.frame =  rockieTalkiePanelFrame;
+             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
              
              // Set the button to the appropriate state
              self.rockieTalkieButton.selected = TRUE;
@@ -445,9 +446,9 @@
 
 - (IBAction) clearSearchField: (id) sender
 {
-    self.searchField.text = @"";
+    self.searchTextField.text = @"";
     
-    [self.searchField resignFirstResponder];
+    [self.searchTextField resignFirstResponder];
 }
 
 - (IBAction) recordAction: (UIButton*) button
@@ -491,7 +492,7 @@
 - (void) startRecording
 {
     // Show button 'volume glow'
-    self.recordButtonGlowView.hidden = FALSE;
+    self.recordButtonGlowImageView.hidden = FALSE;
     
     AVAudioSession *avSession = [AVAudioSession sharedInstance];
 	
@@ -514,15 +515,15 @@
     
   	NSError *error;
     
-  	self.recorder = [[AVAudioRecorder alloc] initWithURL: url
+  	self.avRecorder = [[AVAudioRecorder alloc] initWithURL: url
                                                 settings: settings
                                                    error: &error];
     
-  	if (self.recorder)
+  	if (self.avRecorder)
     {
-  		[self.recorder prepareToRecord];
-  		self.recorder.meteringEnabled = YES;
-  		[self.recorder record];
+  		[self.avRecorder prepareToRecord];
+  		self.avRecorder.meteringEnabled = YES;
+  		[self.avRecorder record];
         
 		self.levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.03
                                                            target: self
@@ -539,22 +540,22 @@
 
 - (void) endRecording
 {
-    [self.recorder pause];
-    self.recorder = nil;
+    [self.avRecorder pause];
+    self.avRecorder = nil;
     [self.levelTimer invalidate], self.levelTimer = nil;
     
     // Show button 'volume glow' and reset it's scale
-    self.recordButtonGlowView.hidden = TRUE;
-    [self.recordButtonGlowView setTransform: CGAffineTransformMakeScale(1.0f, 1.0f)];
+    self.recordButtonGlowImageView.hidden = TRUE;
+    [self.recordButtonGlowImageView setTransform: CGAffineTransformMakeScale(1.0f, 1.0f)];
 }
 
 
 - (void) levelTimerCallback: (NSTimer *) timer
 {
-    [self.recorder updateMeters];
+    [self.avRecorder updateMeters];
     
     // Convert from dB to linear
-	double averagePowerForChannel = pow(10, (0.05 * [self.recorder averagePowerForChannel: 0]));
+	double averagePowerForChannel = pow(10, (0.05 * [self.avRecorder averagePowerForChannel: 0]));
     
     NSLog (@"Power %f", averagePowerForChannel);
     
@@ -573,7 +574,7 @@
     
 //    NSLog (@"Scale %f", scaleFactor);
 
-    [self.recordButtonGlowView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
+    [self.recordButtonGlowImageView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
 }
 
 #pragma mark - TextView delegate methods

@@ -17,7 +17,9 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
-@interface SYNChannelsTopTabViewController ()
+@interface SYNChannelsTopTabViewController () <UICollectionViewDelegate,
+                                               UICollectionViewDataSource,
+                                               UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;

@@ -25,7 +25,10 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNDiscoverTopTabViewController ()
+@interface SYNDiscoverTopTabViewController () <UIGestureRecognizerDelegate,
+                                               UICollectionViewDataSource,
+                                               UICollectionViewDelegateFlowLayout,
+                                               UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) BOOL shouldPlaySound;

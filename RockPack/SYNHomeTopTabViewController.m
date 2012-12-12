@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNHomeTopTabViewController.h"
 #import "SYNHomeSectionHeaderView.h"
+#import "SYNHomeTopTabViewController.h"
 #import "SYNVideoThumbnailCell.h"
 #import "Video.h"
 
@@ -16,9 +16,9 @@
 @interface SYNHomeTopTabViewController ()
 
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) NSMutableArray *videos;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) NSMutableArray *videosArray;
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
