@@ -852,11 +852,25 @@
 //                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
 }
 
+
+// User has pressed the Done button, so create a new channel
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {    
+    [self addChannelWithTitle: textField.text];
+    
+    return YES;
+}
+
+- (void) textFieldDidEndEditing: (UITextField *) textField
+{
+    self.channelChooserView.alpha = 0.0f;
+}
+
+- (void) addChannelWithTitle: (NSString *) title
+{
     Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
     
-    newChannel.title = textField.text;
+    newChannel.title = title;
     newChannel.subtitle = @"CHANNEL";
     newChannel.rockedByUserValue = FALSE;
     newChannel.totalRocksValue = 0;
@@ -864,37 +878,24 @@
     
     // TODO: Make these window offsets less hard-coded
     NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
-                                                                                                     70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
+                                                                                                            70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
     
     Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
     newChannel.keyframeURL = coverChannel.keyframeURL;
-    
     newChannel.wallpaperURL = coverChannel.wallpaperURL;
-    
     newChannel.biog = coverChannel.biog;
+    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", coverChannel.title, coverChannel.subtitle];
     
-    NSString *biogTitle = coverChannel.title;
-    
-    NSString *biogSubtitle = coverChannel.subtitle;;
-    
-    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", biogTitle, biogSubtitle];
     for (NSIndexPath *indexPath in self.selectionsArray)
     {
-        // Get video 
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];      
+        // Get video
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         [[newChannel videosSet] addObject: video];
     }
     
     [self.channelNameTextField resignFirstResponder];
     [self clearImageWell];
-
-    return YES;
-}
-
-- (void) textFieldDidEndEditing: (UITextField *) textField
-{
-    self.channelChooserView.alpha = 0.0f;
 }
 
 @end
