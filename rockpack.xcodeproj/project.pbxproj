@@ -3009,6 +3009,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kishan Patel (78Q79YX9WD)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
@@ -3018,6 +3019,7 @@
 					"\"$(SRCROOT)/RockPack\"",
 				);
 				PRODUCT_NAME = rockpack;
+				PROVISIONING_PROFILE = "0EE419CB-9B49-4341-AA31-A0A30B5FC14F";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
