@@ -97,7 +97,7 @@
                                        @"wallpaperURL" : @"ChannelWallpaper3",
                                        @"title" : @"ITUNES",
                                        @"subtitle" : @"WHAT'S ON",
-                                       @"biog" : @"TThe iTunes Store has been redesigned for your Mac, PC, iPad, iPhone and iPod touch, so it looks and works the same wherever you shop. Easy-to-browse shelves serve up popular music, films, TV programmes and more. And all the features you know and love are even easier to get to. It’s the best kind of shopping — simple.",
+                                       @"biog" : @"The iTunes Store has been redesigned for your Mac, PC, iPad, iPhone and iPod touch, so it looks and works the same wherever you shop. Easy-to-browse shelves serve up popular music, films, TV programmes and more. And all the features you know and love are even easier to get to. It’s the best kind of shopping — simple.",
                                        @"totalRocks" : @886,
                                        @"rockedByUser" : @FALSE}];
             
