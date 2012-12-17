@@ -162,11 +162,12 @@
         self.channelOverlayView.image = [UIImage imageNamed: @"OverlayChannelCreate.png"];
         [self.channelChooserView addSubview: self.channelOverlayView];
         
-        self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 325, 384, 30)];
+        self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 328, 384, 35)];
         
         self.channelNameTextField.textAlignment = NSTextAlignmentCenter;
         self.channelNameTextField.textColor = [UIColor whiteColor];
-        self.channelNameTextField.font = [UIFont boldRockpackFontOfSize: 22.0f];
+        self.channelNameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+        self.channelNameTextField.font = [UIFont rockpackFontOfSize: 36.0f];
         [self.channelChooserView addSubview: self.channelNameTextField];
         
         // Carousel collection view
@@ -191,7 +192,7 @@
         [self.channelChooserView addSubview: self.channelCoverCarouselCollectionView];
         
         // Initially hide this view
-        self.channelChooserView.hidden = TRUE;
+        self.channelChooserView.alpha = 0.0f;
         [self.view addSubview: self.channelChooserView];
     }
 }
