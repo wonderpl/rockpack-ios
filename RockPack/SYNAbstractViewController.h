@@ -52,8 +52,6 @@
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
-- (IBAction) createChannelFromImageWell: (id) sender;
-
 - (BOOL) hasImageWell;
 
 - (void) highlightImageWell: (BOOL) showHighlight;

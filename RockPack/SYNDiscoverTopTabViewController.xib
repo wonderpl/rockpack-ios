@@ -59,7 +59,7 @@
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">307</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{512, 89}, {512, 497}}</string>
+						<string key="NSFrame">{{512, 88}, {512, 499}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -87,7 +87,7 @@
 							<object class="IBUIImageView" id="68687741">
 								<reference key="NSNextResponder" ref="469858340"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{512, 499}</string>
+								<string key="NSFrameSize">{512, 598}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="139001911"/>
@@ -366,12 +366,13 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 						</array>
-						<string key="NSFrame">{{0, 88}, {512, 598}}</string>
+						<string key="NSFrame">{{0, 88}, {512, 499}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="68687741"/>
 						<string key="NSReuseIdentifierKey">_NS:10</string>
 						<reference key="IBUIBackgroundColor" ref="1061543414"/>
+						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>

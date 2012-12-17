@@ -22,7 +22,7 @@
 #import "Video.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNAbstractViewController () 
+@interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
@@ -162,12 +162,14 @@
         self.channelOverlayView.image = [UIImage imageNamed: @"OverlayChannelCreate.png"];
         [self.channelChooserView addSubview: self.channelOverlayView];
         
-        self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 328, 384, 35)];
+        self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 330, 384, 35)];
         
         self.channelNameTextField.textAlignment = NSTextAlignmentCenter;
         self.channelNameTextField.textColor = [UIColor whiteColor];
         self.channelNameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+        self.channelNameTextField.returnKeyType = UIReturnKeyDone;
         self.channelNameTextField.font = [UIFont rockpackFontOfSize: 36.0f];
+        self.channelNameTextField.delegate = self;
         [self.channelChooserView addSubview: self.channelNameTextField];
         
         // Carousel collection view
@@ -177,11 +179,13 @@
         channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(360.0f , 226.0f);
         channelCoverCarouselHorizontalLayout.cellSpacing = 40.0f;
         
-        self.channelCoverCarouselCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(157, 603, 608, 72)
+        self.channelCoverCarouselCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(62, 58, 900, 226)
                                                                      collectionViewLayout: channelCoverCarouselHorizontalLayout];
 
         self.channelCoverCarouselCollectionView.delegate = self;
         self.channelCoverCarouselCollectionView.dataSource = self;
+        self.channelCoverCarouselCollectionView.backgroundColor = [UIColor clearColor];
+        self.channelCoverCarouselCollectionView.showsHorizontalScrollIndicator = FALSE;
         
         // Set up our carousel
         [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
