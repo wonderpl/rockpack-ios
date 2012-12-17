@@ -9,17 +9,41 @@
 //
 //  To keep the code as DRY as possible, we put as much common stuff in here as possible
 
+#import "AppConstants.h"
+#import "AudioToolbox/AudioToolbox.h"
+#import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
+#import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
+#import "SYNChannelSelectorCell.h"
+#import "SYNImageWellCell.h"
+#import "UIFont+SYNFont.h"
 #import "Video.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface SYNAbstractViewController ()
+@interface SYNAbstractViewController () 
 
+@property (nonatomic, assign) BOOL shouldPlaySound;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
+@property (nonatomic, strong) IBOutlet UICollectionView *imageWellCollectionView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
+@property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
+@property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *imageWellArray;
+@property (nonatomic, strong) NSMutableArray *selectionsArray;
+@property (nonatomic, strong) UIButton *imageWellAddButton;
+@property (nonatomic, strong) UIButton *imageWellDeleteButton;
+@property (nonatomic, strong) UIButton *imageWellShuffleButton;
+@property (nonatomic, strong) UIImageView *imageWellMessageView;
+@property (nonatomic, strong) UIImageView *imageWellPanelView;
+@property (nonatomic, strong) UIView *dropZoneView;
+@property (nonatomic, strong) UIView *imageWellView;
 
 @end
+
 
 @implementation SYNAbstractViewController
 
@@ -28,6 +52,157 @@
 
 // Need to explicitly synthesise these as we are using the real ivars below
 @synthesize managedObjectContext = _managedObjectContext;
+
+#pragma mark - Initialisation
+
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if (self.hasImageWell)
+    {
+        // Initialise arrays with default capacities
+        self.imageWellArray = [[NSMutableArray alloc] initWithCapacity: 100];
+        self.selectionsArray = [[NSMutableArray alloc] initWithCapacity: 100];
+        
+        // Initialise common views
+        
+        // Overall view to slide in and out of view
+        self.imageWellView = [[UIView alloc] initWithFrame: CGRectMake(0, 577, 1024, 111)];
+        
+        // Panel view
+        self.imageWellPanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 111)];
+        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
+        [self.imageWellView addSubview: self.imageWellPanelView];
+        
+        // Buttons
+        
+        self.imageWellDeleteButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.imageWellDeleteButton.frame = CGRectMake(786, 37, 50, 42);
+        
+        [self.imageWellDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDelete.png"]
+                                    forState: UIControlStateNormal];
+        
+        [self.imageWellDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDeleteHighlighted.png"]
+                                    forState: UIControlStateHighlighted];
+        
+        [self.imageWellDeleteButton addTarget: self
+                                       action: @selector(clearImageWell)
+                             forControlEvents: UIControlEventTouchUpInside];
+        
+        [self.imageWellView addSubview: self.imageWellDeleteButton];
+        
+        self.imageWellAddButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.imageWellAddButton.frame = CGRectMake(850, 36, 50, 42);
+        
+        [self.imageWellAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAdd.png"]
+                                 forState: UIControlStateNormal];
+        
+        [self.imageWellAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAddHighlighted.png"]
+                                 forState: UIControlStateSelected];
+        
+        [self.imageWellAddButton addTarget: self
+                                    action: @selector(createChannelFromImageWell)
+                          forControlEvents: UIControlEventTouchUpInside];
+        
+        [self.imageWellView addSubview: self.imageWellAddButton];
+        
+        self.imageWellShuffleButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.imageWellShuffleButton.frame = CGRectMake(913, 37, 50, 42);
+        
+        [self.imageWellShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffle.png"]
+                                     forState: UIControlStateNormal];
+        
+        [self.imageWellShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffleHighlighted.png"]
+                                     forState: UIControlStateHighlighted];
+        
+        [self.imageWellView addSubview: self.imageWellShuffleButton];
+        
+        // Message view
+        self.imageWellMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(156, 47, 411, 31)];
+        self.imageWellMessageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
+        [self.imageWellView addSubview: self.imageWellMessageView];
+        
+        // Imagewell collection view
+        
+        // Need to create a layout first
+        UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+        standardFlowLayout.itemSize = CGSizeMake(127.0f , 72.0f);
+        standardFlowLayout.minimumInteritemSpacing = 0.0f;
+        standardFlowLayout.minimumLineSpacing = 15.0f;
+        standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        self.imageWellCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(157, 26, 608, 72)
+                                                          collectionViewLayout: standardFlowLayout];
+        
+        self.imageWellCollectionView.delegate = self;
+        self.imageWellCollectionView.dataSource = self;
+        
+        self.imageWellCollectionView.backgroundColor = [UIColor clearColor];
+        
+
+        // Register cells
+        UINib *imageWellCellNib = [UINib nibWithNibName: @"SYNImageWellCell"
+                                                 bundle: nil];
+        
+        [self.imageWellCollectionView registerNib: imageWellCellNib
+                       forCellWithReuseIdentifier: @"ImageWellCell"];
+        
+        [self.imageWellView addSubview: self.imageWellCollectionView];
+        
+        // Drop zone
+        self.dropZoneView = [[UIView alloc] initWithFrame: CGRectMake(14, 603, 125, 72)];
+        [self.imageWellView addSubview: self.dropZoneView];
+        
+        [self.view addSubview: self.imageWellView];
+        
+        self.channelChooserView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 398)];
+        
+        self.channelOverlayView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
+        self.channelOverlayView.image = [UIImage imageNamed: @"OverlayChannelCreate.png"];
+        [self.channelChooserView addSubview: self.channelOverlayView];
+        
+        self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 325, 384, 30)];
+        
+        self.channelNameTextField.textAlignment = NSTextAlignmentCenter;
+        self.channelNameTextField.textColor = [UIColor whiteColor];
+        self.channelNameTextField.font = [UIFont boldRockpackFontOfSize: 22.0f];
+        [self.channelChooserView addSubview: self.channelNameTextField];
+        
+        // Carousel collection view
+        
+        // Set carousel collection view to use custom layout algorithm
+        CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
+        channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(360.0f , 226.0f);
+        channelCoverCarouselHorizontalLayout.cellSpacing = 40.0f;
+        
+        self.channelCoverCarouselCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(157, 603, 608, 72)
+                                                                     collectionViewLayout: channelCoverCarouselHorizontalLayout];
+
+        self.channelCoverCarouselCollectionView.delegate = self;
+        self.channelCoverCarouselCollectionView.dataSource = self;
+        
+        // Set up our carousel
+        [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
+                                    forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
+        
+        self.channelCoverCarouselCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
+        
+        [self.channelChooserView addSubview: self.channelCoverCarouselCollectionView];
+        
+        // Initially hide this view
+        self.channelChooserView.hidden = TRUE;
+        [self.view addSubview: self.channelChooserView];
+    }
+}
+
+
+- (void) viewDidAppear: (BOOL) animated
+{
+    [super viewDidAppear: animated];
+    
+    [self.imageWellCollectionView reloadData];
+}
 
 
 #pragma mark - Core Data support
@@ -269,5 +444,330 @@
 }
 
 
+#pragma mark - Initialisation
+
+
+- (NSInteger) collectionView: (UICollectionView *) cv
+      numberOfItemsInSection: (NSInteger) section
+{
+    if (cv == self.channelCoverCarouselCollectionView)
+    {
+        return 10;
+    }
+    else if (cv == self.imageWellCollectionView)
+    {
+        return self.imageWellArray.count;
+    }
+    else
+    {
+        // Signal that we do not handle this collection view
+        return -1;
+    }
+}
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    if (cv == self.channelCoverCarouselCollectionView)
+    {
+#ifdef SOUND_ENABLED
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+                                                              ofType: @"aif"];
+        
+        if (self.shouldPlaySound == TRUE)
+        {
+            NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+            SystemSoundID sound;
+            AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+            AudioServicesPlaySystemSound(sound);
+        }
+#endif
+        
+        SYNChannelSelectorCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
+                                                                     forIndexPath: indexPath];
+        
+        NSString *imageName = [NSString stringWithFormat: @"ChannelCreationCover%d.png", (indexPath.row % 10) + 1];
+        
+        // Now add a 2 pixel transparent edge on the image (which dramatically reduces jaggies on transformation)
+        UIImage *image = [UIImage imageNamed: imageName];
+        CGRect imageRect = CGRectMake( 0 , 0 , image.size.width + 4 , image.size.height + 4 );
+        
+        UIGraphicsBeginImageContext(imageRect.size);
+        [image drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
+        CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        cell.imageView.image = image;
+        
+        cell.imageView.layer.shouldRasterize = YES;
+        cell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
+        cell.imageView.clipsToBounds = NO;
+        cell.imageView.layer.masksToBounds = NO;
+        
+        // End of clever jaggie reduction
+        
+        return cell;
+    }
+    else if (cv == self.imageWellCollectionView)
+    {
+        SYNImageWellCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
+                                                               forIndexPath: indexPath];
+        
+        cell.imageView.image = [self.imageWellArray objectAtIndex: indexPath.row];
+        
+        return cell;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+
+- (BOOL) collectionView: (UICollectionView *) cv
+         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
+{
+    // Assume for now, that we can handle this
+    BOOL handledInAbstractView = TRUE;
+    
+    if (cv == self.channelCoverCarouselCollectionView)
+    {
+        //#warning "Need to select wallpack here"
+        NSLog (@"Selecting channel cover cell does nothing");
+    }
+    else if (cv == self.imageWellCollectionView)
+    {
+        NSLog (@"Selecting image well cell does nothing");
+    }
+    else
+    {
+        // OK, it turns out that we can't handle this (so indicate to caller)
+        handledInAbstractView = FALSE;
+    }
+    
+    return handledInAbstractView;
+}
+
+- (IBAction) createChannelFromImageWell
+{
+    UIViewController *pvc = self.parentViewController;
+    
+    [pvc.view addSubview: self.channelChooserView];
+    
+    self.channelNameTextField.text = @"";
+    [self.channelNameTextField becomeFirstResponder];
+    
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.channelChooserView.alpha = 1.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+    
+    // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
+    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
+    [self.channelCoverCarouselCollectionView scrollToItemAtIndexPath: startIndexPath
+                                                    atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
+                                                            animated: NO];
+    
+    // Only play the scrolling click (after we have scrolled to the right position in the list,
+    // which might not have finished in this run loop
+    [NSObject performBlock: ^
+     {
+         self.shouldPlaySound = TRUE;
+     }
+                afterDelay: 0.1f];
+}
+
+
+// Assume no image well by default
+- (BOOL) hasImageWell
+{
+    return FALSE;
+}
+
+- (IBAction) clearImageWell
+{
+#ifdef SOUND_ENABLED
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Trash"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
+    
+    [self.selectionsArray removeAllObjects];
+    
+    [self.imageWellArray removeAllObjects];
+    [self.imageWellCollectionView reloadData];
+    
+    self.imageWellAddButton.enabled = FALSE;
+    self.imageWellDeleteButton.enabled = FALSE;
+    self.imageWellAddButton.selected = FALSE;
+    
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.imageWellMessageView.alpha = 1.0f;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+}
+
+
+- (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
+{
+    //    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
+    //                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
+}
+
+
+// User has pressed the Done button, so create a new channel
+- (BOOL) textFieldShouldReturn: (UITextField *) textField
+{
+    [self addChannelWithTitle: textField.text];
+    
+    return YES;
+}
+
+- (void) textFieldDidEndEditing: (UITextField *) textField
+{
+    self.channelChooserView.alpha = 0.0f;
+}
+
+- (void) addChannelWithTitle: (NSString *) title
+{
+    Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
+    
+    newChannel.title = title;
+    newChannel.subtitle = @"CHANNEL";
+    newChannel.rockedByUserValue = FALSE;
+    newChannel.totalRocksValue = 0;
+    newChannel.userGeneratedValue = TRUE;
+    
+    // TODO: Make these window offsets less hard-coded
+    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
+                                                                                                            70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
+    
+    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    newChannel.keyframeURL = coverChannel.keyframeURL;
+    newChannel.wallpaperURL = coverChannel.wallpaperURL;
+    newChannel.biog = coverChannel.biog;
+    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", coverChannel.title, coverChannel.subtitle];
+    
+    for (Video *video in self.selectionsArray)
+    {
+        [[newChannel videosSet] addObject: video];
+    }
+    
+    [self.channelNameTextField resignFirstResponder];
+    [self clearImageWell];
+}
+
+#pragma mark - Image well support
+
+- (void) animateImageWellAdditionWithVideo: (Video *) video
+{
+#ifdef SOUND_ENABLED
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Select"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
+    
+    // If this is the first thing we are adding then fade out the message
+    if (self.imageWellArray.count == 0)
+    {
+        self.imageWellAddButton.enabled = TRUE;
+        self.imageWellAddButton.selected = TRUE;
+        self.imageWellDeleteButton.enabled = TRUE;
+        
+        [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Contract thumbnail view
+             self.imageWellMessageView.alpha = 0.0f;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
+    }
+    
+    [self.selectionsArray addObject: video];
+    
+    // Add image at front
+    UIImage *image = video.keyframeImage;
+    
+    [self.imageWellArray insertObject: image
+                              atIndex: 0];
+    
+    CGRect imageWellView = self.imageWellCollectionView.frame;
+    imageWellView.origin.x -= 142;
+    imageWellView.size.width += 142;
+    self.imageWellCollectionView.frame = imageWellView;
+    
+    [self.imageWellCollectionView reloadData];
+    
+    [self.imageWellCollectionView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
+                                         atScrollPosition: UICollectionViewScrollPositionLeft
+                                                 animated: NO];
+    
+    // Animate the view out onto the screen
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.5f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         CGRect imageWellView = self.imageWellCollectionView.frame;
+         imageWellView.origin.x += 142;
+         imageWellView.size.width -= 142;
+         self.imageWellCollectionView.frame =  imageWellView;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+}
+
+- (void) highlightImageWell: (BOOL) showHighlight
+{
+    if (showHighlight)
+    {
+        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWellHighlighted.png"];
+    }
+    else
+    {
+        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
+    }
+}
+
+
+- (BOOL) pointInImageWell: (CGPoint) point
+{
+    return CGRectContainsPoint(self.imageWellView.bounds, point);
+}
 
 @end

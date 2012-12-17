@@ -363,11 +363,16 @@
 
 #pragma mark - Rockie-Talkie gesture handlers
 
+// Swipe rockie-talkie off screen
+
 -(void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
     if (!self.didNotSwipe)
     {
         self.didNotSwipe = TRUE;
+        
+        // Stop recording
+        [self endRecording];
     
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -404,6 +409,7 @@
 }
 
 
+// Swipe rockie-talkie onto screen
 - (void) swipeRockieTalkieRight: (UISwipeGestureRecognizer *) swipeGesture
 {
     if (self.didNotSwipe)

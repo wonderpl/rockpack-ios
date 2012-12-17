@@ -512,6 +512,7 @@
 		01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */; };
 		01EC6237166EAAA6003154B1 /* SYNAbstractDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNAbstractDetailViewController.m */; };
 		01EC6238166EAAA6003154B1 /* SYNAbstractDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EC6236166EAAA6003154B1 /* SYNAbstractDetailViewController.xib */; };
+		01F014FE167F22E800A85774 /* MessageDragAndDrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F014FD167F22E800A85774 /* MessageDragAndDrop.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1097,6 +1098,7 @@
 		01EC6234166EAAA5003154B1 /* SYNAbstractDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractDetailViewController.h; sourceTree = "<group>"; };
 		01EC6235166EAAA6003154B1 /* SYNAbstractDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractDetailViewController.m; sourceTree = "<group>"; };
 		01EC6236166EAAA6003154B1 /* SYNAbstractDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAbstractDetailViewController.xib; sourceTree = "<group>"; };
+		01F014FD167F22E800A85774 /* MessageDragAndDrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MessageDragAndDrop.png; path = Assets/Images/MessageDragAndDrop.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1436,6 +1438,7 @@
 		01363EA3162F521D00FFAA09 /* Messages */ = {
 			isa = PBXGroup;
 			children = (
+				01F014FD167F22E800A85774 /* MessageDragAndDrop.png */,
 				01677DF416554A7C00B1B1D8 /* MessageDragAndDrop@2x.png */,
 			);
 			name = Messages;
@@ -2783,6 +2786,7 @@
 				01A0769316762C9000E1CDAD /* ButtonStarHighlighted@2x.png in Resources */,
 				01A9BE1D16763E800098EA0C /* ButtonShareHighlighted.png in Resources */,
 				01A9BE1E16763E800098EA0C /* ButtonShareHighlighted@2x.png in Resources */,
+				01F014FE167F22E800A85774 /* MessageDragAndDrop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2954,6 +2958,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nick Banks (QWB4Z97ECZ)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
@@ -2962,6 +2967,7 @@
 					"\"$(SRCROOT)/RockPack\"",
 				);
 				PRODUCT_NAME = rockpack;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6EF3CC4B-2D3C-484B-8B9A-1364FE1FC4ED";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

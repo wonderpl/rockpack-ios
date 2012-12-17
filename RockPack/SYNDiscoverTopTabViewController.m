@@ -8,11 +8,8 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
-#import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
-#import "NSObject+Blocks.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelSelectorCell.h"
 #import "SYNChannelsDB.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
@@ -23,41 +20,26 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import <QuartzCore/QuartzCore.h>
 
 @interface SYNDiscoverTopTabViewController () <UIGestureRecognizerDelegate,
-                                               UICollectionViewDataSource,
-                                               UICollectionViewDelegateFlowLayout,
                                                UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL inDrag;
-@property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
-@property (nonatomic, strong) IBOutlet UIButton *imageWellAddButton;
-@property (nonatomic, strong) IBOutlet UIButton *imageWellDeleteButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
-@property (nonatomic, strong) IBOutlet UICollectionView *imageWellCollectionView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *imageWellMessageView;
-@property (nonatomic, strong) IBOutlet UIImageView *imageWellPanelView;
 @property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *subtitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, strong) IBOutlet UIView *channelChooserView;
-@property (nonatomic, strong) IBOutlet UIView *dropZoneView;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
-@property (nonatomic, strong) NSMutableArray *imageWellArray;
-@property (nonatomic, strong) NSMutableArray *selectionsArray;
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @end
@@ -67,10 +49,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Initialise arrays with default capacities
-    self.imageWellArray = [[NSMutableArray alloc] initWithCapacity: 100];
-    self.selectionsArray = [[NSMutableArray alloc] initWithCapacity: 100];
+
 
     // Set the labels to use the custom font
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
@@ -91,28 +70,13 @@
                                                                                                            action: @selector(longPressThumbnail:)];
     
     [self.videoThumbnailCollectionView addGestureRecognizer: longPressOnThumbnailView];
-
-    // Init image well collection view
-    UINib *imageWellCellNib = [UINib nibWithNibName: @"SYNImageWellCell"
-                                             bundle: nil];
-
-    [self.imageWellCollectionView registerNib: imageWellCellNib
-         forCellWithReuseIdentifier: @"ImageWellCell"];
-
-    // Set caroulsel collection view to use custom layout algorithm
-    CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
-    self.channelCoverCarouselCollectionView.collectionViewLayout = channelCoverCarouselHorizontalLayout;
-
-    // Set up our carousel
-    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
-              forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
-
-    self.channelCoverCarouselCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal; 
 }
 
 
 - (void) viewWillAppear: (BOOL) animated
 {
+    [super viewWillAppear: animated];
+    
     // TODO: Remove this video download hack once we have real data from the API
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
     [SYNChannelsDB sharedChannelsDBManager];
@@ -120,6 +84,12 @@
     // Set the first video
     [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
                                                        inSection: 0]];
+}
+
+
+- (BOOL) hasImageWell
+{
+    return TRUE;
 }
 
 
@@ -208,7 +178,7 @@
         [self.view addSubview: self.draggedView];
         
         // Highlight the image well
-        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWellHighlighted.png"];
+        [self highlightImageWell: TRUE];
     }
     else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
     {
@@ -219,13 +189,14 @@
     else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
     {
         // Un-highlight the image well
-        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
+        [self highlightImageWell: FALSE];
         
         // and let's figure out where we dropped it
-        CGPoint point = [sender locationInView: self.dropZoneView];
+//        CGPoint point = [sender locationInView: self.dropZoneView];
+        CGPoint point = [sender locationInView: self.view];
         
         // If we have dropped it in the right place, then add it to our image well
-        if (CGRectContainsPoint(self.imageWellPanelView.bounds, point))
+        if ([self pointInImageWell: point])
             
         {
             // Hide the dragged thumbnail and add new image to image well
@@ -282,7 +253,7 @@
         [self.view addSubview: self.draggedView];
         
         // Highlight the image well
-        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWellHighlighted.png"];
+        [self highlightImageWell: TRUE];
     }
     else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
     {
@@ -294,20 +265,21 @@
     else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
     {
         // Un-highlight the image well
-        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
+        [self highlightImageWell: FALSE];
         
         // and let's figure out where we dropped it
-        CGPoint point = [sender locationInView: self.dropZoneView];
+//        CGPoint point = [sender locationInView: self.dropZoneView];
+        CGPoint point = [sender locationInView: self.view];
         
         // If we have dropped it in the right place, then add it to our image well
-        if (CGRectContainsPoint(self.imageWellPanelView.bounds, point))
+        if ([self pointInImageWell: point])
             
         {
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
 
-            [self animateImageWellAdditionWithVideoForIndexPath: self.draggedIndexPath];
-
+            Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.draggedIndexPath];
+            [self animateImageWellAdditionWithVideo: video];
         }
         else
         {
@@ -350,8 +322,9 @@
 
 - (void) viewDidAppear: (BOOL) animated
 {
+    [super viewDidAppear: animated];
+    
     [self.videoThumbnailCollectionView reloadData];
-    [self.imageWellCollectionView reloadData];
 }
 
 
@@ -384,8 +357,6 @@
         video.rockedByUserValue = TRUE;
         video.totalRocksValue += 1;
     }
-    
-//    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     
     [self saveDB];
 }
@@ -434,13 +405,8 @@
 {
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-//    cell.addItButton.enabled = FALSE;
-    
-    [self animateImageWellAdditionWithVideoForIndexPath: indexPath];
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    [self animateImageWellAdditionWithVideo: video];
 }
 
 #pragma mark - Large video view gesture handler
@@ -548,22 +514,27 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) view
+- (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
-    if (view == self.channelCoverCarouselCollectionView)
+    // See if this can be handled in our abstract base class
+    int items = [super collectionView: cv
+              numberOfItemsInSection:  section];
+    
+    if (items < 0)
     {
-        return 10;
+        if (cv == self.videoThumbnailCollectionView)
+        {
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+            items = [sectionInfo numberOfObjects];
+        }
+        else
+        {
+            AssertOrLog(@"No valid collection view found");
+        }
     }
-    else if (view == self.videoThumbnailCollectionView)
-    {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
-        return [sectionInfo numberOfObjects];
-    }
-    else
-    {
-        return self.imageWellArray.count;
-    }
+    
+    return items;
 }
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
@@ -574,328 +545,97 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.channelCoverCarouselCollectionView)
-    {
-#ifdef SOUND_ENABLED
-        // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
-                                                              ofType: @"aif"];
-        
-        if (self.shouldPlaySound == TRUE)
-        {
-            NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-            SystemSoundID sound;
-            AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-            AudioServicesPlaySystemSound(sound);
-        }
-#endif
-        
-        SYNChannelSelectorCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
-                                                                      forIndexPath: indexPath];
-        
-        NSString *imageName = [NSString stringWithFormat: @"ChannelCreationCover%d.png", (indexPath.row % 10) + 1];
-
-        // Now add a 2 pixel transparent edge on the image (which dramatically reduces jaggies on transformation)        
-        UIImage *image = [UIImage imageNamed: imageName];
-        CGRect imageRect = CGRectMake( 0 , 0 , image.size.width + 4 , image.size.height + 4 );
-        
-        UIGraphicsBeginImageContext(imageRect.size);
-        [image drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
-        CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+    // See if this can be handled in our abstract base class
+    UICollectionViewCell *cell = [super collectionView: cv
+                                cellForItemAtIndexPath: indexPath];
     
-        cell.imageView.image = image;
-        
-        cell.imageView.layer.shouldRasterize = YES;
-        cell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
-        cell.imageView.clipsToBounds = NO;
-        cell.imageView.layer.masksToBounds = NO;
-        
-        // End of clever jaggie reduction
-        
-        return cell;
-    }
-    else if (cv == self.videoThumbnailCollectionView)
+    // Do we have a valid cell?
+    if (!cell)
     {
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-        
-        SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
-                                                               forIndexPath: indexPath];
-        
-        cell.imageView.image = video.keyframeImage;
-        
-        cell.maintitle.text = video.title;
-        
-        cell.subtitle.text = video.subtitle;
-        
-        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        
-        cell.rockItButton.selected = video.rockedByUserValue;
-        
-        // Wire the Done button up to the correct method in the sign up controller
-        
-        [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleThumbnailRockItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.rockItButton addTarget: self
-                              action: @selector(toggleThumbnailRockItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
-        [cell.addItButton removeTarget: nil
-                                 action: @selector(touchThumbnailAddItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.addItButton addTarget: self
-                              action: @selector(touchThumbnailAddItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
-        return cell;
+        if (cv == self.videoThumbnailCollectionView)
+        {
+            // No, but it was our collection view
+            Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+            
+            SYNVideoThumbnailCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+                                                                                      forIndexPath: indexPath];
+            
+            videoThumbnailCell.imageView.image = video.keyframeImage;
+            
+            videoThumbnailCell.maintitle.text = video.title;
+            
+            videoThumbnailCell.subtitle.text = video.subtitle;
+            
+            videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+            
+            videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
+            
+            // Wire the Done button up to the correct method in the sign up controller
+            
+            [videoThumbnailCell.rockItButton removeTarget: nil
+                                     action: @selector(toggleThumbnailRockItButton:)
+                           forControlEvents: UIControlEventTouchUpInside];
+            
+            [videoThumbnailCell.rockItButton addTarget: self
+                                  action: @selector(toggleThumbnailRockItButton:)
+                        forControlEvents: UIControlEventTouchUpInside];
+            
+            [videoThumbnailCell.addItButton removeTarget: nil
+                                     action: @selector(touchThumbnailAddItButton:)
+                           forControlEvents: UIControlEventTouchUpInside];
+            
+            [videoThumbnailCell.addItButton addTarget: self
+                                  action: @selector(touchThumbnailAddItButton:)
+                        forControlEvents: UIControlEventTouchUpInside];
+            
+            cell = videoThumbnailCell;
+        }
+        else
+        {
+            AssertOrLog(@"No valid collection view found");
+        }
     }
-    else
-    {
-        SYNImageWellCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
-                                                               forIndexPath: indexPath];
-        
-        cell.imageView.image = [self.imageWellArray objectAtIndex: indexPath.row];
-        
-        return cell;
-    }
+    
+    return cell;
 }
 
 
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.channelCoverCarouselCollectionView)
+    // See if this can be handled in our abstract base class
+    BOOL handledInSuperview = [super collectionView: (UICollectionView *) cv
+                   didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
+    
+    if (!handledInSuperview)
     {
-//#warning "Need to select wallpack here"
-        NSLog (@"Need to select wallpack here");
-    }
-    else if (cv == self.videoThumbnailCollectionView)
-    {
-#ifdef FULL_SCREEN_THUMBNAILS
-        if (self.isLargeVideoViewExpanded == FALSE)
+        // Check to see if is one that we can handle
+        if (cv == self.videoThumbnailCollectionView)
         {
-            [self animateLargeVideoViewRight: nil];
-            self.largeVideoViewExpanded = TRUE;
+    #ifdef FULL_SCREEN_THUMBNAILS
+            if (self.isLargeVideoViewExpanded == FALSE)
+            {
+                [self animateLargeVideoViewRight: nil];
+                self.largeVideoViewExpanded = TRUE;
+            }
+    #endif
+            self.currentIndexPath = indexPath;
+            
+            [self setLargeVideoToIndexPath: indexPath];
         }
-#endif
-        self.currentIndexPath = indexPath;
-        
-        [self setLargeVideoToIndexPath: indexPath];
-    }
-    else
-    {
-        NSLog (@"Selecting image well cell does nothing");
+        else
+        {
+            AssertOrLog(@"Trying to select unexpected collection view");
+        }
     }
 }
-
-#pragma mark - Image well support
 
 
 - (IBAction) addToImageWellFromLargeVideo: (id) sender
 {
-    [self animateImageWellAdditionWithVideoForIndexPath: self.currentIndexPath];
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+    [self animateImageWellAdditionWithVideo: video];
 }
 
-- (void) animateImageWellAdditionWithVideoForIndexPath: (NSIndexPath *) indexPath
-{
-#ifdef SOUND_ENABLED
-    // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Select"
-                                                          ofType: @"aif"];
-    
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
-#endif
-    
-    // If this is the first thing we are adding then fade out the message
-    if (self.imageWellArray.count == 0)
-    {
-        self.imageWellAddButton.enabled = TRUE;
-        self.imageWellAddButton.selected = TRUE;
-        self.imageWellDeleteButton.enabled = TRUE;
-        
-        [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Contract thumbnail view
-             self.imageWellMessageView.alpha = 0.0f;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-         }];
-    }
-
-    [self.selectionsArray addObject: indexPath];
-    
-    // Add image at front
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    UIImage *image = video.keyframeImage;
-    
-    [self.imageWellArray insertObject: image
-                         atIndex: 0];
-    
-    CGRect imageWellView = self.imageWellCollectionView.frame;
-    imageWellView.origin.x -= 142;
-    imageWellView.size.width += 142;
-    self.imageWellCollectionView.frame = imageWellView;
-    
-    [self.imageWellCollectionView reloadData];
-    
-    [self.imageWellCollectionView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
-                               atScrollPosition: UICollectionViewScrollPositionLeft
-                                       animated: NO];
-    
-    // Animate the view out onto the screen
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.5f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         CGRect imageWellView = self.imageWellCollectionView.frame;
-         imageWellView.origin.x += 142;
-         imageWellView.size.width -= 142;
-         self.imageWellCollectionView.frame =  imageWellView;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-}
-
-
-- (IBAction) clearImageWell
-{
-#ifdef SOUND_ENABLED
-    // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Trash"
-                                                          ofType: @"aif"];
-    
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
-#endif
-    
-    [self.selectionsArray removeAllObjects];
-    
-    [self.imageWellArray removeAllObjects];
-    [self.imageWellCollectionView reloadData];
-    
-    self.imageWellAddButton.enabled = FALSE;
-    self.imageWellDeleteButton.enabled = FALSE;
-    self.imageWellAddButton.selected = FALSE;
-    
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.imageWellMessageView.alpha = 1.0f;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-}
-
-
-- (IBAction) addImagewellToRockpack: (id) sender
-{
-    UIViewController *pvc = self.parentViewController;
-    
-    [pvc.view addSubview: self.channelChooserView];
-    
-    self.channelNameTextField.text = @"";
-    [self.channelNameTextField becomeFirstResponder];
-    
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.channelChooserView.alpha = 1.0f;
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-    
-    // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
-    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
-    [self.channelCoverCarouselCollectionView scrollToItemAtIndexPath: startIndexPath
-                                  atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
-                                          animated: NO];
-    
-    // Only play the scrolling click (after we have scrolled to the right position in the list,
-    // which might not have finished in this run loop
-    [NSObject performBlock: ^
-     {
-         self.shouldPlaySound = TRUE;
-     }
-                afterDelay: 0.1f];
-}
-
-- (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
-{
-//    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
-//                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
-}
-
-
-// User has pressed the Done button, so create a new channel
-- (BOOL) textFieldShouldReturn: (UITextField *) textField
-{    
-    [self addChannelWithTitle: textField.text];
-    
-    return YES;
-}
-
-- (void) textFieldDidEndEditing: (UITextField *) textField
-{
-    self.channelChooserView.alpha = 0.0f;
-}
-
-- (void) addChannelWithTitle: (NSString *) title
-{
-    Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
-    
-    newChannel.title = title;
-    newChannel.subtitle = @"CHANNEL";
-    newChannel.rockedByUserValue = FALSE;
-    newChannel.totalRocksValue = 0;
-    newChannel.userGeneratedValue = TRUE;
-    
-    // TODO: Make these window offsets less hard-coded
-    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
-                                                                                                            70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
-    
-    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    newChannel.keyframeURL = coverChannel.keyframeURL;
-    newChannel.wallpaperURL = coverChannel.wallpaperURL;
-    newChannel.biog = coverChannel.biog;
-    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", coverChannel.title, coverChannel.subtitle];
-    
-    for (NSIndexPath *indexPath in self.selectionsArray)
-    {
-        // Get video
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-        [[newChannel videosSet] addObject: video];
-    }
-    
-    [self.channelNameTextField resignFirstResponder];
-    [self clearImageWell];
-}
 
 @end

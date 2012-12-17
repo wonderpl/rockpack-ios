@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Channel" representedClassName="Channel" syncable="YES">
         <attribute name="biog" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="biogTitle" optional="YES" attributeType="String" syncable="YES"/>
@@ -30,8 +30,8 @@
         <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Channel" inverseName="videos" inverseEntity="Channel" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Channel" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Video" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Channel" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="User" positionX="-81" positionY="261" width="128" height="105"/>
+        <element name="Video" positionX="-216" positionY="63" width="128" height="165"/>
     </elements>
 </model>

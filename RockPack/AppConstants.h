@@ -44,6 +44,9 @@
 // Camera preview animation
 #define kCameraPreviewAnimationDuration 0.3f
 
+// Large Video panel
+#define kCreateChannelPanelAnimationDuration 0.3f
+
 //
 // Dimensions
 //

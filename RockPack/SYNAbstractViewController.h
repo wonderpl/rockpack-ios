@@ -10,7 +10,11 @@
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
-@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate>
+@class Video;
+
+@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
+                                                         UICollectionViewDataSource,
+                                                         UICollectionViewDelegate>
 
 // Public properties
 
@@ -41,5 +45,20 @@
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath;
+
+- (BOOL) collectionView: (UICollectionView *) cv
+         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
+
+- (IBAction) createChannelFromImageWell: (id) sender;
+
+- (BOOL) hasImageWell;
+
+- (void) highlightImageWell: (BOOL) showHighlight;
+- (BOOL) pointInImageWell: (CGPoint) point;
+
+- (void) animateImageWellAdditionWithVideo: (Video *) video;
 
 @end
