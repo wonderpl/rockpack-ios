@@ -772,7 +772,7 @@
 
 - (BOOL) pointInImageWell: (CGPoint) point
 {
-    return CGRectContainsPoint(self.imageWellView.bounds, point);
+    return CGRectContainsPoint(self.imageWellView.frame, point);
 }
 
 @end
