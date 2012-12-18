@@ -42,8 +42,6 @@
 @property (nonatomic, strong) UIImageView *imageWellPanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
 
-@property (nonatomic, weak) id imageWellAnimationBlock;
-
 @end
 
 
@@ -620,18 +618,17 @@
 
 - (void) startImageWellDismissalTimer
 {
-    // Cancel any previous animations
-    [self.imageWellAnimationBlock cancel];
-    
-    
-    self.imageWellAnimationBlock = [NSObject performBlock: ^
-                                    {
-                                        self.imageWellAnimationBlock = nil;
-                                        [self hideImageWell: TRUE];
-                                    }
-                                    afterDelay: kImageWellOnScreenDuration];
+    self.imageWellAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kImageWellOnScreenDuration
+                                                                    target: self
+                                                                  selector: @selector(imageWellTimerCallback)
+                                                                  userInfo: nil
+                                                                   repeats: NO];
 }
 
+- (void) imageWellTimerCallback
+{
+    [self hideImageWell: TRUE];
+}
 
 - (void) showImageWell: (BOOL) animated
 {
