@@ -34,6 +34,7 @@
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
+@property (nonatomic, strong) NSTimer *imageWellAnimationTimer;
 @property (nonatomic, strong) UIButton *imageWellAddButton;
 @property (nonatomic, strong) UIButton *imageWellDeleteButton;
 @property (nonatomic, strong) UIButton *imageWellShuffleButton;
@@ -41,6 +42,7 @@
 @property (nonatomic, strong) UIImageView *imageWellPanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (nonatomic, strong) UIView *imageWellView;
+@property (nonatomic, strong) id imageWellAnimationBlock;
 
 @end
 
@@ -52,6 +54,15 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
+#pragma mark - Custom accessor methods
+
+- (void) setImageWellAnimationTimer: (NSTimer*) timer
+{
+    // We need to invalidate our timeer before setting a new one (so that the old one doen't fire anyway)
+    [_imageWellAnimationTimer invalidate];
+    _imageWellAnimationTimer = timer;
+}
+
 #pragma mark - Initialisation
 
 - (void) viewDidLoad
@@ -62,7 +73,7 @@
     {
         // Initialise common views
         // Overall view to slide in and out of view
-        self.imageWellView = [[UIView alloc] initWithFrame: CGRectMake(0, 577, 1024, 111)];
+        self.imageWellView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kImageWellEffectiveHeight, 1024, 111)];
         
         // Panel view
         self.imageWellPanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 111)];
@@ -583,7 +594,7 @@
      {
          self.shouldPlaySound = TRUE;
      }
-                afterDelay: 0.1f];
+     afterDelay: 0.1f];
 }
 
 
@@ -607,6 +618,18 @@
     return nil;
 }
 
+- (void) startImageWellDismissalTimer
+{
+    // Cancel any previous animations
+    [self.imageWellAnimationBlock cancel];
+    
+    self.imageWellAnimationBlock = [NSObject performBlock: ^
+                                    {
+                                        [self hideImageWell: TRUE];
+                                    }
+                                    afterDelay: kImageWellOnScreenDuration];
+}
+
 
 - (void) showImageWell: (BOOL) animated
 {
@@ -614,44 +637,67 @@
     {
         self.imageWellVisible = TRUE;
         
-        // Slide imagewell view upwards (and contract any other dependent visible views)
-        [UIView animateWithDuration: kImageWellAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             CGRect imageWellFrame = self.imageWellView.frame;
-             imageWellFrame.origin.x -= kImageWellEffectiveHeight;
-             self.imageWellView.frame = imageWellFrame;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-         }];
+        if (animated)
+        {
+            // Slide imagewell view upwards (and contract any other dependent visible views)
+            [UIView animateWithDuration: kImageWellAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^
+             {
+                 [self shiftImageWellUp];
+             }
+             completion: ^(BOOL finished)
+             {
+             }];
+        }
+        else
+        {
+            [self shiftImageWellUp];
+        }
     }
 }
 
 
 - (void) hideImageWell: (BOOL) animated
 {
-    if (self.imageWellVisible == FALSE)
+    if (self.imageWellVisible == TRUE)
     {
         self.imageWellVisible = FALSE;
         
-        [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Slide imagewell view downwards (and expand any other dependent visible views)
-             CGRect imageWellFrame = self.imageWellView.frame;
-             imageWellFrame.origin.x -= kImageWellEffectiveHeight;
-             self.imageWellView.frame = imageWellFrame;
-         }
-                         completion: ^(BOOL finished)
-         {
-         }];
+        if (animated)
+        {
+            [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^
+             {
+                 // Slide imagewell view downwards (and expand any other dependent visible views)
+                 [self shiftImageWellDown];
+             }
+             completion: ^(BOOL finished)
+             {
+             }];
+        }
+        else
+        {
+            [self shiftImageWellDown];
+        }
     }
+}
+
+- (void) shiftImageWellUp
+{
+    CGRect imageWellFrame = self.imageWellView.frame;
+    imageWellFrame.origin.y -= kImageWellEffectiveHeight;
+    self.imageWellView.frame = imageWellFrame;
+}
+
+- (void) shiftImageWellDown
+{
+    CGRect imageWellFrame = self.imageWellView.frame;
+    imageWellFrame.origin.y += kImageWellEffectiveHeight;
+    self.imageWellView.frame = imageWellFrame;
 }
 
 - (IBAction) clearImageWell

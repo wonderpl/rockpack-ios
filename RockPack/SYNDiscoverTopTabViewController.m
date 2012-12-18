@@ -257,6 +257,8 @@
 {
     if (sender.state == UIGestureRecognizerStateBegan)
     {
+        [self showImageWell: TRUE];
+        
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
@@ -296,6 +298,7 @@
     {
         // Un-highlight the image well
         [self highlightImageWell: FALSE];
+        [self startImageWellDismissalTimer];
         
         // and let's figure out where we dropped it
         //        CGPoint point = [sender locationInView: self.dropZoneView];
@@ -407,6 +410,9 @@
 
 - (IBAction) touchThumbnailAddItButton: (UIButton *) addItButton
 {
+    [self showImageWell: TRUE];
+    [self startImageWellDismissalTimer];
+    
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
