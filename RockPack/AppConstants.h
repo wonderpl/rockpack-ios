@@ -40,7 +40,7 @@
 
 // Image well
 #define kImageWellAnimationDuration 0.3f
-#define kImageWellOnScreenDuration 2.0f
+#define kImageWellOnScreenDuration 10.0f
 
 // Large Video panel
 #define kLargeVideoPanelAnimationDuration 0.3f

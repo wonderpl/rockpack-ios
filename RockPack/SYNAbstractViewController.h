@@ -18,6 +18,7 @@
 // Public properties
 @property (readonly) NSManagedObjectContext *managedObjectContext;
 @property (readonly, getter = isImageWellVisible) BOOL imageWellVisible;
+@property (nonatomic, strong) UIView *imageWellView;
 
 // Public methods
 

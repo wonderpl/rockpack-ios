@@ -1219,6 +1219,7 @@
 			isa = PBXGroup;
 			children = (
 				01982525162A02DD00216900 /* Contstants */,
+				019825EE162C948000216900 /* Categories */,
 				019824E21629CAC000216900 /* App Delegate */,
 				012632CC162DF7B30009FF9C /* Collection Cells */,
 				012632C7162DF4C40009FF9C /* Layout Engine Support */,
@@ -1867,7 +1868,6 @@
 		01982525162A02DD00216900 /* Contstants */ = {
 			isa = PBXGroup;
 			children = (
-				019825EE162C948000216900 /* Categories */,
 				01982526162A02F700216900 /* AppConstants.h */,
 			);
 			name = Contstants;

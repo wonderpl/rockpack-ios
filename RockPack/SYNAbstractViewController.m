@@ -41,8 +41,8 @@
 @property (nonatomic, strong) UIImageView *imageWellMessageView;
 @property (nonatomic, strong) UIImageView *imageWellPanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
-@property (nonatomic, strong) UIView *imageWellView;
-@property (nonatomic, strong) id imageWellAnimationBlock;
+
+@property (nonatomic, weak) id imageWellAnimationBlock;
 
 @end
 
@@ -623,8 +623,10 @@
     // Cancel any previous animations
     [self.imageWellAnimationBlock cancel];
     
+    
     self.imageWellAnimationBlock = [NSObject performBlock: ^
                                     {
+                                        self.imageWellAnimationBlock = nil;
                                         [self hideImageWell: TRUE];
                                     }
                                     afterDelay: kImageWellOnScreenDuration];
@@ -691,6 +693,15 @@
     CGRect imageWellFrame = self.imageWellView.frame;
     imageWellFrame.origin.y -= kImageWellEffectiveHeight;
     self.imageWellView.frame = imageWellFrame;
+    
+    NSArray *views = [self otherViewsToResizeOnImageWellExpandOrContract];
+    
+//    for (UIView *view in views)
+//    {
+//        CGRect viewFrame = self.view.frame;
+//        viewFrame.size.height -= kImageWellEffectiveHeight;
+//        self.view.frame = viewFrame;
+//    }
 }
 
 - (void) shiftImageWellDown
@@ -698,6 +709,15 @@
     CGRect imageWellFrame = self.imageWellView.frame;
     imageWellFrame.origin.y += kImageWellEffectiveHeight;
     self.imageWellView.frame = imageWellFrame;
+    
+    NSArray *views = [self otherViewsToResizeOnImageWellExpandOrContract];
+    
+//    for (UIView *view in views)
+//    {
+//        CGRect viewFrame = self.view.frame;
+//        viewFrame.size.height += kImageWellEffectiveHeight;
+//        self.view.frame = viewFrame;
+//    }
 }
 
 - (IBAction) clearImageWell

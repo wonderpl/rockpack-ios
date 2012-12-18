@@ -333,6 +333,12 @@
     }
 }
 
+- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract
+{
+//    return @[self.largeVideoPanelView, self.videoThumbnailCollectionView];
+        return @[self.largeVideoPanelView];
+}
+
 
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
                  animated: (BOOL) animated
@@ -418,8 +424,6 @@
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     [self animateImageWellAdditionWithVideo: video];
 }
-
-#pragma mark - Large video view gesture handler
 
 - (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
@@ -617,6 +621,65 @@
         }
     }
 }
+
+- (void) showImageWell: (BOOL) animated
+{
+    // Slide imagewell view upwards (and contract any other dependent visible views)
+    [UIView animateWithDuration: kImageWellAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         CGRect imageWellFrame = self.imageWellView.frame;
+         imageWellFrame.origin.y -= kImageWellEffectiveHeight;
+         self.imageWellView.frame = imageWellFrame;
+         
+         CGRect viewFrame = self.largeVideoPanelView.frame;
+         viewFrame.size.height -= kImageWellEffectiveHeight;
+         self.largeVideoPanelView.frame = viewFrame;
+         
+         viewFrame = self.videoThumbnailCollectionView.frame;
+         viewFrame.size.height -= kImageWellEffectiveHeight;
+         self.videoThumbnailCollectionView.frame = viewFrame;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         
+     }];
+}
+
+
+- (void) hideImageWell: (BOOL) animated
+{
+
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         CGRect imageWellFrame = self.imageWellView.frame;
+         imageWellFrame.origin.y += kImageWellEffectiveHeight;
+         self.imageWellView.frame = imageWellFrame;
+         
+         // Slide imagewell view downwards (and expand any other dependent visible views)
+         CGRect viewFrame = self.largeVideoPanelView.frame;
+         viewFrame.size.height += kImageWellEffectiveHeight;
+         self.largeVideoPanelView.frame = viewFrame;
+         
+         viewFrame = self.videoThumbnailCollectionView.frame;
+         viewFrame.size.height += kImageWellEffectiveHeight;
+         self.videoThumbnailCollectionView.frame = viewFrame;
+         
+
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+
+}
+
+
 
 
 @end
