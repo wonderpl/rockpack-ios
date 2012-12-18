@@ -172,7 +172,8 @@
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         
-        self.draggedView.image = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        self.draggedView.image = video.keyframeImage;
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
