@@ -23,6 +23,9 @@ enum {
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
 
+// This is used to indicate the UIViewController that 
+@property (nonatomic, weak) UIViewController *viewControllerDelegate;
+
 - (void) setFocus: (BOOL) focus;
 
 @end

@@ -64,12 +64,6 @@
 
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
          forCellWithReuseIdentifier: @"ThumbnailCell"];
-    
-    // Add dragging to video thumbnail view
-    UILongPressGestureRecognizer *longPressOnThumbnailView = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-                                                                                                           action: @selector(longPressThumbnail:)];
-    
-    [self.videoThumbnailCollectionView addGestureRecognizer: longPressOnThumbnailView];
 }
 
 
@@ -84,6 +78,14 @@
     // Set the first video
     [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
                                                        inSection: 0]];
+}
+
+
+- (void) viewDidAppear: (BOOL) animated
+{
+    [super viewDidAppear: animated];
+    
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -224,6 +226,33 @@
 }
 
 
+- (IBAction) addToImageWellFromLargeVideo: (id) sender
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+    [self animateImageWellAdditionWithVideo: video];
+}
+
+
+- (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    self.titleLabel.text = video.title;
+    self.subtitleLabel.text = video.subtitle;
+    
+    [self updateLargeVideoRockpackForIndexPath: indexPath];
+}
+
+
+- (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    
+    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+    self.rockItButton.selected = video.rockedByUserValue;
+}
+
+
 - (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender
 {
     if (sender.state == UIGestureRecognizerStateBegan)
@@ -240,7 +269,7 @@
         
         self.inDrag = YES;
         self.draggedIndexPath = indexPath;
-
+        
         // Store the initial drag point, just in case we have to animate it back if the user misses the drop zone
         self.initialDragCenter = [sender locationInView: self.view];
         
@@ -269,7 +298,7 @@
         [self highlightImageWell: FALSE];
         
         // and let's figure out where we dropped it
-//        CGPoint point = [sender locationInView: self.dropZoneView];
+        //        CGPoint point = [sender locationInView: self.dropZoneView];
         CGPoint point = [sender locationInView: self.view];
         
         // If we have dropped it in the right place, then add it to our image well
@@ -278,7 +307,7 @@
         {
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
-
+            
             Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.draggedIndexPath];
             [self animateImageWellAdditionWithVideo: video];
         }
@@ -302,33 +331,6 @@
 }
 
 
-- (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
-{
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    
-    self.titleLabel.text = video.title;
-    self.subtitleLabel.text = video.subtitle;
-    
-    [self updateLargeVideoRockpackForIndexPath: indexPath];
-}
-
-- (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
-{
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    
-    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-    self.rockItButton.selected = video.rockedByUserValue;
-}
-
-
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear: animated];
-    
-    [self.videoThumbnailCollectionView reloadData];
-}
-
-
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
                  animated: (BOOL) animated
 {
@@ -341,6 +343,7 @@
         [self.videoThumbnailCollectionView reloadData];
     }
 }
+
 
 - (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
 {
@@ -562,33 +565,11 @@
                                                                                       forIndexPath: indexPath];
             
             videoThumbnailCell.imageView.image = video.keyframeImage;
-            
             videoThumbnailCell.maintitle.text = video.title;
-            
             videoThumbnailCell.subtitle.text = video.subtitle;
-            
             videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-            
             videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
-            
-            // Wire the Done button up to the correct method in the sign up controller
-            
-            [videoThumbnailCell.rockItButton removeTarget: nil
-                                     action: @selector(toggleThumbnailRockItButton:)
-                           forControlEvents: UIControlEventTouchUpInside];
-            
-            [videoThumbnailCell.rockItButton addTarget: self
-                                  action: @selector(toggleThumbnailRockItButton:)
-                        forControlEvents: UIControlEventTouchUpInside];
-            
-            [videoThumbnailCell.addItButton removeTarget: nil
-                                     action: @selector(touchThumbnailAddItButton:)
-                           forControlEvents: UIControlEventTouchUpInside];
-            
-            [videoThumbnailCell.addItButton addTarget: self
-                                  action: @selector(touchThumbnailAddItButton:)
-                        forControlEvents: UIControlEventTouchUpInside];
-            
+            videoThumbnailCell.viewControllerDelegate = self;
             cell = videoThumbnailCell;
         }
         else
@@ -629,13 +610,6 @@
             AssertOrLog(@"Trying to select unexpected collection view");
         }
     }
-}
-
-
-- (IBAction) addToImageWellFromLargeVideo: (id) sender
-{
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
-    [self animateImageWellAdditionWithVideo: video];
 }
 
 

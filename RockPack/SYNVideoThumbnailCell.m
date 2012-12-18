@@ -18,6 +18,8 @@
 
 @implementation SYNVideoThumbnailCell
 
+@synthesize viewControllerDelegate = _viewControllerDelegate;
+
 - (id) initWithFrame: (CGRect) frame
 {
     if ((self = [super initWithFrame: frame]))
@@ -65,6 +67,30 @@
         self.highlightedBackgroundView.hidden = TRUE;
     }
 }
+
+
+// Need to do this outside awakeFromNib as the delegate is not set at that point
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+{
+    _viewControllerDelegate = viewControllerDelegate;
+    
+    // Add dragging to video thumbnail view
+    UILongPressGestureRecognizer *longPressOnThumbnailGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
+                                                                                                                        action: @selector(longPressThumbnail:)];
+    
+    [self.imageView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
+    
+    // Add button targets
+    [self.rockItButton addTarget: self.viewControllerDelegate
+                          action: @selector(toggleThumbnailRockItButton:)
+                forControlEvents: UIControlEventTouchUpInside];
+    
+    
+    [self.addItButton addTarget: self.viewControllerDelegate
+                         action: @selector(touchThumbnailAddItButton:)
+               forControlEvents: UIControlEventTouchUpInside];
+}
+
 
 
 @end
