@@ -18,6 +18,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNImageWellCell.h"
+#import "SYNVideoSelection.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import <QuartzCore/QuartzCore.h>
@@ -32,8 +33,6 @@
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
-@property (nonatomic, strong) NSMutableArray *imageWellArray;
-@property (nonatomic, strong) NSMutableArray *selectionsArray;
 @property (nonatomic, strong) UIButton *imageWellAddButton;
 @property (nonatomic, strong) UIButton *imageWellDeleteButton;
 @property (nonatomic, strong) UIButton *imageWellShuffleButton;
@@ -61,12 +60,7 @@
     
     if (self.hasImageWell)
     {
-        // Initialise arrays with default capacities
-        self.imageWellArray = [[NSMutableArray alloc] initWithCapacity: 100];
-        self.selectionsArray = [[NSMutableArray alloc] initWithCapacity: 100];
-        
         // Initialise common views
-        
         // Overall view to slide in and out of view
         self.imageWellView = [[UIView alloc] initWithFrame: CGRectMake(0, 577, 1024, 111)];
         
@@ -461,7 +455,7 @@
     }
     else if (cv == self.imageWellCollectionView)
     {
-        return self.imageWellArray.count;
+        return SYNVideoSelection.sharedVideoSelectionArray.count;
     }
     else
     {
@@ -520,7 +514,8 @@
         SYNImageWellCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
                                                                forIndexPath: indexPath];
         
-        cell.imageView.image = [self.imageWellArray objectAtIndex: indexPath.row];
+        Video *video = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.row];
+        cell.imageView.image = video.keyframeImage;
         
         return cell;
     }
@@ -611,9 +606,8 @@
     AudioServicesPlaySystemSound(sound);
 #endif
     
-    [self.selectionsArray removeAllObjects];
+    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
     
-    [self.imageWellArray removeAllObjects];
     [self.imageWellCollectionView reloadData];
     
     self.imageWellAddButton.enabled = FALSE;
@@ -675,7 +669,7 @@
     newChannel.biog = coverChannel.biog;
     newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", coverChannel.title, coverChannel.subtitle];
     
-    for (Video *video in self.selectionsArray)
+    for (Video *video in SYNVideoSelection.sharedVideoSelectionArray)
     {
         [[newChannel videosSet] addObject: video];
     }
@@ -700,7 +694,7 @@
 #endif
     
     // If this is the first thing we are adding then fade out the message
-    if (self.imageWellArray.count == 0)
+    if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
         self.imageWellAddButton.enabled = TRUE;
         self.imageWellAddButton.selected = TRUE;
@@ -720,13 +714,8 @@
          }];
     }
     
-    [self.selectionsArray addObject: video];
-    
-    // Add image at front
-    UIImage *image = video.keyframeImage;
-    
-    [self.imageWellArray insertObject: image
-                              atIndex: 0];
+    [SYNVideoSelection.sharedVideoSelectionArray insertObject: video
+                                                      atIndex: 0];
     
     CGRect imageWellView = self.imageWellCollectionView.frame;
     imageWellView.origin.x -= 142;

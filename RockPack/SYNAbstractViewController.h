@@ -15,9 +15,7 @@
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
                                                          UICollectionViewDataSource,
                                                          UICollectionViewDelegate>
-
 // Public properties
-
 @property (readonly) NSManagedObjectContext *managedObjectContext;
 
 // Public methods
@@ -52,8 +50,10 @@
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
+// Is this tab imagewell compatible (returns false by default)
 - (BOOL) hasImageWell;
 
+// Highlights imagewell for when drag is in operation
 - (void) highlightImageWell: (BOOL) showHighlight;
 - (BOOL) pointInImageWell: (CGPoint) point;
 

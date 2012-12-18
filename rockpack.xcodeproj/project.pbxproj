@@ -462,6 +462,7 @@
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
 		01B7F768164FD43F009C5CCD /* SYNAbstractThumbnailDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */; };
 		01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */; };
+		01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D8C6A716807A54000059D1 /* SYNVideoSelection.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
 		01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D81664CDA5009B941F /* SYNAbstractViewController.m */; };
@@ -1033,6 +1034,8 @@
 		01B7F767164FD43F009C5CCD /* SYNAbstractThumbnailDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractThumbnailDB.m; sourceTree = "<group>"; };
 		01B7F769164FDA8A009C5CCD /* SYNChannelsDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDB.h; sourceTree = "<group>"; };
 		01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDB.m; sourceTree = "<group>"; };
+		01D8C6A616807A54000059D1 /* SYNVideoSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoSelection.h; sourceTree = "<group>"; };
+		01D8C6A716807A54000059D1 /* SYNVideoSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoSelection.m; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		01E427D21664C726009B941F /* Rockpack.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Rockpack.xcdatamodel; sourceTree = "<group>"; };
 		01E427D71664CDA5009B941F /* SYNAbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractViewController.h; sourceTree = "<group>"; };
@@ -1745,6 +1748,8 @@
 				019824ED1629CC6600216900 /* TestFlight */,
 				019824E91629CBD000216900 /* Exception Handler */,
 				019824E51629CB1D00216900 /* Debug */,
+				01D8C6A616807A54000059D1 /* SYNVideoSelection.h */,
+				01D8C6A716807A54000059D1 /* SYNVideoSelection.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -2884,6 +2889,7 @@
 				0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */,
 				0199F13B16721A4500E479C6 /* SYNHomeTopTabViewController.m in Sources */,
 				018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */,
+				01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
