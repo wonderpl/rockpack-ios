@@ -693,15 +693,6 @@
     CGRect imageWellFrame = self.imageWellView.frame;
     imageWellFrame.origin.y -= kImageWellEffectiveHeight;
     self.imageWellView.frame = imageWellFrame;
-    
-    NSArray *views = [self otherViewsToResizeOnImageWellExpandOrContract];
-    
-//    for (UIView *view in views)
-//    {
-//        CGRect viewFrame = self.view.frame;
-//        viewFrame.size.height -= kImageWellEffectiveHeight;
-//        self.view.frame = viewFrame;
-//    }
 }
 
 - (void) shiftImageWellDown
@@ -709,15 +700,6 @@
     CGRect imageWellFrame = self.imageWellView.frame;
     imageWellFrame.origin.y += kImageWellEffectiveHeight;
     self.imageWellView.frame = imageWellFrame;
-    
-    NSArray *views = [self otherViewsToResizeOnImageWellExpandOrContract];
-    
-//    for (UIView *view in views)
-//    {
-//        CGRect viewFrame = self.view.frame;
-//        viewFrame.size.height += kImageWellEffectiveHeight;
-//        self.view.frame = viewFrame;
-//    }
 }
 
 - (IBAction) clearImageWell
