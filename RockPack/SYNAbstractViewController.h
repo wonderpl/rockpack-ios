@@ -17,6 +17,7 @@
                                                          UICollectionViewDelegate>
 // Public properties
 @property (readonly) NSManagedObjectContext *managedObjectContext;
+@property (readonly, getter = isImageWellVisible) BOOL imageWellVisible;
 
 // Public methods
 
@@ -52,6 +53,17 @@
 
 // Is this tab imagewell compatible (returns false by default)
 - (BOOL) hasImageWell;
+
+
+// Override if the image w
+- (BOOL) isImageWellVisibleOnStart;
+
+- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract;
+
+
+- (void) showImageWell: (BOOL) animated;
+- (void) hideImageWell: (BOOL) animated;
+
 
 // Highlights imagewell for when drag is in operation
 - (void) highlightImageWell: (BOOL) showHighlight;

@@ -398,10 +398,6 @@
          }
                          completion: ^(BOOL finished)
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = -495;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
-             
              // Set the button to the appropriate state
              self.rockieTalkieButton.selected = FALSE;
          }];
@@ -440,10 +436,6 @@
          }
                          completion: ^(BOOL finished)
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = 0;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
-             
              // Set the button to the appropriate state
              self.rockieTalkieButton.selected = TRUE;
          }];

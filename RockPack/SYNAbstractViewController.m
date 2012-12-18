@@ -25,6 +25,7 @@
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
+@property (getter = isImageWellVisible) BOOL imageWellVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
 @property (nonatomic, strong) IBOutlet UICollectionView *imageWellCollectionView;
@@ -46,11 +47,10 @@
 
 @implementation SYNAbstractViewController
 
-@synthesize videoFetchedResultsController = _videoFetchedResultsController;
-@synthesize channelFetchedResultsController = _channelFetchedResultsController;
-
 // Need to explicitly synthesise these as we are using the real ivars below
+@synthesize channelFetchedResultsController = _channelFetchedResultsController;
 @synthesize managedObjectContext = _managedObjectContext;
+@synthesize videoFetchedResultsController = _videoFetchedResultsController;
 
 #pragma mark - Initialisation
 
@@ -593,6 +593,67 @@
     return FALSE;
 }
 
+
+// Assume that the imagewell is not visible on first entry to the tab
+- (BOOL) isImageWellVisibleOnStart;
+{
+    return FALSE;
+}
+
+
+// Assume that there are no other views to expand
+- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract
+{
+    return nil;
+}
+
+
+- (void) showImageWell: (BOOL) animated
+{
+    if (self.imageWellVisible == FALSE)
+    {
+        self.imageWellVisible = TRUE;
+        
+        // Slide imagewell view upwards (and contract any other dependent visible views)
+        [UIView animateWithDuration: kImageWellAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect imageWellFrame = self.imageWellView.frame;
+             imageWellFrame.origin.x -= kImageWellEffectiveHeight;
+             self.imageWellView.frame = imageWellFrame;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
+    }
+}
+
+
+- (void) hideImageWell: (BOOL) animated
+{
+    if (self.imageWellVisible == FALSE)
+    {
+        self.imageWellVisible = FALSE;
+        
+        [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             // Slide imagewell view downwards (and expand any other dependent visible views)
+             CGRect imageWellFrame = self.imageWellView.frame;
+             imageWellFrame.origin.x -= kImageWellEffectiveHeight;
+             self.imageWellView.frame = imageWellFrame;
+         }
+                         completion: ^(BOOL finished)
+         {
+         }];
+    }
+}
+
 - (IBAction) clearImageWell
 {
 #ifdef SOUND_ENABLED
@@ -605,14 +666,6 @@
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
     AudioServicesPlaySystemSound(sound);
 #endif
-    
-    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
-    
-    [self.imageWellCollectionView reloadData];
-    
-    self.imageWellAddButton.enabled = FALSE;
-    self.imageWellDeleteButton.enabled = FALSE;
-    self.imageWellAddButton.selected = FALSE;
     
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.0f

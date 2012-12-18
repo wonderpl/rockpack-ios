@@ -85,12 +85,13 @@
 							</object>
 							<object class="IBUIImageView" id="886759980">
 								<reference key="NSNextResponder" ref="92173708"/>
-								<int key="NSvFlags">-2147483374</int>
+								<int key="NSvFlags">274</int>
 								<string key="NSFrameSize">{512, 156}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="111552951"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>

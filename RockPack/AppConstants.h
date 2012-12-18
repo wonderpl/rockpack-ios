@@ -38,6 +38,9 @@
 // Rockie-talkie
 #define kRockieTalkieAnimationDuration 0.3f
 
+// Image well
+#define kImageWellAnimationDuration 0.3f
+
 // Large Video panel
 #define kLargeVideoPanelAnimationDuration 0.3f
 
@@ -50,6 +53,9 @@
 //
 // Dimensions
 //
+
+// Effective height (exlcuding shadow) of the image well
+#define kImageWellEffectiveHeight 99
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
