@@ -11,4 +11,9 @@
 
 @interface SYNBottomTabViewController : SYNAbstractViewController 
 
+@property (nonatomic, strong, readonly) IBOutlet UIButton *rockieTalkieButton;
+
+- (void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture;
+- (void) swipeRockieTalkieRight: (UISwipeGestureRecognizer *) swipeGesture;
+
 @end

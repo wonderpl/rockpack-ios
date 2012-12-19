@@ -16,6 +16,7 @@
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
+#import "SYNBottomTabViewController.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNImageWellCell.h"
 #import "SYNVideoSelection.h"
@@ -507,11 +508,15 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
-//    if (self.rockieTalkieButton.selected == FALSE)
-//    {
-//        // Need to slide rockie talkie out
-//        [self swipeRockieTalkieRight: nil];
-//    }
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    
+    if (bottomTabViewController.rockieTalkieButton.selected == FALSE)
+    {
+        // Need to slide rockie talkie out
+        [bottomTabViewController swipeRockieTalkieRight: nil];
+    }
 }
 
 

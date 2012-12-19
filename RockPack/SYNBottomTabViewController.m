@@ -364,7 +364,7 @@
 
 // Swipe rockie-talkie off screen
 
--(void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
+- (void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
     if (!self.didNotSwipe)
     {
