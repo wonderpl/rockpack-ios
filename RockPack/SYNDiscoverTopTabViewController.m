@@ -540,26 +540,7 @@
     // Do we have a valid cell?
     if (!cell)
     {
-        if (cv == self.videoThumbnailCollectionView)
-        {
-            // No, but it was our collection view
-            Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-            
-            SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                                      forIndexPath: indexPath];
-            
-            videoThumbnailCell.imageView.image = video.keyframeImage;
-            videoThumbnailCell.maintitle.text = video.title;
-            videoThumbnailCell.subtitle.text = video.subtitle;
-            videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-            videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
-            videoThumbnailCell.viewControllerDelegate = self;
-            cell = videoThumbnailCell;
-        }
-        else
-        {
-            AssertOrLog(@"No valid collection view found");
-        }
+        AssertOrLog(@"No valid collection view found");
     }
     
     return cell;

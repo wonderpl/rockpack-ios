@@ -183,7 +183,7 @@
             if (![[NSFileManager defaultManager] removeItemAtURL: storeURL
                                                             error: &error])
             {
-                NSLog(@"*** Could not delete persistent store, %@", error);
+                DebugLog(@"*** Could not delete persistent store, %@", error);
             }
         } // else the existing persistent store is compatible with the current model - nice!
     } // else no database file yet

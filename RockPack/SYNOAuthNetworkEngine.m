@@ -56,7 +56,7 @@
 			if (error)
             {
 				// Auth failed, so call the MKNetworkOperation object's error blocks (if any) with our own custom NSError
-				NSLog(@"Auth error: %@", error);
+				DebugLog(@"Auth error: %@", error);
                 [request operationFailedWithError: [NSError errorWithDomain: NSURLErrorDomain
                                                                        code: NSURLErrorUserAuthenticationRequired
                                                                    userInfo: nil]];

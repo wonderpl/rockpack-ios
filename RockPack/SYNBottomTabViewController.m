@@ -198,7 +198,6 @@
 	}
 }
 
-
 - (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
         shouldReceiveTouch: (UITouch *) touch
 {
@@ -531,7 +530,7 @@
   	}
     else
     {
-  		NSLog(@"%@", [error description]);
+  		DebugLog(@"%@", [error description]);
     }
 }
 
@@ -555,7 +554,7 @@
     // Convert from dB to linear
 	double averagePowerForChannel = pow(10, (0.05 * [self.avRecorder averagePowerForChannel: 0]));
     
-    NSLog (@"Power %f", averagePowerForChannel);
+    DebugLog (@"Power %f", averagePowerForChannel);
     
     // And clip to 0 > x > 1
     if (averagePowerForChannel < 0.0)
@@ -569,8 +568,6 @@
     
     // Adjust size of glow, Adding 1 for the scale factor
     double scaleFactor = 1.0f + averagePowerForChannel;
-    
-//    NSLog (@"Scale %f", scaleFactor);
 
     [self.recordButtonGlowImageView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
 }

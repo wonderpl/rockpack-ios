@@ -25,7 +25,6 @@
 @property (nonatomic, strong) IBOutlet SYNSwitch *toggleSwitch;
 @property (nonatomic, strong) IBOutlet UIButton *backButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UICollectionView *starredVideoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *packedVideosLabel;
@@ -68,8 +67,8 @@
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
                                              bundle: nil];
     
-    [self.starredVideoThumbnailCollectionView registerNib: videoThumbnailCellNib
-                          forCellWithReuseIdentifier: @"ThumbnailCell"];
+    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+                          forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
     
     // Channel thumbnails
     UINib *channelThumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
@@ -125,7 +124,7 @@
 {
     if (controller == self.videoFetchedResultsController)
     {
-        [self.starredVideoThumbnailCollectionView reloadData];
+        [self.videoThumbnailCollectionView reloadData];
     }
     else
     {
@@ -139,7 +138,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
-    if (cv == self.starredVideoThumbnailCollectionView)
+    if (cv == self.videoThumbnailCollectionView)
     {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
         return [sectionInfo numberOfObjects];
@@ -153,7 +152,7 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
 {
-    if (cv == self.starredVideoThumbnailCollectionView)
+    if (cv == self.videoThumbnailCollectionView)
     {
         return self.videoFetchedResultsController.sections.count;
     }
@@ -166,77 +165,51 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.starredVideoThumbnailCollectionView)
+    // See if this can be handled in our abstract base class
+    UICollectionViewCell *cell = [super collectionView: cv
+                                cellForItemAtIndexPath: indexPath];
+    
+    // Do we have a valid cell?
+    if (!cell)
     {
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-        
-        SYNVideoThumbnailWideCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
-                                                                    forIndexPath: indexPath];
-        
-        cell.imageView.image = video.keyframeImage;
-        
-        cell.maintitle.text = video.title;
-        
-        cell.subtitle.text = video.subtitle;
-        
-        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        
-        cell.rockItButton.selected = video.rockedByUserValue;
-        
-        // Wire the Done button up to the correct method in the sign up controller      
-        [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleVideoRockItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.rockItButton addTarget: self
-                              action: @selector(toggleVideoRockItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
-        [cell.addItButton removeTarget: nil
-                                action: @selector(touchVideoShareButton:)
-                      forControlEvents: UIControlEventTouchUpInside];
-		
-		[cell.addItButton addTarget: self
-                             action: @selector(touchVideoShareButton:)
-                   forControlEvents: UIControlEventTouchUpInside];
-        
-        return cell;
+        if (cv == self.channelThumbnailCollectionView)
+        {
+            Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+            
+            SYNChannelThumbnailCell *channelCell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
+                                                                          forIndexPath: indexPath];
+            
+            channelCell.imageView.image = channel.keyframeImage;
+            channelCell.titleLabel.text = channel.title;
+            channelCell.subtitleLabel.text = channel.subtitle;
+            channelCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+            channelCell.rockItButton.selected = channel.rockedByUserValue;
+            
+            // Wire the Done button up to the correct method in the sign up controller
+            [channelCell.rockItButton removeTarget: nil
+                                     action: @selector(toggleChannelRockItButton:)
+                           forControlEvents: UIControlEventTouchUpInside];
+            
+            [channelCell.rockItButton addTarget: self
+                                  action: @selector(toggleChannelRockItButton:)
+                        forControlEvents: UIControlEventTouchUpInside];
+            
+            cell = channelCell;
+        }
+        else
+        {
+            AssertOrLog(@"No valid collection view found");
+        }
     }
-    else
-    {
-        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-        
-        SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
-                                                                      forIndexPath: indexPath];
-        
-        cell.imageView.image = channel.keyframeImage;
-        
-        cell.titleLabel.text = channel.title;
-        
-        cell.subtitleLabel.text = channel.subtitle;
-        
-        cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
-        
-        cell.rockItButton.selected = channel.rockedByUserValue;
-        
-        // Wire the Done button up to the correct method in the sign up controller       
-        [cell.rockItButton removeTarget: nil
-                                 action: @selector(toggleChannelRockItButton:)
-                       forControlEvents: UIControlEventTouchUpInside];
-        
-        [cell.rockItButton addTarget: self
-                              action: @selector(toggleChannelRockItButton:)
-                    forControlEvents: UIControlEventTouchUpInside];
-        
-        return cell;
-    }
+    
+    return cell;
 }
 
 
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.starredVideoThumbnailCollectionView)
+    if (cv == self.videoThumbnailCollectionView)
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
@@ -286,11 +259,11 @@
          {
              // Swap collection views
              self.channelThumbnailCollectionView.alpha = 1.0f;
-             self.starredVideoThumbnailCollectionView.alpha = 0.0f;
+             self.videoThumbnailCollectionView.alpha = 0.0f;
          }
                          completion: ^(BOOL finished)
          {
-             self.starredVideoThumbnailCollectionView.hidden = TRUE;
+             self.videoThumbnailCollectionView.hidden = TRUE;
          }];
     }
     else
@@ -298,8 +271,8 @@
         // Set packed videos label to dark and channel label to light
         self.packedVideosLabel.textColor = self.lightSwitchColor;
         self.channelLabel.textColor = self.darkSwitchColor;
-        self.starredVideoThumbnailCollectionView.alpha = 0.0f;
-        self.starredVideoThumbnailCollectionView.hidden = FALSE;
+        self.videoThumbnailCollectionView.alpha = 0.0f;
+        self.videoThumbnailCollectionView.hidden = FALSE;
         
         
         [UIView animateWithDuration: kSwitchLabelAnimation
@@ -309,7 +282,7 @@
          {
              // Swap collection views
              self.channelThumbnailCollectionView.alpha = 0.0f;
-             self.starredVideoThumbnailCollectionView.alpha = 1.0f;
+             self.videoThumbnailCollectionView.alpha = 1.0f;
          }
                          completion: ^(BOOL finished)
          {
@@ -319,20 +292,9 @@
 }
 
 
-// Buttons activated from scrolling list of thumbnails
-- (IBAction) toggleVideoRockItButton: (UIButton *) rockItButton
+- (BOOL) shouldUpdateRockItStatus
 {
-    // Get to cell it self (from button subview)
-    UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.starredVideoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleVideoRockItAtIndex: indexPath];
+    return FALSE;
 }
 
 

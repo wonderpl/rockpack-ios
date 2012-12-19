@@ -135,7 +135,7 @@
     if (cv == self.videoThumbnailCollectionView)
     {
         // No, but it was our collection view
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: adjustedIndexPath];
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: adjustedIndexPath];
         
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
@@ -160,7 +160,7 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    NSLog (@"Selecting image well cell does nothing");
+    DebugLog (@"Selecting image well cell does nothing");
 }
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
@@ -179,11 +179,6 @@
     SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableSupplementaryViewOfKind: kind
                                                                     withReuseIdentifier: @"SYNHomeSectionHeaderView"
                                                                            forIndexPath: indexPath];
-    
-////    NSLog (@"About to display supplementary view %@, %@, %@", cv,kind,indexPath);
-//    SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableCellWithReuseIdentifier: 
-//                                                                           forIndexPath: indexPath];
-////    NSLog (@"Displayed supplementary");
     NSString *sectionText;
     BOOL focus = FALSE;
     
@@ -250,7 +245,7 @@
 
 - (IBAction) touchVideoAddItButton: (UIButton *) addItButton
 {
-    NSLog (@"No implementation yet");
+    DebugLog (@"No implementation yet");
 }
 
 

@@ -169,7 +169,7 @@
         // At this stage, we don't know whether the user is pinching in or out
         self.userPinchedOut = FALSE;
         
-        NSLog (@"UIGestureRecognizerStateBegan");
+        DebugLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollection]];
         
@@ -206,7 +206,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateChanged)
     {
-        NSLog (@"UIGestureRecognizerStateChanged");
+        DebugLog (@"UIGestureRecognizerStateChanged");
         float scale = sender.scale;
         
         if (scale < 1.0)
@@ -223,7 +223,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateEnded)
     {
-        NSLog (@"UIGestureRecognizerStateEnded");
+        DebugLog (@"UIGestureRecognizerStateEnded");
         
         if (self.userPinchedOut == TRUE)
         {
@@ -232,7 +232,7 @@
     }
     else if (sender.state == UIGestureRecognizerStateCancelled)
     {
-        NSLog (@"UIGestureRecognizerStateCancelled");
+        DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
 }

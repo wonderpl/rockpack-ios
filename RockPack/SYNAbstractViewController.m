@@ -344,7 +344,7 @@
         {
             for(NSError* detailedError in detailedErrors)
             {
-                NSLog(@" DetailedError: %@", [detailedError userInfo]);
+                DebugLog(@" DetailedError: %@", [detailedError userInfo]);
             }
         }
         
@@ -468,13 +468,22 @@
         [self toggleVideoRockItAtIndex: indexPath];
         [self updateOtherOnscreenVideoAssetsForIndexPath: indexPath];
         
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-        SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-        
-        cell.rockItButton.selected = video.rockedByUserValue;
-        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-
+        if (self.shouldUpdateRockItStatus == TRUE)
+        {
+            Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+            SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+            
+            cell.rockItButton.selected = video.rockedByUserValue;
+            cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+        }
     }
+}
+
+
+// This can be overridden if updating RockIt may cause the videoFetchedResults
+- (BOOL) shouldUpdateRockItStatus
+{
+    return TRUE;
 }
 
 
@@ -498,7 +507,11 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
-    NSLog (@"No share functionality currently implemented");
+//    if (self.rockieTalkieButton.selected == FALSE)
+//    {
+//        // Need to slide rockie talkie out
+//        [self swipeRockieTalkieRight: nil];
+//    }
 }
 
 
@@ -526,7 +539,26 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.channelCoverCarouselCollectionView)
+    UICollectionViewCell *cell = nil;
+    
+    if (cv == self.videoThumbnailCollectionView)
+    {
+        // No, but it was our collection view
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        
+        SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+                                                                                      forIndexPath: indexPath];
+        
+        videoThumbnailCell.imageView.image = video.keyframeImage;
+        videoThumbnailCell.maintitle.text = video.title;
+        videoThumbnailCell.subtitle.text = video.subtitle;
+        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+        videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
+        videoThumbnailCell.viewControllerDelegate = self;
+        
+        cell = videoThumbnailCell;
+    }
+    else if (cv == self.channelCoverCarouselCollectionView)
     {
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -542,7 +574,7 @@
         }
 #endif
         
-        SYNChannelSelectorCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
+        SYNChannelSelectorCell *channelCarouselCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                      forIndexPath: indexPath];
         
         NSString *imageName = [NSString stringWithFormat: @"ChannelCreationCover%d.png", (indexPath.row % 10) + 1];
@@ -557,31 +589,29 @@
         image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         
-        cell.imageView.image = image;
+        channelCarouselCell.imageView.image = image;
         
-        cell.imageView.layer.shouldRasterize = YES;
-        cell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
-        cell.imageView.clipsToBounds = NO;
-        cell.imageView.layer.masksToBounds = NO;
+        channelCarouselCell.imageView.layer.shouldRasterize = YES;
+        channelCarouselCell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
+        channelCarouselCell.imageView.clipsToBounds = NO;
+        channelCarouselCell.imageView.layer.masksToBounds = NO;
         
         // End of clever jaggie reduction
         
-        return cell;
+        cell = channelCarouselCell;
     }
     else if (cv == self.imageWellCollectionView)
     {
-        SYNImageWellCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
+        SYNImageWellCell *imageWellCell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
                                                                forIndexPath: indexPath];
         
         Video *video = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.row];
-        cell.imageView.image = video.keyframeImage;
+        imageWellCell.imageView.image = video.keyframeImage;
         
-        return cell;
+        cell = imageWellCell;
     }
-    else
-    {
-        return nil;
-    }
+
+    return cell;
 }
 
 
@@ -594,13 +624,13 @@
     if (cv == self.channelCoverCarouselCollectionView)
     {
         //#warning "Need to select wallpack here"
-        NSLog (@"Selecting channel cover cell does nothing");
+        DebugLog (@"Selecting channel cover cell does nothing");
     }
     else if (cv == self.imageWellCollectionView)
     {
-        NSLog (@"Selecting image well cell does nothing");
+        DebugLog (@"Selecting image well cell does nothing");
     }
-    else
+    else 
     {
         // OK, it turns out that we can't handle this (so indicate to caller)
         handledInAbstractView = FALSE;

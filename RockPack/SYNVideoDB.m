@@ -206,7 +206,7 @@
                 {
                     for(NSError* detailedError in detailedErrors)
                     {
-                        NSLog(@" DetailedError: %@", [detailedError userInfo]);
+                        DebugLog(@" DetailedError: %@", [detailedError userInfo]);
                     }
                 }
                 
