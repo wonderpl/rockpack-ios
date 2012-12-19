@@ -70,12 +70,17 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<bool key="IBUIAlwaysBounceVertical">YES</bool>
 						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 						<float key="IBUIMinimumZoomScale">0.0</float>
 						<float key="IBUIMaximumZoomScale">0.0</float>
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="42788729">
 							<reference key="IBUICollectionView" ref="932486542"/>
 							<string key="IBUIItemSize">{507, 175}</string>
+							<double key="IBUISectionInset.top">0.0</double>
+							<double key="IBUISectionInset.bottom">0.0</double>
+							<double key="IBUISectionInset.left">5</double>
+							<double key="IBUISectionInset.right">5</double>
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
