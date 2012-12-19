@@ -15,9 +15,11 @@ enum {
 
 @interface SYNVideoThumbnailWideCell : UICollectionViewCell
 
-@property (nonatomic, strong) IBOutlet UIImageView *imageView;
-@property (nonatomic, strong) IBOutlet UILabel *maintitle;
-@property (nonatomic, strong) IBOutlet UILabel *subtitle;
+@property (nonatomic, strong) IBOutlet UIImageView *videoImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
+@property (nonatomic, strong) IBOutlet UILabel *videoTitle;
+@property (nonatomic, strong) IBOutlet UILabel *channelName;
+@property (nonatomic, strong) IBOutlet UILabel *userName;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *addItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;

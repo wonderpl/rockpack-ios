@@ -140,9 +140,10 @@
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
         
-        videoThumbnailCell.imageView.image = video.keyframeImage;
-        videoThumbnailCell.maintitle.text = video.title;
-        videoThumbnailCell.subtitle.text = video.subtitle;
+        videoThumbnailCell.videoImageView.image = video.keyframeImage;
+        videoThumbnailCell.videoTitle.text = video.title;
+        videoThumbnailCell.channelName.text = video.subtitle;
+        videoThumbnailCell.userName.text = @"FRED DIBNAH";
         videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
         videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;

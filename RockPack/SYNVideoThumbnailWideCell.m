@@ -8,6 +8,7 @@
 
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNVideoThumbnailWideCell ()
 
@@ -49,8 +50,9 @@
 {
     [super awakeFromNib];
     
-    self.maintitle.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.subtitle.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.videoTitle.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.channelName.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.userName.font = [UIFont rockpackFontOfSize: 12.0f];
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.highlightedBackgroundView.hidden = TRUE;
 }
@@ -78,7 +80,7 @@
     UILongPressGestureRecognizer *longPressOnThumbnailGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
                                                                                                                         action: @selector(longPressThumbnail:)];
     
-    [self.imageView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
+    [self.videoImageView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
     
     // Add button targets
     [self.rockItButton addTarget: self.viewControllerDelegate
