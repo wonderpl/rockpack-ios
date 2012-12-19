@@ -8,7 +8,7 @@
 
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNHomeTopTabViewController.h"
-#import "SYNVideoThumbnailCell.h"
+#import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 
 #define FAKE_MULTIPLE_SECTIONS
@@ -37,11 +37,11 @@
     [self.videoThumbnailCollectionView addSubview: self.refreshControl];
 
     // Init collection view
-    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
                                              bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-         forCellWithReuseIdentifier: @"SYNVideoThumbnailCell"];
+         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
     
     // Register collection view header view
     UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
@@ -126,41 +126,33 @@
     adjustedIndexPath = indexPath;
 #endif
     
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: adjustedIndexPath];
-    
-    SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailCell"
+    SYNVideoThumbnailWideCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                 forIndexPath: indexPath];
     if ((indexPath.row < 3) && (indexPath.section == 0))
     {
         cell.focus = TRUE;
     }
     
-    cell.imageView.image = video.keyframeImage;
-    
-    cell.maintitle.text = video.title;
-    
-    cell.subtitle.text = video.subtitle;
-    
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-
-    cell.rockItButton.selected = video.rockedByUserValue;
-    
-    // Wire the Done button up to the correct method in the sign up controller    
-    [cell.rockItButton removeTarget: nil
-                             action: @selector(toggleVideoThumbnailRockItButton:)
-                   forControlEvents: UIControlEventTouchUpInside];
-    
-    [cell.rockItButton addTarget: self
-                          action: @selector(toggleVideoThumbnailRockItButton:)
-                forControlEvents: UIControlEventTouchUpInside];
-    
-    [cell.addItButton removeTarget: nil
-                            action: @selector(touchVideoThumbnailAddItButton:)
-                  forControlEvents: UIControlEventTouchUpInside];
-    
-    [cell.addItButton addTarget: self
-                         action: @selector(touchVideoThumbnailAddItButton:)
-               forControlEvents: UIControlEventTouchUpInside];
+    if (cv == self.videoThumbnailCollectionView)
+    {
+        // No, but it was our collection view
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: adjustedIndexPath];
+        
+        SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+                                                                                      forIndexPath: indexPath];
+        
+        videoThumbnailCell.imageView.image = video.keyframeImage;
+        videoThumbnailCell.maintitle.text = video.title;
+        videoThumbnailCell.subtitle.text = video.subtitle;
+        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+        videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
+        videoThumbnailCell.viewControllerDelegate = self;
+        cell = videoThumbnailCell;
+    }
+    else
+    {
+        AssertOrLog(@"No valid collection view found");
+    }
     
     return cell;
 }
@@ -246,7 +238,7 @@
     [self toggleVideoRockItAtIndex: indexPath];
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = video.rockedByUserValue;
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];

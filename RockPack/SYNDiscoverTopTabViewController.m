@@ -14,7 +14,7 @@
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
 #import "SYNVideoDB.h"
-#import "SYNVideoThumbnailCell.h"
+#import "SYNVideoThumbnailWideCell.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
 #import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
@@ -59,11 +59,11 @@
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
     // Init video thumbnail collection view
-    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
                                              bundle: nil];
 
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-         forCellWithReuseIdentifier: @"ThumbnailCell"];
+         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
 }
 
 
@@ -389,7 +389,7 @@
 
 // Buttons activated from scrolling list of thumbnails
 
-- (IBAction) toggleThumbnailRockItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoThumbnailRockItButton: (UIButton *) rockItButton
 {
     rockItButton.selected = !rockItButton.selected;
     
@@ -407,14 +407,14 @@
     [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
     
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+    SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = video.rockedByUserValue;
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
 
-- (IBAction) touchThumbnailAddItButton: (UIButton *) addItButton
+- (IBAction) touchVideoThumbnailAddItButton: (UIButton *) addItButton
 {
     [self showImageWell: TRUE];
     [self startImageWellDismissalTimer];
@@ -571,7 +571,7 @@
             // No, but it was our collection view
             Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
             
-            SYNVideoThumbnailCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+            SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
             
             videoThumbnailCell.imageView.image = video.keyframeImage;
@@ -604,13 +604,13 @@
         // Check to see if is one that we can handle
         if (cv == self.videoThumbnailCollectionView)
         {
-    #ifdef FULL_SCREEN_THUMBNAILS
+#ifdef FULL_SCREEN_THUMBNAILS
             if (self.isLargeVideoViewExpanded == FALSE)
             {
                 [self animateLargeVideoViewRight: nil];
                 self.largeVideoViewExpanded = TRUE;
             }
-    #endif
+#endif
             self.currentIndexPath = indexPath;
             
             [self setLargeVideoToIndexPath: indexPath];

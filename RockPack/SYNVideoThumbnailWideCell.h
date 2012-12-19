@@ -13,7 +13,7 @@ enum {
     kShowShareButton = 1
 };
 
-@interface SYNVideoThumbnailCell : UICollectionViewCell
+@interface SYNVideoThumbnailWideCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *maintitle;

@@ -6,17 +6,17 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNVideoThumbnailCell.h"
+#import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 
-@interface SYNVideoThumbnailCell ()
+@interface SYNVideoThumbnailWideCell ()
 
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
 
 @end
 
-@implementation SYNVideoThumbnailCell
+@implementation SYNVideoThumbnailWideCell
 
 @synthesize viewControllerDelegate = _viewControllerDelegate;
 
@@ -25,7 +25,7 @@
     if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNVideoThumbnailCell"
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNVideoThumbnailWideCell"
                                                               owner: self
                                                             options: nil];
         

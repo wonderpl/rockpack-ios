@@ -13,7 +13,7 @@
 #import "SYNMyRockpackMovieViewController.h"
 #import "SYNMyRockpackViewController.h"
 #import "SYNSwitch.h"
-#import "SYNVideoThumbnailCell.h"
+#import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
@@ -65,7 +65,7 @@
     
     // Init collection views
     // Video thumbnails
-    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailCell"
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
                                              bundle: nil];
     
     [self.starredVideoThumbnailCollectionView registerNib: videoThumbnailCellNib
@@ -170,7 +170,7 @@
     {
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNVideoThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
+        SYNVideoThumbnailWideCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ThumbnailCell"
                                                                     forIndexPath: indexPath];
         
         cell.imageView.image = video.keyframeImage;
@@ -333,12 +333,6 @@
     }
     
     [self toggleVideoRockItAtIndex: indexPath];
-    
-//    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-//    SYNVideoThumbnailCell *cell = (SYNVideoThumbnailCell *)[self.packedVideoThumbnailCollection cellForItemAtIndexPath: indexPath];
-//    
-//    cell.rockItButton.selected = video.rockedByUserValue;
-//    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
 

@@ -47,9 +47,9 @@
 		012ECAC8165C120900A60980 /* PanelWallpackTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 012ECAC7165C120900A60980 /* PanelWallpackTitle.png */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
-		01363EC116300F3A00FFAA09 /* SYNVideoThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNVideoThumbnailCell.xib */; };
+		01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */; };
 		01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EC816304D8D00FFAA09 /* SYNVideoDB.m */; };
-		01363F241630B81400FFAA09 /* SYNVideoThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F231630B81400FFAA09 /* SYNVideoThumbnailCell.m */; };
+		01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */; };
 		01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F501631789F00FFAA09 /* SYNMovableView.m */; };
 		01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNImageWellCell.m */; };
 		01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */; };
@@ -560,11 +560,11 @@
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
-		01363EC016300F3A00FFAA09 /* SYNVideoThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailCell.xib; sourceTree = "<group>"; };
+		01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailWideCell.xib; sourceTree = "<group>"; };
 		01363EC716304D8D00FFAA09 /* SYNVideoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoDB.h; sourceTree = "<group>"; };
 		01363EC816304D8D00FFAA09 /* SYNVideoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoDB.m; sourceTree = "<group>"; };
-		01363F221630B81400FFAA09 /* SYNVideoThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailCell.h; sourceTree = "<group>"; };
-		01363F231630B81400FFAA09 /* SYNVideoThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailCell.m; sourceTree = "<group>"; };
+		01363F221630B81400FFAA09 /* SYNVideoThumbnailWideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailWideCell.h; sourceTree = "<group>"; };
+		01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailWideCell.m; sourceTree = "<group>"; };
 		01363F4F1631789F00FFAA09 /* SYNMovableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMovableView.h; sourceTree = "<group>"; };
 		01363F501631789F00FFAA09 /* SYNMovableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMovableView.m; sourceTree = "<group>"; };
 		01363F781631A01000FFAA09 /* SYNImageWellCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImageWellCell.h; sourceTree = "<group>"; };
@@ -2096,9 +2096,9 @@
 				01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */,
 				01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */,
 				01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */,
-				01363F221630B81400FFAA09 /* SYNVideoThumbnailCell.h */,
-				01363F231630B81400FFAA09 /* SYNVideoThumbnailCell.m */,
-				01363EC016300F3A00FFAA09 /* SYNVideoThumbnailCell.xib */,
+				01363F221630B81400FFAA09 /* SYNVideoThumbnailWideCell.h */,
+				01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */,
+				01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */,
 			);
 			name = "Video cells";
 			sourceTree = "<group>";
@@ -2388,7 +2388,7 @@
 				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
 				012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */,
-				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailCell.xib in Resources */,
+				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */,
 				01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */,
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
@@ -2833,7 +2833,7 @@
 				012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */,
 				01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */,
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
-				01363F241630B81400FFAA09 /* SYNVideoThumbnailCell.m in Sources */,
+				01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */,
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
 				01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */,
 				01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */,
