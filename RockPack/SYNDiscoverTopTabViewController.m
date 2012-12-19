@@ -29,7 +29,6 @@
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
@@ -375,6 +374,16 @@
 }
 
 
+- (void) updateOtherOnscreenVideoAssetsForIndexPath: (NSIndexPath *) indexPath
+{
+    if ([indexPath isEqual: self.currentIndexPath])
+    {
+        [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
+    }
+}
+
+
+
 - (IBAction) toggleLargeRockItButton: (UIButton *) button
 {
     button.selected = !button.selected;
@@ -389,41 +398,6 @@
 
 // Buttons activated from scrolling list of thumbnails
 
-- (IBAction) toggleVideoThumbnailRockItButton: (UIButton *) rockItButton
-{
-    rockItButton.selected = !rockItButton.selected;
-    
-    // Get to cell it self (from button subview)
-    UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleRockItAtIndex: indexPath];
-    [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
-    
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-    cell.rockItButton.selected = video.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-}
-
-
-- (IBAction) touchVideoThumbnailAddItButton: (UIButton *) addItButton
-{
-    [self showImageWell: TRUE];
-    [self startImageWellDismissalTimer];
-    
-    UIView *v = addItButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    [self animateImageWellAdditionWithVideo: video];
-}
 
 - (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
 {

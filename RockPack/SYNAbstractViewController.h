@@ -19,6 +19,7 @@
 @property (readonly) NSManagedObjectContext *managedObjectContext;
 @property (readonly, getter = isImageWellVisible) BOOL imageWellVisible;
 @property (nonatomic, strong) UIView *imageWellView;
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 
 // Public methods
 

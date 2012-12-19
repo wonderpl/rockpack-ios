@@ -82,12 +82,16 @@
     
     // Add button targets
     [self.rockItButton addTarget: self.viewControllerDelegate
-                          action: @selector(toggleThumbnailRockItButton:)
+                          action: @selector(userTouchedVideoRockItButton:)
                 forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.shareItButton addTarget: self.viewControllerDelegate
+                         action: @selector(userTouchedVideoShareItButton:)
+               forControlEvents: UIControlEventTouchUpInside];
     
     
     [self.addItButton addTarget: self.viewControllerDelegate
-                         action: @selector(touchThumbnailAddItButton:)
+                         action: @selector(userTouchedVideoAddItButton:)
                forControlEvents: UIControlEventTouchUpInside];
 }
 

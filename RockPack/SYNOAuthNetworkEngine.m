@@ -50,7 +50,7 @@
 	// If we're not authenticated, and this is not part of the OAuth process,
 	if (!self.isAuthenticated)
     {
-		NSLog(@"enqueueSignedOperation - Not authenticated");
+		DebugLog(@"enqueueSignedOperation - Not authenticated");
 		[self authenticateWithCompletionBlock: ^(NSError *error)
         {
 			if (error)

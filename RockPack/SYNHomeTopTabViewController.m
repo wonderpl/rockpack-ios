@@ -15,7 +15,6 @@
 
 @interface SYNHomeTopTabViewController ()
 
-@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSMutableArray *videosArray;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
@@ -221,7 +220,7 @@
     return reusableView;
 }
 
-- (IBAction) toggleVideoThumbnailRockItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoRockItButton: (UIButton *) rockItButton
 {
     rockItButton.selected = !rockItButton.selected;
     
@@ -244,12 +243,12 @@
     cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
 }
 
-- (IBAction) toggleThumbnailShareItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoShareItButton: (UIButton *) rockItButton
 {
 }
 
 
-- (IBAction) touchVideoThumbnailAddItButton: (UIButton *) addItButton
+- (IBAction) touchVideoAddItButton: (UIButton *) addItButton
 {
     NSLog (@"No implementation yet");
 }

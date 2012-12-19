@@ -175,8 +175,6 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    NSLog (@"Moving");
-
     // Actually swap the video thumbnails around in the visible list
     id fromItem = [self.videosArray objectAtIndex: fromIndexPath.item];
     id fromObject = [self.channel.videosSet objectAtIndex: fromIndexPath.item];

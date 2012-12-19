@@ -19,6 +19,7 @@
 #import "SYNChannelSelectorCell.h"
 #import "SYNImageWellCell.h"
 #import "SYNVideoSelection.h"
+#import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import <QuartzCore/QuartzCore.h>
@@ -449,6 +450,55 @@
     }
     
     [self saveDB];
+}
+
+
+- (IBAction) userTouchedVideoRockItButton: (UIButton *) rockItButton
+{
+    rockItButton.selected = !rockItButton.selected;
+    
+    // Get to cell it self (from button subview)
+    UIView *v = rockItButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (indexPath)
+    {
+        // Need to do this first as this changes the actual video object
+        [self toggleVideoRockItAtIndex: indexPath];
+        [self updateOtherOnscreenVideoAssetsForIndexPath: indexPath];
+        
+        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+        
+        cell.rockItButton.selected = video.rockedByUserValue;
+        cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+
+    }
+}
+
+
+// This is intended to be subclassed where other video assets (i.e. a Large video view) have information that is dependent on Video attributes
+- (void) updateOtherOnscreenVideoAssetsForIndexPath: (NSIndexPath *) indexPath
+{
+    // By default, do nothing
+}
+
+
+- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
+{
+    [self showImageWell: TRUE];
+    [self startImageWellDismissalTimer];
+    
+    UIView *v = addItButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    [self animateImageWellAdditionWithVideo: video];
+}
+
+- (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
+{
+    NSLog (@"No share functionality currently implemented");
 }
 
 
