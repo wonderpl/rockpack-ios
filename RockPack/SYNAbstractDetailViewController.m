@@ -16,6 +16,7 @@
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "VideoInstance.h"
 
 @interface SYNAbstractDetailViewController ()
 
@@ -26,7 +27,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *biogTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
-@property (nonatomic, strong) NSMutableArray *videosArray;
+@property (nonatomic, strong) NSMutableArray *videoInstancesArray;
 
 @end
 
@@ -39,7 +40,7 @@
 	if ((self = [super initWithNibName: @"SYNAbstractDetailViewController" bundle: nil]))
     {
 		self.channel = channel;
-        self.videosArray = [NSMutableArray arrayWithArray: self.channel.videos.array];
+        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstanceSet.array];
 	}
     
 	return self;
@@ -106,7 +107,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    return self.videosArray.count;
+    return self.videoInstancesArray.count;
 }
 
 
@@ -122,10 +123,10 @@
     SYNVideoThumbnailRegularCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                        forIndexPath: indexPath];
     
-    Video *video = [self.videosArray objectAtIndex: indexPath.item];
-    cell.imageView.image = video.thumbnailImage;
-    cell.titleLabel.text = video.title;
-    cell.subtitleLabel.text = video.channelName;
+    VideoInstance *videoInstance = [self.videoInstancesArray objectAtIndex: indexPath.item];
+    cell.imageView.image = videoInstance.video.thumbnailImage;
+    cell.titleLabel.text = videoInstance.title;
+    cell.subtitleLabel.text = videoInstance.channel.title;
     
     return cell;
 }
@@ -149,9 +150,9 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videosArray objectAtIndex: indexPath.row];
+    VideoInstance *videoInstance = [self.videoInstancesArray objectAtIndex: indexPath.row];
     
-    SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
+    SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
     
     [self animatedPushViewController: movieVC];
     
@@ -175,14 +176,14 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
     // Actually swap the video thumbnails around in the visible list
-    id fromItem = [self.videosArray objectAtIndex: fromIndexPath.item];
-    id fromObject = [self.channel.videosSet objectAtIndex: fromIndexPath.item];
+    id fromItem = [self.videoInstancesArray objectAtIndex: fromIndexPath.item];
+    id fromObject = [self.channel.videoInstanceSet objectAtIndex: fromIndexPath.item];
     
-    [self.videosArray removeObjectAtIndex: fromIndexPath.item];
-    [self.channel.videosSet removeObjectAtIndex: fromIndexPath.item];
+    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
+    [self.channel.videoInstanceSet removeObjectAtIndex: fromIndexPath.item];
     
-    [self.videosArray insertObject: fromItem atIndex: toIndexPath.item];
-    [self.channel.videosSet insertObject: fromObject atIndex: toIndexPath.item];
+    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
+    [self.channel.videoInstanceSet insertObject: fromObject atIndex: toIndexPath.item];
     
     [self saveDB];
 }

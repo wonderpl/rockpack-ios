@@ -10,7 +10,6 @@
 #import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
-#import "SYNChannelsDB.h"
 #import "SYNChannelsTopTabViewController.h"
 #import "SYNMyRockpackCell.h"
 #import "SYNVideoDB.h"

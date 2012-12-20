@@ -12,7 +12,7 @@
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wallpaperURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="channelOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="channel" inverseEntity="ChannelOwner" syncable="YES"/>
-        <relationship name="channelVideos" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="channel" inverseEntity="VideoInstance" syncable="YES"/>
+        <relationship name="videoInstance" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="VideoInstance" inverseName="channel" inverseEntity="VideoInstance" syncable="YES"/>
     </entity>
     <entity name="ChannelOwner" representedClassName="ChannelOwner" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -28,14 +28,14 @@
         <attribute name="starredByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="channelVideos" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="video" inverseEntity="VideoInstance" syncable="YES"/>
+        <relationship name="videoInstance" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="video" inverseEntity="VideoInstance" syncable="YES"/>
     </entity>
     <entity name="VideoInstance" representedClassName="VideoInstance" syncable="YES">
         <attribute name="dateAdded" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="channel" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Channel" inverseName="channelVideos" inverseEntity="Channel" syncable="YES"/>
-        <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="channelVideos" inverseEntity="Video" syncable="YES"/>
+        <relationship name="channel" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Channel" inverseName="videoInstance" inverseEntity="Channel" syncable="YES"/>
+        <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstance" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
         <element name="Channel" positionX="-407" positionY="63" width="128" height="223"/>

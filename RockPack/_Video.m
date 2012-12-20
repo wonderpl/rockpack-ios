@@ -14,7 +14,7 @@ const struct VideoAttributes VideoAttributes = {
 };
 
 const struct VideoRelationships VideoRelationships = {
-	.channelVideos = @"channelVideos",
+	.videoInstance = @"videoInstance",
 };
 
 const struct VideoFetchedProperties VideoFetchedProperties = {
@@ -150,8 +150,17 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 
-@dynamic channelVideos;
+@dynamic videoInstance;
 
+	
+- (NSMutableSet*)videoInstanceSet {
+	[self willAccessValueForKey:@"videoInstance"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"videoInstance"];
+  
+	[self didAccessValueForKey:@"videoInstance"];
+	return result;
+}
 	
 
 

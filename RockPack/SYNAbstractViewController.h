@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
-@class Video;
+@class VideoInstance;
 
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
                                                          UICollectionViewDataSource,
@@ -26,9 +26,9 @@
 // Core Data support
 
 // Generalised fetchedResultsControllers
-- (NSFetchedResultsController *) videoFetchedResultsController;
-- (NSPredicate *) videoFetchedResultsControllerPredicate;
-- (NSArray *) videoFetchedResultsControllerSortDescriptors;
+- (NSFetchedResultsController *) videoInstanceFetchedResultsController;
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate;
+- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
 
 - (NSFetchedResultsController *) channelFetchedResultsController;
 - (NSPredicate *) channelFetchedResultsControllerPredicate;
@@ -71,6 +71,6 @@
 - (void) highlightImageWell: (BOOL) showHighlight;
 - (BOOL) pointInImageWell: (CGPoint) point;
 
-- (void) animateImageWellAdditionWithVideo: (Video *) video;
+- (void) animateImageWellAdditionWithVideo: (VideoInstance *) videoInstance;
 
 @end

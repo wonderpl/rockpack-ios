@@ -18,7 +18,7 @@ const struct ChannelAttributes ChannelAttributes = {
 
 const struct ChannelRelationships ChannelRelationships = {
 	.channelOwner = @"channelOwner",
-	.channelVideos = @"channelVideos",
+	.videoInstance = @"videoInstance",
 };
 
 const struct ChannelFetchedProperties ChannelFetchedProperties = {
@@ -203,8 +203,17 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 	
 
-@dynamic channelVideos;
+@dynamic videoInstance;
 
+	
+- (NSMutableOrderedSet*)videoInstanceSet {
+	[self willAccessValueForKey:@"videoInstance"];
+  
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"videoInstance"];
+  
+	[self didAccessValueForKey:@"videoInstance"];
+	return result;
+}
 	
 
 

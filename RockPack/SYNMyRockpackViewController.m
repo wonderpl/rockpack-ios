@@ -91,13 +91,13 @@
 #pragma mark - CoreData support
 
 // The following 4 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoFetchedResultsControllerPredicate
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
     return [NSPredicate predicateWithFormat: @"rockedByUser == TRUE"];
 }
 
 
-- (NSArray *) videoFetchedResultsControllerSortDescriptors
+- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
                                                                    ascending: YES];
@@ -122,7 +122,7 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    if (controller == self.videoFetchedResultsController)
+    if (controller == self.videoInstanceFetchedResultsController)
     {
         [self.videoThumbnailCollectionView reloadData];
     }
@@ -140,7 +140,7 @@
 {
     if (cv == self.videoThumbnailCollectionView)
     {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
         return [sectionInfo numberOfObjects];
     }
     else
@@ -154,7 +154,7 @@
 {
     if (cv == self.videoThumbnailCollectionView)
     {
-        return self.videoFetchedResultsController.sections.count;
+        return self.videoInstanceFetchedResultsController.sections.count;
     }
     else
     {
@@ -210,7 +210,7 @@
 {
     if (cv == self.videoThumbnailCollectionView)
     {
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
         
         SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
         

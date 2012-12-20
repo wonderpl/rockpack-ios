@@ -488,7 +488,6 @@
 		01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
-		01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */; };
 		01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D8C6A716807A54000059D1 /* SYNVideoSelection.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
@@ -1086,8 +1085,6 @@
 		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
 		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
 		01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelThumbnailCell.xib; sourceTree = "<group>"; };
-		01B7F769164FDA8A009C5CCD /* SYNChannelsDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDB.h; sourceTree = "<group>"; };
-		01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDB.m; sourceTree = "<group>"; };
 		01D8C6A616807A54000059D1 /* SYNVideoSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoSelection.h; sourceTree = "<group>"; };
 		01D8C6A716807A54000059D1 /* SYNVideoSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoSelection.m; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -1520,8 +1517,6 @@
 			children = (
 				01363EC716304D8D00FFAA09 /* SYNVideoDB.h */,
 				01363EC816304D8D00FFAA09 /* SYNVideoDB.m */,
-				01B7F769164FDA8A009C5CCD /* SYNChannelsDB.h */,
-				01B7F76A164FDA8A009C5CCD /* SYNChannelsDB.m */,
 			);
 			name = Databases;
 			sourceTree = "<group>";
@@ -2960,7 +2955,6 @@
 				011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */,
 				011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */,
 				01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */,
-				01B7F76B164FDA8A009C5CCD /* SYNChannelsDB.m in Sources */,
 				0106E82316510A5900DC5173 /* SYNWallpackThumbnailCell.m in Sources */,
 				0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				0170717516554E9B00A3C7C4 /* NSDate+RFC1123.m in Sources */,

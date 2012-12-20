@@ -13,6 +13,7 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
+#import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
@@ -23,6 +24,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -35,7 +37,7 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *videoFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
 @property (nonatomic, strong) NSTimer *imageWellAnimationTimer;
 @property (nonatomic, strong) UIButton *imageWellAddButton;
 @property (nonatomic, strong) UIButton *imageWellDeleteButton;
@@ -52,7 +54,7 @@
 // Need to explicitly synthesise these as we are using the real ivars below
 @synthesize channelFetchedResultsController = _channelFetchedResultsController;
 @synthesize managedObjectContext = _managedObjectContext;
-@synthesize videoFetchedResultsController = _videoFetchedResultsController;
+@synthesize videoInstanceFetchedResultsController = _videoInstanceFetchedResultsController;
 
 #pragma mark - Custom accessor methods
 
@@ -233,51 +235,51 @@
 }
 
 
-// Generalised version of videoFetchedResultsController, you can override the predicate and sort descriptors
-// by overiding the videoFetchedResultsControllerPredicate and videoFetchedResultsControllerSortDescriptors methods
-- (NSFetchedResultsController *) videoFetchedResultsController
+// Generalised version of videoInstanceFetchedResultsController, you can override the predicate and sort descriptors
+// by overiding the videoInstanceFetchedResultsControllerPredicate and videoInstanceFetchedResultsControllerSortDescriptors methods
+- (NSFetchedResultsController *) videoInstanceFetchedResultsController
 {
     NSError *error = nil;
     
     // Return cached version if we have already created one
-    if (_videoFetchedResultsController != nil)
+    if (_videoInstanceFetchedResultsController != nil)
     {
-        return _videoFetchedResultsController;
+        return _videoInstanceFetchedResultsController;
     }
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Video"
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: self.managedObjectContext];
     
     // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.videoFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.videoFetchedResultsControllerSortDescriptors;
+    fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
+    fetchRequest.sortDescriptors = self.videoInstanceFetchedResultsControllerSortDescriptors;
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    self.videoFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+    self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                              managedObjectContext: self.managedObjectContext
                                                                                sectionNameKeyPath: nil
                                                                                         cacheName: nil];
-    _videoFetchedResultsController.delegate = self;
+    _videoInstanceFetchedResultsController.delegate = self;
     
-    ZAssert([_videoFetchedResultsController performFetch: &error], @"videoFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
-    return _videoFetchedResultsController;
+    return _videoInstanceFetchedResultsController;
 }
 
 // Abstract functions, should be overidden in subclasses
-- (NSPredicate *) videoFetchedResultsControllerPredicate
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    AssertOrLog (@"videoFetchedResultsControllerPredicate:Abstract function called");
+    AssertOrLog (@"videoInstanceFetchedResultsControllerPredicate:Abstract function called");
     return nil;
 }
 
-- (NSArray *) videoFetchedResultsControllerSortDescriptors
+- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    AssertOrLog (@"videoFetchedResultsControllerSortDescriptors:Abstract function called");
+    AssertOrLog (@"videoInstanceFetchedResultsControllerSortDescriptors:Abstract function called");
     return nil;
 }
 
@@ -414,19 +416,19 @@
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     
-    if (video.starredByUserValue == TRUE)
+    if (videoInstance.video.starredByUserValue == TRUE)
     {
         // Currently highlighted, so decrement
-        video.starredByUserValue = FALSE;
-        video.starCountValue -= 1;
+        videoInstance.video.starredByUserValue = FALSE;
+        videoInstance.video.starCountValue -= 1;
     }
     else
     {
         // Currently highlighted, so increment
-        video.starredByUserValue = TRUE;
-        video.starCountValue += 1;
+        videoInstance.video.starredByUserValue = TRUE;
+        videoInstance.video.starCountValue += 1;
     }
     
     [self saveDB];
@@ -471,11 +473,11 @@
         
         if (self.shouldUpdateRockItStatus == TRUE)
         {
-            Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+            VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
             SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
             
-            cell.rockItButton.selected = video.starredByUserValue;
-            cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
+            cell.rockItButton.selected = videoInstance.video.starredByUserValue;
+            cell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         }
     }
 }
@@ -502,8 +504,8 @@
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
-    [self animateImageWellAdditionWithVideo: video];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    [self animateImageWellAdditionWithVideo: videoInstance];
 }
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
@@ -549,17 +551,17 @@
     if (cv == self.videoThumbnailCollectionView)
     {
         // No, but it was our collection view
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
         
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
         
-        videoThumbnailCell.videoImageView.image = video.thumbnailImage;
-        videoThumbnailCell.videoTitle.text = video.title;
-        videoThumbnailCell.channelName.text = video.channelName;
-        videoThumbnailCell.userName.text = video.userName;
-        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
-        videoThumbnailCell.rockItButton.selected = video.starredByUserValue;
+        videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
+        videoThumbnailCell.videoTitle.text = videoInstance.title;
+        videoThumbnailCell.channelName.text = videoInstance.channel.title;
+        videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
+        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;
         
         cell = videoThumbnailCell;
@@ -851,9 +853,9 @@
     newChannel.wallpaperURL = coverChannel.wallpaperURL;
     newChannel.channelDescription = coverChannel.channelDescription;
     
-    for (Video *video in SYNVideoSelection.sharedVideoSelectionArray)
+    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
     {
-        [[newChannel videosSet] addObject: video];
+        [[newChannel videoInstanceSet] addObject: videoInstance];
     }
     
     [self.channelNameTextField resignFirstResponder];
@@ -862,7 +864,7 @@
 
 #pragma mark - Image well support
 
-- (void) animateImageWellAdditionWithVideo: (Video *) video
+- (void) animateImageWellAdditionWithVideo: (VideoInstance *) videoInstance
 {
 #ifdef SOUND_ENABLED
     // Play a suitable sound
@@ -896,7 +898,7 @@
          }];
     }
     
-    [SYNVideoSelection.sharedVideoSelectionArray insertObject: video
+    [SYNVideoSelection.sharedVideoSelectionArray insertObject: videoInstance
                                                       atIndex: 0];
     
     CGRect imageWellView = self.imageWellCollectionView.frame;

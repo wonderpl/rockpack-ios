@@ -6,10 +6,13 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "Channel.h"
+#import "ChannelOwner.h"
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNHomeTopTabViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
+#import "VideoInstance.h"
 
 #define FAKE_MULTIPLE_SECTIONS
 
@@ -75,14 +78,14 @@
 #pragma mark - Core Data support
 
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoFetchedResultsControllerPredicate
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
     // No predicate
     return nil;
 }
 
 
-- (NSArray *) videoFetchedResultsControllerSortDescriptors
+- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
                                                                    ascending: YES];
@@ -97,7 +100,7 @@
 #ifdef FAKE_MULTIPLE_SECTIONS
     return 6;
 #else
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
     
     return [sectionInfo numberOfObjects];
 #endif
@@ -109,7 +112,7 @@
 #ifdef FAKE_MULTIPLE_SECTIONS
     return 5;
 #else
-    return self.videoFetchedResultsController.sections.count;
+    return self.videoInstanceFetchedResultsController.sections.count;
 #endif
 }
 
@@ -135,17 +138,17 @@
     if (cv == self.videoThumbnailCollectionView)
     {
         // No, but it was our collection view
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: adjustedIndexPath];
+        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: adjustedIndexPath];
         
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
         
-        videoThumbnailCell.videoImageView.image = video.thumbnailImage;
-        videoThumbnailCell.videoTitle.text = video.title;
-        videoThumbnailCell.channelName.text = video.channelName;
-        videoThumbnailCell.userName.text = video.userName;
-        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
-        videoThumbnailCell.rockItButton.selected = video.starredByUserValue;
+        videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
+        videoThumbnailCell.videoTitle.text = videoInstance.title;
+        videoThumbnailCell.channelName.text = videoInstance.channel.title;
+        videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
+        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;
         cell = videoThumbnailCell;
     }
@@ -232,7 +235,7 @@
     
     [self toggleVideoRockItAtIndex: indexPath];
     
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = video.starredByUserValue;

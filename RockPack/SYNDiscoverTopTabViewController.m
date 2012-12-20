@@ -10,7 +10,6 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "Channel.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelsDB.h"
 #import "SYNDiscoverTopTabViewController.h"
 #import "SYNImageWellCell.h"
 #import "SYNVideoDB.h"
@@ -19,6 +18,7 @@
 #import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface SYNDiscoverTopTabViewController () <UIGestureRecognizerDelegate,
@@ -72,7 +72,7 @@
     
     // TODO: Remove this video download hack once we have real data from the API
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
-    [SYNChannelsDB sharedChannelsDBManager];
+//    [SYNChannelsDB sharedChannelsDBManager];
 
     // Set the first video
     [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
@@ -97,14 +97,14 @@
 #pragma mark - Core Data support
 
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoFetchedResultsControllerPredicate
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
     // No predicate
     return nil;
 }
 
 
-- (NSArray *) videoFetchedResultsControllerSortDescriptors
+- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     // TODO: This is currently sorted by title, but I suspect that we need to be more sophisticated
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
@@ -135,7 +135,7 @@
     
     [self updateLargeVideoDetailsForIndexPath: indexPath];
     
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     NSURL *videoURL = video.localVideoURL;
     
     self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
@@ -173,7 +173,7 @@
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
         self.draggedView.image = video.thumbnailImage;
         
         // now add the item to the view
@@ -227,17 +227,17 @@
 
 - (IBAction) addToImageWellFromLargeVideo: (id) sender
 {
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
-    [self animateImageWellAdditionWithVideo: video];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+    [self animateImageWellAdditionWithVideo: videoInstance];
 }
 
 
 - (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.titleLabel.text = video.title;
-    self.subtitleLabel.text = video.channelName;
+    self.titleLabel.text = videoInstance.title;
+    self.subtitleLabel.text = videoInstance.channel.title;
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
 }
@@ -245,7 +245,7 @@
 
 - (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     
     self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", video.starCount];
     self.rockItButton.selected = video.starredByUserValue;
@@ -260,7 +260,7 @@
         
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
-        Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
         
         if (!indexPath)
         {
@@ -310,8 +310,8 @@
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
             
-            Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.draggedIndexPath];
-            [self animateImageWellAdditionWithVideo: video];
+            VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.draggedIndexPath];
+            [self animateImageWellAdditionWithVideo: videoInstance];
         }
         else
         {
@@ -355,7 +355,7 @@
 
 - (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
+    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     
     if (video.starredByUserValue == TRUE)
     {
@@ -513,7 +513,7 @@
     {
         if (cv == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoFetchedResultsController sections][section];
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
             items = [sectionInfo numberOfObjects];
         }
         else
