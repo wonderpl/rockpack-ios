@@ -4,7 +4,7 @@
 
 
 // Returns keyframe image
-- (UIImage *) keyframeImage;
+- (UIImage *) thumbnailImage;
 - (NSURL *) localVideoURL;
 
 @end

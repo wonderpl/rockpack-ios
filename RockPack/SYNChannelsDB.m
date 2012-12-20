@@ -427,15 +427,13 @@
                 Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
                 
                 channel.indexValue = index++;
-                channel.keyframeURL = [channelDetailsDictionary objectForKey: @"keyframeURL"];
+                channel.thumbnailURL = [channelDetailsDictionary objectForKey: @"keyframeURL"];
                 channel.wallpaperURL = [channelDetailsDictionary objectForKey: @"wallpaperURL"];
                 channel.title = [channelDetailsDictionary objectForKey: @"title"];
-                channel.subtitle = [channelDetailsDictionary objectForKey: @"subtitle"];
-                channel.biog = [channelDetailsDictionary objectForKey: @"biog"];
-                channel.biogTitle = [channelDetailsDictionary objectForKey: @"title"];
+                channel.channelDescription = [channelDetailsDictionary objectForKey: @"biog"];
                 channel.rockedByUser = [channelDetailsDictionary objectForKey: @"rockedByUser"];
-                channel.totalRocks = [channelDetailsDictionary objectForKey: @"totalRocks"];
-                channel.userGeneratedValue = FALSE;
+                channel.rockCount = [channelDetailsDictionary objectForKey: @"totalRocks"];
+                channel.rockedByUserValue = FALSE;
                 
                 [[channel videosSet] addObjectsFromArray: videoEntries];
             }

@@ -71,13 +71,13 @@
     SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
                                                                   forIndexPath: indexPath];
     
-    cell.imageView.image = channel.keyframeImage;
+    cell.imageView.image = channel.thumbnailImage;
     
     cell.titleLabel.text = channel.title;
     
-    cell.subtitleLabel.text = channel.subtitle;
+    cell.subtitleLabel.text = @"Subtitle - Remove";
 
-    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
     
@@ -158,7 +158,7 @@
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
-    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
 }
 
 
@@ -195,7 +195,7 @@
         imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
         
         // Now create a new UIImageView to overlay
-        UIImage *cellImage = channel.keyframeImage;
+        UIImage *cellImage = channel.thumbnailImage;
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;

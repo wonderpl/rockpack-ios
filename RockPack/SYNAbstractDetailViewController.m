@@ -123,7 +123,7 @@
                                                                        forIndexPath: indexPath];
     
     Video *video = [self.videosArray objectAtIndex: indexPath.item];
-    cell.imageView.image = video.keyframeImage;
+    cell.imageView.image = video.thumbnailImage;
     cell.titleLabel.text = video.title;
     cell.subtitleLabel.text = video.channelName;
     

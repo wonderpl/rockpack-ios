@@ -179,7 +179,7 @@
             SYNChannelThumbnailCell *channelCell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
                                                                           forIndexPath: indexPath];
             
-            channelCell.imageView.image = channel.keyframeImage;
+            channelCell.imageView.image = channel.thumbnailImage;
             channelCell.titleLabel.text = channel.title;
             channelCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
             channelCell.rockItButton.selected = channel.rockedByUserValue;

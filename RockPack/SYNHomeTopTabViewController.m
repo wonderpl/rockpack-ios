@@ -140,7 +140,7 @@
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
         
-        videoThumbnailCell.videoImageView.image = video.keyframeImage;
+        videoThumbnailCell.videoImageView.image = video.thumbnailImage;
         videoThumbnailCell.videoTitle.text = video.title;
         videoThumbnailCell.channelName.text = video.channelName;
         videoThumbnailCell.userName.text = video.userName;

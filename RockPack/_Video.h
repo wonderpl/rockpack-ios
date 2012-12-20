@@ -10,7 +10,6 @@ extern const struct VideoAttributes {
 	__unsafe_unretained NSString *starCount;
 	__unsafe_unretained NSString *starredByUser;
 	__unsafe_unretained NSString *thumbnailURL;
-	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *uniqueId;
 } VideoAttributes;
 
@@ -24,7 +23,6 @@ extern const struct VideoFetchedProperties {
 
 @class VideoInstance;
 @class Channel;
-
 
 
 
@@ -104,16 +102,6 @@ extern const struct VideoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* title;
-
-
-
-//- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSString* uniqueId;
 
 
@@ -185,12 +173,6 @@ extern const struct VideoFetchedProperties {
 
 - (NSString*)primitiveThumbnailURL;
 - (void)setPrimitiveThumbnailURL:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
 
 
 

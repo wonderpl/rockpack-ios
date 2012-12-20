@@ -174,7 +174,7 @@
         self.draggedView.alpha = 0.7;
         
         Video *video = [self.videoFetchedResultsController objectAtIndexPath: self.currentIndexPath];
-        self.draggedView.image = video.keyframeImage;
+        self.draggedView.image = video.thumbnailImage;
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
@@ -236,7 +236,7 @@
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.titleLabel.text = video.videoTitle;
+    self.titleLabel.text = video.title;
     self.subtitleLabel.text = video.channelName;
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
@@ -247,8 +247,8 @@
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-    self.rockItButton.selected = video.rockedByUserValue;
+    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", video.starCount];
+    self.rockItButton.selected = video.starredByUserValue;
 }
 
 
@@ -278,7 +278,7 @@
         CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
-        self.draggedView.image = video.keyframeImage;
+        self.draggedView.image = video.thumbnailImage;
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
@@ -357,17 +357,17 @@
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    if (video.rockedByUserValue == TRUE)
+    if (video.starredByUserValue == TRUE)
     {
         // Currently highlighted, so decrement
-        video.rockedByUserValue = FALSE;
-        video.totalRocksValue -= 1;
+        video.starredByUserValue = FALSE;
+        video.starCountValue -= 1;
     }
     else
     {
         // Currently highlighted, so increment
-        video.rockedByUserValue = TRUE;
-        video.totalRocksValue += 1;
+        video.starredByUserValue = TRUE;
+        video.starCountValue += 1;
     }
     
     [self saveDB];
