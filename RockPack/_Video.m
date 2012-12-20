@@ -4,17 +4,17 @@
 #import "_Video.h"
 
 const struct VideoAttributes VideoAttributes = {
-	.channelName = @"channelName",
-	.keyframeURL = @"keyframeURL",
-	.rockedByUser = @"rockedByUser",
-	.sourceIndex = @"sourceIndex",
-	.totalRocks = @"totalRocks",
-	.userName = @"userName",
-	.videoTitle = @"videoTitle",
-	.videoURL = @"videoURL",
+	.source = @"source",
+	.sourceId = @"sourceId",
+	.starCount = @"starCount",
+	.starredByUser = @"starredByUser",
+	.thumbnailURL = @"thumbnailURL",
+	.title = @"title",
+	.uniqueId = @"uniqueId",
 };
 
 const struct VideoRelationships VideoRelationships = {
+	.channelVideos = @"channelVideos",
 	.channels = @"channels",
 };
 
@@ -47,18 +47,13 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"rockedByUserValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"rockedByUser"];
+	if ([key isEqualToString:@"starCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"starCount"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"sourceIndexValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"sourceIndex"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-	if ([key isEqualToString:@"totalRocksValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"totalRocks"];
+	if ([key isEqualToString:@"starredByUserValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"starredByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -69,118 +64,96 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 
-@dynamic channelName;
+@dynamic source;
 
 
 
 
 
 
-@dynamic keyframeURL;
+@dynamic sourceId;
 
 
 
 
 
 
-@dynamic rockedByUser;
+@dynamic starCount;
 
 
 
-- (BOOL)rockedByUserValue {
-	NSNumber *result = [self rockedByUser];
+- (int64_t)starCountValue {
+	NSNumber *result = [self starCount];
+	return [result longLongValue];
+}
+
+- (void)setStarCountValue:(int64_t)value_ {
+	[self setStarCount:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveStarCountValue {
+	NSNumber *result = [self primitiveStarCount];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveStarCountValue:(int64_t)value_ {
+	[self setPrimitiveStarCount:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
+@dynamic starredByUser;
+
+
+
+- (BOOL)starredByUserValue {
+	NSNumber *result = [self starredByUser];
 	return [result boolValue];
 }
 
-- (void)setRockedByUserValue:(BOOL)value_ {
-	[self setRockedByUser:[NSNumber numberWithBool:value_]];
+- (void)setStarredByUserValue:(BOOL)value_ {
+	[self setStarredByUser:[NSNumber numberWithBool:value_]];
 }
 
-- (BOOL)primitiveRockedByUserValue {
-	NSNumber *result = [self primitiveRockedByUser];
+- (BOOL)primitiveStarredByUserValue {
+	NSNumber *result = [self primitiveStarredByUser];
 	return [result boolValue];
 }
 
-- (void)setPrimitiveRockedByUserValue:(BOOL)value_ {
-	[self setPrimitiveRockedByUser:[NSNumber numberWithBool:value_]];
+- (void)setPrimitiveStarredByUserValue:(BOOL)value_ {
+	[self setPrimitiveStarredByUser:[NSNumber numberWithBool:value_]];
 }
 
 
 
 
 
-@dynamic sourceIndex;
-
-
-
-- (int64_t)sourceIndexValue {
-	NSNumber *result = [self sourceIndex];
-	return [result longLongValue];
-}
-
-- (void)setSourceIndexValue:(int64_t)value_ {
-	[self setSourceIndex:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveSourceIndexValue {
-	NSNumber *result = [self primitiveSourceIndex];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveSourceIndexValue:(int64_t)value_ {
-	[self setPrimitiveSourceIndex:[NSNumber numberWithLongLong:value_]];
-}
-
-
-
-
-
-@dynamic totalRocks;
-
-
-
-- (int64_t)totalRocksValue {
-	NSNumber *result = [self totalRocks];
-	return [result longLongValue];
-}
-
-- (void)setTotalRocksValue:(int64_t)value_ {
-	[self setTotalRocks:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveTotalRocksValue {
-	NSNumber *result = [self primitiveTotalRocks];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveTotalRocksValue:(int64_t)value_ {
-	[self setPrimitiveTotalRocks:[NSNumber numberWithLongLong:value_]];
-}
-
-
-
-
-
-@dynamic userName;
+@dynamic thumbnailURL;
 
 
 
 
 
 
-@dynamic videoTitle;
+@dynamic title;
 
 
 
 
 
 
-@dynamic videoURL;
+@dynamic uniqueId;
 
 
 
 
 
+
+@dynamic channelVideos;
+
+	
 
 @dynamic channels;
 

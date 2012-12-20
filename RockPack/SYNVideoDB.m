@@ -198,13 +198,13 @@
             {                          
                 Video *video = [Video insertInManagedObjectContext: self.managedObjectContext];
                 
-                video.videoURL = [videoDetailsDictionary objectForKey: @"videoURL"];
-                video.keyframeURL = [videoDetailsDictionary objectForKey: @"keyframeURL"];
-                video.videoTitle = [videoDetailsDictionary objectForKey: @"title"];
+                video.sourceId = [videoDetailsDictionary objectForKey: @"videoURL"];
+                video.thumbnailURL = [videoDetailsDictionary objectForKey: @"keyframeURL"];
+                video.title = [videoDetailsDictionary objectForKey: @"title"];
                 video.channelName = [videoDetailsDictionary objectForKey: @"channel"];
                 video.userName = [videoDetailsDictionary objectForKey: @"user"];
-                video.rockedByUser = [videoDetailsDictionary objectForKey: @"rockedByUser"];
-                video.totalRocks = [videoDetailsDictionary objectForKey: @"totalRocks"];
+                video.starredByUser = [videoDetailsDictionary objectForKey: @"rockedByUser"];
+                video.starCount = [videoDetailsDictionary objectForKey: @"totalRocks"];
             }
             
             // Now we have created all our Video objects, save them...

@@ -181,8 +181,7 @@
             
             channelCell.imageView.image = channel.keyframeImage;
             channelCell.titleLabel.text = channel.title;
-            channelCell.subtitleLabel.text = channel.subtitle;
-            channelCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+            channelCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
             channelCell.rockItButton.selected = channel.rockedByUserValue;
             
             // Wire the Done button up to the correct method in the sign up controller
@@ -317,7 +316,7 @@
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
-    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.totalRocks];
+    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
 }
 
 

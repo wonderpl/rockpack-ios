@@ -10,14 +10,14 @@
 
 @implementation Video
 
-- (UIImage *) keyframeImage
+- (UIImage *) thumbnailImage
 {
-    return [UIImage imageNamed: self.keyframeURL];
+    return [UIImage imageNamed: self.thumbnailURL];
 }
 
 - (NSURL *) localVideoURL
 {
-    return [NSURL fileURLWithPath: [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", self.videoURL, nil]]];
+    return [NSURL fileURLWithPath: [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", self.sourceId, nil]]];
 }
 
 @end

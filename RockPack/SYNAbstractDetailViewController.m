@@ -94,8 +94,7 @@
     // Set all labels and images to correspond to the selected channel
     self.channelTitleLabel.text = self.channel.title;
     self.channelWallpaperImageView.image = self.channel.wallpaperImage;
-    self.biogTitleLabel.text = self.channel.biogTitle;
-    self.biogBodyLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.biog];
+    self.biogBodyLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.channelDescription];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -125,7 +124,7 @@
     
     Video *video = [self.videosArray objectAtIndex: indexPath.item];
     cell.imageView.image = video.keyframeImage;
-    cell.titleLabel.text = video.videoTitle;
+    cell.titleLabel.text = video.title;
     cell.subtitleLabel.text = video.channelName;
     
     return cell;
@@ -140,8 +139,8 @@
     SYNChannelHeaderView *reusableView = [cv dequeueReusableSupplementaryViewOfKind: kind
                                                                 withReuseIdentifier: @"SYNChannelHeaderView"
                                                                        forIndexPath: indexPath];
-    reusableView.titleLabel.text = self.channel.biogTitle;
-    reusableView.subtitleLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.biog];
+//    reusableView.titleLabel.text = self.channel.biogTitle;
+    reusableView.subtitleLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.channelDescription];
     
     return reusableView;
 }

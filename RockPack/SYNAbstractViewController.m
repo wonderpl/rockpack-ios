@@ -416,17 +416,17 @@
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    if (video.rockedByUserValue == TRUE)
+    if (video.starredByUserValue == TRUE)
     {
         // Currently highlighted, so decrement
-        video.rockedByUserValue = FALSE;
-        video.totalRocksValue -= 1;
+        video.starredByUserValue = FALSE;
+        video.starCountValue -= 1;
     }
     else
     {
         // Currently highlighted, so increment
-        video.rockedByUserValue = TRUE;
-        video.totalRocksValue += 1;
+        video.starredByUserValue = TRUE;
+        video.starCountValue += 1;
     }
     
     [self saveDB];
@@ -441,13 +441,13 @@
     {
         // Currently highlighted, so decrement
         channel.rockedByUserValue = FALSE;
-        channel.totalRocksValue -= 1;
+        channel.rockCountValue -= 1;
     }
     else
     {
         // Currently highlighted, so increment
         channel.rockedByUserValue = TRUE;
-        channel.totalRocksValue += 1;
+        channel.rockCountValue += 1;
     }
     
     [self saveDB];
@@ -474,8 +474,8 @@
             Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
             SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
             
-            cell.rockItButton.selected = video.rockedByUserValue;
-            cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+            cell.rockItButton.selected = video.starredByUserValue;
+            cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
         }
     }
 }
@@ -555,11 +555,11 @@
                                                                                       forIndexPath: indexPath];
         
         videoThumbnailCell.videoImageView.image = video.keyframeImage;
-        videoThumbnailCell.videoTitle.text = video.videoTitle;
+        videoThumbnailCell.videoTitle.text = video.title;
         videoThumbnailCell.channelName.text = video.channelName;
         videoThumbnailCell.userName.text = video.userName;
-        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
+        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
+        videoThumbnailCell.rockItButton.selected = video.starredByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;
         
         cell = videoThumbnailCell;
@@ -837,10 +837,9 @@
     Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
     
     newChannel.title = title;
-    newChannel.subtitle = @"CHANNEL";
     newChannel.rockedByUserValue = FALSE;
-    newChannel.totalRocksValue = 0;
-    newChannel.userGeneratedValue = TRUE;
+    newChannel.rockCountValue = 0;
+    newChannel.rockedByUserValue = TRUE;
     
     // TODO: Make these window offsets less hard-coded
     NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
@@ -848,10 +847,9 @@
     
     Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    newChannel.keyframeURL = coverChannel.keyframeURL;
+    newChannel.thumbnailURL = coverChannel.thumbnailURL;
     newChannel.wallpaperURL = coverChannel.wallpaperURL;
-    newChannel.biog = coverChannel.biog;
-    newChannel.biogTitle = [NSString stringWithFormat: @"%@ - %@", coverChannel.title, coverChannel.subtitle];
+    newChannel.channelDescription = coverChannel.channelDescription;
     
     for (Video *video in SYNVideoSelection.sharedVideoSelectionArray)
     {

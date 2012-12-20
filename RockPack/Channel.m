@@ -10,9 +10,9 @@
 
 @implementation Channel
 
-- (UIImage *) keyframeImage
+- (UIImage *) thumbnailImage
 {
-    return [UIImage imageNamed: self.keyframeURL];
+    return [UIImage imageNamed: self.thumbnailURL];
 }
 
 - (UIImage *) wallpaperImage

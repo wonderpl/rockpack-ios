@@ -5,27 +5,29 @@
 
 
 extern const struct ChannelAttributes {
-	__unsafe_unretained NSString *biog;
-	__unsafe_unretained NSString *biogTitle;
+	__unsafe_unretained NSString *channelDescription;
 	__unsafe_unretained NSString *index;
-	__unsafe_unretained NSString *keyframeURL;
+	__unsafe_unretained NSString *lastUpdated;
+	__unsafe_unretained NSString *rockCount;
 	__unsafe_unretained NSString *rockedByUser;
-	__unsafe_unretained NSString *subtitle;
+	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *totalRocks;
-	__unsafe_unretained NSString *userGenerated;
+	__unsafe_unretained NSString *uniqueId;
 	__unsafe_unretained NSString *wallpaperURL;
 } ChannelAttributes;
 
 extern const struct ChannelRelationships {
+	__unsafe_unretained NSString *channelOwner;
+	__unsafe_unretained NSString *channelVideos;
 	__unsafe_unretained NSString *videos;
 } ChannelRelationships;
 
 extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
+@class ChannelOwner;
+@class VideoInstance;
 @class Video;
-
 
 
 
@@ -50,21 +52,11 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* biog;
+@property (nonatomic, strong) NSString* channelDescription;
 
 
 
-//- (BOOL)validateBiog:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* biogTitle;
-
-
-
-//- (BOOL)validateBiogTitle:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateChannelDescription:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -84,11 +76,25 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* keyframeURL;
+@property (nonatomic, strong) NSDate* lastUpdated;
 
 
 
-//- (BOOL)validateKeyframeURL:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateLastUpdated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* rockCount;
+
+
+
+@property int64_t rockCountValue;
+- (int64_t)rockCountValue;
+- (void)setRockCountValue:(int64_t)value_;
+
+//- (BOOL)validateRockCount:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -108,11 +114,11 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* subtitle;
+@property (nonatomic, strong) NSString* thumbnailURL;
 
 
 
-//- (BOOL)validateSubtitle:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -128,29 +134,11 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* totalRocks;
+@property (nonatomic, strong) NSString* uniqueId;
 
 
 
-@property int64_t totalRocksValue;
-- (int64_t)totalRocksValue;
-- (void)setTotalRocksValue:(int64_t)value_;
-
-//- (BOOL)validateTotalRocks:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* userGenerated;
-
-
-
-@property BOOL userGeneratedValue;
-- (BOOL)userGeneratedValue;
-- (void)setUserGeneratedValue:(BOOL)value_;
-
-//- (BOOL)validateUserGenerated:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -162,6 +150,20 @@ extern const struct ChannelFetchedProperties {
 
 //- (BOOL)validateWallpaperURL:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
+@property (nonatomic, strong) ChannelOwner *channelOwner;
+
+//- (BOOL)validateChannelOwner:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) VideoInstance *channelVideos;
+
+//- (BOOL)validateChannelVideos:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -188,14 +190,8 @@ extern const struct ChannelFetchedProperties {
 @interface _Channel (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveBiog;
-- (void)setPrimitiveBiog:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveBiogTitle;
-- (void)setPrimitiveBiogTitle:(NSString*)value;
+- (NSString*)primitiveChannelDescription;
+- (void)setPrimitiveChannelDescription:(NSString*)value;
 
 
 
@@ -209,8 +205,17 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSString*)primitiveKeyframeURL;
-- (void)setPrimitiveKeyframeURL:(NSString*)value;
+- (NSDate*)primitiveLastUpdated;
+- (void)setPrimitiveLastUpdated:(NSDate*)value;
+
+
+
+
+- (NSNumber*)primitiveRockCount;
+- (void)setPrimitiveRockCount:(NSNumber*)value;
+
+- (int64_t)primitiveRockCountValue;
+- (void)setPrimitiveRockCountValue:(int64_t)value_;
 
 
 
@@ -224,8 +229,8 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSString*)primitiveSubtitle;
-- (void)setPrimitiveSubtitle:(NSString*)value;
+- (NSString*)primitiveThumbnailURL;
+- (void)setPrimitiveThumbnailURL:(NSString*)value;
 
 
 
@@ -236,20 +241,8 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSNumber*)primitiveTotalRocks;
-- (void)setPrimitiveTotalRocks:(NSNumber*)value;
-
-- (int64_t)primitiveTotalRocksValue;
-- (void)setPrimitiveTotalRocksValue:(int64_t)value_;
-
-
-
-
-- (NSNumber*)primitiveUserGenerated;
-- (void)setPrimitiveUserGenerated:(NSNumber*)value;
-
-- (BOOL)primitiveUserGeneratedValue;
-- (void)setPrimitiveUserGeneratedValue:(BOOL)value_;
+- (NSString*)primitiveUniqueId;
+- (void)setPrimitiveUniqueId:(NSString*)value;
 
 
 
@@ -258,6 +251,16 @@ extern const struct ChannelFetchedProperties {
 - (void)setPrimitiveWallpaperURL:(NSString*)value;
 
 
+
+
+
+- (ChannelOwner*)primitiveChannelOwner;
+- (void)setPrimitiveChannelOwner:(ChannelOwner*)value;
+
+
+
+- (VideoInstance*)primitiveChannelVideos;
+- (void)setPrimitiveChannelVideos:(VideoInstance*)value;
 
 
 

@@ -141,11 +141,11 @@
                                                                                       forIndexPath: indexPath];
         
         videoThumbnailCell.videoImageView.image = video.keyframeImage;
-        videoThumbnailCell.videoTitle.text = video.videoTitle;
+        videoThumbnailCell.videoTitle.text = video.title;
         videoThumbnailCell.channelName.text = video.channelName;
         videoThumbnailCell.userName.text = video.userName;
-        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
-        videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
+        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
+        videoThumbnailCell.rockItButton.selected = video.starredByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;
         cell = videoThumbnailCell;
     }
@@ -168,7 +168,7 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
 {
-    return CGSizeMake(1024, 44);
+    return CGSizeMake(1024, 65);
 }
 
 
@@ -235,8 +235,8 @@
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.rockItButton.selected = video.rockedByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
+    cell.rockItButton.selected = video.starredByUserValue;
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
 }
 
 - (IBAction) toggleVideoShareItButton: (UIButton *) rockItButton

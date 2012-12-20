@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Channel" representedClassName="Channel" syncable="YES">
-        <attribute name="biog" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="biogTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="channelDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="rockCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="subtitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="totalRocks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="userGenerated" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wallpaperURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channelOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="channel" inverseEntity="ChannelOwner" syncable="YES"/>
+        <relationship name="channelVideos" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="channel" inverseEntity="VideoInstance" syncable="YES"/>
         <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
     </entity>
-    <entity name="User" representedClassName="User" syncable="YES">
-        <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="dateJoined" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="ChannelOwner" representedClassName="ChannelOwner" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channel" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Channel" inverseName="channelOwner" inverseEntity="Channel" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">
-        <attribute name="channelName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="keyframeURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="sourceIndex" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="totalRocks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="videoTitle" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="videoURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source" attributeType="String" syncable="YES"/>
+        <attribute name="sourceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="starCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="starredByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Channel" inverseName="videos" inverseEntity="Channel" syncable="YES"/>
+        <relationship name="channelVideos" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="video" inverseEntity="VideoInstance" syncable="YES"/>
+    </entity>
+    <entity name="VideoInstance" representedClassName="VideoInstance" syncable="YES">
+        <attribute name="dateAdded" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="channel" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Channel" inverseName="channelVideos" inverseEntity="Channel" syncable="YES"/>
+        <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="channelVideos" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Channel" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="User" positionX="-81" positionY="261" width="128" height="105"/>
-        <element name="Video" positionX="-216" positionY="63" width="128" height="178"/>
+        <element name="Channel" positionX="-407" positionY="63" width="128" height="223"/>
+        <element name="ChannelOwner" positionX="-74" positionY="396" width="128" height="103"/>
+        <element name="Video" positionX="79" positionY="18" width="128" height="163"/>
+        <element name="VideoInstance" positionX="-191" positionY="81" width="128" height="118"/>
     </elements>
 </model>
