@@ -195,10 +195,7 @@
             
             // Now create the NSManaged Video objects corresponding to these details
             for (NSDictionary *videoDetailsDictionary in self.videoDetailsArray)
-            {           
-//                Video *video = (Video *)[[NSManagedObject alloc] initWithEntity: videoEntity
-//                                                   insertIntoManagedObjectContext: self.managedObjectContext];
-                
+            {                          
                 Video *video = [Video insertInManagedObjectContext: self.managedObjectContext];
                 
                 video.videoURL = [videoDetailsDictionary objectForKey: @"videoURL"];
