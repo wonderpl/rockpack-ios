@@ -16,14 +16,12 @@ extern const struct VideoAttributes {
 
 extern const struct VideoRelationships {
 	__unsafe_unretained NSString *channelVideos;
-	__unsafe_unretained NSString *channels;
 } VideoRelationships;
 
 extern const struct VideoFetchedProperties {
 } VideoFetchedProperties;
 
 @class VideoInstance;
-@class Channel;
 
 
 
@@ -131,22 +129,10 @@ extern const struct VideoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *channels;
-
-- (NSMutableSet*)channelsSet;
-
-
-
-
 
 @end
 
 @interface _Video (CoreDataGeneratedAccessors)
-
-- (void)addChannels:(NSSet*)value_;
-- (void)removeChannels:(NSSet*)value_;
-- (void)addChannelsObject:(Channel*)value_;
-- (void)removeChannelsObject:(Channel*)value_;
 
 @end
 
@@ -204,11 +190,6 @@ extern const struct VideoFetchedProperties {
 
 - (VideoInstance*)primitiveChannelVideos;
 - (void)setPrimitiveChannelVideos:(VideoInstance*)value;
-
-
-
-- (NSMutableSet*)primitiveChannels;
-- (void)setPrimitiveChannels:(NSMutableSet*)value;
 
 
 @end

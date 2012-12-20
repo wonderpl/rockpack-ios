@@ -13,7 +13,6 @@
         <attribute name="wallpaperURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="channelOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="channel" inverseEntity="ChannelOwner" syncable="YES"/>
         <relationship name="channelVideos" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="channel" inverseEntity="VideoInstance" syncable="YES"/>
-        <relationship name="videos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Video" inverseName="channels" inverseEntity="Video" syncable="YES"/>
     </entity>
     <entity name="ChannelOwner" representedClassName="ChannelOwner" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -29,7 +28,6 @@
         <attribute name="starredByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Channel" inverseName="videos" inverseEntity="Channel" syncable="YES"/>
         <relationship name="channelVideos" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="video" inverseEntity="VideoInstance" syncable="YES"/>
     </entity>
     <entity name="VideoInstance" representedClassName="VideoInstance" syncable="YES">
@@ -40,9 +38,9 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="channelVideos" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Channel" positionX="-407" positionY="63" width="128" height="238"/>
+        <element name="Channel" positionX="-407" positionY="63" width="128" height="223"/>
         <element name="ChannelOwner" positionX="-74" positionY="396" width="128" height="103"/>
-        <element name="Video" positionX="79" positionY="18" width="128" height="178"/>
-        <element name="VideoInstance" positionX="-191" positionY="81" width="128" height="118"/>
+        <element name="Video" positionX="79" positionY="18" width="128" height="163"/>
+        <element name="VideoInstance" positionX="-198" positionY="18" width="128" height="118"/>
     </elements>
 </model>
