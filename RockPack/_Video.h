@@ -5,6 +5,7 @@
 
 
 extern const struct VideoAttributes {
+	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *source;
 	__unsafe_unretained NSString *sourceId;
 	__unsafe_unretained NSString *starCount;
@@ -31,6 +32,7 @@ extern const struct VideoFetchedProperties {
 
 
 
+
 @interface VideoID : NSManagedObjectID {}
 @end
 
@@ -39,6 +41,16 @@ extern const struct VideoFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (VideoID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSString* categoryId;
+
+
+
+//- (BOOL)validateCategoryId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -139,6 +151,12 @@ extern const struct VideoFetchedProperties {
 @end
 
 @interface _Video (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSString*)primitiveCategoryId;
+- (void)setPrimitiveCategoryId:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveSource;

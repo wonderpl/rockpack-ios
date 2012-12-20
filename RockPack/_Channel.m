@@ -4,6 +4,7 @@
 #import "_Channel.h"
 
 const struct ChannelAttributes ChannelAttributes = {
+	.categoryId = @"categoryId",
 	.channelDescription = @"channelDescription",
 	.index = @"index",
 	.lastUpdated = @"lastUpdated",
@@ -68,6 +69,13 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic categoryId;
+
+
 
 
 

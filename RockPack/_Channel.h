@@ -5,6 +5,7 @@
 
 
 extern const struct ChannelAttributes {
+	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
 	__unsafe_unretained NSString *index;
 	__unsafe_unretained NSString *lastUpdated;
@@ -39,6 +40,7 @@ extern const struct ChannelFetchedProperties {
 
 
 
+
 @interface ChannelID : NSManagedObjectID {}
 @end
 
@@ -47,6 +49,16 @@ extern const struct ChannelFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (ChannelID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSString* categoryId;
+
+
+
+//- (BOOL)validateCategoryId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -188,6 +200,12 @@ extern const struct ChannelFetchedProperties {
 @end
 
 @interface _Channel (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSString*)primitiveCategoryId;
+- (void)setPrimitiveCategoryId:(NSString*)value;
+
+
 
 
 - (NSString*)primitiveChannelDescription;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Channel" representedClassName="Channel" syncable="YES">
+        <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channelDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
@@ -21,6 +22,7 @@
         <relationship name="channel" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Channel" inverseName="channelOwner" inverseEntity="Channel" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" syncable="YES">
+        <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="source" attributeType="String" syncable="YES"/>
         <attribute name="sourceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -38,9 +40,9 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="channelVideos" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Channel" positionX="-407" positionY="63" width="128" height="223"/>
+        <element name="Channel" positionX="-407" positionY="63" width="128" height="238"/>
         <element name="ChannelOwner" positionX="-74" positionY="396" width="128" height="103"/>
-        <element name="Video" positionX="79" positionY="18" width="128" height="163"/>
+        <element name="Video" positionX="79" positionY="18" width="128" height="178"/>
         <element name="VideoInstance" positionX="-191" positionY="81" width="128" height="118"/>
     </elements>
 </model>

@@ -4,6 +4,7 @@
 #import "_Video.h"
 
 const struct VideoAttributes VideoAttributes = {
+	.categoryId = @"categoryId",
 	.source = @"source",
 	.sourceId = @"sourceId",
 	.starCount = @"starCount",
@@ -59,6 +60,13 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic categoryId;
+
+
 
 
 
