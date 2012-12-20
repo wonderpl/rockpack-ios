@@ -16,6 +16,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "VideoInstance.h"
 
 @interface SYNMyRockpackViewController () <UICollectionViewDataSource,
                                            UICollectionViewDelegateFlowLayout,
@@ -93,13 +94,13 @@
 // The following 4 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"rockedByUser == TRUE"];
+    return [NSPredicate predicateWithFormat: @"video.rockedByUser == TRUE"];
 }
 
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }
@@ -210,9 +211,9 @@
 {
     if (cv == self.videoThumbnailCollectionView)
     {
-        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: video];
+        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
         
         [self animatedPushViewController: movieVC];
     }

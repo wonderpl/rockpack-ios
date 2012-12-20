@@ -107,7 +107,7 @@
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     // TODO: This is currently sorted by title, but I suspect that we need to be more sophisticated
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }
@@ -135,8 +135,8 @@
     
     [self updateLargeVideoDetailsForIndexPath: indexPath];
     
-    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-    NSURL *videoURL = video.localVideoURL;
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    NSURL *videoURL = videoInstance.video.localVideoURL;
     
     self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
     
@@ -245,10 +245,10 @@
 
 - (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", video.starCount];
-    self.rockItButton.selected = video.starredByUserValue;
+    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+    self.rockItButton.selected = videoInstance.video.starredByUserValue;
 }
 
 

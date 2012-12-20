@@ -87,7 +87,7 @@
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }
@@ -235,11 +235,11 @@
     
     [self toggleVideoRockItAtIndex: indexPath];
     
-    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.rockItButton.selected = video.starredByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.starCount];
+    cell.rockItButton.selected = videoInstance.video.starredByUserValue;
+    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
 }
 
 - (IBAction) toggleVideoShareItButton: (UIButton *) rockItButton
