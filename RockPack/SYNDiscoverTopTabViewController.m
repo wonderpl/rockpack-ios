@@ -107,7 +107,7 @@
 - (NSArray *) videoFetchedResultsControllerSortDescriptors
 {
     // TODO: This is currently sorted by title, but I suspect that we need to be more sophisticated
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }
@@ -236,8 +236,8 @@
 {
     Video *video = [self.videoFetchedResultsController objectAtIndexPath: indexPath];
     
-    self.titleLabel.text = video.title;
-    self.subtitleLabel.text = video.subtitle;
+    self.titleLabel.text = video.videoTitle;
+    self.subtitleLabel.text = video.channelName;
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
 }

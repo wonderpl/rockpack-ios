@@ -87,7 +87,8 @@
                                        @{@"videoURL" : @"Adidas",
                                        @"keyframeURL" : @"Adidas",
                                        @"title" : @"ADIDAS | TEAM GB",
-                                       @"subtitle" : @"DON'T STOP ME NOW",
+                                       @"channel" : @"MESSI TOP 5",
+                                       @"user" : @"TRICKY NICKY",
                                        @"totalRocks" : @453,
                                        @"rockedByUser" : @FALSE}];
         
@@ -95,7 +96,8 @@
                                        @{@"videoURL" : @"AngryBirds",
                                        @"keyframeURL" : @"AngryBirds",
                                        @"title" : @"ANGRY BIRDS: STAR WARS",
-                                       @"subtitle" : @"TRAILER",
+                                       @"channel" : @"WATCH OUT FOR THE PIGS",
+                                       @"user" : @"KISHAN THE MAN",
                                        @"totalRocks" : @273,
                                        @"rockedByUser" : @FALSE}];
             
@@ -103,7 +105,8 @@
                                        @{@"videoURL" : @"CallOfDuty",
                                        @"keyframeURL" : @"CallOfDuty",
                                        @"title" : @"CALL OF DUTY: BLACK OPS 2",
-                                       @"subtitle" : @"TRAILER",
+                                       @"channel" : @"LEAD BY EXAMPLE",
+                                       @"user" : @"LEIGH982",
                                        @"totalRocks" : @886,
                                        @"rockedByUser" : @FALSE}];
             
@@ -111,7 +114,8 @@
                                        @{@"videoURL" : @"CarlyRaeJepsen",
                                        @"keyframeURL" : @"CarlyRaeJepsen",
                                        @"title" : @"CARLY RAE JEPSEN",
-                                       @"subtitle" : @"CALL ME MAYBE",
+                                       @"user" : @"WADINGBIRD",
+                                       @"channel" : @"CALL ME?",
                                        @"totalRocks" : @132,
                                        @"rockedByUser" : @FALSE}];
             
@@ -119,7 +123,8 @@
                                        @{@"videoURL" : @"HotelTransylvania",
                                        @"keyframeURL" : @"HotelTransylvania",
                                        @"title" : @"HOTEL TRANSYLVANIA",
-                                       @"subtitle" : @"TRAILER",
+                                       @"channel" : @"SPOOKY!",
+                                       @"user" : @"8BITBOY",
                                        @"totalRocks" : @613,
                                        @"rockedByUser" : @TRUE}];
             
@@ -127,7 +132,8 @@
                                        @{@"videoURL" : @"JustinBieber",
                                        @"keyframeURL" : @"JustinBieber",
                                        @"title" : @"JUSTIN BIEBER",
-                                       @"subtitle" : @"BOYFRIEND",
+                                       @"channel" : @"MY SUMMER",
+                                       @"user" : @"LILACBAGEL",
                                        @"totalRocks" : @277,
                                        @"rockedByUser" : @TRUE}];
             
@@ -135,7 +141,8 @@
                                        @{@"videoURL" : @"Madagascar3",
                                        @"keyframeURL" : @"Madagascar3",
                                        @"title" : @"MADAGASCAR 3: EUROPE'S MOST WANTED",
-                                       @"subtitle" : @"TRAILER",
+                                       @"channel" : @"POLKA DOT AFRO",
+                                       @"user" : @"ERINPASTA",
                                        @"totalRocks" : @323,
                                        @"rockedByUser" : @FALSE}];
             
@@ -143,7 +150,8 @@
                                        @{@"videoURL" : @"MonstersUniversity",
                                        @"keyframeURL" : @"MonstersUniversity",
                                        @"title" : @"MONSTERS UNIVERSITY",
-                                       @"subtitle" : @"TRAILER",
+                                       @"user" : @"ADRIANALIMA",
+                                       @"channel" : @"THEY ARE BACK",
                                        @"totalRocks" : @245,
                                        @"rockedByUser" : @TRUE}];
             
@@ -151,7 +159,8 @@
                                        @{@"videoURL" : @"NikeFootball",
                                        @"keyframeURL" : @"NikeFootball",
                                        @"title" : @"NIKE FOOTBALL: MERCURIAL VAPOR VIII",
-                                       @"subtitle" : @"CRISTIANO RONALDO VS RAFA NADAL",
+                                       @"channel" : @"RONALDO VS RAFA",
+                                       @"user" : @"SOPHIE_SMITH",
                                        @"totalRocks" : @653,
                                        @"rockedByUser" : @FALSE}];
             
@@ -159,7 +168,8 @@
                                         @{@"videoURL" : @"OneDirection",
                                         @"keyframeURL" : @"OneDirection",
                                         @"title" : @"ONE DIRECTION",
-                                        @"subtitle" : @"LIVE WHILE WE'RE YOUNG",
+                                        @"channel" : @"LIVE WHILE WE'RE YOUNG",
+                                        @"user" : @"ARDENTIRISHBOY",
                                         @"totalRocks" : @121,
                                         @"rockedByUser" : @FALSE}];
             
@@ -167,7 +177,8 @@
                                         @{@"videoURL" : @"TheDarkKnightRises",
                                         @"keyframeURL" : @"TheDarkKnightRises",
                                         @"title" : @"THE DARK KNIGHT RISES",
-                                        @"subtitle" : @"TRAILER",
+                                        @"user" : @"NEARSPECTRE",
+                                        @"channel" : @"BEWARE OF THE BAT",
                                         @"totalRocks" : @271,
                                         @"rockedByUser" : @TRUE}];
             
@@ -175,7 +186,8 @@
                                         @{@"videoURL" : @"TheLionKing",
                                         @"keyframeURL" : @"TheLionKing",
                                         @"title" : @"THE LION KING",
-                                        @"subtitle" : @"MOVIE",
+                                        @"channel" : @"CIRCLE OF LIFE",
+                                        @"user" : @"FUNNYPENGUIN",
                                         @"totalRocks" : @978,
                                         @"rockedByUser" : @FALSE}];
             
@@ -191,8 +203,9 @@
                 
                 video.videoURL = [videoDetailsDictionary objectForKey: @"videoURL"];
                 video.keyframeURL = [videoDetailsDictionary objectForKey: @"keyframeURL"];
-                video.title = [videoDetailsDictionary objectForKey: @"title"];
-                video.subtitle = [videoDetailsDictionary objectForKey: @"subtitle"];
+                video.videoTitle = [videoDetailsDictionary objectForKey: @"title"];
+                video.channelName = [videoDetailsDictionary objectForKey: @"channel"];
+                video.userName = [videoDetailsDictionary objectForKey: @"user"];
                 video.rockedByUser = [videoDetailsDictionary objectForKey: @"rockedByUser"];
                 video.totalRocks = [videoDetailsDictionary objectForKey: @"totalRocks"];
             }

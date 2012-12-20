@@ -99,7 +99,7 @@
 
 - (NSArray *) videoFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }

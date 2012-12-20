@@ -5,12 +5,13 @@
 
 
 extern const struct VideoAttributes {
+	__unsafe_unretained NSString *channelName;
 	__unsafe_unretained NSString *keyframeURL;
 	__unsafe_unretained NSString *rockedByUser;
 	__unsafe_unretained NSString *sourceIndex;
-	__unsafe_unretained NSString *subtitle;
-	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *totalRocks;
+	__unsafe_unretained NSString *userName;
+	__unsafe_unretained NSString *videoTitle;
 	__unsafe_unretained NSString *videoURL;
 } VideoAttributes;
 
@@ -31,6 +32,7 @@ extern const struct VideoFetchedProperties {
 
 
 
+
 @interface VideoID : NSManagedObjectID {}
 @end
 
@@ -39,6 +41,16 @@ extern const struct VideoFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (VideoID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSString* channelName;
+
+
+
+//- (BOOL)validateChannelName:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -82,26 +94,6 @@ extern const struct VideoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* subtitle;
-
-
-
-//- (BOOL)validateSubtitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* title;
-
-
-
-//- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSNumber* totalRocks;
 
 
@@ -111,6 +103,26 @@ extern const struct VideoFetchedProperties {
 - (void)setTotalRocksValue:(int64_t)value_;
 
 //- (BOOL)validateTotalRocks:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* userName;
+
+
+
+//- (BOOL)validateUserName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* videoTitle;
+
+
+
+//- (BOOL)validateVideoTitle:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -148,6 +160,12 @@ extern const struct VideoFetchedProperties {
 @interface _Video (CoreDataGeneratedPrimitiveAccessors)
 
 
+- (NSString*)primitiveChannelName;
+- (void)setPrimitiveChannelName:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveKeyframeURL;
 - (void)setPrimitiveKeyframeURL:(NSString*)value;
 
@@ -172,23 +190,23 @@ extern const struct VideoFetchedProperties {
 
 
 
-- (NSString*)primitiveSubtitle;
-- (void)setPrimitiveSubtitle:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
 - (NSNumber*)primitiveTotalRocks;
 - (void)setPrimitiveTotalRocks:(NSNumber*)value;
 
 - (int64_t)primitiveTotalRocksValue;
 - (void)setPrimitiveTotalRocksValue:(int64_t)value_;
+
+
+
+
+- (NSString*)primitiveUserName;
+- (void)setPrimitiveUserName:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveVideoTitle;
+- (void)setPrimitiveVideoTitle:(NSString*)value;
 
 
 

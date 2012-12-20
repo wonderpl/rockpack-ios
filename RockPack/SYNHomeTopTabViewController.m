@@ -84,7 +84,7 @@
 
 - (NSArray *) videoFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"videoTitle"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }
@@ -141,9 +141,9 @@
                                                                                       forIndexPath: indexPath];
         
         videoThumbnailCell.videoImageView.image = video.keyframeImage;
-        videoThumbnailCell.videoTitle.text = video.title;
-        videoThumbnailCell.channelName.text = video.subtitle;
-        videoThumbnailCell.userName.text = @"FRED DIBNAH";
+        videoThumbnailCell.videoTitle.text = video.videoTitle;
+        videoThumbnailCell.channelName.text = video.channelName;
+        videoThumbnailCell.userName.text = video.userName;
         videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", video.totalRocks];
         videoThumbnailCell.rockItButton.selected = video.rockedByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;

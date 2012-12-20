@@ -4,12 +4,13 @@
 #import "_Video.h"
 
 const struct VideoAttributes VideoAttributes = {
+	.channelName = @"channelName",
 	.keyframeURL = @"keyframeURL",
 	.rockedByUser = @"rockedByUser",
 	.sourceIndex = @"sourceIndex",
-	.subtitle = @"subtitle",
-	.title = @"title",
 	.totalRocks = @"totalRocks",
+	.userName = @"userName",
+	.videoTitle = @"videoTitle",
 	.videoURL = @"videoURL",
 };
 
@@ -64,6 +65,13 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic channelName;
+
+
 
 
 
@@ -127,20 +135,6 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 
-@dynamic subtitle;
-
-
-
-
-
-
-@dynamic title;
-
-
-
-
-
-
 @dynamic totalRocks;
 
 
@@ -162,6 +156,20 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 - (void)setPrimitiveTotalRocksValue:(int64_t)value_ {
 	[self setPrimitiveTotalRocks:[NSNumber numberWithLongLong:value_]];
 }
+
+
+
+
+
+@dynamic userName;
+
+
+
+
+
+
+@dynamic videoTitle;
+
 
 
 
