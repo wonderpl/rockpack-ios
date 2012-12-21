@@ -565,6 +565,8 @@
                 
                 Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
                 
+                channel.uniqueId = [NSString stringWithFormat: @"%d", index];
+                channel.categoryId = @"funny";
                 channel.indexValue = index++;
                 channel.thumbnailURL = [channelDetailsDictionary objectForKey: @"keyframeURL"];
                 channel.wallpaperURL = [channelDetailsDictionary objectForKey: @"wallpaperURL"];

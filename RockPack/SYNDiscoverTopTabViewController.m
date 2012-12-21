@@ -72,11 +72,13 @@
     
     // TODO: Remove this video download hack once we have real data from the API
     [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
-//    [SYNChannelsDB sharedChannelsDBManager];
 
     // Set the first video
-    [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
-                                                       inSection: 0]];
+    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
+    {
+        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
+                                                           inSection: 0]];
+    }
 }
 
 
@@ -99,7 +101,10 @@
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    // No predicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"channel.uniqueId == %@", @"62"];
+    
+    return predicate;
+    
     return nil;
 }
 
@@ -116,7 +121,7 @@
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
     // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
+    return [NSPredicate predicateWithFormat: @"(channelOwner.uniqueId != 666"];
 }
 
 
