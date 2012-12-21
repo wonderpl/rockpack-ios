@@ -144,6 +144,7 @@
                                                                                       forIndexPath: indexPath];
         
         videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
+        videoThumbnailCell.channelImageView.image = videoInstance.channel.thumbnailImage;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
         videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;

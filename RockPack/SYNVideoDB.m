@@ -16,6 +16,7 @@
 #import "Video.h"
 #import "Channel.h"
 #import "VideoInstance.h"
+#import "ChannelOwner.h"
 
 @interface SYNVideoDB () <MBProgressHUDDelegate>
 
@@ -529,7 +530,6 @@
             
             self.channelDetailsArray = @[d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d33, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, d32];
             
-            
             int uniqueId = 0;
             NSMutableArray *videos = [[NSMutableArray alloc] initWithCapacity: 12];
             
@@ -549,6 +549,13 @@
                 [videos addObject: video];
             }
             
+            // Create a couple of channel owners in the database, one for the user of the app and one for another user
+            ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.managedObjectContext];
+            
+            channelOwnerMe.name = @"NICK BANKS";
+            channelOwnerMe.uniqueId = @"666";
+            channelOwnerMe.thumbnailURL = @"ChannelThumb0";
+            
             int index = 0;
             // Now create the NSManaged Video objects corresponding to these details
             for (NSDictionary *channelDetailsDictionary in self.channelDetailsArray)
@@ -559,12 +566,21 @@
                 Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
                 
                 channel.indexValue = index++;
-                channel.thumbnailURL = [channelDetailsDictionary objectForKey: @"keyframeURL"];
+                channel.thumbnailURL = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];
                 channel.wallpaperURL = [channelDetailsDictionary objectForKey: @"wallpaperURL"];
                 channel.title = [channelDetailsDictionary objectForKey: @"title"];
                 channel.channelDescription = [channelDetailsDictionary objectForKey: @"biog"];
                 channel.rockedByUser = [channelDetailsDictionary objectForKey: @"rockedByUser"];
                 channel.rockCount = [channelDetailsDictionary objectForKey: @"totalRocks"];
+                
+                ChannelOwner *channelOwner = [ChannelOwner insertInManagedObjectContext: self.managedObjectContext];
+                channelOwner.name = [(NSDictionary *)[self.videoDetailsArray objectAtIndex: index % 12] objectForKey: @"user"];
+                channelOwner.uniqueId = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];;
+                channelOwner.thumbnailURL = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];
+                
+                channel.channelOwner = channelOwner;
+                                               
+                index++;
                 
                 //                video.title = [videoDetailsDictionary objectForKey: @"title"];
                 //                 video.userName = [videoDetailsDictionary objectForKey: @"user"];
