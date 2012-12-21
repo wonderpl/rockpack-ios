@@ -116,7 +116,7 @@
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
     // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"userGenerated == FALSE"];
+    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
 }
 
 

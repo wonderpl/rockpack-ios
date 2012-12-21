@@ -566,7 +566,7 @@
                 Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
                 
                 channel.indexValue = index++;
-                channel.thumbnailURL = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];
+                channel.thumbnailURL = [channelDetailsDictionary objectForKey: @"keyframeURL"];
                 channel.wallpaperURL = [channelDetailsDictionary objectForKey: @"wallpaperURL"];
                 channel.title = [channelDetailsDictionary objectForKey: @"title"];
                 channel.channelDescription = [channelDetailsDictionary objectForKey: @"biog"];

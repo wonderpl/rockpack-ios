@@ -94,7 +94,7 @@
 // The following 4 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"video.rockedByUser == TRUE"];
+    return [NSPredicate predicateWithFormat: @"video.starredByUser == TRUE"];
 }
 
 
@@ -108,8 +108,7 @@
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"userGenerated == TRUE"];
-//    return [NSPredicate predicateWithFormat: @"(rockedByUser == TRUE) AND (userGenerated == TRUE)"];
+    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId == 666"];
 }
 
 

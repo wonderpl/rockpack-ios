@@ -241,7 +241,7 @@
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"userGenerated == FALSE"];
+    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
 }
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
