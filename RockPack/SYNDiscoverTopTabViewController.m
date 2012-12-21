@@ -101,7 +101,7 @@
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"channel.uniqueId == %@", @"62"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", @"1"];
     
     return predicate;
     

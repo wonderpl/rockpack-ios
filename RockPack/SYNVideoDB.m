@@ -567,7 +567,7 @@
                 
                 channel.uniqueId = [NSString stringWithFormat: @"%d", index];
                 channel.categoryId = @"funny";
-                channel.indexValue = index++;
+                channel.indexValue = index;
                 channel.thumbnailURL = [channelDetailsDictionary objectForKey: @"keyframeURL"];
                 channel.wallpaperURL = [channelDetailsDictionary objectForKey: @"wallpaperURL"];
                 channel.title = [channelDetailsDictionary objectForKey: @"title"];
@@ -582,7 +582,7 @@
                 
                 channel.channelOwner = channelOwner;
                                                
-                index++;
+               
                 
                 //                video.title = [videoDetailsDictionary objectForKey: @"title"];
                 //                 video.userName = [videoDetailsDictionary objectForKey: @"user"];
@@ -597,13 +597,19 @@
                 for (Video *video in videos)
                 {
                     VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.managedObjectContext];
-                    
-                    videoInstance.uniqueId = @"unknown";
+                    int fakeIndex = 99;
+                    if (index < 12)
+                    {
+                        fakeIndex = (i + index) % 12;
+                    }
+                    videoInstance.uniqueId = [NSString stringWithFormat: @"%d", fakeIndex];
                     videoInstance.dateAdded = [NSDate date];
                     videoInstance.title = [(NSDictionary *)[self.videoDetailsArray objectAtIndex: i++] objectForKey: @"title"];
                     videoInstance.video = video;
                     videoInstance.channel = channel;
                 }
+                
+                 index++;
             }
             
             // Now we have created all our Video objects, save them...
