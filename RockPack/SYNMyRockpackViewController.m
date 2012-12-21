@@ -94,7 +94,10 @@
 // The following 4 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"video.starredByUser == TRUE"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(uniqueId == %@) AND (video.starredByUser == TRUE)", @"1"];
+    
+    return predicate;
+//    return [NSPredicate predicateWithFormat: @"video.starredByUser == TRUE"];
 }
 
 

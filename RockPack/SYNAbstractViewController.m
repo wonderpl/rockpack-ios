@@ -432,6 +432,8 @@
     }
     
     [self saveDB];
+    
+//    [self.videoThumbnailCollectionView reloadData];
 }
 
 
