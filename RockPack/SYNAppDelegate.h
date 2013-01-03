@@ -11,7 +11,7 @@
 
 // Something new!
 
-@class SYNBottomTabViewController;
+@class SYNBottomTabViewController, ChannelOwner;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -26,6 +26,9 @@
 
 // Root view controller
 @property (strong, nonatomic) SYNBottomTabViewController *viewController;
+
+// Bit of a hack to represent the current user
+@property (weak, nonatomic) ChannelOwner *channelOwnerMe;
 
 - (void) saveContext;
 - (NSURL *) applicationDocumentsDirectory;

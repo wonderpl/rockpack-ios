@@ -556,6 +556,9 @@
             channelOwnerMe.uniqueId = @"666";
             channelOwnerMe.thumbnailURL = @"ChannelThumb0";
             
+            SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+            delegate.channelOwnerMe = channelOwnerMe;
+            
             int index = 0;
             // Now create the NSManaged Video objects corresponding to these details
             for (NSDictionary *channelDetailsDictionary in self.channelDetailsArray)

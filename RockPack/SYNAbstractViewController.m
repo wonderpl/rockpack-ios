@@ -867,6 +867,27 @@
 {
     Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
     
+//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    newChannel.channelOwner = delegate.channelOwnerMe;
+    
+    NSError *error = nil;
+    NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
+                                                   inManagedObjectContext: self.managedObjectContext];
+    
+    // Find out how many Video objects we have in the database
+    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
+    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
+    [channelOwnerFetchRequest setPredicate: predicate];
+    
+    NSArray *channelOwnerEntries = [self.managedObjectContext executeFetchRequest: channelOwnerFetchRequest
+                                                                     error: &error];
+    
+    DebugLog(@"unique id = %@", ((ChannelOwner *)channelOwnerEntries[0]).uniqueId);
+    
+    newChannel.channelOwner = (ChannelOwner *)channelOwnerEntries[0];
+    
     newChannel.title = title;
     newChannel.rockedByUserValue = FALSE;
     newChannel.rockCountValue = 0;
@@ -886,6 +907,9 @@
     {
         [[newChannel videoInstanceSet] addObject: videoInstance];
     }
+    
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [delegate saveContext];
     
     [self.channelNameTextField resignFirstResponder];
     [self clearImageWell];
