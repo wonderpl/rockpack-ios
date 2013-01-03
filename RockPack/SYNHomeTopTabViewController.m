@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSMutableArray *videosArray;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
+@property (nonatomic, assign) BOOL refreshing;
 
 @end
 
@@ -56,9 +58,12 @@
 
 - (void) refreshVideoThumbnails
 {
+    self.refreshing = TRUE;
+    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+    
     [self.refreshControl beginRefreshing];
     
-    self.timer = [NSTimer timerWithTimeInterval: 2.0f
+    self.timer = [NSTimer timerWithTimeInterval: 5.0f
                             target: self
                           selector: @selector(refreshVideoThumbnailsFinished)
                           userInfo: nil
@@ -72,6 +77,8 @@
 
 - (void) refreshVideoThumbnailsFinished
 {
+    [self.supplementaryViewWithRefreshButton spinRefreshButton: FALSE];
+    self.refreshing = FALSE;
     [self.refreshControl endRefreshing];
 }
 
@@ -116,7 +123,7 @@
 #endif
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     NSIndexPath *adjustedIndexPath;
@@ -128,20 +135,20 @@
     adjustedIndexPath = indexPath;
 #endif
     
-    SYNVideoThumbnailWideCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                forIndexPath: indexPath];
+    SYNVideoThumbnailWideCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+                                                                                 forIndexPath: indexPath];
     if ((indexPath.row < 3) && (indexPath.section == 0))
     {
         cell.focus = TRUE;
     }
     
-    if (cv == self.videoThumbnailCollectionView)
+    if (collectionView == self.videoThumbnailCollectionView)
     {
         // No, but it was our collection view
         VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: adjustedIndexPath];
         
-        SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                                      forIndexPath: indexPath];
+        SYNVideoThumbnailWideCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+                                                                                                  forIndexPath: indexPath];
         
         videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
         videoThumbnailCell.channelImageView.image = videoInstance.channel.thumbnailImage;
@@ -186,12 +193,21 @@
                                                                                        forIndexPath: indexPath];
     NSString *sectionText;
     BOOL focus = FALSE;
+    BOOL refreshButtonHidden = TRUE;
     
     switch (indexPath.section)
     {
         case 0:
             sectionText = @"TODAY";
             focus = TRUE;
+            // We need to store this away, so can control animations (but must nil when goes out of scope)
+            self.supplementaryViewWithRefreshButton = sectionSupplementaryView;
+            refreshButtonHidden = FALSE;
+            if (self.refreshing == TRUE)
+            {
+                [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+            }
+
             break;
             
         case 1:
@@ -215,11 +231,42 @@
     }
     
     // Special case, remember the first section view
-    
+    sectionSupplementaryView.viewControllerDelegate = self;
     sectionSupplementaryView.focus = focus;
+    sectionSupplementaryView.refreshView.hidden = refreshButtonHidden;
     sectionSupplementaryView.sectionTitleLabel.text = sectionText;
     
     return sectionSupplementaryView;
+}
+
+- (void) collectionView: (UICollectionView *) collectionView
+       didEndDisplayingSupplementaryView: (UICollectionReusableView *) view
+       forElementOfKind: (NSString *) elementKind
+            atIndexPath: (NSIndexPath *) indexPath
+{
+    if (collectionView == self.videoThumbnailCollectionView)
+    {
+        if (indexPath.section == 0)
+        {
+            // If out first section header leave the screen, then we need to ensure that we don't try and manipulate it
+            //  in future (as it will no longer exist)
+            self.supplementaryViewWithRefreshButton = nil;
+        }
+    }
+    else
+    {
+        // We should not be expecting any other supplementary views
+        AssertOrLog(@"No valid collection view found");
+    }
+}
+
+- (IBAction) userTouchedRefreshButton: (id) sender
+{
+    if (self.refreshing == FALSE)
+    {
+        self.refreshing = TRUE;
+        [self refreshVideoThumbnails];
+    }
 }
 
 

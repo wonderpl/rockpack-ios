@@ -54,6 +54,17 @@
     self.sectionView.hidden = FALSE;
 }
 
+// Need to do this outside awakeFromNib as the delegate is not set at that point
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+{
+    _viewControllerDelegate = viewControllerDelegate;
+    
+    // Add button targets
+    [self.refreshButton addTarget: _viewControllerDelegate
+                           action: @selector(userTouchedRefreshButton:)
+                 forControlEvents: UIControlEventTouchUpInside];
+}
+
 
 - (void) setFocus: (BOOL) focus
 {
@@ -69,47 +80,53 @@
     }
 }
 
+
+// We need to ensure that there are no active animations (i.e. the Refresh button) when the cell is re-used
 - (void) prepareForReuse
 {
-    DebugLog(@"prepareForReuse");
-    
+    self.refreshButton.selected = FALSE;
+    self.refreshView.hidden = TRUE;
     [self.refreshButton.layer removeAllAnimations];
 }
 
-- (IBAction) touched: (id) sender
+
+- (void) spinRefreshButton: (BOOL) spin
 {
-    [self spinButton];
-}
+    if (spin)
+    {
+        self.refreshButton.selected = TRUE;
+        [CATransaction begin];
+        [CATransaction setValue: (id) kCFBooleanTrue
+                         forKey: kCATransactionDisableActions];
+        
+        CGRect frame = [self.refreshButton frame];
+        self.refreshButton.layer.anchorPoint = CGPointMake(0.5, 0.5);
+        self.refreshButton.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
+        [CATransaction commit];
+        
+        [CATransaction begin];
+        [CATransaction setValue: (id)kCFBooleanFalse
+                         forKey: kCATransactionDisableActions];
+        
+        [CATransaction setValue: [NSNumber numberWithFloat:2.0]
+                         forKey: kCATransactionAnimationDuration];
+        
+        CABasicAnimation *animation;
+        animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
+        animation.fromValue = [NSNumber numberWithFloat: 0.0];
+        animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
+        animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
+        animation.delegate = self;
+        [self.refreshButton.layer addAnimation: animation
+                                        forKey: @"rotationAnimation"];
+        [CATransaction commit];
+    }
+    else
+    {
+        self.refreshButton.selected = FALSE;
+        [self.refreshButton.layer removeAllAnimations];
+    }
 
-
-- (void) spinButton
-{
-	[CATransaction begin];
-	[CATransaction setValue: (id) kCFBooleanTrue
-					 forKey: kCATransactionDisableActions];
-
-	CGRect frame = [self.refreshButton frame];
-	self.refreshButton.layer.anchorPoint = CGPointMake(0.5, 0.5);
-	self.refreshButton.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
-	[CATransaction commit];
-
-	[CATransaction begin];
-	[CATransaction setValue: (id)kCFBooleanFalse
-					 forKey: kCATransactionDisableActions];
-
-	[CATransaction setValue: [NSNumber numberWithFloat:2.0]
-                     forKey: kCATransactionAnimationDuration];
-
-	CABasicAnimation *animation;
-	animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
-	animation.fromValue = [NSNumber numberWithFloat: 0.0];
-	animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
-	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
-	animation.delegate = self;
-	[self.refreshButton.layer addAnimation: animation
-                                      forKey: @"rotationAnimation"];
-
-	[CATransaction commit];
 }
 
 
@@ -119,7 +136,7 @@
 {
 	if (finished)
 	{
-		[self spinButton];
+		[self spinRefreshButton: TRUE];
 	}
 }
 

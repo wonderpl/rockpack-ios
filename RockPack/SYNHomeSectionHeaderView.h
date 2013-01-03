@@ -12,7 +12,12 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *sectionTitleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *refreshButton;
+@property (nonatomic, strong) IBOutlet UIView *refreshView;
+
+// This is used to indicate the UIViewController that
+@property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 - (void) setFocus: (BOOL) focus;
+- (void) spinRefreshButton: (BOOL) spin;
 
 @end
