@@ -20,7 +20,10 @@
 @property (readonly, getter = isImageWellVisible) BOOL imageWellVisible;
 @property (nonatomic, strong) UIView *imageWellView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-
+@property (nonatomic, assign) BOOL inDrag;
+@property (nonatomic, assign) CGPoint initialDragCenter;
+@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
+@property (nonatomic, strong) UIImageView *draggedView;
 // Public methods
 
 // Core Data support

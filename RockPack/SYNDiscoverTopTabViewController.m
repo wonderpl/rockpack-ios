@@ -24,8 +24,6 @@
 @interface SYNDiscoverTopTabViewController () <UIGestureRecognizerDelegate,
                                                UIScrollViewDelegate>
 
-@property (nonatomic, assign) BOOL inDrag;
-@property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
@@ -38,8 +36,7 @@
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
-@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
-@property (nonatomic, strong) UIImageView *draggedView;
+
 
 @end
 
@@ -121,7 +118,7 @@
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
     // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"(channelOwner.uniqueId != 666"];
+    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
 }
 
 
@@ -265,7 +262,8 @@
         
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
-        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        
+        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
         
         if (!indexPath)
         {
@@ -283,7 +281,7 @@
         CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
-        self.draggedView.image = video.thumbnailImage;
+        self.draggedView.image = videoInstance.video.thumbnailImage;
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
