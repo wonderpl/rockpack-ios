@@ -11,6 +11,7 @@
 @interface SYNHomeSectionHeaderView : UICollectionReusableView
 
 @property (nonatomic, strong) IBOutlet UILabel *sectionTitleLabel;
+@property (nonatomic, strong) IBOutlet UIButton *refreshButton;
 
 - (void) setFocus: (BOOL) focus;
 

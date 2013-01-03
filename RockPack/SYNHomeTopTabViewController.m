@@ -181,9 +181,9 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    SYNHomeSectionHeaderView *reusableView = [cv dequeueReusableSupplementaryViewOfKind: kind
-                                                                    withReuseIdentifier: @"SYNHomeSectionHeaderView"
-                                                                           forIndexPath: indexPath];
+    SYNHomeSectionHeaderView *sectionSupplementaryView = [cv dequeueReusableSupplementaryViewOfKind: kind
+                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
+                                                                                       forIndexPath: indexPath];
     NSString *sectionText;
     BOOL focus = FALSE;
     
@@ -214,11 +214,15 @@
             break;
     }
     
-    reusableView.focus = focus;
-    reusableView.sectionTitleLabel.text = sectionText;
+    // Special case, remember the first section view
     
-    return reusableView;
+    sectionSupplementaryView.focus = focus;
+    sectionSupplementaryView.sectionTitleLabel.text = sectionText;
+    
+    return sectionSupplementaryView;
 }
+
+
 
 - (IBAction) toggleVideoRockItButton: (UIButton *) rockItButton
 {
