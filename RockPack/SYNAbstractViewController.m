@@ -270,6 +270,11 @@
     return _videoInstanceFetchedResultsController;
 }
 
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    NSLog (@"controller updated");
+}
+
 // Abstract functions, should be overidden in subclasses
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
