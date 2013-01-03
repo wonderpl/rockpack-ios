@@ -97,6 +97,4 @@
                forControlEvents: UIControlEventTouchUpInside];
 }
 
-
-
 @end

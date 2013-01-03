@@ -465,7 +465,7 @@
 
 - (IBAction) userTouchedVideoRockItButton: (UIButton *) rockItButton
 {
-    rockItButton.selected = !rockItButton.selected;
+//    rockItButton.selected = !rockItButton.selected;
     
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
@@ -481,10 +481,12 @@
         if (self.shouldUpdateRockItStatus == TRUE)
         {
             VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-            SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+            SYNVideoThumbnailWideCell *videoThumbnailCell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
             
-            cell.rockItButton.selected = videoInstance.video.starredByUserValue;
-            cell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+            [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
+                                             selected: videoInstance.video.starredByUserValue];
+//            videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
+            videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         }
     }
 }
@@ -550,6 +552,21 @@
     }
 }
 
+- (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
+                                    selected: (BOOL) selected
+{
+    videoThumbnailCell.rockItButton.selected = selected;
+    
+    if (selected)
+    {
+        videoThumbnailCell.rockItNumber.textColor = [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f];
+    }
+    else
+    {
+        videoThumbnailCell.rockItNumber.textColor = [UIColor colorWithRed: 0.510f green: 0.553f blue: 0.569f alpha: 1.0f];
+    }
+}
+
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
@@ -569,7 +586,11 @@
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
         videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
         videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
+        
+        [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
+                                         selected: videoInstance.video.starredByUserValue];
+        
+//        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;
         
         cell = videoThumbnailCell;

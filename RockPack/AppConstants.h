@@ -22,6 +22,16 @@
 #define FULL_SCREEN_THUMBNAILS__
 
 //
+// Colours
+//
+
+// Highlighted RockIt number text colour
+#define kHighlightedRockItTextColour [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f]
+
+// Default
+#define kDefaultRockItTextColour
+
+//
 // Animations
 //
 
