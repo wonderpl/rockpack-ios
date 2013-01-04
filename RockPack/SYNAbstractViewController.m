@@ -807,13 +807,6 @@
     return FALSE;
 }
 
-
-// Assume that there are no other views to expand
-- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract
-{
-    return nil;
-}
-
 - (void) startImageWellDismissalTimer
 {
     self.imageWellAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kImageWellOnScreenDuration

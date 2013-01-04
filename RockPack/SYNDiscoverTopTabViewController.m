@@ -254,12 +254,6 @@
 }
 
 
-- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract
-{
-//    return @[self.largeVideoPanelView, self.videoThumbnailCollectionView];
-        return @[self.largeVideoPanelView];
-}
-
 
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
                  animated: (BOOL) animated
@@ -502,17 +496,17 @@
 
 - (void) shiftImageWellUp
 {
-         CGRect imageWellFrame = self.imageWellView.frame;
-         imageWellFrame.origin.y -= kImageWellEffectiveHeight;
-         self.imageWellView.frame = imageWellFrame;
+     CGRect imageWellFrame = self.imageWellView.frame;
+     imageWellFrame.origin.y -= kImageWellEffectiveHeight;
+     self.imageWellView.frame = imageWellFrame;
 
-         CGRect viewFrame = self.largeVideoPanelView.frame;
-         viewFrame.size.height -= kImageWellEffectiveHeight;
-         self.largeVideoPanelView.frame = viewFrame;
+     CGRect viewFrame = self.largeVideoPanelView.frame;
+     viewFrame.size.height -= kImageWellEffectiveHeight;
+     self.largeVideoPanelView.frame = viewFrame;
 
-         viewFrame = self.videoThumbnailCollectionView.frame;
-         viewFrame.size.height -= kImageWellEffectiveHeight;
-         self.videoThumbnailCollectionView.frame = viewFrame;
+     viewFrame = self.videoThumbnailCollectionView.frame;
+     viewFrame.size.height -= kImageWellEffectiveHeight;
+     self.videoThumbnailCollectionView.frame = viewFrame;
 }
 
 
@@ -531,7 +525,5 @@
     viewFrame.size.height += kImageWellEffectiveHeight;
     self.videoThumbnailCollectionView.frame = viewFrame;
 }
-
-
 
 @end

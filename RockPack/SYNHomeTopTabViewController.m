@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "SYNHomeSectionHeaderView.h"
@@ -104,29 +105,58 @@
     return @[sortDescriptor];
 }
 
-#pragma mark - Collection view support
-
-- (NSInteger) collectionView: (UICollectionView *) view
-      numberOfItemsInSection: (NSInteger) section
+- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract
 {
-#ifdef FAKE_MULTIPLE_SECTIONS
-    return 6;
-#else
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
-    
-    return [sectionInfo numberOfObjects];
-#endif
-
+    return @[self.videoThumbnailCollectionView];
+//    return @[self.largeVideoPanelView];
 }
+
+#pragma mark - Collection view support
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
 {
+    if (cv == self.videoThumbnailCollectionView)
+    {
 #ifdef FAKE_MULTIPLE_SECTIONS
-    return 5;
+        return 5;
 #else
-    return self.videoInstanceFetchedResultsController.sections.count;
+        return self.videoInstanceFetchedResultsController.sections.count;
 #endif
+    }
+    else
+    {
+        return 1;
+    }
 }
+
+- (NSInteger) collectionView: (UICollectionView *) cv
+      numberOfItemsInSection: (NSInteger) section
+{
+    // See if this can be handled in our abstract base class
+    int items = [super collectionView: cv
+               numberOfItemsInSection:  section];
+    
+    if (items < 0)
+    {
+        if (cv == self.videoThumbnailCollectionView)
+        {
+#ifdef FAKE_MULTIPLE_SECTIONS
+            return 6;
+#else
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
+            
+            return [sectionInfo numberOfObjects];
+#endif
+        }
+        else
+        {
+            AssertOrLog(@"No valid collection view found");
+        }
+    }
+    
+    return items;
+}
+
 
 //- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
 //                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -173,11 +203,11 @@
 //    return cell;
 //}
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // See if this can be handled in our abstract base class
-    UICollectionViewCell *cell = [super collectionView: cv
+    UICollectionViewCell *cell = [super collectionView: collectionView
                                 cellForItemAtIndexPath: indexPath];
     
     // Do we have a valid cell?
@@ -330,6 +360,30 @@
 - (IBAction) touchVideoAddItButton: (UIButton *) addItButton
 {
     DebugLog (@"No implementation yet");
+}
+
+- (void) shiftImageWellUp
+{
+    CGRect imageWellFrame = self.imageWellView.frame;
+    imageWellFrame.origin.y -= kImageWellEffectiveHeight;
+    self.imageWellView.frame = imageWellFrame;
+    
+    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
+    viewFrame.size.height -= kImageWellEffectiveHeight;
+    self.videoThumbnailCollectionView.frame = viewFrame;
+}
+
+
+- (void) shiftImageWellDown
+{
+    CGRect imageWellFrame = self.imageWellView.frame;
+    imageWellFrame.origin.y += kImageWellEffectiveHeight;
+    self.imageWellView.frame = imageWellFrame;
+    
+    // Slide imagewell view downwards (and expand any other dependent visible views)
+    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
+    viewFrame.size.height += kImageWellEffectiveHeight;
+    self.videoThumbnailCollectionView.frame = viewFrame;
 }
 
 

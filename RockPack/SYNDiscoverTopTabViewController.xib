@@ -63,7 +63,6 @@
 						<string key="NSFrame">{{512, 88}, {512, 598}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
 							<int key="NSColorSpace">3</int>
@@ -744,6 +743,7 @@
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="animatedPopViewController">id</string>
+						<string key="longPressThumbnail:">UIGestureRecognizer</string>
 						<string key="userTouchedVideoAddItButton:">UIButton</string>
 						<string key="userTouchedVideoRockItButton:">UIButton</string>
 						<string key="userTouchedVideoShareItButton:">UIButton</string>
@@ -752,6 +752,10 @@
 						<object class="IBActionInfo" key="animatedPopViewController">
 							<string key="name">animatedPopViewController</string>
 							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="longPressThumbnail:">
+							<string key="name">longPressThumbnail:</string>
+							<string key="candidateClassName">UIGestureRecognizer</string>
 						</object>
 						<object class="IBActionInfo" key="userTouchedVideoAddItButton:">
 							<string key="name">userTouchedVideoAddItButton:</string>
@@ -808,6 +812,35 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNDiscoverTopTabViewController</string>
 					<string key="superclassName">SYNAbstractTopTabViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addToImageWellFromLargeVideo:">id</string>
+						<string key="animateLargeVideoViewRight:">id</string>
+						<string key="longPressLargeVideo:">UIGestureRecognizer</string>
+						<string key="swipeLargeVideoViewLeft:">UISwipeGestureRecognizer</string>
+						<string key="toggleLargeRockItButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addToImageWellFromLargeVideo:">
+							<string key="name">addToImageWellFromLargeVideo:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="animateLargeVideoViewRight:">
+							<string key="name">animateLargeVideoViewRight:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="longPressLargeVideo:">
+							<string key="name">longPressLargeVideo:</string>
+							<string key="candidateClassName">UIGestureRecognizer</string>
+						</object>
+						<object class="IBActionInfo" key="swipeLargeVideoViewLeft:">
+							<string key="name">swipeLargeVideoViewLeft:</string>
+							<string key="candidateClassName">UISwipeGestureRecognizer</string>
+						</object>
+						<object class="IBActionInfo" key="toggleLargeRockItButton:">
+							<string key="name">toggleLargeRockItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="largeVideoPanelView">UIView</string>
 						<string key="rockItButton">UIButton</string>

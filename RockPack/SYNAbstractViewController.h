@@ -63,8 +63,6 @@
 // Override if the image w
 - (BOOL) isImageWellVisibleOnStart;
 
-- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract;
-
 - (void) startImageWellDismissalTimer;
 - (void) showImageWell: (BOOL) animated;
 - (void) hideImageWell: (BOOL) animated;
