@@ -100,7 +100,7 @@
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
-                                                                   ascending: YES];
+                                                                   ascending: NO];
     return @[sortDescriptor];
 }
 
@@ -109,11 +109,6 @@
     return @"daysAgo";
 }
 
-- (NSArray *) otherViewsToResizeOnImageWellExpandOrContract
-{
-    return @[self.videoThumbnailCollectionView];
-//    return @[self.largeVideoPanelView];
-}
 
 #pragma mark - Collection view support
 
@@ -194,9 +189,9 @@
     if (collectionView == self.videoThumbnailCollectionView)
     {
         // Work out the day
-        id<NSFetchedResultsSectionInfo> thing = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
+        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
         
-        DebugLog(@"name %@, indexTitle %@", thing.name, thing.indexTitle);
+        sectionInfo.name;
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"

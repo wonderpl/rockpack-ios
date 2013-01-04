@@ -10,3 +10,6 @@
 [submodule "MTLabel"]
 	path = MTLabel
 	url = https://synchromation@github.com/synchromation/MTLabel.git
+[submodule "NSDate-Extensions"]
+	path = NSDate-Extensions
+	url = https://synchromation@github.com/synchromation/NSDate-Extensions.git
