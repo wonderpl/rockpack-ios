@@ -261,7 +261,7 @@
     // nil for section name key path means "no sections".
     self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                              managedObjectContext: self.managedObjectContext
-                                                                               sectionNameKeyPath: nil
+                                                                               sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
                                                                                         cacheName: nil];
     _videoInstanceFetchedResultsController.delegate = self;
     
@@ -285,6 +285,12 @@
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     AssertOrLog (@"videoInstanceFetchedResultsControllerSortDescriptors:Abstract function called");
+    return nil;
+}
+
+// No section name key path by default
+- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
+{
     return nil;
 }
 

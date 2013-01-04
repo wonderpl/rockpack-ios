@@ -597,6 +597,9 @@
                 
                 int i = 0;
                 
+                // Fake up a date which counts back from today (dependent on the value of index)
+                NSDate *instanceDate = [NSDate dateWithTimeIntervalSinceNow: index * -(60*60*24)];
+                
                 for (Video *video in videos)
                 {
                     VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.managedObjectContext];
@@ -606,7 +609,7 @@
                         fakeIndex = (i + index) % 12;
                     }
                     videoInstance.uniqueId = [NSString stringWithFormat: @"%d", fakeIndex];
-                    videoInstance.dateAdded = [NSDate date];
+                    videoInstance.dateAdded = instanceDate;
                     videoInstance.title = [(NSDictionary *)[self.videoDetailsArray objectAtIndex: i++] objectForKey: @"title"];
                     videoInstance.video = video;
                     videoInstance.channel = channel;

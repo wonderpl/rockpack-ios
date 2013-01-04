@@ -1,5 +1,8 @@
 #import "_VideoInstance.h"
 
-@interface VideoInstance : _VideoInstance {}
+@interface VideoInstance : _VideoInstance
+
 // Custom logic goes here.
+- (NSNumber *) daysAgo;
+
 @end

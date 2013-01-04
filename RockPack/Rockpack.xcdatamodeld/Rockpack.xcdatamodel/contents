@@ -40,7 +40,7 @@
     <elements>
         <element name="Channel" positionX="-407" positionY="63" width="128" height="223"/>
         <element name="ChannelOwner" positionX="-74" positionY="396" width="128" height="103"/>
-        <element name="Video" positionX="79" positionY="18" width="128" height="163"/>
+        <element name="Video" positionX="79" positionY="18" width="128" height="165"/>
         <element name="VideoInstance" positionX="-198" positionY="18" width="128" height="118"/>
     </elements>
 </model>

@@ -15,8 +15,6 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-#define FAKE_MULTIPLE_SECTIONS
-
 @interface SYNHomeTopTabViewController ()
 
 @property (nonatomic, strong) NSMutableArray *videosArray;
@@ -26,6 +24,7 @@
 @property (nonatomic, assign) BOOL refreshing;
 
 @end
+
 
 @implementation SYNHomeTopTabViewController
 
@@ -100,9 +99,14 @@
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
                                                                    ascending: YES];
     return @[sortDescriptor];
+}
+
+- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
+{
+    return @"daysAgo";
 }
 
 - (NSArray *) otherViewsToResizeOnImageWellExpandOrContract
@@ -117,11 +121,7 @@
 {
     if (cv == self.videoThumbnailCollectionView)
     {
-#ifdef FAKE_MULTIPLE_SECTIONS
-        return 5;
-#else
         return self.videoInstanceFetchedResultsController.sections.count;
-#endif
     }
     else
     {
@@ -140,13 +140,8 @@
     {
         if (cv == self.videoThumbnailCollectionView)
         {
-#ifdef FAKE_MULTIPLE_SECTIONS
-            return 6;
-#else
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
-            
             return [sectionInfo numberOfObjects];
-#endif
         }
         else
         {
@@ -157,51 +152,6 @@
     return items;
 }
 
-
-//- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-//                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    NSIndexPath *adjustedIndexPath;
-//#ifdef FAKE_MULTIPLE_SECTIONS
-//    int section = (indexPath.section % 2) ? 0 : 6;
-//    adjustedIndexPath = [NSIndexPath indexPathForItem: indexPath.row + section
-//                                            inSection: 0];
-//#else
-//    adjustedIndexPath = indexPath;
-//#endif
-//    
-//    SYNVideoThumbnailWideCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-//                                                                                 forIndexPath: indexPath];
-//    if ((indexPath.row < 3) && (indexPath.section == 0))
-//    {
-//        cell.focus = TRUE;
-//    }
-//    
-//    if (collectionView == self.videoThumbnailCollectionView)
-//    {
-//        // No, but it was our collection view
-//        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: adjustedIndexPath];
-//        
-//        SYNVideoThumbnailWideCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-//                                                                                                  forIndexPath: indexPath];
-//        
-//        videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
-//        videoThumbnailCell.channelImageView.image = videoInstance.channel.thumbnailImage;
-//        videoThumbnailCell.videoTitle.text = videoInstance.title;
-//        videoThumbnailCell.channelName.text = videoInstance.channel.title;
-//        videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
-//        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-//        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
-//        videoThumbnailCell.viewControllerDelegate = self;
-//        cell = videoThumbnailCell;
-//    }
-//    else
-//    {
-//        AssertOrLog(@"No valid collection view found");
-//    }
-//    
-//    return cell;
-//}
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -243,6 +193,11 @@
     
     if (collectionView == self.videoThumbnailCollectionView)
     {
+        // Work out the day
+        id<NSFetchedResultsSectionInfo> thing = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
+        
+        DebugLog(@"name %@, indexTitle %@", thing.name, thing.indexTitle);
+        
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
                                                                                                       forIndexPath: indexPath];

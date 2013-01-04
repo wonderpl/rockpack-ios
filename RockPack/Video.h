@@ -1,9 +1,8 @@
 #import "_Video.h"
 
-@interface Video : _Video {}
+@interface Video : _Video
 
-
-// Returns keyframe image
+// Custom logic goes here.
 - (UIImage *) thumbnailImage;
 - (NSURL *) localVideoURL;
 
