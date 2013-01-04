@@ -42,10 +42,10 @@
 
     // Init collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
-                                             bundle: nil];
+                                                  bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
     
     // Register collection view header view
     UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
@@ -54,6 +54,11 @@
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+}
+
+- (BOOL) hasImageWell
+{
+    return TRUE;
 }
 
 - (void) refreshVideoThumbnails
@@ -123,44 +128,60 @@
 #endif
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
+//- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
+//                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+//{
+//    NSIndexPath *adjustedIndexPath;
+//#ifdef FAKE_MULTIPLE_SECTIONS
+//    int section = (indexPath.section % 2) ? 0 : 6;
+//    adjustedIndexPath = [NSIndexPath indexPathForItem: indexPath.row + section
+//                                            inSection: 0];
+//#else
+//    adjustedIndexPath = indexPath;
+//#endif
+//    
+//    SYNVideoThumbnailWideCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+//                                                                                 forIndexPath: indexPath];
+//    if ((indexPath.row < 3) && (indexPath.section == 0))
+//    {
+//        cell.focus = TRUE;
+//    }
+//    
+//    if (collectionView == self.videoThumbnailCollectionView)
+//    {
+//        // No, but it was our collection view
+//        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: adjustedIndexPath];
+//        
+//        SYNVideoThumbnailWideCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+//                                                                                                  forIndexPath: indexPath];
+//        
+//        videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
+//        videoThumbnailCell.channelImageView.image = videoInstance.channel.thumbnailImage;
+//        videoThumbnailCell.videoTitle.text = videoInstance.title;
+//        videoThumbnailCell.channelName.text = videoInstance.channel.title;
+//        videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
+//        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+//        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
+//        videoThumbnailCell.viewControllerDelegate = self;
+//        cell = videoThumbnailCell;
+//    }
+//    else
+//    {
+//        AssertOrLog(@"No valid collection view found");
+//    }
+//    
+//    return cell;
+//}
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    NSIndexPath *adjustedIndexPath;
-#ifdef FAKE_MULTIPLE_SECTIONS
-    int section = (indexPath.section % 2) ? 0 : 6;
-    adjustedIndexPath = [NSIndexPath indexPathForItem: indexPath.row + section
-                                            inSection: 0];
-#else
-    adjustedIndexPath = indexPath;
-#endif
+    // See if this can be handled in our abstract base class
+    UICollectionViewCell *cell = [super collectionView: cv
+                                cellForItemAtIndexPath: indexPath];
     
-    SYNVideoThumbnailWideCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                                 forIndexPath: indexPath];
-    if ((indexPath.row < 3) && (indexPath.section == 0))
-    {
-        cell.focus = TRUE;
-    }
-    
-    if (collectionView == self.videoThumbnailCollectionView)
-    {
-        // No, but it was our collection view
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: adjustedIndexPath];
-        
-        SYNVideoThumbnailWideCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                                                  forIndexPath: indexPath];
-        
-        videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
-        videoThumbnailCell.channelImageView.image = videoInstance.channel.thumbnailImage;
-        videoThumbnailCell.videoTitle.text = videoInstance.title;
-        videoThumbnailCell.channelName.text = videoInstance.channel.title;
-        videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
-        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
-        videoThumbnailCell.viewControllerDelegate = self;
-        cell = videoThumbnailCell;
-    }
-    else
+    // Do we have a valid cell?
+    if (!cell)
     {
         AssertOrLog(@"No valid collection view found");
     }
@@ -184,58 +205,65 @@
 
 
 // Used for the collection view header
-- (UICollectionReusableView *) collectionView: (UICollectionView *) cv
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    SYNHomeSectionHeaderView *sectionSupplementaryView = [cv dequeueReusableSupplementaryViewOfKind: kind
-                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
-                                                                                       forIndexPath: indexPath];
-    NSString *sectionText;
-    BOOL focus = FALSE;
-    BOOL refreshButtonHidden = TRUE;
+    UICollectionReusableView *sectionSupplementaryView = nil;
     
-    switch (indexPath.section)
+    if (collectionView == self.videoThumbnailCollectionView)
     {
-        case 0:
-            sectionText = @"TODAY";
-            focus = TRUE;
-            // We need to store this away, so can control animations (but must nil when goes out of scope)
-            self.supplementaryViewWithRefreshButton = sectionSupplementaryView;
-            refreshButtonHidden = FALSE;
-            if (self.refreshing == TRUE)
-            {
-                [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
-            }
-
-            break;
-            
-        case 1:
-            sectionText = @"YESTERDAY";
-            break;
-            
-        case 2:
-            sectionText = @"SUNDAY";
-            break;
-            
-        case 3:
-            sectionText = @"3rd DEC";
-            break;
-            
-        case 4:
-            sectionText = @"28th NOV";
-            break;
-            
-        default:
-            break;
+        SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                               withReuseIdentifier: @"SYNHomeSectionHeaderView"
+                                                                                                      forIndexPath: indexPath];
+        NSString *sectionText;
+        BOOL focus = FALSE;
+        BOOL refreshButtonHidden = TRUE;
+        
+        switch (indexPath.section)
+        {
+            case 0:
+                sectionText = @"TODAY";
+                focus = TRUE;
+                // We need to store this away, so can control animations (but must nil when goes out of scope)
+                self.supplementaryViewWithRefreshButton = headerSupplementaryView;
+                refreshButtonHidden = FALSE;
+                if (self.refreshing == TRUE)
+                {
+                    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+                }
+                
+                break;
+                
+            case 1:
+                sectionText = @"YESTERDAY";
+                break;
+                
+            case 2:
+                sectionText = @"SUNDAY";
+                break;
+                
+            case 3:
+                sectionText = @"3rd DEC";
+                break;
+                
+            case 4:
+                sectionText = @"28th NOV";
+                break;
+                
+            default:
+                break;
+        }
+        
+        // Special case, remember the first section view
+        headerSupplementaryView.viewControllerDelegate = self;
+        headerSupplementaryView.focus = focus;
+        headerSupplementaryView.refreshView.hidden = refreshButtonHidden;
+        headerSupplementaryView.sectionTitleLabel.text = sectionText;
+        
+        sectionSupplementaryView = headerSupplementaryView;
     }
-    
-    // Special case, remember the first section view
-    sectionSupplementaryView.viewControllerDelegate = self;
-    sectionSupplementaryView.focus = focus;
-    sectionSupplementaryView.refreshView.hidden = refreshButtonHidden;
-    sectionSupplementaryView.sectionTitleLabel.text = sectionText;
-    
+
     return sectionSupplementaryView;
 }
 

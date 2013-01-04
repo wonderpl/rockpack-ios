@@ -642,7 +642,7 @@
         SYNImageWellCell *imageWellCell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
                                                                forIndexPath: indexPath];
         
-        VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.row];
+        VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
         imageWellCell.imageView.image = videoInstance.video.thumbnailImage;
         
         cell = imageWellCell;
