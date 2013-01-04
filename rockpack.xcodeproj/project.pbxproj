@@ -488,6 +488,7 @@
 		01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
+		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
 		01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */; };
 		01CF11C91695CC1600E64620 /* ButtonRefreshDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */; };
 		01CF11CA1695CC1600E64620 /* ButtonRefreshSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C41695CC1600E64620 /* ButtonRefreshSelected.png */; };
@@ -1091,6 +1092,8 @@
 		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
 		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
 		01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelThumbnailCell.xib; sourceTree = "<group>"; };
+		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
+		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
 		01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshDefault.png; path = Assets/Images/ButtonRefreshDefault.png; sourceTree = "<group>"; };
 		01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshDefault@2x.png"; path = "Assets/Images/ButtonRefreshDefault@2x.png"; sourceTree = "<group>"; };
 		01CF11C41695CC1600E64620 /* ButtonRefreshSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshSelected.png; path = Assets/Images/ButtonRefreshSelected.png; sourceTree = "<group>"; };
@@ -2042,6 +2045,8 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
+				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
 				019825EF162C94A300216900 /* UIColor+SYNColor.h */,
 				019825F0162C94A300216900 /* UIColor+SYNColor.m */,
 				019825F2162C94B500216900 /* UIFont+SYNFont.h */,
@@ -3024,6 +3029,7 @@
 				01946B921683335400354601 /* _VideoInstance.m in Sources */,
 				01946B971683339F00354601 /* ChannelOwner.m in Sources */,
 				01946B981683339F00354601 /* VideoInstance.m in Sources */,
+				01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
