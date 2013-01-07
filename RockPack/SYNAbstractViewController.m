@@ -19,7 +19,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelSelectorCell.h"
-#import "SYNImageWellCell.h"
+#import "SYNVideoQueueCell.h"
 #import "SYNVideoSelection.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
@@ -29,21 +29,21 @@
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
-@property (getter = isImageWellVisible) BOOL imageWellVisible;
+@property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
-@property (nonatomic, strong) IBOutlet UICollectionView *imageWellCollectionView;
+@property (nonatomic, strong) IBOutlet UICollectionView *videoQueueCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
-@property (nonatomic, strong) NSTimer *imageWellAnimationTimer;
-@property (nonatomic, strong) UIButton *imageWellAddButton;
-@property (nonatomic, strong) UIButton *imageWellDeleteButton;
-@property (nonatomic, strong) UIButton *imageWellShuffleButton;
-@property (nonatomic, strong) UIImageView *imageWellMessageView;
-@property (nonatomic, strong) UIImageView *imageWellPanelView;
+@property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
+@property (nonatomic, strong) UIButton *videoQueueAddButton;
+@property (nonatomic, strong) UIButton *videoQueueDeleteButton;
+@property (nonatomic, strong) UIButton *videoQueueShuffleButton;
+@property (nonatomic, strong) UIImageView *videoQueueMessageView;
+@property (nonatomic, strong) UIImageView *videoQueuePanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
 
 @end
@@ -58,11 +58,11 @@
 
 #pragma mark - Custom accessor methods
 
-- (void) setImageWellAnimationTimer: (NSTimer*) timer
+- (void) setVideoQueueAnimationTimer: (NSTimer*) timer
 {
     // We need to invalidate our timeer before setting a new one (so that the old one doen't fire anyway)
-    [_imageWellAnimationTimer invalidate];
-    _imageWellAnimationTimer = timer;
+    [_videoQueueAnimationTimer invalidate];
+    _videoQueueAnimationTimer = timer;
 }
 
 #pragma mark - Initialisation
@@ -71,66 +71,66 @@
 {
     [super viewDidLoad];
     
-    if (self.hasImageWell)
+    if (self.hasVideoQueue)
     {
         // Initialise common views
         // Overall view to slide in and out of view
-        self.imageWellView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kImageWellEffectiveHeight, 1024, 111)];
+        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kVideoQueueEffectiveHeight, 1024, 111)];
         
         // Panel view
-        self.imageWellPanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 111)];
-        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
-        [self.imageWellView addSubview: self.imageWellPanelView];
+        self.videoQueuePanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 111)];
+        self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
+        [self.videoQueueView addSubview: self.videoQueuePanelView];
         
         // Buttons
         
-        self.imageWellDeleteButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.imageWellDeleteButton.frame = CGRectMake(786, 37, 50, 42);
+        self.videoQueueDeleteButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.videoQueueDeleteButton.frame = CGRectMake(786, 37, 50, 42);
         
-        [self.imageWellDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDelete.png"]
+        [self.videoQueueDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDelete.png"]
                                     forState: UIControlStateNormal];
         
-        [self.imageWellDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDeleteHighlighted.png"]
+        [self.videoQueueDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDeleteHighlighted.png"]
                                     forState: UIControlStateHighlighted];
         
-        [self.imageWellDeleteButton addTarget: self
-                                       action: @selector(clearImageWell)
+        [self.videoQueueDeleteButton addTarget: self
+                                       action: @selector(clearVideoQueue)
                              forControlEvents: UIControlEventTouchUpInside];
         
-        [self.imageWellView addSubview: self.imageWellDeleteButton];
+        [self.videoQueueView addSubview: self.videoQueueDeleteButton];
         
-        self.imageWellAddButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.imageWellAddButton.frame = CGRectMake(850, 36, 50, 42);
+        self.videoQueueAddButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.videoQueueAddButton.frame = CGRectMake(850, 36, 50, 42);
         
-        [self.imageWellAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAdd.png"]
+        [self.videoQueueAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAdd.png"]
                                  forState: UIControlStateNormal];
         
-        [self.imageWellAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAddHighlighted.png"]
+        [self.videoQueueAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAddHighlighted.png"]
                                  forState: UIControlStateSelected];
         
-        [self.imageWellAddButton addTarget: self
-                                    action: @selector(createChannelFromImageWell)
+        [self.videoQueueAddButton addTarget: self
+                                    action: @selector(createChannelFromVideoQueue)
                           forControlEvents: UIControlEventTouchUpInside];
         
-        [self.imageWellView addSubview: self.imageWellAddButton];
+        [self.videoQueueView addSubview: self.videoQueueAddButton];
         
-        self.imageWellShuffleButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.imageWellShuffleButton.frame = CGRectMake(913, 37, 50, 42);
+        self.videoQueueShuffleButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.videoQueueShuffleButton.frame = CGRectMake(913, 37, 50, 42);
         
-        [self.imageWellShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffle.png"]
+        [self.videoQueueShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffle.png"]
                                      forState: UIControlStateNormal];
         
-        [self.imageWellShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffleHighlighted.png"]
+        [self.videoQueueShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffleHighlighted.png"]
                                      forState: UIControlStateHighlighted];
         
-        [self.imageWellView addSubview: self.imageWellShuffleButton];
+        [self.videoQueueView addSubview: self.videoQueueShuffleButton];
         
         // Message view
-        self.imageWellMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(156, 47, 411, 31)];
-        self.imageWellMessageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
-        [self.imageWellView addSubview: self.imageWellMessageView];
+        self.videoQueueMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(156, 47, 411, 31)];
+        self.videoQueueMessageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
+        [self.videoQueueView addSubview: self.videoQueueMessageView];
         
-        // Imagewell collection view
+        // Video Queue collection view
         
         // Need to create a layout first
         UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -139,29 +139,29 @@
         standardFlowLayout.minimumLineSpacing = 15.0f;
         standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        self.imageWellCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(157, 26, 608, 72)
+        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(157, 26, 608, 72)
                                                           collectionViewLayout: standardFlowLayout];
         
-        self.imageWellCollectionView.delegate = self;
-        self.imageWellCollectionView.dataSource = self;
+        self.videoQueueCollectionView.delegate = self;
+        self.videoQueueCollectionView.dataSource = self;
         
-        self.imageWellCollectionView.backgroundColor = [UIColor clearColor];
+        self.videoQueueCollectionView.backgroundColor = [UIColor clearColor];
         
 
         // Register cells
-        UINib *imageWellCellNib = [UINib nibWithNibName: @"SYNImageWellCell"
+        UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell"
                                                  bundle: nil];
         
-        [self.imageWellCollectionView registerNib: imageWellCellNib
-                       forCellWithReuseIdentifier: @"ImageWellCell"];
+        [self.videoQueueCollectionView registerNib: videoQueueCellNib
+                       forCellWithReuseIdentifier: @"VideoQueueCell"];
         
-        [self.imageWellView addSubview: self.imageWellCollectionView];
+        [self.videoQueueView addSubview: self.videoQueueCollectionView];
         
         // Drop zone
         self.dropZoneView = [[UIView alloc] initWithFrame: CGRectMake(14, 603, 125, 72)];
-        [self.imageWellView addSubview: self.dropZoneView];
+        [self.videoQueueView addSubview: self.dropZoneView];
         
-        [self.view addSubview: self.imageWellView];
+        [self.view addSubview: self.videoQueueView];
         
         self.channelChooserView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 398)];
         
@@ -213,7 +213,7 @@
 {
     [super viewDidAppear: animated];
     
-    [self.imageWellCollectionView reloadData];
+    [self.videoQueueCollectionView reloadData];
 }
 
 
@@ -514,13 +514,13 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-    [self showImageWell: TRUE];
-    [self startImageWellDismissalTimer];
+    [self showVideoQueue: TRUE];
+    [self startVideoQueueDismissalTimer];
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-    [self animateImageWellAdditionWithVideo: videoInstance];
+    [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
@@ -547,7 +547,7 @@
     {
         return 10;
     }
-    else if (cv == self.imageWellCollectionView)
+    else if (cv == self.videoQueueCollectionView)
     {
         return SYNVideoSelection.sharedVideoSelectionArray.count;
     }
@@ -643,15 +643,15 @@
         
         cell = channelCarouselCell;
     }
-    else if (cv == self.imageWellCollectionView)
+    else if (cv == self.videoQueueCollectionView)
     {
-        SYNImageWellCell *imageWellCell = [cv dequeueReusableCellWithReuseIdentifier: @"ImageWellCell"
+        SYNVideoQueueCell *videoQueueCell = [cv dequeueReusableCellWithReuseIdentifier: @"VideoQueueCell"
                                                                forIndexPath: indexPath];
         
         VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
-        imageWellCell.imageView.image = videoInstance.video.thumbnailImage;
+        videoQueueCell.imageView.image = videoInstance.video.thumbnailImage;
         
-        cell = imageWellCell;
+        cell = videoQueueCell;
     }
 
     return cell;
@@ -669,7 +669,7 @@
         //#warning "Need to select wallpack here"
         DebugLog (@"Selecting channel cover cell does nothing");
     }
-    else if (cv == self.imageWellCollectionView)
+    else if (cv == self.videoQueueCollectionView)
     {
         DebugLog (@"Selecting image well cell does nothing");
     }
@@ -682,7 +682,7 @@
     return handledInAbstractView;
 }
 
-- (IBAction) createChannelFromImageWell
+- (IBAction) createChannelFromVideoQueue
 {
     UIViewController *pvc = self.parentViewController;
     
@@ -722,7 +722,7 @@
 {
     if (sender.state == UIGestureRecognizerStateBegan)
     {
-        [self showImageWell: TRUE];
+        [self showVideoQueue: TRUE];
         
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
@@ -751,7 +751,7 @@
         [self.view addSubview: self.draggedView];
         
         // Highlight the image well
-        [self highlightImageWell: TRUE];
+        [self highlightVideoQueue: TRUE];
     }
     else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
     {
@@ -763,22 +763,22 @@
     else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
     {
         // Un-highlight the image well
-        [self highlightImageWell: FALSE];
-        [self startImageWellDismissalTimer];
+        [self highlightVideoQueue: FALSE];
+        [self startVideoQueueDismissalTimer];
         
         // and let's figure out where we dropped it
         //        CGPoint point = [sender locationInView: self.dropZoneView];
         CGPoint point = [sender locationInView: self.view];
         
         // If we have dropped it in the right place, then add it to our image well
-        if ([self pointInImageWell: point])
+        if ([self pointInVideoQueue: point])
             
         {
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
             
             VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.draggedIndexPath];
-            [self animateImageWellAdditionWithVideo: videoInstance];
+            [self animateVideoAdditionToVideoQueue: videoInstance];
         }
         else
         {
@@ -801,47 +801,47 @@
 
 
 // Assume no image well by default
-- (BOOL) hasImageWell
+- (BOOL) hasVideoQueue
 {
     return FALSE;
 }
 
 
-// Assume that the imagewell is not visible on first entry to the tab
-- (BOOL) isImageWellVisibleOnStart;
+// Assume that the video queue is not visible on first entry to the tab
+- (BOOL) isVideoQueueVisibleOnStart;
 {
     return FALSE;
 }
 
-- (void) startImageWellDismissalTimer
+- (void) startVideoQueueDismissalTimer
 {
-    self.imageWellAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kImageWellOnScreenDuration
+    self.videoQueueAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kVideoQueueOnScreenDuration
                                                                     target: self
-                                                                  selector: @selector(imageWellTimerCallback)
+                                                                  selector: @selector(videoQueueTimerCallback)
                                                                   userInfo: nil
                                                                    repeats: NO];
 }
 
-- (void) imageWellTimerCallback
+- (void) videoQueueTimerCallback
 {
-    [self hideImageWell: TRUE];
+    [self hideVideoQueue: TRUE];
 }
 
-- (void) showImageWell: (BOOL) animated
+- (void) showVideoQueue: (BOOL) animated
 {
-    if (self.imageWellVisible == FALSE)
+    if (self.isVideoQueueVisible == FALSE)
     {
-        self.imageWellVisible = TRUE;
+        self.videoQueueVisible = TRUE;
         
         if (animated)
         {
-            // Slide imagewell view upwards (and contract any other dependent visible views)
-            [UIView animateWithDuration: kImageWellAnimationDuration
+            // Slide video queue view upwards (and contract any other dependent visible views)
+            [UIView animateWithDuration: kVideoQueueAnimationDuration
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseInOut
                              animations: ^
              {
-                 [self shiftImageWellUp];
+                 [self slideVideoQueueUp];
              }
              completion: ^(BOOL finished)
              {
@@ -849,17 +849,17 @@
         }
         else
         {
-            [self shiftImageWellUp];
+            [self slideVideoQueueUp];
         }
     }
 }
 
 
-- (void) hideImageWell: (BOOL) animated
+- (void) hideVideoQueue: (BOOL) animated
 {
-    if (self.imageWellVisible == TRUE)
+    if (self.videoQueueVisible == TRUE)
     {
-        self.imageWellVisible = FALSE;
+        self.videoQueueVisible = FALSE;
         
         if (animated)
         {
@@ -868,8 +868,8 @@
                                 options: UIViewAnimationOptionCurveEaseInOut
                              animations: ^
              {
-                 // Slide imagewell view downwards (and expand any other dependent visible views)
-                 [self shiftImageWellDown];
+                 // Slide video queue view downwards (and expand any other dependent visible views)
+                 [self slideVideoQueueDown];
              }
              completion: ^(BOOL finished)
              {
@@ -877,26 +877,26 @@
         }
         else
         {
-            [self shiftImageWellDown];
+            [self slideVideoQueueDown];
         }
     }
 }
 
-- (void) shiftImageWellUp
+- (void) slideVideoQueueUp
 {
-    CGRect imageWellFrame = self.imageWellView.frame;
-    imageWellFrame.origin.y -= kImageWellEffectiveHeight;
-    self.imageWellView.frame = imageWellFrame;
+    CGRect videoQueueViewFrame = self.videoQueueView.frame;
+    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
+    self.videoQueueView.frame = videoQueueViewFrame;
 }
 
-- (void) shiftImageWellDown
+- (void) slideVideoQueueDown
 {
-    CGRect imageWellFrame = self.imageWellView.frame;
-    imageWellFrame.origin.y += kImageWellEffectiveHeight;
-    self.imageWellView.frame = imageWellFrame;
+    CGRect videoQueueViewFrame = self.videoQueueView.frame;
+    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
+    self.videoQueueView.frame = videoQueueViewFrame;
 }
 
-- (IBAction) clearImageWell
+- (IBAction) clearVideoQueue
 {
 #ifdef SOUND_ENABLED
     // Play a suitable sound
@@ -914,7 +914,7 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.imageWellMessageView.alpha = 1.0f;
+         self.videoQueueMessageView.alpha = 1.0f;
          
      }
                      completion: ^(BOOL finished)
@@ -992,12 +992,12 @@
     [delegate saveContext];
     
     [self.channelNameTextField resignFirstResponder];
-    [self clearImageWell];
+    [self clearVideoQueue];
 }
 
 #pragma mark - Image well support
 
-- (void) animateImageWellAdditionWithVideo: (VideoInstance *) videoInstance
+- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
 {
 #ifdef SOUND_ENABLED
     // Play a suitable sound
@@ -1013,9 +1013,9 @@
     // If this is the first thing we are adding then fade out the message
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
-        self.imageWellAddButton.enabled = TRUE;
-        self.imageWellAddButton.selected = TRUE;
-        self.imageWellDeleteButton.enabled = TRUE;
+        self.videoQueueAddButton.enabled = TRUE;
+        self.videoQueueAddButton.selected = TRUE;
+        self.videoQueueDeleteButton.enabled = TRUE;
         
         [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                               delay: 0.0f
@@ -1023,7 +1023,7 @@
                          animations: ^
          {
              // Contract thumbnail view
-             self.imageWellMessageView.alpha = 0.0f;
+             self.videoQueueMessageView.alpha = 0.0f;
              
          }
                          completion: ^(BOOL finished)
@@ -1034,14 +1034,14 @@
     [SYNVideoSelection.sharedVideoSelectionArray insertObject: videoInstance
                                                       atIndex: 0];
     
-    CGRect imageWellView = self.imageWellCollectionView.frame;
-    imageWellView.origin.x -= 142;
-    imageWellView.size.width += 142;
-    self.imageWellCollectionView.frame = imageWellView;
+    CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
+    videoQueueViewFrame.origin.x -= 142;
+    videoQueueViewFrame.size.width += 142;
+    self.videoQueueCollectionView.frame = videoQueueViewFrame;
     
-    [self.imageWellCollectionView reloadData];
+    [self.videoQueueCollectionView reloadData];
     
-    [self.imageWellCollectionView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
+    [self.videoQueueCollectionView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
                                          atScrollPosition: UICollectionViewScrollPositionLeft
                                                  animated: NO];
     
@@ -1052,10 +1052,10 @@
                      animations: ^
      {
          // Contract thumbnail view
-         CGRect imageWellView = self.imageWellCollectionView.frame;
-         imageWellView.origin.x += 142;
-         imageWellView.size.width -= 142;
-         self.imageWellCollectionView.frame =  imageWellView;
+         CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
+         videoQueueViewFrame.origin.x += 142;
+         videoQueueViewFrame.size.width -= 142;
+         self.videoQueueCollectionView.frame =  videoQueueViewFrame;
          
      }
                      completion: ^(BOOL finished)
@@ -1063,22 +1063,22 @@
      }];
 }
 
-- (void) highlightImageWell: (BOOL) showHighlight
+- (void) highlightVideoQueue: (BOOL) showHighlight
 {
     if (showHighlight)
     {
-        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWellHighlighted.png"];
+        self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueueHighlighted.png"];
     }
     else
     {
-        self.imageWellPanelView.image = [UIImage imageNamed: @"PanelImageWell.png"];
+        self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
     }
 }
 
 
-- (BOOL) pointInImageWell: (CGPoint) point
+- (BOOL) pointInVideoQueue: (CGPoint) point
 {
-    return CGRectContainsPoint(self.imageWellView.frame, point);
+    return CGRectContainsPoint(self.videoQueueView.frame, point);
 }
 
 @end

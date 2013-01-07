@@ -17,8 +17,8 @@
                                                          UICollectionViewDelegate>
 // Public properties
 @property (readonly) NSManagedObjectContext *managedObjectContext;
-@property (readonly, getter = isImageWellVisible) BOOL imageWellVisible;
-@property (nonatomic, strong) UIView *imageWellView;
+@property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+@property (nonatomic, strong) UIView *videoQueueView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
@@ -56,22 +56,22 @@
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
-// Is this tab imagewell compatible (returns false by default)
-- (BOOL) hasImageWell;
+// Is this tab videoQueue compatible (returns false by default)
+- (BOOL) hasVideoQueue;
 
 
 // Override if the image w
-- (BOOL) isImageWellVisibleOnStart;
+- (BOOL) isVideoQueueVisibleOnStart;
 
-- (void) startImageWellDismissalTimer;
-- (void) showImageWell: (BOOL) animated;
-- (void) hideImageWell: (BOOL) animated;
+- (void) startVideoQueueDismissalTimer;
+- (void) showVideoQueue: (BOOL) animated;
+- (void) hideVideoQueue: (BOOL) animated;
 
 
-// Highlights imagewell for when drag is in operation
-- (void) highlightImageWell: (BOOL) showHighlight;
-- (BOOL) pointInImageWell: (CGPoint) point;
+// Highlights video queue for when drag is in operation
+- (void) highlightVideoQueue: (BOOL) showHighlight;
+- (BOOL) pointInVideoQueue: (CGPoint) point;
 
-- (void) animateImageWellAdditionWithVideo: (VideoInstance *) videoInstance;
+- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
 @end

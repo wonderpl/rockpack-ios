@@ -4,5 +4,6 @@
 
 // Custom logic goes here.
 - (NSNumber *) daysAgo;
+- (NSDate *) dateAddedIgnoringTime;
 
 @end

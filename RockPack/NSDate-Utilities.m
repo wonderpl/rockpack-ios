@@ -13,6 +13,7 @@
 #import "NSDate-Utilities.h"
 
 #define DATE_COMPONENTS (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit)
+#define DATE_COMPONENTS_NO_TIME (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit)
 #define CURRENT_CALENDAR [NSCalendar currentCalendar]
 
 @implementation NSDate (Utilities)
@@ -69,6 +70,18 @@
 	NSTimeInterval aTimeInterval = [[NSDate date] timeIntervalSinceReferenceDate] - D_MINUTE * dMinutes;
 	NSDate *newDate = [NSDate dateWithTimeIntervalSinceReferenceDate:aTimeInterval];
 	return newDate;		
+}
+
+- (NSDate *) dateIgnoringTime
+{
+    // Get just the year, Month and day from our date
+    NSDateComponents *components = [CURRENT_CALENDAR components: DATE_COMPONENTS_NO_TIME
+                                                       fromDate: self];
+    
+    // Convert the components back to a date (hopefully without a time component)
+    NSDate *dateWithoutTime = [CURRENT_CALENDAR dateFromComponents: components];
+    
+    return dateWithoutTime;
 }
 
 #pragma mark Comparing Dates

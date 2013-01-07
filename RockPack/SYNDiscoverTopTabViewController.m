@@ -11,7 +11,7 @@
 #import "Channel.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
-#import "SYNImageWellCell.h"
+#import "SYNVideoQueueCell.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
@@ -87,7 +87,7 @@
 }
 
 
-- (BOOL) hasImageWell
+- (BOOL) hasVideoQueue
 {
     return TRUE;
 }
@@ -182,7 +182,7 @@
         [self.view addSubview: self.draggedView];
         
         // Highlight the image well
-        [self highlightImageWell: TRUE];
+        [self highlightVideoQueue: TRUE];
     }
     else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
     {
@@ -193,19 +193,19 @@
     else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
     {
         // Un-highlight the image well
-        [self highlightImageWell: FALSE];
+        [self highlightVideoQueue: FALSE];
         
         // and let's figure out where we dropped it
 //        CGPoint point = [sender locationInView: self.dropZoneView];
         CGPoint point = [sender locationInView: self.view];
         
         // If we have dropped it in the right place, then add it to our image well
-        if ([self pointInImageWell: point])
+        if ([self pointInVideoQueue: point])
             
         {
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
-            [self addToImageWellFromLargeVideo: nil];
+            [self addToVideoQueueFromLargeVideo: nil];
         }
         else
         {
@@ -227,10 +227,10 @@
 }
 
 
-- (IBAction) addToImageWellFromLargeVideo: (id) sender
+- (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
     VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
-    [self animateImageWellAdditionWithVideo: videoInstance];
+    [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
 
@@ -494,35 +494,35 @@
 }
 
 
-- (void) shiftImageWellUp
+- (void) slideVideoQueueUp
 {
-     CGRect imageWellFrame = self.imageWellView.frame;
-     imageWellFrame.origin.y -= kImageWellEffectiveHeight;
-     self.imageWellView.frame = imageWellFrame;
+     CGRect videoQueueViewFrame = self.videoQueueView.frame;
+     videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
+     self.videoQueueView.frame = videoQueueViewFrame;
 
      CGRect viewFrame = self.largeVideoPanelView.frame;
-     viewFrame.size.height -= kImageWellEffectiveHeight;
+     viewFrame.size.height -= kVideoQueueEffectiveHeight;
      self.largeVideoPanelView.frame = viewFrame;
 
      viewFrame = self.videoThumbnailCollectionView.frame;
-     viewFrame.size.height -= kImageWellEffectiveHeight;
+     viewFrame.size.height -= kVideoQueueEffectiveHeight;
      self.videoThumbnailCollectionView.frame = viewFrame;
 }
 
 
-- (void) shiftImageWellDown
+- (void) slideVideoQueueDown
 {
-    CGRect imageWellFrame = self.imageWellView.frame;
-    imageWellFrame.origin.y += kImageWellEffectiveHeight;
-    self.imageWellView.frame = imageWellFrame;
+    CGRect videoQueueViewFrame = self.videoQueueView.frame;
+    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
+    self.videoQueueView.frame = videoQueueViewFrame;
     
-    // Slide imagewell view downwards (and expand any other dependent visible views)
+    // Slide video queue view downwards (and expand any other dependent visible views)
     CGRect viewFrame = self.largeVideoPanelView.frame;
-    viewFrame.size.height += kImageWellEffectiveHeight;
+    viewFrame.size.height += kVideoQueueEffectiveHeight;
     self.largeVideoPanelView.frame = viewFrame;
     
     viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height += kImageWellEffectiveHeight;
+    viewFrame.size.height += kVideoQueueEffectiveHeight;
     self.videoThumbnailCollectionView.frame = viewFrame;
 }
 

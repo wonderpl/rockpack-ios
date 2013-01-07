@@ -56,7 +56,7 @@
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
 }
 
-- (BOOL) hasImageWell
+- (BOOL) hasVideoQueue
 {
     return TRUE;
 }
@@ -106,7 +106,8 @@
 
 - (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
 {
-    return @"daysAgo";
+//    return @"daysAgo";
+    return @"dateAddedIgnoringTime";
 }
 
 
@@ -191,7 +192,7 @@
         // Work out the day
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
         
-        sectionInfo.name;
+        DebugLog(@"name %@, indexTitle %@", sectionInfo.name, sectionInfo.indexTitle);
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
@@ -312,27 +313,27 @@
     DebugLog (@"No implementation yet");
 }
 
-- (void) shiftImageWellUp
+- (void) slideVideoQueueUp
 {
-    CGRect imageWellFrame = self.imageWellView.frame;
-    imageWellFrame.origin.y -= kImageWellEffectiveHeight;
-    self.imageWellView.frame = imageWellFrame;
+    CGRect videoQueueViewFrame = self.videoQueueView.frame;
+    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
+    self.videoQueueView.frame = videoQueueViewFrame;
     
     CGRect viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height -= kImageWellEffectiveHeight;
+    viewFrame.size.height -= kVideoQueueEffectiveHeight;
     self.videoThumbnailCollectionView.frame = viewFrame;
 }
 
 
-- (void) shiftImageWellDown
+- (void) slideVideoQueueDown
 {
-    CGRect imageWellFrame = self.imageWellView.frame;
-    imageWellFrame.origin.y += kImageWellEffectiveHeight;
-    self.imageWellView.frame = imageWellFrame;
+    CGRect videoQueueViewFrame = self.videoQueueView.frame;
+    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
+    self.videoQueueView.frame = videoQueueViewFrame;
     
-    // Slide imagewell view downwards (and expand any other dependent visible views)
+    // Slide video queue view downwards (and expand any other dependent visible views)
     CGRect viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height += kImageWellEffectiveHeight;
+    viewFrame.size.height += kVideoQueueEffectiveHeight;
     self.videoThumbnailCollectionView.frame = viewFrame;
 }
 

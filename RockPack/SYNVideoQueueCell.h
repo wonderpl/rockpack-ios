@@ -1,5 +1,5 @@
 //
-//  SYNImageWellCell.h
+//  SYNVideoQueueCell.h
 //  rockpack
 //
 //  Created by Nick Banks on 19/10/2012.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNImageWellCell : UICollectionViewCell
+@interface SYNVideoQueueCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 

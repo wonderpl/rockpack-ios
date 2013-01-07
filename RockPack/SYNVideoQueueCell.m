@@ -1,21 +1,21 @@
 //
-//  SYNImageWellCell.m
+//  SYNVideoQueueCell.m
 //  rockpack
 //
 //  Created by Nick Banks on 19/10/2012.
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNImageWellCell.h"
+#import "SYNVideoQueueCell.h"
 
-@implementation SYNImageWellCell
+@implementation SYNVideoQueueCell
 
 - (id) initWithFrame: (CGRect) frame
 {
     if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNImageWellCell"
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNVideoQueueCell"
                                                               owner: self
                                                             options: nil];
         

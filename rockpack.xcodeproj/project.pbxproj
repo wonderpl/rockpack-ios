@@ -50,8 +50,8 @@
 		01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EC816304D8D00FFAA09 /* SYNVideoDB.m */; };
 		01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */; };
 		01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F501631789F00FFAA09 /* SYNMovableView.m */; };
-		01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNImageWellCell.m */; };
-		01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */; };
+		01363F7A1631A01000FFAA09 /* SYNVideoQueueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNVideoQueueCell.m */; };
+		01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */; };
 		01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */; };
 		01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */; };
 		01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */; };
@@ -156,10 +156,10 @@
 		01677E9F16554BD900B1B1D8 /* WallpackCarouselCircleAlpha@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677E9B16554BD900B1B1D8 /* WallpackCarouselCircleAlpha@2x.png */; };
 		01677EA016554BD900B1B1D8 /* WallpackCarouselCircleBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677E9C16554BD900B1B1D8 /* WallpackCarouselCircleBackground.png */; };
 		01677EA116554BD900B1B1D8 /* WallpackCarouselCircleBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677E9D16554BD900B1B1D8 /* WallpackCarouselCircleBackground@2x.png */; };
-		01677EB916554C5800B1B1D8 /* PanelImageWell.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB016554C5800B1B1D8 /* PanelImageWell.png */; };
-		01677EBA16554C5800B1B1D8 /* PanelImageWell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB116554C5800B1B1D8 /* PanelImageWell@2x.png */; };
-		01677EBB16554C5800B1B1D8 /* PanelImageWellHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB216554C5800B1B1D8 /* PanelImageWellHighlighted.png */; };
-		01677EBC16554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB316554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png */; };
+		01677EB916554C5800B1B1D8 /* PanelVideoQueue.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB016554C5800B1B1D8 /* PanelVideoQueue.png */; };
+		01677EBA16554C5800B1B1D8 /* PanelVideoQueue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB116554C5800B1B1D8 /* PanelVideoQueue@2x.png */; };
+		01677EBB16554C5800B1B1D8 /* PanelVideoQueueHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB216554C5800B1B1D8 /* PanelVideoQueueHighlighted.png */; };
+		01677EBC16554C5800B1B1D8 /* PanelVideoQueueHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB316554C5800B1B1D8 /* PanelVideoQueueHighlighted@2x.png */; };
 		01677EBD16554C5800B1B1D8 /* PanelMainTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB416554C5800B1B1D8 /* PanelMainTitle.png */; };
 		01677EBE16554C5800B1B1D8 /* PanelMainTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB516554C5800B1B1D8 /* PanelMainTitle@2x.png */; };
 		01677EC116554C5800B1B1D8 /* PanelWallpackTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677EB816554C5800B1B1D8 /* PanelWallpackTitle@2x.png */; };
@@ -598,9 +598,9 @@
 		01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailWideCell.m; sourceTree = "<group>"; };
 		01363F4F1631789F00FFAA09 /* SYNMovableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMovableView.h; sourceTree = "<group>"; };
 		01363F501631789F00FFAA09 /* SYNMovableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMovableView.m; sourceTree = "<group>"; };
-		01363F781631A01000FFAA09 /* SYNImageWellCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImageWellCell.h; sourceTree = "<group>"; };
-		01363F791631A01000FFAA09 /* SYNImageWellCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImageWellCell.m; sourceTree = "<group>"; };
-		01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNImageWellCell.xib; sourceTree = "<group>"; };
+		01363F781631A01000FFAA09 /* SYNVideoQueueCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueCell.h; sourceTree = "<group>"; };
+		01363F791631A01000FFAA09 /* SYNVideoQueueCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueCell.m; sourceTree = "<group>"; };
+		01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoQueueCell.xib; sourceTree = "<group>"; };
 		01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouseHorizontallLayout.h; sourceTree = "<group>"; };
 		01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouseHorizontallLayout.m; sourceTree = "<group>"; };
 		01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackCell.xib; sourceTree = "<group>"; };
@@ -710,10 +710,10 @@
 		01677E9B16554BD900B1B1D8 /* WallpackCarouselCircleAlpha@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WallpackCarouselCircleAlpha@2x.png"; path = "Assets/Images/WallpackCarouselCircleAlpha@2x.png"; sourceTree = "<group>"; };
 		01677E9C16554BD900B1B1D8 /* WallpackCarouselCircleBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WallpackCarouselCircleBackground.png; path = Assets/Images/WallpackCarouselCircleBackground.png; sourceTree = "<group>"; };
 		01677E9D16554BD900B1B1D8 /* WallpackCarouselCircleBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WallpackCarouselCircleBackground@2x.png"; path = "Assets/Images/WallpackCarouselCircleBackground@2x.png"; sourceTree = "<group>"; };
-		01677EB016554C5800B1B1D8 /* PanelImageWell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelImageWell.png; path = Assets/Images/PanelImageWell.png; sourceTree = "<group>"; };
-		01677EB116554C5800B1B1D8 /* PanelImageWell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelImageWell@2x.png"; path = "Assets/Images/PanelImageWell@2x.png"; sourceTree = "<group>"; };
-		01677EB216554C5800B1B1D8 /* PanelImageWellHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelImageWellHighlighted.png; path = Assets/Images/PanelImageWellHighlighted.png; sourceTree = "<group>"; };
-		01677EB316554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelImageWellHighlighted@2x.png"; path = "Assets/Images/PanelImageWellHighlighted@2x.png"; sourceTree = "<group>"; };
+		01677EB016554C5800B1B1D8 /* PanelVideoQueue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoQueue.png; path = Assets/Images/PanelVideoQueue.png; sourceTree = "<group>"; };
+		01677EB116554C5800B1B1D8 /* PanelVideoQueue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoQueue@2x.png"; path = "Assets/Images/PanelVideoQueue@2x.png"; sourceTree = "<group>"; };
+		01677EB216554C5800B1B1D8 /* PanelVideoQueueHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoQueueHighlighted.png; path = Assets/Images/PanelVideoQueueHighlighted.png; sourceTree = "<group>"; };
+		01677EB316554C5800B1B1D8 /* PanelVideoQueueHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoQueueHighlighted@2x.png"; path = "Assets/Images/PanelVideoQueueHighlighted@2x.png"; sourceTree = "<group>"; };
 		01677EB416554C5800B1B1D8 /* PanelMainTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelMainTitle.png; path = Assets/Images/PanelMainTitle.png; sourceTree = "<group>"; };
 		01677EB516554C5800B1B1D8 /* PanelMainTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelMainTitle@2x.png"; path = "Assets/Images/PanelMainTitle@2x.png"; sourceTree = "<group>"; };
 		01677EB816554C5800B1B1D8 /* PanelWallpackTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelWallpackTitle@2x.png"; path = "Assets/Images/PanelWallpackTitle@2x.png"; sourceTree = "<group>"; };
@@ -1940,10 +1940,10 @@
 			children = (
 				01B7CDA3166E1CF6001F4AF0 /* PanelChannelDetailsHeader.png */,
 				01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */,
-				01677EB016554C5800B1B1D8 /* PanelImageWell.png */,
-				01677EB116554C5800B1B1D8 /* PanelImageWell@2x.png */,
-				01677EB216554C5800B1B1D8 /* PanelImageWellHighlighted.png */,
-				01677EB316554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png */,
+				01677EB016554C5800B1B1D8 /* PanelVideoQueue.png */,
+				01677EB116554C5800B1B1D8 /* PanelVideoQueue@2x.png */,
+				01677EB216554C5800B1B1D8 /* PanelVideoQueueHighlighted.png */,
+				01677EB316554C5800B1B1D8 /* PanelVideoQueueHighlighted@2x.png */,
 				01677EB416554C5800B1B1D8 /* PanelMainTitle.png */,
 				01677EB516554C5800B1B1D8 /* PanelMainTitle@2x.png */,
 				012ECAC7165C120900A60980 /* PanelWallpackTitle.png */,
@@ -2207,9 +2207,9 @@
 		01B7CD9F166E1661001F4AF0 /* Image Well cells */ = {
 			isa = PBXGroup;
 			children = (
-				01363F781631A01000FFAA09 /* SYNImageWellCell.h */,
-				01363F791631A01000FFAA09 /* SYNImageWellCell.m */,
-				01363F7B1631A03500FFAA09 /* SYNImageWellCell.xib */,
+				01363F781631A01000FFAA09 /* SYNVideoQueueCell.h */,
+				01363F791631A01000FFAA09 /* SYNVideoQueueCell.m */,
+				01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */,
 			);
 			name = "Image Well cells";
 			sourceTree = "<group>";
@@ -2496,7 +2496,7 @@
 				0198254F162A204A00216900 /* SYNFriendsViewController.xib in Resources */,
 				012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */,
-				01363F7C1631A03500FFAA09 /* SYNImageWellCell.xib in Resources */,
+				01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */,
 				01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */,
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
 				0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */,
@@ -2741,10 +2741,10 @@
 				01677E9F16554BD900B1B1D8 /* WallpackCarouselCircleAlpha@2x.png in Resources */,
 				01677EA016554BD900B1B1D8 /* WallpackCarouselCircleBackground.png in Resources */,
 				01677EA116554BD900B1B1D8 /* WallpackCarouselCircleBackground@2x.png in Resources */,
-				01677EB916554C5800B1B1D8 /* PanelImageWell.png in Resources */,
-				01677EBA16554C5800B1B1D8 /* PanelImageWell@2x.png in Resources */,
-				01677EBB16554C5800B1B1D8 /* PanelImageWellHighlighted.png in Resources */,
-				01677EBC16554C5800B1B1D8 /* PanelImageWellHighlighted@2x.png in Resources */,
+				01677EB916554C5800B1B1D8 /* PanelVideoQueue.png in Resources */,
+				01677EBA16554C5800B1B1D8 /* PanelVideoQueue@2x.png in Resources */,
+				01677EBB16554C5800B1B1D8 /* PanelVideoQueueHighlighted.png in Resources */,
+				01677EBC16554C5800B1B1D8 /* PanelVideoQueueHighlighted@2x.png in Resources */,
 				01677EBD16554C5800B1B1D8 /* PanelMainTitle.png in Resources */,
 				01677EBE16554C5800B1B1D8 /* PanelMainTitle@2x.png in Resources */,
 				01677EC116554C5800B1B1D8 /* PanelWallpackTitle@2x.png in Resources */,
@@ -2975,7 +2975,7 @@
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
 				01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */,
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
-				01363F7A1631A01000FFAA09 /* SYNImageWellCell.m in Sources */,
+				01363F7A1631A01000FFAA09 /* SYNVideoQueueCell.m in Sources */,
 				01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */,
 				01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */,
 				011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */,
