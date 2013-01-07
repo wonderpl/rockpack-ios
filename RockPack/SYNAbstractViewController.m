@@ -416,9 +416,6 @@
     self.view.alpha = 1.0f;
     vc.view.alpha = 0.0f;
     
-//    [self.navigationController pushViewController: vc
-//                                         animated: NO];
-    
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -437,10 +434,9 @@
                                          animated: NO];
 }
 
+
 - (IBAction) animatedPopViewController
 {
-    //	[self.navigationController popViewControllerAnimated: YES];
-    
     UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
     parentVC.view.alpha = 0.0f;
     
@@ -460,6 +456,7 @@
      {
      }];
 }
+
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
@@ -559,6 +556,7 @@
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
+
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
     SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -608,6 +606,7 @@
         videoThumbnailCell.rockItNumber.textColor = [UIColor colorWithRed: 0.510f green: 0.553f blue: 0.569f alpha: 1.0f];
     }
 }
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath

@@ -63,11 +63,12 @@
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSNextKeyView" ref="13664562"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">BackgroundDiscovery@2x.png</string>
+							<string key="NSResourceName">BackgroundGeneric.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="41472375">
@@ -844,13 +845,6 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">4</int>
-						<reference key="object" ref="366077416"/>
-						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Image - Background</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
 						<reference key="object" ref="41472375"/>
 						<reference key="parent" ref="766721923"/>
@@ -981,6 +975,12 @@
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">View - nav controller placeholder</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">4</int>
+						<reference key="object" ref="366077416"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Image - Background</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1033,7 +1033,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundDiscovery@2x.png">{2048, 1194}</string>
+			<string key="BackgroundGeneric.png">{64, 768}</string>
 			<string key="ButtonCancelSearch.png">{23, 23}</string>
 			<string key="ButtonRockie.png">{103, 43}</string>
 			<string key="ButtonRockieHighlighted.png">{103, 43}</string>

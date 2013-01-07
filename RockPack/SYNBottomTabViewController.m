@@ -156,6 +156,8 @@
     
     // Placeholder for rockie-talkie message view to show message only when no text in main view
     self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
+    
+    self.backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BackgroundGeneric"]];
 }
 
 - (void) viewWillAppear:(BOOL)animated

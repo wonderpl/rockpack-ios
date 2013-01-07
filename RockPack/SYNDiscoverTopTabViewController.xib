@@ -720,7 +720,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundDiscovery@2x.png">{2048, 1194}</string>
+			<string key="BackgroundDiscovery@2x.png">{16, 16}</string>
 			<string key="ButtonLargeAdd.png">{44, 44}</string>
 			<string key="ButtonLargeAddHighlighted.png">{44, 44}</string>
 			<string key="ButtonShare.png">{43, 43}</string>
