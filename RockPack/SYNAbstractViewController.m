@@ -128,6 +128,14 @@
         // Message view
         self.videoQueueMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(156, 47, 411, 31)];
         self.videoQueueMessageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
+        
+        
+        // Disable message if we already have items in the queue (from another screen)
+        if (SYNVideoSelection.sharedVideoSelectionArray.count != 0)
+        {
+            self.videoQueueMessageView.alpha = 0.0f;
+        }
+        
         [self.videoQueueView addSubview: self.videoQueueMessageView];
         
         // Video Queue collection view
@@ -147,7 +155,6 @@
         
         self.videoQueueCollectionView.backgroundColor = [UIColor clearColor];
         
-
         // Register cells
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell"
                                                  bundle: nil];
@@ -209,12 +216,41 @@
 }
 
 
-- (void) viewDidAppear: (BOOL) animated
+- (void) viewWillAppear: (BOOL) animated
 {
-    [super viewDidAppear: animated];
+    [super viewWillAppear: animated];
     
-    [self.videoQueueCollectionView reloadData];
+    if (self.hasVideoQueue)
+    {
+        // Disable message if we already have items in the queue (from another screen)
+        if (SYNVideoSelection.sharedVideoSelectionArray.count != 0)
+        {
+            self.videoQueueMessageView.alpha = 0.0f;
+        }
+        else
+        {
+            self.videoQueueMessageView.alpha = 1.0f;
+        }
+        
+        [self.videoQueueCollectionView reloadData];
+    }
 }
+
+- (void) viewDidDisappear: (BOOL) animated
+{
+    [super viewDidDisappear: animated];
+    
+    if (self.hasVideoQueue)
+    {
+        [self hideVideoQueue: NO];
+    }
+}
+
+
+//- (void) viewDidAppear: (BOOL) animated
+//{
+//    [super viewDidAppear: animated];
+//}
 
 
 #pragma mark - Core Data support
@@ -859,6 +895,7 @@
 {
     if (self.videoQueueVisible == TRUE)
     {
+        self.videoQueueAnimationTimer = nil;
         self.videoQueueVisible = FALSE;
         
         if (animated)
@@ -920,6 +957,10 @@
                      completion: ^(BOOL finished)
      {
      }];
+    
+    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
+    
+    [self.videoQueueCollectionView reloadData];
 }
 
 

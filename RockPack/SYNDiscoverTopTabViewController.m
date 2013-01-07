@@ -418,16 +418,16 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) cv
+- (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
     // See if this can be handled in our abstract base class
-    int items = [super collectionView: cv
+    int items = [super collectionView: collectionView
               numberOfItemsInSection:  section];
     
     if (items < 0)
     {
-        if (cv == self.videoThumbnailCollectionView)
+        if (collectionView == self.videoThumbnailCollectionView)
         {
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
             items = [sectionInfo numberOfObjects];
@@ -441,16 +441,16 @@
     return items;
 }
 
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 1;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // See if this can be handled in our abstract base class
-    UICollectionViewCell *cell = [super collectionView: cv
+    UICollectionViewCell *cell = [super collectionView: collectionView
                                 cellForItemAtIndexPath: indexPath];
     
     // Do we have a valid cell?
@@ -463,17 +463,17 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) cv
+- (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // See if this can be handled in our abstract base class
-    BOOL handledInSuperview = [super collectionView: (UICollectionView *) cv
+    BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
                    didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
     
     if (!handledInSuperview)
     {
         // Check to see if is one that we can handle
-        if (cv == self.videoThumbnailCollectionView)
+        if (collectionView == self.videoThumbnailCollectionView)
         {
 #ifdef FULL_SCREEN_THUMBNAILS
             if (self.isLargeVideoViewExpanded == FALSE)

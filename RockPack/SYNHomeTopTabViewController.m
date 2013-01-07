@@ -89,6 +89,24 @@
 
 #pragma mark - Core Data support
 
+
+// Not sure that
+- (NSPredicate *) channelFetchedResultsControllerPredicate
+{
+    // Don't show any user generated channels
+    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
+}
+
+
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
+{
+    // Sort by index
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
+                                                                   ascending: YES];
+    return @[sortDescriptor];
+}
+
+
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
@@ -113,9 +131,9 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    if (cv == self.videoThumbnailCollectionView)
+    if (collectionView == self.videoThumbnailCollectionView)
     {
         return self.videoInstanceFetchedResultsController.sections.count;
     }
@@ -125,16 +143,16 @@
     }
 }
 
-- (NSInteger) collectionView: (UICollectionView *) cv
+- (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
     // See if this can be handled in our abstract base class
-    int items = [super collectionView: cv
+    int items = [super collectionView: collectionView
                numberOfItemsInSection:  section];
     
     if (items < 0)
     {
-        if (cv == self.videoThumbnailCollectionView)
+        if (collectionView == self.videoThumbnailCollectionView)
         {
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
             return [sectionInfo numberOfObjects];
@@ -166,7 +184,7 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) cv
+- (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     DebugLog (@"Selecting image well cell does nothing");
@@ -176,7 +194,14 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
 {
-    return CGSizeMake(1024, 65);
+    if (collectionView == self.videoThumbnailCollectionView)
+    {
+        return CGSizeMake(1024, 65);
+    }
+    else
+    {
+        return CGSizeMake(0, 0);
+    }
 }
 
 
