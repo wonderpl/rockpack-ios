@@ -9,6 +9,7 @@
 #import "AppConstants.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "NSDate-Utilities.h"
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNHomeTopTabViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
@@ -217,7 +218,13 @@
         // Work out the day
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
         
-        DebugLog(@"name %@, indexTitle %@", sectionInfo.name, sectionInfo.indexTitle);
+        // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
+        
+        // TODO: We might want to optimise this instead of creating a new date formatter each time
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        
+        NSDate *date = [dateFormatter dateFromString: sectionInfo.name];
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
@@ -226,39 +233,34 @@
         BOOL focus = FALSE;
         BOOL refreshButtonHidden = TRUE;
         
-        switch (indexPath.section)
+        // Unavoidably long if-then-else
+        
+        if ([date isToday])
         {
-            case 0:
-                sectionText = @"TODAY";
-                focus = TRUE;
-                // We need to store this away, so can control animations (but must nil when goes out of scope)
-                self.supplementaryViewWithRefreshButton = headerSupplementaryView;
-                refreshButtonHidden = FALSE;
-                if (self.refreshing == TRUE)
-                {
-                    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
-                }
-                
-                break;
-                
-            case 1:
-                sectionText = @"YESTERDAY";
-                break;
-                
-            case 2:
-                sectionText = @"SUNDAY";
-                break;
-                
-            case 3:
-                sectionText = @"3rd DEC";
-                break;
-                
-            case 4:
-                sectionText = @"28th NOV";
-                break;
-                
-            default:
-                break;
+            sectionText = @"TODAY";
+            focus = TRUE;
+            
+            // We need to store this away, so can control animations (but must nil when goes out of scope)
+            self.supplementaryViewWithRefreshButton = headerSupplementaryView;
+            
+            refreshButtonHidden = FALSE;
+            
+            if (self.refreshing == TRUE)
+            {
+                [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+            }
+        }
+        else if ([date isYesterday])
+        {
+            sectionText = @"YESTERDAY";
+        }
+        else if (abs([date timeIntervalSinceDate: [NSDate date]]) < D_WEEK)
+        {
+            sectionText = date.weekdayString;
+        }
+        else
+        {
+            sectionText = date.shortDateWithOrdinalString;
         }
         
         // Special case, remember the first section view
@@ -293,6 +295,9 @@
         AssertOrLog(@"No valid collection view found");
     }
 }
+
+
+#pragma mark - UI Actions
 
 - (IBAction) userTouchedRefreshButton: (id) sender
 {
@@ -337,6 +342,9 @@
 {
     DebugLog (@"No implementation yet");
 }
+
+
+#pragma mark - Video Queue animation
 
 - (void) slideVideoQueueUp
 {

@@ -361,4 +361,140 @@
 	NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:self];
 	return components.year;
 }
+
+- (NSString *) weekdayString
+{
+    NSString *string;
+    
+    switch (self.weekday)
+    {
+        case 2:
+            string = NSLocalizedString (@"MONDAY", nil);
+            break;
+            
+        case 3:
+            string = NSLocalizedString (@"TUESDAY", nil);
+            break;
+            
+        case 4:
+            string = NSLocalizedString (@"WEDNESDAY", nil);
+            break;
+            
+        case 5:
+            string = NSLocalizedString (@"THURDAY", nil);
+            break;
+            
+        case 6:
+            string = NSLocalizedString (@"FRIDAY", nil);
+            break;
+            
+        case 7:
+            string =  NSLocalizedString (@"SATURDAY", nil);
+            break;
+            
+        default:
+            string =  NSLocalizedString (@"SUNDAY", nil);
+            break;
+    }
+    
+    return string;
+}
+
+- (NSString *) shortMonthString
+{
+    NSString *string;
+    
+    switch (self.month)
+    {
+        case 1:
+            string = NSLocalizedString (@"JAN", nil);
+            break;
+            
+        case 2:
+            string = NSLocalizedString (@"FEB", nil);
+            break;
+            
+        case 3:
+            string = NSLocalizedString (@"MAR", nil);
+            break;
+            
+        case 4:
+            string = NSLocalizedString (@"APR", nil);
+            break;
+            
+        case 5:
+            string = NSLocalizedString (@"MAY", nil);
+            break;
+            
+        case 6:
+            string = NSLocalizedString (@"JUN", nil);
+            break;
+            
+        case 7:
+            string = NSLocalizedString (@"JUL", nil);
+            break;
+            
+        case 8:
+            string = NSLocalizedString (@"AUG", nil);
+            break;
+            
+        case 9:
+            string = NSLocalizedString (@"SEP", nil);
+            break;
+            
+        case 10:
+            string = NSLocalizedString (@"OCT", nil);
+            break;
+            
+        case 11:
+            string = NSLocalizedString (@"NOV", nil);
+            break;
+            
+        default:
+            string = NSLocalizedString (@"DEC", nil);
+            break;
+    }
+    
+    return string;
+}
+
+// Add ordinal to number ie 1st, 2nd, 3rd, etc.
+- (NSString *) shortDateWithOrdinalString
+{
+    NSString *suffix = nil;
+    
+    int ones = self.day % 10;
+    int tens = floor(self.day / 10);
+    tens = tens % 10;
+    
+    if (tens == 1)
+    {
+        suffix = @"th";
+    }
+    else
+    {
+        switch (ones)
+        {
+            case 1:
+                suffix = @"st";
+                break;
+                
+            case 2:
+                suffix = @"nd";
+                break;
+                
+            case 3:
+                suffix = @"rd";
+                break;
+                
+            default:
+                suffix = @"th";
+        }
+    }
+    
+    NSString *ordinalString = [NSString stringWithFormat:@"%d%@ %@", self.day, suffix, self.shortMonthString];
+    
+    return ordinalString;
+}
+
 @end

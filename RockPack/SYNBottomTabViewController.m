@@ -76,10 +76,8 @@
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
 
-    
     // Discover tab 
     SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
-    
     
     // My Rockpack tab
     SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
@@ -142,11 +140,6 @@
     self.rockieTalkiePanelView.userInteractionEnabled = TRUE;
     self.didNotSwipe = TRUE;
     
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(selectMyRockpackTab)
-//                                                 name: @"SelectMyRockpackTab"
-//                                               object: nil];
-    
     // Setup number of messages number font in title bar
     self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     
@@ -168,7 +161,6 @@
 #pragma mark - Tab & Container switching mechanism
 
 // Add the five tab view controllers as sub-view controllers of this view controller
-
 - (void) setViewControllers: (NSArray *) newViewControllers
 {
 	UIViewController *oldSelectedViewController = self.selectedViewController;
@@ -186,11 +178,17 @@
 	// re-select the previously selected view controller.
 	NSUInteger newIndex = [_viewControllers indexOfObject: oldSelectedViewController];
 	if (newIndex != NSNotFound)
+    {
 		_selectedIndex = newIndex;
+    }
 	else if (newIndex < [_viewControllers count])
+    {
 		_selectedIndex = newIndex;
+    }
 	else
+    {
 		_selectedIndex = 0;
+    }
     
 	// Add the new child view controllers.
 	for (UIViewController *viewController in _viewControllers)
@@ -198,31 +196,6 @@
 		[self addChildViewController: viewController];
 		[viewController didMoveToParentViewController: self];
 	}
-}
-
-- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
-        shouldReceiveTouch: (UITouch *) touch
-{
-    if (self.rockieTalkieButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
-{
-    if ([SYNMovableView allowDragging]  == TRUE && gestureRecognizer == self.swipeRightRecognizer)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
 }
 
 
@@ -365,7 +338,6 @@
 #pragma mark - Rockie-Talkie gesture handlers
 
 // Swipe rockie-talkie off screen
-
 - (void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
     if (!self.didNotSwipe)
@@ -443,6 +415,7 @@
     }
 }
 
+
 - (IBAction) clearSearchField: (id) sender
 {
     self.searchTextField.text = @"";
@@ -450,10 +423,12 @@
     [self.searchTextField resignFirstResponder];
 }
 
+
 - (IBAction) recordAction: (UIButton*) button
 {
     button.selected = !button.selected;
 }
+
 
 - (IBAction) rockieTalkieAction: (UIButton*) button
 {
@@ -471,20 +446,18 @@
     }
 }
 
+
 - (IBAction) recordTouchDown
 {
     [self startRecording];
 }
+
 
 - (IBAction) recordTouchUp
 {
     [self endRecording];
 }
 
-//- (void) selectMyRockpackTab
-//{
-//    [self setSelectedIndex: 2];
-//}
 
 #pragma mark - Rockie-talkie recording actions
 
@@ -640,5 +613,32 @@
 }
 
 
+#pragma mark - Gesture recognizers
+
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
+        shouldReceiveTouch: (UITouch *) touch
+{
+    if (self.rockieTalkieButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+
+- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
+{
+    if ([SYNMovableView allowDragging]  == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
 
 @end
