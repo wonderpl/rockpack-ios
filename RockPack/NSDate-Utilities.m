@@ -142,6 +142,13 @@
 	return [self isSameWeekAsDate:newDate];
 }
 
+
+- (BOOL) isLast7Days
+{
+    return (abs([self timeIntervalSinceDate: [NSDate date]]) < D_WEEK);
+}
+
+
 - (BOOL) isSameMonthAsDate: (NSDate *) aDate
 {
 	NSDateComponents *components1 = [CURRENT_CALENDAR components:NSYearCalendarUnit fromDate:self];
@@ -164,7 +171,7 @@
 
 - (BOOL) isThisYear
 {
-	return [self isSameWeekAsDate:[NSDate date]];
+	return [self isSameYearAsDate:[NSDate date]];
 }
 
 - (BOOL) isNextYear
@@ -362,6 +369,18 @@
 	return components.year;
 }
 
+
+- (NSString *) yearString
+{
+    return [NSString stringWithFormat: @"%d", self.year];
+}
+
+- (NSString *) shortYearString
+{
+    return [NSString stringWithFormat: @"%02d", self.year % 100];
+}
+
+
 - (NSString *) weekdayString
 {
     NSString *string;
@@ -492,9 +511,12 @@
         }
     }
     
-    NSString *ordinalString = [NSString stringWithFormat:@"%d%@ %@", self.day, suffix, self.shortMonthString];
-    
-    return ordinalString;
+    return [NSString stringWithFormat: @"%d%@ %@", self.day, suffix, self.shortMonthString];
+}
+
+- (NSString *) shortDateWithOrdinalStringAndYear
+{
+    return [NSString stringWithFormat: @"%@ %@", self.shortDateWithOrdinalString, self.shortYearString];
 }
 
 @end

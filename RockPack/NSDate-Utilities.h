@@ -35,6 +35,7 @@
 - (BOOL) isThisWeek;
 - (BOOL) isNextWeek;
 - (BOOL) isLastWeek;
+- (BOOL) isLast7Days;
 - (BOOL) isSameMonthAsDate: (NSDate *) aDate; 
 - (BOOL) isThisMonth;
 - (BOOL) isSameYearAsDate: (NSDate *) aDate;
@@ -77,7 +78,9 @@
 @property (readonly) NSInteger nthWeekday; // e.g. 2nd Tuesday of the month == 2
 @property (readonly) NSInteger year;
 
+@property (readonly) NSString *yearString;
 @property (readonly) NSString *weekdayString;
 @property (readonly) NSString *shortMonthString;
 @property (readonly) NSString *shortDateWithOrdinalString;
+@property (readonly) NSString *shortDateWithOrdinalStringAndYear;
 @end

@@ -254,13 +254,17 @@
         {
             sectionText = @"YESTERDAY";
         }
-        else if (abs([date timeIntervalSinceDate: [NSDate date]]) < D_WEEK)
+        else if ([date isLast7Days])
         {
             sectionText = date.weekdayString;
         }
-        else
+        else if ([date isThisYear])
         {
             sectionText = date.shortDateWithOrdinalString;
+        }
+        else
+        {
+            sectionText = date.shortDateWithOrdinalStringAndYear;
         }
         
         // Special case, remember the first section view
