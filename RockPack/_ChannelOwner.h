@@ -2,12 +2,11 @@
 // Make changes to ChannelOwner.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "AbstractCommon.h"
 
 extern const struct ChannelOwnerAttributes {
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *thumbnailURL;
-	__unsafe_unretained NSString *uniqueId;
 } ChannelOwnerAttributes;
 
 extern const struct ChannelOwnerRelationships {
@@ -22,11 +21,10 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-
 @interface ChannelOwnerID : NSManagedObjectID {}
 @end
 
-@interface _ChannelOwner : NSManagedObject {}
+@interface _ChannelOwner : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -51,16 +49,6 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 //- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* uniqueId;
-
-
-
-//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -91,12 +79,6 @@ extern const struct ChannelOwnerFetchedProperties {
 
 - (NSString*)primitiveThumbnailURL;
 - (void)setPrimitiveThumbnailURL:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveUniqueId;
-- (void)setPrimitiveUniqueId:(NSString*)value;
 
 
 

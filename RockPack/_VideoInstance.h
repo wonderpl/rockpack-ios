@@ -2,12 +2,11 @@
 // Make changes to VideoInstance.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "AbstractCommon.h"
 
 extern const struct VideoInstanceAttributes {
 	__unsafe_unretained NSString *dateAdded;
 	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *uniqueId;
 } VideoInstanceAttributes;
 
 extern const struct VideoInstanceRelationships {
@@ -24,11 +23,10 @@ extern const struct VideoInstanceFetchedProperties {
 
 
 
-
 @interface VideoInstanceID : NSManagedObjectID {}
 @end
 
-@interface _VideoInstance : NSManagedObject {}
+@interface _VideoInstance : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -53,16 +51,6 @@ extern const struct VideoInstanceFetchedProperties {
 
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* uniqueId;
-
-
-
-//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -100,12 +88,6 @@ extern const struct VideoInstanceFetchedProperties {
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveUniqueId;
-- (void)setPrimitiveUniqueId:(NSString*)value;
 
 
 

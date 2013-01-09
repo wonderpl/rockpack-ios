@@ -6,7 +6,6 @@
 const struct ChannelOwnerAttributes ChannelOwnerAttributes = {
 	.name = @"name",
 	.thumbnailURL = @"thumbnailURL",
-	.uniqueId = @"uniqueId",
 };
 
 const struct ChannelOwnerRelationships ChannelOwnerRelationships = {
@@ -57,13 +56,6 @@ const struct ChannelOwnerFetchedProperties ChannelOwnerFetchedProperties = {
 
 
 @dynamic thumbnailURL;
-
-
-
-
-
-
-@dynamic uniqueId;
 
 
 

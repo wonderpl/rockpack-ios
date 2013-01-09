@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "AbstractCommon.h"
 #import "AppConstants.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
@@ -116,14 +117,13 @@
     
 	@try
 	{
-		[managedObjectContext setPersistentStoreCoordinator:  persistentStoreCoordinator]];
-		
 		// Register ourselves as an observer of the NSManagedObjectContextDidSaveNotification event that gets sent
 		// when a managedObjectContext is saved to the persistent sotre
 		[[NSNotificationCenter defaultCenter] addObserver: self
 												 selector: @selector(contextDidSave:)
 													 name: NSManagedObjectContextDidSaveNotification
-												   object: managedObjectContext];
+												   object: self.importManagedObjectContext];
+        
         // Abort if cancelled
         if (self.isCancelled)
         {
@@ -155,25 +155,21 @@
                                                                timeoutInterval: kAPIDefaultTimout];
             
             // Set up a synchronouse connection to send the GET
-            NSData *responseData = [NSURLConnection sendSignedSynchronousRequest: request
-                                                               returningResponse: &response
-                                                                           error: &error];
+            NSData *responseData = [NSURLConnection sendSynchronousRequest: request
+                                                         returningResponse: &response
+                                                                     error: &error];
             // Abort if cancelled
             if (self.isCancelled)
             {
-                //                NSBLog (@"__________Cancel in loop %@", self);
+                DebugLog (@"Cancel in loop %@", self);
                 @throw self.cancelledException;
-            }
-            else
-            {
-                //                NSBLog (@"==========Running in loop %@", self);
             }
             
             // Did we succeed?  If so then update the venue list stored in the database, otherwise log a suitable error
             if ([error code])
             {
                 // Log the error
-                NSBLog(@"AbstractUpdate, sendSynchronoutRequest: Unresolved error %@, %@", error, [error userInfo]);
+                DebugLog(@"AbstractUpdate, sendSynchronoutRequest: Unresolved error %@, %@", error, [error userInfo]);
                 @throw self.communicationsException;
             }
             else
@@ -181,7 +177,7 @@
                 // No? What about a nil pointer?
                 if (!responseData)
                 {
-                    NSBLog(@"AbstractnUpdate: NSURLConnection sendSynchronousRequest: Response = nil");
+                    DebugLog(@"AbstractnUpdate: NSURLConnection sendSynchronousRequest: Response = nil");
                     error = [NSError errorWithDomain: NSURLErrorDomain
                                                 code: NSURLErrorZeroByteResource
                                             userInfo: nil];
@@ -206,7 +202,6 @@
                 if (self.responseJSON)
                 {
                     [self createManagedObjectsFromDictionary: self.responseJSON
-                                      inManagedObjectContext: self.importManagedObjectContext
                                                 shouldDelete: self.firstTime];
                     
                     // Paging support
@@ -237,7 +232,7 @@
                 {
                     for(NSError* detailedError in detailedErrors)
                     {
-                        NSBLog(@" DetailedError: %@", [detailedError userInfo]);
+                        DebugLog(@" DetailedError: %@", [detailedError userInfo]);
                     }
                 }
                 
@@ -250,40 +245,38 @@
             }
         }
     }
-}
-@catch (NSException * e)
-{
-    if (nil == error)
+    @catch (NSException * e)
     {
-        error = [NSError errorWithDomain: NSURLErrorDomain
-                                    code: NSURLErrorCancelled
-                                userInfo: [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: self.indexOffset]
-                                                                      forKey: @"Index"]];
+        if (nil == error)
+        {
+            error = [NSError errorWithDomain: NSURLErrorDomain
+                                        code: NSURLErrorCancelled
+                                    userInfo: [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: self.indexOffset]
+                                                                          forKey: @"Index"]];
+        }
     }
-}
-@finally
-{
-    // Remove ourself as an observer of the NSManagedObjectContextDidSaveNotification event (as this task is about to dissappear)
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSManagedObjectContextDidSaveNotification
-                                                  object: managedObjectContext];
-    // Clean up
-    [managedObjectContext reset];
-    [managedObjectContext release];
-}
-
-// Report back if anything that actually returned an error code (as opposed to a user or programmatic cancellation)
-if (error)
-{
-    if ([error code] == NSURLErrorCancelled)
+    @finally
     {
-        self.completionBlock(self, nil, kUpdaterCancelled);
+        // Remove ourself as an observer of the NSManagedObjectContextDidSaveNotification event (as this task is about to dissappear)
+        [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                        name: NSManagedObjectContextDidSaveNotification
+                                                      object: self.importManagedObjectContext];
+        // Clean up
+        [self.importManagedObjectContext reset];
     }
-    else
+    
+    // Report back if anything that actually returned an error code (as opposed to a user or programmatic cancellation)
+    if (error)
     {
-        self.completionBlock(self, error, kUpdaterNotCancelled);
+        if ([error code] == NSURLErrorCancelled)
+        {
+            self.completionBlock(self, nil, kUpdaterCancelled);
+        }
+        else
+        {
+            self.completionBlock(self, error, kUpdaterNotCancelled);
+        }
     }
-}
 }
 
 
@@ -304,24 +297,24 @@ if (error)
     if (shouldDelete == TRUE)
     {
         NSEntityDescription *genericEntity = [NSEntityDescription entityForName: @"GenericTableEntry"
-                                                         inManagedObjectContext: managedObjectContext];
+                                                         inManagedObjectContext: self.importManagedObjectContext];
         
         // Delete all entities that correspond to this unique view id
         // We should delete them here as if we hit a problem, then we just rollback the update
-        NSFetchRequest *deletionFetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSFetchRequest *deletionFetchRequest = [[NSFetchRequest alloc] init];
         [deletionFetchRequest setEntity: genericEntity];
         
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat:  @"(uniqueViewId ==  %@)", self.uniqueViewId];
         [deletionFetchRequest setPredicate: predicate];
         
-        NSArray *entriesForDeletion = [managedObjectContext executeFetchRequest: deletionFetchRequest
+        NSArray *entriesForDeletion = [self.importManagedObjectContext executeFetchRequest: deletionFetchRequest
                                                                           error: &error];
         
         // Fast enumerate through the existing song database, deleting them
-        for (GenericTableEntry *entryToDelete in entriesForDeletion)
+        for (AbstractCommon *entryToDelete in entriesForDeletion)
         {
-            [managedObjectContext deleteObject: entryToDelete];
+            [self.importManagedObjectContext deleteObject: entryToDelete];
         }
     }
     
@@ -333,8 +326,7 @@ if (error)
 {
     for (NSDictionary *newsItem in itemArray)
     {
-        NSNumber *newsItemId = [NSNumber numberWithInt: 0];
-        NSString *newsItemURL = @"";
+        NSString *uniqueId;
         
         // Get Data dictionary
         NSDictionary *dataDictionary = [newsItem objectForKey: @"Data"];
@@ -342,39 +334,30 @@ if (error)
         // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
         if (dataDictionary && [dataDictionary isKindOfClass: [NSDictionary class]])
         {
-            newsItemId = [DictionaryHelper validIntForDictionary: dataDictionary
-                                                          andKey: @"Id"
-                                                  withDefaultInt: 0];
+            // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+            NSNumber *number  = [dataDictionary objectForKey: dataDictionary
+                                                     withDefault: @0];
             
-            newsItemURL = [DictionaryHelper validStringForDictionary: dataDictionary
-                                                              andKey: @"Url"
-                                                   withDefaultString: @""];
+            NSString *string  = [dataDictionary objectForKey: dataDictionary
+                                                 withDefault: @""];
+            
+            NSDate *date  = [dataDictionary objectForKey: dataDictionary
+                                                 withDefault: @0];
+            
+            NSNumber *boolean  = [dataDictionary objectForKey: dataDictionary
+                                                 withDefault: @FALSE];
+        
             
         }
         
-        VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.mainManagedObjectContext];
-        
-        // Set to defaults so that we don't crash on save if something goes wrong in parsing
-        NSString *imageURI = @"";
-        
+        VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.importManagedObjectContext];
         
         // Get common properties
-        [self getCommonObjectAttributesFromDictionary: newsItem
-                                             uniqueId: &uniqueId];
+//        [self getCommonObjectAttributesFromDictionary: newsItem
+//                                             uniqueId: &uniqueId];
     }
+}
     
     
-    // All objects share certain attributes, so parse them here, start with the unique ID, but add more as more common items fount
-    - (void) getCommonObjectAttributesFromDictionary: (NSDictionary *) dictionary
-uniqueId: (NSString **) uniqueId
-    
-    {
-        // Get common attributes
-        *uniqueId = [DictionaryHelper validStringForDictionary: dictionary
-                                                        andKey: @"id"
-                                             withDefaultString: @""];
-    }
-    
-    
-    @end
+@end
     

@@ -2,7 +2,7 @@
 // Make changes to Video.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "AbstractCommon.h"
 
 extern const struct VideoAttributes {
 	__unsafe_unretained NSString *categoryId;
@@ -11,7 +11,6 @@ extern const struct VideoAttributes {
 	__unsafe_unretained NSString *starCount;
 	__unsafe_unretained NSString *starredByUser;
 	__unsafe_unretained NSString *thumbnailURL;
-	__unsafe_unretained NSString *uniqueId;
 } VideoAttributes;
 
 extern const struct VideoRelationships {
@@ -30,11 +29,10 @@ extern const struct VideoFetchedProperties {
 
 
 
-
 @interface VideoID : NSManagedObjectID {}
 @end
 
-@interface _Video : NSManagedObject {}
+@interface _Video : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -112,16 +110,6 @@ extern const struct VideoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* uniqueId;
-
-
-
-//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSSet *videoInstance;
 
 - (NSMutableSet*)videoInstanceSet;
@@ -182,12 +170,6 @@ extern const struct VideoFetchedProperties {
 
 - (NSString*)primitiveThumbnailURL;
 - (void)setPrimitiveThumbnailURL:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveUniqueId;
-- (void)setPrimitiveUniqueId:(NSString*)value;
 
 
 

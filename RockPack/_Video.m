@@ -10,7 +10,6 @@ const struct VideoAttributes VideoAttributes = {
 	.starCount = @"starCount",
 	.starredByUser = @"starredByUser",
 	.thumbnailURL = @"thumbnailURL",
-	.uniqueId = @"uniqueId",
 };
 
 const struct VideoRelationships VideoRelationships = {
@@ -137,13 +136,6 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 @dynamic thumbnailURL;
-
-
-
-
-
-
-@dynamic uniqueId;
 
 
 

@@ -486,6 +486,8 @@
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
 		01C6FD0C169DA76F00E01AA3 /* SYNAbstractUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */; };
 		01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */; };
+		01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */; };
+		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
 		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
 		01C9CFA8169B4F5500C42479 /* BackgroundGeneric.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C9CFA7169B4F5500C42479 /* BackgroundGeneric.png */; };
 		01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */; };
@@ -1095,6 +1097,10 @@
 		01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractUpdater.m; sourceTree = "<group>"; };
 		01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Validation.h"; sourceTree = "<group>"; };
 		01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Validation.m"; sourceTree = "<group>"; };
+		01C6FD10169E11B000E01AA3 /* _AbstractCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _AbstractCommon.h; sourceTree = "<group>"; };
+		01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _AbstractCommon.m; sourceTree = "<group>"; };
+		01C6FD12169E11B000E01AA3 /* AbstractCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractCommon.h; sourceTree = "<group>"; };
+		01C6FD13169E11B000E01AA3 /* AbstractCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractCommon.m; sourceTree = "<group>"; };
 		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
 		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
 		01C9CFA7169B4F5500C42479 /* BackgroundGeneric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundGeneric.png; path = Assets/Images/BackgroundGeneric.png; sourceTree = "<group>"; };
@@ -2408,6 +2414,8 @@
 		01E427F21664F32D009B941F /* Auto generated files */ = {
 			isa = PBXGroup;
 			children = (
+				01C6FD10169E11B000E01AA3 /* _AbstractCommon.h */,
+				01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */,
 				01E427EC1664EE52009B941F /* _Channel.h */,
 				01E427ED1664EE52009B941F /* _Channel.m */,
 				01946B8D1683335400354601 /* _ChannelOwner.h */,
@@ -2423,6 +2431,8 @@
 		01E427F31664F346009B941F /* Editable files */ = {
 			isa = PBXGroup;
 			children = (
+				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
+				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
 				01E427E31664DF21009B941F /* Channel.h */,
 				01E427E41664DF21009B941F /* Channel.m */,
 				01946B931683339F00354601 /* ChannelOwner.h */,
@@ -3054,6 +3064,8 @@
 				01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */,
 				01C6FD0C169DA76F00E01AA3 /* SYNAbstractUpdater.m in Sources */,
 				01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */,
+				01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */,
+				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

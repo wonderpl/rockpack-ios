@@ -10,4 +10,7 @@
 
 @interface NSDictionary (Validation)
 
+- (id) objectForKey: (id) key
+        withDefault: (id) defaultValue;
+
 @end

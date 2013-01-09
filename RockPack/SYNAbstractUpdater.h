@@ -25,7 +25,7 @@ typedef void (^SYNUpdaterResponseBlock)(SYNAbstractUpdater* completedOperation, 
 #pragma mark Public Methods
 
 - (id) initWithCompletionBlock: (SYNUpdaterResponseBlock) completionBlock
-                 uniqueTableId: (NSString *) uniqueTableId;
+                 uniqueViewId: (NSString *) uniqueViewId;
 
 - (void) updateObjectList: (NSString *) entityName;
 
@@ -33,8 +33,6 @@ typedef void (^SYNUpdaterResponseBlock)(SYNAbstractUpdater* completedOperation, 
 
 
 - (void) createManagedObjectsFromDictionary: (NSDictionary *) responseDictionary
-                     inManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                                shouldDelete: (BOOL) shouldDelete;
-
 
 @end

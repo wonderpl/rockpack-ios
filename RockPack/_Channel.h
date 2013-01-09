@@ -2,7 +2,7 @@
 // Make changes to Channel.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "AbstractCommon.h"
 
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
@@ -13,7 +13,6 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *rockedByUser;
 	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *uniqueId;
 	__unsafe_unretained NSString *wallpaperURL;
 } ChannelAttributes;
 
@@ -38,11 +37,10 @@ extern const struct ChannelFetchedProperties {
 
 
 
-
 @interface ChannelID : NSManagedObjectID {}
 @end
 
-@interface _Channel : NSManagedObject {}
+@interface _Channel : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -144,16 +142,6 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* uniqueId;
-
-
-
-//- (BOOL)validateUniqueId:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSString* wallpaperURL;
 
 
@@ -246,12 +234,6 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveUniqueId;
-- (void)setPrimitiveUniqueId:(NSString*)value;
 
 
 
