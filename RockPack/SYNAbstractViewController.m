@@ -53,7 +53,7 @@
 
 // Need to explicitly synthesise these as we are using the real ivars below
 @synthesize channelFetchedResultsController = _channelFetchedResultsController;
-@synthesize managedObjectContext = _managedObjectContext;
+@synthesize mainManagedObjectContext = _mainManagedObjectContext;
 @synthesize videoInstanceFetchedResultsController = _videoInstanceFetchedResultsController;
 
 #pragma mark - Custom accessor methods
@@ -256,18 +256,18 @@
 #pragma mark - Core Data support
 
 // Single cached MOC for all the view controllers
-- (NSManagedObjectContext *) managedObjectContext
+- (NSManagedObjectContext *) mainManagedObjectContext
 {
     static dispatch_once_t onceQueue;
-    static NSManagedObjectContext *managedObjectContext = nil;
+    static NSManagedObjectContext *mainManagedObjectContext = nil;
     
     dispatch_once(&onceQueue, ^
                   {
                       SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-                      managedObjectContext = delegate.managedObjectContext;
+                      mainManagedObjectContext = delegate.mainManagedObjectContext;
                   });
     
-    return managedObjectContext;
+    return mainManagedObjectContext;
 }
 
 
@@ -287,7 +287,7 @@
     
     // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: self.managedObjectContext];
+                                      inManagedObjectContext: self.mainManagedObjectContext];
     
     // Add any sort descriptors and predicates
     fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
@@ -296,7 +296,7 @@
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                             managedObjectContext: self.managedObjectContext
+                                                                             managedObjectContext: self.mainManagedObjectContext
                                                                                sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
                                                                                         cacheName: nil];
     _videoInstanceFetchedResultsController.delegate = self;
@@ -346,7 +346,7 @@
     
     // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: self.managedObjectContext];
+                                      inManagedObjectContext: self.mainManagedObjectContext];
     
     // Add any sort descriptors and predicates
     fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
@@ -355,7 +355,7 @@
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     self.channelFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                               managedObjectContext: self.managedObjectContext
+                                                                               managedObjectContext: self.mainManagedObjectContext
                                                                                  sectionNameKeyPath: nil
                                                                                           cacheName: nil];
     _channelFetchedResultsController.delegate = self;
@@ -386,7 +386,7 @@
 {
     NSError *error = nil;
     
-    if (![self.managedObjectContext save: &error])
+    if (![self.mainManagedObjectContext save: &error])
     {
         NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
         
@@ -985,14 +985,14 @@
 
 - (void) addChannelWithTitle: (NSString *) title
 {
-    Channel *newChannel = [Channel insertInManagedObjectContext: self.managedObjectContext];
+    Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
     
 //    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
 //    newChannel.channelOwner = delegate.channelOwnerMe;
     
     NSError *error = nil;
     NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
-                                                   inManagedObjectContext: self.managedObjectContext];
+                                                   inManagedObjectContext: self.mainManagedObjectContext];
     
     // Find out how many Video objects we have in the database
     NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
@@ -1001,7 +1001,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
     [channelOwnerFetchRequest setPredicate: predicate];
     
-    NSArray *channelOwnerEntries = [self.managedObjectContext executeFetchRequest: channelOwnerFetchRequest
+    NSArray *channelOwnerEntries = [self.mainManagedObjectContext executeFetchRequest: channelOwnerFetchRequest
                                                                      error: &error];
     
     DebugLog(@"unique id = %@", ((ChannelOwner *)channelOwnerEntries[0]).uniqueId);
@@ -1029,7 +1029,7 @@
     }
     
     SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate saveContext];
+    [delegate saveContext: kSaveAsynchronously];
     
     [self.channelNameTextField resignFirstResponder];
     [self clearVideoQueue];

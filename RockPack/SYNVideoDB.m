@@ -30,24 +30,24 @@
 // New CoreData support
 
 // We don't need to retain this as it is already retained by the app delegate
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSManagedObjectContext *mainManagedObjectContext;
 
 @end
 
 @implementation SYNVideoDB
 
 // Need to explicitly synthesise these as we are using the real ivars below
-@synthesize managedObjectContext = _managedObjectContext;
+@synthesize mainManagedObjectContext = _mainManagedObjectContext;
 
-- (NSManagedObjectContext *) managedObjectContext
+- (NSManagedObjectContext *) mainManagedObjectContext
 {
-	if (!_managedObjectContext)
+	if (!_mainManagedObjectContext)
 	{
         SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-        self.managedObjectContext = delegate.managedObjectContext;
+        self.mainManagedObjectContext = delegate.mainManagedObjectContext;
     }
     
-    return _managedObjectContext;
+    return _mainManagedObjectContext;
 }
 
 // Singleton
@@ -73,13 +73,13 @@
         
         // Create a Video entity (to allow us to manipulate Video objects in the DB)
         NSEntityDescription *videoEntity = [NSEntityDescription entityForName: @"Video"
-                                                       inManagedObjectContext: self.managedObjectContext];
+                                                       inManagedObjectContext: self.mainManagedObjectContext];
         
         // Find out how many Video objects we have in the database
         NSFetchRequest *countFetchRequest = [[NSFetchRequest alloc] init];
         [countFetchRequest setEntity: videoEntity];
         
-        NSArray *videoEntries = [self.managedObjectContext executeFetchRequest: countFetchRequest
+        NSArray *videoEntries = [self.mainManagedObjectContext executeFetchRequest: countFetchRequest
                                                                          error: &error];
         
         // If we don't have any Video entries in our database, then create some
@@ -536,7 +536,7 @@
             // Now create the NSManaged Video objects corresponding to these details
             for (NSDictionary *videoDetailsDictionary in self.videoDetailsArray)
             {                          
-                Video *video = [Video insertInManagedObjectContext: self.managedObjectContext];
+                Video *video = [Video insertInManagedObjectContext: self.mainManagedObjectContext];
                 
                 video.uniqueId = [NSString stringWithFormat: @"%d", uniqueId++];
                 video.source = @"rockpack"; // Hardwire this for now
@@ -550,7 +550,7 @@
             }
             
             // Create a couple of channel owners in the database, one for the user of the app and one for another user
-            ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.managedObjectContext];
+            ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
             
             channelOwnerMe.name = @"NICK BANKS";
             channelOwnerMe.uniqueId = @"666";
@@ -562,11 +562,8 @@
             int index = 0;
             // Now create the NSManaged Video objects corresponding to these details
             for (NSDictionary *channelDetailsDictionary in self.channelDetailsArray)
-            {
-                //                Video *video = (Video *)[[NSManagedObject alloc] initWithEntity: videoEntity
-                //                                                   insertIntoManagedObjectContext: self.managedObjectContext];
-                
-                Channel *channel = [Channel insertInManagedObjectContext: self.managedObjectContext];
+            {                
+                Channel *channel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
                 
                 channel.uniqueId = [NSString stringWithFormat: @"%d", index];
                 channel.categoryId = @"funny";
@@ -578,20 +575,12 @@
                 channel.rockedByUser = [channelDetailsDictionary objectForKey: @"rockedByUser"];
                 channel.rockCount = [channelDetailsDictionary objectForKey: @"totalRocks"];
                 
-                ChannelOwner *channelOwner = [ChannelOwner insertInManagedObjectContext: self.managedObjectContext];
+                ChannelOwner *channelOwner = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
                 channelOwner.name = [(NSDictionary *)[self.videoDetailsArray objectAtIndex: index % 12] objectForKey: @"user"];
                 channelOwner.uniqueId = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];;
                 channelOwner.thumbnailURL = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];
                 
                 channel.channelOwner = channelOwner;
-                                               
-               
-                
-                //                video.title = [videoDetailsDictionary objectForKey: @"title"];
-                //                 video.userName = [videoDetailsDictionary objectForKey: @"user"];
-                //                 video.channelName = [videoDetailsDictionary objectForKey: @"channel"];
-                
-//                [[channel videosSet] addObjectsFromArray: videoEntries];
                 
                 // Now create a set of 10 VideoInstances for each channel
                 
@@ -602,7 +591,7 @@
                 
                 for (Video *video in videos)
                 {
-                    VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.managedObjectContext];
+                    VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.mainManagedObjectContext];
                     int fakeIndex = 99;
                     if (index < 12)
                     {
@@ -619,7 +608,7 @@
             }
             
             // Now we have created all our Video objects, save them...
-            if (![self.managedObjectContext save: &error])
+            if (![self.mainManagedObjectContext save: &error])
             {
                 NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
                 

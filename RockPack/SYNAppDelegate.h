@@ -19,10 +19,7 @@
 @property (strong, nonatomic) UIWindow *window;
 
 // Support for Core Data
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-
+@property (readonly, strong, nonatomic) NSManagedObjectContext *mainManagedObjectContext;
 
 // Root view controller
 @property (strong, nonatomic) SYNBottomTabViewController *viewController;
@@ -30,7 +27,6 @@
 // Bit of a hack to represent the current user
 @property (weak, nonatomic) ChannelOwner *channelOwnerMe;
 
-- (void) saveContext;
-- (NSURL *) applicationDocumentsDirectory;
+- (void) saveContext: (BOOL) wait;
 
 @end

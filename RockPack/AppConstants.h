@@ -9,6 +9,11 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+// Savecontext
+
+#define kSaveSynchronously TRUE
+#define kSaveAsynchronously FALSE
+
 // Settings
 
 #define kDownloadedVideoContentBool @"kDownloadedVideoContentBool"

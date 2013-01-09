@@ -1282,6 +1282,7 @@
 		010DEFDA1629BDC40080F26B /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */,
 				01982525162A02DD00216900 /* Contstants */,
 				019825EE162C948000216900 /* Categories */,
 				019824E21629CAC000216900 /* App Delegate */,
@@ -2352,6 +2353,13 @@
 				019E82F51654055D00744A03 /* PanelLargeVideoView@2x.png */,
 			);
 			name = "Discovery Page";
+			sourceTree = "<group>";
+		};
+		01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Asynchronous Operations";
 			sourceTree = "<group>";
 		};
 		01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */ = {

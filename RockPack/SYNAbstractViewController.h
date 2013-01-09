@@ -16,7 +16,7 @@
                                                          UICollectionViewDataSource,
                                                          UICollectionViewDelegate>
 // Public properties
-@property (readonly) NSManagedObjectContext *managedObjectContext;
+@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, strong) UIView *videoQueueView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
