@@ -6,13 +6,17 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractUpdater.h"
 #import "AppConstants.h"
-#import "DictionaryHelper.h"
 #import "Channel.h"
+#import "ChannelOwner.h"
+#import "NSDictionary+Validation.h"
+#import "SYNAbstractUpdater.h"
+#import "SYNAppDelegate.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "ChannelOwner.h"
+
+#define kUpdaterCancelled TRUE
+#define kUpdaterNotCancelled FALSE
 
 @interface SYNAbstractUpdater()
 
@@ -21,16 +25,18 @@
 
 @property (nonatomic, copy) SYNUpdaterResponseBlock completionBlock;
 
-@property (nonatomic, retain) NSException *cancelledException;
-@property (nonatomic, retain) NSException *communicationsException;
-@property (nonatomic, retain) NSString *uniqueViewId;
+@property (nonatomic, assign) BOOL firstTime;
+@property (nonatomic, assign) int batchSize;
 @property (nonatomic, assign) int numItemsTotal;
 @property (nonatomic, assign) int offset;
-@property (nonatomic, assign) int batchSize;
-@property (nonatomic, assign) BOOL firstTime;
-
+@property (nonatomic, retain) NSException *cancelledException;
+@property (nonatomic, retain) NSException *communicationsException;
+@property (nonatomic, retain) NSManagedObjectContext *importManagedObjectContext;
+@property (nonatomic, retain) NSString *uniqueViewId;
+@property (nonatomic, retain) id responseJSON;
 
 @end
+
 
 @implementation SYNAbstractUpdater
 
@@ -46,19 +52,19 @@
 
 // This is the initialisation method that sets the callback delegate and Twitter username and password and tweet
 - (id) initWithCompletionBlock: (SYNUpdaterResponseBlock) completionBlock
-                 uniqueViewId: (NSString *) uniqueViewId;
+                  uniqueViewId: (NSString *) uniqueViewId;
 {
     if ((self = [super init]))
     {
         // Perform initialisation here
-        if (response)
+        if (completionBlock)
         {
             self.completionBlock = completionBlock;
         }
         
         self.uniqueViewId = uniqueViewId;
     }
-
+    
     return self;
 }
 
@@ -70,9 +76,10 @@
 }
 
 
-- (NSString *) queryURL
+- (NSURL *) queryURL
 {
-    return @"";
+    return nil;
+    //return [NSURL URLWithString: @"http://www.synchromation.com"];
 }
 
 
@@ -91,7 +98,8 @@
 	// Several functions use this to report errors
 	NSError	*error = nil;
 	NSURLResponse *response = nil;
-
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
     // Set up a default exception
     self.cancelledException = [NSException exceptionWithName: @"CancelledException"
                                                       reason: @"Operation cancelled"
@@ -101,15 +109,14 @@
                                                            reason: @"Error talking to server"
                                                          userInfo: nil];
 	
-    // Set up a new managed object context with our existing persistent store (as created by our app delegate)
-    NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
-    
-    // No undo manager
-    [managedObjectContext setUndoManager: nil];
+    // This is where the magic occurs
+    // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
+    self.importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
+    self.importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
     
 	@try
 	{
-		[managedObjectContext setPersistentStoreCoordinator: [(SecretDJAppDelegate *)[[UIApplication sharedApplication] delegate] persistentStoreCoordinator]];
+		[managedObjectContext setPersistentStoreCoordinator:  persistentStoreCoordinator]];
 		
 		// Register ourselves as an observer of the NSManagedObjectContextDidSaveNotification event that gets sent
 		// when a managedObjectContext is saved to the persistent sotre
@@ -143,9 +150,9 @@
         {
             self.currentBatchSize = (numItemsRemaining < self.batchSize) ? numItemsRemaining : self.batchSize;
             
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: [self queryURL]]
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: self.queryURL]
                                                                    cachePolicy: NSURLRequestReloadIgnoringLocalAndRemoteCacheData
-                                                               timeoutInterval: kAPI2VenuesUpdateTimeout];
+                                                               timeoutInterval: kAPIDefaultTimout];
             
             // Set up a synchronouse connection to send the GET
             NSData *responseData = [NSURLConnection sendSignedSynchronousRequest: request
@@ -183,119 +190,100 @@
                 }
                 else
                 {
-                    // All seems well, so construct a String around the Data from the response
-                    NSString *responseString = [[[NSString alloc] initWithData: responseData
-                                                                      encoding: NSUTF8StringEncoding] autorelease];
-                    
-                    // Check so see if response is null string or empty array or list
-                    if (!([responseString isEqualToString:@""] || [responseString isEqualToString:@"{}"]))
+                    // Turn the incoming JSON into an NSDictionary or NSArray
+                    self.responseJSON = [NSJSONSerialization JSONObjectWithData: responseData
+                                                                        options: 0
+                                                                          error: &error];
+                    // If not successful, then call our completion block
+                    if ((self.responseJSON == nil) && error)
                     {
-                        // Create a new JSON parser object
-                        SBJSON *jsonParser = [[SBJSON new] autorelease];
-                        
-                        // Parse string into a (mutable)dictionary object
-                        self.responseDictionary =  (NSDictionary *) [jsonParser objectWithString: responseString
-                                                                                           error: NULL];
-                    }
-                    
-                    // Only do something if we were successful in getting our information i.e. we were returned a dictionalry
-                    if (self.responseDictionary)
-                    {
-                        [self createManagedObjectsFromDictionary: self.responseDictionary
-                                          inManagedObjectContext: managedObjectContext
-                                                    shouldDelete: self.firstTime];
-                        
-                        // Paging support
-                        if ((self.firstTime  == TRUE) && ![self.jukeboxHash isEqualToString: @""] && [self.jukeboxHash isEqualToString: self.lastJukeboxHash])
-                        {
-                            // Same as last time so act as if cancelled
-                            NSBLog (@"__________Cancel on same hash %@", self);
-                            @throw self.cancelledException;
-                        }
-                        else
-                        {
-                            self.lastJukeboxHash = self.jukeboxHash;
-                        }
-                        
-                        self.firstTime = FALSE;
-                        self.indexOffset += self.currentBatchSize;
-                        
-                        numItemsRemaining = (self.batchSize == kDefaultBatchSize) ? 0 : self.numItemsTotal - self.indexOffset;
-                    }
-                    else
-                    {
-                        // Really should have our own error domain for this
-                        error = [NSError errorWithDomain: NSURLErrorDomain
-                                                    code: NSURLErrorCannotParseResponse
-                                                userInfo: nil];
-                        
-                        @throw self.communicationsException;
+                        self.completionBlock(self, error, kUpdaterNotCancelled);
+                        return;
                     }
                 }
-            }
-            
-            // Only save if we weren't cancelled
-            if (!self.isCancelled && !error)
-            {
-                if (![managedObjectContext save: &error])
+                
+                // Only do something if we were successful in getting our information i.e. we were returned a dictionalry
+                if (self.responseJSON)
                 {
-                    NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-                    if(detailedErrors != nil && [detailedErrors count] > 0)
-                    {
-                        for(NSError* detailedError in detailedErrors)
-                        {
-                            NSBLog(@" DetailedError: %@", [detailedError userInfo]);
-                        }
-                    }
+                    [self createManagedObjectsFromDictionary: self.responseJSON
+                                      inManagedObjectContext: self.importManagedObjectContext
+                                                shouldDelete: self.firstTime];
                     
-                    // Bail out if save failed
+                    // Paging support
+                    self.firstTime = FALSE;
+                    self.indexOffset += self.currentBatchSize;
+                    
+                    numItemsRemaining = (self.batchSize == kDefaultBatchSize) ? 0 : self.numItemsTotal - self.indexOffset;
+                }
+                else
+                {
+                    // Really should have our own error domain for this
                     error = [NSError errorWithDomain: NSURLErrorDomain
-                                                code: NSURLErrorCannotDecodeContentData
+                                                code: NSURLErrorCannotParseResponse
                                             userInfo: nil];
                     
                     @throw self.communicationsException;
                 }
             }
         }
-	}
-	@catch (NSException * e)
-	{
-        if (nil == error)
+        
+        // Only save if we weren't cancelled
+        if (!self.isCancelled && !error)
         {
-            error = [NSError errorWithDomain: NSURLErrorDomain
-                                        code: NSURLErrorCancelled
-                                    userInfo: [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: self.indexOffset]
-                                                                          forKey: @"Index"]];
+            if (![self.importManagedObjectContext save: &error])
+            {
+                NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+                if(detailedErrors != nil && [detailedErrors count] > 0)
+                {
+                    for(NSError* detailedError in detailedErrors)
+                    {
+                        NSBLog(@" DetailedError: %@", [detailedError userInfo]);
+                    }
+                }
+                
+                // Bail out if save failed
+                error = [NSError errorWithDomain: NSURLErrorDomain
+                                            code: NSURLErrorCannotDecodeContentData
+                                        userInfo: nil];
+                
+                @throw self.communicationsException;
+            }
         }
-	}
-    @finally
-    {
-		// Remove ourself as an observer of the NSManagedObjectContextDidSaveNotification event (as this task is about to dissappear)
-		[[NSNotificationCenter defaultCenter] removeObserver: self
-														name: NSManagedObjectContextDidSaveNotification
-													  object: managedObjectContext];
-        // Clean up
-        [managedObjectContext reset];
-        [managedObjectContext release];
     }
-	
-	// Report back if anything that actually returned an error code (as opposed to a user or programmatic cancellation)
-	if (error)
-	{
-        if ([error code] == NSURLErrorCancelled)
-        {
-            //            NSBLog (@"__________Cancel callback %@", self);
-            [self.delegate performSelectorOnMainThread: self.cancelledSelector
-                                            withObject: error
-                                         waitUntilDone: YES];
-        }
-        else
-        {
-            [self.delegate performSelectorOnMainThread: self.errorSelector
-                                            withObject: error
-                                         waitUntilDone: YES];
-        }
-	}
+}
+@catch (NSException * e)
+{
+    if (nil == error)
+    {
+        error = [NSError errorWithDomain: NSURLErrorDomain
+                                    code: NSURLErrorCancelled
+                                userInfo: [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: self.indexOffset]
+                                                                      forKey: @"Index"]];
+    }
+}
+@finally
+{
+    // Remove ourself as an observer of the NSManagedObjectContextDidSaveNotification event (as this task is about to dissappear)
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: NSManagedObjectContextDidSaveNotification
+                                                  object: managedObjectContext];
+    // Clean up
+    [managedObjectContext reset];
+    [managedObjectContext release];
+}
+
+// Report back if anything that actually returned an error code (as opposed to a user or programmatic cancellation)
+if (error)
+{
+    if ([error code] == NSURLErrorCancelled)
+    {
+        self.completionBlock(self, nil, kUpdaterCancelled);
+    }
+    else
+    {
+        self.completionBlock(self, error, kUpdaterNotCancelled);
+    }
+}
 }
 
 
@@ -303,22 +291,7 @@
 // I.e. we can call a method in our main thread to update its own managedObjectContext
 - (void) contextDidSave: (NSNotification*) notification
 {
-    NSMutableDictionary	*response = [[NSMutableDictionary alloc] initWithCapacity: 2];
-	
-	[response setObject: notification
-				 forKey: @"Notification"];
-	
-	if (self.responseDictionary)
-	{
-		[response setObject: self.responseDictionary
-					 forKey: @"ResponseDictionary"];
-	}
-	
-    [self.delegate performSelectorOnMainThread: self.updateSelector
-                                    withObject: response
-                                 waitUntilDone: YES];
-	
-	[response release];
+    self.completionBlock(self, nil, kUpdaterNotCancelled);
 }
 
 
@@ -357,7 +330,7 @@
 
 
 - (void) createChannelObjectsFromItemArray: (NSArray *) itemArray
-{   
+{
     for (NSDictionary *newsItem in itemArray)
     {
         NSNumber *newsItemId = [NSNumber numberWithInt: 0];
@@ -379,29 +352,29 @@
             
         }
         
-        VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.mainManagedObjectContext]; 
+        VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.mainManagedObjectContext];
         
         // Set to defaults so that we don't crash on save if something goes wrong in parsing
         NSString *imageURI = @"";
-
+        
         
         // Get common properties
         [self getCommonObjectAttributesFromDictionary: newsItem
                                              uniqueId: &uniqueId];
-}
-
-
-// All objects share certain attributes, so parse them here, start with the unique ID, but add more as more common items fount
-- (void) getCommonObjectAttributesFromDictionary: (NSDictionary *) dictionary
-                                        uniqueId: (NSString **) uniqueId
-
-{
-    // Get common attributes
-    *uniqueId = [DictionaryHelper validStringForDictionary: dictionary
-                                                andKey: @"id"
-                                     withDefaultString: @""];
-}
-
-
-@end
-
+    }
+    
+    
+    // All objects share certain attributes, so parse them here, start with the unique ID, but add more as more common items fount
+    - (void) getCommonObjectAttributesFromDictionary: (NSDictionary *) dictionary
+uniqueId: (NSString **) uniqueId
+    
+    {
+        // Get common attributes
+        *uniqueId = [DictionaryHelper validStringForDictionary: dictionary
+                                                        andKey: @"id"
+                                             withDefaultString: @""];
+    }
+    
+    
+    @end
+    

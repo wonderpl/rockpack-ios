@@ -540,11 +540,11 @@
                 
                 video.uniqueId = [NSString stringWithFormat: @"%d", uniqueId++];
                 video.source = @"rockpack"; // Hardwire this for now
-                video.sourceId = [videoDetailsDictionary objectForKey: @"videoURL"];
+                video.sourceId = videoDetailsDictionary [@"videoURL"];
                 video.categoryId = @"funny";
-                video.thumbnailURL = [videoDetailsDictionary objectForKey: @"keyframeURL"];
-                video.starredByUser = [videoDetailsDictionary objectForKey: @"rockedByUser"];
-                video.starCount = [videoDetailsDictionary objectForKey: @"totalRocks"];
+                video.thumbnailURL = videoDetailsDictionary [@"keyframeURL"];
+                video.starredByUser = videoDetailsDictionary [@"rockedByUser"];
+                video.starCount = videoDetailsDictionary [@"totalRocks"];
                 
                 [videos addObject: video];
             }
@@ -568,15 +568,15 @@
                 channel.uniqueId = [NSString stringWithFormat: @"%d", index];
                 channel.categoryId = @"funny";
                 channel.indexValue = index;
-                channel.thumbnailURL = [channelDetailsDictionary objectForKey: @"keyframeURL"];
-                channel.wallpaperURL = [channelDetailsDictionary objectForKey: @"wallpaperURL"];
-                channel.title = [channelDetailsDictionary objectForKey: @"title"];
-                channel.channelDescription = [channelDetailsDictionary objectForKey: @"biog"];
-                channel.rockedByUser = [channelDetailsDictionary objectForKey: @"rockedByUser"];
-                channel.rockCount = [channelDetailsDictionary objectForKey: @"totalRocks"];
+                channel.thumbnailURL = channelDetailsDictionary [@"keyframeURL"];
+                channel.wallpaperURL = channelDetailsDictionary [@"wallpaperURL"];
+                channel.title = channelDetailsDictionary [@"title"];
+                channel.channelDescription = channelDetailsDictionary [@"biog"];
+                channel.rockedByUser = channelDetailsDictionary [@"rockedByUser"];
+                channel.rockCount = channelDetailsDictionary [@"totalRocks"];
                 
                 ChannelOwner *channelOwner = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
-                channelOwner.name = [(NSDictionary *)[self.videoDetailsArray objectAtIndex: index % 12] objectForKey: @"user"];
+                channelOwner.name = ((NSDictionary *)[self.videoDetailsArray objectAtIndex: index % 12]) [@"user"];
                 channelOwner.uniqueId = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];;
                 channelOwner.thumbnailURL = [NSString stringWithFormat: @"ChannelThumb%d", (index % 12) + 1];
                 
@@ -610,7 +610,7 @@
             // Now we have created all our Video objects, save them...
             if (![self.mainManagedObjectContext save: &error])
             {
-                NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+                NSArray* detailedErrors = [error userInfo][NSDetailedErrorsKey];
                 
                 if ([detailedErrors count] > 0)
                 {
@@ -674,7 +674,7 @@
         for (int videoFileIndex = 0; videoFileIndex < self.videoDetailsArray.count; videoFileIndex++)
         {        
             NSDictionary *videoDetails = [self.videoDetailsArray objectAtIndex: videoFileIndex];
-            NSString *videoURLString = [videoDetails objectForKey: @"videoURL"];
+            NSString *videoURLString = videoDetails [@"videoURL"];
             
             NSString *downloadPath = [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", videoURLString, nil]];
             

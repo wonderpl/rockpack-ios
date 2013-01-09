@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class SYNAbstractUpdater;
+
 typedef void (^SYNUpdaterResponseBlock)(SYNAbstractUpdater* completedOperation, NSError* error, BOOL wasCancelled);
 
 @interface SYNAbstractUpdater : NSOperation

@@ -9,6 +9,8 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+#define kAPIDefaultTimout 30
+
 // API default batch size (we may need different ones for each API at some stage)
 #define kDefaultBatchSize 20
 
