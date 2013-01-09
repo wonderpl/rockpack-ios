@@ -484,6 +484,7 @@
 		01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
+		01C6FD0C169DA76F00E01AA3 /* SYNAbstractUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */; };
 		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
 		01C9CFA8169B4F5500C42479 /* BackgroundGeneric.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C9CFA7169B4F5500C42479 /* BackgroundGeneric.png */; };
 		01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */; };
@@ -1089,6 +1090,8 @@
 		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
 		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
 		01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelThumbnailCell.xib; sourceTree = "<group>"; };
+		01C6FD0A169DA76F00E01AA3 /* SYNAbstractUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractUpdater.h; sourceTree = "<group>"; };
+		01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractUpdater.m; sourceTree = "<group>"; };
 		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
 		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
 		01C9CFA7169B4F5500C42479 /* BackgroundGeneric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundGeneric.png; path = Assets/Images/BackgroundGeneric.png; sourceTree = "<group>"; };
@@ -1282,7 +1285,6 @@
 		010DEFDA1629BDC40080F26B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */,
 				01982525162A02DD00216900 /* Contstants */,
 				019825EE162C948000216900 /* Categories */,
 				019824E21629CAC000216900 /* App Delegate */,
@@ -1290,6 +1292,7 @@
 				012632C7162DF4C40009FF9C /* Layout Engine Support */,
 				019824E31629CADE00216900 /* Custom Views */,
 				019824E11629CAB600216900 /* View Controllers */,
+				01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */,
 				019824E41629CAF500216900 /* Helpers */,
 				01E427D01664C701009B941F /* Data Model */,
 				010DEFDB1629BDC40080F26B /* Supporting Files */,
@@ -2358,8 +2361,18 @@
 		01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */ = {
 			isa = PBXGroup;
 			children = (
+				01C6FD09169DA73000E01AA3 /* Updaters */,
 			);
 			name = "Asynchronous Operations";
+			sourceTree = "<group>";
+		};
+		01C6FD09169DA73000E01AA3 /* Updaters */ = {
+			isa = PBXGroup;
+			children = (
+				01C6FD0A169DA76F00E01AA3 /* SYNAbstractUpdater.h */,
+				01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */,
+			);
+			name = Updaters;
 			sourceTree = "<group>";
 		};
 		01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */ = {
@@ -3034,6 +3047,7 @@
 				01946B971683339F00354601 /* ChannelOwner.m in Sources */,
 				01946B981683339F00354601 /* VideoInstance.m in Sources */,
 				01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */,
+				01C6FD0C169DA76F00E01AA3 /* SYNAbstractUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

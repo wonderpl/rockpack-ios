@@ -1,0 +1,38 @@
+//
+//  SYNAbstractUpdater.h
+//  rockpack
+//
+//  Created by Nick Banks on 09/01/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+
+typedef void (^SYNUpdaterResponseBlock)(SYNAbstractUpdater* completedOperation, NSError* error, BOOL wasCancelled);
+
+@interface SYNAbstractUpdater : NSOperation
+
+#pragma mark -
+#pragma mark Public Properties
+
+@property (nonatomic, assign) int currentBatchSize;
+@property (nonatomic, assign) int indexOffset;
+
+#pragma mark -
+#pragma mark Public Methods
+
+- (id) initWithCompletionBlock: (SYNUpdaterResponseBlock) completionBlock
+                 uniqueTableId: (NSString *) uniqueTableId;
+
+- (void) updateObjectList: (NSString *) entityName;
+
+- (NSString *) queryURL;
+
+
+- (void) createManagedObjectsFromDictionary: (NSDictionary *) responseDictionary
+                     inManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                               shouldDelete: (BOOL) shouldDelete;
+
+
+@end
