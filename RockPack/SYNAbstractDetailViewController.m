@@ -40,7 +40,7 @@
 	if ((self = [super initWithNibName: @"SYNAbstractDetailViewController" bundle: nil]))
     {
 		self.channel = channel;
-        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstanceSet.array];
+        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
 	}
     
 	return self;
@@ -177,13 +177,13 @@
 {
     // Actually swap the video thumbnails around in the visible list
     id fromItem = [self.videoInstancesArray objectAtIndex: fromIndexPath.item];
-    id fromObject = [self.channel.videoInstanceSet objectAtIndex: fromIndexPath.item];
+    id fromObject = [self.channel.videoInstances objectAtIndex: fromIndexPath.item];
     
     [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
-    [self.channel.videoInstanceSet removeObjectAtIndex: fromIndexPath.item];
+    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
     
     [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
-    [self.channel.videoInstanceSet insertObject: fromObject atIndex: toIndexPath.item];
+    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
     
     [self saveDB];
 }

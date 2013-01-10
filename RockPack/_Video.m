@@ -13,7 +13,7 @@ const struct VideoAttributes VideoAttributes = {
 };
 
 const struct VideoRelationships VideoRelationships = {
-	.videoInstance = @"videoInstance",
+	.videoInstances = @"videoInstances",
 };
 
 const struct VideoFetchedProperties VideoFetchedProperties = {
@@ -142,15 +142,15 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 
 
-@dynamic videoInstance;
+@dynamic videoInstances;
 
 	
-- (NSMutableSet*)videoInstanceSet {
-	[self willAccessValueForKey:@"videoInstance"];
+- (NSMutableSet*)videoInstancesSet {
+	[self willAccessValueForKey:@"videoInstances"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"videoInstance"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"videoInstances"];
   
-	[self didAccessValueForKey:@"videoInstance"];
+	[self didAccessValueForKey:@"videoInstances"];
 	return result;
 }
 	

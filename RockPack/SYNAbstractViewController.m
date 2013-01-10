@@ -1025,7 +1025,7 @@
     
     for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
     {
-        [[newChannel videoInstanceSet] addObject: videoInstance];
+        [[newChannel videoInstancesSet] addObject: videoInstance];
     }
     
     SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];

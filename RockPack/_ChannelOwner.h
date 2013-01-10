@@ -10,7 +10,7 @@ extern const struct ChannelOwnerAttributes {
 } ChannelOwnerAttributes;
 
 extern const struct ChannelOwnerRelationships {
-	__unsafe_unretained NSString *channel;
+	__unsafe_unretained NSString *channels;
 } ChannelOwnerRelationships;
 
 extern const struct ChannelOwnerFetchedProperties {
@@ -54,9 +54,9 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-@property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) NSSet *channels;
 
-//- (BOOL)validateChannel:(id*)value_ error:(NSError**)error_;
+- (NSMutableSet*)channelsSet;
 
 
 
@@ -65,6 +65,11 @@ extern const struct ChannelOwnerFetchedProperties {
 @end
 
 @interface _ChannelOwner (CoreDataGeneratedAccessors)
+
+- (void)addChannels:(NSSet*)value_;
+- (void)removeChannels:(NSSet*)value_;
+- (void)addChannelsObject:(Channel*)value_;
+- (void)removeChannelsObject:(Channel*)value_;
 
 @end
 
@@ -84,8 +89,8 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-- (Channel*)primitiveChannel;
-- (void)setPrimitiveChannel:(Channel*)value;
+- (NSMutableSet*)primitiveChannels;
+- (void)setPrimitiveChannels:(NSMutableSet*)value;
 
 
 @end
