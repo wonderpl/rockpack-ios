@@ -322,28 +322,57 @@
 }
 
 
-- (void) createChannelObjectsFromItemArray: (NSArray *) itemArray
+- (void) createVideoInstanceObjectsFromDictionary: (NSDictionary *) dictionary
 {
-    for (NSDictionary *newsItem in itemArray)
+    // Get Data dictionary
+    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+    
+    // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
+    if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
     {
-        NSString *uniqueId;
+        // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+        NSArray *itemArray = [videosDictionary objectForKey: @"items"];
         
-        // Get Data dictionary
-        NSDictionary *dataDictionary = [newsItem objectForKey: @"Data"];
-        
-        // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
-        if (dataDictionary && [dataDictionary isKindOfClass: [NSDictionary class]])
+        if ([itemArray isKindOfClass: [NSArray class]])
         {
-            // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+            for (NSDictionary *itemDictionary in itemArray)
+            {
+                if ([itemDictionary isKindOfClass: [NSDictionary class]])
+                {
+                    VideoInstance *videoInstance =  [VideoInstance instanceFromDictionary: itemDictionary
+                                                                usingManagedObjectContext: self.importManagedObjectContext];
+                    
+                    // If we seem to have a valid object, then save
+                    if (videoInstance != nil)
+                    {
+                        [self saveDB];
+                    }
+
+                }
+            }  
+        }  
+    }
+    else
+    {
+        AssertOrLog(@"Not a dictionary");
+    }
+}
+
+- (void) saveDB
+{
+    NSError *error = nil;
+    
+    if (![self.importManagedObjectContext save: &error])
+    {
+        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
         
-            
+        if ([detailedErrors count] > 0)
+        {
+            for(NSError* detailedError in detailedErrors)
+            {
+                DebugLog(@" DetailedError: %@", [detailedError userInfo]);
+            }
         }
-        
-        VideoInstance *videoInstance = [VideoInstance insertInManagedObjectContext: self.importManagedObjectContext];
-        
-        // Get common properties
-//        [self getCommonObjectAttributesFromDictionary: newsItem
-//                                             uniqueId: &uniqueId];
     }
 }
 

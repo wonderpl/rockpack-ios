@@ -25,7 +25,7 @@ typedef void (^SYNUpdaterResponseBlock)(SYNAbstractUpdater* completedOperation, 
 #pragma mark Public Methods
 
 - (id) initWithCompletionBlock: (SYNUpdaterResponseBlock) completionBlock
-                 uniqueViewId: (NSString *) uniqueViewId;
+                  uniqueViewId: (NSString *) uniqueViewId;
 
 - (void) updateObjectList: (NSString *) entityName;
 

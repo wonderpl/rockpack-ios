@@ -14,4 +14,8 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 
 -(id) initWithDefaultSettings;
 
+- (void) JSONObjectForPath: (NSString *) path
+           completionBlock: (JSONResponseBlock) completionBlock
+                errorBlock: (MKNKErrorBlock) errorBlock;
+
 @end

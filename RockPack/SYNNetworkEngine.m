@@ -36,11 +36,13 @@
                 errorBlock: (MKNKErrorBlock) errorBlock
 {
     // Append additional parameters
-    path = [NSString stringWithFormat: @"%@?%@", path, self.localeString];
+//    path = [NSString stringWithFormat: @"%@?%@", path, self.localeString];
     
-    MKNetworkOperation *networkOperation = [self operationWithPath: path
-                                                            params: nil
-                                                        httpMethod: @"GET"];
+    NSDictionary *headerFields = @{@"grant_type" : @"password",
+                                   @"username" : @"ios",
+                                   @"password" : @"password"};
+    
+    MKNetworkOperation *networkOperation = [self operationWithPath: path];
     
     [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
     {

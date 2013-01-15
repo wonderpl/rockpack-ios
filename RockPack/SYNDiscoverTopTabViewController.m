@@ -21,6 +21,8 @@
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "SYNImportTest.h"
+
 @interface SYNDiscoverTopTabViewController () <UIGestureRecognizerDelegate,
                                                UIScrollViewDelegate>
 
@@ -68,8 +70,9 @@
     [super viewWillAppear: animated];
     
     // TODO: Remove this video download hack once we have real data from the API
-    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
-
+//    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
+    [SYNImportTest importTest];
+    
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
     {
