@@ -58,7 +58,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     }
     else
     {
-        VideoInstance *instance = [[VideoInstance alloc] init];
+        VideoInstance *instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
         
         // As we have a new object, we need to set all the attributes (from the dictionary passed in)
         // We have already obtained the uniqueId, so pass it in as an optimisation
@@ -86,7 +86,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     self.uniqueId = uniqueId;
     
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
-                                                   withDefault: [NSDate date]];
+                                                 withDefault: [NSDate date]];
     
     self.title = [dictionary objectForKey: @"title"
                               withDefault: @""];

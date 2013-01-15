@@ -51,7 +51,7 @@ static NSDateFormatter *dateFormatter = nil;
 	return date;
 }
 
-
+// Used for dates in the following format "2012-12-14T09:59:46.000Z"
 + (NSDateFormatter *) ISO6801DateFormatter
 {
     if (dateFormatter == nil)
@@ -60,9 +60,9 @@ static NSDateFormatter *dateFormatter = nil;
         static dispatch_once_t oncePredicate;
         dispatch_once(&oncePredicate, ^
         {
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
-            [formatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+            dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
+            [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
         });
     }
     

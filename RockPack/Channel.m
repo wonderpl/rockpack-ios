@@ -55,7 +55,7 @@ static NSEntityDescription *channelEntity = nil;
     }
     else
     {
-        Channel *instance = [[Channel alloc] init];
+        Channel *instance = [Channel insertInManagedObjectContext: managedObjectContext];
         
         // As we have a new object, we need to set all the attributes (from the dictionary passed in)
         // We have already obtained the uniqueId, so pass it in as an optimisation
