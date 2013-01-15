@@ -1,7 +1,10 @@
 #import "NSDate-Utilities.h"
-#import "VideoInstance.h"
+#import "NSDictionary+Validation.h"
 #import "Video.h"
+#import "VideoInstance.h"
 
+
+static NSEntityDescription *videoInstanceEntity = nil;
 
 @interface VideoInstance ()
 
@@ -12,8 +15,103 @@
 
 @implementation VideoInstance
 
-// Custom logic goes here.
 
+#pragma mark - Object factory
+
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+{
+    NSError *error = nil;
+    
+    // Get the unique id of this object from the dictionary that has been passed in
+    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    
+    // Only create an entity description once, should increase performance
+    if (videoInstanceEntity == nil)
+    {
+        // Do once, and only once
+        static dispatch_once_t oncePredicate;
+        dispatch_once(&oncePredicate, ^
+        {
+            // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
+            videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
+                                              inManagedObjectContext: managedObjectContext];
+          
+        });
+    }
+    
+    // Now we need to see if this object already exists, and if so return it and if not create it
+    NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
+    [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+    
+    // Search on the unique Id
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
+    [videoInstanceFetchRequest setPredicate: predicate];
+    
+    NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                error: &error];
+    
+    if (matchingVideoInstanceEntries.count > 0)
+    {
+        // We should only have one match, but just use the first object returned anyway
+        return matchingVideoInstanceEntries[0];
+    }
+    else
+    {
+        VideoInstance *instance = [[VideoInstance alloc] init];
+        
+        // As we have a new object, we need to set all the attributes (from the dictionary passed in)
+        // We have already obtained the uniqueId, so pass it in as an optimisation
+        [instance setAttributesFromDictionary: dictionary
+                                       withId: uniqueId
+                    usingManagedObjectContext: managedObjectContext];
+        
+        return instance;
+    }
+}
+
+
+- (void) setAttributesFromDictionary: (NSDictionary *) dictionary
+                              withId: (NSString *) uniqueId
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+{
+    // Is we are not actually a dictionary, then bail
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        return;
+    }
+    
+    // Simple objects
+    self.uniqueId = uniqueId;
+    
+    self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
+                                                   withDefault: [NSDate date]];
+    
+    self.title = [dictionary objectForKey: @"title"
+                              withDefault: @""];
+}
+
+
+#pragma mark - Object reference counting
+
+// This is very important, we need to set the delete rule to 'Nullify' and then custom delete our connected NSManagedObjects
+// dependent on whether they are only referenced by us
+- (void) prepareForDeletion
+{
+    if (self.video.videoInstances.count == 1)
+    {
+        DebugLog(@"Single reference to Video, will be deleted");
+        [self.managedObjectContext deleteObject: self.video];
+    }
+    else
+    {
+        DebugLog(@"Multiple references to Video object, not deleted");
+    }
+}
+
+
+#pragma mark - Helper methods
 
 - (NSNumber *) daysAgo
 {
@@ -26,24 +124,6 @@
 - (NSDate *) dateAddedIgnoringTime
 {
     return self.dateAdded.dateIgnoringTime;
-}
-
-
-// This is very important, we need to set the delete rule to 'Nullify' and then custom delete our connected NSManagedObjects
-// dependent on whether they are only referenced by us
-
-// Not sure if we should delete connected Channel/ChannelInstances at the same time
-- (void) prepareForDeletion
-{
-    if (self.video.videoInstances.count == 1)
-    {
-        DebugLog(@"Single reference to Video, will be deleted");
-        [self.managedObjectContext deleteObject: self.video];
-    }
-    else
-    {
-        DebugLog(@"Multiple references to Video object, not deleted");
-    }
 }
 
 @end

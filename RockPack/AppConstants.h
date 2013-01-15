@@ -9,6 +9,19 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+
+//
+// API
+//
+
+// Host for API
+
+#define kAPIHostName @"demo.rockpack.com"
+
+#define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"test/ws/%@/subscriptions/recent_videos/"
+
+// Timeout for API calls
+
 #define kAPIDefaultTimout 30
 
 // API default batch size (we may need different ones for each API at some stage)

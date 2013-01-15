@@ -1,5 +1,8 @@
 #import "_ChannelOwner.h"
 
-@interface ChannelOwner : _ChannelOwner {}
-// Custom logic goes here.
+@interface ChannelOwner : _ChannelOwner
+
++ (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
+                usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 @end

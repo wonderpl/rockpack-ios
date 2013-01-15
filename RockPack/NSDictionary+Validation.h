@@ -13,4 +13,7 @@
 - (id) objectForKey: (id) key
         withDefault: (id) defaultValue;
 
+- (NSDate *) dateFromISO6801StringForKey: (id) key
+                             withDefault: (NSDate *) defaultDate;
+
 @end

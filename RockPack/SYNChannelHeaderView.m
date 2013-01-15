@@ -25,12 +25,12 @@
             return nil;
         }
         
-        if (![[arrayOfViews objectAtIndex: 0] isKindOfClass: [UICollectionViewCell class]])
+        if (![arrayOfViews[0] isKindOfClass: [UICollectionViewCell class]])
         {
             return nil;
         }
         
-        self = [arrayOfViews objectAtIndex: 0];
+        self = arrayOfViews[0];
     }
     
     return self;

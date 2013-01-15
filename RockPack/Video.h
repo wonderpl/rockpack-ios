@@ -2,7 +2,9 @@
 
 @interface Video : _Video
 
-// Custom logic goes here.
++ (Video *) instanceFromDictionary: (NSDictionary *) dictionary
+         usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 - (UIImage *) thumbnailImage;
 - (NSURL *) localVideoURL;
 

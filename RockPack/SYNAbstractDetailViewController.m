@@ -123,7 +123,7 @@
     SYNVideoThumbnailRegularCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                        forIndexPath: indexPath];
     
-    VideoInstance *videoInstance = [self.videoInstancesArray objectAtIndex: indexPath.item];
+    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
     cell.imageView.image = videoInstance.video.thumbnailImage;
     cell.titleLabel.text = videoInstance.title;
     cell.subtitleLabel.text = videoInstance.channel.title;
@@ -150,7 +150,7 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstancesArray objectAtIndex: indexPath.row];
+    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
     
     SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
     
@@ -176,8 +176,8 @@
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
     // Actually swap the video thumbnails around in the visible list
-    id fromItem = [self.videoInstancesArray objectAtIndex: fromIndexPath.item];
-    id fromObject = [self.channel.videoInstances objectAtIndex: fromIndexPath.item];
+    id fromItem = self.videoInstancesArray[fromIndexPath.item];
+    id fromObject = self.channel.videoInstances[fromIndexPath.item];
     
     [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
     [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];

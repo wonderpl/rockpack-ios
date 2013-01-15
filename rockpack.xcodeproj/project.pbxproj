@@ -488,6 +488,7 @@
 		01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */; };
 		01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */; };
 		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
+		01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */; };
 		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
 		01C9CFA8169B4F5500C42479 /* BackgroundGeneric.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C9CFA7169B4F5500C42479 /* BackgroundGeneric.png */; };
 		01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */; };
@@ -1101,6 +1102,8 @@
 		01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _AbstractCommon.m; sourceTree = "<group>"; };
 		01C6FD12169E11B000E01AA3 /* AbstractCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractCommon.h; sourceTree = "<group>"; };
 		01C6FD13169E11B000E01AA3 /* AbstractCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractCommon.m; sourceTree = "<group>"; };
+		01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkEngine.h; sourceTree = "<group>"; };
+		01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkEngine.m; sourceTree = "<group>"; };
 		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
 		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
 		01C9CFA7169B4F5500C42479 /* BackgroundGeneric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundGeneric.png; path = Assets/Images/BackgroundGeneric.png; sourceTree = "<group>"; };
@@ -1476,6 +1479,8 @@
 		012ECA5C165B9D1A00A60980 /* Custom Engines */ = {
 			isa = PBXGroup;
 			children = (
+				01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */,
+				01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */,
 				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
 				019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */,
 				012ECA5D165B9D4300A60980 /* SYNVideoDownloadEngine.h */,
@@ -3066,6 +3071,7 @@
 				01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */,
 				01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */,
 				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
+				01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

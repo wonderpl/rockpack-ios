@@ -2,7 +2,9 @@
 
 @interface VideoInstance : _VideoInstance
 
-// Custom logic goes here.
++ (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 - (NSNumber *) daysAgo;
 - (NSDate *) dateAddedIgnoringTime;
 

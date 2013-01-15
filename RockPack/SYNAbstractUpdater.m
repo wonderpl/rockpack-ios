@@ -335,17 +335,6 @@
         if (dataDictionary && [dataDictionary isKindOfClass: [NSDictionary class]])
         {
             // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
-            NSNumber *number  = [dataDictionary objectForKey: dataDictionary
-                                                     withDefault: @0];
-            
-            NSString *string  = [dataDictionary objectForKey: dataDictionary
-                                                 withDefault: @""];
-            
-            NSDate *date  = [dataDictionary objectForKey: dataDictionary
-                                                 withDefault: @0];
-            
-            NSNumber *boolean  = [dataDictionary objectForKey: dataDictionary
-                                                 withDefault: @FALSE];
         
             
         }
@@ -357,7 +346,36 @@
 //                                             uniqueId: &uniqueId];
     }
 }
-    
-    
+
+/*
+ 
+ {
+ "videos": {
+     "items": [
+     {
+     "channel": {
+         "id": "UCrDkAvwZum-UTjHmzDI2iIw",
+         "owner": {
+         "id": "Tr3dHIt5_K9qdGtR",
+         "name": "officialpsy",
+         "thumbnail_url": "https://i3.ytimg.com/i/rDkAvwZum-UTjHmzDI2iIw/1.jpg?v=50018dde"
+     },
+     "thumbnail_url": "https://i.ytimg.com/vi/9bZkp7q19f0/default.jpg",
+     "title": "Music"
+     },
+     "date_added": "2012-07-15T07:46:32.000Z",
+     "id": "Tr3dHIt5_K9qdG",
+     "title": "PSY - GANGNAM STYLE (\uac15\ub0a8\uc2a4\ud0c0\uc77c) M/V",
+     "video": {
+         "id": "RP000001RLYRRUDMSGXIMRYLYHAHTTE7WPMGY6BD",
+         "source": "youtube",
+         "source_id": "9bZkp7q19f0",
+         "star_count": 6038724,
+         "thumbnail_url": "http://i.ytimg.com/vi/9bZkp7q19f0/0.jpg"
+     }
+ },
+ 
+ */
+
 @end
-    
+
