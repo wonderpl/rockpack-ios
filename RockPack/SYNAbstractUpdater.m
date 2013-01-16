@@ -340,8 +340,9 @@
                 if ([itemDictionary isKindOfClass: [NSDictionary class]])
                 {
                     VideoInstance *videoInstance =  [VideoInstance instanceFromDictionary: itemDictionary
-                                                                usingManagedObjectContext: self.importManagedObjectContext];
-                    
+                                                                usingManagedObjectContext: self.importManagedObjectContext
+                                                                       withRootObjectType: kVideoInstanceRootObject];
+            
                     // If we seem to have a valid object, then save
                     if (videoInstance != nil)
                     {

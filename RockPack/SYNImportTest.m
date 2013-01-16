@@ -20,7 +20,7 @@ static SYNNetworkEngine *networkEngine;
 @implementation SYNImportTest
 
 + (void) importTest
-{
+{    
     networkEngine = [[SYNNetworkEngine alloc] initWithDefaultSettings];
     
     NSString *path = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
@@ -34,6 +34,20 @@ static SYNNetworkEngine *networkEngine;
      importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
      importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
      
+    NSError *error;
+    
+    NSEntityDescription *videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
+                                                           inManagedObjectContext: importManagedObjectContext];
+    
+    // Now we need to see if this object already exists, and if so return it and if not create it
+    NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
+    [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+    
+    NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                error: &error];
+    NSLog (@"video instances %@", matchingChannelEntries);
+        
+        
      if (dictionary)
      {
          // Get Data dictionary
@@ -52,30 +66,40 @@ static SYNNetworkEngine *networkEngine;
                      if ([itemDictionary isKindOfClass: [NSDictionary class]])
                      {
                          VideoInstance *videoInstance =  [VideoInstance instanceFromDictionary: itemDictionary
-                                                                     usingManagedObjectContext: importManagedObjectContext];
-                         
-                         // If we seem to have a valid object, then save
-                         if (videoInstance != nil)
-                         {
-                             NSError *error = nil;
-                             
-                             if (![importManagedObjectContext save: &error])
-                             {
-                                 NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-                                 
-                                 if ([detailedErrors count] > 0)
-                                 {
-                                     for(NSError* detailedError in detailedErrors)
-                                     {
-                                         DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-                                     }
-                                 }
-                             }
-
-                         }
+                                                                     usingManagedObjectContext: importManagedObjectContext
+                                                                            withRootObjectType: kVideoInstanceRootObject];
                      }
                  }  
-             }  
+             }
+             
+             NSError *error = nil;
+             
+             if (![importManagedObjectContext save: &error])
+             {
+                 NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+                 
+                 if ([detailedErrors count] > 0)
+                 {
+                     for(NSError* detailedError in detailedErrors)
+                     {
+                         DebugLog(@" DetailedError: %@", [detailedError userInfo]);
+                     }
+                 }
+             }
+             
+             [appDelegate saveContext: TRUE];
+             
+             
+             NSEntityDescription *videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
+                                                                    inManagedObjectContext: importManagedObjectContext];
+             
+             // Now we need to see if this object already exists, and if so return it and if not create it
+             NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
+             [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+             
+             NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                                                                                         error: &error];
+             NSLog (@"video instances %@", matchingChannelEntries);
          }
          else
          {

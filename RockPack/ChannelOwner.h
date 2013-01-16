@@ -1,8 +1,10 @@
 #import "_ChannelOwner.h"
+#import "AbstractCommon.h"
 
 @interface ChannelOwner : _ChannelOwner
 
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
-                usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+                usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                       withRootObjectType: (RootObject) rootObject;
 
 @end

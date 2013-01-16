@@ -15,7 +15,8 @@ static NSEntityDescription *channelOwnerEntity = nil;
 #pragma mark - Object factory
 
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
-                usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+                usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                  withRootObjectType: (RootObject) rootObject
 {
     NSError *error = nil;
     
@@ -46,20 +47,27 @@ static NSEntityDescription *channelOwnerEntity = nil;
     
     NSArray *matchingChannelOwnerEntries = [managedObjectContext executeFetchRequest: channelOwnerFetchRequest
                                                                                error: &error];
+    ChannelOwner *instance;
     
     if (matchingChannelOwnerEntries.count > 0)
     {
-        return matchingChannelOwnerEntries[0];
+        instance = matchingChannelOwnerEntries[0];
+        NSLog(@"Using existing ChannelOwner instance with id %@", instance.uniqueId);
+        
+        return instance;
     }
     else
     {
-        ChannelOwner *instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
+        instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
         
         // As we have a new object, we need to set all the attributes (from the dictionary passed in)
         // We have already obtained the uniqueId, so pass it in as an optimisation
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext];
+                    usingManagedObjectContext: managedObjectContext
+                           withRootObjectType: rootObject];
+        
+        NSLog(@"Created ChannelOwner instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -68,7 +76,9 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
+                  withRootObjectType: (RootObject) rootObject
+
 {
     // Is we are not actually a dictionary, then bail
     if (![dictionary isKindOfClass: [NSDictionary class]])

@@ -15,7 +15,8 @@ static NSEntityDescription *videoEntity = nil;
 #pragma mark - Object factory
 
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
-         usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+         usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                withRootObjectType: (RootObject) rootObject
 {
     NSError *error = nil;
     
@@ -44,22 +45,29 @@ static NSEntityDescription *videoEntity = nil;
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     [channelFetchRequest setPredicate: predicate];
     
-    NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
+    NSArray *matchingVideoEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
                                                                           error: &error];
     
-    if (matchingChannelEntries.count > 0)
+    Video *instance;
+    
+    if (matchingVideoEntries.count > 0)
     {
-        return matchingChannelEntries[0];
+        instance = matchingVideoEntries[0];
+        NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        return instance;
     }
     else
     {
-        Video *instance = [Video insertInManagedObjectContext: managedObjectContext];
+        instance = [Video insertInManagedObjectContext: managedObjectContext];
         
         // As we have a new object, we need to set all the attributes (from the dictionary passed in)
         // We have already obtained the uniqueId, so pass it in as an optimisation
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext];
+                    usingManagedObjectContext: managedObjectContext
+                           withRootObjectType: rootObject];
+        
+        NSLog(@"Created Video instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -68,7 +76,9 @@ static NSEntityDescription *videoEntity = nil;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                  withRootObjectType: (RootObject) rootObject
+
 {
     // Is we are not actually a dictionary, then bail
     if (![dictionary isKindOfClass: [NSDictionary class]])

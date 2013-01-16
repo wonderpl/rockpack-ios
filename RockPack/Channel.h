@@ -1,9 +1,11 @@
 #import "_Channel.h"
+#import "AbstractCommon.h"
 
 @interface Channel : _Channel 
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                  withRootObjectType: (RootObject) rootObject;
 
 - (UIImage *) thumbnailImage;
 - (UIImage *) wallpaperImage;

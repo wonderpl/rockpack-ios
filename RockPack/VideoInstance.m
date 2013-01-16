@@ -19,7 +19,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
 #pragma mark - Object factory
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
-                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                  withRootObjectType: (RootObject) rootObject
 {
     NSError *error = nil;
     
@@ -51,20 +52,26 @@ static NSEntityDescription *videoInstanceEntity = nil;
     NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
                                                                                 error: &error];
     
+    VideoInstance *instance;
+    
     if (matchingVideoInstanceEntries.count > 0)
     {
-        // We should only have one match, but just use the first object returned anyway
-        return matchingVideoInstanceEntries[0];
+        instance = matchingVideoInstanceEntries[0];
+        NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        return instance;
     }
     else
     {
-        VideoInstance *instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
+        instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
         
         // As we have a new object, we need to set all the attributes (from the dictionary passed in)
         // We have already obtained the uniqueId, so pass it in as an optimisation
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext];
+                    usingManagedObjectContext: managedObjectContext
+                           withRootObjectType: rootObject];
+        
+        NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -73,7 +80,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                  withRootObjectType: (RootObject) rootObject
 {
     // Is we are not actually a dictionary, then bail
     if (![dictionary isKindOfClass: [NSDictionary class]])
@@ -124,6 +132,11 @@ static NSEntityDescription *videoInstanceEntity = nil;
 - (NSDate *) dateAddedIgnoringTime
 {
     return self.dateAdded.dateIgnoringTime;
+}
+
+- (NSString *) description
+{
+    return [NSString stringWithFormat: @"VideoInstance(%@) dateAdded: %@, title: %@", self.uniqueId, self.dateAdded, self.title];
 }
 
 @end

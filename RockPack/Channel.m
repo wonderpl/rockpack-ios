@@ -17,8 +17,10 @@ static NSEntityDescription *channelEntity = nil;
 #pragma mark - Object factory
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                  withRootObjectType: (RootObject) rootObject
 {
+    NSLog (@"Creating Channel");
     NSError *error = nil;
     
     // Get the unique id of this object from the dictionary that has been passed in
@@ -34,7 +36,6 @@ static NSEntityDescription *channelEntity = nil;
             // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
             channelEntity = [NSEntityDescription entityForName: @"Channel"
                                         inManagedObjectContext: managedObjectContext];
-              
         });
     }
 
@@ -48,20 +49,26 @@ static NSEntityDescription *channelEntity = nil;
     
     NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
                                                                                 error: &error];
+    Channel *instance;
     
     if (matchingChannelEntries.count > 0)
     {
-        return matchingChannelEntries[0];
+        instance = matchingChannelEntries[0];
+        NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        return instance;
     }
     else
     {
-        Channel *instance = [Channel insertInManagedObjectContext: managedObjectContext];
+        instance = [Channel insertInManagedObjectContext: managedObjectContext];
         
         // As we have a new object, we need to set all the attributes (from the dictionary passed in)
         // We have already obtained the uniqueId, so pass it in as an optimisation
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext];
+                    usingManagedObjectContext: managedObjectContext
+                           withRootObjectType: rootObject];
+        
+        NSLog(@"Created Channel instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -70,7 +77,8 @@ static NSEntityDescription *channelEntity = nil;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                  withRootObjectType: (RootObject) rootObject
 {
     // Is we are not actually a dictionary, then bail
     if (![dictionary isKindOfClass: [NSDictionary class]])
@@ -108,7 +116,8 @@ static NSEntityDescription *channelEntity = nil;
     
     // NSManagedObjects
     self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
-                                   usingManagedObjectContext: managedObjectContext];
+                                   usingManagedObjectContext: managedObjectContext
+                                          withRootObjectType: rootObject];
 }
 
 
@@ -151,6 +160,12 @@ static NSEntityDescription *channelEntity = nil;
 {
     return [UIImage imageNamed: self.wallpaperURL];
 }
+
+- (NSString *) description
+{
+    return [NSString stringWithFormat: @"Channel(%@) categoryId: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@", self.uniqueId, self.categoryId, self.channelDescription];
+}
+
 
 
 @end
