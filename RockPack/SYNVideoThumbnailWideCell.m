@@ -75,7 +75,7 @@
         {
             
             [UIView transitionWithView: self.contentView
-                              duration: isInCache? 0.0f : 0.0f
+                              duration: 10.0f
                                options: UIViewAnimationOptionTransitionCrossDissolve
                             animations: ^
                             {
