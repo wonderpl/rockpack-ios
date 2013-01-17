@@ -1,5 +1,6 @@
 #import "NSDictionary+Validation.h"
 #import "Video.h"
+#import <Foundation/Foundation.h>
 
 static NSEntityDescription *videoEntity = nil;
 
@@ -21,7 +22,9 @@ static NSEntityDescription *videoEntity = nil;
     NSError *error = nil;
     
     // Get the unique id of this object from the dictionary that has been passed in
-    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"
+                                      withDefault: @"Uninitialized Id"];
+
     
     // Only create an entity description once, should increase performance
     if (videoEntity == nil)
@@ -98,8 +101,6 @@ static NSEntityDescription *videoEntity = nil;
     
     self.sourceId = [dictionary objectForKey: @"source_id"
                                  withDefault: @""];
-    
-    id number = [dictionary objectForKey: @"star_count"];
     
     self.starCount = [dictionary objectForKey: @"star_count"
                                   withDefault: [NSNumber numberWithInt: 0]];

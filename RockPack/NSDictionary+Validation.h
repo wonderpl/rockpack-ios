@@ -16,4 +16,7 @@
 - (NSDate *) dateFromISO6801StringForKey: (id) key
                              withDefault: (NSDate *) defaultDate;
 
+- (NSString *) upperCaseStringForKey: (id) key
+                         withDefault: (id) defaultValue;
+
 @end

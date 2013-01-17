@@ -21,7 +21,8 @@ static NSEntityDescription *channelOwnerEntity = nil;
     NSError *error = nil;
     
     // Get the unique id of this object from the dictionary that has been passed in
-    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"
+                                      withDefault: @"Uninitialized Id"];
     
     // Only create an entity description once, should increase performance
     if (channelOwnerEntity == nil)
@@ -93,8 +94,8 @@ static NSEntityDescription *channelOwnerEntity = nil;
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://"];
     
-    self.name = [dictionary objectForKey: @"name"
-                             withDefault: @""];
+    self.name = [dictionary upperCaseStringForKey: @"name"
+                                      withDefault: @""];
 }
 
 

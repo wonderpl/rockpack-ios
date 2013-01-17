@@ -25,7 +25,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
     NSError *error = nil;
     
     // Get the unique id of this object from the dictionary that has been passed in
-    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"
+                                      withDefault: @"Uninitialized Id"];
     
     // Only create an entity description once, should increase performance
     if (videoInstanceEntity == nil)
@@ -96,13 +97,13 @@ static NSEntityDescription *videoInstanceEntity = nil;
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];
     
-    self.title = [dictionary objectForKey: @"title"
-                              withDefault: @""];
+    self.title = [dictionary upperCaseStringForKey: @"title"
+                                       withDefault: @""];
     
     // NSManagedObjects
     self.video = [Video instanceFromDictionary: [dictionary objectForKey: @"video"]
-                                   usingManagedObjectContext: managedObjectContext
-                                          withRootObjectType: rootObject];
+                     usingManagedObjectContext: managedObjectContext
+                            withRootObjectType: rootObject];
 }
 
 

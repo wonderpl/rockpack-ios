@@ -18,12 +18,32 @@ static NSDateFormatter *dateFormatter = nil;
 {
 	id value = [self objectForKey: key];
     
-	if (value == nil || [value isEqual: [NSNull null]])
+    // Crafty, check to see that we are a valid object AND that the object is of the same type as the default value
+    // this is a bit of an assumption, but I think that it makes sense
+	if (value == nil || [value isEqual: [NSNull null]] || ![defaultValue isKindOfClass: [value class]])
     {
         value = defaultValue;
     }
     
 	return value;
+}
+
+
+// 
+- (NSString *) upperCaseStringForKey: (id) key
+                         withDefault: (id) defaultValue
+{
+    NSString *string = [self objectForKey: key
+                              withDefault: defaultValue];
+    
+    // Crafty, check to see that we are a valid object AND that the object is of the same type as the default value
+    // this is a bit of an assumption, but I think that it makes sense
+	if (string != nil)
+    {
+        string = [string uppercaseStringWithLocale: [NSLocale currentLocale]];
+    }
+    
+	return string;
 }
 
 
@@ -33,7 +53,8 @@ static NSDateFormatter *dateFormatter = nil;
 	NSString *dateString = [self objectForKey: key];
     NSDate *date;
     
-	if (dateString != nil && ![dateString isEqual: [NSNull null]])
+    // Check to see that we have a valid string object from which 
+	if (dateString != nil && ![dateString isEqual: [NSNull null]] && [dateString isKindOfClass: [NSString class]])
     {
         date = [[NSDictionary ISO6801DateFormatter] dateFromString: dateString];
         

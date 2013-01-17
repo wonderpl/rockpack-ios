@@ -24,7 +24,8 @@ static NSEntityDescription *channelEntity = nil;
     NSError *error = nil;
     
     // Get the unique id of this object from the dictionary that has been passed in
-    NSString *uniqueId = [dictionary objectForKey: @"id"];
+    NSString *uniqueId = [dictionary objectForKey: @"id"
+                                      withDefault: @"Uninitialized Id"];
     
     // Only create an entity description once, should increase performance
     if (channelEntity == nil)
@@ -94,7 +95,7 @@ static NSEntityDescription *channelEntity = nil;
                                    withDefault: @""];
     
     self.index = [dictionary objectForKey: @"index"
-                              withDefault: @""];
+                              withDefault: [NSNumber numberWithInt: 0]];
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -108,8 +109,8 @@ static NSEntityDescription *channelEntity = nil;
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://"];
     
-    self.title = [dictionary objectForKey: @"title"
-                              withDefault: @""];
+    self.title = [dictionary upperCaseStringForKey: @"title"
+                                       withDefault: @""];
     
     self.wallpaperURL = [dictionary objectForKey: @"wallpaper_url"
                                      withDefault: @"http://"];
