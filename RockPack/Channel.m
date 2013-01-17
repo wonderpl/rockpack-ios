@@ -163,7 +163,7 @@ static NSEntityDescription *channelEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"Channel(%@) categoryId: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@, channelDescription: %@", self.uniqueId, self.categoryId, self.channelDescription];
+    return [NSString stringWithFormat: @"Channel(%@) categoryId: %@, channelDescription: %@, index: %@, lastUpdated: %@, rockCount: %@, rockedByUser: %@, thumbnailURL: %@, title: %@, wallpaperURL: %@", self.uniqueId, self.categoryId, self.channelDescription, self.index, self.lastUpdated, self.rockCount, self.rockedByUser, self.thumbnailURL, self.title, self.wallpaperURL];
 }
 
 

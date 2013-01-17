@@ -57,7 +57,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     if (matchingVideoInstanceEntries.count > 0)
     {
         instance = matchingVideoInstanceEntries[0];
-        NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
         return instance;
     }
     else
@@ -98,6 +98,11 @@ static NSEntityDescription *videoInstanceEntity = nil;
     
     self.title = [dictionary objectForKey: @"title"
                               withDefault: @""];
+    
+    // NSManagedObjects
+    self.video = [Video instanceFromDictionary: [dictionary objectForKey: @"video"]
+                                   usingManagedObjectContext: managedObjectContext
+                                          withRootObjectType: rootObject];
 }
 
 
@@ -133,6 +138,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 {
     return self.dateAdded.dateIgnoringTime;
 }
+
 
 - (NSString *) description
 {

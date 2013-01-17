@@ -98,4 +98,12 @@ static NSEntityDescription *channelOwnerEntity = nil;
 }
 
 
+#pragma mark - Helper methods
+
+- (NSString *) description
+{
+    return [NSString stringWithFormat: @"ChannelOwner(%@) name: %@, thumbnailURL: %@", self.uniqueId, self.name, self.thumbnailURL];
+}
+
+
 @end

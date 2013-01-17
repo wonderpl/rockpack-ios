@@ -53,7 +53,7 @@ static NSEntityDescription *videoEntity = nil;
     if (matchingVideoEntries.count > 0)
     {
         instance = matchingVideoEntries[0];
-        NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        NSLog(@"Using existing Video instance with id %@", instance.uniqueId);
         return instance;
     }
     else
@@ -99,6 +99,8 @@ static NSEntityDescription *videoEntity = nil;
     self.sourceId = [dictionary objectForKey: @"source_id"
                                  withDefault: @""];
     
+    id number = [dictionary objectForKey: @"star_count"];
+    
     self.starCount = [dictionary objectForKey: @"star_count"
                                   withDefault: [NSNumber numberWithInt: 0]];
     
@@ -117,9 +119,16 @@ static NSEntityDescription *videoEntity = nil;
     return [UIImage imageNamed: self.thumbnailURL];
 }
 
+
 - (NSURL *) localVideoURL
 {
     return [NSURL fileURLWithPath: [NSHomeDirectory() stringByAppendingPathComponent: [NSString stringWithFormat: @"/Documents/%@.mp4", self.sourceId, nil]]];
+}
+
+
+- (NSString *) description
+{
+    return [NSString stringWithFormat: @"Video(%@) categoryId: %@, source: %@, sourceId: %@, starCount: %@, starredByUser: %@, thumbnailURL: %@", self.uniqueId, self.categoryId, self.source, self.sourceId, self.starCount, self.starredByUser, self.thumbnailURL];
 }
 
 @end
