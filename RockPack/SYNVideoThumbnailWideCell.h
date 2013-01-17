@@ -29,5 +29,6 @@ enum {
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 - (void) setFocus: (BOOL) focus;
+- (void) setVideoImageViewImage: (NSString*) imageURLString;
 
 @end

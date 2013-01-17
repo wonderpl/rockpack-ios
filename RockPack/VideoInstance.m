@@ -1,3 +1,4 @@
+#import "Channel.h"
 #import "NSDate-Utilities.h"
 #import "NSDictionary+Validation.h"
 #import "Video.h"
@@ -102,6 +103,10 @@ static NSEntityDescription *videoInstanceEntity = nil;
     
     // NSManagedObjects
     self.video = [Video instanceFromDictionary: [dictionary objectForKey: @"video"]
+                     usingManagedObjectContext: managedObjectContext
+                            withRootObjectType: rootObject];
+    
+    self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
                      usingManagedObjectContext: managedObjectContext
                             withRootObjectType: rootObject];
 }

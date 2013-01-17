@@ -9,6 +9,7 @@
 #import "AppConstants.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
+#import "SYNNetworkEngine.h"
 #import "TestFlight.h"
 #import "UncaughtExceptionHandler.h"
 
@@ -16,6 +17,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
+@property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 
 @end
 
@@ -31,6 +33,9 @@
     
     // Se up core data
     [self initializeCoreDataStack];
+    
+    // Set up network engine
+    [self initializeNetworkEngine];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -218,5 +223,12 @@
     }
 }
 
+
+#pragma mark - Network engine suport
+
+- (void) initializeNetworkEngine
+{
+    self.networkEngine = [[SYNNetworkEngine alloc] initWithDefaultSettings];
+}
 
 @end

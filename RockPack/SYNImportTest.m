@@ -89,7 +89,6 @@ static SYNNetworkEngine *networkEngine;
              
              [appDelegate saveContext: TRUE];
              
-             
              NSEntityDescription *videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
                                                                     inManagedObjectContext: importManagedObjectContext];
              

@@ -6,14 +6,19 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "MKNetworkKit.h"
+#import "SYNAppDelegate.h"
+#import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNVideoThumbnailWideCell ()
 
-@property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
+@property (nonatomic, strong) MKNetworkOperation* imageLoadingOperation;
+@property (nonatomic, strong) NSString* loadingImageURLString;
 
 @end
 
@@ -57,6 +62,36 @@
     self.highlightedBackgroundView.hidden = TRUE;
 }
 
+- (void) setVideoImageViewImage: (NSString*) imageURLString
+{
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
+    self.loadingImageURLString = imageURLString;
+    self.imageLoadingOperation = [appDelegate.networkEngine imageAtURL: [NSURL URLWithString: self.loadingImageURLString]
+                                                                  size: self.videoImageView.frame.size
+                                                     completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
+    {
+        if([self.loadingImageURLString isEqualToString: [url absoluteString]])
+        {
+            
+            [UIView transitionWithView: self.contentView
+                              duration: isInCache? 0.0f : 0.0f
+                               options: UIViewAnimationOptionTransitionCrossDissolve
+                            animations: ^
+                            {
+                                self.videoImageView.image = fetchedImage;
+                            }
+                            completion: ^(BOOL finished)
+                            {
+                                // Any cleanup here
+                            }];
+        }
+    }
+    errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
+    {
+        
+    }];
+}
 
 - (void) setFocus: (BOOL) focus
 {
@@ -96,5 +131,13 @@
                          action: @selector(userTouchedVideoAddItButton:)
                forControlEvents: UIControlEventTouchUpInside];
 }
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+    self.videoImageView.image = nil;
+    [self.imageLoadingOperation cancel];
+}
+
 
 @end

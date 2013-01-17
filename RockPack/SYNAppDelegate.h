@@ -11,7 +11,7 @@
 
 // Something new!
 
-@class SYNBottomTabViewController, ChannelOwner;
+@class SYNBottomTabViewController, ChannelOwner, SYNNetworkEngine;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -20,6 +20,9 @@
 
 // Support for Core Data
 @property (readonly, strong, nonatomic) NSManagedObjectContext *mainManagedObjectContext;
+
+// Comms support
+@property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
 
 // Root view controller
 @property (strong, nonatomic) SYNBottomTabViewController *viewController;
