@@ -475,6 +475,7 @@
 		01B0A975166CF00C00CAA235 /* Placeholder1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A974166CF00C00CAA235 /* Placeholder1.png */; };
 		01B0A978166CF58100CAA235 /* Adidas.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A976166CF58100CAA235 /* Adidas.png */; };
 		01B0A979166CF58100CAA235 /* AngryBirds.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A977166CF58100CAA235 /* AngryBirds.png */; };
+		01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */; };
 		01B7CD8E166D1E24001F4AF0 /* PanelChannelsTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CD8B166D1E23001F4AF0 /* PanelChannelsTitle.png */; };
 		01B7CD8F166D1E24001F4AF0 /* PanelChannelsTitle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CD8C166D1E23001F4AF0 /* PanelChannelsTitle@2x.png */; };
 		01B7CD90166D1E24001F4AF0 /* Placeholder2.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CD8D166D1E24001F4AF0 /* Placeholder2.png */; };
@@ -1083,6 +1084,8 @@
 		01B0A974166CF00C00CAA235 /* Placeholder1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Placeholder1.png; path = Assets/Images/Placeholder1.png; sourceTree = "<group>"; };
 		01B0A976166CF58100CAA235 /* Adidas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adidas.png; path = Assets/Images/Adidas.png; sourceTree = "<group>"; };
 		01B0A977166CF58100CAA235 /* AngryBirds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AngryBirds.png; path = Assets/Images/AngryBirds.png; sourceTree = "<group>"; };
+		01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionViewCell+AsyncImage.h"; sourceTree = "<group>"; };
+		01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionViewCell+AsyncImage.m"; sourceTree = "<group>"; };
 		01B37241162EBAD800A9F8F5 /* RockPack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = RockPack.entitlements; path = RockPack/RockPack.entitlements; sourceTree = "<group>"; };
 		01B7CD8B166D1E23001F4AF0 /* PanelChannelsTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelsTitle.png; path = Assets/Images/PanelChannelsTitle.png; sourceTree = "<group>"; };
 		01B7CD8C166D1E23001F4AF0 /* PanelChannelsTitle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelChannelsTitle@2x.png"; path = "Assets/Images/PanelChannelsTitle@2x.png"; sourceTree = "<group>"; };
@@ -2075,6 +2078,8 @@
 				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
 				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
 				01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */,
+				01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */,
+				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3078,6 +3083,7 @@
 				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
 				01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */,
 				01C9FED816A586A600844505 /* SYNImportTest.m in Sources */,
+				01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3161,7 +3167,7 @@
 					"\"$(SRCROOT)/RockPack\"",
 				);
 				PRODUCT_NAME = rockpack;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6EF3CC4B-2D3C-484B-8B9A-1364FE1FC4ED";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0EE419CB-9B49-4341-AA31-A0A30B5FC14F";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

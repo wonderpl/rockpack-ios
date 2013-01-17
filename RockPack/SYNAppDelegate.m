@@ -229,6 +229,7 @@
 - (void) initializeNetworkEngine
 {
     self.networkEngine = [[SYNNetworkEngine alloc] initWithDefaultSettings];
+    [self.networkEngine useCache];
 }
 
 @end

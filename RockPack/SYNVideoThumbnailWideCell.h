@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "UICollectionViewCell+AsyncImage.h"
 #import <UIKit/UIKit.h>
 
 enum {
@@ -30,5 +31,6 @@ enum {
 
 - (void) setFocus: (BOOL) focus;
 - (void) setVideoImageViewImage: (NSString*) imageURLString;
+- (void) setChannelImageViewImage: (NSString*) imageURLString;
 
 @end

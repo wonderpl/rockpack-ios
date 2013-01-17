@@ -17,8 +17,10 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
-@property (nonatomic, strong) MKNetworkOperation* imageLoadingOperation;
-@property (nonatomic, strong) NSString* loadingImageURLString;
+@property (nonatomic, strong) MKNetworkOperation* videoImageLoadingOperation;
+@property (nonatomic, strong) MKNetworkOperation* channelImageLoadingOperation;
+@property (nonatomic, strong) NSString* loadingVideoImageViewURLString;
+@property (nonatomic, strong) NSString* loadingChannelImageViewURLString;
 
 @end
 
@@ -62,36 +64,29 @@
     self.highlightedBackgroundView.hidden = TRUE;
 }
 
+
+#pragma mark - Asynchronous image loading support
+
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    self.loadingVideoImageViewURLString = imageURLString;
     
-    self.loadingImageURLString = imageURLString;
-    self.imageLoadingOperation = [appDelegate.networkEngine imageAtURL: [NSURL URLWithString: self.loadingImageURLString]
-                                                                  size: self.videoImageView.frame.size
-                                                     completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
-    {
-        if([self.loadingImageURLString isEqualToString: [url absoluteString]])
-        {
-            
-            [UIView transitionWithView: self.contentView
-                              duration: 10.0f
-                               options: UIViewAnimationOptionTransitionCrossDissolve
-                            animations: ^
-                            {
-                                self.videoImageView.image = fetchedImage;
-                            }
-                            completion: ^(BOOL finished)
-                            {
-                                // Any cleanup here
-                            }];
-        }
-    }
-    errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
-    {
-        
-    }];
+    [self loadAndCacheImageInView: self.videoImageView
+                    withURLString: self.loadingVideoImageViewURLString
+         andImageLoadingOperation: self.videoImageLoadingOperation];
 }
+
+- (void) setChannelImageViewImage: (NSString*) imageURLString
+{
+    self.loadingChannelImageViewURLString = imageURLString;
+    
+    [self loadAndCacheImageInView: self.channelImageView
+                    withURLString: self.loadingChannelImageViewURLString
+         andImageLoadingOperation: self.channelImageLoadingOperation];
+}
+
+
+#pragma mark - Cell focus 
 
 - (void) setFocus: (BOOL) focus
 {
@@ -132,11 +127,16 @@
                forControlEvents: UIControlEventTouchUpInside];
 }
 
+
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
 - (void) prepareForReuse
 {
+    // We need to clean up any asynchronous image uploads
     self.videoImageView.image = nil;
-    [self.imageLoadingOperation cancel];
+    [self.videoImageLoadingOperation cancel];
+    
+    self.channelImageView.image = nil;
+    [self.channelImageLoadingOperation cancel];
 }
 
 

@@ -36,11 +36,7 @@
                 errorBlock: (MKNKErrorBlock) errorBlock
 {
     // Append additional parameters
-//    path = [NSString stringWithFormat: @"%@?%@", path, self.localeString];
-    
-    NSDictionary *headerFields = @{@"grant_type" : @"password",
-                                   @"username" : @"ios",
-                                   @"password" : @"password"};
+    path = [NSString stringWithFormat: @"%@?%@", path, self.localeString];
     
     MKNetworkOperation *networkOperation = [self operationWithPath: path];
     
