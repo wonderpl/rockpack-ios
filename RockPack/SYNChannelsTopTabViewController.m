@@ -57,45 +57,45 @@
 
 }
 
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 1;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
 
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelThumbnailCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
-                                                                  forIndexPath: indexPath];
+    SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
+                                                                                              forIndexPath: indexPath];
     
-    cell.imageView.image = channel.thumbnailImage;
+    channelThumbnailCell.channelImageViewImage = channel.thumbnailURL;
     
-    cell.titleLabel.text = channel.title;
+    channelThumbnailCell.titleLabel.text = channel.title;
     
-    cell.userNameLabel.text = channel.channelOwner.name;
-
-    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
+    channelThumbnailCell.userNameLabel.text = channel.channelOwner.name;
     
-    cell.rockItButton.selected = channel.rockedByUserValue;
+    channelThumbnailCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
     
-    // Wire the Done button up to the correct method in the sign up controller  
-    [cell.rockItButton removeTarget: nil
-                             action: @selector(toggleChannelRockItButton:)
-                   forControlEvents: UIControlEventTouchUpInside];
+    channelThumbnailCell.rockItButton.selected = channel.rockedByUserValue;
     
-    [cell.rockItButton addTarget: self
-                          action: @selector(toggleChannelRockItButton:)
-                forControlEvents: UIControlEventTouchUpInside];
+    // Wire the Done button up to the correct method in the sign up controller
+    [channelThumbnailCell.rockItButton removeTarget: nil
+                                             action: @selector(toggleChannelRockItButton:)
+                                   forControlEvents: UIControlEventTouchUpInside];
     
-    return cell;
+    [channelThumbnailCell.rockItButton addTarget: self
+                                          action: @selector(toggleChannelRockItButton:)
+                                forControlEvents: UIControlEventTouchUpInside];
+    
+    return channelThumbnailCell;
 
 }
 
 
-- (void) collectionView: (UICollectionView *) cv
+- (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];

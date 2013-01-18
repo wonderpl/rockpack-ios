@@ -6,8 +6,17 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "MKNetworkKit.h"
 #import "SYNChannelThumbnailCell.h"
+#import "UICollectionViewCell+AsyncImage.h"
 #import "UIFont+SYNFont.h"
+
+@interface SYNChannelThumbnailCell ()
+
+@property (nonatomic, strong) MKNetworkOperation* channelImageLoadingOperation;
+@property (nonatomic, strong) NSString* loadingChannelImageViewURLString;
+
+@end
 
 @implementation SYNChannelThumbnailCell
 
@@ -45,14 +54,22 @@
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
 }
 
-/*
- // Only override drawRect: if you perform custom drawing.
- // An empty implementation adversely affects performance during animation.
- - (void)drawRect:(CGRect)rect
- {
- // Drawing code
- }
- */
 
+- (void) setChannelImageViewImage: (NSString*) imageURLString
+{
+    self.loadingChannelImageViewURLString = imageURLString;
+    
+    [self loadAndCacheImageInView: self.imageView
+                    withURLString: self.loadingChannelImageViewURLString
+         andImageLoadingOperation: self.channelImageLoadingOperation];
+}
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+
+    self.imageView.image = nil;
+    [self.channelImageLoadingOperation cancel];
+}
 
 @end

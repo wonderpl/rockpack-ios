@@ -17,4 +17,6 @@
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 
+- (void) setChannelImageViewImage: (NSString*) imageURLString;
+
 @end

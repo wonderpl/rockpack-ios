@@ -621,9 +621,7 @@
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
         
-//        videoThumbnailCell.videoImageView.image = videoInstance.video.thumbnailImage;
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
-//        videoThumbnailCell.channelImageView.image = videoInstance.channel.thumbnailImage;
         videoThumbnailCell.channelImageViewImage = videoInstance.channel.thumbnailURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;

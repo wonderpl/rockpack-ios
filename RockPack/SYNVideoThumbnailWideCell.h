@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "UICollectionViewCell+AsyncImage.h"
 #import <UIKit/UIKit.h>
 
 enum {

@@ -10,6 +10,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
+#import "UICollectionViewCell+AsyncImage.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
