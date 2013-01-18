@@ -7,6 +7,7 @@
 //
 
 #import "Channel.h"
+#import "ChannelOwner.h"
 #import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
@@ -74,7 +75,7 @@
     
     cell.titleLabel.text = channel.title;
     
-    cell.subtitleLabel.text = @"Subtitle - Remove";
+    cell.userNameLabel.text = channel.channelOwner.name;
 
     cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
     

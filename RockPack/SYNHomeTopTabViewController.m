@@ -39,6 +39,7 @@
                             action: @selector(refreshVideoThumbnails)
                   forControlEvents: UIControlEventValueChanged];
     
+    
     [self.videoThumbnailCollectionView addSubview: self.refreshControl];
 
     // Init collection view
