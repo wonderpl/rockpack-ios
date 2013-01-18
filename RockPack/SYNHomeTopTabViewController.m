@@ -234,11 +234,8 @@
         BOOL focus = FALSE;
         BOOL refreshButtonHidden = TRUE;
         
-        // Unavoidably long if-then-else
-        
-        if ([date isToday])
+        if (indexPath.section == 0)
         {
-            sectionText = @"TODAY";
             focus = TRUE;
             
             // We need to store this away, so can control animations (but must nil when goes out of scope)
@@ -250,6 +247,12 @@
             {
                 [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
             }
+        }
+        
+        // Unavoidably long if-then-else
+        if ([date isToday])
+        {
+            sectionText = @"TODAY";
         }
         else if ([date isYesterday])
         {
