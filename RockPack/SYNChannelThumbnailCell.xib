@@ -47,7 +47,7 @@
 								<string key="NSFrameSize">{251, 302}</string>
 								<reference key="NSSuperview" ref="915651722"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="46667409"/>
+								<reference key="NSNextKeyView" ref="234895006"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -72,7 +72,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
-							<object class="IBUIImageView" id="46667409">
+							<object class="IBUIImageView" id="234895006">
 								<reference key="NSNextResponder" ref="915651722"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{191, 177}</string>
@@ -189,7 +189,7 @@
 							<object class="IBUIButton" id="370910392">
 								<reference key="NSNextResponder" ref="915651722"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{55, 232}, {43, 43}}</string>
+								<string key="NSFrame">{{55, 234}, {43, 43}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="541878383"/>
@@ -369,7 +369,7 @@
 							<reference ref="428156086"/>
 							<reference ref="370910392"/>
 							<reference ref="541878383"/>
-							<reference ref="46667409"/>
+							<reference ref="234895006"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -422,7 +422,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">65</int>
-						<reference key="object" ref="46667409"/>
+						<reference key="object" ref="234895006"/>
 						<reference key="parent" ref="887741211"/>
 						<string key="objectName">Image View - Gloss</string>
 					</object>
