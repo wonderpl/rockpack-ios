@@ -44,6 +44,8 @@
 
 @implementation SYNDiscoverTopTabViewController
 
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -133,6 +135,86 @@
     return @[sortDescriptor];
 }
 
+
+#pragma mark - Collection view support
+
+- (NSInteger) collectionView: (UICollectionView *) collectionView
+      numberOfItemsInSection: (NSInteger) section
+{
+    // See if this can be handled in our abstract base class
+    int items = [super collectionView: collectionView
+               numberOfItemsInSection:  section];
+    
+    if (items < 0)
+    {
+        if (collectionView == self.videoThumbnailCollectionView)
+        {
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
+            items = [sectionInfo numberOfObjects];
+        }
+        else
+        {
+            AssertOrLog(@"No valid collection view found");
+        }
+    }
+    
+    return items;
+}
+
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
+{
+    return 1;
+}
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    // See if this can be handled in our abstract base class
+    UICollectionViewCell *cell = [super collectionView: collectionView
+                                cellForItemAtIndexPath: indexPath];
+    
+    // Do we have a valid cell?
+    if (!cell)
+    {
+        AssertOrLog(@"No valid collection view found");
+    }
+    
+    return cell;
+}
+
+
+- (void) collectionView: (UICollectionView *) collectionView
+didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    // See if this can be handled in our abstract base class
+    BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
+                   didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
+    
+    if (!handledInSuperview)
+    {
+        // Check to see if is one that we can handle
+        if (collectionView == self.videoThumbnailCollectionView)
+        {
+#ifdef FULL_SCREEN_THUMBNAILS
+            if (self.isLargeVideoViewExpanded == FALSE)
+            {
+                [self animateLargeVideoViewRight: nil];
+                self.largeVideoViewExpanded = TRUE;
+            }
+#endif
+            self.currentIndexPath = indexPath;
+            
+            [self setLargeVideoToIndexPath: indexPath];
+        }
+        else
+        {
+            AssertOrLog(@"Trying to select unexpected collection view");
+        }
+    }
+}
+
+
+#pragma mark - User interface
 
 - (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath
 {
@@ -419,83 +501,7 @@
 }
 
 
-#pragma mark - Collection view support
-
-- (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
-{
-    // See if this can be handled in our abstract base class
-    int items = [super collectionView: collectionView
-              numberOfItemsInSection:  section];
-    
-    if (items < 0)
-    {
-        if (collectionView == self.videoThumbnailCollectionView)
-        {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
-            items = [sectionInfo numberOfObjects];
-        }
-        else
-        {
-            AssertOrLog(@"No valid collection view found");
-        }
-    }
-    
-    return items;
-}
-
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
-{
-    return 1;
-}
-
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    // See if this can be handled in our abstract base class
-    UICollectionViewCell *cell = [super collectionView: collectionView
-                                cellForItemAtIndexPath: indexPath];
-    
-    // Do we have a valid cell?
-    if (!cell)
-    {
-        AssertOrLog(@"No valid collection view found");
-    }
-    
-    return cell;
-}
-
-
-- (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    // See if this can be handled in our abstract base class
-    BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
-                   didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
-    
-    if (!handledInSuperview)
-    {
-        // Check to see if is one that we can handle
-        if (collectionView == self.videoThumbnailCollectionView)
-        {
-#ifdef FULL_SCREEN_THUMBNAILS
-            if (self.isLargeVideoViewExpanded == FALSE)
-            {
-                [self animateLargeVideoViewRight: nil];
-                self.largeVideoViewExpanded = TRUE;
-            }
-#endif
-            self.currentIndexPath = indexPath;
-            
-            [self setLargeVideoToIndexPath: indexPath];
-        }
-        else
-        {
-            AssertOrLog(@"Trying to select unexpected collection view");
-        }
-    }
-}
-
+#pragma mark - Video queue animation
 
 - (void) slideVideoQueueUp
 {

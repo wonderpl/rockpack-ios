@@ -30,6 +30,8 @@
 
 @implementation SYNChannelsTopTabViewController
 
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -46,6 +48,22 @@
     
     [self.view addGestureRecognizer: pinchOnChannelView];
 }
+
+
+#pragma mark - Core Data Support
+
+- (NSPredicate *) channelFetchedResultsControllerPredicate
+{
+    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
+}
+
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
+{
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
+                                                                   ascending: YES];
+    return @[sortDescriptor];
+}
+
 
 #pragma mark - Collection view support
 
@@ -236,22 +254,5 @@
         [self.pinchedView removeFromSuperview];
     }
 }
-
-
-#pragma mark - Core Data Support
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
-}
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
-
-
 
 @end

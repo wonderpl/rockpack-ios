@@ -65,7 +65,7 @@
     _videoQueueAnimationTimer = timer;
 }
 
-#pragma mark - Initialisation
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {

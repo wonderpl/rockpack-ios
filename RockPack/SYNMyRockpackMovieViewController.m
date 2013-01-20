@@ -11,7 +11,6 @@
 #import "Video.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-
 @interface SYNMyRockpackMovieViewController ()
 
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
@@ -21,6 +20,8 @@
 
 
 @implementation SYNMyRockpackMovieViewController
+
+#pragma mark - View lifecycle
 
 - (id) initWithVideo: (Video *) video
 {
