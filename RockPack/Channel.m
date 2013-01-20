@@ -57,6 +57,17 @@ static NSEntityDescription *channelEntity = nil;
     {
         instance = matchingChannelEntries[0];
         NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        
+        // Check to see if we need to fill in the viewId
+        if (rootObject == kChannelRootObject)
+        {
+            instance.viewId = viewId;
+        }
+        else
+        {
+            instance.viewId = @"";
+        }
+        
         return instance;
     }
     else
@@ -94,7 +105,16 @@ static NSEntityDescription *channelEntity = nil;
     // Simple objects
     self.uniqueId = uniqueId;
     
-    self.viewId = viewId;
+    // If we are initially creating Channel objects, then set our viewId of the appropriate vide name
+    // otherwise just set to blank
+    if (rootObject == kChannelRootObject)
+    {
+       self.viewId = viewId; 
+    }
+    else
+    {
+        self.viewId = @"";
+    }
     
     self.categoryId = [dictionary objectForKey: @"category_id"
                                    withDefault: @""];

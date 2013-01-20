@@ -99,8 +99,6 @@ static NSEntityDescription *channelOwnerEntity = nil;
     
     self.name = [dictionary upperCaseStringForKey: @"name"
                                       withDefault: @""];
-    
-    NSLog (self.description);
 }
 
 

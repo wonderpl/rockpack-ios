@@ -61,6 +61,17 @@ static NSEntityDescription *videoInstanceEntity = nil;
     {
         instance = matchingVideoInstanceEntries[0];
         NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
+        
+        // Check to see if we need to fill in the viewId
+        if (rootObject == kVideoInstanceRootObject)
+        {
+            instance.viewId = viewId;
+        }
+        else
+        {
+            instance.viewId = @"";
+        }
+        
         return instance;
     }
     else
@@ -98,7 +109,16 @@ static NSEntityDescription *videoInstanceEntity = nil;
     // Simple objects
     self.uniqueId = uniqueId;
     
-    self.viewId = viewId;
+    // If we are initially creating Channel objects, then set our viewId of the appropriate vide name
+    // otherwise just set to blank
+    if (rootObject == kVideoInstanceRootObject)
+    {
+        self.viewId = viewId;
+    }
+    else
+    {
+        self.viewId = @"";
+    }
     
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];

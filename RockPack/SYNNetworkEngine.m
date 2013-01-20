@@ -204,7 +204,7 @@
                          {
                              [Channel instanceFromDictionary: itemDictionary
                                    usingManagedObjectContext: importManagedObjectContext
-                                          withRootObjectType: kVideoInstanceRootObject
+                                          withRootObjectType: kChannelRootObject
                                                    andViewId: @"Channels"];
                          }
                      }

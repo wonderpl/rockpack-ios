@@ -78,7 +78,7 @@
                                              bundle: nil];
     
     [self.channelThumbnailCollectionView registerNib: channelThumbnailCellNib
-                          forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
+                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
     
     self.channelThumbnailCollectionView.alpha = 0.0f;
     self.channelThumbnailCollectionView.hidden = TRUE;
@@ -182,7 +182,7 @@
         {
             Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
             
-            SYNChannelThumbnailCell *channelCell = [cv dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
+            SYNChannelThumbnailCell *channelCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                           forIndexPath: indexPath];
             
             channelCell.imageView.image = channel.thumbnailImage;

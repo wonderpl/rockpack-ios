@@ -41,7 +41,7 @@
                                              bundle: nil];
     
     [self.channelThumbnailCollection registerNib: thumbnailCellNib
-                      forCellWithReuseIdentifier: @"ChannelThumbnailCell"];
+                      forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
 
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
@@ -86,7 +86,7 @@
 
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"ChannelThumbnailCell"
+    SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.thumbnailURL;
