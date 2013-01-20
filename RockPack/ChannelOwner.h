@@ -5,6 +5,7 @@
 
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                       withRootObjectType: (RootObject) rootObject;
+                       withRootObjectType: (RootObject) rootObject
+                                andViewId: (NSString *) viewId;
 
 @end

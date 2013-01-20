@@ -12,6 +12,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.rockedByUser = @"rockedByUser",
 	.thumbnailURL = @"thumbnailURL",
 	.title = @"title",
+	.viewId = @"viewId",
 	.wallpaperURL = @"wallpaperURL",
 };
 
@@ -178,6 +179,13 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 @dynamic title;
+
+
+
+
+
+
+@dynamic viewId;
 
 
 

@@ -16,7 +16,8 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                  withRootObjectType: (RootObject) rootObject
+                       withRootObjectType: (RootObject) rootObject
+                                andViewId: (NSString *) viewId;
 {
     NSError *error = nil;
     
@@ -66,7 +67,8 @@ static NSEntityDescription *channelOwnerEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                           withRootObjectType: rootObject];
+                           withRootObjectType: rootObject
+                                    andViewId: viewId];
         
         NSLog(@"Created ChannelOwner instance with id %@", instance.uniqueId);
         
@@ -79,6 +81,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
                   withRootObjectType: (RootObject) rootObject
+                           andViewId: (NSString *) viewId
 
 {
     // Is we are not actually a dictionary, then bail

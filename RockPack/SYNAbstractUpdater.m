@@ -341,7 +341,8 @@
                 {
                     VideoInstance *videoInstance =  [VideoInstance instanceFromDictionary: itemDictionary
                                                                 usingManagedObjectContext: self.importManagedObjectContext
-                                                                       withRootObjectType: kVideoInstanceRootObject];
+                                                                       withRootObjectType: kVideoInstanceRootObject
+                                                                                andViewId: @"Home"];
             
                     // If we seem to have a valid object, then save
                     if (videoInstance != nil)

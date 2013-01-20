@@ -21,7 +21,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                  withRootObjectType: (RootObject) rootObject
+                        withRootObjectType: (RootObject) rootObject
+                                 andViewId: (NSString *) viewId
 {
     NSError *error = nil;
     
@@ -71,7 +72,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                           withRootObjectType: rootObject];
+                           withRootObjectType: rootObject
+                                    andViewId: viewId];
         
         NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
         
@@ -84,6 +86,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                   withRootObjectType: (RootObject) rootObject
+                           andViewId: (NSString *) viewId
 {
     // Is we are not actually a dictionary, then bail
     if (![dictionary isKindOfClass: [NSDictionary class]])
@@ -104,11 +107,13 @@ static NSEntityDescription *videoInstanceEntity = nil;
     // NSManagedObjects
     self.video = [Video instanceFromDictionary: [dictionary objectForKey: @"video"]
                      usingManagedObjectContext: managedObjectContext
-                            withRootObjectType: rootObject];
+                            withRootObjectType: rootObject
+                                     andViewId: viewId];
     
     self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
                      usingManagedObjectContext: managedObjectContext
-                            withRootObjectType: rootObject];
+                            withRootObjectType: rootObject
+                                         andViewId: viewId];
 }
 
 

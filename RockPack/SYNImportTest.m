@@ -67,7 +67,8 @@ static SYNNetworkEngine *networkEngine;
                      {
                          VideoInstance *videoInstance =  [VideoInstance instanceFromDictionary: itemDictionary
                                                                      usingManagedObjectContext: importManagedObjectContext
-                                                                            withRootObjectType: kVideoInstanceRootObject];
+                                                                            withRootObjectType: kVideoInstanceRootObject
+                                                                                     andViewId: @"Home"];
                      }
                  }  
              }

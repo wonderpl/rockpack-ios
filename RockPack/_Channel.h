@@ -13,6 +13,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *rockedByUser;
 	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *title;
+	__unsafe_unretained NSString *viewId;
 	__unsafe_unretained NSString *wallpaperURL;
 } ChannelAttributes;
 
@@ -26,6 +27,7 @@ extern const struct ChannelFetchedProperties {
 
 @class ChannelOwner;
 @class VideoInstance;
+
 
 
 
@@ -142,6 +144,16 @@ extern const struct ChannelFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* wallpaperURL;
 
 
@@ -234,6 +246,12 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 

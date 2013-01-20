@@ -7,6 +7,7 @@
 extern const struct VideoInstanceAttributes {
 	__unsafe_unretained NSString *dateAdded;
 	__unsafe_unretained NSString *title;
+	__unsafe_unretained NSString *viewId;
 } VideoInstanceAttributes;
 
 extern const struct VideoInstanceRelationships {
@@ -19,6 +20,7 @@ extern const struct VideoInstanceFetchedProperties {
 
 @class Channel;
 @class Video;
+
 
 
 
@@ -56,6 +58,16 @@ extern const struct VideoInstanceFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) Channel *channel;
 
 //- (BOOL)validateChannel:(id*)value_ error:(NSError**)error_;
@@ -88,6 +100,12 @@ extern const struct VideoInstanceFetchedProperties {
 
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 
