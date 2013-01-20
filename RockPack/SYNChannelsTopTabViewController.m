@@ -242,7 +242,7 @@
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
+    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
 }
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors

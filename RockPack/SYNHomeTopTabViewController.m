@@ -96,7 +96,7 @@
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
     // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
+    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
 }
 
 
@@ -112,8 +112,9 @@
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    // No predicate
-    return nil;
+//    // No predicate
+//    return nil;
+        return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
 }
 
 

@@ -98,6 +98,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
     // Simple objects
     self.uniqueId = uniqueId;
     
+    self.viewId = viewId;
+    
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];
     

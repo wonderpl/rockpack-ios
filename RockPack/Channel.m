@@ -94,6 +94,8 @@ static NSEntityDescription *channelEntity = nil;
     // Simple objects
     self.uniqueId = uniqueId;
     
+    self.viewId = viewId;
+    
     self.categoryId = [dictionary objectForKey: @"category_id"
                                    withDefault: @""];
     
