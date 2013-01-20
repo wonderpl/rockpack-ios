@@ -9,8 +9,10 @@
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "Channel.h"
+#import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
+#import "SYNNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoThumbnailWideCell.h"
@@ -20,8 +22,6 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
-
-#import "SYNImportTest.h"
 
 @interface SYNDiscoverTopTabViewController () <UIGestureRecognizerDelegate,
                                                UIScrollViewDelegate>
@@ -73,7 +73,9 @@
     
     // TODO: Remove this video download hack once we have real data from the API
 //    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
-    [SYNImportTest importTest];
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
+    [appDelegate.networkEngine updateHomeScreen];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)

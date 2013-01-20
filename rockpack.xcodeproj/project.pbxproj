@@ -458,7 +458,6 @@
 		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
 		01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */; };
 		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
-		01C9FED816A586A600844505 /* SYNImportTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9FED716A586A600844505 /* SYNImportTest.m */; };
 		01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */; };
 		01CF11C91695CC1600E64620 /* ButtonRefreshDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */; };
 		01CF11CA1695CC1600E64620 /* ButtonRefreshSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C41695CC1600E64620 /* ButtonRefreshSelected.png */; };
@@ -1043,8 +1042,6 @@
 		01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkEngine.m; sourceTree = "<group>"; };
 		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
 		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
-		01C9FED616A586A600844505 /* SYNImportTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNImportTest.h; sourceTree = "<group>"; };
-		01C9FED716A586A600844505 /* SYNImportTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNImportTest.m; sourceTree = "<group>"; };
 		01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshDefault.png; path = Assets/Images/ButtonRefreshDefault.png; sourceTree = "<group>"; };
 		01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshDefault@2x.png"; path = "Assets/Images/ButtonRefreshDefault@2x.png"; sourceTree = "<group>"; };
 		01CF11C41695CC1600E64620 /* ButtonRefreshSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshSelected.png; path = Assets/Images/ButtonRefreshSelected.png; sourceTree = "<group>"; };
@@ -2285,8 +2282,6 @@
 			children = (
 				01C6FD0A169DA76F00E01AA3 /* SYNAbstractUpdater.h */,
 				01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */,
-				01C9FED616A586A600844505 /* SYNImportTest.h */,
-				01C9FED716A586A600844505 /* SYNImportTest.m */,
 			);
 			name = Updaters;
 			sourceTree = "<group>";
@@ -2938,7 +2933,6 @@
 				01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */,
 				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
 				01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */,
-				01C9FED816A586A600844505 /* SYNImportTest.m in Sources */,
 				01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
