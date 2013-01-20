@@ -15,5 +15,6 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 -(id) initWithDefaultSettings;
 
 - (void) updateHomeScreen;
+- (void) updateChannelScreen;
 
 @end

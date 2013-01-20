@@ -111,6 +111,9 @@ static NSEntityDescription *channelEntity = nil;
     self.rockCount = [dictionary objectForKey: @"rocked_by_user"
                                   withDefault: [NSNumber numberWithBool: FALSE]];
     
+    self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
+                                         withDefault: [NSNumber numberWithBool: FALSE]];
+    
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @"http://"];
     

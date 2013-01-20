@@ -75,7 +75,8 @@
 //    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
-    [appDelegate.networkEngine updateHomeScreen];
+//    [appDelegate.networkEngine updateHomeScreen];
+    [appDelegate.networkEngine updateChannelScreen];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)

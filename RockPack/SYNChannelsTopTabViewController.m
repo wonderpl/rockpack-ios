@@ -54,12 +54,12 @@
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
+    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
 }
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }

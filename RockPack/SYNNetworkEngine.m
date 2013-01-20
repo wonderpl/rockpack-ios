@@ -134,16 +134,16 @@
                  
                  [self.appDelegate saveContext: TRUE];
                  
-                 NSEntityDescription *videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-                                                                        inManagedObjectContext: self.importManagedObjectContext];
-                 
-                 // Now we need to see if this object already exists, and if so return it and if not create it
-                 NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-                 [videoInstanceFetchRequest setEntity: videoInstanceEntity];
-                 
-                 NSArray *matchingChannelEntries = [self.importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-                                                                                                  error: &error];
-                 NSLog (@"video instances %@", matchingChannelEntries);
+//                 NSEntityDescription *videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
+//                                                                        inManagedObjectContext: self.importManagedObjectContext];
+//                 
+//                 // Now we need to see if this object already exists, and if so return it and if not create it
+//                 NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
+//                 [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+//                 
+//                 NSArray *matchingVideoInstanceEntries = [self.importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+//                                                                                                  error: &error];
+//                 NSLog (@"video instances %@", matchingVideoInstanceEntries);
              }
              else
              {
@@ -227,16 +227,16 @@
                  
                  [appDelegate saveContext: TRUE];
                  
-                 NSEntityDescription *videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
+                 NSEntityDescription *channelEntity = [NSEntityDescription entityForName: @"Channel"
                                                                         inManagedObjectContext: importManagedObjectContext];
                  
                  // Now we need to see if this object already exists, and if so return it and if not create it
-                 NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-                 [videoInstanceFetchRequest setEntity: videoInstanceEntity];
+                 NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+                 [channelFetchRequest setEntity: channelEntity];
                  
-                 NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
+                 NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                              error: &error];
-                 NSLog (@"video instances %@", matchingChannelEntries);
+                 NSLog (@"channel instances %@", matchingChannelEntries);
              }
              else
              {

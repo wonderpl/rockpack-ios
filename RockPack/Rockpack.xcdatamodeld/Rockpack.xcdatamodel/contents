@@ -10,6 +10,7 @@
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="rockCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="subscribersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
@@ -40,7 +41,7 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-308" positionY="-106" width="128" height="58"/>
-        <element name="Channel" positionX="-423" positionY="152" width="128" height="225"/>
+        <element name="Channel" positionX="-423" positionY="152" width="128" height="240"/>
         <element name="ChannelOwner" positionX="-641" positionY="272" width="128" height="90"/>
         <element name="Video" positionX="7" positionY="216" width="128" height="150"/>
         <element name="VideoInstance" positionX="-207" positionY="257" width="128" height="120"/>

@@ -10,6 +10,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.lastUpdated = @"lastUpdated",
 	.rockCount = @"rockCount",
 	.rockedByUser = @"rockedByUser",
+	.subscribersCount = @"subscribersCount",
 	.thumbnailURL = @"thumbnailURL",
 	.title = @"title",
 	.viewId = @"viewId",
@@ -62,6 +63,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 	}
 	if ([key isEqualToString:@"rockedByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"rockedByUser"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"subscribersCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"subscribersCount"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -165,6 +171,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 - (void)setPrimitiveRockedByUserValue:(BOOL)value_ {
 	[self setPrimitiveRockedByUser:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic subscribersCount;
+
+
+
+- (int64_t)subscribersCountValue {
+	NSNumber *result = [self subscribersCount];
+	return [result longLongValue];
+}
+
+- (void)setSubscribersCountValue:(int64_t)value_ {
+	[self setSubscribersCount:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveSubscribersCountValue {
+	NSNumber *result = [self primitiveSubscribersCount];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveSubscribersCountValue:(int64_t)value_ {
+	[self setPrimitiveSubscribersCount:[NSNumber numberWithLongLong:value_]];
 }
 
 
