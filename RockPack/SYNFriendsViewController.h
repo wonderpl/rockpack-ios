@@ -1,13 +1,13 @@
 //
 //  SYNFriendsViewController.h
-//  RockPack
+//  rockpack
 //
-//  Created by Nick Banks on 13/10/2012.
-//  Copyright (c) 2012 Nick Banks. All rights reserved.
+//  Created by Nick Banks on 21/01/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SYNAbstractViewController.h"
 
-@interface SYNFriendsViewController : UIViewController
+@interface SYNFriendsViewController : SYNAbstractViewController
 
 @end

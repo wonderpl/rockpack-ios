@@ -18,7 +18,6 @@
 
 @interface SYNHomeTopTabViewController ()
 
-@property (nonatomic, strong) NSMutableArray *videosArray;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
@@ -239,7 +238,8 @@
         
         if (indexPath.section == 0)
         {
-            focus = TRUE;
+            // When highlighting is required again, then set to TRUE
+            focus = FALSE;
             
             // We need to store this away, so can control animations (but must nil when goes out of scope)
             self.supplementaryViewWithRefreshButton = headerSupplementaryView;

@@ -12,7 +12,7 @@
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
-#import "SYNFriendsViewController.h"
+#import "SYNOldFriendsViewController.h"
 #import "SYNHomeTopTabViewController.h"
 #import "SYNMovableView.h"
 #import "SYNMyRockpackViewController.h"
@@ -86,7 +86,7 @@
     myRockpackRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // Friends tab
-    SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
+    SYNOldFriendsViewController *friendsViewController = [[SYNOldFriendsViewController alloc] init];
     
     // Using new array syntax
     self.viewControllers = @[wallPackViewController,
