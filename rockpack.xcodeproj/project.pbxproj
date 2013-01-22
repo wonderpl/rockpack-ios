@@ -85,6 +85,10 @@
 		015CB00916AD76B100FEB8E7 /* SYNFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00716AD76B100FEB8E7 /* SYNFriendsViewController.xib */; };
 		015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00C16AD932000FEB8E7 /* SYNFriendThumbnailCell.m */; };
 		015CB00F16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00E16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib */; };
+		015CB01216ADC07D00FEB8E7 /* PanelFriendsToolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB01016ADC07D00FEB8E7 /* PanelFriendsToolbar.png */; };
+		015CB01316ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB01116ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png */; };
+		015CB01616AE039900FEB8E7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01516AE039900FEB8E7 /* User.m */; };
+		015CB01916AE03B200FEB8E7 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01816AE03B200FEB8E7 /* _User.m */; };
 		01677DF516554A7C00B1B1D8 /* MessageDragAndDrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DF416554A7C00B1B1D8 /* MessageDragAndDrop@2x.png */; };
 		01677E0C16554AB500B1B1D8 /* ButtonBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DF616554AB500B1B1D8 /* ButtonBack.png */; };
 		01677E0D16554AB500B1B1D8 /* ButtonBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DF716554AB500B1B1D8 /* ButtonBack@2x.png */; };
@@ -614,6 +618,12 @@
 		015CB00B16AD932000FEB8E7 /* SYNFriendThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendThumbnailCell.h; sourceTree = "<group>"; };
 		015CB00C16AD932000FEB8E7 /* SYNFriendThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendThumbnailCell.m; sourceTree = "<group>"; };
 		015CB00E16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendThumbnailCell.xib; sourceTree = "<group>"; };
+		015CB01016ADC07D00FEB8E7 /* PanelFriendsToolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelFriendsToolbar.png; path = Assets/Images/PanelFriendsToolbar.png; sourceTree = "<group>"; };
+		015CB01116ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelFriendsToolbar@2x.png"; path = "Assets/Images/PanelFriendsToolbar@2x.png"; sourceTree = "<group>"; };
+		015CB01416AE039900FEB8E7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		015CB01516AE039900FEB8E7 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		015CB01716AE03B200FEB8E7 /* _User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _User.h; sourceTree = "<group>"; };
+		015CB01816AE03B200FEB8E7 /* _User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _User.m; sourceTree = "<group>"; };
 		01677DF416554A7C00B1B1D8 /* MessageDragAndDrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MessageDragAndDrop@2x.png"; path = "Assets/Images/MessageDragAndDrop@2x.png"; sourceTree = "<group>"; };
 		01677DF616554AB500B1B1D8 /* ButtonBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBack.png; path = Assets/Images/ButtonBack.png; sourceTree = "<group>"; };
 		01677DF716554AB500B1B1D8 /* ButtonBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBack@2x.png"; path = "Assets/Images/ButtonBack@2x.png"; sourceTree = "<group>"; };
@@ -1271,6 +1281,8 @@
 		011CC658164A821600F02B6D /* Friends Page */ = {
 			isa = PBXGroup;
 			children = (
+				015CB01016ADC07D00FEB8E7 /* PanelFriendsToolbar.png */,
+				015CB01116ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png */,
 				019E834B1654064D00744A03 /* BackgroundFriendsTemplate@2x.png */,
 				019E834C1654064D00744A03 /* ButtonCamera.png */,
 				019E834D1654064D00744A03 /* ButtonCamera@2x.png */,
@@ -2338,6 +2350,8 @@
 		01E427F21664F32D009B941F /* Auto generated files */ = {
 			isa = PBXGroup;
 			children = (
+				015CB01716AE03B200FEB8E7 /* _User.h */,
+				015CB01816AE03B200FEB8E7 /* _User.m */,
 				01C6FD10169E11B000E01AA3 /* _AbstractCommon.h */,
 				01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */,
 				01E427EC1664EE52009B941F /* _Channel.h */,
@@ -2365,6 +2379,8 @@
 				01E427E11664DF21009B941F /* Video.m */,
 				01946B951683339F00354601 /* VideoInstance.h */,
 				01946B961683339F00354601 /* VideoInstance.m */,
+				015CB01416AE039900FEB8E7 /* User.h */,
+				015CB01516AE039900FEB8E7 /* User.m */,
 			);
 			name = "Editable files";
 			sourceTree = "<group>";
@@ -2856,6 +2872,8 @@
 				01B34C9D16A9A8A6002AD8FB /* BackgroundGeneric.jpg in Resources */,
 				015CB00916AD76B100FEB8E7 /* SYNFriendsViewController.xib in Resources */,
 				015CB00F16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib in Resources */,
+				015CB01216ADC07D00FEB8E7 /* PanelFriendsToolbar.png in Resources */,
+				015CB01316ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2962,6 +2980,8 @@
 				01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */,
 				015CB00816AD76B100FEB8E7 /* SYNFriendsViewController.m in Sources */,
 				015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */,
+				015CB01616AE039900FEB8E7 /* User.m in Sources */,
+				015CB01916AE03B200FEB8E7 /* _User.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

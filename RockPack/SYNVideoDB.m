@@ -64,6 +64,19 @@
     return videoDBManager;
 }
 
+//+ (id) sharedFriendDBManager
+//{
+//    static dispatch_once_t onceQueue;
+//    static SYNVideoDB *friendDBManager = nil;
+//    
+//    dispatch_once(&onceQueue, ^
+//                  {
+//                      friendDBManager = [[self alloc] initFriends];
+//                  });
+//    
+//    return friendDBManager;
+//}
+
 
 - (id) init
 {

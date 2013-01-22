@@ -31,7 +31,7 @@
     if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNFriendThumbnailWideCell"
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNFriendThumbnailCell"
                                                               owner: self
                                                             options: nil];
         
@@ -63,7 +63,7 @@
 
 #pragma mark - Asynchronous image loading support
 
-- (void) setVideoImageViewImage: (NSString*) imageURLString
+- (void) setFriendImageViewImage: (NSString*) imageURLString
 {
     self.loadingFriendImageViewURLString = imageURLString;
     

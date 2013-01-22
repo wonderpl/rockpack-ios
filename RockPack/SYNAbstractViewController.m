@@ -247,12 +247,6 @@
 }
 
 
-//- (void) viewDidAppear: (BOOL) animated
-//{
-//    [super viewDidAppear: animated];
-//}
-
-
 #pragma mark - Core Data support
 
 // Single cached MOC for all the view controllers

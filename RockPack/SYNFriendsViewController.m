@@ -11,21 +11,30 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
+#import "SYNAppDelegate.h"
+#import "SYNFriendThumbnailCell.h"
 #import "SYNFriendsViewController.h"
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
-@interface SYNFriendsViewController ()
+@interface SYNFriendsViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *videosArray;
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryView;
+@property (nonatomic, strong) IBOutlet UICollectionView *friendThumbnailCollectionView;
+@property (nonatomic, strong) NSFetchedResultsController *friendFetchedResultsController;
+@property (nonatomic, strong) NSArray *forenameArray;
+@property (nonatomic, strong) NSArray *surnameArray;
+@property (nonatomic, strong) NSArray *thumbnailURLArray;
 
 @end
 
 
 @implementation SYNFriendsViewController
+
+@synthesize friendFetchedResultsController = _friendFetchedResultsController;
 
 #pragma mark - View lifecycle
 
@@ -34,22 +43,110 @@
     [super viewDidLoad];
     
     // Init collection view
-    UINib *friendThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
+    UINib *friendThumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
                                                   bundle: nil];
     
-    [self.videoThumbnailCollectionView registerNib: friendThumbnailCellNib
-                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
-    
+    [self.friendThumbnailCollectionView registerNib: friendThumbnailCellNib
+                        forCellWithReuseIdentifier: @"SYNFriendThumbnailCell"];
+
     // Register collection view header view
     UINib *headerViewNib = [UINib nibWithNibName: @"SYNHomeSectionHeaderView"
                                           bundle: nil];
     
-    [self.videoThumbnailCollectionView registerNib: headerViewNib
+    [self.friendThumbnailCollectionView registerNib: headerViewNib
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+    
+    self.forenameArray = @[@"GREGORY", @"KISH", @"PAUL", @"PAUL", @"GREGORY", @"KISH", @"PAUL", @"PAUL"];
+    
+    self.surnameArray = @[@"TALON", @"PATEL", @"CACKETT", @"CACKETT", @"TALON", @"PATEL", @"CACKETT", @"CACKETT"];
+    
+    self.thumbnailURLArray =  @[@"https://i.ytimg.com/vi/d89PkOthWhg/default.jpg",
+                                @"https://i.ytimg.com/vi/gdndTE8ZFig/default.jpg",
+                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg",
+                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg",
+                                @"https://i.ytimg.com/vi/d89PkOthWhg/default.jpg",
+                                @"https://i.ytimg.com/vi/gdndTE8ZFig/default.jpg",
+                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg",
+                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg"];
 }
 
 #pragma mark - Core Data support
+
+// Single cached MOC for all the view controllers
+- (NSManagedObjectContext *) mainManagedObjectContext
+{
+    static dispatch_once_t onceQueue;
+    static NSManagedObjectContext *mainManagedObjectContext = nil;
+    
+    dispatch_once(&onceQueue, ^
+                  {
+                      SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+                      mainManagedObjectContext = delegate.mainManagedObjectContext;
+                  });
+    
+    return mainManagedObjectContext;
+}
+
+
+// Generalised version of videoInstanceFetchedResultsController, you can override the predicate and sort descriptors
+// by overiding the videoInstanceFetchedResultsControllerPredicate and videoInstanceFetchedResultsControllerSortDescriptors methods
+- (NSFetchedResultsController *) vFetchedResultsController
+{
+    NSError *error = nil;
+    
+    // Return cached version if we have already created one
+    if (_friendFetchedResultsController != nil)
+    {
+        return _friendFetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: self.mainManagedObjectContext];
+    
+    // Add any sort descriptors and predicates
+    fetchRequest.predicate = self.friendFetchedResultsControllerPredicate;
+    fetchRequest.sortDescriptors = self.friendFetchedResultsControllerSortDescriptors;
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.friendFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                     managedObjectContext: self.mainManagedObjectContext
+                                                                                       sectionNameKeyPath: self.friendFetchedResultsControllerSectionNameKeyPath
+                                                                                                cacheName: nil];
+    _friendFetchedResultsController.delegate = self;
+    
+    ZAssert([_friendFetchedResultsController performFetch: &error], @"friendFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return _friendFetchedResultsController;
+}
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    NSLog (@"controller updated");
+}
+
+// Abstract functions, should be overidden in subclasses
+- (NSPredicate *) friendFetchedResultsControllerPredicate
+{
+    AssertOrLog (@"videoInstanceFetchedResultsControllerPredicate:Abstract function called");
+    return nil;
+}
+
+- (NSArray *) friendFetchedResultsControllerSortDescriptors
+{
+    AssertOrLog (@"videoInstanceFetchedResultsControllerSortDescriptors:Abstract function called");
+    return nil;
+}
+
+// No section name key path by default
+- (NSString *) friendFetchedResultsControllerSectionNameKeyPath
+{
+    return nil;
+}
 
 
 
@@ -79,9 +176,23 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = nil;
+    // SYNFriendThumbnailCell
+    SYNFriendThumbnailCell *friendThumbnailCell = nil;
     
-    return cell;
+    if (collectionView == self.friendThumbnailCollectionView)
+    {
+        // No, but it was our collection view
+        friendThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
+                                                                                      forIndexPath: indexPath];
+        
+        friendThumbnailCell.friendImageViewImage = self.thumbnailURLArray[indexPath.row % 8];
+        friendThumbnailCell.forename.text = self.forenameArray[indexPath.row % 8];
+        friendThumbnailCell.surname.text = self.surnameArray[indexPath.row % 8];
+
+        friendThumbnailCell.viewControllerDelegate = self;
+    }
+    
+    return friendThumbnailCell;
 }
 
 
@@ -95,7 +206,7 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
            referenceSizeForHeaderInSection: (NSInteger) section
 {
-    if (collectionView == self.videoThumbnailCollectionView)
+    if (collectionView == self.friendThumbnailCollectionView)
     {
         return CGSizeMake(1024, 65);
     }
@@ -113,11 +224,8 @@
 {
     UICollectionReusableView *sectionSupplementaryView = nil;
     
-    if (collectionView == self.videoThumbnailCollectionView)
+    if (collectionView == self.friendThumbnailCollectionView)
     {
-        // Work out the day
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
-        
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
                                                                                                       forIndexPath: indexPath];
@@ -146,7 +254,7 @@
        forElementOfKind: (NSString *) elementKind
             atIndexPath: (NSIndexPath *) indexPath
 {
-    if (collectionView == self.videoThumbnailCollectionView)
+    if (collectionView == self.friendThumbnailCollectionView)
     {
         if (indexPath.section == 0)
         {
