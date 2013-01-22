@@ -28,7 +28,8 @@
                                           UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
-@property (nonatomic, assign) BOOL didNotSwipe;
+@property (nonatomic, assign) BOOL didNotSwipeMessageInbox;
+@property (nonatomic, assign) BOOL didNotSwipeShareMenu;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, copy) NSArray *viewControllers;
@@ -36,7 +37,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton *notificationsButton;
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
-@property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
+@property (nonatomic, strong) IBOutlet UIButton *messageInboxButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
@@ -45,11 +46,12 @@
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
-@property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
-@property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanelView;
+@property (nonatomic, strong) IBOutlet UIView *messageInboxView;
+@property (nonatomic, strong) IBOutlet UIView *shareMenuView;
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
-@property (nonatomic, strong) UISwipeGestureRecognizer *swipeLeftRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *messageInboxSwipeLeftRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *shareMenuSwipeLeftRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
@@ -125,24 +127,32 @@
     // Add swipe recoginisers for Rockie-Talkie
     // Right swipe
     self.swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                     action: @selector(swipeRockieTalkieRight:)];
+                                                                     action: @selector(slideMessageInboxRight:)];
     
-    [self.swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.swipeRightRecognizer setDirection: UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer: self.swipeRightRecognizer];
     
     // We need this to check that we can swipe
     self.swipeRightRecognizer.delegate = self;
     
-    // Left swipe
-    self.swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                    action: @selector(swipeRockieTalkieLeft:)];
+    // Left swipe on message inbox
+    self.messageInboxSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                    action: @selector(slideMessageInboxLeft:)];
     
-    [self.swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.rockieTalkiePanelView addGestureRecognizer: self.swipeLeftRecognizer];
+    [self.messageInboxSwipeLeftRecognizer setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.messageInboxView addGestureRecognizer: self.messageInboxSwipeLeftRecognizer];
+    
+    // Left swipe on share menu 
+    self.shareMenuSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                     action: @selector(slideShareMenuLeft:)];
+    
+    [self.shareMenuSwipeLeftRecognizer setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.shareMenuView addGestureRecognizer: self.shareMenuSwipeLeftRecognizer];
     
     // Set initial state
-    self.rockieTalkiePanelView.userInteractionEnabled = TRUE;
-    self.didNotSwipe = TRUE;
+    self.messageInboxView.userInteractionEnabled = TRUE;
+    self.didNotSwipeMessageInbox = TRUE;
+    self.didNotSwipeShareMenu = TRUE;
     
     // Setup number of messages number font in title bar
     self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
@@ -342,14 +352,14 @@
 }
 
 
-#pragma mark - Rockie-Talkie gesture handlers
+#pragma mark - Side menu gesture handlers
 
 // Swipe rockie-talkie off screen
-- (void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
+- (void) slideMessageInboxLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
-    if (!self.didNotSwipe)
+    if (!self.didNotSwipeMessageInbox)
     {
-        self.didNotSwipe = TRUE;
+        self.didNotSwipeMessageInbox = TRUE;
         
         // Stop recording
         [self endRecording];
@@ -371,26 +381,31 @@
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = -495;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
+             CGRect messageInboxViewFrame = self.messageInboxView.frame;
+             messageInboxViewFrame.origin.x = -495;
+             self.messageInboxView.frame =  messageInboxViewFrame;
 
          }
                          completion: ^(BOOL finished)
          {
              // Set the button to the appropriate state
-             self.rockieTalkieButton.selected = FALSE;
+             self.messageInboxButton.selected = FALSE;
          }];
     }
 }
 
 
 // Swipe rockie-talkie onto screen
-- (void) swipeRockieTalkieRight: (UISwipeGestureRecognizer *) swipeGesture
+- (void) slideMessageInboxRight: (UISwipeGestureRecognizer *) swipeGesture
 {
-    if (self.didNotSwipe)
+    if (self.didNotSwipeMessageInbox)
     {
-        self.didNotSwipe = FALSE;
+        self.didNotSwipeMessageInbox = FALSE;
+        
+        if (self.didNotSwipeShareMenu == FALSE)
+        {
+            [self slideShareMenuLeft: nil];
+        }
 
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -409,18 +424,111 @@
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = 0;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
+             CGRect messageInboxViewFrame = self.messageInboxView.frame;
+             messageInboxViewFrame.origin.x = 0;
+             self.messageInboxView.frame =  messageInboxViewFrame;
              
          }
                          completion: ^(BOOL finished)
          {
              // Set the button to the appropriate state
-             self.rockieTalkieButton.selected = TRUE;
+             self.messageInboxButton.selected = TRUE;
          }];
     }
 }
+
+- (void) toggleShareMenu
+{
+    if (self.didNotSwipeShareMenu == TRUE)
+    {
+        [self slideShareMenuRight: nil];
+    }
+    else
+    {
+        [self slideShareMenuLeft: nil];
+    }
+}
+
+// Swipe rockie-talkie off screen
+- (void) slideShareMenuLeft: (UISwipeGestureRecognizer *) swipeGesture
+{
+    if (!self.didNotSwipeShareMenu)
+    {
+        self.didNotSwipeShareMenu = TRUE;
+        
+#ifdef SOUND_ENABLED
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideOut"
+                                                              ofType: @"aif"];
+        
+        NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+        AudioServicesPlaySystemSound(sound);
+#endif
+        
+        // Animate the view out onto the screen
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect shareMenuViewFrame = self.shareMenuView.frame;
+             shareMenuViewFrame.origin.x = -495;
+             self.shareMenuView.frame =  shareMenuViewFrame;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+             // Set the button to the appropriate state
+//             self.messageInboxButton.selected = FALSE;
+         }];
+    }
+}
+
+
+// Swipe rockie-talkie onto screen
+- (void) slideShareMenuRight: (UISwipeGestureRecognizer *) swipeGesture
+{
+    if (self.didNotSwipeShareMenu)
+    {
+        self.didNotSwipeShareMenu = FALSE;
+        
+        if (self.didNotSwipeMessageInbox == FALSE)
+        {
+            [self slideMessageInboxLeft: nil];
+        }
+        
+#ifdef SOUND_ENABLED
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideIn"
+                                                              ofType: @"aif"];
+        
+        NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+        AudioServicesPlaySystemSound(sound);
+#endif
+        
+        // Animate the view out onto the screen
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect shareMenuViewFrame = self.shareMenuView.frame;
+             shareMenuViewFrame.origin.x = 0;
+             self.shareMenuView.frame =  shareMenuViewFrame;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+             // Set the button to the appropriate state
+//             self.messageInboxButton.selected = TRUE;
+         }];
+    }
+}
+
 
 
 - (IBAction) clearSearchField: (id) sender
@@ -444,12 +552,12 @@
     if (button.selected)
     {
         // Need to slide rockie talkie out
-        [self swipeRockieTalkieRight: nil];
+        [self slideMessageInboxRight: nil];
     }
     else
     {
         // Need to slide rockie talkie back in
-        [self swipeRockieTalkieLeft: nil];
+        [self slideMessageInboxLeft: nil];
     }
 }
 
@@ -655,7 +763,7 @@
 - (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
         shouldReceiveTouch: (UITouch *) touch
 {
-    if (self.rockieTalkieButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+    if (self.messageInboxButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
     {
         return NO;
     }

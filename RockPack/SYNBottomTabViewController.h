@@ -11,9 +11,12 @@
 
 @interface SYNBottomTabViewController : SYNAbstractViewController 
 
-@property (nonatomic, strong, readonly) UIButton *rockieTalkieButton;
+@property (nonatomic, strong, readonly) UIButton *messageInboxButton;
 
-- (void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) swipeRockieTalkieRight: (UISwipeGestureRecognizer *) swipeGesture;
+- (void) slideMessageInboxLeft: (UISwipeGestureRecognizer *) swipeGesture;
+- (void) slideMessageInboxRight: (UISwipeGestureRecognizer *) swipeGesture;
+- (void) slideShareMenuLeft: (UISwipeGestureRecognizer *) swipeGesture;
+- (void) slideShareMenuRight: (UISwipeGestureRecognizer *) swipeGesture;
+- (void) toggleShareMenu;
 
 @end

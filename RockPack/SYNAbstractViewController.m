@@ -557,11 +557,8 @@
     
     SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
     
-    if (bottomTabViewController.rockieTalkieButton.selected == FALSE)
-    {
-        // Need to slide rockie talkie out
-        [bottomTabViewController swipeRockieTalkieRight: nil];
-    }
+    // Need to slide rockie talkie out
+    [bottomTabViewController toggleShareMenu];
 }
 
 

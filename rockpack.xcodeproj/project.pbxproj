@@ -548,6 +548,8 @@
 		01F6D5B816AEADCE003F016D /* ButtonStarFriendsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F6D5B416AEADCE003F016D /* ButtonStarFriendsHighlighted@2x.png */; };
 		01F8E72B16AEE331000D44B9 /* PanelShare.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E72916AEE330000D44B9 /* PanelShare.png */; };
 		01F8E72C16AEE331000D44B9 /* PanelShare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E72A16AEE330000D44B9 /* PanelShare@2x.png */; };
+		01F8E73116AEFEA6000D44B9 /* PanelInbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E72F16AEFEA6000D44B9 /* PanelInbox.png */; };
+		01F8E73216AEFEA6000D44B9 /* PanelInbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73016AEFEA6000D44B9 /* PanelInbox@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1181,6 +1183,8 @@
 		01F6D5B416AEADCE003F016D /* ButtonStarFriendsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonStarFriendsHighlighted@2x.png"; path = "Assets/Images/ButtonStarFriendsHighlighted@2x.png"; sourceTree = "<group>"; };
 		01F8E72916AEE330000D44B9 /* PanelShare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelShare.png; path = Assets/Images/PanelShare.png; sourceTree = "<group>"; };
 		01F8E72A16AEE330000D44B9 /* PanelShare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelShare@2x.png"; path = "Assets/Images/PanelShare@2x.png"; sourceTree = "<group>"; };
+		01F8E72F16AEFEA6000D44B9 /* PanelInbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelInbox.png; path = Assets/Images/PanelInbox.png; sourceTree = "<group>"; };
+		01F8E73016AEFEA6000D44B9 /* PanelInbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelInbox@2x.png"; path = "Assets/Images/PanelInbox@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1368,6 +1372,8 @@
 		011CC692164C5C1100F02B6D /* Rockie Talkie */ = {
 			isa = PBXGroup;
 			children = (
+				01F8E72F16AEFEA6000D44B9 /* PanelInbox.png */,
+				01F8E73016AEFEA6000D44B9 /* PanelInbox@2x.png */,
 				01F8E72916AEE330000D44B9 /* PanelShare.png */,
 				01F8E72A16AEE330000D44B9 /* PanelShare@2x.png */,
 			);
@@ -2979,6 +2985,8 @@
 				01A3EC3816AED804008DCE08 /* NotificationContent@2x.png in Resources */,
 				01F8E72B16AEE331000D44B9 /* PanelShare.png in Resources */,
 				01F8E72C16AEE331000D44B9 /* PanelShare@2x.png in Resources */,
+				01F8E73116AEFEA6000D44B9 /* PanelInbox.png in Resources */,
+				01F8E73216AEFEA6000D44B9 /* PanelInbox@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
