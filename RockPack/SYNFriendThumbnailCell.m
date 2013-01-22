@@ -97,6 +97,8 @@
     // We need to clean up any asynchronous image uploads
     self.friendImageView.image = nil;
     [self.friendImageLoadingOperation cancel];
+    self.favouriteButton.selected = FALSE;
+    self.favouriteButton.hidden = FALSE;
 }
 
 

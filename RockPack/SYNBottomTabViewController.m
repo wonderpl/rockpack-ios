@@ -9,6 +9,7 @@
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "MKNetworkEngine.h"
+#import "SYNActivityPopoverViewController.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsTopTabViewController.h"
 #import "SYNDiscoverTopTabViewController.h"
@@ -24,6 +25,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIGestureRecognizerDelegate,
+                                          UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL didNotSwipe;
@@ -32,18 +34,21 @@
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) AVAudioRecorder *avRecorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
+@property (nonatomic, strong) IBOutlet UIButton *notificationsButton;
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfNotificationsLabel;
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
 @property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanelView;
 @property (nonatomic, strong) NSTimer *levelTimer;
+@property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeLeftRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
 @property (nonatomic, weak) UIViewController *selectedViewController;
@@ -141,6 +146,9 @@
     
     // Setup number of messages number font in title bar
     self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    
+    // Setup number of messages number font in title bar
+    self.numberOfNotificationsLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     
     // Setup rockie-talkie message view
     self.messageTextView.font = [UIFont rockpackFontOfSize: 15.0f];
@@ -429,7 +437,7 @@
 }
 
 
-- (IBAction) rockieTalkieAction: (UIButton*) button
+- (IBAction) userTouchedInboxButton: (UIButton*) button
 {
     button.selected = !button.selected;
     
@@ -443,6 +451,36 @@
         // Need to slide rockie talkie back in
         [self swipeRockieTalkieLeft: nil];
     }
+}
+
+- (IBAction) userTouchedNotificationButton: (UIButton*) button
+{
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        SYNActivityPopoverViewController *actionPopoverController = [[SYNActivityPopoverViewController alloc] init];
+        // Need show the popover controller
+        self.actionButtonPopover = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.actionButtonPopover.popoverContentSize = CGSizeMake(320, 166);
+        self.actionButtonPopover.delegate = self;
+        
+        [self.actionButtonPopover presentPopoverFromRect: button.frame
+                                                  inView: self.view
+                                permittedArrowDirections: UIPopoverArrowDirectionUp
+                                                animated: YES];
+    }
+    else
+    {
+        // Need to hide the popover controller
+        [self.actionButtonPopover dismissPopoverAnimated: YES];
+    }
+}
+
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
+{
+	// Any cleanup
+    self.notificationsButton.selected = FALSE;
 }
 
 

@@ -13,6 +13,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *friendImageView;
 @property (nonatomic, strong) IBOutlet UILabel *forename;
 @property (nonatomic, strong) IBOutlet UILabel *surname;
+@property (nonatomic, strong) IBOutlet UIButton *favouriteButton;
 
 // This is used to indicate the UIViewController that
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
