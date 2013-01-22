@@ -56,8 +56,8 @@
 {
     [super awakeFromNib];
     
-    self.forename.font = [UIFont boldRockpackFontOfSize: 13.0f];
-    self.surname.font = [UIFont boldRockpackFontOfSize: 13.0f];
+    self.forename.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.surname.font = [UIFont rockpackFontOfSize: 13.0f];
 }
 
 

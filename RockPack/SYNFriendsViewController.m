@@ -185,7 +185,7 @@
         friendThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                       forIndexPath: indexPath];
         
-        friendThumbnailCell.friendImageViewImage = self.thumbnailURLArray[indexPath.row % 8];
+//        friendThumbnailCell.friendImageViewImage = self.thumbnailURLArray[indexPath.row % 8];
         friendThumbnailCell.forename.text = self.forenameArray[indexPath.row % 8];
         friendThumbnailCell.surname.text = self.surnameArray[indexPath.row % 8];
 
@@ -231,7 +231,7 @@
                                                                                                       forIndexPath: indexPath];
         NSString *sectionText;
         
-        if (indexPath.section == 1)
+        if (indexPath.section == 0)
         {
             sectionText = @"FAVOURITES (7)";
         }
