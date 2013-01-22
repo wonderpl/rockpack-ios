@@ -61,14 +61,14 @@
     
     self.surnameArray = @[@"TALON", @"PATEL", @"CACKETT", @"CACKETT", @"TALON", @"PATEL", @"CACKETT", @"CACKETT"];
     
-    self.thumbnailURLArray =  @[@"https://i.ytimg.com/vi/d89PkOthWhg/default.jpg",
-                                @"https://i.ytimg.com/vi/gdndTE8ZFig/default.jpg",
-                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg",
-                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg",
-                                @"https://i.ytimg.com/vi/d89PkOthWhg/default.jpg",
-                                @"https://i.ytimg.com/vi/gdndTE8ZFig/default.jpg",
-                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg",
-                                @"https://i.ytimg.com/vi/-fadCAHjN-s/default.jpg"];
+    self.thumbnailURLArray =  @[@"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Gregory.png",
+                                @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Kish.png",
+                                @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png",
+                                @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png",
+                                @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Gregory.png",
+                                @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Kish.png",
+                                @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png",
+                                @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png"];
 }
 
 #pragma mark - Core Data support
@@ -185,9 +185,13 @@
         friendThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                       forIndexPath: indexPath];
         
-//        friendThumbnailCell.friendImageViewImage = self.thumbnailURLArray[indexPath.row % 8];
-        friendThumbnailCell.forename.text = self.forenameArray[indexPath.row % 8];
-        friendThumbnailCell.surname.text = self.surnameArray[indexPath.row % 8];
+        // Leave the last favourites tile blank
+        if (!((indexPath.section == 0) && (indexPath.row == 7)))
+        {
+            friendThumbnailCell.friendImageViewImage = self.thumbnailURLArray[indexPath.row % 8];
+            friendThumbnailCell.forename.text = self.forenameArray[indexPath.row % 8];
+            friendThumbnailCell.surname.text = self.surnameArray[indexPath.row % 8];
+        }
 
         friendThumbnailCell.viewControllerDelegate = self;
     }

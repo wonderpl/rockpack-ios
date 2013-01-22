@@ -56,8 +56,13 @@
 {
     [super awakeFromNib];
     
-    self.forename.font = [UIFont rockpackFontOfSize: 13.0f];
-    self.surname.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.forename.font = [UIFont boldRockpackFontOfSize: 13.0f];
+    self.forename.shadowColor = [UIColor blackColor];
+    self.forename.shadowOffset = CGSizeMake (1,1);
+    self.surname.font = [UIFont boldRockpackFontOfSize: 13.0f];
+    self.surname.shadowColor = [UIColor blackColor];
+    self.surname.shadowOffset = CGSizeMake (1,1);
+    
 }
 
 

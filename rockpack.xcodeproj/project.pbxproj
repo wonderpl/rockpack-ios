@@ -91,6 +91,10 @@
 		015CB01916AE03B200FEB8E7 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01816AE03B200FEB8E7 /* _User.m */; };
 		015CB01C16AE189700FEB8E7 /* BackgroundFriendThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB01A16AE189700FEB8E7 /* BackgroundFriendThumbnail@2x.png */; };
 		015CB01D16AE189700FEB8E7 /* BackgroundFriendThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB01B16AE189700FEB8E7 /* BackgroundFriendThumbnail.png */; };
+		015CB02016AE1FD500FEB8E7 /* GlossFriendThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB01E16AE1FD500FEB8E7 /* GlossFriendThumbnail.png */; };
+		015CB02116AE1FD500FEB8E7 /* GlossFriendThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB01F16AE1FD500FEB8E7 /* GlossFriendThumbnail@2x.png */; };
+		015CB02416AE204500FEB8E7 /* GradientFriendThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB02216AE204500FEB8E7 /* GradientFriendThumbnail.png */; };
+		015CB02516AE204500FEB8E7 /* GradientFriendThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB02316AE204500FEB8E7 /* GradientFriendThumbnail@2x.png */; };
 		01677DF516554A7C00B1B1D8 /* MessageDragAndDrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DF416554A7C00B1B1D8 /* MessageDragAndDrop@2x.png */; };
 		01677E0C16554AB500B1B1D8 /* ButtonBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DF616554AB500B1B1D8 /* ButtonBack.png */; };
 		01677E0D16554AB500B1B1D8 /* ButtonBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01677DF716554AB500B1B1D8 /* ButtonBack@2x.png */; };
@@ -628,6 +632,10 @@
 		015CB01816AE03B200FEB8E7 /* _User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _User.m; sourceTree = "<group>"; };
 		015CB01A16AE189700FEB8E7 /* BackgroundFriendThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundFriendThumbnail@2x.png"; path = "Assets/Images/BackgroundFriendThumbnail@2x.png"; sourceTree = "<group>"; };
 		015CB01B16AE189700FEB8E7 /* BackgroundFriendThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundFriendThumbnail.png; path = Assets/Images/BackgroundFriendThumbnail.png; sourceTree = "<group>"; };
+		015CB01E16AE1FD500FEB8E7 /* GlossFriendThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossFriendThumbnail.png; path = Assets/Images/GlossFriendThumbnail.png; sourceTree = "<group>"; };
+		015CB01F16AE1FD500FEB8E7 /* GlossFriendThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossFriendThumbnail@2x.png"; path = "Assets/Images/GlossFriendThumbnail@2x.png"; sourceTree = "<group>"; };
+		015CB02216AE204500FEB8E7 /* GradientFriendThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GradientFriendThumbnail.png; path = Assets/Images/GradientFriendThumbnail.png; sourceTree = "<group>"; };
+		015CB02316AE204500FEB8E7 /* GradientFriendThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GradientFriendThumbnail@2x.png"; path = "Assets/Images/GradientFriendThumbnail@2x.png"; sourceTree = "<group>"; };
 		01677DF416554A7C00B1B1D8 /* MessageDragAndDrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MessageDragAndDrop@2x.png"; path = "Assets/Images/MessageDragAndDrop@2x.png"; sourceTree = "<group>"; };
 		01677DF616554AB500B1B1D8 /* ButtonBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBack.png; path = Assets/Images/ButtonBack.png; sourceTree = "<group>"; };
 		01677DF716554AB500B1B1D8 /* ButtonBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBack@2x.png"; path = "Assets/Images/ButtonBack@2x.png"; sourceTree = "<group>"; };
@@ -1285,6 +1293,10 @@
 		011CC658164A821600F02B6D /* Friends Page */ = {
 			isa = PBXGroup;
 			children = (
+				015CB02216AE204500FEB8E7 /* GradientFriendThumbnail.png */,
+				015CB02316AE204500FEB8E7 /* GradientFriendThumbnail@2x.png */,
+				015CB01E16AE1FD500FEB8E7 /* GlossFriendThumbnail.png */,
+				015CB01F16AE1FD500FEB8E7 /* GlossFriendThumbnail@2x.png */,
 				015CB01A16AE189700FEB8E7 /* BackgroundFriendThumbnail@2x.png */,
 				015CB01B16AE189700FEB8E7 /* BackgroundFriendThumbnail.png */,
 				015CB01016ADC07D00FEB8E7 /* PanelFriendsToolbar.png */,
@@ -2882,6 +2894,10 @@
 				015CB01316ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png in Resources */,
 				015CB01C16AE189700FEB8E7 /* BackgroundFriendThumbnail@2x.png in Resources */,
 				015CB01D16AE189700FEB8E7 /* BackgroundFriendThumbnail.png in Resources */,
+				015CB02016AE1FD500FEB8E7 /* GlossFriendThumbnail.png in Resources */,
+				015CB02116AE1FD500FEB8E7 /* GlossFriendThumbnail@2x.png in Resources */,
+				015CB02416AE204500FEB8E7 /* GradientFriendThumbnail.png in Resources */,
+				015CB02516AE204500FEB8E7 /* GradientFriendThumbnail@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
