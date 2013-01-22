@@ -30,14 +30,15 @@
 
 @property (nonatomic, assign) BOOL didNotSwipeMessageInbox;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
+@property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) AVAudioRecorder *avRecorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
+@property (nonatomic, strong) IBOutlet UIButton *messageInboxButton;
 @property (nonatomic, strong) IBOutlet UIButton *notificationsButton;
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
-@property (nonatomic, strong) IBOutlet UIButton *messageInboxButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
@@ -591,16 +592,30 @@
     self.notificationsButton.selected = FALSE;
 }
 
+// Keep just in case hold to record is back in fashion again
+//- (IBAction) recordTouchDown
+//{
+//    [self startRecording];
+//}
+//
+//
+//- (IBAction) recordTouchUp
+//{
+//    [self endRecording];
+//}
 
-- (IBAction) recordTouchDown
+- (IBAction) toggleRecording
 {
-    [self startRecording];
-}
-
-
-- (IBAction) recordTouchUp
-{
-    [self endRecording];
+    if (self.isRecording)
+    {
+        self.isRecording = FALSE;
+        [self endRecording];
+    }
+    else
+    {
+        self.isRecording = TRUE;
+        [self startRecording];
+    }
 }
 
 
