@@ -37,18 +37,27 @@
 @property (nonatomic, strong) AVAudioRecorder *avRecorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton *messageInboxButton;
+@property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *notificationsButton;
+@property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
+@property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
+@property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *followLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfNotificationsLabel;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfRocksLabel;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
+@property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) IBOutlet UIView *messageInboxView;
 @property (nonatomic, strong) IBOutlet UIView *shareMenuView;
+@property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 @property (nonatomic, strong) UISwipeGestureRecognizer *messageInboxSwipeLeftRecognizer;
@@ -169,6 +178,26 @@
     self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
     
     self.backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BackgroundGeneric"]];
+    
+    self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.followLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
+    self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
+    self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    
+    [self.videoWebView setBackgroundColor: [UIColor clearColor]];
+        [self.videoWebView setBackgroundColor: [UIColor whiteColor]];
+	[self.videoWebView setOpaque: NO];
+    
+    // TODO: Put this somewhere more sensible
+    [self loadWebViewWithJSAPIUsingYouTubeId: @"diP-o_JxysA"
+                                       width: 740
+                                      height: 416];
+    
+//    [self loadWebViewWithIFrameUsingVimeoId: @"55351724"
+//                                      width: 740
+//                                     height: 416];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -799,6 +828,166 @@
     {
         return NO;
     }
+}
+
+
+#pragma mark - Video view
+
+- (IBAction) userTouchedPreviousVideoButton: (id) sender
+{
+    
+}
+
+- (IBAction) userTouchedNextVideoButton: (id) sender
+{
+    
+}
+
+//    [self loadWebViewWithIFrameUsingYouTubeId: @"diP-o_JxysA"
+//                                        width: 475
+//                                       height: 267];
+
+//    [self loadWebViewWithJSAPIUsingYouTubeId: @"diP-o_JxysA"
+//                                       width: 475
+//                                      height: 267];
+
+//    [self loadWebViewWithIFrameUsingVimeoId: @"55351724"
+//                                      width: 475
+//                                     height: 267];
+
+
+
+- (void) loadWebViewWithIFrameUsingYouTubeId: (NSString *) videoId
+                                       width: (int) width
+                                      height: (int) height
+{
+    NSDictionary *parameterDictionary = @{@"autoplay" : @"1",
+    @"modestbranding" : @"1",
+    @"origin" : @"http://example.com\\",
+    @"showinfo" : @"0"};
+    
+    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
+    
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId, parameterString];
+    
+    [self.videoWebView loadHTMLString: iFrameHTML
+                              baseURL: nil];
+}
+
+- (void) loadWebViewWithJSAPIUsingYouTubeId: (NSString *) videoId
+                                      width: (int) width
+                                     height: (int) height
+{
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId];
+    
+    [self.videoWebView loadHTMLString: iFrameHTML
+                              baseURL: [NSURL URLWithString:@"http://www.youtube.com"]];
+    
+    self.videoWebView.mediaPlaybackRequiresUserAction = FALSE;
+}
+
+
+- (void) loadWebViewWithIFrameUsingVimeoId: (NSString *) videoId
+                                     width: (int) width
+                                    height: (int) height
+{
+    // api=1&player_id=player
+    NSDictionary *parameterDictionary = @{@"api" : @"0",
+    @"player_id" : @"player"};
+    
+    //    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
+    NSString *parameterString = @"";
+    
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, videoId, parameterString, width, height];
+    
+    [self.videoWebView loadHTMLString: iFrameHTML
+                              baseURL: nil];
+}
+
+
+//- (void) loadVideoViewWithURL: (NSString *) videoURLString
+//{
+//    NSURL *videoURL = [NSURL URLWithString: videoURLString];
+//    
+//    self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
+//    
+//    self.mainVideoPlayerController.shouldAutoplay = NO;
+//    [self.mainVideoPlayerController prepareToPlay];
+//    
+//    [[self.mainVideoPlayerController view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
+//    
+//    [self.videoPlaceholderView addSubview: [self.mainVideoPlayerController view]];
+//    
+//    [self.mainVideoPlayerController pause];
+//}
+
+
+
+- (NSString *) createParamStringFromDictionary: (NSDictionary *) params
+{
+    __block NSString *result = @"";
+    
+    [params enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop)
+     {
+         result = [result stringByAppendingFormat: @"%@=%@&", key, obj];
+     }];
+    
+    // Chop off last ampersand
+    result = [result substringToIndex: [result length] - 2];
+    return [result stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+}
+
+
+- (BOOL) webView: (UIWebView *) webView
+        shouldStartLoadWithRequest: (NSURLRequest *) request
+        navigationType: (UIWebViewNavigationType) navigationType
+{
+    // Break apart request URL
+    NSString *requestString = [[request URL] absoluteString];
+    NSArray *components = [requestString componentsSeparatedByString :@":"];
+    
+    // Check for your protocol
+    if ([components count] > 1 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"streamtest"])
+    {
+        // Look for specific actions
+        if ([(NSString *)[components objectAtIndex:1] isEqualToString: @"onReady"])
+        {
+            // Parameters can be found at [components objectAtIndex:n]
+            // where 'n' is the ordinal position of the colon-delimited parameter
+            
+            [self.videoWebView stringByEvaluatingJavaScriptFromString: @"helloWorld()"];
+        }
+        
+        // Return 'NO' to prevent navigation
+        return NO;
+    }
+    
+    // Return 'YES', navigate to requested URL as normal
+    return YES;
 }
 
 @end
