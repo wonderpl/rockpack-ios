@@ -565,6 +565,8 @@
 		01F8E76616B03462000D44B9 /* VimeoIFramePlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76316B03462000D44B9 /* VimeoIFramePlayer.html */; };
 		01F8E76716B03462000D44B9 /* YouTubeIFramePlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76416B03462000D44B9 /* YouTubeIFramePlayer.html */; };
 		01F8E76816B03462000D44B9 /* YouTubeJSAPIPlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76516B03462000D44B9 /* YouTubeJSAPIPlayer.html */; };
+		01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */; };
+		01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1215,6 +1217,9 @@
 		01F8E76316B03462000D44B9 /* VimeoIFramePlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = VimeoIFramePlayer.html; path = Assets/HTML/VimeoIFramePlayer.html; sourceTree = "<group>"; };
 		01F8E76416B03462000D44B9 /* YouTubeIFramePlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeIFramePlayer.html; path = Assets/HTML/YouTubeIFramePlayer.html; sourceTree = "<group>"; };
 		01F8E76516B03462000D44B9 /* YouTubeJSAPIPlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayer.html; path = Assets/HTML/YouTubeJSAPIPlayer.html; sourceTree = "<group>"; };
+		01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoViewerViewController.h; sourceTree = "<group>"; };
+		01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoViewerViewController.m; sourceTree = "<group>"; };
+		01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoViewerViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1829,6 +1834,7 @@
 			isa = PBXGroup;
 			children = (
 				01982563162ADEAD00216900 /* Abstract */,
+				01F8E77B16B039E6000D44B9 /* Universal */,
 				01982562162ADE5200216900 /* Bottom Tab */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				0199F1371672199F00E479C6 /* Home */,
@@ -2562,6 +2568,16 @@
 			name = HTML;
 			sourceTree = "<group>";
 		};
+		01F8E77B16B039E6000D44B9 /* Universal */ = {
+			isa = PBXGroup;
+			children = (
+				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
+				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
+				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
+			);
+			name = Universal;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3063,6 +3079,7 @@
 				01F8E76616B03462000D44B9 /* VimeoIFramePlayer.html in Resources */,
 				01F8E76716B03462000D44B9 /* YouTubeIFramePlayer.html in Resources */,
 				01F8E76816B03462000D44B9 /* YouTubeJSAPIPlayer.html in Resources */,
+				01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3172,6 +3189,7 @@
 				015CB01616AE039900FEB8E7 /* User.m in Sources */,
 				015CB01916AE03B200FEB8E7 /* _User.m in Sources */,
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
+				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
