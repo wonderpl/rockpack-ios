@@ -75,7 +75,11 @@
     [super viewDidLoad];
     
     // Wallpack tab
-    SYNHomeTopTabViewController *wallPackViewController = [[SYNHomeTopTabViewController alloc] init];
+    SYNHomeTopTabViewController *homeViewController = [[SYNHomeTopTabViewController alloc] init];
+    UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeViewController];
+    homeRootNavigationViewController.navigationBarHidden = TRUE;
+    homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
     // Channels tab
     SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
@@ -98,7 +102,7 @@
     SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
     
     // Using new array syntax
-    self.viewControllers = @[wallPackViewController,
+    self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
                              discoverViewController,
                              myRockpackRootNavigationViewController,

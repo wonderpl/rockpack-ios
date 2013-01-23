@@ -25,6 +25,7 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNVideoViewerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -559,6 +560,32 @@
     
     // Need to slide rockie talkie out
     [bottomTabViewController toggleShareMenu];
+}
+
+- (void) displayVideoViewer: (VideoInstance *) videoInstance
+{
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    
+    SYNVideoViewerViewController *videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
+    
+    videoViewerViewController.view.alpha = 0.0f;
+    [bottomTabViewController.view addSubview: videoViewerViewController.view];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+
+         videoViewerViewController.view.alpha = 1.0f;
+         
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 

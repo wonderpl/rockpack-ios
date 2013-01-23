@@ -8,6 +8,8 @@
 
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "VideoInstance.h"
+#import "Video.h"
 
 @interface SYNVideoViewerViewController ()
 
@@ -56,7 +58,11 @@
 	[self.videoWebView setOpaque: NO];
     
     // TODO: Put this somewhere more sensible
-    [self loadWebViewWithJSAPIUsingYouTubeId: @"diP-o_JxysA"
+//    [self loadWebViewWithJSAPIUsingYouTubeId: @"diP-o_JxysA"
+//                                       width: 740
+//                                      height: 416];
+    
+    [self loadWebViewWithJSAPIUsingYouTubeId: self.videoInstance.video.source
                                        width: 740
                                       height: 416];
     

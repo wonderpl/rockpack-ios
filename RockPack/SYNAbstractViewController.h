@@ -74,4 +74,6 @@
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
+- (void) displayVideoViewer: (VideoInstance *) videoInstance;
+
 @end

@@ -15,6 +15,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNVideoViewerViewController.h"
 
 @interface SYNHomeTopTabViewController ()
 
@@ -191,7 +192,10 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    DebugLog (@"Selecting image well cell does nothing");
+    // XXX
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    
+    [self displayVideoViewer: videoInstance];
 }
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
