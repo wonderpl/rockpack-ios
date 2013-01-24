@@ -259,7 +259,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         self.initialDragCenter = [sender locationInView: self.view];
         
         // Hardcoded for now, eeek!
-        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
+        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 73);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         

@@ -43,9 +43,9 @@
 @property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-@property (nonatomic, strong) UIButton *videoQueueAddButton;
 @property (nonatomic, strong) UIButton *videoQueueDeleteButton;
-@property (nonatomic, strong) UIButton *videoQueueShuffleButton;
+@property (nonatomic, strong) UIButton *videoQueueExistingButton;
+@property (nonatomic, strong) UIButton *videoQueueNewButton;
 @property (nonatomic, strong) UIImageView *videoQueueMessageView;
 @property (nonatomic, strong) UIImageView *videoQueuePanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
@@ -79,17 +79,18 @@
     {
         // Initialise common views
         // Overall view to slide in and out of view
-        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
+//        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
+        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 573+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
         
         // Panel view
-        self.videoQueuePanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, kVideoQueueEffectiveHeight)];
+        self.videoQueuePanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 115)];
         self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
         [self.videoQueueView addSubview: self.videoQueuePanelView];
         
         // Buttons
         
         self.videoQueueDeleteButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.videoQueueDeleteButton.frame = CGRectMake(786, 37, 50, 42);
+        self.videoQueueDeleteButton.frame = CGRectMake(949, 35, 50, 50);
         
         [self.videoQueueDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDelete.png"]
                                     forState: UIControlStateNormal];
@@ -103,31 +104,31 @@
         
         [self.videoQueueView addSubview: self.videoQueueDeleteButton];
         
-        self.videoQueueAddButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.videoQueueAddButton.frame = CGRectMake(850, 36, 50, 42);
+        self.videoQueueNewButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.videoQueueNewButton.frame = CGRectMake(663, 35, 50, 50);
         
-        [self.videoQueueAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAdd.png"]
+        [self.videoQueueNewButton setImage: [UIImage imageNamed: @"ButtonVideoWellNew.png"]
                                  forState: UIControlStateNormal];
         
-        [self.videoQueueAddButton setImage: [UIImage imageNamed: @"ButtonVideoWellAddHighlighted.png"]
+        [self.videoQueueNewButton setImage: [UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"]
                                  forState: UIControlStateSelected];
         
-        [self.videoQueueAddButton addTarget: self
+        [self.videoQueueNewButton addTarget: self
                                     action: @selector(createChannelFromVideoQueue)
                           forControlEvents: UIControlEventTouchUpInside];
         
-        [self.videoQueueView addSubview: self.videoQueueAddButton];
+        [self.videoQueueView addSubview: self.videoQueueNewButton];
         
-        self.videoQueueShuffleButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.videoQueueShuffleButton.frame = CGRectMake(913, 37, 50, 42);
+        self.videoQueueExistingButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        self.videoQueueExistingButton.frame = CGRectMake(806, 35, 50, 50);
         
-        [self.videoQueueShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffle.png"]
+        [self.videoQueueExistingButton setImage: [UIImage imageNamed: @"ButtonVideoWellExisting.png"]
                                      forState: UIControlStateNormal];
         
-        [self.videoQueueShuffleButton setImage: [UIImage imageNamed: @"ButtonVideoWellShuffleHighlighted.png"]
+        [self.videoQueueExistingButton setImage: [UIImage imageNamed: @"ButtonVideoWellExistingHighlighted.png"]
                                      forState: UIControlStateHighlighted];
         
-        [self.videoQueueView addSubview: self.videoQueueShuffleButton];
+        [self.videoQueueView addSubview: self.videoQueueExistingButton];
         
         // Message view
         self.videoQueueMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(156, 47, 411, 31)];
@@ -146,12 +147,12 @@
         
         // Need to create a layout first
         UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-        standardFlowLayout.itemSize = CGSizeMake(127.0f , 72.0f);
+        standardFlowLayout.itemSize = CGSizeMake(127.0f , 73.0f);
         standardFlowLayout.minimumInteritemSpacing = 0.0f;
         standardFlowLayout.minimumLineSpacing = 15.0f;
         standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(157, 26, 608, 72)
+        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(20, 26, 472, 73)
                                                           collectionViewLayout: standardFlowLayout];
         
         self.videoQueueCollectionView.delegate = self;
@@ -169,7 +170,7 @@
         [self.videoQueueView addSubview: self.videoQueueCollectionView];
         
         // Drop zone
-        self.dropZoneView = [[UIView alloc] initWithFrame: CGRectMake(14, 603, 125, 72)];
+        self.dropZoneView = [[UIView alloc] initWithFrame: CGRectMake(20, 640, 127, 73)];
         [self.videoQueueView addSubview: self.dropZoneView];
         
         [self.view addSubview: self.videoQueueView];
@@ -846,7 +847,7 @@
         
         // Hardcoded for now, eeek!
         // TODO: Unhardcode this
-        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
+        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 73);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
 //        self.draggedView.image = videoInstance.video.thumbnailImage;
@@ -1152,8 +1153,8 @@
     // If this is the first thing we are adding then fade out the message
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
-        self.videoQueueAddButton.enabled = TRUE;
-        self.videoQueueAddButton.selected = TRUE;
+        self.videoQueueNewButton.enabled = TRUE;
+        self.videoQueueNewButton.selected = TRUE;
         self.videoQueueDeleteButton.enabled = TRUE;
         
         [UIView animateWithDuration: kLargeVideoPanelAnimationDuration

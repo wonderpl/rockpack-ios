@@ -100,7 +100,7 @@
 
 // Effective height (exlcuding shadow) of the image well
 //#define kVideoQueueEffectiveHeight 99
-#define kVideoQueueEffectiveHeight 111
+#define kVideoQueueEffectiveHeight 103
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
