@@ -36,6 +36,12 @@
 #define kSaveSynchronously TRUE
 #define kSaveAsynchronously FALSE
 
+
+// Notifications
+
+// One the APIs imported some new data - we will need to be more specific at some stage.
+#define kDataUpdated @"kDataUpdated"
+
 // Settings
 
 #define kDownloadedVideoContentBool @"kDownloadedVideoContentBool"

@@ -37,6 +37,11 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+											                         selector: @selector(reloadCollectionViews)
+												                             name: kDataUpdated
+											                           object: nil];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -48,6 +53,13 @@
     
     [appDelegate.networkEngine updateHomeScreen];
     [appDelegate.networkEngine updateChannelScreen];
+}
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+													                                name: kDataUpdated
+												                              object: nil];
 }
 
 - (BOOL) hasVideoQueue
@@ -80,6 +92,11 @@
     return nil;
 }
 
+
+- (void) reloadCollectionViews
+{
+    [self.videoThumbnailCollectionView reloadData];
+}
 
 #pragma mark - Collection view support
 

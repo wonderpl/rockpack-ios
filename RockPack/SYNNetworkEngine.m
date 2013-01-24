@@ -134,16 +134,8 @@
                  
                  [self.appDelegate saveContext: TRUE];
                  
-//                 NSEntityDescription *videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-//                                                                        inManagedObjectContext: self.importManagedObjectContext];
-//                 
-//                 // Now we need to see if this object already exists, and if so return it and if not create it
-//                 NSFetchRequest *videoInstanceFetchRequest = [[NSFetchRequest alloc] init];
-//                 [videoInstanceFetchRequest setEntity: videoInstanceEntity];
-//                 
-//                 NSArray *matchingVideoInstanceEntries = [self.importManagedObjectContext executeFetchRequest: videoInstanceFetchRequest
-//                                                                                                  error: &error];
-//                 NSLog (@"video instances %@", matchingVideoInstanceEntries);
+                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+                                                                     object: nil];
              }
              else
              {
@@ -227,16 +219,8 @@
                  
                  [appDelegate saveContext: TRUE];
                  
-                 NSEntityDescription *channelEntity = [NSEntityDescription entityForName: @"Channel"
-                                                                        inManagedObjectContext: importManagedObjectContext];
-                 
-                 // Now we need to see if this object already exists, and if so return it and if not create it
-                 NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-                 [channelFetchRequest setEntity: channelEntity];
-                 
-                 NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                             error: &error];
-                 NSLog (@"channel instances %@", matchingChannelEntries);
+                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+                                                                     object: nil];
              }
              else
              {
