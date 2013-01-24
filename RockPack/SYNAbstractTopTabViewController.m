@@ -46,7 +46,9 @@
 //    self.topTabHighlightedView.image = [UIImage imageNamed: @"TabTopHighlighted.png"];
     
     // Just put placeholder image in for now
-    self.topTabView = [[UIImageView alloc] initWithFrame: CGRectMake (0, 79, 1024, 65)];
+    self.topTabView = [[UIImageView alloc] initWithFrame: CGRectMake (0, 44, 1024, 79)];
+    self.topTabView.image = [UIImage imageNamed: @"CategoryBar.png"];
+    [self.view addSubview: self.topTabView];
 }
 
 
