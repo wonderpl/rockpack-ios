@@ -16,7 +16,7 @@
 #import "SYNFriendsRootViewController.h"
 #import "SYNHomeRootViewController.h"
 #import "SYNMovableView.h"
-#import "SYNOldYouRootViewController.h"
+#import "SYNYouRootViewController.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoDownloadEngine.h"
 #import "SYNVideoViewerViewController.h"
@@ -75,42 +75,42 @@
     [super viewDidLoad];
     
     // Wallpack tab
-    SYNHomeRootViewController *homeViewController = [[SYNHomeRootViewController alloc] init];
-    UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeViewController];
+    SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] init];
+    UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;
     homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
     homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
     // Channels tab
-    SYNChannelsRootViewController *channelsViewController = [[SYNChannelsRootViewController alloc] init];
-    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsViewController];
+    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] init];
+    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
     channelsRootNavigationViewController.navigationBarHidden = TRUE;
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
 
     // Discover tab 
-    SYNVideosRootViewController *videosViewController = [[SYNVideosRootViewController alloc] init];
+    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] init];
     
     // My Rockpack tab
-    SYNOldYouRootViewController *myRockpackViewController = [[SYNOldYouRootViewController alloc] init];
-    UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
-    myRockpackRootNavigationViewController.navigationBarHidden = TRUE;
-    myRockpackRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    myRockpackRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] init];
+    UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
+    youRootRootNavigationViewController.navigationBarHidden = TRUE;
+    youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // Friends tab
-    SYNFriendsRootViewController *friendsViewController = [[SYNFriendsRootViewController alloc] init];
+    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] init];
     
     // Using new array syntax
     self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
-                             videosViewController,
-                             myRockpackRootNavigationViewController,
-                             friendsViewController];
+                             videosRootViewController,
+                             youRootRootNavigationViewController,
+                             friendsRootViewController];
 
     _selectedIndex = NSNotFound;
     
-    self.selectedViewController = videosViewController;
+    self.selectedViewController = videosRootViewController;
     
     // Now fade in gracefully from splash screen (do this here as opposed to the app delegate so that the orientation is known)
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];

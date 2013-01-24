@@ -142,8 +142,6 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
          // Contract thumbnail view
          self.view.alpha = 0.0f;
          channelVC.view.alpha = 1.0f;
-         self.topTabView.alpha = 0.0f;
-         self.topTabHighlightedView.alpha = 0.0f;
          self.pinchedView.alpha = 0.0f;
          self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
          

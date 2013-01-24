@@ -58,6 +58,7 @@
 		0142ED8116B1439B008694DA /* CategoryBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED7F16B1439B008694DA /* CategoryBar.png */; };
 		0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8016B1439B008694DA /* CategoryBar@2x.png */; };
 		0142ED8B16B19FBE008694DA /* SYNYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8916B19FBE008694DA /* SYNYouRootViewController.xib */; };
+		0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */; };
 		014A450C1668C8FD0091E4E5 /* OverlayChannelCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450B1668C8FD0091E4E5 /* OverlayChannelCreate.png */; };
 		014A45231668C9180091E4E5 /* OverlayChannelCreate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450E1668C9180091E4E5 /* OverlayChannelCreate@2x.png */; };
 		014A45241668C9180091E4E5 /* ChannelCreationCover10.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450F1668C9180091E4E5 /* ChannelCreationCover10.png */; };
@@ -1411,7 +1412,7 @@
 			name = "Camera Overlay";
 			sourceTree = "<group>";
 		};
-		011CC692164C5C1100F02B6D /* Rockie Talkie */ = {
+		011CC692164C5C1100F02B6D /* Sliding panels */ = {
 			isa = PBXGroup;
 			children = (
 				01F8E72F16AEFEA6000D44B9 /* PanelInbox.png */,
@@ -1419,7 +1420,7 @@
 				01F8E72916AEE330000D44B9 /* PanelShare.png */,
 				01F8E72A16AEE330000D44B9 /* PanelShare@2x.png */,
 			);
-			name = "Rockie Talkie";
+			name = "Sliding panels";
 			sourceTree = "<group>";
 		};
 		012632C7162DF4C40009FF9C /* Layout Engine Support */ = {
@@ -1800,12 +1801,11 @@
 				01F8E73316AFF426000D44B9 /* Full screen video */,
 				01A3EC3416AED7F6008DCE08 /* Popover */,
 				01B0A969166CEC3400CAA235 /* Cell Assets */,
-				011CC692164C5C1100F02B6D /* Rockie Talkie */,
+				011CC692164C5C1100F02B6D /* Sliding panels */,
 				018919F51672235000AB07BB /* Home Page */,
 				0106E82A1651119000DC5173 /* Wallpack Page */,
 				01B7F76C164FE464009C5CCD /* Channels Page */,
 				01C3F71616505A7700CE368C /* Videos Page */,
-				019E81F8165402EE00744A03 /* My Rockpack Page */,
 				011CC658164A821600F02B6D /* Friends Page */,
 				01363EA3162F521D00FFAA09 /* Messages */,
 				01E98D6E165C13610079FD7A /* Slider */,
@@ -2185,13 +2185,6 @@
 				019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */,
 			);
 			name = OAuth2;
-			sourceTree = "<group>";
-		};
-		019E81F8165402EE00744A03 /* My Rockpack Page */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "My Rockpack Page";
 			sourceTree = "<group>";
 		};
 		01A3EC2A16AECE0F008DCE08 /* Popover */ = {
@@ -3204,6 +3197,7 @@
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
 				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
 				01702F4616B1386100FF3D4D /* SYNVideosRootViewController.m in Sources */,
+				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

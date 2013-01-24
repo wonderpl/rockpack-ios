@@ -11,7 +11,6 @@
 @interface UIFont (SYNFont)
 
 + (UIFont *) rockpackFontOfSize: (CGFloat) fontSize;
-+ (UIFont *) mediumRockpackFontOfSize: (CGFloat) fontSize;
 + (UIFont *) boldRockpackFontOfSize: (CGFloat) fontSize;
 
 @end

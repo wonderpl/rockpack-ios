@@ -24,10 +24,4 @@
 }
 
 
-+ (UIFont *) mediumRockpackFontOfSize: (CGFloat) fontSize
-{
-    return [UIFont fontWithName: @"DINNextLTPro-Medium"
-                           size: fontSize];
-}
-
 @end
