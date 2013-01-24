@@ -11,14 +11,14 @@
 #import "SYNChannelThumbnailCell.h"
 #import "SYNMyRockpackChannelDetailViewController.h"
 #import "SYNMyRockpackMovieViewController.h"
-#import "SYNMyRockpackViewController.h"
+#import "SYNYouRootViewController.h"
 #import "SYNSwitch.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
-@interface SYNMyRockpackViewController () <UICollectionViewDataSource,
+@interface SYNYouRootViewController () <UICollectionViewDataSource,
                                            UICollectionViewDelegateFlowLayout,
                                            UIScrollViewDelegate>
 
@@ -37,7 +37,7 @@
 
 @end
 
-@implementation SYNMyRockpackViewController
+@implementation SYNYouRootViewController
 
 #pragma mark - View lifecycle
 

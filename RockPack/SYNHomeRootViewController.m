@@ -11,13 +11,13 @@
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
 #import "SYNHomeSectionHeaderView.h"
-#import "SYNHomeTopTabViewController.h"
+#import "SYNHomeRootViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "SYNVideoViewerViewController.h"
 
-@interface SYNHomeTopTabViewController ()
+@interface SYNHomeRootViewController ()
 
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
@@ -27,7 +27,7 @@
 @end
 
 
-@implementation SYNHomeTopTabViewController
+@implementation SYNHomeRootViewController
 
 #pragma mark - View lifecycle
 

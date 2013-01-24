@@ -11,12 +11,12 @@
 #import "MKNetworkEngine.h"
 #import "SYNActivityPopoverViewController.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelsTopTabViewController.h"
-#import "SYNDiscoverTopTabViewController.h"
-#import "SYNFriendsViewController.h"
-#import "SYNHomeTopTabViewController.h"
+#import "SYNChannelsRootViewController.h"
+#import "SYNVideosRootViewController.h"
+#import "SYNFriendsRootViewController.h"
+#import "SYNHomeRootViewController.h"
 #import "SYNMovableView.h"
-#import "SYNMyRockpackViewController.h"
+#import "SYNYouRootViewController.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoDownloadEngine.h"
 #import "SYNVideoViewerViewController.h"
@@ -75,42 +75,42 @@
     [super viewDidLoad];
     
     // Wallpack tab
-    SYNHomeTopTabViewController *homeViewController = [[SYNHomeTopTabViewController alloc] init];
+    SYNHomeRootViewController *homeViewController = [[SYNHomeRootViewController alloc] init];
     UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;
     homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
     homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
     // Channels tab
-    SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
+    SYNChannelsRootViewController *channelsViewController = [[SYNChannelsRootViewController alloc] init];
     UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsViewController];
     channelsRootNavigationViewController.navigationBarHidden = TRUE;
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
 
     // Discover tab 
-    SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
+    SYNVideosRootViewController *videosViewController = [[SYNVideosRootViewController alloc] init];
     
     // My Rockpack tab
-    SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
+    SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] init];
     UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
     myRockpackRootNavigationViewController.navigationBarHidden = TRUE;
     myRockpackRootNavigationViewController.view.autoresizesSubviews = TRUE;
     myRockpackRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // Friends tab
-    SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
+    SYNFriendsRootViewController *friendsViewController = [[SYNFriendsRootViewController alloc] init];
     
     // Using new array syntax
     self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
-                             discoverViewController,
+                             videosViewController,
                              myRockpackRootNavigationViewController,
                              friendsViewController];
 
     _selectedIndex = NSNotFound;
     
-    self.selectedViewController = discoverViewController;
+    self.selectedViewController = videosViewController;
     
     // Now fade in gracefully from splash screen (do this here as opposed to the app delegate so that the orientation is known)
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];

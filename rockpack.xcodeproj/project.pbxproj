@@ -55,6 +55,8 @@
 		01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */; };
 		01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */; };
 		01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */; };
+		0142ED8116B1439B008694DA /* CategoryBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED7F16B1439B008694DA /* CategoryBar.png */; };
+		0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8016B1439B008694DA /* CategoryBar@2x.png */; };
 		014A450C1668C8FD0091E4E5 /* OverlayChannelCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450B1668C8FD0091E4E5 /* OverlayChannelCreate.png */; };
 		014A45231668C9180091E4E5 /* OverlayChannelCreate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450E1668C9180091E4E5 /* OverlayChannelCreate@2x.png */; };
 		014A45241668C9180091E4E5 /* ChannelCreationCover10.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450F1668C9180091E4E5 /* ChannelCreationCover10.png */; };
@@ -78,11 +80,11 @@
 		014A45361668C9180091E4E5 /* ChannelCreationCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A45211668C9180091E4E5 /* ChannelCreationCover1.png */; };
 		014A45371668C9180091E4E5 /* ChannelCreationCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A45221668C9180091E4E5 /* ChannelCreationCover1@2x.png */; };
 		014A456816691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456716691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m */; };
-		014A4570166A39E60091E4E5 /* SYNChannelsTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456E166A39E60091E4E5 /* SYNChannelsTopTabViewController.m */; };
-		014A4571166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 014A456F166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib */; };
+		014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */; };
+		014A4571166A39E60091E4E5 /* SYNChannelsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */; };
 		014A4575166A56720091E4E5 /* SYNChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A4573166A56720091E4E5 /* SYNChannelsDetailViewController.m */; };
-		015CB00816AD76B100FEB8E7 /* SYNFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00616AD76B100FEB8E7 /* SYNFriendsViewController.m */; };
-		015CB00916AD76B100FEB8E7 /* SYNFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00716AD76B100FEB8E7 /* SYNFriendsViewController.xib */; };
+		015CB00816AD76B100FEB8E7 /* SYNFriendsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */; };
+		015CB00916AD76B100FEB8E7 /* SYNFriendsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */; };
 		015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00C16AD932000FEB8E7 /* SYNFriendThumbnailCell.m */; };
 		015CB00F16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00E16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib */; };
 		015CB01216ADC07D00FEB8E7 /* PanelFriendsToolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 015CB01016ADC07D00FEB8E7 /* PanelFriendsToolbar.png */; };
@@ -186,6 +188,8 @@
 		01677F1316554CFD00B1B1D8 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1216554CFD00B1B1D8 /* iTunesArtwork */; };
 		01677F1616554D2700B1B1D8 /* DINNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1416554D2700B1B1D8 /* DINNextLTPro-Bold.otf */; };
 		01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */; };
+		01702F4616B1386100FF3D4D /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01702F4416B1386100FF3D4D /* SYNVideosRootViewController.m */; };
+		01702F4716B1386100FF3D4D /* SYNVideosRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01702F4516B1386100FF3D4D /* SYNVideosRootViewController.xib */; };
 		0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */; };
 		0170717516554E9B00A3C7C4 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716416554E9B00A3C7C4 /* NSDate+RFC1123.m */; };
 		0170717616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m */; };
@@ -255,8 +259,8 @@
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
 		0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */; };
 		0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F135167215BE00E479C6 /* NSData+MKBase64.m */; };
-		0199F13B16721A4500E479C6 /* SYNHomeTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F13916721A4500E479C6 /* SYNHomeTopTabViewController.m */; };
-		0199F13C16721A4500E479C6 /* SYNHomeTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0199F13A16721A4500E479C6 /* SYNHomeTopTabViewController.xib */; };
+		0199F13B16721A4500E479C6 /* SYNHomeRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F13916721A4500E479C6 /* SYNHomeRootViewController.m */; };
+		0199F13C16721A4500E479C6 /* SYNHomeRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0199F13A16721A4500E479C6 /* SYNHomeRootViewController.xib */; };
 		019E6A5A165FD7D1002B312A /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A59165FD7D1002B312A /* SSKeychain.m */; };
 		019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A5C165FD800002B312A /* MBProgressHUD.m */; };
 		019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */; };
@@ -376,11 +380,6 @@
 		019E82EC1654051600744A03 /* ChannelWallpaper9.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82971654051600744A03 /* ChannelWallpaper9.png */; };
 		019E82ED1654051600744A03 /* ChannelWallpaperGeneric.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82981654051600744A03 /* ChannelWallpaperGeneric.png */; };
 		019E82EE1654051600744A03 /* ChannelWallpaperGeneric@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82991654051600744A03 /* ChannelWallpaperGeneric@2x.png */; };
-		019E82F61654055D00744A03 /* BackgroundMainVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82EF1654055D00744A03 /* BackgroundMainVideo@2x.png */; };
-		019E82F91654055D00744A03 /* OverlayGlossThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82F21654055D00744A03 /* OverlayGlossThumbnail.png */; };
-		019E82FA1654055D00744A03 /* OverlayGlossThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82F31654055D00744A03 /* OverlayGlossThumbnail@2x.png */; };
-		019E82FB1654055D00744A03 /* PanelLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82F41654055D00744A03 /* PanelLargeVideoView.png */; };
-		019E82FC1654055D00744A03 /* PanelLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82F51654055D00744A03 /* PanelLargeVideoView@2x.png */; };
 		019E8324165405E500744A03 /* Avatar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82FD165405E500744A03 /* Avatar1.png */; };
 		019E8325165405E500744A03 /* Avatar1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82FE165405E500744A03 /* Avatar1@2x.png */; };
 		019E8326165405E500744A03 /* Avatar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82FF165405E500744A03 /* Avatar2.png */; };
@@ -511,8 +510,8 @@
 		01E428161666671D009B941F /* Interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280E1666671D009B941F /* Interpolator.cpp */; };
 		01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4281916666F09009B941F /* SYNChannelSelectorCell.m */; };
 		01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */; };
-		01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */; };
-		01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */; };
+		01E8AF1D16638A7600056DBF /* SYNYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNYouRootViewController.m */; };
+		01E8AF1E16638A7600056DBF /* SYNYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNYouRootViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
 		01E98D7F165C13F10079FD7A /* EddieTaylor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7D165C13F10079FD7A /* EddieTaylor@2x.png */; };
 		01E98D84165C142C0079FD7A /* WallpacksHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D80165C142C0079FD7A /* WallpacksHeader.png */; };
@@ -567,6 +566,8 @@
 		01F8E76816B03462000D44B9 /* YouTubeJSAPIPlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76516B03462000D44B9 /* YouTubeJSAPIPlayer.html */; };
 		01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */; };
 		01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */; };
+		01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78116B0554B000D44B9 /* ButtonClose.png */; };
+		01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -626,6 +627,8 @@
 		01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackCell.xib; sourceTree = "<group>"; };
 		01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackCell.h; sourceTree = "<group>"; };
 		01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackCell.m; sourceTree = "<group>"; };
+		0142ED7F16B1439B008694DA /* CategoryBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategoryBar.png; sourceTree = "<group>"; };
+		0142ED8016B1439B008694DA /* CategoryBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategoryBar@2x.png"; sourceTree = "<group>"; };
 		014A450B1668C8FD0091E4E5 /* OverlayChannelCreate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OverlayChannelCreate.png; path = Assets/Images/OverlayChannelCreate.png; sourceTree = "<group>"; };
 		014A450E1668C9180091E4E5 /* OverlayChannelCreate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OverlayChannelCreate@2x.png"; path = "Assets/Images/OverlayChannelCreate@2x.png"; sourceTree = "<group>"; };
 		014A450F1668C9180091E4E5 /* ChannelCreationCover10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCreationCover10.png; path = Assets/Images/ChannelCreationCover10.png; sourceTree = "<group>"; };
@@ -650,14 +653,14 @@
 		014A45221668C9180091E4E5 /* ChannelCreationCover1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCreationCover1@2x.png"; path = "Assets/Images/ChannelCreationCover1@2x.png"; sourceTree = "<group>"; };
 		014A456616691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXReorderableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		014A456716691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXReorderableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
-		014A456D166A39E60091E4E5 /* SYNChannelsTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsTopTabViewController.h; sourceTree = "<group>"; };
-		014A456E166A39E60091E4E5 /* SYNChannelsTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsTopTabViewController.m; sourceTree = "<group>"; };
-		014A456F166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsTopTabViewController.xib; sourceTree = "<group>"; };
+		014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsRootViewController.h; sourceTree = "<group>"; };
+		014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsRootViewController.m; sourceTree = "<group>"; };
+		014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsRootViewController.xib; sourceTree = "<group>"; };
 		014A4572166A56720091E4E5 /* SYNChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDetailViewController.h; sourceTree = "<group>"; };
 		014A4573166A56720091E4E5 /* SYNChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDetailViewController.m; sourceTree = "<group>"; };
-		015CB00516AD76B100FEB8E7 /* SYNFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsViewController.h; sourceTree = "<group>"; };
-		015CB00616AD76B100FEB8E7 /* SYNFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsViewController.m; sourceTree = "<group>"; };
-		015CB00716AD76B100FEB8E7 /* SYNFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsViewController.xib; sourceTree = "<group>"; };
+		015CB00516AD76B100FEB8E7 /* SYNFriendsRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsRootViewController.h; sourceTree = "<group>"; };
+		015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsRootViewController.m; sourceTree = "<group>"; };
+		015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsRootViewController.xib; sourceTree = "<group>"; };
 		015CB00B16AD932000FEB8E7 /* SYNFriendThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendThumbnailCell.h; sourceTree = "<group>"; };
 		015CB00C16AD932000FEB8E7 /* SYNFriendThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendThumbnailCell.m; sourceTree = "<group>"; };
 		015CB00E16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendThumbnailCell.xib; sourceTree = "<group>"; };
@@ -767,6 +770,9 @@
 		01677F1216554CFD00B1B1D8 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Assets/Images/iTunesArtwork; sourceTree = "<group>"; };
 		01677F1416554D2700B1B1D8 /* DINNextLTPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DINNextLTPro-Bold.otf"; path = "Assets/Fonts/DINNextLTPro-Bold.otf"; sourceTree = "<group>"; };
 		01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DINNextLTPro-Regular.otf"; path = "Assets/Fonts/DINNextLTPro-Regular.otf"; sourceTree = "<group>"; };
+		01702F4316B1386100FF3D4D /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
+		01702F4416B1386100FF3D4D /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
+		01702F4516B1386100FF3D4D /* SYNVideosRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideosRootViewController.xib; sourceTree = "<group>"; };
 		0170715F16554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAlert+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
 		0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
 		0170716316554E9B00A3C7C4 /* NSDate+RFC1123.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RFC1123.h"; sourceTree = "<group>"; };
@@ -862,9 +868,9 @@
 		0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCollectionBackgroundView.m; sourceTree = "<group>"; };
 		0199F134167215BE00E479C6 /* NSData+MKBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MKBase64.h"; sourceTree = "<group>"; };
 		0199F135167215BE00E479C6 /* NSData+MKBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MKBase64.m"; sourceTree = "<group>"; };
-		0199F13816721A4500E479C6 /* SYNHomeTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeTopTabViewController.h; sourceTree = "<group>"; };
-		0199F13916721A4500E479C6 /* SYNHomeTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeTopTabViewController.m; sourceTree = "<group>"; };
-		0199F13A16721A4500E479C6 /* SYNHomeTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeTopTabViewController.xib; sourceTree = "<group>"; };
+		0199F13816721A4500E479C6 /* SYNHomeRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeRootViewController.h; sourceTree = "<group>"; };
+		0199F13916721A4500E479C6 /* SYNHomeRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeRootViewController.m; sourceTree = "<group>"; };
+		0199F13A16721A4500E479C6 /* SYNHomeRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNHomeRootViewController.xib; sourceTree = "<group>"; };
 		019E6A58165FD7D1002B312A /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = sskeychain/SSKeychain.h; sourceTree = SOURCE_ROOT; };
 		019E6A59165FD7D1002B312A /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = sskeychain/SSKeychain.m; sourceTree = SOURCE_ROOT; };
 		019E6A5B165FD800002B312A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
@@ -1000,11 +1006,6 @@
 		019E82971654051600744A03 /* ChannelWallpaper9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper9.png; path = Assets/Images/ChannelWallpaper9.png; sourceTree = "<group>"; };
 		019E82981654051600744A03 /* ChannelWallpaperGeneric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaperGeneric.png; path = Assets/Images/ChannelWallpaperGeneric.png; sourceTree = "<group>"; };
 		019E82991654051600744A03 /* ChannelWallpaperGeneric@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelWallpaperGeneric@2x.png"; path = "Assets/Images/ChannelWallpaperGeneric@2x.png"; sourceTree = "<group>"; };
-		019E82EF1654055D00744A03 /* BackgroundMainVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundMainVideo@2x.png"; path = "Assets/Images/BackgroundMainVideo@2x.png"; sourceTree = "<group>"; };
-		019E82F21654055D00744A03 /* OverlayGlossThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OverlayGlossThumbnail.png; path = Assets/Images/OverlayGlossThumbnail.png; sourceTree = "<group>"; };
-		019E82F31654055D00744A03 /* OverlayGlossThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OverlayGlossThumbnail@2x.png"; path = "Assets/Images/OverlayGlossThumbnail@2x.png"; sourceTree = "<group>"; };
-		019E82F41654055D00744A03 /* PanelLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelLargeVideoView.png; path = Assets/Images/PanelLargeVideoView.png; sourceTree = "<group>"; };
-		019E82F51654055D00744A03 /* PanelLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelLargeVideoView@2x.png"; path = "Assets/Images/PanelLargeVideoView@2x.png"; sourceTree = "<group>"; };
 		019E82FD165405E500744A03 /* Avatar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar1.png; path = Assets/Images/Avatar1.png; sourceTree = "<group>"; };
 		019E82FE165405E500744A03 /* Avatar1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar1@2x.png"; path = "Assets/Images/Avatar1@2x.png"; sourceTree = "<group>"; };
 		019E82FF165405E500744A03 /* Avatar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar2.png; path = Assets/Images/Avatar2.png; sourceTree = "<group>"; };
@@ -1160,9 +1161,9 @@
 		01E4281816666F09009B941F /* SYNChannelSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelSelectorCell.h; sourceTree = "<group>"; };
 		01E4281916666F09009B941F /* SYNChannelSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelSelectorCell.m; sourceTree = "<group>"; };
 		01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelSelectorCell.xib; sourceTree = "<group>"; };
-		01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackViewController.h; sourceTree = "<group>"; };
-		01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackViewController.m; sourceTree = "<group>"; };
-		01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackViewController.xib; sourceTree = "<group>"; };
+		01E8AF1A16638A7600056DBF /* SYNYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouRootViewController.h; sourceTree = "<group>"; };
+		01E8AF1B16638A7600056DBF /* SYNYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouRootViewController.m; sourceTree = "<group>"; };
+		01E8AF1C16638A7600056DBF /* SYNYouRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNYouRootViewController.xib; sourceTree = "<group>"; };
 		01E98D7C165C13F10079FD7A /* EddieTaylor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EddieTaylor.png; path = Assets/Images/EddieTaylor.png; sourceTree = "<group>"; };
 		01E98D7D165C13F10079FD7A /* EddieTaylor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EddieTaylor@2x.png"; path = "Assets/Images/EddieTaylor@2x.png"; sourceTree = "<group>"; };
 		01E98D80165C142C0079FD7A /* WallpacksHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WallpacksHeader.png; path = Assets/Images/WallpacksHeader.png; sourceTree = "<group>"; };
@@ -1220,6 +1221,8 @@
 		01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoViewerViewController.h; sourceTree = "<group>"; };
 		01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoViewerViewController.m; sourceTree = "<group>"; };
 		01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoViewerViewController.xib; sourceTree = "<group>"; };
+		01F8E78116B0554B000D44B9 /* ButtonClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonClose.png; path = Assets/Images/ButtonClose.png; sourceTree = "<group>"; };
+		01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonClose@2x.png"; path = "Assets/Images/ButtonClose@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1797,7 +1800,7 @@
 				018919F51672235000AB07BB /* Home Page */,
 				0106E82A1651119000DC5173 /* Wallpack Page */,
 				01B7F76C164FE464009C5CCD /* Channels Page */,
-				01C3F71616505A7700CE368C /* Discovery Page */,
+				01C3F71616505A7700CE368C /* Videos Page */,
 				019E81F8165402EE00744A03 /* My Rockpack Page */,
 				011CC658164A821600F02B6D /* Friends Page */,
 				01363EA3162F521D00FFAA09 /* Messages */,
@@ -1839,8 +1842,8 @@
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				0199F1371672199F00E479C6 /* Home */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
-				0198255F162ADE2900216900 /* Video (Discover) */,
-				01982560162ADE3300216900 /* My Rockpack */,
+				0198255F162ADE2900216900 /* Videos */,
+				01982560162ADE3300216900 /* You */,
 				01982561162ADE4000216900 /* Friends */,
 			);
 			name = "View Controllers";
@@ -2023,37 +2026,40 @@
 			name = Panels;
 			sourceTree = "<group>";
 		};
-		0198255F162ADE2900216900 /* Video (Discover) */ = {
+		0198255F162ADE2900216900 /* Videos */ = {
 			isa = PBXGroup;
 			children = (
+				01702F4316B1386100FF3D4D /* SYNVideosRootViewController.h */,
+				01702F4416B1386100FF3D4D /* SYNVideosRootViewController.m */,
+				01702F4516B1386100FF3D4D /* SYNVideosRootViewController.xib */,
 				012632F1162E130C0009FF9C /* SYNDiscoverTopTabViewController.h */,
 				012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */,
 				012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */,
 			);
-			name = "Video (Discover)";
+			name = Videos;
 			sourceTree = "<group>";
 		};
-		01982560162ADE3300216900 /* My Rockpack */ = {
+		01982560162ADE3300216900 /* You */ = {
 			isa = PBXGroup;
 			children = (
-				01E8AF1A16638A7600056DBF /* SYNMyRockpackViewController.h */,
-				01E8AF1B16638A7600056DBF /* SYNMyRockpackViewController.m */,
-				01E8AF1C16638A7600056DBF /* SYNMyRockpackViewController.xib */,
+				01E8AF1A16638A7600056DBF /* SYNYouRootViewController.h */,
+				01E8AF1B16638A7600056DBF /* SYNYouRootViewController.m */,
+				01E8AF1C16638A7600056DBF /* SYNYouRootViewController.xib */,
 				01E427F4166551F6009B941F /* SYNMyRockpackMovieViewController.h */,
 				01E427F5166551F6009B941F /* SYNMyRockpackMovieViewController.m */,
 				01E427F6166551F6009B941F /* SYNMyRockpackMovieViewController.xib */,
 				01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */,
 				01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */,
 			);
-			name = "My Rockpack";
+			name = You;
 			sourceTree = "<group>";
 		};
 		01982561162ADE4000216900 /* Friends */ = {
 			isa = PBXGroup;
 			children = (
-				015CB00516AD76B100FEB8E7 /* SYNFriendsViewController.h */,
-				015CB00616AD76B100FEB8E7 /* SYNFriendsViewController.m */,
-				015CB00716AD76B100FEB8E7 /* SYNFriendsViewController.xib */,
+				015CB00516AD76B100FEB8E7 /* SYNFriendsRootViewController.h */,
+				015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */,
+				015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */,
 				0198254B162A204A00216900 /* SYNOldFriendsViewController.h */,
 				0198254C162A204A00216900 /* SYNOldFriendsViewController.m */,
 				0198254D162A204A00216900 /* SYNOldFriendsViewController.xib */,
@@ -2149,9 +2155,9 @@
 		0199F1371672199F00E479C6 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				0199F13816721A4500E479C6 /* SYNHomeTopTabViewController.h */,
-				0199F13916721A4500E479C6 /* SYNHomeTopTabViewController.m */,
-				0199F13A16721A4500E479C6 /* SYNHomeTopTabViewController.xib */,
+				0199F13816721A4500E479C6 /* SYNHomeRootViewController.h */,
+				0199F13916721A4500E479C6 /* SYNHomeRootViewController.m */,
+				0199F13A16721A4500E479C6 /* SYNHomeRootViewController.xib */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -2293,9 +2299,9 @@
 		01B7F75B164FB7A7009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
-				014A456D166A39E60091E4E5 /* SYNChannelsTopTabViewController.h */,
-				014A456E166A39E60091E4E5 /* SYNChannelsTopTabViewController.m */,
-				014A456F166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib */,
+				014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */,
+				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
+				014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */,
 				014A4572166A56720091E4E5 /* SYNChannelsDetailViewController.h */,
 				014A4573166A56720091E4E5 /* SYNChannelsDetailViewController.m */,
 			);
@@ -2397,9 +2403,11 @@
 			name = "Channels Page";
 			sourceTree = "<group>";
 		};
-		01C3F71616505A7700CE368C /* Discovery Page */ = {
+		01C3F71616505A7700CE368C /* Videos Page */ = {
 			isa = PBXGroup;
 			children = (
+				0142ED7F16B1439B008694DA /* CategoryBar.png */,
+				0142ED8016B1439B008694DA /* CategoryBar@2x.png */,
 				014A450B1668C8FD0091E4E5 /* OverlayChannelCreate.png */,
 				014A450E1668C9180091E4E5 /* OverlayChannelCreate@2x.png */,
 				014A450F1668C9180091E4E5 /* ChannelCreationCover10.png */,
@@ -2422,13 +2430,8 @@
 				014A45201668C9180091E4E5 /* ChannelCreationCover2@2x.png */,
 				014A45211668C9180091E4E5 /* ChannelCreationCover1.png */,
 				014A45221668C9180091E4E5 /* ChannelCreationCover1@2x.png */,
-				019E82EF1654055D00744A03 /* BackgroundMainVideo@2x.png */,
-				019E82F21654055D00744A03 /* OverlayGlossThumbnail.png */,
-				019E82F31654055D00744A03 /* OverlayGlossThumbnail@2x.png */,
-				019E82F41654055D00744A03 /* PanelLargeVideoView.png */,
-				019E82F51654055D00744A03 /* PanelLargeVideoView@2x.png */,
 			);
-			name = "Discovery Page";
+			name = "Videos Page";
 			sourceTree = "<group>";
 		};
 		01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */ = {
@@ -2542,6 +2545,8 @@
 		01F8E73316AFF426000D44B9 /* Full screen video */ = {
 			isa = PBXGroup;
 			children = (
+				01F8E78116B0554B000D44B9 /* ButtonClose.png */,
+				01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */,
 				01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */,
 				01F8E73D16B012A8000D44B9 /* ButtonVideoScreenNext@2x.png */,
 				01F8E73E16B012A8000D44B9 /* ButtonVideoScreenNextHighlighted.png */,
@@ -2755,11 +2760,6 @@
 				019E82EC1654051600744A03 /* ChannelWallpaper9.png in Resources */,
 				019E82ED1654051600744A03 /* ChannelWallpaperGeneric.png in Resources */,
 				019E82EE1654051600744A03 /* ChannelWallpaperGeneric@2x.png in Resources */,
-				019E82F61654055D00744A03 /* BackgroundMainVideo@2x.png in Resources */,
-				019E82F91654055D00744A03 /* OverlayGlossThumbnail.png in Resources */,
-				019E82FA1654055D00744A03 /* OverlayGlossThumbnail@2x.png in Resources */,
-				019E82FB1654055D00744A03 /* PanelLargeVideoView.png in Resources */,
-				019E82FC1654055D00744A03 /* PanelLargeVideoView@2x.png in Resources */,
 				019E8324165405E500744A03 /* Avatar1.png in Resources */,
 				019E8325165405E500744A03 /* Avatar1@2x.png in Resources */,
 				019E8326165405E500744A03 /* Avatar2.png in Resources */,
@@ -2917,7 +2917,7 @@
 				01E98DA9165C32D10079FD7A /* TemplateX.png in Resources */,
 				01E98DAC165C39050079FD7A /* CardHarry.png in Resources */,
 				01E98DAD165C39050079FD7A /* CardHarry@2x.png in Resources */,
-				01E8AF1E16638A7600056DBF /* SYNMyRockpackViewController.xib in Resources */,
+				01E8AF1E16638A7600056DBF /* SYNYouRootViewController.xib in Resources */,
 				01E427F8166551F7009B941F /* SYNMyRockpackMovieViewController.xib in Resources */,
 				01E427FD16664EB3009B941F /* ButtonThumbnailShare.png in Resources */,
 				01E427FE16664EB3009B941F /* ButtonThumbnailShare@2x.png in Resources */,
@@ -2946,7 +2946,7 @@
 				014A45351668C9180091E4E5 /* ChannelCreationCover2@2x.png in Resources */,
 				014A45361668C9180091E4E5 /* ChannelCreationCover1.png in Resources */,
 				014A45371668C9180091E4E5 /* ChannelCreationCover1@2x.png in Resources */,
-				014A4571166A39E60091E4E5 /* SYNChannelsTopTabViewController.xib in Resources */,
+				014A4571166A39E60091E4E5 /* SYNChannelsRootViewController.xib in Resources */,
 				01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */,
 				01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */,
 				01B0A96D166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png in Resources */,
@@ -2960,7 +2960,7 @@
 				01B7CDA6166E1CF7001F4AF0 /* PanelChannelDetailsHeader.png in Resources */,
 				01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */,
 				01EC6238166EAAA6003154B1 /* SYNAbstractDetailViewController.xib in Resources */,
-				0199F13C16721A4500E479C6 /* SYNHomeTopTabViewController.xib in Resources */,
+				0199F13C16721A4500E479C6 /* SYNHomeRootViewController.xib in Resources */,
 				018919F81672236D00AB07BB /* PanelHomeTitle.png in Resources */,
 				018919F91672236D00AB07BB /* PanelHomeTitle@2x.png in Resources */,
 				01891A001672255F00AB07BB /* SYNHomeSectionHeaderView.xib in Resources */,
@@ -3031,7 +3031,7 @@
 				01B34C9916A99D6A002AD8FB /* GlossChannelThumbnail@2x.png in Resources */,
 				01B34C9B16A9A84F002AD8FB /* BackgroundGeneric@2x.jpg in Resources */,
 				01B34C9D16A9A8A6002AD8FB /* BackgroundGeneric.jpg in Resources */,
-				015CB00916AD76B100FEB8E7 /* SYNFriendsViewController.xib in Resources */,
+				015CB00916AD76B100FEB8E7 /* SYNFriendsRootViewController.xib in Resources */,
 				015CB00F16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib in Resources */,
 				015CB01216ADC07D00FEB8E7 /* PanelFriendsToolbar.png in Resources */,
 				015CB01316ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png in Resources */,
@@ -3080,6 +3080,11 @@
 				01F8E76716B03462000D44B9 /* YouTubeIFramePlayer.html in Resources */,
 				01F8E76816B03462000D44B9 /* YouTubeJSAPIPlayer.html in Resources */,
 				01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */,
+				01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */,
+				01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */,
+				01702F4716B1386100FF3D4D /* SYNVideosRootViewController.xib in Resources */,
+				0142ED8116B1439B008694DA /* CategoryBar.png in Resources */,
+				0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3147,7 +3152,7 @@
 				019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */,
 				019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */,
 				019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */,
-				01E8AF1D16638A7600056DBF /* SYNMyRockpackViewController.m in Sources */,
+				01E8AF1D16638A7600056DBF /* SYNYouRootViewController.m in Sources */,
 				01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */,
 				01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */,
 				01E427E21664DF21009B941F /* Video.m in Sources */,
@@ -3162,7 +3167,7 @@
 				01E428161666671D009B941F /* Interpolator.cpp in Sources */,
 				01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */,
 				014A456816691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m in Sources */,
-				014A4570166A39E60091E4E5 /* SYNChannelsTopTabViewController.m in Sources */,
+				014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */,
 				014A4575166A56720091E4E5 /* SYNChannelsDetailViewController.m in Sources */,
 				01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */,
 				01B7CD97166E0FD6001F4AF0 /* SYNChannelHeaderView.m in Sources */,
@@ -3170,7 +3175,7 @@
 				01EC6237166EAAA6003154B1 /* SYNAbstractDetailViewController.m in Sources */,
 				0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */,
 				0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */,
-				0199F13B16721A4500E479C6 /* SYNHomeTopTabViewController.m in Sources */,
+				0199F13B16721A4500E479C6 /* SYNHomeRootViewController.m in Sources */,
 				018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */,
 				01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */,
 				01946B911683335400354601 /* _ChannelOwner.m in Sources */,
@@ -3184,12 +3189,13 @@
 				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
 				01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */,
 				01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */,
-				015CB00816AD76B100FEB8E7 /* SYNFriendsViewController.m in Sources */,
+				015CB00816AD76B100FEB8E7 /* SYNFriendsRootViewController.m in Sources */,
 				015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */,
 				015CB01616AE039900FEB8E7 /* User.m in Sources */,
 				015CB01916AE03B200FEB8E7 /* _User.m in Sources */,
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
 				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
+				01702F4616B1386100FF3D4D /* SYNVideosRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

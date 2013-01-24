@@ -11,13 +11,13 @@
 #import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
-#import "SYNChannelsTopTabViewController.h"
+#import "SYNChannelsRootViewController.h"
 #import "SYNMyRockpackCell.h"
 #import "SYNVideoDB.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
-@interface SYNChannelsTopTabViewController () <UICollectionViewDelegate,
+@interface SYNChannelsRootViewController () <UICollectionViewDelegate,
                                                UICollectionViewDataSource,
                                                UIScrollViewDelegate>
 
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation SYNChannelsTopTabViewController
+@implementation SYNChannelsRootViewController
 
 #pragma mark - View lifecycle
 

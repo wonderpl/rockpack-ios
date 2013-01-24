@@ -10,9 +10,12 @@
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
 #import "Video.h"
+#import "Channel.h"
+#import "ChannelOwner.h"
 
 @interface SYNVideoViewerViewController ()
 
+@property (nonatomic, strong) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
@@ -57,18 +60,14 @@
     [self.videoWebView setBackgroundColor: [UIColor whiteColor]];
 	[self.videoWebView setOpaque: NO];
     
-    // TODO: Put this somewhere more sensible
-//    [self loadWebViewWithJSAPIUsingYouTubeId: @"diP-o_JxysA"
-//                                       width: 740
-//                                      height: 416];
-    
-    [self loadWebViewWithJSAPIUsingYouTubeId: self.videoInstance.video.source
+    [self loadWebViewWithJSAPIUsingYouTubeId: self.videoInstance.video.sourceId
                                        width: 740
                                       height: 416];
     
-    //    [self loadWebViewWithIFrameUsingVimeoId: @"55351724"
-    //                                      width: 740
-    //                                     height: 416];
+    self.channelCreatorLabel.text = self.videoInstance.channel.channelOwner.name;
+    self.channelTitleLabel.text = self.videoInstance.channel.title;
+    self.videoTitleLabel.text = self.videoInstance.title;
+    self.numberOfRocksLabel.text = self.videoInstance.video.starCount.stringValue;
 }
 
 

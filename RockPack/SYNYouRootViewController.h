@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
 
-@interface SYNMyRockpackViewController : SYNAbstractViewController 
+@interface SYNYouRootViewController : SYNAbstractViewController 
 
 @end

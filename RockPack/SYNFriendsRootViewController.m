@@ -13,13 +13,13 @@
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
 #import "SYNFriendThumbnailCell.h"
-#import "SYNFriendsViewController.h"
+#import "SYNFriendsRootViewController.h"
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
-@interface SYNFriendsViewController () <NSFetchedResultsControllerDelegate>
+@interface SYNFriendsRootViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *videosArray;
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryView;
@@ -32,7 +32,7 @@
 @end
 
 
-@implementation SYNFriendsViewController
+@implementation SYNFriendsRootViewController
 
 @synthesize friendFetchedResultsController = _friendFetchedResultsController;
 

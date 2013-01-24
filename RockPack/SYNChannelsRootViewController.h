@@ -8,6 +8,6 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNChannelsTopTabViewController : SYNAbstractTopTabViewController 
+@interface SYNChannelsRootViewController : SYNAbstractTopTabViewController 
 
 @end

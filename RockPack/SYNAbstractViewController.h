@@ -75,5 +75,6 @@
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
 - (void) displayVideoViewer: (VideoInstance *) videoInstance;
+- (IBAction) dismissVideoViewer;
 
 @end

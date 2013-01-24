@@ -46,6 +46,7 @@
 @property (nonatomic, strong) UIImageView *videoQueueMessageView;
 @property (nonatomic, strong) UIImageView *videoQueuePanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 
 @end
 
@@ -568,24 +569,41 @@
     
     SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
     
-    SYNVideoViewerViewController *videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
+    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
     
-    videoViewerViewController.view.alpha = 0.0f;
-    [bottomTabViewController.view addSubview: videoViewerViewController.view];
+    self.videoViewerViewController.view.alpha = 0.0f;
+    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         // Contract thumbnail view
-
-         videoViewerViewController.view.alpha = 1.0f;
-         
+         self.videoViewerViewController.view.alpha = 1.0f;
      }
      completion: ^(BOOL finished)
      {
+         [self.videoViewerViewController.closeButton addTarget: self
+                                                        action: @selector(dismissVideoViewer)
+                                              forControlEvents: UIControlEventTouchUpInside];
      }];
+}
+
+- (IBAction) dismissVideoViewer
+{
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.videoViewerViewController.view.alpha = 0.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+         [self.videoViewerViewController.view removeFromSuperview];
+         self.videoViewerViewController = nil;
+     }];
+
 }
 
 
