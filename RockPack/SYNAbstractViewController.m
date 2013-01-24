@@ -19,6 +19,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelSelectorCell.h"
+#import "SYNNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoSelection.h"
 #import "SYNVideoThumbnailWideCell.h"
@@ -37,16 +38,17 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
+@property (nonatomic, strong) MKNetworkOperation *draggedImageLoadingOperation;
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UIButton *videoQueueAddButton;
 @property (nonatomic, strong) UIButton *videoQueueDeleteButton;
 @property (nonatomic, strong) UIButton *videoQueueShuffleButton;
 @property (nonatomic, strong) UIImageView *videoQueueMessageView;
 @property (nonatomic, strong) UIImageView *videoQueuePanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 
 @end
 
@@ -404,7 +406,7 @@
 }
 
 
-#pragma - Animation support
+#pragma mark - Animation support
 
 // Special animation of pushing new view controller onto UINavigationController's stack
 - (void) animatedPushViewController: (UIViewController *) vc
@@ -813,10 +815,41 @@
         self.initialDragCenter = [sender locationInView: self.view];
         
         // Hardcoded for now, eeek!
+        // TODO: Unhardcode this
         CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 72);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
-        self.draggedView.image = videoInstance.video.thumbnailImage;
+//        self.draggedView.image = videoInstance.video.thumbnailImage;
+        
+        SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+
+        self.draggedImageLoadingOperation = [appDelegate.networkEngine imageAtURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                                                             size: self.draggedView.frame.size
+                                                                completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
+         {
+             if([videoInstance.video.thumbnailURL isEqualToString: [url absoluteString]])
+             {
+                 if (isInCache)
+                 {
+                     self.draggedView.image = fetchedImage;
+                 }
+                 else
+                 {
+                     [UIView transitionWithView: self.view
+                                       duration: 0.4f
+                                        options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                                     animations: ^
+                      {
+                          self.draggedView.image = fetchedImage;
+                      }
+                                     completion: nil];
+                 }
+             }
+         }
+        errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
+         {
+             
+         }];
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];
