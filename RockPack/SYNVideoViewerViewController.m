@@ -56,8 +56,10 @@
     self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     
-    [self.videoWebView setBackgroundColor: [UIColor clearColor]];
-	[self.videoWebView setOpaque: NO];
+    self.videoWebView.backgroundColor = [UIColor clearColor];
+	self.videoWebView.opaque = NO;
+    self.videoWebView.scrollView.scrollEnabled = false;
+    self.videoWebView.scrollView.bounces = false;
     
     [self loadWebViewWithJSAPIUsingYouTubeId: self.videoInstance.video.sourceId
                                        width: 740
@@ -216,8 +218,8 @@
 
 
 - (BOOL) webView: (UIWebView *) webView
-shouldStartLoadWithRequest: (NSURLRequest *) request
-  navigationType: (UIWebViewNavigationType) navigationType
+         shouldStartLoadWithRequest: (NSURLRequest *) request
+         navigationType: (UIWebViewNavigationType) navigationType
 {
     // Break apart request URL
     NSString *requestString = [[request URL] absoluteString];

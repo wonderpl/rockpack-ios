@@ -31,7 +31,7 @@
             function onYouTubeIframeAPIReady()
             {
                 player = new YT.Player('player', {
-                                       playerVars: { 'controls': 1, 'modestbranding': 1, 'showinfo': 0 },
+                                       playerVars: { 'controls': 1, 'modestbranding': 1, 'showinfo': 0, 'rel' : 0},
                                        width: '%d',
                                        height: '%d',
                                        videoId: '%@',
@@ -48,7 +48,7 @@
                 // Pass the state back to the Obj-C handler
                 window.location = 'streamtest:onReady';
                 
-//                player.playVideo();
+                player.playVideo();
             }
             
             function onPlayerStateChange(event)
