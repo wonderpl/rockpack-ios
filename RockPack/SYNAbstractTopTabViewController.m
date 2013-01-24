@@ -27,23 +27,26 @@
     
     _selectedIndex = NSNotFound;
     
-    //Underlying (unselected) tab images
-    self.topTabView = [[SYNTabImageView alloc] initWithFrame: CGRectMake (0, 33, 1024, 65)
-                                            touchHandler: ^(CGPoint touchPoint)
-                                                          {
-                                                              [self tabButtonTouched: touchPoint];
-                                                          }];
+//    //Underlying (unselected) tab images
+//    self.topTabView = [[SYNTabImageView alloc] initWithFrame: CGRectMake (0, 33, 1024, 65)
+//                                            touchHandler: ^(CGPoint touchPoint)
+//                                                          {
+//                                                              [self tabButtonTouched: touchPoint];
+//                                                          }];
+//    
+//    self.topTabView.contentMode  = UIViewContentModeLeft;
+//    self.topTabView.image = [UIImage imageNamed: @"TabTop.png"];
+//    self.topTabView.userInteractionEnabled = YES;
+//    
+//    [self.view addSubview: self.topTabView];
+//    
+//    // Highlighted tab images to craftily overlay (by using a superview to clip)
+//    self.topTabHighlightedView = [[UIImageView alloc] initWithFrame: CGRectMake (0, 0, 1024, 65)];
+//    self.topTabHighlightedView.contentMode  = UIViewContentModeLeft;
+//    self.topTabHighlightedView.image = [UIImage imageNamed: @"TabTopHighlighted.png"];
     
-    self.topTabView.contentMode  = UIViewContentModeLeft;
-    self.topTabView.image = [UIImage imageNamed: @"TabTop.png"];
-    self.topTabView.userInteractionEnabled = YES;
-    
-    [self.view addSubview: self.topTabView];
-    
-    // Highlighted tab images to craftily overlay (by using a superview to clip)
-    self.topTabHighlightedView = [[UIImageView alloc] initWithFrame: CGRectMake (0, 0, 1024, 65)];
-    self.topTabHighlightedView.contentMode  = UIViewContentModeLeft;
-    self.topTabHighlightedView.image = [UIImage imageNamed: @"TabTopHighlighted.png"];
+    // Just put placeholder image in for now
+    self.topTabView = [[UIImageView alloc] initWithFrame: CGRectMake (0, 79, 1024, 65)];
 }
 
 

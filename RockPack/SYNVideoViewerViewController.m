@@ -57,7 +57,6 @@
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     
     [self.videoWebView setBackgroundColor: [UIColor clearColor]];
-    [self.videoWebView setBackgroundColor: [UIColor whiteColor]];
 	[self.videoWebView setOpaque: NO];
     
     [self loadWebViewWithJSAPIUsingYouTubeId: self.videoInstance.video.sourceId
