@@ -10,7 +10,9 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
+#import "SYNAppDelegate.h"
 #import "SYNHomeSectionHeaderView.h"
+#import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideoViewerViewController.h"
 #import "SYNVideosRootViewController.h"
@@ -22,6 +24,7 @@
 @end
 
 @implementation SYNVideosRootViewController
+
 #pragma mark - View lifecycle
 
 - (void) viewDidLoad
@@ -34,6 +37,17 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+}
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    // TODO: Remove this video download hack once we have real data from the API
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
+    [appDelegate.networkEngine updateHomeScreen];
+    [appDelegate.networkEngine updateChannelScreen];
 }
 
 - (BOOL) hasVideoQueue
