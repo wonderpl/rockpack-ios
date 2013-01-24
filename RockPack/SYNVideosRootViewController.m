@@ -42,11 +42,6 @@
 											                         selector: @selector(reloadCollectionViews)
 												                             name: kDataUpdated
 											                           object: nil];
-}
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
     
     // TODO: Remove this video download hack once we have real data from the API
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
@@ -54,6 +49,7 @@
     [appDelegate.networkEngine updateHomeScreen];
     [appDelegate.networkEngine updateChannelScreen];
 }
+
 
 - (void) dealloc
 {
