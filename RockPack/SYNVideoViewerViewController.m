@@ -56,10 +56,13 @@
     self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     
-    self.videoWebView.backgroundColor = [UIColor clearColor];
+//    self.videoWebView.backgroundColor = [UIColor clearColor];
+    self.videoWebView.backgroundColor = [UIColor blackColor];
 	self.videoWebView.opaque = NO;
     self.videoWebView.scrollView.scrollEnabled = false;
     self.videoWebView.scrollView.bounces = false;
+    self.videoWebView.alpha = 0.0f;
+    self.videoWebView.delegate = self;
     
     [self loadWebViewWithJSAPIUsingYouTubeId: self.videoInstance.video.sourceId
                                        width: 740
@@ -226,15 +229,32 @@
     NSArray *components = [requestString componentsSeparatedByString :@":"];
     
     // Check for your protocol
-    if ([components count] > 1 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"streamtest"])
+    if ([components count] >= 3 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"rockpack"])
     {
         // Look for specific actions
-        if ([(NSString *)[components objectAtIndex:1] isEqualToString: @"onReady"])
+        NSString *parameter2 = (NSString *)[components objectAtIndex: 1];
+        if ([parameter2 isEqualToString: @"onStateChange"])
         {
-            // Parameters can be found at [components objectAtIndex:n]
-            // where 'n' is the ordinal position of the colon-delimited parameter
+//            [self.videoWebView stringByEvaluatingJavaScriptFromString: @"helloWorld()"];
             
-            [self.videoWebView stringByEvaluatingJavaScriptFromString: @"helloWorld()"];
+            NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
+            
+            if ([parameter3 isEqualToString: @"1"])
+            {
+//                self.videoWebView.alpha = 1.0f;
+                
+                [UIView animateWithDuration: 0.25f
+                                      delay: 0.0f
+                                    options: UIViewAnimationOptionCurveEaseInOut
+                                 animations: ^
+                 {
+                     // Contract thumbnail view
+                     self.videoWebView.alpha = 1.0f;
+                 }
+                                 completion: ^(BOOL finished)
+                 {
+                 }];
+            }
         }
         
         // Return 'NO' to prevent navigation
