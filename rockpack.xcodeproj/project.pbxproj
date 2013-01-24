@@ -57,6 +57,7 @@
 		01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */; };
 		0142ED8116B1439B008694DA /* CategoryBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED7F16B1439B008694DA /* CategoryBar.png */; };
 		0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8016B1439B008694DA /* CategoryBar@2x.png */; };
+		0142ED8B16B19FBE008694DA /* SYNYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8916B19FBE008694DA /* SYNYouRootViewController.xib */; };
 		014A450C1668C8FD0091E4E5 /* OverlayChannelCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450B1668C8FD0091E4E5 /* OverlayChannelCreate.png */; };
 		014A45231668C9180091E4E5 /* OverlayChannelCreate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450E1668C9180091E4E5 /* OverlayChannelCreate@2x.png */; };
 		014A45241668C9180091E4E5 /* ChannelCreationCover10.png in Resources */ = {isa = PBXBuildFile; fileRef = 014A450F1668C9180091E4E5 /* ChannelCreationCover10.png */; };
@@ -510,8 +511,8 @@
 		01E428161666671D009B941F /* Interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280E1666671D009B941F /* Interpolator.cpp */; };
 		01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4281916666F09009B941F /* SYNChannelSelectorCell.m */; };
 		01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */; };
-		01E8AF1D16638A7600056DBF /* SYNYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNYouRootViewController.m */; };
-		01E8AF1E16638A7600056DBF /* SYNYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNYouRootViewController.xib */; };
+		01E8AF1D16638A7600056DBF /* SYNOldYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNOldYouRootViewController.m */; };
+		01E8AF1E16638A7600056DBF /* SYNOldYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNOldYouRootViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
 		01E98D7F165C13F10079FD7A /* EddieTaylor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7D165C13F10079FD7A /* EddieTaylor@2x.png */; };
 		01E98D84165C142C0079FD7A /* WallpacksHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D80165C142C0079FD7A /* WallpacksHeader.png */; };
@@ -629,6 +630,9 @@
 		01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackCell.m; sourceTree = "<group>"; };
 		0142ED7F16B1439B008694DA /* CategoryBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategoryBar.png; sourceTree = "<group>"; };
 		0142ED8016B1439B008694DA /* CategoryBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategoryBar@2x.png"; sourceTree = "<group>"; };
+		0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouRootViewController.h; sourceTree = "<group>"; };
+		0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouRootViewController.m; sourceTree = "<group>"; };
+		0142ED8916B19FBE008694DA /* SYNYouRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNYouRootViewController.xib; sourceTree = "<group>"; };
 		014A450B1668C8FD0091E4E5 /* OverlayChannelCreate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OverlayChannelCreate.png; path = Assets/Images/OverlayChannelCreate.png; sourceTree = "<group>"; };
 		014A450E1668C9180091E4E5 /* OverlayChannelCreate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "OverlayChannelCreate@2x.png"; path = "Assets/Images/OverlayChannelCreate@2x.png"; sourceTree = "<group>"; };
 		014A450F1668C9180091E4E5 /* ChannelCreationCover10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCreationCover10.png; path = Assets/Images/ChannelCreationCover10.png; sourceTree = "<group>"; };
@@ -1161,9 +1165,9 @@
 		01E4281816666F09009B941F /* SYNChannelSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelSelectorCell.h; sourceTree = "<group>"; };
 		01E4281916666F09009B941F /* SYNChannelSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelSelectorCell.m; sourceTree = "<group>"; };
 		01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelSelectorCell.xib; sourceTree = "<group>"; };
-		01E8AF1A16638A7600056DBF /* SYNYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouRootViewController.h; sourceTree = "<group>"; };
-		01E8AF1B16638A7600056DBF /* SYNYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouRootViewController.m; sourceTree = "<group>"; };
-		01E8AF1C16638A7600056DBF /* SYNYouRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNYouRootViewController.xib; sourceTree = "<group>"; };
+		01E8AF1A16638A7600056DBF /* SYNOldYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOldYouRootViewController.h; sourceTree = "<group>"; };
+		01E8AF1B16638A7600056DBF /* SYNOldYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOldYouRootViewController.m; sourceTree = "<group>"; };
+		01E8AF1C16638A7600056DBF /* SYNOldYouRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOldYouRootViewController.xib; sourceTree = "<group>"; };
 		01E98D7C165C13F10079FD7A /* EddieTaylor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EddieTaylor.png; path = Assets/Images/EddieTaylor.png; sourceTree = "<group>"; };
 		01E98D7D165C13F10079FD7A /* EddieTaylor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EddieTaylor@2x.png"; path = "Assets/Images/EddieTaylor@2x.png"; sourceTree = "<group>"; };
 		01E98D80165C142C0079FD7A /* WallpacksHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WallpacksHeader.png; path = Assets/Images/WallpacksHeader.png; sourceTree = "<group>"; };
@@ -2042,9 +2046,12 @@
 		01982560162ADE3300216900 /* You */ = {
 			isa = PBXGroup;
 			children = (
-				01E8AF1A16638A7600056DBF /* SYNYouRootViewController.h */,
-				01E8AF1B16638A7600056DBF /* SYNYouRootViewController.m */,
-				01E8AF1C16638A7600056DBF /* SYNYouRootViewController.xib */,
+				0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */,
+				0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */,
+				0142ED8916B19FBE008694DA /* SYNYouRootViewController.xib */,
+				01E8AF1A16638A7600056DBF /* SYNOldYouRootViewController.h */,
+				01E8AF1B16638A7600056DBF /* SYNOldYouRootViewController.m */,
+				01E8AF1C16638A7600056DBF /* SYNOldYouRootViewController.xib */,
 				01E427F4166551F6009B941F /* SYNMyRockpackMovieViewController.h */,
 				01E427F5166551F6009B941F /* SYNMyRockpackMovieViewController.m */,
 				01E427F6166551F6009B941F /* SYNMyRockpackMovieViewController.xib */,
@@ -2917,7 +2924,7 @@
 				01E98DA9165C32D10079FD7A /* TemplateX.png in Resources */,
 				01E98DAC165C39050079FD7A /* CardHarry.png in Resources */,
 				01E98DAD165C39050079FD7A /* CardHarry@2x.png in Resources */,
-				01E8AF1E16638A7600056DBF /* SYNYouRootViewController.xib in Resources */,
+				01E8AF1E16638A7600056DBF /* SYNOldYouRootViewController.xib in Resources */,
 				01E427F8166551F7009B941F /* SYNMyRockpackMovieViewController.xib in Resources */,
 				01E427FD16664EB3009B941F /* ButtonThumbnailShare.png in Resources */,
 				01E427FE16664EB3009B941F /* ButtonThumbnailShare@2x.png in Resources */,
@@ -3085,6 +3092,7 @@
 				01702F4716B1386100FF3D4D /* SYNVideosRootViewController.xib in Resources */,
 				0142ED8116B1439B008694DA /* CategoryBar.png in Resources */,
 				0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */,
+				0142ED8B16B19FBE008694DA /* SYNYouRootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3152,7 +3160,7 @@
 				019E6A5D165FD800002B312A /* MBProgressHUD.m in Sources */,
 				019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */,
 				019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */,
-				01E8AF1D16638A7600056DBF /* SYNYouRootViewController.m in Sources */,
+				01E8AF1D16638A7600056DBF /* SYNOldYouRootViewController.m in Sources */,
 				01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */,
 				01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */,
 				01E427E21664DF21009B941F /* Video.m in Sources */,

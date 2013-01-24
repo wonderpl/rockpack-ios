@@ -17,9 +17,7 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 
-@interface SYNChannelsRootViewController () <UICollectionViewDelegate,
-                                               UICollectionViewDataSource,
-                                               UIScrollViewDelegate>
+@interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;

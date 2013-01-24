@@ -16,7 +16,7 @@
 #import "SYNFriendsRootViewController.h"
 #import "SYNHomeRootViewController.h"
 #import "SYNMovableView.h"
-#import "SYNYouRootViewController.h"
+#import "SYNOldYouRootViewController.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoDownloadEngine.h"
 #import "SYNVideoViewerViewController.h"
@@ -92,7 +92,7 @@
     SYNVideosRootViewController *videosViewController = [[SYNVideosRootViewController alloc] init];
     
     // My Rockpack tab
-    SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] init];
+    SYNOldYouRootViewController *myRockpackViewController = [[SYNOldYouRootViewController alloc] init];
     UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
     myRockpackRootNavigationViewController.navigationBarHidden = TRUE;
     myRockpackRootNavigationViewController.view.autoresizesSubviews = TRUE;

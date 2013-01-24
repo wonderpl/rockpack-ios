@@ -1,14 +1,13 @@
 //
-//  SYNMyRockpackViewController.h
+//  SYNYouRootViewController.h
 //  rockpack
 //
-//  Created by Nick Banks on 26/11/2012.
-//  Copyright (c) 2012 Nick Banks. All rights reserved.
+//  Created by Nick Banks on 24/01/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
 
-@interface SYNYouRootViewController : SYNAbstractViewController 
+@interface SYNYouRootViewController : SYNAbstractTopTabViewController
 
 @end

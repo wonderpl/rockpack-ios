@@ -77,10 +77,10 @@
     {
         // Initialise common views
         // Overall view to slide in and out of view
-        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kVideoQueueEffectiveHeight, 1024, 111)];
+        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
         
         // Panel view
-        self.videoQueuePanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 111)];
+        self.videoQueuePanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, kVideoQueueEffectiveHeight)];
         self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
         [self.videoQueueView addSubview: self.videoQueuePanelView];
         

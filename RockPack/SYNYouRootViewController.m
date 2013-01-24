@@ -1,39 +1,28 @@
 //
-//  SYNMyRockpackViewController.m
+//  SYNYouRootViewController.m
 //  rockpack
 //
-//  Created by Nick Banks on 26/11/2012.
-//  Copyright (c) 2012 Nick Banks. All rights reserved.
+//  Created by Nick Banks on 24/01/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "AppConstants.h"
 #import "Channel.h"
+#import "ChannelOwner.h"
+#import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNMyRockpackChannelDetailViewController.h"
-#import "SYNMyRockpackMovieViewController.h"
+#import "SYNChannelsDetailViewController.h"
+#import "SYNMyRockpackCell.h"
+#import "SYNVideoDB.h"
 #import "SYNYouRootViewController.h"
-#import "SYNSwitch.h"
-#import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
-#import "VideoInstance.h"
 
-@interface SYNYouRootViewController () <UICollectionViewDataSource,
-                                           UICollectionViewDelegateFlowLayout,
-                                           UIScrollViewDelegate>
+@interface SYNYouRootViewController ()
 
-@property (nonatomic, assign) CGPoint originalOrigin;
-@property (nonatomic, strong) IBOutlet SYNSwitch *toggleSwitch;
-@property (nonatomic, strong) IBOutlet UIButton *backButton;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
-@property (nonatomic, strong) IBOutlet UILabel *channelLabel;
-@property (nonatomic, strong) IBOutlet UILabel *packedVideosLabel;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet UIView *avatarView;
-@property (nonatomic, strong) IBOutlet UIView *cardsView;
-@property (nonatomic, strong) UIColor *darkSwitchColor;
-@property (nonatomic, strong) UIColor *lightSwitchColor;
+@property (nonatomic, assign) BOOL userPinchedOut;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
+@property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
+@property (nonatomic, strong) UIImageView *pinchedView;
 
 @end
 
@@ -45,78 +34,26 @@
 {
     [super viewDidLoad];
     
-    // Add custom slider
-    self.toggleSwitch = [[SYNSwitch alloc] initWithFrame: CGRectMake(780, 24 + 44, 95, 42)];
-    self.toggleSwitch.on = NO;
-    [self.toggleSwitch addTarget: self
-                          action: @selector(switchChanged:forEvent:)
-                forControlEvents: (UIControlEventValueChanged)];
-    
-    // Set switch label colours
-    self.lightSwitchColor = [UIColor colorWithRed: 213.0f/255.0f green: 233.0f/255.0f blue: 238.0f/255.0f alpha: 1.0f];
-    self.darkSwitchColor = [UIColor colorWithRed: 129.0f/255.0f green: 154.0f/255.0f blue: 162.0f/255.0f alpha: 1.0f];
-    self.packedVideosLabel.textColor = self.lightSwitchColor;
-    self.channelLabel.textColor = self.darkSwitchColor;
-    
-    [self.view addSubview: self.toggleSwitch];
-    
-    self.userNameLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
-    self.packedVideosLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
-    self.channelLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
-    self.userAvatarImageView.image = [UIImage imageNamed: @"EddieTaylor.png"];
-    
-    // Init collection views
-    // Video thumbnails
-    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
+    // Init collection view
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+    [self.channelThumbnailCollection registerNib: thumbnailCellNib
+                      forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
     
-    // Channel thumbnails
-    UINib *channelThumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
-                                             bundle: nil];
+    UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
+                                                                                             action: @selector(handlePinchGesture:)];
     
-    [self.channelThumbnailCollectionView registerNib: channelThumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
-    
-    self.channelThumbnailCollectionView.alpha = 0.0f;
-    self.channelThumbnailCollectionView.hidden = TRUE;
-}
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-
+    [self.view addGestureRecognizer: pinchOnChannelView];
 }
 
 
-#pragma mark - CoreData support
-
-// The following 4 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(uniqueId == %@) AND (video.starredByUser == TRUE)", @"1"];
-    
-    return predicate;
-//    return [NSPredicate predicateWithFormat: @"video.starredByUser == TRUE"];
-}
-
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
-
+#pragma mark - Core Data Support
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId == 666"];
-//    return nil;
+    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
 }
-
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
@@ -126,180 +63,95 @@
 }
 
 
-- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
-{
-    if (controller == self.videoInstanceFetchedResultsController)
-    {
-        [self.videoThumbnailCollectionView reloadData];
-    }
-    else
-    {
-        [self.channelThumbnailCollectionView reloadData];
-    }
-}
-
-
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) cv
+- (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    if (cv == self.videoThumbnailCollectionView)
-    {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
-        return [sectionInfo numberOfObjects];
-    }
-    else
-    {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
-        return [sectionInfo numberOfObjects];
-    }
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
+    return [sectionInfo numberOfObjects];
+    
 }
 
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    if (cv == self.videoThumbnailCollectionView)
-    {
-        return self.videoInstanceFetchedResultsController.sections.count;
-    }
-    else
-    {
-        return self.channelFetchedResultsController.sections.count;
-    }
+    return 1;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    // See if this can be handled in our abstract base class
-    UICollectionViewCell *cell = [super collectionView: cv
-                                cellForItemAtIndexPath: indexPath];
     
-    // Do we have a valid cell?
-    if (!cell)
-    {
-        if (cv == self.channelThumbnailCollectionView)
-        {
-            Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-            
-            SYNChannelThumbnailCell *channelCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
-                                                                          forIndexPath: indexPath];
-            
-            channelCell.imageView.image = channel.thumbnailImage;
-            channelCell.titleLabel.text = channel.title;
-            channelCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
-            channelCell.rockItButton.selected = channel.rockedByUserValue;
-            
-            // Wire the Done button up to the correct method in the sign up controller
-            [channelCell.rockItButton removeTarget: nil
-                                     action: @selector(toggleChannelRockItButton:)
-                           forControlEvents: UIControlEventTouchUpInside];
-            
-            [channelCell.rockItButton addTarget: self
-                                  action: @selector(toggleChannelRockItButton:)
-                        forControlEvents: UIControlEventTouchUpInside];
-            
-            cell = channelCell;
-        }
-        else
-        {
-            AssertOrLog(@"No valid collection view found");
-        }
-    }
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    return cell;
+    SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
+                                                                                              forIndexPath: indexPath];
+    
+    channelThumbnailCell.channelImageViewImage = channel.thumbnailURL;
+    
+    channelThumbnailCell.titleLabel.text = channel.title;
+    
+    channelThumbnailCell.userNameLabel.text = channel.channelOwner.name;
+    
+    channelThumbnailCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
+    
+    channelThumbnailCell.rockItButton.selected = channel.rockedByUserValue;
+    
+    // Wire the Done button up to the correct method in the sign up controller
+    [channelThumbnailCell.rockItButton removeTarget: nil
+                                             action: @selector(toggleChannelRockItButton:)
+                                   forControlEvents: UIControlEventTouchUpInside];
+    
+    [channelThumbnailCell.rockItButton addTarget: self
+                                          action: @selector(toggleChannelRockItButton:)
+                                forControlEvents: UIControlEventTouchUpInside];
+    
+    return channelThumbnailCell;
+    
 }
 
 
-- (void) collectionView: (UICollectionView *) cv
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) collectionView: (UICollectionView *) collectionView
+didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (cv == self.videoThumbnailCollectionView)
-    {
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-        
-        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
-        
-        [self animatedPushViewController: movieVC];
-    }
-    else
-    {
-        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-        
-        SYNMyRockpackChannelDetailViewController *channelDetailVC = [[SYNMyRockpackChannelDetailViewController alloc] initWithChannel: channel];
-        
-
-        [self animatedPushViewController: channelDetailVC];
-    }
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    
+    [self animatedPushViewController: channelVC];
 }
 
 
-#pragma mark - UI Stuff
-
-- (IBAction) userTouchedRockedVideoButton: (id) sender
+// Custom zoom out transition
+- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    self.toggleSwitch.on = FALSE;
-}
-
-- (IBAction) userTouchedMyChannelsButton: (id) sender
-{
-    self.toggleSwitch.on = TRUE;
-}
-
-- (void) switchChanged: (id)sender
-              forEvent: (UIEvent *) event
-{
-    if (self.toggleSwitch.on == YES)
-    {
-        // Set packed videos label to light and channel label to dark
-        self.packedVideosLabel.textColor = self.darkSwitchColor;
-        self.channelLabel.textColor = self.lightSwitchColor;
-        self.channelThumbnailCollectionView.alpha = 0.0f;
-        self.channelThumbnailCollectionView.hidden = FALSE;
-
-        [UIView animateWithDuration: kSwitchLabelAnimation
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Swap collection views
-             self.channelThumbnailCollectionView.alpha = 1.0f;
-             self.videoThumbnailCollectionView.alpha = 0.0f;
-         }
-                         completion: ^(BOOL finished)
-         {
-             self.videoThumbnailCollectionView.hidden = TRUE;
-         }];
-    }
-    else
-    {
-        // Set packed videos label to dark and channel label to light
-        self.packedVideosLabel.textColor = self.lightSwitchColor;
-        self.channelLabel.textColor = self.darkSwitchColor;
-        self.videoThumbnailCollectionView.alpha = 0.0f;
-        self.videoThumbnailCollectionView.hidden = FALSE;
-        
-        
-        [UIView animateWithDuration: kSwitchLabelAnimation
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Swap collection views
-             self.channelThumbnailCollectionView.alpha = 0.0f;
-             self.videoThumbnailCollectionView.alpha = 1.0f;
-         }
-                         completion: ^(BOOL finished)
-         {
-             self.channelThumbnailCollectionView.hidden = TRUE;
-         }];
-    }
-}
-
-
-- (BOOL) shouldUpdateRockItStatus
-{
-    return FALSE;
+    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    
+    channelVC.view.alpha = 0.0f;
+    
+    [self.navigationController pushViewController: channelVC
+                                         animated: NO];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.view.alpha = 0.0f;
+         channelVC.view.alpha = 1.0f;
+         self.topTabView.alpha = 0.0f;
+         self.topTabHighlightedView.alpha = 0.0f;
+         self.pinchedView.alpha = 0.0f;
+         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         [self.pinchedView removeFromSuperview];
+     }];
 }
 
 
@@ -308,7 +160,7 @@
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (!indexPath)
@@ -319,16 +171,86 @@
     [self toggleChannelRockItAtIndex: indexPath];
     
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
     cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
 }
 
 
-- (IBAction) touchVideoShareButton: (UIButton *) addItButton
+- (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
 {
-    // TODO: Add share
+    if (sender.state == UIGestureRecognizerStateBegan)
+    {
+        // At this stage, we don't know whether the user is pinching in or out
+        self.userPinchedOut = FALSE;
+        
+        DebugLog (@"UIGestureRecognizerStateBegan");
+        // figure out which item in the table was selected
+        NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollection]];
+        
+        if (!indexPath)
+        {
+            return;
+        }
+        
+        self.pinchedIndexPath = indexPath;
+        
+        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+        
+        // Get the various frames we need to calculate the actual position
+        CGRect imageViewFrame = channelCell.imageView.frame;
+        CGRect viewFrame = channelCell.superview.frame;
+        CGRect cellFrame = channelCell.frame;
+        
+        CGPoint offset = self.channelThumbnailCollection.contentOffset;
+        
+        // Now add them together to get the real pos in the top view
+        imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
+        imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
+        
+        // Now create a new UIImageView to overlay
+        UIImage *cellImage = channel.thumbnailImage;
+        
+        self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
+        self.pinchedView.alpha = 0.7f;
+        self.pinchedView.image = cellImage;
+        
+        // now add the item to the view
+        [self.view addSubview: self.pinchedView];
+    }
+    else if (sender.state == UIGestureRecognizerStateChanged)
+    {
+        DebugLog (@"UIGestureRecognizerStateChanged");
+        float scale = sender.scale;
+        
+        if (scale < 1.0)
+        {
+            return;
+        }
+        else
+        {
+            self.userPinchedOut = TRUE;
+            
+            // we zoomed it, so let's update the coordinates of the dragged view
+            self.pinchedView.transform = CGAffineTransformMakeScale(scale, scale);
+        }
+    }
+    else if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        DebugLog (@"UIGestureRecognizerStateEnded");
+        
+        if (self.userPinchedOut == TRUE)
+        {
+            [self transitionToItemAtIndexPath: self.pinchedIndexPath];
+        }
+    }
+    else if (sender.state == UIGestureRecognizerStateCancelled)
+    {
+        DebugLog (@"UIGestureRecognizerStateCancelled");
+        [self.pinchedView removeFromSuperview];
+    }
 }
 
 @end
