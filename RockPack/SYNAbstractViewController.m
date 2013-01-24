@@ -722,7 +722,37 @@
                                                                forIndexPath: indexPath];
         
         VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
-        videoQueueCell.imageView.image = videoInstance.video.thumbnailImage;
+//        videoQueueCell.imageView.image = videoInstance.video.thumbnailImage;
+        
+        SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+        
+        self.draggedImageLoadingOperation = [appDelegate.networkEngine imageAtURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                                                             size: videoQueueCell.imageView.frame.size
+                                                                completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
+         {
+             if([videoInstance.video.thumbnailURL isEqualToString: [url absoluteString]])
+             {
+                 if (isInCache)
+                 {
+                     videoQueueCell.imageView.image = fetchedImage;
+                 }
+                 else
+                 {
+                     [UIView transitionWithView: videoQueueCell.contentView
+                                       duration: 0.4f
+                                        options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                                     animations: ^
+                      {
+                          videoQueueCell.imageView.image = fetchedImage;
+                      }
+                                     completion: nil];
+                 }
+             }
+         }
+        errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
+         {
+             
+         }];
         
         cell = videoQueueCell;
     }
