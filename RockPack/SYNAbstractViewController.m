@@ -151,15 +151,20 @@
         standardFlowLayout.minimumInteritemSpacing = 0.0f;
         standardFlowLayout.minimumLineSpacing = 15.0f;
         standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+         standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
         
-        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(20, 26, 472, 73)
-                                                          collectionViewLayout: standardFlowLayout];
+//        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(10, 26, 478, 73)
+//                                                          collectionViewLayout: standardFlowLayout];
+        
+        // Make this of zero width initially
+        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)
+                                                           collectionViewLayout: standardFlowLayout];
         
         self.videoQueueCollectionView.delegate = self;
         self.videoQueueCollectionView.dataSource = self;
         
-        self.videoQueueCollectionView.backgroundColor = [UIColor clearColor];
-        
+//        self.videoQueueCollectionView.backgroundColor = [UIColor clearColor];
+            self.videoQueueCollectionView.backgroundColor = [UIColor blueColor];
         // Register cells
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell"
                                                  bundle: nil];
@@ -847,7 +852,7 @@
         
         // Hardcoded for now, eeek!
         // TODO: Unhardcode this
-        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 127, 73);
+        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 123, 69);
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
 //        self.draggedView.image = videoInstance.video.thumbnailImage;
@@ -1171,19 +1176,34 @@
          }];
     }
     
-    [SYNVideoSelection.sharedVideoSelectionArray insertObject: videoInstance
-                                                      atIndex: 0];
     
+    // OK, here goes
+    
+    // First, increase the size of the view by the size of the new cell to be added (+margin)
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
-    videoQueueViewFrame.origin.x -= 142;
     videoQueueViewFrame.size.width += 142;
+    
     self.videoQueueCollectionView.frame = videoQueueViewFrame;
+    
+    [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance];
     
     [self.videoQueueCollectionView reloadData];
     
-    [self.videoQueueCollectionView scrollToItemAtIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]
-                                         atScrollPosition: UICollectionViewScrollPositionLeft
-                                                 animated: NO];
+    [self performSelector: @selector(animateVideoAdditionToVideoQueue2:)
+               withObject: videoInstance
+               afterDelay: 0.0f];
+}
+
+- (void) animateVideoAdditionToVideoQueue2: (VideoInstance *) videoInstance
+{    
+    NSLog (@"Collection %f, frame %f, offset %f, target %f", self.videoQueueCollectionView.contentSize.width, self.videoQueueCollectionView.frame.size.width, self.videoQueueCollectionView.contentOffset.x, (float)kVideoQueueWidth);
+    
+    if (self.videoQueueCollectionView.contentSize.width + 15 > kVideoQueueWidth + 142)
+    {
+        CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
+        contentOffset.x = self.videoQueueCollectionView.contentSize.width - kVideoQueueWidth;
+        self.videoQueueCollectionView.contentOffset = contentOffset;
+    }
     
     // Animate the view out onto the screen
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
@@ -1191,15 +1211,33 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         // Contract thumbnail view
-         CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
-         videoQueueViewFrame.origin.x += 142;
-         videoQueueViewFrame.size.width -= 142;
-         self.videoQueueCollectionView.frame =  videoQueueViewFrame;
+         // Slide origin back
+         CGRect videoQueueCollectionViewFrame = self.videoQueueCollectionView.frame;
+         videoQueueCollectionViewFrame.origin.x -= 142;
          
+         CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
+         
+         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
+         {
+             videoQueueCollectionViewFrame.origin.x = kVideoQueueOffsetX;
+             videoQueueCollectionViewFrame.size.width = kVideoQueueWidth;
+
+             
+//             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - kVideoQueueWidth;
+             contentOffset.x += 142;
+         }
+         
+//         self.videoQueueCollectionView.contentOffset = contentOffset;
+         self.videoQueueCollectionView.frame = videoQueueCollectionViewFrame;
      }
-                     completion: ^(BOOL finished)
+     completion: ^(BOOL finished)
      {
+         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
+         {
+             CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
+             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - kVideoQueueWidth;
+             self.videoQueueCollectionView.contentOffset = contentOffset;
+         }
      }];
 }
 
@@ -1220,5 +1258,19 @@
 {
     return CGRectContainsPoint(self.videoQueueView.frame, point);
 }
+
+//         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
+//         {
+//             CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
+//             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - kVideoQueueWidth;
+//             self.videoQueueCollectionView.contentOffset = contentOffset;
+//         }
+//         else
+//         {
+//             CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
+//             NSLog (@"width=%f", self.videoQueueCollectionView.frame.size.width);
+//             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - self.videoQueueCollectionView.frame.size.width;
+//             self.videoQueueCollectionView.contentOffset = contentOffset;
+//         }
 
 @end

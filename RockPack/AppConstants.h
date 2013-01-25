@@ -83,7 +83,8 @@
 
 // Image well
 #define kVideoQueueAnimationDuration 0.3f
-#define kVideoQueueOnScreenDuration 10.0f
+//#define kVideoQueueOnScreenDuration 10.0f
+#define kVideoQueueOnScreenDuration 10000.0f
 
 // Large Video panel
 #define kLargeVideoPanelAnimationDuration 0.3f
@@ -101,6 +102,10 @@
 // Effective height (exlcuding shadow) of the image well
 //#define kVideoQueueEffectiveHeight 99
 #define kVideoQueueEffectiveHeight 103
+
+#define kVideoQueueWidth 490
+//#define kVideoQueueWidth 475
+#define kVideoQueueOffsetX 10
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
