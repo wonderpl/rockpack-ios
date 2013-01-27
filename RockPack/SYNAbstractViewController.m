@@ -131,7 +131,7 @@
         [self.videoQueueView addSubview: self.videoQueueExistingButton];
         
         // Message view
-        self.videoQueueMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(156, 47, 411, 31)];
+        self.videoQueueMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(60, 47, 411, 31)];
         self.videoQueueMessageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
         
         
@@ -571,13 +571,20 @@
     [bottomTabViewController toggleShareMenu];
 }
 
+//- (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender
+//{
+//    if (sender.state == UIGestureRecognizerStateBegan)
+//    {
+//        [self showVideoQueue: TRUE];
+//        
+//        // figure out which item in the table was selected
+//        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
 
 // Called by invisible button on video view cell
-- (void) displayVideoViewerFromButton: (UIButton *) addItButton
-
+- (void) displayVideoViewerFromView: (UIGestureRecognizer *) sender
 {
-    UIView *v = addItButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
+
     VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     
     [self displayVideoViewer: videoInstance];

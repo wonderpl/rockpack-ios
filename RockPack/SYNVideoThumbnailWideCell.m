@@ -17,7 +17,7 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
-@property (nonatomic, strong) IBOutlet UIButton *showVideoButton;
+@property (nonatomic, strong) IBOutlet UIView *longPressView;
 
 @end
 
@@ -101,7 +101,13 @@
     UILongPressGestureRecognizer *longPressOnThumbnailGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
                                                                                                                         action: @selector(longPressThumbnail:)];
     
-    [self.videoImageView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
+    [self.longPressView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
+    
+    UITapGestureRecognizer *tapOnThumbnailGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
+                                                                                                                        action: @selector(displayVideoViewerFromView:)];
+    [self.longPressView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
+    
+    [self.longPressView addGestureRecognizer: tapOnThumbnailGestureRecognizer];
     
     // Add button targets
     [self.rockItButton addTarget: self.viewControllerDelegate
@@ -116,10 +122,6 @@
     [self.addItButton addTarget: self.viewControllerDelegate
                          action: @selector(userTouchedVideoAddItButton:)
                forControlEvents: UIControlEventTouchUpInside];
-    
-    [self.showVideoButton addTarget: self.viewControllerDelegate
-                             action: @selector(displayVideoViewerFromButton:)
-                   forControlEvents: UIControlEventTouchUpInside];
 }
 
 
