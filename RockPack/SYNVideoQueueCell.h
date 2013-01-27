@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 
+- (void) setVideoImageViewImage: (NSString*) imageURLString;
+
 @end

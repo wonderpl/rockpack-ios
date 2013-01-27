@@ -11,6 +11,7 @@
 #import "SYNBottomTabViewController.h"
 #import "SYNNetworkEngine.h"
 #import "TestFlight.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 
 @interface SYNAppDelegate ()
@@ -230,6 +231,9 @@
 {
     self.networkEngine = [[SYNNetworkEngine alloc] initWithDefaultSettings];
     [self.networkEngine useCache];
+    
+    // Use this engine as the default for the asynchronous image loading category on UIImageView
+    UIImageView.defaultEngine = self.networkEngine;
 }
 
 @end

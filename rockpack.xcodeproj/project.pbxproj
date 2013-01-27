@@ -478,6 +478,7 @@
 		01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4281916666F09009B941F /* SYNChannelSelectorCell.m */; };
 		01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */; };
 		01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */; };
+		01E566F516B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E566F416B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m */; };
 		01E8AF1D16638A7600056DBF /* SYNOldYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNOldYouRootViewController.m */; };
 		01E8AF1E16638A7600056DBF /* SYNOldYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNOldYouRootViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
@@ -1077,6 +1078,8 @@
 		01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelSelectorCell.xib; sourceTree = "<group>"; };
 		01E566CE16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
 		01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
+		01E566F316B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
+		01E566F416B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
 		01E8AF1A16638A7600056DBF /* SYNOldYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOldYouRootViewController.h; sourceTree = "<group>"; };
 		01E8AF1B16638A7600056DBF /* SYNOldYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOldYouRootViewController.m; sourceTree = "<group>"; };
 		01E8AF1C16638A7600056DBF /* SYNOldYouRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOldYouRootViewController.xib; sourceTree = "<group>"; };
@@ -1618,6 +1621,8 @@
 		0170715E16554E9B00A3C7C4 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				01E566F316B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.h */,
+				01E566F416B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m */,
 				0199F134167215BE00E479C6 /* NSData+MKBase64.h */,
 				0199F135167215BE00E479C6 /* NSData+MKBase64.m */,
 				0170715F16554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.h */,
@@ -2994,6 +2999,7 @@
 				01702F4616B1386100FF3D4D /* SYNVideosRootViewController.m in Sources */,
 				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
 				01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */,
+				01E566F516B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

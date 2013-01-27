@@ -7,6 +7,7 @@
 //
 
 #import "SYNVideoQueueCell.h"
+#import "MKNetworkKit.h"
 
 @implementation SYNVideoQueueCell
 
@@ -33,6 +34,14 @@
     }
     
     return self;
+}
+
+#pragma mark - Asynchronous image loading support
+
+- (void) setVideoImageViewImage: (NSString*) imageURLString
+{
+    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                   placeHolderImage: nil];
 }
 
 @end

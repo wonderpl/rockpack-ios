@@ -10,7 +10,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
-#import "UICollectionViewCell+AsyncImage.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -18,10 +17,6 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
-@property (nonatomic, strong) MKNetworkOperation* videoImageLoadingOperation;
-@property (nonatomic, strong) MKNetworkOperation* channelImageLoadingOperation;
-@property (nonatomic, strong) NSString* loadingVideoImageViewURLString;
-@property (nonatomic, strong) NSString* loadingChannelImageViewURLString;
 
 @end
 
@@ -70,20 +65,14 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-    self.loadingVideoImageViewURLString = imageURLString;
-    
-    [self loadAndCacheImageInView: self.videoImageView
-                    withURLString: self.loadingVideoImageViewURLString
-         andImageLoadingOperation: self.videoImageLoadingOperation];
+    [self.videoImageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                        placeHolderImage: nil];
 }
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
-{
-    self.loadingChannelImageViewURLString = imageURLString;
-    
-    [self loadAndCacheImageInView: self.channelImageView
-                    withURLString: self.loadingChannelImageViewURLString
-         andImageLoadingOperation: self.channelImageLoadingOperation];
+{    
+    [self.channelImageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                          placeHolderImage: nil];
 }
 
 
@@ -134,10 +123,7 @@
 {
     // We need to clean up any asynchronous image uploads
     self.videoImageView.image = nil;
-    [self.videoImageLoadingOperation cancel];
-    
     self.channelImageView.image = nil;
-    [self.channelImageLoadingOperation cancel];
 }
 
 

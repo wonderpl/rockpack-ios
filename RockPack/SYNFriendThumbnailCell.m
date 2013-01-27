@@ -11,7 +11,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNFriendThumbnailCell.h"
 #import "SYNNetworkEngine.h"
-#import "UICollectionViewCell+AsyncImage.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -70,11 +69,8 @@
 
 - (void) setFriendImageViewImage: (NSString*) imageURLString
 {
-    self.loadingFriendImageViewURLString = imageURLString;
-    
-    [self loadAndCacheImageInView: self.friendImageView
-                    withURLString: self.loadingFriendImageViewURLString
-         andImageLoadingOperation: self.friendImageLoadingOperation];
+    [self.friendImageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                         placeHolderImage: nil];
 }
 
 

@@ -9,6 +9,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "UICollectionViewCell+AsyncImage.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 
 @implementation UICollectionViewCell (AsyncImage)
 

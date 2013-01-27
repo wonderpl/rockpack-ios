@@ -8,13 +8,9 @@
 
 #import "MKNetworkKit.h"
 #import "SYNChannelThumbnailCell.h"
-#import "UICollectionViewCell+AsyncImage.h"
 #import "UIFont+SYNFont.h"
 
 @interface SYNChannelThumbnailCell ()
-
-@property (nonatomic, strong) MKNetworkOperation* channelImageLoadingOperation;
-@property (nonatomic, strong) NSString* loadingChannelImageViewURLString;
 
 @end
 
@@ -57,11 +53,8 @@
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {
-    self.loadingChannelImageViewURLString = imageURLString;
-    
-    [self loadAndCacheImageInView: self.imageView
-                    withURLString: self.loadingChannelImageViewURLString
-         andImageLoadingOperation: self.channelImageLoadingOperation];
+    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                        placeHolderImage: nil];
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
@@ -69,7 +62,6 @@
 {
 
     self.imageView.image = nil;
-    [self.channelImageLoadingOperation cancel];
 }
 
 @end
