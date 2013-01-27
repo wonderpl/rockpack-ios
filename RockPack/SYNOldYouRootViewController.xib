@@ -36,7 +36,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="180058539">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="1047949742">
@@ -299,6 +299,7 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{1024, 686}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="1047949742"/>
 				<reference key="IBUIBackgroundColor" ref="674789222"/>
 				<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -540,7 +541,7 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.CustomClassName">SYNOldYouRootViewController</string>
+				<string key="-1.CustomClassName">SYNYouRootViewController</string>
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -572,8 +573,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonBack.png">{95, 38}</string>
-			<string key="ButtonBackHighlighted.png">{95, 38}</string>
+			<string key="ButtonBack.png">{53, 30}</string>
+			<string key="ButtonBackHighlighted.png">{53, 30}</string>
 			<string key="EddieTaylor.png">{87, 87}</string>
 			<string key="PanelWallpackTitle.png">{1024, 99}</string>
 		</dictionary>

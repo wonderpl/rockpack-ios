@@ -25,3 +25,6 @@
 #endif
 
 #define ZAssert(condition, ...) do { if (!(condition)) { AssertOrLog(__VA_ARGS__); }} while(0)
+
+#define UIDeviceOrientationIsPortrait(orientation)  ((orientation) == UIDeviceOrientationPortrait || (orientation) == UIDeviceOrientationPortraitUpsideDown)
+#define UIDeviceOrientationIsLandscape(orientation) ((orientation) == UIDeviceOrientationLandscapeLeft || (orientation) == UIDeviceOrientationLandscapeRight)

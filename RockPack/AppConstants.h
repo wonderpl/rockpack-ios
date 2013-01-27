@@ -83,8 +83,8 @@
 
 // Image well
 #define kVideoQueueAnimationDuration 0.3f
-//#define kVideoQueueOnScreenDuration 10.0f
-#define kVideoQueueOnScreenDuration 10000.0f
+#define kVideoQueueOnScreenDuration 10.0f
+//#define kVideoQueueOnScreenDuration 10000.0f
 
 // Large Video panel
 #define kLargeVideoPanelAnimationDuration 0.3f

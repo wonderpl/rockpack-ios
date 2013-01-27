@@ -1,15 +1,20 @@
 //
-//  SYNChannelsChannelViewController.h
+//  SYNADetailViewController.h
 //  rockpack
 //
-//  Created by Nick Banks on 01/12/2012.
+//  Created by Nick Banks on 04/12/2012.
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
 @class Channel;
 
-#import "SYNAbstractDetailViewController.h"
+#import "LXReorderableCollectionViewFlowLayout.h"
+#import "SYNAbstractViewController.h"
 
-@interface SYNChannelsDetailViewController : SYNAbstractDetailViewController
+@interface SYNChannelsDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,
+                                                                        UICollectionViewDataSource,
+                                                                        UICollectionViewDelegateFlowLayout,
+                                                                        UIScrollViewDelegate>
+- (id) initWithChannel: (Channel *) channel;
 
 @end

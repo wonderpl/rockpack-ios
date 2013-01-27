@@ -163,8 +163,8 @@
         self.videoQueueCollectionView.delegate = self;
         self.videoQueueCollectionView.dataSource = self;
         
-//        self.videoQueueCollectionView.backgroundColor = [UIColor clearColor];
-            self.videoQueueCollectionView.backgroundColor = [UIColor blueColor];
+        self.videoQueueCollectionView.backgroundColor = [UIColor clearColor];
+//            self.videoQueueCollectionView.backgroundColor = [UIColor blueColor];
         // Register cells
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell"
                                                  bundle: nil];
@@ -1205,6 +1205,7 @@
         self.videoQueueCollectionView.contentOffset = contentOffset;
     }
     
+    
     // Animate the view out onto the screen
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.5f
@@ -1223,21 +1224,20 @@
              videoQueueCollectionViewFrame.size.width = kVideoQueueWidth;
 
              
-//             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - kVideoQueueWidth;
-             contentOffset.x += 142;
+             contentOffset.x = self.videoQueueCollectionView.contentSize.width - kVideoQueueWidth + 15;
          }
          
-//         self.videoQueueCollectionView.contentOffset = contentOffset;
+         self.videoQueueCollectionView.contentOffset = contentOffset;
          self.videoQueueCollectionView.frame = videoQueueCollectionViewFrame;
      }
      completion: ^(BOOL finished)
      {
-         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
-         {
-             CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
-             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - kVideoQueueWidth;
-             self.videoQueueCollectionView.contentOffset = contentOffset;
-         }
+//         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
+//         {
+//             CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
+//             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - kVideoQueueWidth;
+//             self.videoQueueCollectionView.contentOffset = contentOffset;
+//         }
      }];
 }
 
