@@ -479,6 +479,10 @@
 		01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */; };
 		01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */; };
 		01E566F516B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E566F416B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m */; };
+		01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */; };
+		01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E5670416B5E2F400B8B218 /* HPTextViewInternal.m */; };
+		01E5670E16B5EF7C00B8B218 /* MessageEntryInputField.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E5670C16B5EF7C00B8B218 /* MessageEntryInputField.png */; };
+		01E5670F16B5EF7C00B8B218 /* MessageEntryInputField@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E5670D16B5EF7C00B8B218 /* MessageEntryInputField@2x.png */; };
 		01E8AF1D16638A7600056DBF /* SYNOldYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8AF1B16638A7600056DBF /* SYNOldYouRootViewController.m */; };
 		01E8AF1E16638A7600056DBF /* SYNOldYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E8AF1C16638A7600056DBF /* SYNOldYouRootViewController.xib */; };
 		01E98D7E165C13F10079FD7A /* EddieTaylor.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D7C165C13F10079FD7A /* EddieTaylor.png */; };
@@ -1080,6 +1084,12 @@
 		01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
 		01E566F316B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
 		01E566F416B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
+		01E5670116B5E2F400B8B218 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
+		01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
+		01E5670316B5E2F400B8B218 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
+		01E5670416B5E2F400B8B218 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
+		01E5670C16B5EF7C00B8B218 /* MessageEntryInputField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MessageEntryInputField.png; path = Assets/Images/MessageEntryInputField.png; sourceTree = "<group>"; };
+		01E5670D16B5EF7C00B8B218 /* MessageEntryInputField@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MessageEntryInputField@2x.png"; path = "Assets/Images/MessageEntryInputField@2x.png"; sourceTree = "<group>"; };
 		01E8AF1A16638A7600056DBF /* SYNOldYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOldYouRootViewController.h; sourceTree = "<group>"; };
 		01E8AF1B16638A7600056DBF /* SYNOldYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOldYouRootViewController.m; sourceTree = "<group>"; };
 		01E8AF1C16638A7600056DBF /* SYNOldYouRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNOldYouRootViewController.xib; sourceTree = "<group>"; };
@@ -1583,6 +1593,8 @@
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01E5670C16B5EF7C00B8B218 /* MessageEntryInputField.png */,
+				01E5670D16B5EF7C00B8B218 /* MessageEntryInputField@2x.png */,
 				0142EDB916B2E9CB008694DA /* DividerChannelGlass.png */,
 				0142EDBA16B2E9CC008694DA /* DividerChannelGlass@2x.png */,
 				0142EDB116B2E9AF008694DA /* ButtonEdit.png */,
@@ -1764,6 +1776,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				01E566FA16B5E2AA00B8B218 /* Resizeable Text View */,
 				01E42805166666F4009B941F /* Coverflow */,
 				019E6A5E165FD958002B312A /* OAuth2 */,
 				019E6A56165FD7A2002B312A /* Keychain */,
@@ -2389,6 +2402,17 @@
 			name = Coverflow;
 			sourceTree = "<group>";
 		};
+		01E566FA16B5E2AA00B8B218 /* Resizeable Text View */ = {
+			isa = PBXGroup;
+			children = (
+				01E5670116B5E2F400B8B218 /* HPGrowingTextView.h */,
+				01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */,
+				01E5670316B5E2F400B8B218 /* HPTextViewInternal.h */,
+				01E5670416B5E2F400B8B218 /* HPTextViewInternal.m */,
+			);
+			name = "Resizeable Text View";
+			sourceTree = "<group>";
+		};
 		01E98D6E165C13610079FD7A /* Slider */ = {
 			isa = PBXGroup;
 			children = (
@@ -2887,6 +2911,8 @@
 				0142EDB816B2E9AF008694DA /* ButtonEditHighlighted@2x.png in Resources */,
 				0142EDBB16B2E9CD008694DA /* DividerChannelGlass.png in Resources */,
 				0142EDBC16B2E9CD008694DA /* DividerChannelGlass@2x.png in Resources */,
+				01E5670E16B5EF7C00B8B218 /* MessageEntryInputField.png in Resources */,
+				01E5670F16B5EF7C00B8B218 /* MessageEntryInputField@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3000,6 +3026,8 @@
 				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
 				01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				01E566F516B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
+				01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */,
+				01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
