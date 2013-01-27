@@ -149,14 +149,14 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    // XXX
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-    
-    [self displayVideoViewer: videoInstance];
-}
+//- (void) collectionView: (UICollectionView *) collectionView
+//         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+//{
+//    // XXX
+//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+//    
+//    [self displayVideoViewer: videoInstance];
+//}
 
 
 #pragma mark - UI Actions

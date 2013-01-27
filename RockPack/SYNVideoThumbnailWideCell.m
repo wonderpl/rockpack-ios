@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
+@property (nonatomic, strong) IBOutlet UIButton *showVideoButton;
 
 @end
 
@@ -115,6 +116,10 @@
     [self.addItButton addTarget: self.viewControllerDelegate
                          action: @selector(userTouchedVideoAddItButton:)
                forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.showVideoButton addTarget: self.viewControllerDelegate
+                             action: @selector(displayVideoViewerFromButton:)
+                   forControlEvents: UIControlEventTouchUpInside];
 }
 
 

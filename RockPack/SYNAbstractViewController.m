@@ -571,6 +571,19 @@
     [bottomTabViewController toggleShareMenu];
 }
 
+
+// Called by invisible button on video view cell
+- (void) displayVideoViewerFromButton: (UIButton *) addItButton
+
+{
+    UIView *v = addItButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    
+    [self displayVideoViewer: videoInstance];
+}
+
+
 - (void) displayVideoViewer: (VideoInstance *) videoInstance
 {
     SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
