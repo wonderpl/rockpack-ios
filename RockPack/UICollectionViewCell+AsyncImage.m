@@ -41,9 +41,9 @@
              }
          }
      }
-                             errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
+    errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
      {
-         
+         imageView.image = nil;;
      }];
 }
 
