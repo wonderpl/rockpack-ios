@@ -96,13 +96,12 @@
 
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
-#if 1
-    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(5, 5, 5, 5);
+    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.channelDescriptionTextView.text = @"test";
     self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
 	self.channelDescriptionTextView.minNumberOfLines = 1;
-	self.channelDescriptionTextView.maxNumberOfLines = 3;
-    self.channelDescriptionTextView.backgroundColor = [UIColor blueColor];
+	self.channelDescriptionTextView.maxNumberOfLines = 4;
+    self.channelDescriptionTextView.backgroundColor = [UIColor clearColor];
     self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
 	self.channelDescriptionTextView.delegate = self;
     self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
@@ -113,7 +112,8 @@
                                                                        topCapHeight: 22];
     
     UIImageView *entryImageView = [[UIImageView alloc] initWithImage: entryBackground];
-    entryImageView.frame = self.channelDescriptionTextView.frame;
+    CGRect largerRectangle = CGRectInset(self.channelDescriptionTextView.frame, -10, -10);
+    entryImageView.frame = largerRectangle;
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     self.channelDescriptionTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -121,44 +121,7 @@
     [self.channelDescriptionTextContainerView addSubview: entryImageView];
 
     self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-#else
-    self.channelDescriptionTextContainerView = [[UIView alloc] initWithFrame:CGRectMake(261, 10, 753, 80)];
-//    self.channelDescriptionTextContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 40, 320, 40)];
-    
-	self.channelDescriptionTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(1, 14, 743, 52)];
-//    self.channelDescriptionTextView = [[HPGrowingTextView alloc] initWithFrame: CGRectMake(6, 3, 240, 40)];
 
-    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 0);
-//    self.channelDescriptionTextView.text = @"test\n\ntesttest\n\ntest";
-	self.channelDescriptionTextView.minNumberOfLines = 1;
-	self.channelDescriptionTextView.maxNumberOfLines = 4;
-	self.channelDescriptionTextView.returnKeyType = UIReturnKeyDone; //just as an example
-    self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
-	self.channelDescriptionTextView.delegate = self;
-    self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    self.channelDescriptionTextView.backgroundColor = [UIColor clearColor];
-    self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
-    
-    // textView.text = @"test\n\ntest";
-	// textView.animateHeightChange = NO; //turns off animation
-    
-    [self.textPanelView addSubview: self.channelDescriptionTextContainerView];
-	
-    UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
-    
-    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
-                                                                       topCapHeight: 22];
-    
-    UIImageView *entryImageView = [[UIImageView alloc] initWithImage: entryBackground];
-    entryImageView.frame = CGRectMake(0, 15, 745, 55);
-//        entryImageView.frame = CGRectMake(5, 0, 248, 40);
-    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionTextView];
-    [self.channelDescriptionTextContainerView addSubview: entryImageView];    
-
-    self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-#endif
     
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
