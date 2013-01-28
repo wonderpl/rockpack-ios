@@ -31,6 +31,7 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
 @property (nonatomic, strong) IBOutlet HPGrowingTextView *channelDescriptionTextView;
+@property (nonatomic, strong) UIImageView *channelDescriptionHightlightView;
 @property (nonatomic, strong) IBOutlet UIView *channelDescriptionTextContainerView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
@@ -111,17 +112,15 @@
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
                                                                        topCapHeight: 22];
     
-    UIImageView *entryImageView = [[UIImageView alloc] initWithImage: entryBackground];
-    CGRect largerRectangle = CGRectInset(self.channelDescriptionTextView.frame, -10, -10);
-    entryImageView.frame = largerRectangle;
-    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
+    self.channelDescriptionHightlightView = [[UIImageView alloc] initWithImage: entryBackground];
+    self.channelDescriptionHightlightView.frame = CGRectInset(self.channelDescriptionTextView.frame, -10, -10);
+    self.channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.channelDescriptionTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.channelDescriptionHightlightView.hidden = TRUE;
     
-    [self.channelDescriptionTextContainerView addSubview: entryImageView];
+    [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
 
     self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-
     
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
@@ -130,10 +129,19 @@
 
 #pragma mark - Growable UITextView delegates
 
-- (void) resignTextView
+- (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
-	[self.channelDescriptionTextView resignFirstResponder];
+    self.channelDescriptionHightlightView.hidden = FALSE;
 }
+
+
+- (void) growingTextViewDidEndEditing: (HPGrowingTextView *) growingTextView
+{
+    self.channelDescriptionHightlightView.hidden = TRUE;
+    [self.channelDescriptionTextView scrollRangeToVisible: NSMakeRange (0,0)];
+    [self.channelDescriptionTextView resignFirstResponder];
+}
+
 
 - (void) growingTextView: (HPGrowingTextView *) growingTextView
         willChangeHeight: (float) height
@@ -302,21 +310,4 @@
     [self saveDB];
 }
 
-
-#pragma mark - Keyboard management
-
-- (void) textViewDidBeginEditing: (UITextView *) textView
-{
-//    [self.scrollView adjustOffsetToIdealIfNeeded];
-    
-//    [[self.channelDescriptionTextView layer] setBorderColor: [[UIColor whiteColor] CGColor]];
-//    [[self.channelDescriptionTextView layer] setBorderWidth: 10];
-//    [[self.channelDescriptionTextView layer] setCornerRadius: 15];
-    
-//    [self.userNameLabel.layer setBackgroundColor: [[UIColor whiteColor] CGColor]];
-//    [self.userNameLabel.layer setBorderColor: [[UIColor grayColor] CGColor]];
-//    [self.userNameLabel.layer setBorderWidth: 1.0];
-//    [self.userNameLabel.layer setCornerRadius: 8.0f];
-//    [self.userNameLabel.layer setMasksToBounds: YES];
-}
 @end
