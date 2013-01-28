@@ -94,7 +94,7 @@
 
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
-#ifdef 1
+#if 0
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     self.view.backgroundColor = [UIColor blackColor];
 	
