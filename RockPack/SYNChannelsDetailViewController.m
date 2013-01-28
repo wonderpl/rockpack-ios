@@ -14,6 +14,7 @@
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNMyRockpackMovieViewController.h"
+#import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "TPKeyboardAvoidingScrollView.h"
 #import "UIFont+SYNFont.h"
@@ -35,7 +36,7 @@
 @property (nonatomic, strong) IBOutlet UIView *channelDescriptionTextContainerView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
+@property (nonatomic, strong) IBOutlet SYNTextField *channelTitleTextField;
 @property (nonatomic, strong) IBOutlet UILabel *videosLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followersLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoCountLabel;
@@ -66,7 +67,7 @@
     [super viewDidLoad];
     
     // Set all the labels to use the custom font
-    self.channelTitleLabel.font = [UIFont boldRockpackFontOfSize: 29.0f];
+    self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.videosLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.followersLabel.font = [UIFont rockpackFontOfSize: 12.0f];
@@ -97,6 +98,7 @@
 
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
+    // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
     self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.channelDescriptionTextView.text = @"test";
     self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
@@ -107,6 +109,8 @@
 	self.channelDescriptionTextView.delegate = self;
     self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
 	
+    
+    // Add highlighted box
     UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
     
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
@@ -119,6 +123,10 @@
     self.channelDescriptionHightlightView.hidden = TRUE;
     
     [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
+    
+    
+    // Now use the same assets to create a highlight box for the channel title
+//    channelTitleLabel
 
     self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     
@@ -215,7 +223,7 @@
     [super viewWillAppear: animated];
     
     // Set all labels and images to correspond to the selected channel
-    self.channelTitleLabel.text = self.channel.title;
+    self.channelTitleTextField.text = self.channel.title;
     self.channelWallpaperImageView.image = self.channel.wallpaperImage;
 //    self.biogBodyLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.channelDescription];
     
