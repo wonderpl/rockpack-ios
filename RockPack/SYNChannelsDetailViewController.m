@@ -7,6 +7,7 @@
 //
 
 #import "Channel.h"
+#import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNChannelCollectionBackgroundView.h"
@@ -23,13 +24,15 @@
 
 
 
-@interface SYNChannelsDetailViewController ()
+@interface SYNChannelsDetailViewController () <HPGrowingTextViewDelegate>
 
 @property (nonatomic, assign) BOOL keyboardShown;
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
-@property (nonatomic, strong) IBOutlet UITextView *channelDescriptionTextView;
+@property (nonatomic, strong) IBOutlet HPGrowingTextView *channelDescriptionTextView;
+@property (nonatomic, strong) IBOutlet UIView *channelDescriptionTextContainerView;
+@property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videosLabel;
@@ -68,7 +71,6 @@
     self.followersLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.videoCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
     self.followersCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
-    self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
     
     // Register video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
@@ -94,70 +96,147 @@
 
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
-#if 0
-    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-    self.view.backgroundColor = [UIColor blackColor];
+#if 1
+    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(5, 5, 5, 5);
+    self.channelDescriptionTextView.text = @"test";
+    self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
+	self.channelDescriptionTextView.minNumberOfLines = 1;
+	self.channelDescriptionTextView.maxNumberOfLines = 3;
+    self.channelDescriptionTextView.backgroundColor = [UIColor blueColor];
+    self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
+	self.channelDescriptionTextView.delegate = self;
+    self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
 	
-    containerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 40, 320, 40)];
+    UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
     
-	textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
-    textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 0);
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
+                                                                       topCapHeight: 22];
     
-	textView.minNumberOfLines = 1;
-	textView.maxNumberOfLines = 6;
-	textView.returnKeyType = UIReturnKeyGo; //just as an example
-	textView.font = [UIFont systemFontOfSize:15.0f];
-	textView.delegate = self;
-    textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    textView.backgroundColor = [UIColor blackColor];
-    textView.textColor = [UIColor whiteColor];
+    UIImageView *entryImageView = [[UIImageView alloc] initWithImage: entryBackground];
+    entryImageView.frame = self.channelDescriptionTextView.frame;
+    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    self.channelDescriptionTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [self.channelDescriptionTextContainerView addSubview: entryImageView];
+
+    self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+#else
+    self.channelDescriptionTextContainerView = [[UIView alloc] initWithFrame:CGRectMake(261, 10, 753, 80)];
+//    self.channelDescriptionTextContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 40, 320, 40)];
+    
+	self.channelDescriptionTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(1, 14, 743, 52)];
+//    self.channelDescriptionTextView = [[HPGrowingTextView alloc] initWithFrame: CGRectMake(6, 3, 240, 40)];
+
+    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 0);
+//    self.channelDescriptionTextView.text = @"test\n\ntesttest\n\ntest";
+	self.channelDescriptionTextView.minNumberOfLines = 1;
+	self.channelDescriptionTextView.maxNumberOfLines = 4;
+	self.channelDescriptionTextView.returnKeyType = UIReturnKeyDone; //just as an example
+    self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
+	self.channelDescriptionTextView.delegate = self;
+    self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    self.channelDescriptionTextView.backgroundColor = [UIColor clearColor];
+    self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
     
     // textView.text = @"test\n\ntest";
 	// textView.animateHeightChange = NO; //turns off animation
     
-    [self.view addSubview:containerView];
+    [self.textPanelView addSubview: self.channelDescriptionTextContainerView];
 	
-    UIImage *rawEntryBackground = [UIImage imageNamed:@"MessageEntryInputField.png"];
-    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-    UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-    entryImageView.frame = CGRectMake(5, 0, 248, 40);
+    UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
+    
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
+                                                                       topCapHeight: 22];
+    
+    UIImageView *entryImageView = [[UIImageView alloc] initWithImage: entryBackground];
+    entryImageView.frame = CGRectMake(0, 15, 745, 55);
+//        entryImageView.frame = CGRectMake(5, 0, 248, 40);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
-    UIImage *rawBackground = [UIImage imageNamed:@"MessageEntryBackground.png"];
-    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
-    imageView.frame = CGRectMake(0, 0, containerView.frame.size.width, containerView.frame.size.height);
-    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
-    // view hierachy
-    [containerView addSubview:imageView];
-    [containerView addSubview:textView];
-    [containerView addSubview:entryImageView];
-    
-    UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-    UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-    
-	UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	doneBtn.frame = CGRectMake(containerView.frame.size.width - 69, 8, 63, 27);
-    doneBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-	[doneBtn setTitle:@"Done" forState:UIControlStateNormal];
-    
-    [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-    doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
-    doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    
-    [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-	[doneBtn addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
-    [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-    [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
-	[containerView addSubview:doneBtn];
-    containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionTextView];
+    [self.channelDescriptionTextContainerView addSubview: entryImageView];    
+
+    self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 #endif
     
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
+}
+
+
+#pragma mark - Growable UITextView delegates
+
+- (void) resignTextView
+{
+	[self.channelDescriptionTextView resignFirstResponder];
+}
+
+- (void) growingTextView: (HPGrowingTextView *) growingTextView
+        willChangeHeight: (float) height
+{
+    float diff = (growingTextView.frame.size.height - height);
+    
+	CGRect containerViewFrame = self.channelDescriptionTextContainerView.frame;
+    containerViewFrame.size.height -= diff;
+//    containerViewFrame.origin.y += diff;
+	self.channelDescriptionTextContainerView.frame = containerViewFrame;
+}
+
+//Code from Brett Schumann
+- (void) keyboardWillShow: (NSNotification *) notification
+{
+    // get keyboard size and loctaion
+	CGRect keyboardBounds;
+    [[notification.userInfo valueForKey: UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [notification.userInfo objectForKey: UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect: keyboardBounds
+                                     toView: nil];
+    
+	// get a rect for the textView frame
+	CGRect containerFrame = self.channelDescriptionTextContainerView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+    
+	// animations settings
+	[UIView beginAnimations: nil
+                    context: NULL];
+    
+	[UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: [duration doubleValue]];
+    [UIView setAnimationCurve: [curve intValue]];
+	
+	// set views with new info
+	self.channelDescriptionTextContainerView.frame = containerFrame;
+	
+	// commit animations
+	[UIView commitAnimations];
+}
+
+- (void) keyboardWillHide: (NSNotification *) notification
+{
+    NSNumber *duration = [notification.userInfo objectForKey: UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
+	
+	// get a rect for the textView frame
+	CGRect containerFrame = self.channelDescriptionTextContainerView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+	
+	// animations settings
+	[UIView beginAnimations: nil
+                    context: NULL];
+    
+	[UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: [duration doubleValue]];
+    [UIView setAnimationCurve: [curve intValue]];
+    
+	// set views with new info
+	self.channelDescriptionTextContainerView.frame = containerFrame;
+	
+	// commit animations
+	[UIView commitAnimations];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -265,16 +344,16 @@
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
-    [self.scrollView adjustOffsetToIdealIfNeeded];
+//    [self.scrollView adjustOffsetToIdealIfNeeded];
     
 //    [[self.channelDescriptionTextView layer] setBorderColor: [[UIColor whiteColor] CGColor]];
 //    [[self.channelDescriptionTextView layer] setBorderWidth: 10];
 //    [[self.channelDescriptionTextView layer] setCornerRadius: 15];
     
-    [self.userNameLabel.layer setBackgroundColor: [[UIColor whiteColor] CGColor]];
-    [self.userNameLabel.layer setBorderColor: [[UIColor grayColor] CGColor]];
-    [self.userNameLabel.layer setBorderWidth: 1.0];
-    [self.userNameLabel.layer setCornerRadius: 8.0f];
-    [self.userNameLabel.layer setMasksToBounds: YES];
+//    [self.userNameLabel.layer setBackgroundColor: [[UIColor whiteColor] CGColor]];
+//    [self.userNameLabel.layer setBorderColor: [[UIColor grayColor] CGColor]];
+//    [self.userNameLabel.layer setBorderWidth: 1.0];
+//    [self.userNameLabel.layer setCornerRadius: 8.0f];
+//    [self.userNameLabel.layer setMasksToBounds: YES];
 }
 @end
