@@ -1,13 +1,13 @@
 //
-//  SYNVideosTopLevelViewController.h
-//  rockpack
+//  SYNDiscoverTopTabViewController.h
+//  RockPack
 //
-//  Created by Nick Banks on 24/01/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Created by Nick Banks on 16/10/2012.
+//  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractViewController.h"
+#import "SYNAbstractTopTabViewController.h"
 
-@interface SYNVideosRootViewController : SYNAbstractViewController
+@interface SYNVideosRootViewController : SYNAbstractTopTabViewController 
 
 @end

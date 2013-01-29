@@ -23,6 +23,9 @@
 /* Begin PBXBuildFile section */
 		0106E82316510A5900DC5173 /* SYNWallpackThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0106E82216510A5900DC5173 /* SYNWallpackThumbnailCell.m */; };
 		0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */; };
+		0109D1BD16B7F03900673FC4 /* PanelLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */; };
+		0109D1BE16B7F03900673FC4 /* PanelLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */; };
+		0109D1C016B7F38900673FC4 /* placeholder10.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BF16B7F38900673FC4 /* placeholder10.png */; };
 		010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD41629BDC40080F26B /* UIKit.framework */; };
 		010DEFD71629BDC40080F26B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD61629BDC40080F26B /* Foundation.framework */; };
 		010DEFD91629BDC40080F26B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD81629BDC40080F26B /* CoreGraphics.framework */; };
@@ -38,8 +41,8 @@
 		011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */; };
 		012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */; };
 		012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */; };
-		012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */; };
-		012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */; };
+		012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */; };
+		012632F5162E130C0009FF9C /* SYNVideosRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
 		012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA3F165AF1E400A60980 /* SYNSwitch.m */; };
 		012ECA5F165B9D4300A60980 /* SYNVideoDownloadEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */; };
@@ -180,8 +183,8 @@
 		01677F1316554CFD00B1B1D8 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1216554CFD00B1B1D8 /* iTunesArtwork */; };
 		01677F1616554D2700B1B1D8 /* DINNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1416554D2700B1B1D8 /* DINNextLTPro-Bold.otf */; };
 		01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */; };
-		01702F4616B1386100FF3D4D /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01702F4416B1386100FF3D4D /* SYNVideosRootViewController.m */; };
-		01702F4716B1386100FF3D4D /* SYNVideosRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01702F4516B1386100FF3D4D /* SYNVideosRootViewController.xib */; };
+		01702F4616B1386100FF3D4D /* SYNVideosRootViewControllerOld.m in Sources */ = {isa = PBXBuildFile; fileRef = 01702F4416B1386100FF3D4D /* SYNVideosRootViewControllerOld.m */; };
+		01702F4716B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01702F4516B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib */; };
 		0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */; };
 		0170717516554E9B00A3C7C4 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716416554E9B00A3C7C4 /* NSDate+RFC1123.m */; };
 		0170717616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m */; };
@@ -527,6 +530,9 @@
 		0106E82116510A5900DC5173 /* SYNWallpackThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackThumbnailCell.h; sourceTree = "<group>"; };
 		0106E82216510A5900DC5173 /* SYNWallpackThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackThumbnailCell.m; sourceTree = "<group>"; };
 		0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallpackThumbnailCell.xib; sourceTree = "<group>"; };
+		0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelLargeVideoView.png; path = Assets/Images/PanelLargeVideoView.png; sourceTree = "<group>"; };
+		0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelLargeVideoView@2x.png"; path = "Assets/Images/PanelLargeVideoView@2x.png"; sourceTree = "<group>"; };
+		0109D1BF16B7F38900673FC4 /* placeholder10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder10.png; path = Assets/Images/placeholder10.png; sourceTree = "<group>"; };
 		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -553,9 +559,9 @@
 		012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselVerticalLayout.m; sourceTree = "<group>"; };
 		012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselCell.h; sourceTree = "<group>"; };
 		012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselCell.m; sourceTree = "<group>"; };
-		012632F1162E130C0009FF9C /* SYNDiscoverTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDiscoverTopTabViewController.h; sourceTree = "<group>"; };
-		012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDiscoverTopTabViewController.m; sourceTree = "<group>"; };
-		012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNDiscoverTopTabViewController.xib; sourceTree = "<group>"; };
+		012632F1162E130C0009FF9C /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
+		012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
+		012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideosRootViewController.xib; sourceTree = "<group>"; };
 		0126331E162E2A060009FF9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		012ECA3E165AF1E400A60980 /* SYNSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSwitch.h; sourceTree = "<group>"; };
 		012ECA3F165AF1E400A60980 /* SYNSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSwitch.m; sourceTree = "<group>"; };
@@ -716,9 +722,9 @@
 		01677F1216554CFD00B1B1D8 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Assets/Images/iTunesArtwork; sourceTree = "<group>"; };
 		01677F1416554D2700B1B1D8 /* DINNextLTPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DINNextLTPro-Bold.otf"; path = "Assets/Fonts/DINNextLTPro-Bold.otf"; sourceTree = "<group>"; };
 		01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DINNextLTPro-Regular.otf"; path = "Assets/Fonts/DINNextLTPro-Regular.otf"; sourceTree = "<group>"; };
-		01702F4316B1386100FF3D4D /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
-		01702F4416B1386100FF3D4D /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
-		01702F4516B1386100FF3D4D /* SYNVideosRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideosRootViewController.xib; sourceTree = "<group>"; };
+		01702F4316B1386100FF3D4D /* SYNVideosRootViewControllerOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewControllerOld.h; sourceTree = "<group>"; };
+		01702F4416B1386100FF3D4D /* SYNVideosRootViewControllerOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewControllerOld.m; sourceTree = "<group>"; };
+		01702F4516B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideosRootViewControllerOld.xib; sourceTree = "<group>"; };
 		0170715F16554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAlert+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
 		0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
 		0170716316554E9B00A3C7C4 /* NSDate+RFC1123.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RFC1123.h"; sourceTree = "<group>"; };
@@ -1920,6 +1926,9 @@
 		01982550162A2AAC00216900 /* Panels */ = {
 			isa = PBXGroup;
 			children = (
+				0109D1BF16B7F38900673FC4 /* placeholder10.png */,
+				0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */,
+				0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */,
 				01B7CDA3166E1CF6001F4AF0 /* PanelChannelDetailsHeader.png */,
 				01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */,
 				01677EB416554C5800B1B1D8 /* PanelMainTitle.png */,
@@ -1933,12 +1942,12 @@
 		0198255F162ADE2900216900 /* Videos */ = {
 			isa = PBXGroup;
 			children = (
-				01702F4316B1386100FF3D4D /* SYNVideosRootViewController.h */,
-				01702F4416B1386100FF3D4D /* SYNVideosRootViewController.m */,
-				01702F4516B1386100FF3D4D /* SYNVideosRootViewController.xib */,
-				012632F1162E130C0009FF9C /* SYNDiscoverTopTabViewController.h */,
-				012632F2162E130C0009FF9C /* SYNDiscoverTopTabViewController.m */,
-				012632F3162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib */,
+				012632F1162E130C0009FF9C /* SYNVideosRootViewController.h */,
+				012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */,
+				012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */,
+				01702F4316B1386100FF3D4D /* SYNVideosRootViewControllerOld.h */,
+				01702F4416B1386100FF3D4D /* SYNVideosRootViewControllerOld.m */,
+				01702F4516B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib */,
 			);
 			name = Videos;
 			sourceTree = "<group>";
@@ -2524,7 +2533,7 @@
 				010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */,
 				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
 				0198254F162A204A00216900 /* SYNOldFriendsViewController.xib in Resources */,
-				012632F5162E130C0009FF9C /* SYNDiscoverTopTabViewController.xib in Resources */,
+				012632F5162E130C0009FF9C /* SYNVideosRootViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */,
 				01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */,
@@ -2892,7 +2901,7 @@
 				01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */,
 				01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */,
 				01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */,
-				01702F4716B1386100FF3D4D /* SYNVideosRootViewController.xib in Resources */,
+				01702F4716B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib in Resources */,
 				0142ED8116B1439B008694DA /* CategoryBar.png in Resources */,
 				0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */,
 				0142ED8B16B19FBE008694DA /* SYNYouRootViewController.xib in Resources */,
@@ -2918,6 +2927,9 @@
 				0142EDBC16B2E9CD008694DA /* DividerChannelGlass@2x.png in Resources */,
 				01E5670E16B5EF7C00B8B218 /* MessageEntryInputField.png in Resources */,
 				01E5670F16B5EF7C00B8B218 /* MessageEntryInputField@2x.png in Resources */,
+				0109D1BD16B7F03900673FC4 /* PanelLargeVideoView.png in Resources */,
+				0109D1BE16B7F03900673FC4 /* PanelLargeVideoView@2x.png in Resources */,
+				0109D1C016B7F38900673FC4 /* placeholder10.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2956,7 +2968,7 @@
 				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
 				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
 				012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */,
-				012632F4162E130C0009FF9C /* SYNDiscoverTopTabViewController.m in Sources */,
+				012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */,
 				01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */,
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
 				01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */,
@@ -3027,7 +3039,7 @@
 				015CB01916AE03B200FEB8E7 /* _User.m in Sources */,
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
 				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
-				01702F4616B1386100FF3D4D /* SYNVideosRootViewController.m in Sources */,
+				01702F4616B1386100FF3D4D /* SYNVideosRootViewControllerOld.m in Sources */,
 				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
 				01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				01E566F516B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m in Sources */,

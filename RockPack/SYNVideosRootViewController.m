@@ -1,25 +1,46 @@
 //
-//  SYNVideosTopLevelViewController.m
-//  rockpack
+//  SYNDiscoverTopTabViewController.m
+//  RockPack
 //
-//  Created by Nick Banks on 24/01/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Created by Nick Banks on 16/10/2012.
+//  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
 #import "AppConstants.h"
+#import "AudioToolbox/AudioToolbox.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
-#import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
-#import "SYNHomeSectionHeaderView.h"
-#import "SYNNetworkEngine.h"
-#import "SYNVideoThumbnailWideCell.h"
-#import "SYNVideoViewerViewController.h"
+#import "SYNBottomTabViewController.h"
 #import "SYNVideosRootViewController.h"
+#import "SYNNetworkEngine.h"
+#import "SYNVideoQueueCell.h"
+#import "SYNVideoDB.h"
+#import "SYNVideoThumbnailWideCell.h"
+#import "SYNWallpackCarouseHorizontallLayout.h"
+#import "SYNWallpackCarouselCell.h"
+#import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import <MediaPlayer/MediaPlayer.h>
 
-@interface SYNVideosRootViewController ()
+@interface SYNVideosRootViewController () <UIGestureRecognizerDelegate,
+                                               UIScrollViewDelegate>
+
+@property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
+@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
+@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
+@property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
+@property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
+@property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
+@property (nonatomic, strong) IBOutlet UILabel *channelLabel;
+@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
+@property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
+@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
+
 
 @end
 
@@ -31,32 +52,51 @@
 {
     [super viewDidLoad];
 
-    // Init collection view
+
+    // Set the labels to use the custom font
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.channelLabel.font = [UIFont rockpackFontOfSize: 14.0f];
+    self.userNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+
+    // Init video thumbnail collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
-                                                  bundle: nil];
-    
+                                             bundle: nil];
+
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-											                         selector: @selector(reloadCollectionViews)
-												                             name: kDataUpdated
-											                           object: nil];
+         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+}
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
     
     // TODO: Remove this video download hack once we have real data from the API
+//    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateHomeScreen];
     [appDelegate.networkEngine updateChannelScreen];
+    
+    // Set the first video
+    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
+    {
+        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
+                                                           inSection: 0]];
+    }
 }
 
 
-- (void) dealloc
+- (void) viewDidAppear: (BOOL) animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-													                                name: kDataUpdated
-												                              object: nil];
+    [super viewDidAppear: animated];
+    
+    [self.videoThumbnailCollectionView reloadData];
 }
+
 
 - (BOOL) hasVideoQueue
 {
@@ -69,44 +109,40 @@
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    //    // No predicate
-    //    return nil;
-    return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", @"1"];
+    
+    return predicate;
+    
+    return nil;
 }
 
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
-                                                                   ascending: NO];
+    // TODO: This is currently sorted by title, but I suspect that we need to be more sophisticated
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                   ascending: YES];
     return @[sortDescriptor];
 }
 
-- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
+
+- (NSPredicate *) channelFetchedResultsControllerPredicate
 {
-    //    return @"daysAgo";
-    return nil;
+    // Don't show any user generated channels
+    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
 }
 
 
-- (void) reloadCollectionViews
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
-    [self.videoThumbnailCollectionView reloadData];
+    // Sort by index
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
+                                                                   ascending: YES];
+    return @[sortDescriptor];
 }
+
 
 #pragma mark - Collection view support
-
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
-{
-    if (collectionView == self.videoThumbnailCollectionView)
-    {
-        return self.videoInstanceFetchedResultsController.sections.count;
-    }
-    else
-    {
-        return 1;
-    }
-}
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
@@ -120,7 +156,7 @@
         if (collectionView == self.videoThumbnailCollectionView)
         {
             id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
-            return [sectionInfo numberOfObjects];
+            items = [sectionInfo numberOfObjects];
         }
         else
         {
@@ -131,6 +167,10 @@
     return items;
 }
 
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
+{
+    return 1;
+}
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -149,59 +189,340 @@
 }
 
 
-//- (void) collectionView: (UICollectionView *) collectionView
-//         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    // XXX
-//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-//    
-//    [self displayVideoViewer: videoInstance];
-//}
-
-
-#pragma mark - UI Actions
-
-- (IBAction) toggleVideoRockItButton: (UIButton *) rockItButton
+- (void) collectionView: (UICollectionView *) collectionView
+didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    rockItButton.selected = !rockItButton.selected;
+    // See if this can be handled in our abstract base class
+    BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
+                   didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
     
-    // Get to cell it self (from button subview)
-    UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
+    if (!handledInSuperview)
     {
-        return;
+        // Check to see if is one that we can handle
+        if (collectionView == self.videoThumbnailCollectionView)
+        {
+#ifdef FULL_SCREEN_THUMBNAILS
+            if (self.isLargeVideoViewExpanded == FALSE)
+            {
+                [self animateLargeVideoViewRight: nil];
+                self.largeVideoViewExpanded = TRUE;
+            }
+#endif
+            self.currentIndexPath = indexPath;
+            
+            [self setLargeVideoToIndexPath: indexPath];
+        }
+        else
+        {
+            AssertOrLog(@"Trying to select unexpected collection view");
+        }
     }
+}
+
+
+#pragma mark - User interface
+
+- (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath
+{
+    self.currentIndexPath = indexPath;
     
-    [self toggleVideoRockItAtIndex: indexPath];
+    [self updateLargeVideoDetailsForIndexPath: indexPath];
     
     VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+    NSURL *videoURL = videoInstance.video.localVideoURL;
     
-    cell.rockItButton.selected = videoInstance.video.starredByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+    self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
+    
+    self.mainVideoPlayerController.shouldAutoplay = NO;
+    [self.mainVideoPlayerController prepareToPlay];
+    
+    [[self.mainVideoPlayerController view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
+    
+    [self.videoPlaceholderView addSubview: [self.mainVideoPlayerController view]];
+    
+    // Add dragging to large video view
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                            action: @selector(longPressLargeVideo:)];
+    [self.mainVideoPlayerController.view addGestureRecognizer: longPress];
+    
+    [self.mainVideoPlayerController pause];
+    
 }
 
 
-- (IBAction) touchVideoAddItButton: (UIButton *) addItButton
+- (IBAction) longPressLargeVideo: (UIGestureRecognizer *) sender
 {
-    DebugLog (@"No implementation yet");
+    if (sender.state == UIGestureRecognizerStateBegan)
+    {
+        // figure out which item in the table was selected
+        
+        self.inDrag = YES;
+        
+        // Store the initial drag point, just in case we have to animate it back if the user misses the drop zone
+        self.initialDragCenter = [sender locationInView: self.view];
+        
+        // Hardcoded for now, eeek!
+        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 123, 69);
+        self.draggedView = [[UIImageView alloc] initWithFrame: frame];
+        self.draggedView.alpha = 0.7;
+        
+        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        self.draggedView.image = video.thumbnailImage;
+        
+        // now add the item to the view
+        [self.view addSubview: self.draggedView];
+        
+        // Highlight the image well
+        [self highlightVideoQueue: TRUE];
+    }
+    else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
+    {
+        // we dragged it, so let's update the coordinates of the dragged view
+        CGPoint point = [sender locationInView: self.view];
+        self.draggedView.center = point;
+    }
+    else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
+    {
+        // Un-highlight the image well
+        [self highlightVideoQueue: FALSE];
+        
+        // and let's figure out where we dropped it
+//        CGPoint point = [sender locationInView: self.dropZoneView];
+        CGPoint point = [sender locationInView: self.view];
+        
+        // If we have dropped it in the right place, then add it to our image well
+        if ([self pointInVideoQueue: point])
+            
+        {
+            // Hide the dragged thumbnail and add new image to image well
+            [self.draggedView removeFromSuperview];
+            [self addToVideoQueueFromLargeVideo: nil];
+        }
+        else
+        {
+            [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^
+             {
+                 // Contract thumbnail view
+                 self.draggedView.center = self.initialDragCenter;
+                 
+             }
+                             completion: ^(BOOL finished)
+             {
+                 [self.draggedView removeFromSuperview];
+             }];
+        }
+    }
 }
 
 
-#pragma mark - Video Queue animation
+- (IBAction) addToVideoQueueFromLargeVideo: (id) sender
+{
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+    [self animateVideoAdditionToVideoQueue: videoInstance];
+}
+
+
+- (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
+{
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    
+    self.titleLabel.text = videoInstance.title;
+    self.channelLabel.text = videoInstance.channel.title;
+    self.userNameLabel.text = videoInstance.channel.channelOwner.name;
+    
+    [self updateLargeVideoRockpackForIndexPath: indexPath];
+}
+
+
+- (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
+{
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    
+    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+    self.rockItButton.selected = videoInstance.video.starredByUserValue;
+}
+
+
+
+- (void) setSelectedIndex: (NSUInteger) newSelectedIndex
+                 animated: (BOOL) animated
+{
+    if (newSelectedIndex != NSNotFound)
+    {
+        [self highlightTab: newSelectedIndex];
+        
+        // We need to change the search criteria here to relect the change in genre
+        
+        [self.videoThumbnailCollectionView reloadData];
+    }
+}
+
+
+- (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
+{
+    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    
+    if (video.starredByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        video.starredByUserValue = FALSE;
+        video.starCountValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        video.starredByUserValue = TRUE;
+        video.starCountValue += 1;
+    }
+    
+    [self saveDB];
+}
+
+
+- (void) updateOtherOnscreenVideoAssetsForIndexPath: (NSIndexPath *) indexPath
+{
+    if ([indexPath isEqual: self.currentIndexPath])
+    {
+        [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
+    }
+}
+
+
+
+- (IBAction) toggleLargeRockItButton: (UIButton *) button
+{
+    button.selected = !button.selected;
+    
+    [self toggleRockItAtIndex: self.currentIndexPath];
+    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
+    [self.videoThumbnailCollectionView reloadData];
+    
+    [self saveDB];
+}
+
+
+// Buttons activated from scrolling list of thumbnails
+
+
+- (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
+{
+#ifdef FULL_SCREEN_THUMBNAILS
+#ifdef SOUND_ENABLED
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
+    
+    // Animate the view out onto the screen
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Slide off large video view
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = -1024;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+         
+         // Expand thumbnail view
+         CGRect thumbailViewFrame = self.thumbnailView.frame;
+         thumbailViewFrame.origin.x = 0;
+         thumbailViewFrame.size.width = 1024;
+         self.thumbnailView.frame =  thumbailViewFrame;
+     }
+                     completion: ^(BOOL finished)
+     {
+         // Fix hidden video view
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = -1024;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+         
+         // Fix expanded thumbnail view
+         CGRect thumbailViewFrame = self.thumbnailView.frame;
+         thumbailViewFrame.origin.x = 0;
+         thumbailViewFrame.size.width = 1024;
+         self.thumbnailView.frame =  thumbailViewFrame;
+         
+         // Allow it to be expanded again
+         self.largeVideoViewExpanded = FALSE;
+     }];
+#endif
+}
+
+#pragma mark - Large video view open animation
+
+- (IBAction) animateLargeVideoViewRight: (id) sender
+{
+#ifdef FULL_SCREEN_THUMBNAILS
+#ifdef SOUND_ENABLED
+    // Play a suitable sound
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+                                                          ofType: @"aif"];
+    
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
+    
+    // Animate the view out onto the screen
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Slide on large video view
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = 0;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+         
+         // Contract thumbnail view
+         CGRect thumbailViewFrame = self.thumbnailView.frame;
+         thumbailViewFrame.origin.x = 512;
+         thumbailViewFrame.size.width = 512;
+         self.thumbnailView.frame =  thumbailViewFrame;
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         // Fix on-screen video view
+         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
+         largeVideoPanelFrame.origin.x = 0;
+         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
+         
+         // Fix contracted thumbnail view
+         CGRect thumbailViewFrame = self.thumbnailView.frame;
+         thumbailViewFrame.origin.x = 512;
+         thumbailViewFrame.size.width = 512;
+         self.thumbnailView.frame =  thumbailViewFrame;
+     }];
+#endif
+}
+
+
+#pragma mark - Video queue animation
 
 - (void) slideVideoQueueUp
 {
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-    
-    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height -= kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
+     CGRect videoQueueViewFrame = self.videoQueueView.frame;
+     videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
+     self.videoQueueView.frame = videoQueueViewFrame;
+
+     CGRect viewFrame = self.largeVideoPanelView.frame;
+     viewFrame.size.height -= kVideoQueueEffectiveHeight;
+     self.largeVideoPanelView.frame = viewFrame;
+
+     viewFrame = self.videoThumbnailCollectionView.frame;
+     viewFrame.size.height -= kVideoQueueEffectiveHeight;
+     self.videoThumbnailCollectionView.frame = viewFrame;
 }
 
 
@@ -212,10 +533,13 @@
     self.videoQueueView.frame = videoQueueViewFrame;
     
     // Slide video queue view downwards (and expand any other dependent visible views)
-    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
+    CGRect viewFrame = self.largeVideoPanelView.frame;
+    viewFrame.size.height += kVideoQueueEffectiveHeight;
+    self.largeVideoPanelView.frame = viewFrame;
+    
+    viewFrame = self.videoThumbnailCollectionView.frame;
     viewFrame.size.height += kVideoQueueEffectiveHeight;
     self.videoThumbnailCollectionView.frame = viewFrame;
 }
-
 
 @end
