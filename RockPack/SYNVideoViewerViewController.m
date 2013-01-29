@@ -13,9 +13,8 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 
-@interface SYNVideoViewerViewController ()
+@interface SYNVideoViewerViewController () <UIWebViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
@@ -166,8 +165,8 @@
                                     height: (int) height
 {
     // api=1&player_id=player
-    NSDictionary *parameterDictionary = @{@"api" : @"0",
-    @"player_id" : @"player"};
+//    NSDictionary *parameterDictionary = @{@"api" : @"0",
+//    @"player_id" : @"player"};
     
     //    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
     NSString *parameterString = @"";

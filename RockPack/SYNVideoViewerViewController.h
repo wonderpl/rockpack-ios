@@ -14,6 +14,6 @@
 
 - (id) initWithVideoInstance: (VideoInstance *) videoInstance;
 
-@property (readonly, nonatomic, strong) IBOutlet UIButton *closeButton;
+@property (nonatomic, strong) IBOutlet UIButton *closeButton;
 
 @end
