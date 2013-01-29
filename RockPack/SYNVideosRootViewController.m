@@ -25,22 +25,24 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface SYNVideosRootViewController () <UIGestureRecognizerDelegate,
-                                               UIScrollViewDelegate>
+                                           UIScrollViewDelegate,
+                                           UIWebViewDelegate>
 
 @property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
+@property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
+@property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
-@property (nonatomic, strong) IBOutlet UILabel *channelLabel;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
+@property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
 @property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
-
 
 @end
 
@@ -52,7 +54,6 @@
 {
     [super viewDidLoad];
 
-
     // Set the labels to use the custom font
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.channelLabel.font = [UIFont rockpackFontOfSize: 14.0f];
@@ -60,13 +61,22 @@
     self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    
+    
+    // Set up large video view
+    self.videoWebView.backgroundColor = [UIColor blackColor];
+	self.videoWebView.opaque = NO;
+    self.videoWebView.scrollView.scrollEnabled = false;
+    self.videoWebView.scrollView.bounces = false;
+    self.videoWebView.alpha = 0.0f;
+    self.videoWebView.delegate = self;
 
     // Init video thumbnail collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
-                                             bundle: nil];
+                                                  bundle: nil];
 
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+                        forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
 }
 
 
@@ -106,39 +116,31 @@
 
 #pragma mark - Core Data support
 
-// The following 2 methods are called by the abstract class' getFetchedResults controller methods
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", @"1"];
-    
-    return predicate;
-    
-    return nil;
+    //    // No predicate
+    //    return nil;
+    return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
 }
 
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    // TODO: This is currently sorted by title, but I suspect that we need to be more sophisticated
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                   ascending: YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
+                                                                   ascending: NO];
     return @[sortDescriptor];
 }
 
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
+- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
 {
-    // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != 666"];
+    //    return @"daysAgo";
+    return nil;
 }
 
 
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
+- (void) reloadCollectionViews
 {
-    // Sort by index
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -229,24 +231,10 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     [self updateLargeVideoDetailsForIndexPath: indexPath];
     
     VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-    NSURL *videoURL = videoInstance.video.localVideoURL;
     
-    self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
-    
-    self.mainVideoPlayerController.shouldAutoplay = NO;
-    [self.mainVideoPlayerController prepareToPlay];
-    
-    [[self.mainVideoPlayerController view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
-    
-    [self.videoPlaceholderView addSubview: [self.mainVideoPlayerController view]];
-    
-    // Add dragging to large video view
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-                                                                                            action: @selector(longPressLargeVideo:)];
-    [self.mainVideoPlayerController.view addGestureRecognizer: longPress];
-    
-    [self.mainVideoPlayerController pause];
-    
+    [self loadWebViewWithJSAPIUsingYouTubeId: videoInstance.video.sourceId
+                                       width: 740
+                                      height: 416];    
 }
 
 
@@ -332,6 +320,9 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     self.titleLabel.text = videoInstance.title;
     self.channelLabel.text = videoInstance.channel.title;
     self.userNameLabel.text = videoInstance.channel.channelOwner.name;
+    
+    [self.channelImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.thumbnailURL]
+                          placeHolderImage: nil];
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
 }
@@ -541,5 +532,140 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     viewFrame.size.height += kVideoQueueEffectiveHeight;
     self.videoThumbnailCollectionView.frame = viewFrame;
 }
+
+
+#pragma mark - Video support
+
+- (void) loadWebViewWithIFrameUsingYouTubeId: (NSString *) videoId
+                                       width: (int) width
+                                      height: (int) height
+{
+    NSDictionary *parameterDictionary = @{@"autoplay" : @"1",
+                                          @"modestbranding" : @"1",
+                                          @"origin" : @"http://example.com\\",
+                                          @"showinfo" : @"0"};
+    
+    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
+    
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId, parameterString];
+    
+    [self.videoWebView loadHTMLString: iFrameHTML
+                              baseURL: nil];
+}
+
+- (void) loadWebViewWithJSAPIUsingYouTubeId: (NSString *) videoId
+                                      width: (int) width
+                                     height: (int) height
+{
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId];
+    
+    [self.videoWebView loadHTMLString: iFrameHTML
+                              baseURL: [NSURL URLWithString:@"http://www.youtube.com"]];
+    
+    self.videoWebView.mediaPlaybackRequiresUserAction = FALSE;
+}
+
+
+- (void) loadWebViewWithIFrameUsingVimeoId: (NSString *) videoId
+                                     width: (int) width
+                                    height: (int) height
+{
+    // api=1&player_id=player
+    //    NSDictionary *parameterDictionary = @{@"api" : @"0",
+    //    @"player_id" : @"player"};
+    
+    //    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
+    NSString *parameterString = @"";
+    
+    NSError *error = nil;
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
+                                                         ofType: @"html"];
+    
+    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
+                                                             encoding: NSUTF8StringEncoding
+                                                                error: &error];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, videoId, parameterString, width, height];
+    
+    [self.videoWebView loadHTMLString: iFrameHTML
+                              baseURL: nil];
+}
+
+
+- (NSString *) createParamStringFromDictionary: (NSDictionary *) params
+{
+    __block NSString *result = @"";
+    
+    [params enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop)
+     {
+         result = [result stringByAppendingFormat: @"%@=%@&", key, obj];
+     }];
+    
+    // Chop off last ampersand
+    result = [result substringToIndex: [result length] - 2];
+    return [result stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+}
+
+
+- (BOOL) webView: (UIWebView *) webView
+         shouldStartLoadWithRequest: (NSURLRequest *) request
+         navigationType: (UIWebViewNavigationType) navigationType
+{
+    // Break apart request URL
+    NSString *requestString = [[request URL] absoluteString];
+    NSArray *components = [requestString componentsSeparatedByString :@":"];
+    
+    // Check for your protocol
+    if ([components count] >= 3 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"rockpack"])
+    {
+        // Look for specific actions
+        NSString *parameter2 = (NSString *)[components objectAtIndex: 1];
+        if ([parameter2 isEqualToString: @"onStateChange"])
+        {            
+            NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
+            
+            if ([parameter3 isEqualToString: @"1"])
+            {
+                
+                [UIView animateWithDuration: 0.25f
+                                      delay: 0.0f
+                                    options: UIViewAnimationOptionCurveEaseInOut
+                                 animations: ^
+                 {
+                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
+                     
+                     // Contract thumbnail view
+                     self.videoWebView.alpha = 1.0f;
+                 }
+                                 completion: ^(BOOL finished)
+                 {
+                 }];
+            }
+        }
+        
+        // Return 'NO' to prevent navigation
+        return NO;
+    }
+    
+    // Return 'YES', navigate to requested URL as normal
+    return YES;
+}
+
 
 @end

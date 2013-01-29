@@ -54,8 +54,8 @@
     self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
     self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    
-//    self.videoWebView.backgroundColor = [UIColor clearColor];
+
+    // Setup web player
     self.videoWebView.backgroundColor = [UIColor blackColor];
 	self.videoWebView.opaque = NO;
     self.videoWebView.scrollView.scrollEnabled = false;
