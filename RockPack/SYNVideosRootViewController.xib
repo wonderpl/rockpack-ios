@@ -41,7 +41,7 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">288</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUICollectionView" id="864104468">
+					<object class="IBUICollectionView" id="444780306">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">274</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
@@ -55,8 +55,8 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<float key="IBUIMinimumZoomScale">0.0</float>
 						<float key="IBUIMaximumZoomScale">0.0</float>
-						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="38654401">
-							<reference key="IBUICollectionView" ref="864104468"/>
+						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="632936114">
+							<reference key="IBUICollectionView" ref="444780306"/>
 							<string key="IBUIItemSize">{507, 182}</string>
 							<float key="IBUIMinimumLineSpacing">10</float>
 							<float key="IBUIMinimumInteritemSpacing">10</float>
@@ -77,7 +77,7 @@
 								<string key="NSFrameSize">{512, 598}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1009141314"/>
+								<reference key="NSNextKeyView" ref="1031843967"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">5</int>
@@ -86,6 +86,39 @@
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">PanelLargeVideoView.png</string>
+								</object>
+							</object>
+							<object class="IBUIWebView" id="1009141314">
+								<reference key="NSNextResponder" ref="469858340"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{13, 11}, {494, 278}}</string>
+								<reference key="NSSuperview" ref="469858340"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="139001911"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MCAwAA</bytes>
+								</object>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIDataDetectorTypes">1</int>
+								<bool key="IBUIDetectsPhoneNumbers">YES</bool>
+							</object>
+							<object class="IBUIImageView" id="1031843967">
+								<reference key="NSNextResponder" ref="469858340"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{512, 598}</string>
+								<reference key="NSSuperview" ref="469858340"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="1009141314"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">5</int>
+								<reference key="IBUIGestureRecognizers" ref="0"/>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossLargeVideoView.png</string>
 								</object>
 							</object>
 							<object class="IBUIButton" id="368019503">
@@ -135,7 +168,7 @@
 							<object class="IBUIButton" id="751197010">
 								<reference key="NSNextResponder" ref="469858340"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{237, 406}, {43, 43}}</string>
+								<string key="NSFrame">{{237, 407}, {43, 43}}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="700624423"/>
@@ -168,7 +201,7 @@
 								<string key="NSFrame">{{359, 405}, {44, 44}}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="864104468"/>
+								<reference key="NSNextKeyView" ref="444780306"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -200,10 +233,7 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="630250693"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MCAwAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="1061543414"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 							<object class="IBUILabel" id="630250693">
@@ -307,22 +337,6 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-							</object>
-							<object class="IBUIWebView" id="1009141314">
-								<reference key="NSNextResponder" ref="469858340"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{13, 11}, {494, 278}}</string>
-								<reference key="NSSuperview" ref="469858340"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="139001911"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MSAxIDEAA</bytes>
-								</object>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIDataDetectorTypes">1</int>
-								<bool key="IBUIDetectsPhoneNumbers">YES</bool>
 							</object>
 						</array>
 						<string key="NSFrame">{{0, 120}, {512, 598}}</string>
@@ -445,18 +459,27 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">videoThumbnailCollectionView</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="864104468"/>
+						<reference key="destination" ref="444780306"/>
 					</object>
 					<int key="connectionID">137</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">toggleLargeRockItButton:</string>
+						<string key="label">toggleLargeVideoPanelStarItButton:</string>
 						<reference key="source" ref="368019503"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
-					<int key="connectionID">109</int>
+					<int key="connectionID">140</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">userTouchedVideoShareItButton:</string>
+						<reference key="source" ref="751197010"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">141</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -496,7 +519,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
-						<reference key="source" ref="864104468"/>
+						<reference key="source" ref="444780306"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">138</int>
@@ -504,7 +527,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="864104468"/>
+						<reference key="source" ref="444780306"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">139</int>
@@ -539,7 +562,7 @@
 						<reference key="object" ref="766721923"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="469858340"/>
-							<reference ref="864104468"/>
+							<reference ref="444780306"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -557,6 +580,7 @@
 							<reference ref="474336061"/>
 							<reference ref="26139489"/>
 							<reference ref="1009141314"/>
+							<reference ref="1031843967"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">View - Large Video Panel</string>
@@ -622,16 +646,21 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">135</int>
-						<reference key="object" ref="864104468"/>
+						<reference key="object" ref="444780306"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="38654401"/>
+							<reference ref="632936114"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">136</int>
-						<reference key="object" ref="38654401"/>
-						<reference key="parent" ref="864104468"/>
+						<reference key="object" ref="632936114"/>
+						<reference key="parent" ref="444780306"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">142</int>
+						<reference key="object" ref="1031843967"/>
+						<reference key="parent" ref="469858340"/>
 					</object>
 				</array>
 			</object>
@@ -650,6 +679,7 @@
 				<string key="136.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="14.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="142.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -663,7 +693,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">139</int>
+			<int key="maxID">142</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -734,35 +764,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNVideosRootViewController</string>
 					<string key="superclassName">SYNAbstractTopTabViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addToVideoQueueFromLargeVideo:">id</string>
-						<string key="animateLargeVideoViewRight:">id</string>
-						<string key="longPressLargeVideo:">UIGestureRecognizer</string>
-						<string key="swipeLargeVideoViewLeft:">UISwipeGestureRecognizer</string>
-						<string key="toggleLargeRockItButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addToVideoQueueFromLargeVideo:">
-							<string key="name">addToVideoQueueFromLargeVideo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="animateLargeVideoViewRight:">
-							<string key="name">animateLargeVideoViewRight:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="longPressLargeVideo:">
-							<string key="name">longPressLargeVideo:</string>
-							<string key="candidateClassName">UIGestureRecognizer</string>
-						</object>
-						<object class="IBActionInfo" key="swipeLargeVideoViewLeft:">
-							<string key="name">swipeLargeVideoViewLeft:</string>
-							<string key="candidateClassName">UISwipeGestureRecognizer</string>
-						</object>
-						<object class="IBActionInfo" key="toggleLargeRockItButton:">
-							<string key="name">toggleLargeRockItButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelImageView">UIImageView</string>
 						<string key="channelLabel">UILabel</string>
@@ -861,6 +862,7 @@
 			<string key="ButtonShareHighlighted.png">{43, 43}</string>
 			<string key="ButtonStar.png">{43, 43}</string>
 			<string key="ButtonStarHighlighted.png">{43, 43}</string>
+			<string key="GlossLargeVideoView.png">{512, 598}</string>
 			<string key="PanelLargeVideoView.png">{512, 598}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

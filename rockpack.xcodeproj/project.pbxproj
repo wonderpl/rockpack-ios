@@ -25,7 +25,6 @@
 		0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */; };
 		0109D1BD16B7F03900673FC4 /* PanelLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */; };
 		0109D1BE16B7F03900673FC4 /* PanelLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */; };
-		0109D1C016B7F38900673FC4 /* placeholder10.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BF16B7F38900673FC4 /* placeholder10.png */; };
 		010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD41629BDC40080F26B /* UIKit.framework */; };
 		010DEFD71629BDC40080F26B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD61629BDC40080F26B /* Foundation.framework */; };
 		010DEFD91629BDC40080F26B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD81629BDC40080F26B /* CoreGraphics.framework */; };
@@ -460,6 +459,8 @@
 		01CF11CB1695CC1600E64620 /* ButtonRefreshSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C51695CC1600E64620 /* ButtonRefreshSelected@2x.png */; };
 		01CF11CC1695CC1600E64620 /* ButtonRefreshBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C61695CC1600E64620 /* ButtonRefreshBackground.png */; };
 		01CF11CD1695CC1600E64620 /* ButtonRefreshBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */; };
+		01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */; };
+		01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */; };
 		01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D8C6A716807A54000059D1 /* SYNVideoSelection.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
@@ -532,7 +533,6 @@
 		0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallpackThumbnailCell.xib; sourceTree = "<group>"; };
 		0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelLargeVideoView.png; path = Assets/Images/PanelLargeVideoView.png; sourceTree = "<group>"; };
 		0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelLargeVideoView@2x.png"; path = "Assets/Images/PanelLargeVideoView@2x.png"; sourceTree = "<group>"; };
-		0109D1BF16B7F38900673FC4 /* placeholder10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder10.png; path = Assets/Images/placeholder10.png; sourceTree = "<group>"; };
 		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1055,6 +1055,8 @@
 		01CF11C51695CC1600E64620 /* ButtonRefreshSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshSelected@2x.png"; path = "Assets/Images/ButtonRefreshSelected@2x.png"; sourceTree = "<group>"; };
 		01CF11C61695CC1600E64620 /* ButtonRefreshBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshBackground.png; path = Assets/Images/ButtonRefreshBackground.png; sourceTree = "<group>"; };
 		01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshBackground@2x.png"; path = "Assets/Images/ButtonRefreshBackground@2x.png"; sourceTree = "<group>"; };
+		01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossLargeVideoView.png; path = Assets/Images/GlossLargeVideoView.png; sourceTree = "<group>"; };
+		01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossLargeVideoView@2x.png"; path = "Assets/Images/GlossLargeVideoView@2x.png"; sourceTree = "<group>"; };
 		01D8C6A616807A54000059D1 /* SYNVideoSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoSelection.h; sourceTree = "<group>"; };
 		01D8C6A716807A54000059D1 /* SYNVideoSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoSelection.m; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -1926,7 +1928,8 @@
 		01982550162A2AAC00216900 /* Panels */ = {
 			isa = PBXGroup;
 			children = (
-				0109D1BF16B7F38900673FC4 /* placeholder10.png */,
+				01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */,
+				01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */,
 				0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */,
 				0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */,
 				01B7CDA3166E1CF6001F4AF0 /* PanelChannelDetailsHeader.png */,
@@ -2929,7 +2932,8 @@
 				01E5670F16B5EF7C00B8B218 /* MessageEntryInputField@2x.png in Resources */,
 				0109D1BD16B7F03900673FC4 /* PanelLargeVideoView.png in Resources */,
 				0109D1BE16B7F03900673FC4 /* PanelLargeVideoView@2x.png in Resources */,
-				0109D1C016B7F38900673FC4 /* placeholder10.png in Resources */,
+				01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */,
+				01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

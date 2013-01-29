@@ -354,19 +354,19 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 - (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
 {
-    Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
     
-    if (video.starredByUserValue == TRUE)
+    if (videoInstance.video.starredByUserValue == TRUE)
     {
         // Currently highlighted, so decrement
-        video.starredByUserValue = FALSE;
-        video.starCountValue -= 1;
+        videoInstance.video.starredByUserValue = FALSE;
+        videoInstance.video.starCountValue -= 1;
     }
     else
     {
         // Currently highlighted, so increment
-        video.starredByUserValue = TRUE;
-        video.starCountValue += 1;
+        videoInstance.video.starredByUserValue = TRUE;
+        videoInstance.video.starCountValue += 1;
     }
     
     [self saveDB];
@@ -383,7 +383,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 
 
-- (IBAction) toggleLargeRockItButton: (UIButton *) button
+- (IBAction) toggleLargeVideoPanelStarItButton: (UIButton *) button
 {
     button.selected = !button.selected;
     
