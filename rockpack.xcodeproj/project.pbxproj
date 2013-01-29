@@ -496,6 +496,7 @@
 		01E98D8D165C146B0079FD7A /* SliderBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D89165C146B0079FD7A /* SliderBackground@2x.png */; };
 		01E98D8E165C146B0079FD7A /* SliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D8A165C146B0079FD7A /* SliderThumb.png */; };
 		01E98D8F165C146B0079FD7A /* SliderThumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D8B165C146B0079FD7A /* SliderThumb@2x.png */; };
+		01EA81BC16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */; };
 		01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */; };
 		01EC6237166EAAA6003154B1 /* SYNChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNChannelsDetailViewController.m */; };
 		01EC6238166EAAA6003154B1 /* SYNChannelsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EC6236166EAAA6003154B1 /* SYNChannelsDetailViewController.xib */; };
@@ -1110,6 +1111,7 @@
 		01E98D89165C146B0079FD7A /* SliderBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SliderBackground@2x.png"; path = "Assets/Images/SliderBackground@2x.png"; sourceTree = "<group>"; };
 		01E98D8A165C146B0079FD7A /* SliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SliderThumb.png; path = Assets/Images/SliderThumb.png; sourceTree = "<group>"; };
 		01E98D8B165C146B0079FD7A /* SliderThumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SliderThumb@2x.png"; path = "Assets/Images/SliderThumb@2x.png"; sourceTree = "<group>"; };
+		01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YouTubeJSAPIPlayerNoAutoplay.html; sourceTree = "<group>"; };
 		01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackChannelDetailViewController.h; sourceTree = "<group>"; };
 		01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackChannelDetailViewController.m; sourceTree = "<group>"; };
 		01EC6234166EAAA5003154B1 /* SYNChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDetailViewController.h; sourceTree = "<group>"; };
@@ -2466,6 +2468,7 @@
 				01F8E76316B03462000D44B9 /* VimeoIFramePlayer.html */,
 				01F8E76416B03462000D44B9 /* YouTubeIFramePlayer.html */,
 				01F8E76516B03462000D44B9 /* YouTubeJSAPIPlayer.html */,
+				01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -2934,6 +2937,7 @@
 				0109D1BE16B7F03900673FC4 /* PanelLargeVideoView@2x.png in Resources */,
 				01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */,
 				01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */,
+				01EA81BC16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

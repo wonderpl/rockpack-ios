@@ -32,6 +32,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *videoPlaceholderImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
@@ -41,6 +42,7 @@
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
+@property (nonatomic, strong) IBOutlet UIButton *largeVideoPlayButton;
 
 @end
 
@@ -64,10 +66,12 @@
     // Set up large video view
     self.videoWebView.backgroundColor = [UIColor blackColor];
 	self.videoWebView.opaque = NO;
-//    self.videoWebView.scrollView.scrollEnabled = false;
-//    self.videoWebView.scrollView.bounces = false;
+    self.videoWebView.scrollView.scrollEnabled = false;
+    self.videoWebView.scrollView.bounces = false;
     self.videoWebView.alpha = 0.0f;
     self.videoWebView.delegate = self;
+    self.largeVideoPlayButton.alpha = 1.0f;
+    self.largeVideoPlayButton.enabled = FALSE;
 
     // Init video thumbnail collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -190,7 +194,7 @@
 
 
 - (void) collectionView: (UICollectionView *) collectionView
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // See if this can be handled in our abstract base class
     BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
@@ -201,15 +205,6 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         // Check to see if is one that we can handle
         if (collectionView == self.videoThumbnailCollectionView)
         {
-#ifdef FULL_SCREEN_THUMBNAILS
-            if (self.isLargeVideoViewExpanded == FALSE)
-            {
-                [self animateLargeVideoViewRight: nil];
-                self.largeVideoViewExpanded = TRUE;
-            }
-#endif
-            self.currentIndexPath = indexPath;
-            
             [self setLargeVideoToIndexPath: indexPath];
         }
         else
@@ -224,15 +219,18 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 - (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath
 {
-    self.currentIndexPath = indexPath;
-    
-    [self updateLargeVideoDetailsForIndexPath: indexPath];
-    
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-    
-    [self loadWebViewWithJSAPIUsingYouTubeId: videoInstance.video.sourceId
-                                       width: 740
-                                      height: 416];    
+    if ([self.currentIndexPath isEqual: indexPath] == FALSE)
+    {        
+        self.currentIndexPath = indexPath;
+        
+        [self updateLargeVideoDetailsForIndexPath: indexPath];
+        
+        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        
+        [self loadWebViewWithJSAPIUsingYouTubeId: videoInstance.video.sourceId
+                                           width: 494
+                                          height: 278];
+    }
 }
 
 
@@ -303,6 +301,12 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     }
 }
 
+- (void) displayVideoViewerFromView: (UIGestureRecognizer *) sender
+{
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
+    
+    [self setLargeVideoToIndexPath: indexPath];
+}
 
 - (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
@@ -457,12 +461,27 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                               baseURL: nil];
 }
 
+
 - (void) loadWebViewWithJSAPIUsingYouTubeId: (NSString *) videoId
                                       width: (int) width
                                      height: (int) height
 {
     NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayer"
+    
+    // Show placeholder, but not webview (wait until that has loaded)
+    self.videoWebView.alpha = 0.0f;
+    self.videoPlaceholderImageView.alpha = 1.0f;
+    
+    // Setup placeholder
+    // http://img.youtube.com/vi/<videoid>/0.jpg
+    
+    NSString *placeholderURLString = [NSString stringWithFormat: @"http://img.youtube.com/vi/%@/0.jpg", videoId];
+    
+    [self.videoPlaceholderImageView setImageFromURL: [NSURL URLWithString: placeholderURLString]
+                                   placeHolderImage: nil];
+    
+    // Now set up web view
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayerNoAutoplay"
                                                          ofType: @"html"];
     
     NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
@@ -482,11 +501,6 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                                      width: (int) width
                                     height: (int) height
 {
-    // api=1&player_id=player
-    //    NSDictionary *parameterDictionary = @{@"api" : @"0",
-    //    @"player_id" : @"player"};
-    
-    //    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
     NSString *parameterString = @"";
     
     NSError *error = nil;
@@ -536,6 +550,8 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         {            
             NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
             
+            NSLog (@"Components %@", components);
+            
             if ([parameter3 isEqualToString: @"1"])
             {
                 
@@ -544,13 +560,12 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                                     options: UIViewAnimationOptionCurveEaseInOut
                                  animations: ^
                  {
-                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"stopVideo()"];
-                     
-                     // Contract thumbnail view
-                     self.videoWebView.alpha = 1.0f;
+                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
+                    self.largeVideoPlayButton.alpha = 1.0f;
                  }
-                                 completion: ^(BOOL finished)
+                 completion: ^(BOOL finished)
                  {
+                     self.largeVideoPlayButton.enabled = TRUE;
                  }];
             }
         }
@@ -561,6 +576,29 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     
     // Return 'YES', navigate to requested URL as normal
     return YES;
+}
+
+- (IBAction) playLargeVideo: (id) sender
+{
+
+    
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         [self.videoWebView stringByEvaluatingJavaScriptFromString: @"playVideo()"];
+         
+         // Contract thumbnail view
+         self.videoWebView.alpha = 1.0;
+         self.videoPlaceholderImageView.alpha = 0.0f;
+         self.largeVideoPlayButton.alpha = 0.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+        self.largeVideoPlayButton.enabled = FALSE;
+     }];
+
 }
 
 
