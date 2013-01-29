@@ -39,9 +39,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
-@property (nonatomic, strong) IBOutlet UIView *videoPlaceholderView;
 @property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
-@property (nonatomic, strong) MPMoviePlayerController *mainVideoPlayerController;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 @end
@@ -66,8 +64,8 @@
     // Set up large video view
     self.videoWebView.backgroundColor = [UIColor blackColor];
 	self.videoWebView.opaque = NO;
-    self.videoWebView.scrollView.scrollEnabled = false;
-    self.videoWebView.scrollView.bounces = false;
+//    self.videoWebView.scrollView.scrollEnabled = false;
+//    self.videoWebView.scrollView.bounces = false;
     self.videoWebView.alpha = 0.0f;
     self.videoWebView.delegate = self;
 
@@ -397,108 +395,6 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 
 // Buttons activated from scrolling list of thumbnails
 
-
-- (IBAction) swipeLargeVideoViewLeft: (UISwipeGestureRecognizer *) swipeGesture
-{
-#ifdef FULL_SCREEN_THUMBNAILS
-#ifdef SOUND_ENABLED
-    // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
-                                                          ofType: @"aif"];
-    
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
-#endif
-    
-    // Animate the view out onto the screen
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Slide off large video view
-         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
-         largeVideoPanelFrame.origin.x = -1024;
-         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
-         
-         // Expand thumbnail view
-         CGRect thumbailViewFrame = self.thumbnailView.frame;
-         thumbailViewFrame.origin.x = 0;
-         thumbailViewFrame.size.width = 1024;
-         self.thumbnailView.frame =  thumbailViewFrame;
-     }
-                     completion: ^(BOOL finished)
-     {
-         // Fix hidden video view
-         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
-         largeVideoPanelFrame.origin.x = -1024;
-         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
-         
-         // Fix expanded thumbnail view
-         CGRect thumbailViewFrame = self.thumbnailView.frame;
-         thumbailViewFrame.origin.x = 0;
-         thumbailViewFrame.size.width = 1024;
-         self.thumbnailView.frame =  thumbailViewFrame;
-         
-         // Allow it to be expanded again
-         self.largeVideoViewExpanded = FALSE;
-     }];
-#endif
-}
-
-#pragma mark - Large video view open animation
-
-- (IBAction) animateLargeVideoViewRight: (id) sender
-{
-#ifdef FULL_SCREEN_THUMBNAILS
-#ifdef SOUND_ENABLED
-    // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
-                                                          ofType: @"aif"];
-    
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
-#endif
-    
-    // Animate the view out onto the screen
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Slide on large video view
-         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
-         largeVideoPanelFrame.origin.x = 0;
-         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
-         
-         // Contract thumbnail view
-         CGRect thumbailViewFrame = self.thumbnailView.frame;
-         thumbailViewFrame.origin.x = 512;
-         thumbailViewFrame.size.width = 512;
-         self.thumbnailView.frame =  thumbailViewFrame;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-         // Fix on-screen video view
-         CGRect largeVideoPanelFrame = self.largeVideoPanelView.frame;
-         largeVideoPanelFrame.origin.x = 0;
-         self.largeVideoPanelView.frame =  largeVideoPanelFrame;
-         
-         // Fix contracted thumbnail view
-         CGRect thumbailViewFrame = self.thumbnailView.frame;
-         thumbailViewFrame.origin.x = 512;
-         thumbailViewFrame.size.width = 512;
-         self.thumbnailView.frame =  thumbailViewFrame;
-     }];
-#endif
-}
-
-
 #pragma mark - Video queue animation
 
 - (void) slideVideoQueueUp
@@ -648,7 +544,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
                                     options: UIViewAnimationOptionCurveEaseInOut
                                  animations: ^
                  {
-                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
+                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"stopVideo()"];
                      
                      // Contract thumbnail view
                      self.videoWebView.alpha = 1.0f;
