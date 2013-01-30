@@ -134,8 +134,8 @@
     self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     
     // Now add the long-press gesture recognizers to the custom flow layout
-#warning "Removed gesture recognisers"
-//    [layout setUpGestureRecognizersOnCollectionView];
+
+    [layout setUpGestureRecognizersOnCollectionView];
 }
 
 
@@ -228,7 +228,8 @@
     
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = self.channel.title;
-    self.channelWallpaperImageView.image = self.channel.wallpaperImage;
+    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
+                                   placeHolderImage: nil];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
