@@ -257,24 +257,6 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 }
 
 
-//- (void) loadVideoViewWithURL: (NSString *) videoURLString
-//{
-//    NSURL *videoURL = [NSURL URLWithString: videoURLString];
-//
-//    self.mainVideoPlayerController = [[MPMoviePlayerController alloc] initWithContentURL: videoURL];
-//
-//    self.mainVideoPlayerController.shouldAutoplay = NO;
-//    [self.mainVideoPlayerController prepareToPlay];
-//
-//    [[self.mainVideoPlayerController view] setFrame: [self.videoPlaceholderView bounds]]; // Frame must match parent view
-//
-//    [self.videoPlaceholderView addSubview: [self.mainVideoPlayerController view]];
-//
-//    [self.mainVideoPlayerController pause];
-//}
-
-
-
 - (NSString *) createParamStringFromDictionary: (NSDictionary *) params
 {
     __block NSString *result = @"";

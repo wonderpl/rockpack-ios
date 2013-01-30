@@ -322,10 +322,23 @@
 
 - (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
+    [self showVideoQueue: TRUE];
+    [self startVideoQueueDismissalTimer];
+    
     VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
+//- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
+//{
+//    [self showVideoQueue: TRUE];
+//    [self startVideoQueueDismissalTimer];
+//    
+//    UIView *v = addItButton.superview.superview;
+//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+//    [self animateVideoAdditionToVideoQueue: videoInstance];
+//}
 
 - (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
