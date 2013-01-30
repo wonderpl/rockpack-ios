@@ -93,7 +93,7 @@
     
     // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
     self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.channelDescriptionTextView.text = @"test";
+    self.channelDescriptionTextView.text = @"Describe your channel...";
     self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
 	self.channelDescriptionTextView.minNumberOfLines = 1;
 	self.channelDescriptionTextView.maxNumberOfLines = 4;
@@ -101,7 +101,6 @@
     self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
 	self.channelDescriptionTextView.delegate = self;
     self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-	
     
     // Add highlighted box
     UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
@@ -117,14 +116,12 @@
     
     [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
     
-    
     // Now use the same assets to create a highlight box for the channel title
 //    channelTitleLabel
 
     self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     
     // Now add the long-press gesture recognizers to the custom flow layout
-
     [layout setUpGestureRecognizersOnCollectionView];
 }
 
@@ -134,6 +131,7 @@
 - (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
     self.channelDescriptionHightlightView.hidden = FALSE;
+    growingTextView.text = @"";
 }
 
 
@@ -142,6 +140,11 @@
     self.channelDescriptionHightlightView.hidden = TRUE;
     [self.channelDescriptionTextView scrollRangeToVisible: NSMakeRange (0,0)];
     [self.channelDescriptionTextView resignFirstResponder];
+    
+    if ([growingTextView.text isEqualToString: @""])
+    {
+        growingTextView.text = @"Describe your channel...";
+    }
 }
 
 

@@ -56,11 +56,14 @@ static NSDateFormatter *dateFormatter = nil;
     // Check to see that we have a valid string object from which 
 	if (dateString != nil && ![dateString isEqual: [NSNull null]] && [dateString isKindOfClass: [NSString class]])
     {
-        date = [[NSDictionary ISO6801DateFormatter] dateFromString: dateString];
+        // First 19 chars
+        NSString *subString = [dateString substringToIndex: 19];
+        date = [[NSDictionary ISO6801DateFormatter] dateFromString: subString];
         
         if (date == nil)
         {
-            AssertOrLog(@"Unable to parse date");
+            NSLog (@"Bad date %@", subString);
+//            AssertOrLog(@"Unable to parse date");
             date = defaultDate;
         }
     }
@@ -73,6 +76,7 @@ static NSDateFormatter *dateFormatter = nil;
 }
 
 // Used for dates in the following format "2012-12-14T09:59:46.000Z"
+// 2013-01-30T15:43:18.806454+00:00
 + (NSDateFormatter *) ISO6801DateFormatter
 {
     if (dateFormatter == nil)
@@ -83,7 +87,7 @@ static NSDateFormatter *dateFormatter = nil;
         {
             dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setTimeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
-            [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+            [dateFormatter setDateFormat: @"yyyy-MM-dd'T'HH:mm:ss"];
         });
     }
     

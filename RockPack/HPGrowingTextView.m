@@ -77,6 +77,7 @@
     internalTextView.showsHorizontalScrollIndicator = NO;
     internalTextView.text = @"-";
     internalTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+    internalTextView.clearsOnInsertion = TRUE;
     [self addSubview:internalTextView];
     
     minHeight = internalTextView.frame.size.height;
@@ -186,7 +187,6 @@
 {
     return minNumberOfLines;
 }
-
 
 - (void)textViewDidChange:(UITextView *)textView
 {	

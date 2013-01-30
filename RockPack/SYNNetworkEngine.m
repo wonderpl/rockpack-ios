@@ -59,7 +59,7 @@
                 errorBlock: (MKNKErrorBlock) errorBlock
 {
     // Append additional parameters
-    path = [NSString stringWithFormat: @"%@?%@", path, self.localeString];
+    path = [NSString stringWithFormat: @"%@?locale=%@", path, self.localeString];
     
     MKNetworkOperation *networkOperation = [self operationWithPath: path];
     
@@ -88,6 +88,8 @@
     
     // Now add on the locale as a query parameter
     path = [NSString stringWithFormat: @"%@?locale=%@", path, self.localeString];
+    
+    path = @"ws/USERID/subscriptions/recent_videos/";
     
     [self JSONObjectForPath: path
                      completionBlock: ^(NSDictionary *dictionary)
@@ -154,7 +156,8 @@
 {
     // TODO: Replace category with something sensible
     // Now add on the locale and category as query parameters
-    NSString *path = [NSString stringWithFormat: @"%@?locale=%@&category=%@", kAPIPopularChannels, self.localeString, @"CATID"];
+//    NSString *path = [NSString stringWithFormat: @"%@?locale=%@&category=%@", kAPIPopularChannels, self.localeString, @"CATID"];
+    NSString *path = kAPIPopularChannels;
     
     [self JSONObjectForPath: path
             completionBlock: ^(NSDictionary *dictionary)
