@@ -48,6 +48,7 @@
 						<string key="NSFrame">{{512, 120}, {512, 566}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -87,7 +88,7 @@
 									<string key="NSResourceName">PanelLargeVideoView.png</string>
 								</object>
 							</object>
-							<object class="IBUIImageView" id="145636761">
+							<object class="IBUIImageView" id="443802838">
 								<reference key="NSNextResponder" ref="469858340"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{13, 11}, {494, 278}}</string>
@@ -106,7 +107,7 @@
 								<string key="NSFrame">{{13, 11}, {494, 278}}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="630250693"/>
+								<reference key="NSNextKeyView" ref="292316289"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
 									<int key="NSColorSpace">3</int>
@@ -123,7 +124,7 @@
 								<string key="NSFrameSize">{512, 598}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="145636761"/>
+								<reference key="NSNextKeyView" ref="443802838"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">5</int>
@@ -340,25 +341,28 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
-							<object class="IBUIButton" id="793608739">
+							<object class="IBUIButton" id="292316289">
 								<reference key="NSNextResponder" ref="469858340"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{220, 128}, {73, 44}}</string>
+								<string key="NSFrame">{{13, 11}, {494, 278}}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="630250693"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Button</string>
 								<reference key="IBUIHighlightedTitleColor" ref="34856113"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="855662509"/>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonLargeVideoPanelPlay.png</string>
+								</object>
 								<reference key="IBUIFontDescription" ref="829291685"/>
 								<reference key="IBUIFont" ref="848676678"/>
 							</object>
@@ -483,7 +487,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">videoPlaceholderImageView</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="145636761"/>
+						<reference key="destination" ref="443802838"/>
 					</object>
 					<int key="connectionID">146</int>
 				</object>
@@ -491,7 +495,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">largeVideoPlayButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="793608739"/>
+						<reference key="destination" ref="292316289"/>
 					</object>
 					<int key="connectionID">148</int>
 				</object>
@@ -567,7 +571,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">playLargeVideo:</string>
-						<reference key="source" ref="793608739"/>
+						<reference key="source" ref="292316289"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -621,8 +625,8 @@
 							<reference ref="26139489"/>
 							<reference ref="1009141314"/>
 							<reference ref="1031843967"/>
-							<reference ref="145636761"/>
-							<reference ref="793608739"/>
+							<reference ref="443802838"/>
+							<reference ref="292316289"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">View - Large Video Panel</string>
@@ -699,12 +703,12 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">145</int>
-						<reference key="object" ref="145636761"/>
+						<reference key="object" ref="443802838"/>
 						<reference key="parent" ref="469858340"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">147</int>
-						<reference key="object" ref="793608739"/>
+						<reference key="object" ref="292316289"/>
 						<reference key="parent" ref="469858340"/>
 					</object>
 				</array>
@@ -933,6 +937,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonAdd.png">{43, 43}</string>
 			<string key="ButtonAddHighlighted.png">{43, 43}</string>
+			<string key="ButtonLargeVideoPanelPlay.png">{24, 28}</string>
 			<string key="ButtonShare.png">{43, 43}</string>
 			<string key="ButtonShareHighlighted.png">{43, 43}</string>
 			<string key="ButtonStar.png">{43, 43}</string>

@@ -471,6 +471,7 @@
     // Show placeholder, but not webview (wait until that has loaded)
     self.videoWebView.alpha = 0.0f;
     self.videoPlaceholderImageView.alpha = 1.0f;
+    self.largeVideoPlayButton.alpha = 1.0f;
     
     // Setup placeholder
     // http://img.youtube.com/vi/<videoid>/0.jpg
@@ -561,7 +562,7 @@
                                  animations: ^
                  {
                     [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
-                    self.largeVideoPlayButton.alpha = 1.0f;
+//                    self.largeVideoPlayButton.alpha = 1.0f;
                  }
                  completion: ^(BOOL finished)
                  {
