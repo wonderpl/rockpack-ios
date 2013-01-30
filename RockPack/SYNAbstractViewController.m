@@ -817,7 +817,20 @@
 
 - (IBAction) createChannelFromVideoQueue
 {
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: nil];
+    
+    Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
+    
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    newChannel.channelOwner = delegate.channelOwnerMe;    
+    
+    // TODO: Make these window offsets less hard-coded
+
+    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
+    {
+        [[newChannel videoInstancesSet] addObject: videoInstance];
+    }
+
+    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
     
     [self animatedPushViewController: channelCreationVC];
 }
@@ -1060,9 +1073,6 @@
 - (void) addChannelWithTitle: (NSString *) title
 {
     Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
-    
-//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    newChannel.channelOwner = delegate.channelOwnerMe;
     
     NSError *error = nil;
     NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"

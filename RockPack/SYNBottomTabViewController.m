@@ -127,7 +127,7 @@
      {
          splashView.alpha = 0.0f;
      }
-                     completion: ^(BOOL finished)
+        completion: ^(BOOL finished)
      {
          splashView.alpha = 0.0f;
          [splashView removeFromSuperview];

@@ -13,6 +13,7 @@
 #import "TestFlight.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
+#import "ChannelOwner.h"
 
 @interface SYNAppDelegate ()
 
@@ -37,6 +38,9 @@
     
     // Set up network engine
     [self initializeNetworkEngine];
+    
+    // Create default user
+    [self createDefaultUser];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -234,6 +238,40 @@
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
+}
+
+
+- (void) createDefaultUser
+{
+    // See if we have already created a default user object, and if not create one
+    NSError *error = nil;
+    NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
+                                                          inManagedObjectContext: self.mainManagedObjectContext];
+    
+    // Find out how many Video objects we have in the database
+    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
+    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
+    [channelOwnerFetchRequest setPredicate: predicate];
+    
+    NSArray *channelOwnerEntries = [self.mainManagedObjectContext executeFetchRequest: channelOwnerFetchRequest
+                                                                                error: &error];
+    
+    if (channelOwnerEntries.count > 0)
+    {
+        self.channelOwnerMe = (ChannelOwner *)channelOwnerEntries[0];
+    }
+    else
+    {
+        ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
+        
+        channelOwnerMe.name = @"PAUL CACKETT";
+        channelOwnerMe.uniqueId = @"666";
+        channelOwnerMe.thumbnailURL = @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png";
+        
+        self.channelOwnerMe = channelOwnerMe;
+    }
 }
 
 @end
