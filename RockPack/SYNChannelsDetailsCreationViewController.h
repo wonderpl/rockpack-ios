@@ -1,5 +1,6 @@
+
 //
-//  SYNChannelsDetailViewController.h
+//  SYNtChannelsDetailsCreationViewController.h
 //  rockpack
 //
 //  Created by Nick Banks on 30/01/2013.
@@ -8,6 +9,6 @@
 
 #import "SYNAbstractChannelsDetailViewController.h"
 
-@interface SYNChannelsDetailViewController : SYNAbstractChannelsDetailViewController
+@interface SYNChannelsDetailsCreationViewController : SYNAbstractChannelsDetailViewController
 
 @end

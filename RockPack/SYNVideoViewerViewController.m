@@ -141,7 +141,7 @@
 
 
 - (void) collectionView: (UICollectionView *) cv
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
     

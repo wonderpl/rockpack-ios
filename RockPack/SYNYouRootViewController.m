@@ -10,7 +10,7 @@
 #import "ChannelOwner.h"
 #import "MBProgressHUD.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNChannelsDetailViewController.h"
+#import "SYNAbstractChannelsDetailViewController.h"
 #import "SYNMyRockpackCell.h"
 #import "SYNVideoDB.h"
 #import "SYNYouRootViewController.h"
@@ -116,7 +116,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelVC];
 }
@@ -127,7 +127,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
     channelVC.view.alpha = 0.0f;
     

@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNChannelsDetailViewController.h"
+#import "SYNAbstractChannelsDetailViewController.h"
 
-@interface SYNMyRockpackChannelDetailViewController : SYNChannelsDetailViewController
+@interface SYNMyRockpackChannelDetailViewController : SYNAbstractChannelsDetailViewController
 
 @end

@@ -19,14 +19,15 @@
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelSelectorCell.h"
+#import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoSelection.h"
 #import "SYNVideoThumbnailWideCell.h"
+#import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNVideoViewerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -93,14 +94,14 @@
         self.videoQueueDeleteButton.frame = CGRectMake(949, 35, 50, 50);
         
         [self.videoQueueDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDelete.png"]
-                                    forState: UIControlStateNormal];
+                                     forState: UIControlStateNormal];
         
         [self.videoQueueDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDeleteHighlighted.png"]
-                                    forState: UIControlStateHighlighted];
+                                     forState: UIControlStateHighlighted];
         
         [self.videoQueueDeleteButton addTarget: self
-                                       action: @selector(clearVideoQueue)
-                             forControlEvents: UIControlEventTouchUpInside];
+                                        action: @selector(clearVideoQueue)
+                              forControlEvents: UIControlEventTouchUpInside];
         
         [self.videoQueueView addSubview: self.videoQueueDeleteButton];
         
@@ -108,10 +109,10 @@
         self.videoQueueNewButton.frame = CGRectMake(663, 35, 50, 50);
         
         [self.videoQueueNewButton setImage: [UIImage imageNamed: @"ButtonVideoWellNew.png"]
-                                 forState: UIControlStateNormal];
+                                  forState: UIControlStateNormal];
         
         [self.videoQueueNewButton setImage: [UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"]
-                                 forState: UIControlStateSelected];
+                                  forState: UIControlStateSelected];
         
         [self.videoQueueNewButton addTarget: self
                                     action: @selector(createChannelFromVideoQueue)
@@ -778,41 +779,49 @@
     return handledInAbstractView;
 }
 
+//- (IBAction) createChannelFromVideoQueue
+//{
+//    UIViewController *pvc = self.parentViewController;
+//    
+//    [pvc.view addSubview: self.channelChooserView];
+//    
+//    self.channelNameTextField.text = @"";
+//    [self.channelNameTextField becomeFirstResponder];
+//    
+//    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+//                          delay: 0.0f
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations: ^
+//     {
+//         // Contract thumbnail view
+//         self.channelChooserView.alpha = 1.0f;
+//     }
+//                     completion: ^(BOOL finished)
+//     {
+//     }];
+//    
+//    // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
+//    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
+//    [self.channelCoverCarouselCollectionView scrollToItemAtIndexPath: startIndexPath
+//                                                    atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
+//                                                            animated: NO];
+//    
+//    // Only play the scrolling click (after we have scrolled to the right position in the list,
+//    // which might not have finished in this run loop
+//    [NSObject performBlock: ^
+//     {
+//         self.shouldPlaySound = TRUE;
+//     }
+//     afterDelay: 0.1f];
+//}
+
 - (IBAction) createChannelFromVideoQueue
 {
-    UIViewController *pvc = self.parentViewController;
+    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: nil];
     
-    [pvc.view addSubview: self.channelChooserView];
-    
-    self.channelNameTextField.text = @"";
-    [self.channelNameTextField becomeFirstResponder];
-    
-    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.channelChooserView.alpha = 1.0f;
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-    
-    // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
-    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
-    [self.channelCoverCarouselCollectionView scrollToItemAtIndexPath: startIndexPath
-                                                    atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
-                                                            animated: NO];
-    
-    // Only play the scrolling click (after we have scrolled to the right position in the list,
-    // which might not have finished in this run loop
-    [NSObject performBlock: ^
-     {
-         self.shouldPlaySound = TRUE;
-     }
-     afterDelay: 0.1f];
+    [self animatedPushViewController: channelCreationVC];
 }
+
 
 - (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender
 {

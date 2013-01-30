@@ -86,9 +86,13 @@
     channelsRootNavigationViewController.navigationBarHidden = TRUE;
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
-
-    // Discover tab 
+    
+    // Discover tab
     SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] init];
+    UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
+    videosRootNavigationViewController.navigationBarHidden = TRUE;
+    videosRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // My Rockpack tab
     SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] init];
@@ -103,13 +107,13 @@
     // Using new array syntax
     self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
-                             videosRootViewController,
+                             videosRootNavigationViewController,
                              youRootRootNavigationViewController,
                              friendsRootViewController];
 
     _selectedIndex = NSNotFound;
     
-    self.selectedViewController = videosRootViewController;
+    self.selectedViewController = videosRootNavigationViewController;
     
     // Now fade in gracefully from splash screen (do this here as opposed to the app delegate so that the orientation is known)
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
