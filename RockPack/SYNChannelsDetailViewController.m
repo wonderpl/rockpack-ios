@@ -22,10 +22,9 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
-
-
-
-@interface SYNChannelsDetailViewController () <HPGrowingTextViewDelegate>
+@interface SYNChannelsDetailViewController () <HPGrowingTextViewDelegate,
+                                               UICollectionViewDataSource,
+                                               UICollectionViewDelegate>
 
 @property (nonatomic, assign) BOOL keyboardShown;
 @property (nonatomic, strong) Channel *channel;
@@ -75,28 +74,64 @@
     self.followersCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
     
     // Register video thumbnail cell
+//    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
+//                                                  bundle: nil];
+//    
+//    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+//                        forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
+    
+//    // Register collection view header view
+//    UINib *headerViewNib = [UINib nibWithNibName: @"SYNChannelHeaderView"
+//                                          bundle: nil];
+//    
+//     [self.videoThumbnailCollectionView registerNib: headerViewNib
+//                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+//                                withReuseIdentifier: @"SYNChannelHeaderView"];
+    
+    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
+//    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+//    layout.itemSize = CGSizeMake(256.0f , 193.0f);
+//    layout.minimumInteritemSpacing = 0.0f;
+//    layout.minimumLineSpacing = 0.0f;
+//    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+//    layout.itemSize = CGSizeMake(127.0f , 73.0f);
+//    layout.minimumInteritemSpacing = 0.0f;
+//    layout.minimumLineSpacing = 15.0f;
+//    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+//    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//
+//    self.videoThumbnailCollectionView.collectionViewLayout = layout;
+    
+    UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    standardFlowLayout.itemSize = CGSizeMake(127.0f , 73.0f);
+    standardFlowLayout.minimumInteritemSpacing = 0.0f;
+    standardFlowLayout.minimumLineSpacing = 15.0f;
+    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    //        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(10, 26, 478, 73)
+    //                                                          collectionViewLayout: standardFlowLayout];
+    
+    // Make this of zero width initially
+//    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(100, 100, 400, 400)
+//                                                       collectionViewLayout: standardFlowLayout];
+    
+//    self.videoThumbnailCollectionView.delegate = self;
+//    self.videoThumbnailCollectionView.dataSource = self;
+//    
+//    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+//    self.videoThumbnailCollectionView.backgroundColor = [UIColor blueColor];
+    
+    // Register cells    
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
                                                   bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
-    // Register collection view header view
-    UINib *headerViewNib = [UINib nibWithNibName: @"SYNChannelHeaderView"
-                                          bundle: nil];
-    
-     [self.videoThumbnailCollectionView registerNib: headerViewNib
-                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
-                                withReuseIdentifier: @"SYNChannelHeaderView"];
-    
-    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
-    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(256.0f , 193.0f);
-    layout.minimumInteritemSpacing = 0.0f;
-    layout.minimumLineSpacing = 0.0f;
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-
-    self.videoThumbnailCollectionView.collectionViewLayout = layout;
+    [self.view addSubview: self.videoThumbnailCollectionView];
     
     // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
     self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -131,7 +166,8 @@
     self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     
     // Now add the long-press gesture recognizers to the custom flow layout
-    [layout setUpGestureRecognizersOnCollectionView];
+#warning "Removed gesture recognisers"
+//    [layout setUpGestureRecognizersOnCollectionView];
 }
 
 
@@ -225,7 +261,6 @@
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = self.channel.title;
     self.channelWallpaperImageView.image = self.channel.wallpaperImage;
-//    self.biogBodyLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.channelDescription];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -237,6 +272,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
+    NSLog (@"Number of items %d", self.videoInstancesArray.count);
     return self.videoInstancesArray.count;
 }
 
@@ -254,26 +290,10 @@
                                                                        forIndexPath: indexPath];
     
     VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
-    cell.imageView.image = videoInstance.video.thumbnailImage;
+    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
     cell.titleLabel.text = videoInstance.title;
-    cell.subtitleLabel.text = videoInstance.channel.title;
     
     return cell;
-}
-
-
-// Used for the collection view header
-- (UICollectionReusableView *) collectionView: (UICollectionView *) cv
-            viewForSupplementaryElementOfKind: (NSString *) kind
-                                  atIndexPath: (NSIndexPath *) indexPath
-{
-    SYNChannelHeaderView *reusableView = [cv dequeueReusableSupplementaryViewOfKind: kind
-                                                                withReuseIdentifier: @"SYNChannelHeaderView"
-                                                                       forIndexPath: indexPath];
-//    reusableView.titleLabel.text = self.channel.biogTitle;
-    reusableView.subtitleLabel.text = [NSString stringWithFormat: @"%@\n\n\n", self.channel.channelDescription];
-    
-    return reusableView;
 }
 
 
@@ -288,17 +308,6 @@
     
 }
 
-- (CGSize) collectionView: (UICollectionView *) cv
-                   layout: (UICollectionViewLayout*) cvLayout
-                   referenceSizeForHeaderInSection: (NSInteger) section
-{
-    if (section == 0)
-    {
-        return CGSizeMake(0, 372);
-    }
-    
-    return CGSizeZero;
-}
 
 - (void) collectionView: (UICollectionView *) cv
                  layout: (UICollectionViewLayout *) layout

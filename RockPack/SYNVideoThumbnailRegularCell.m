@@ -40,14 +40,23 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.subtitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.addItButton.enabled = TRUE;
-    self.addItButton.hidden = FALSE;
-    self.shareItButton.enabled = FALSE;
-    self.shareItButton.hidden = TRUE;
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
 }
 
+#pragma mark - Asynchronous image loading support
+
+- (void) setVideoImageViewImage: (NSString*) imageURLString
+{
+    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                   placeHolderImage: nil];
+}
+
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+    // We need to clean up any asynchronous image uploads
+    self.imageView.image = nil;
+}
 
 @end
