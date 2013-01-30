@@ -53,6 +53,11 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadCollectionViews)
+                                                 name: kDataUpdated
+                                               object: nil];
 
     // Set the labels to use the custom font
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
@@ -109,6 +114,13 @@
     [self.videoThumbnailCollectionView reloadData];
 }
 
+
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kDataUpdated
+                                                  object: nil];
+}
 
 - (BOOL) hasVideoQueue
 {

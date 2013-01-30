@@ -134,14 +134,27 @@ static NSEntityDescription *channelEntity = nil;
     self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
                                          withDefault: [NSNumber numberWithBool: FALSE]];
     
+#warning "Quick hack to support new URL naming scheme"
+    NSString *smallThumbnailURL = [dictionary objectForKey: @"cover_thumbnail_small_url"
+                                                 withDefault: @"http://"];
+    
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
-                                     withDefault: @"http://"];
+                                     withDefault: smallThumbnailURL];
     
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
     
-    self.wallpaperURL = [dictionary objectForKey: @"wallpaper_url"
-                                     withDefault: @"http://"];
+#warning "Quick hack for background urls"
+    
+//    self.wallpaperURL = [dictionary objectForKey: @"wallpaper_url"
+//                                     withDefault: @"http://"];
+    
+    self.wallpaperURL = [dictionary objectForKey: @"cover_background_url"
+                                     withDefault: self.thumbnailURL];
+    
+
+    
+    
     
     // NSManagedObjects
     self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
@@ -180,16 +193,6 @@ static NSEntityDescription *channelEntity = nil;
 
 
 #pragma mark - Helper methods
-
-- (UIImage *) thumbnailImage
-{
-    return [UIImage imageNamed: self.thumbnailURL];
-}
-
-- (UIImage *) wallpaperImage
-{
-    return [UIImage imageNamed: self.wallpaperURL];
-}
 
 - (NSString *) description
 {

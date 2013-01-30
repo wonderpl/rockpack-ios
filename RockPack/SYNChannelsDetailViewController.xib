@@ -56,7 +56,7 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 507}, {1024, 179}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
-						<reference key="NSNextKeyView" ref="580930087"/>
+						<reference key="NSNextKeyView" ref="617500053"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="381457900">
 							<int key="NSColorSpace">3</int>
@@ -132,7 +132,7 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<string key="IBUIText">27</string>
+										<string key="IBUIText">0</string>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MC43MjU0OTAxOTYxIDAuODExNzY0NzA1OSAwLjg0NzA1ODgyMzUAA</bytes>
@@ -286,7 +286,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIScrollEnabled">NO</bool>
 					</object>
-					<object class="IBUIView" id="580930087">
+					<object class="IBUIView" id="617500053">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 508}, {1024, 179}}</string>
@@ -329,7 +329,7 @@
 								<int key="IBUIContentMode">3</int>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUIText">MY RANDOM CHANNEL</string>
+								<string key="IBUIText"/>
 								<object class="NSColor" key="IBUITextColor" id="804446849">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -362,7 +362,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">BY YOU</string>
+								<string key="IBUIText"/>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC42MTk2MDc4NDMxIDAuNzEzNzI1NDkwMiAwLjczMzMzMzMzMzMAA</bytes>
@@ -657,7 +657,7 @@
 							<reference ref="915393374"/>
 							<reference ref="566198242"/>
 							<reference ref="1013153826"/>
-							<reference ref="580930087"/>
+							<reference ref="617500053"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -803,7 +803,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100</int>
-						<reference key="object" ref="580930087"/>
+						<reference key="object" ref="617500053"/>
 						<reference key="parent" ref="65885460"/>
 					</object>
 				</array>

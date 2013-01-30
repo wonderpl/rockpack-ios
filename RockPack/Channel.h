@@ -8,7 +8,4 @@
                   withRootObjectType: (RootObject) rootObject
                            andViewId: (NSString *) viewId;
 
-- (UIImage *) thumbnailImage;
-- (UIImage *) wallpaperImage;
-
 @end

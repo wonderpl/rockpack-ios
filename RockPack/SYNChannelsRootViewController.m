@@ -211,11 +211,12 @@
         imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
         
         // Now create a new UIImageView to overlay
-        UIImage *cellImage = channel.thumbnailImage;
+//        UIImage *cellImage = channel.thumbnailImage;
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;
-        self.pinchedView.image = cellImage;
+        [self.pinchedView setImageFromURL: [NSURL URLWithString: channel.thumbnailURL]
+                       placeHolderImage: nil];
         
         // now add the item to the view
         [self.view addSubview: self.pinchedView];
