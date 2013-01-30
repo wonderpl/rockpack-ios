@@ -571,14 +571,6 @@
     [bottomTabViewController toggleShareMenu];
 }
 
-//- (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender
-//{
-//    if (sender.state == UIGestureRecognizerStateBegan)
-//    {
-//        [self showVideoQueue: TRUE];
-//        
-//        // figure out which item in the table was selected
-//        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
 
 // Called by invisible button on video view cell
 - (void) displayVideoViewerFromView: (UIGestureRecognizer *) sender

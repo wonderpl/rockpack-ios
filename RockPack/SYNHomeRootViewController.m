@@ -15,7 +15,6 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNVideoViewerViewController.h"
 
 @interface SYNHomeRootViewController ()
 

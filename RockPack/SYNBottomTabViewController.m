@@ -19,7 +19,6 @@
 #import "SYNYouRootViewController.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoDownloadEngine.h"
-#import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudioTypes.h>
@@ -174,15 +173,14 @@
     self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
     
     self.backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BackgroundGeneric"]];
-    
-    //
-//    SYNVideoViewerViewController
 }
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
 }
+
 
 #pragma mark - Tab & Container switching mechanism
 

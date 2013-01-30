@@ -12,6 +12,8 @@
 #import "Video.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "LXReorderableCollectionViewFlowLayout.h"
+#import "SYNVideoThumbnailSmallCell.h"
 
 @interface SYNVideoViewerViewController () <UIWebViewDelegate>
 
@@ -25,6 +27,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
 @property (nonatomic, strong) VideoInstance *videoInstance;
+@property (nonatomic, strong) NSMutableArray *videoInstancesArray;
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 
 
 @end
@@ -39,6 +43,8 @@
 	if ((self = [super init]))
     {
 		self.videoInstance = videoInstance;
+//        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
+
 	}
     
 	return self;
@@ -71,6 +77,22 @@
     self.channelTitleLabel.text = self.videoInstance.channel.title;
     self.videoTitleLabel.text = self.videoInstance.title;
     self.numberOfRocksLabel.text = self.videoInstance.video.starCount.stringValue;
+    
+    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
+    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(258.0f , 179.0f);
+    layout.minimumInteritemSpacing = 0.0f;
+    layout.minimumLineSpacing = 0.0f;
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    
+    self.videoThumbnailCollectionView.collectionViewLayout = layout;
+    
+    // Regster video thumbnail cell
+    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
+                                                  bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+                        forCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"];
 }
 
 
@@ -88,6 +110,68 @@
 }
 
 
+#pragma mark - Collection view support
+
+- (NSInteger) collectionView: (UICollectionView *) view
+      numberOfItemsInSection: (NSInteger) section
+{
+    NSLog (@"Number of items %d", self.videoInstancesArray.count);
+    return self.videoInstancesArray.count;
+}
+
+
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+{
+    return 1;
+}
+
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    SYNVideoThumbnailSmallCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"
+                                                                       forIndexPath: indexPath];
+    
+    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
+    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
+    cell.titleLabel.text = videoInstance.title;
+    
+    return cell;
+}
+
+
+- (void) collectionView: (UICollectionView *) cv
+didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
+    
+//    SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
+//    
+//    [self animatedPushViewController: movieVC];
+    
+}
+
+
+- (void) collectionView: (UICollectionView *) cv
+                 layout: (UICollectionViewLayout *) layout
+        itemAtIndexPath: (NSIndexPath *) fromIndexPath
+    willMoveToIndexPath: (NSIndexPath *) toIndexPath
+{
+    // Actually swap the video thumbnails around in the visible list
+//    id fromItem = self.videoInstancesArray[fromIndexPath.item];
+//    id fromObject = self.channel.videoInstances[fromIndexPath.item];
+//    
+//    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
+//    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
+//    
+//    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
+//    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
+//    
+//    [self saveDB];
+}
+
+
+
 #pragma mark - Video view
 
 - (IBAction) userTouchedPreviousVideoButton: (id) sender
@@ -99,19 +183,6 @@
 {
     
 }
-
-//    [self loadWebViewWithIFrameUsingYouTubeId: @"diP-o_JxysA"
-//                                        width: 475
-//                                       height: 267];
-
-//    [self loadWebViewWithJSAPIUsingYouTubeId: @"diP-o_JxysA"
-//                                       width: 475
-//                                      height: 267];
-
-//    [self loadWebViewWithIFrameUsingVimeoId: @"55351724"
-//                                      width: 475
-//                                     height: 267];
-
 
 
 - (void) loadWebViewWithIFrameUsingYouTubeId: (NSString *) videoId

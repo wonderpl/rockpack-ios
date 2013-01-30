@@ -81,16 +81,8 @@
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    
-//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-//    layout.itemSize = CGSizeMake(127.0f , 73.0f);
-//    layout.minimumInteritemSpacing = 0.0f;
-//    layout.minimumLineSpacing = 15.0f;
-//    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-//    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
-    
 
     // Regster video thumbnail cell  
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
@@ -98,8 +90,6 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
-    
-    [self.view addSubview: self.videoThumbnailCollectionView];
     
     // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
     self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);

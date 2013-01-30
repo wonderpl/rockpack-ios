@@ -1122,11 +1122,11 @@
 		01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailSmallCell.h; sourceTree = "<group>"; };
 		01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailSmallCell.m; sourceTree = "<group>"; };
 		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
-		01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackgroundVideoThumbnailSmall.png; sourceTree = "<group>"; };
-		01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
-		01EA81CA16B94E770069AFF9 /* placeholder12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder12.png; sourceTree = "<group>"; };
-		01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GlossVideoThumbnailSmall.png; sourceTree = "<group>"; };
-		01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GlossVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
+		01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundVideoThumbnailSmall.png; path = RockPack/BackgroundVideoThumbnailSmall.png; sourceTree = "<group>"; };
+		01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundVideoThumbnailSmall@2x.png"; path = "RockPack/BackgroundVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
+		01EA81CA16B94E770069AFF9 /* placeholder12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder12.png; path = RockPack/placeholder12.png; sourceTree = "<group>"; };
+		01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossVideoThumbnailSmall.png; path = RockPack/GlossVideoThumbnailSmall.png; sourceTree = "<group>"; };
+		01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossVideoThumbnailSmall@2x.png"; path = "RockPack/GlossVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
 		01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackChannelDetailViewController.h; sourceTree = "<group>"; };
 		01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackChannelDetailViewController.m; sourceTree = "<group>"; };
 		01EC6234166EAAA5003154B1 /* SYNChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDetailViewController.h; sourceTree = "<group>"; };
@@ -2465,6 +2465,11 @@
 		01F8E73316AFF426000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */,
+				01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */,
+				01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */,
+				01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */,
+				01EA81CA16B94E770069AFF9 /* placeholder12.png */,
 				01F8E78116B0554B000D44B9 /* ButtonClose.png */,
 				01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */,
 				01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */,
@@ -2495,11 +2500,6 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
-				01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */,
-				01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */,
-				01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */,
-				01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */,
-				01EA81CA16B94E770069AFF9 /* placeholder12.png */,
 				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,

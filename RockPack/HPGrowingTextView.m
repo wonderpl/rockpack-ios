@@ -76,6 +76,7 @@
     internalTextView.contentInset = UIEdgeInsetsZero;		
     internalTextView.showsHorizontalScrollIndicator = NO;
     internalTextView.text = @"-";
+    internalTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     [self addSubview:internalTextView];
     
     minHeight = internalTextView.frame.size.height;
