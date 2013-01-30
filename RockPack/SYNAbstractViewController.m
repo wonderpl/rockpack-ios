@@ -11,7 +11,6 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
-#import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
@@ -34,11 +33,9 @@
 
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoQueueCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) MKNetworkOperation *draggedImageLoadingOperation;
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
@@ -180,49 +177,6 @@
         [self.videoQueueView addSubview: self.dropZoneView];
         
         [self.view addSubview: self.videoQueueView];
-        
-        self.channelChooserView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 398)];
-        
-        self.channelOverlayView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
-        self.channelOverlayView.image = [UIImage imageNamed: @"OverlayChannelCreate.png"];
-        [self.channelChooserView addSubview: self.channelOverlayView];
-        
-        self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 330, 384, 35)];
-        
-        self.channelNameTextField.textAlignment = NSTextAlignmentCenter;
-        self.channelNameTextField.textColor = [UIColor whiteColor];
-        self.channelNameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-        self.channelNameTextField.returnKeyType = UIReturnKeyDone;
-        self.channelNameTextField.font = [UIFont rockpackFontOfSize: 36.0f];
-        self.channelNameTextField.delegate = self;
-        [self.channelChooserView addSubview: self.channelNameTextField];
-        
-        // Carousel collection view
-        
-        // Set carousel collection view to use custom layout algorithm
-        CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
-        channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(360.0f , 226.0f);
-        channelCoverCarouselHorizontalLayout.cellSpacing = 40.0f;
-        
-        self.channelCoverCarouselCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(62, 58, 900, 226)
-                                                                     collectionViewLayout: channelCoverCarouselHorizontalLayout];
-
-        self.channelCoverCarouselCollectionView.delegate = self;
-        self.channelCoverCarouselCollectionView.dataSource = self;
-        self.channelCoverCarouselCollectionView.backgroundColor = [UIColor clearColor];
-        self.channelCoverCarouselCollectionView.showsHorizontalScrollIndicator = FALSE;
-        
-        // Set up our carousel
-        [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
-                                    forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
-        
-        self.channelCoverCarouselCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
-        
-        [self.channelChooserView addSubview: self.channelCoverCarouselCollectionView];
-        
-        // Initially hide this view
-        self.channelChooserView.alpha = 0.0f;
-        [self.view addSubview: self.channelChooserView];
     }
 }
 
@@ -634,11 +588,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
-    if (cv == self.channelCoverCarouselCollectionView)
-    {
-        return 10;
-    }
-    else if (cv == self.videoQueueCollectionView)
+    if (cv == self.videoQueueCollectionView)
     {
         return SYNVideoSelection.sharedVideoSelectionArray.count;
     }
@@ -693,48 +643,6 @@
         
         cell = videoThumbnailCell;
     }
-    else if (cv == self.channelCoverCarouselCollectionView)
-    {
-#ifdef SOUND_ENABLED
-        // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
-                                                              ofType: @"aif"];
-        
-        if (self.shouldPlaySound == TRUE)
-        {
-            NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-            SystemSoundID sound;
-            AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-            AudioServicesPlaySystemSound(sound);
-        }
-#endif
-        
-        SYNChannelSelectorCell *channelCarouselCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
-                                                                     forIndexPath: indexPath];
-        
-        NSString *imageName = [NSString stringWithFormat: @"ChannelCreationCover%d.png", (indexPath.row % 10) + 1];
-        
-        // Now add a 2 pixel transparent edge on the image (which dramatically reduces jaggies on transformation)
-        UIImage *image = [UIImage imageNamed: imageName];
-        CGRect imageRect = CGRectMake( 0 , 0 , image.size.width + 4 , image.size.height + 4 );
-        
-        UIGraphicsBeginImageContext(imageRect.size);
-        [image drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
-        CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        channelCarouselCell.imageView.image = image;
-        
-        channelCarouselCell.imageView.layer.shouldRasterize = YES;
-        channelCarouselCell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
-        channelCarouselCell.imageView.clipsToBounds = NO;
-        channelCarouselCell.imageView.layer.masksToBounds = NO;
-        
-        // End of clever jaggie reduction
-        
-        cell = channelCarouselCell;
-    }
     else if (cv == self.videoQueueCollectionView)
     {
         SYNVideoQueueCell *videoQueueCell = [cv dequeueReusableCellWithReuseIdentifier: @"VideoQueueCell"
@@ -761,12 +669,7 @@
     // Assume for now, that we can handle this
     BOOL handledInAbstractView = TRUE;
     
-    if (cv == self.channelCoverCarouselCollectionView)
-    {
-        //#warning "Need to select wallpack here"
-        DebugLog (@"Selecting channel cover cell does nothing");
-    }
-    else if (cv == self.videoQueueCollectionView)
+    if (cv == self.videoQueueCollectionView)
     {
         DebugLog (@"Selecting image well cell does nothing");
     }
@@ -1056,68 +959,68 @@
     //                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
 }
 
-
-// User has pressed the Done button, so create a new channel
-- (BOOL) textFieldShouldReturn: (UITextField *) textField
-{
-    [self addChannelWithTitle: textField.text];
-    
-    return YES;
-}
-
-- (void) textFieldDidEndEditing: (UITextField *) textField
-{
-    self.channelChooserView.alpha = 0.0f;
-}
-
-- (void) addChannelWithTitle: (NSString *) title
-{
-    Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
-    
-    NSError *error = nil;
-    NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
-                                                   inManagedObjectContext: self.mainManagedObjectContext];
-    
-    // Find out how many Video objects we have in the database
-    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
-    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
-    [channelOwnerFetchRequest setPredicate: predicate];
-    
-    NSArray *channelOwnerEntries = [self.mainManagedObjectContext executeFetchRequest: channelOwnerFetchRequest
-                                                                     error: &error];
-    
-    DebugLog(@"unique id = %@", ((ChannelOwner *)channelOwnerEntries[0]).uniqueId);
-    
-    newChannel.channelOwner = (ChannelOwner *)channelOwnerEntries[0];
-    
-    newChannel.title = title;
-    newChannel.rockedByUserValue = FALSE;
-    newChannel.rockCountValue = 0;
-    newChannel.rockedByUserValue = TRUE;
-    
-    // TODO: Make these window offsets less hard-coded
-    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
-                                                                                                            70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
-    
-    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    
-    newChannel.thumbnailURL = coverChannel.thumbnailURL;
-    newChannel.wallpaperURL = coverChannel.wallpaperURL;
-    newChannel.channelDescription = coverChannel.channelDescription;
-    
-    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
-    {
-        [[newChannel videoInstancesSet] addObject: videoInstance];
-    }
-    
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate saveContext: kSaveAsynchronously];
-    
-    [self.channelNameTextField resignFirstResponder];
-    [self clearVideoQueue];
-}
+//
+//// User has pressed the Done button, so create a new channel
+//- (BOOL) textFieldShouldReturn: (UITextField *) textField
+//{
+//    [self addChannelWithTitle: textField.text];
+//    
+//    return YES;
+//}
+//
+//- (void) textFieldDidEndEditing: (UITextField *) textField
+//{
+//    self.channelChooserView.alpha = 0.0f;
+//}
+//
+//- (void) addChannelWithTitle: (NSString *) title
+//{
+//    Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
+//    
+//    NSError *error = nil;
+//    NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
+//                                                   inManagedObjectContext: self.mainManagedObjectContext];
+//    
+//    // Find out how many Video objects we have in the database
+//    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
+//    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
+//    
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
+//    [channelOwnerFetchRequest setPredicate: predicate];
+//    
+//    NSArray *channelOwnerEntries = [self.mainManagedObjectContext executeFetchRequest: channelOwnerFetchRequest
+//                                                                     error: &error];
+//    
+//    DebugLog(@"unique id = %@", ((ChannelOwner *)channelOwnerEntries[0]).uniqueId);
+//    
+//    newChannel.channelOwner = (ChannelOwner *)channelOwnerEntries[0];
+//    
+//    newChannel.title = title;
+//    newChannel.rockedByUserValue = FALSE;
+//    newChannel.rockCountValue = 0;
+//    newChannel.rockedByUserValue = TRUE;
+//    
+//    // TODO: Make these window offsets less hard-coded
+//    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
+//                                                                                                            70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
+//    
+//    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+//    
+//    newChannel.thumbnailURL = coverChannel.thumbnailURL;
+//    newChannel.wallpaperURL = coverChannel.wallpaperURL;
+//    newChannel.channelDescription = coverChannel.channelDescription;
+//    
+//    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
+//    {
+//        [[newChannel videoInstancesSet] addObject: videoInstance];
+//    }
+//    
+//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    [delegate saveContext: kSaveAsynchronously];
+//    
+//    [self.channelNameTextField resignFirstResponder];
+//    [self clearVideoQueue];
+//}
 
 #pragma mark - Image well support
 

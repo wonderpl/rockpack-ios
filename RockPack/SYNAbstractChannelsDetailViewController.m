@@ -6,13 +6,14 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractChannelsDetailViewController.h"
 #import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
-#import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNChannelSelectorCell.h"
 #import "SYNMyRockpackMovieViewController.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
@@ -28,20 +29,21 @@
 
 @property (nonatomic, assign) BOOL keyboardShown;
 @property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) IBOutlet HPGrowingTextView *channelDescriptionTextView;
+@property (nonatomic, strong) IBOutlet SYNTextField *channelTitleTextField;
+@property (nonatomic, strong) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
-@property (nonatomic, strong) IBOutlet HPGrowingTextView *channelDescriptionTextView;
-@property (nonatomic, strong) UIImageView *channelDescriptionHightlightView;
+@property (nonatomic, strong) IBOutlet UILabel *followersCountLabel;
+@property (nonatomic, strong) IBOutlet UILabel *followersLabel;
+@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *videoCountLabel;
+@property (nonatomic, strong) IBOutlet UILabel *videosLabel;
+@property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) IBOutlet UIView *channelDescriptionTextContainerView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet SYNTextField *channelTitleTextField;
-@property (nonatomic, strong) IBOutlet UILabel *videosLabel;
-@property (nonatomic, strong) IBOutlet UILabel *followersLabel;
-@property (nonatomic, strong) IBOutlet UILabel *videoCountLabel;
-@property (nonatomic, strong) IBOutlet UILabel *followersCountLabel;
-@property (nonatomic, strong) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;
+@property (nonatomic, strong) UIImageView *channelDescriptionHightlightView;
 
 @end
 
@@ -123,6 +125,45 @@
     
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
+    
+    
+    // Carousel collection view
+    
+    // Set carousel collection view to use custom layout algorithm
+    CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
+    channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(341.0f , 190.0f);
+    channelCoverCarouselHorizontalLayout.cellSpacing = 40.0f;
+    
+    self.channelCoverCarouselCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(62, 167, 900, 190)
+                                                                 collectionViewLayout: channelCoverCarouselHorizontalLayout];
+    
+    self.channelCoverCarouselCollectionView.delegate = self;
+    self.channelCoverCarouselCollectionView.dataSource = self;
+    self.channelCoverCarouselCollectionView.backgroundColor = [UIColor clearColor];
+    self.channelCoverCarouselCollectionView.showsHorizontalScrollIndicator = FALSE;
+    
+    // Set up our carousel
+    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
+                                forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
+    
+    self.channelCoverCarouselCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
+
+    
+    // Initially hide this view
+//    self.channelCoverCarouselCollectionView.alpha = 0.0f;
+    [self.view addSubview: self.channelCoverCarouselCollectionView];
+
+    
+//    self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 330, 384, 35)];
+//    
+//    self.channelNameTextField.textAlignment = NSTextAlignmentCenter;
+//    self.channelNameTextField.textColor = [UIColor whiteColor];
+//    self.channelNameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+//    self.channelNameTextField.returnKeyType = UIReturnKeyDone;
+//    self.channelNameTextField.font = [UIFont rockpackFontOfSize: 36.0f];
+//    self.channelNameTextField.delegate = self;
+//    [self.channelChooserView addSubview: self.channelNameTextField];
+
 }
 
 
@@ -231,47 +272,98 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) view
+- (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    NSLog (@"Number of items %d", self.videoInstancesArray.count);
-    return self.videoInstancesArray.count;
+    if (collectionView == self.channelCoverCarouselCollectionView)
+    {
+        return 13;
+    }
+    else
+    {
+        NSLog (@"Number of items %d", self.videoInstancesArray.count);
+        return self.videoInstancesArray.count;
+    }
 }
 
 
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 1;
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    SYNVideoThumbnailRegularCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
-                                                                       forIndexPath: indexPath];
+    UICollectionViewCell *cell = nil;
     
-    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
-    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
-    cell.titleLabel.text = videoInstance.title;
+    if (collectionView == self.channelCoverCarouselCollectionView)
+    {
+#ifdef SOUND_ENABLED
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
+                                                              ofType: @"aif"];
+        
+        if (self.shouldPlaySound == TRUE)
+        {
+            NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+            SystemSoundID sound;
+            AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+            AudioServicesPlaySystemSound(sound);
+        }
+#endif
+        
+//    http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverBackground1.png
+//    http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverThumb1.png
+        
+        SYNChannelSelectorCell *channelCarouselCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
+                                                                                    forIndexPath: indexPath];
+        
+
+        
+        NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverThumb%d.png", (indexPath.row % 13) + 1];
+        
+        channelCarouselCell.channelImageViewImage = imageURLString;
+        
+        cell = channelCarouselCell;
+    }
+    else
+    {
+        SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
+                                                                           forIndexPath: indexPath];
+        
+        VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
+        videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
+        videoThumbnailCell.titleLabel.text = videoInstance.title;
+        
+        cell = videoThumbnailCell;
+    }
     
     return cell;
 }
 
 
-- (void) collectionView: (UICollectionView *) cv
+- (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
-    
-    SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
-    
-    [self animatedPushViewController: movieVC];
-    
+    if (collectionView == self.channelCoverCarouselCollectionView)
+    {
+        //#warning "Need to select wallpack here"
+        DebugLog (@"Selecting channel cover cell does nothing");
+    }
+    else
+    {
+        VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
+        
+        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
+        
+        [self animatedPushViewController: movieVC];
+    }
 }
 
 
-- (void) collectionView: (UICollectionView *) cv
+- (void) collectionView: (UICollectionView *) collectionView
                  layout: (UICollectionViewLayout *) layout
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath

@@ -12,7 +12,6 @@
 
 @interface SYNChannelSelectorCell : CBetterCollectionViewCell
 
-@property (readwrite, nonatomic, weak) IBOutlet UIImageView *imageView;
-
+- (void) setChannelImageViewImage: (NSString*) imageURLString;
 
 @end

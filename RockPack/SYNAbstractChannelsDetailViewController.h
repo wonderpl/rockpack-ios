@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) IBOutlet UIButton *editButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
 
 - (id) initWithChannel: (Channel *) channel;
 

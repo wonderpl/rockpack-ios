@@ -49,6 +49,10 @@
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MCAwAA</bytes>
+						</object>
 						<bool key="IBUIAutoresizesSubviews">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -103,10 +107,7 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="958255606"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MCAwAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="1061543414"/>
 								<float key="IBUIAlpha">0.0</float>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIDataDetectorTypes">1</int>
@@ -767,22 +768,12 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="channelChooserView">UIView</string>
-						<string key="channelCoverCarouselCollectionView">UICollectionView</string>
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>
 						<string key="videoQueueCollectionView">UICollectionView</string>
 						<string key="videoThumbnailCollectionView">UICollectionView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="channelChooserView">
-							<string key="name">channelChooserView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelCoverCarouselCollectionView">
-							<string key="name">channelCoverCarouselCollectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="channelNameTextField">
 							<string key="name">channelNameTextField</string>
 							<string key="candidateClassName">UITextField</string>
