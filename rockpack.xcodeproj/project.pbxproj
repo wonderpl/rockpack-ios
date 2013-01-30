@@ -498,6 +498,11 @@
 		01EA81BC16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */; };
 		01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */; };
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
+		01EA81CB16B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */; };
+		01EA81CC16B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */; };
+		01EA81CD16B94E770069AFF9 /* placeholder12.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81CA16B94E770069AFF9 /* placeholder12.png */; };
+		01EA81D016B94F330069AFF9 /* GlossVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */; };
+		01EA81D116B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */; };
 		01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */; };
 		01EC6237166EAAA6003154B1 /* SYNChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNChannelsDetailViewController.m */; };
 		01EC6238166EAAA6003154B1 /* SYNChannelsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EC6236166EAAA6003154B1 /* SYNChannelsDetailViewController.xib */; };
@@ -1114,6 +1119,14 @@
 		01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YouTubeJSAPIPlayerNoAutoplay.html; sourceTree = "<group>"; };
 		01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonLargeVideoPanelPlay.png; path = Assets/Images/ButtonLargeVideoPanelPlay.png; sourceTree = "<group>"; };
 		01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonLargeVideoPanelPlay@2x.png"; path = "Assets/Images/ButtonLargeVideoPanelPlay@2x.png"; sourceTree = "<group>"; };
+		01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailSmallCell.h; sourceTree = "<group>"; };
+		01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailSmallCell.m; sourceTree = "<group>"; };
+		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
+		01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackgroundVideoThumbnailSmall.png; sourceTree = "<group>"; };
+		01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackgroundVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
+		01EA81CA16B94E770069AFF9 /* placeholder12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder12.png; sourceTree = "<group>"; };
+		01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GlossVideoThumbnailSmall.png; sourceTree = "<group>"; };
+		01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GlossVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
 		01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackChannelDetailViewController.h; sourceTree = "<group>"; };
 		01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackChannelDetailViewController.m; sourceTree = "<group>"; };
 		01EC6234166EAAA5003154B1 /* SYNChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDetailViewController.h; sourceTree = "<group>"; };
@@ -2175,6 +2188,9 @@
 				01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */,
 				01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */,
 				01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */,
+				01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */,
+				01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */,
+				01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */,
 				01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */,
 				01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */,
 				01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */,
@@ -2479,6 +2495,11 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */,
+				01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */,
+				01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */,
+				01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */,
+				01EA81CA16B94E770069AFF9 /* placeholder12.png */,
 				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
@@ -2942,6 +2963,11 @@
 				01EA81BC16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */,
 				01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */,
 				01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */,
+				01EA81CB16B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png in Resources */,
+				01EA81CC16B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png in Resources */,
+				01EA81CD16B94E770069AFF9 /* placeholder12.png in Resources */,
+				01EA81D016B94F330069AFF9 /* GlossVideoThumbnailSmall.png in Resources */,
+				01EA81D116B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
