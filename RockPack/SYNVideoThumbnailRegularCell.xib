@@ -36,7 +36,7 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIImageView" id="995585991">
+					<object class="IBUIImageView" id="1017597346">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{258, 179}</string>
@@ -59,6 +59,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="67122024"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<int key="IBUIContentMode">2</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -169,7 +170,7 @@
 							<reference ref="3438973"/>
 							<reference ref="1046021116"/>
 							<reference ref="67122024"/>
-							<reference ref="995585991"/>
+							<reference ref="1017597346"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -192,7 +193,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">21</int>
-						<reference key="object" ref="995585991"/>
+						<reference key="object" ref="1017597346"/>
 						<reference key="parent" ref="485139548"/>
 					</object>
 				</array>

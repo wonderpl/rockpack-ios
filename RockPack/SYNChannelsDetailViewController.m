@@ -73,27 +73,14 @@
     self.videoCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
     self.followersCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
     
-    // Register video thumbnail cell
-//    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
-//                                                  bundle: nil];
-//    
-//    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
-//                        forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
-    
-//    // Register collection view header view
-//    UINib *headerViewNib = [UINib nibWithNibName: @"SYNChannelHeaderView"
-//                                          bundle: nil];
-//    
-//     [self.videoThumbnailCollectionView registerNib: headerViewNib
-//                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
-//                                withReuseIdentifier: @"SYNChannelHeaderView"];
+
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
-//    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-//    layout.itemSize = CGSizeMake(256.0f , 193.0f);
-//    layout.minimumInteritemSpacing = 0.0f;
-//    layout.minimumLineSpacing = 0.0f;
-//    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(258.0f , 179.0f);
+    layout.minimumInteritemSpacing = 0.0f;
+    layout.minimumLineSpacing = 0.0f;
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
 //    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
 //    layout.itemSize = CGSizeMake(127.0f , 73.0f);
@@ -101,30 +88,11 @@
 //    layout.minimumLineSpacing = 15.0f;
 //    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 //    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//
-//    self.videoThumbnailCollectionView.collectionViewLayout = layout;
+
+    self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
-    UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    standardFlowLayout.itemSize = CGSizeMake(127.0f , 73.0f);
-    standardFlowLayout.minimumInteritemSpacing = 0.0f;
-    standardFlowLayout.minimumLineSpacing = 15.0f;
-    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
-    //        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(10, 26, 478, 73)
-    //                                                          collectionViewLayout: standardFlowLayout];
-    
-    // Make this of zero width initially
-//    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(100, 100, 400, 400)
-//                                                       collectionViewLayout: standardFlowLayout];
-    
-//    self.videoThumbnailCollectionView.delegate = self;
-//    self.videoThumbnailCollectionView.dataSource = self;
-//    
-//    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-//    self.videoThumbnailCollectionView.backgroundColor = [UIColor blueColor];
-    
-    // Register cells    
+
+    // Regster video thumbnail cell  
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailRegularCell"
                                                   bundle: nil];
     
