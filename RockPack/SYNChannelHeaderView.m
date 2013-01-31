@@ -54,6 +54,7 @@
     self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
 	self.channelDescriptionTextView.delegate = self.viewControllerDelegate;
     self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    [self.channelDescriptionTextView resignFirstResponder];
     
     // Add highlighted box
     UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
