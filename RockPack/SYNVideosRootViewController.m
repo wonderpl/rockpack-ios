@@ -102,12 +102,10 @@
 {
     [super viewWillAppear: animated];
     
-    // TODO: Remove this video download hack once we have real data from the API
-//    [[SYNVideoDB sharedVideoDBManager] downloadContentIfRequiredDisplayingHUDInView: self.view];
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateHomeScreen];
-    [appDelegate.networkEngine updateChannelScreen];
+    [appDelegate.networkEngine updateChannelsScreen];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)

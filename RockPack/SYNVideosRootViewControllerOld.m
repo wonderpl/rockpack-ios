@@ -46,7 +46,7 @@
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateHomeScreen];
-    [appDelegate.networkEngine updateChannelScreen];
+    [appDelegate.networkEngine updateChannelsScreen];
 }
 
 

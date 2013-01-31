@@ -79,6 +79,30 @@
 }
 
 
+- (void) JSONObjectForURLString: (NSString *) URLString
+                completionBlock: (JSONResponseBlock) completionBlock
+                     errorBlock: (MKNKErrorBlock) errorBlock
+{
+    MKNetworkOperation *networkOperation = [self operationWithURLString: URLString];
+    
+    [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
+     {
+         [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject)
+          {
+              completionBlock(jsonObject);
+          }];
+     }
+     errorHandler: ^(MKNetworkOperation *errorOp, NSError* error)
+     {
+         errorBlock(error);
+     }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
+
+
 - (void) updateHomeScreen
 {
     // TODO: We need to replace USERID with actual userId ASAP
@@ -152,11 +176,66 @@
 }
 
 
-- (void) updateChannelScreen
+- (void) updateChannel: (NSString *) resourceURL
+{
+    [self JSONObjectForURLString: resourceURL
+                 completionBlock: ^(NSDictionary *dictionary)
+     {
+         NSManagedObjectContext *importManagedObjectContext;
+         
+         // This is where the magic occurs
+         // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
+         SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
+         importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
+         
+         if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
+         {
+             [Channel instanceFromDictionary: dictionary
+                   usingManagedObjectContext: importManagedObjectContext
+                          withRootObjectType: kChannelRootObject
+                                   andViewId: @"Channels"];
+
+             NSError *error = nil;
+             
+             // Merge local context into main context
+             if (![importManagedObjectContext save: &error])
+             {
+                 NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
+                 
+                 if ([detailedErrors count] > 0)
+                 {
+                     for(NSError* detailedError in detailedErrors)
+                     {
+                         DebugLog(@" DetailedError: %@", [detailedError userInfo]);
+                     }
+                 }
+             }
+             
+             // Save main context and save asynchronously into persistent database
+             
+             // TODO: I think that we need to work out how to save asynchronously
+             [appDelegate saveContext: TRUE];
+             
+             [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+                                                                 object: nil];
+         }
+         else
+         {
+             AssertOrLog(@"Not a dictionary");
+         }
+     }
+                 errorBlock: ^(NSError* error)
+     {
+         AssertOrLog(@"API request failed");
+     }];
+}
+
+- (void) updateChannelsScreen
 {
     // TODO: Replace category with something sensible
     // Now add on the locale and category as query parameters
-//    NSString *path = [NSString stringWithFormat: @"%@?locale=%@&category=%@", kAPIPopularChannels, self.localeString, @"CATID"];
+    //    NSString *path = [NSString stringWithFormat: @"%@?locale=%@&category=%@", kAPIPopularChannels, self.localeString, @"CATID"];
     NSString *path = kAPIPopularChannels;
     
     [self JSONObjectForPath: path
