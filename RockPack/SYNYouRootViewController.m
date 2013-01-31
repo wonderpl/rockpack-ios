@@ -87,7 +87,7 @@
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
-    channelThumbnailCell.channelImageViewImage = channel.thumbnailURL;
+    channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     
     channelThumbnailCell.titleLabel.text = channel.title;
     
@@ -210,7 +210,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;
-        [self.pinchedView setImageFromURL: [NSURL URLWithString: channel.thumbnailURL]
+        [self.pinchedView setImageFromURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
                          placeHolderImage: nil];
         // now add the item to the view
         [self.view addSubview: self.pinchedView];

@@ -7,12 +7,15 @@
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
+	__unsafe_unretained NSString *coverBackgroundURL;
+	__unsafe_unretained NSString *coverThumbnailLargeURL;
+	__unsafe_unretained NSString *coverThumbnailSmallURL;
 	__unsafe_unretained NSString *index;
 	__unsafe_unretained NSString *lastUpdated;
+	__unsafe_unretained NSString *resourceURL;
 	__unsafe_unretained NSString *rockCount;
 	__unsafe_unretained NSString *rockedByUser;
 	__unsafe_unretained NSString *subscribersCount;
-	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *viewId;
 	__unsafe_unretained NSString *wallpaperURL;
@@ -28,6 +31,9 @@ extern const struct ChannelFetchedProperties {
 
 @class ChannelOwner;
 @class VideoInstance;
+
+
+
 
 
 
@@ -74,6 +80,36 @@ extern const struct ChannelFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* coverBackgroundURL;
+
+
+
+//- (BOOL)validateCoverBackgroundURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* coverThumbnailLargeURL;
+
+
+
+//- (BOOL)validateCoverThumbnailLargeURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* coverThumbnailSmallURL;
+
+
+
+//- (BOOL)validateCoverThumbnailSmallURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSNumber* index;
 
 
@@ -93,6 +129,16 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateLastUpdated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* resourceURL;
+
+
+
+//- (BOOL)validateResourceURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -135,16 +181,6 @@ extern const struct ChannelFetchedProperties {
 - (void)setSubscribersCountValue:(int64_t)value_;
 
 //- (BOOL)validateSubscribersCount:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* thumbnailURL;
-
-
-
-//- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -221,6 +257,24 @@ extern const struct ChannelFetchedProperties {
 
 
 
+- (NSString*)primitiveCoverBackgroundURL;
+- (void)setPrimitiveCoverBackgroundURL:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveCoverThumbnailLargeURL;
+- (void)setPrimitiveCoverThumbnailLargeURL:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveCoverThumbnailSmallURL;
+- (void)setPrimitiveCoverThumbnailSmallURL:(NSString*)value;
+
+
+
+
 - (NSNumber*)primitiveIndex;
 - (void)setPrimitiveIndex:(NSNumber*)value;
 
@@ -232,6 +286,12 @@ extern const struct ChannelFetchedProperties {
 
 - (NSDate*)primitiveLastUpdated;
 - (void)setPrimitiveLastUpdated:(NSDate*)value;
+
+
+
+
+- (NSString*)primitiveResourceURL;
+- (void)setPrimitiveResourceURL:(NSString*)value;
 
 
 
@@ -259,12 +319,6 @@ extern const struct ChannelFetchedProperties {
 
 - (int64_t)primitiveSubscribersCountValue;
 - (void)setPrimitiveSubscribersCountValue:(int64_t)value_;
-
-
-
-
-- (NSString*)primitiveThumbnailURL;
-- (void)setPrimitiveThumbnailURL:(NSString*)value;
 
 
 

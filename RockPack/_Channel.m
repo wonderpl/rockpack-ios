@@ -6,12 +6,15 @@
 const struct ChannelAttributes ChannelAttributes = {
 	.categoryId = @"categoryId",
 	.channelDescription = @"channelDescription",
+	.coverBackgroundURL = @"coverBackgroundURL",
+	.coverThumbnailLargeURL = @"coverThumbnailLargeURL",
+	.coverThumbnailSmallURL = @"coverThumbnailSmallURL",
 	.index = @"index",
 	.lastUpdated = @"lastUpdated",
+	.resourceURL = @"resourceURL",
 	.rockCount = @"rockCount",
 	.rockedByUser = @"rockedByUser",
 	.subscribersCount = @"subscribersCount",
-	.thumbnailURL = @"thumbnailURL",
 	.title = @"title",
 	.viewId = @"viewId",
 	.wallpaperURL = @"wallpaperURL",
@@ -92,6 +95,27 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
+@dynamic coverBackgroundURL;
+
+
+
+
+
+
+@dynamic coverThumbnailLargeURL;
+
+
+
+
+
+
+@dynamic coverThumbnailSmallURL;
+
+
+
+
+
+
 @dynamic index;
 
 
@@ -119,6 +143,13 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 @dynamic lastUpdated;
+
+
+
+
+
+
+@dynamic resourceURL;
 
 
 
@@ -198,13 +229,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 - (void)setPrimitiveSubscribersCountValue:(int64_t)value_ {
 	[self setPrimitiveSubscribersCount:[NSNumber numberWithLongLong:value_]];
 }
-
-
-
-
-
-@dynamic thumbnailURL;
-
 
 
 

@@ -12,11 +12,12 @@
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNVideosRootViewController.h"
+#import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
-#import "SYNVideoQueueCell.h"
 #import "SYNVideoDB.h"
+#import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
+#import "SYNVideosRootViewController.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
 #import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
@@ -53,6 +54,16 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
+    standardFlowLayout.minimumInteritemSpacing = 0.0f;
+    standardFlowLayout.minimumLineSpacing = 0.0f;
+    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 2, 0, 2);
+    
+    self.videoThumbnailCollectionView.collectionViewLayout = standardFlowLayout;
+
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(reloadCollectionViews)
@@ -348,7 +359,7 @@
     self.channelLabel.text = videoInstance.channel.title;
     self.userNameLabel.text = videoInstance.channel.channelOwner.name;
     
-    [self.channelImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.thumbnailURL]
+    [self.channelImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
                           placeHolderImage: nil];
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
@@ -575,8 +586,6 @@
         if ([parameter2 isEqualToString: @"onStateChange"])
         {            
             NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
-            
-            NSLog (@"Components %@", components);
             
             if ([parameter3 isEqualToString: @"1"])
             {

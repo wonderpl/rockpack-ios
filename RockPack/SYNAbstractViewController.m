@@ -629,7 +629,7 @@
                                                                                       forIndexPath: indexPath];
         
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
-        videoThumbnailCell.channelImageViewImage = videoInstance.channel.thumbnailURL;
+        videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
         videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;

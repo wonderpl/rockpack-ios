@@ -119,8 +119,11 @@ static NSEntityDescription *channelEntity = nil;
     self.categoryId = [dictionary objectForKey: @"category_id"
                                    withDefault: @""];
     
-    self.index = [dictionary objectForKey: @"index"
+    self.index = [dictionary objectForKey: @"position"
                               withDefault: [NSNumber numberWithInt: 0]];
+    
+    self.title = [dictionary upperCaseStringForKey: @"title"
+                                       withDefault: @""];
     
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
@@ -134,27 +137,17 @@ static NSEntityDescription *channelEntity = nil;
     self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
                                          withDefault: [NSNumber numberWithBool: FALSE]];
     
-#warning "Quick hack to support new URL naming scheme"
-    NSString *smallThumbnailURL = [dictionary objectForKey: @"cover_thumbnail_small_url"
-                                                 withDefault: @"http://"];
+    self.coverThumbnailSmallURL = [dictionary objectForKey: @"cover_thumbnail_small_url"
+                                               withDefault: @"http://localhost"];
     
-    self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
-                                     withDefault: smallThumbnailURL];
-    
-    self.title = [dictionary upperCaseStringForKey: @"title"
-                                       withDefault: @""];
-    
-#warning "Quick hack for background urls"
-    
-//    self.wallpaperURL = [dictionary objectForKey: @"wallpaper_url"
-//                                     withDefault: @"http://"];
+    self.coverThumbnailLargeURL = [dictionary objectForKey: @"cover_thumbnail_large_url"
+                                               withDefault: @"http://localhost"];
     
     self.wallpaperURL = [dictionary objectForKey: @"cover_background_url"
-                                     withDefault: self.thumbnailURL];
+                                     withDefault: @"http://localhost"];
     
-
-    
-    
+    self.resourceURL = [dictionary objectForKey: @"resource_url"
+                                    withDefault: @"http://localhost"];
     
     // NSManagedObjects
     self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
@@ -196,7 +189,7 @@ static NSEntityDescription *channelEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"Channel(%@) categoryId: %@, channelDescription: %@, index: %@, lastUpdated: %@, rockCount: %@, rockedByUser: %@, thumbnailURL: %@, title: %@, wallpaperURL: %@", self.uniqueId, self.categoryId, self.channelDescription, self.index, self.lastUpdated, self.rockCount, self.rockedByUser, self.thumbnailURL, self.title, self.wallpaperURL];
+    return [NSString stringWithFormat: @"Channel(%@) categoryId: %@, channelDescription: %@, index: %@, lastUpdated: %@, rockCount: %@, rockedByUser: %@, coverThumbnailSmallURL: %@, coverThumbnailLargeURL: %@,, title: %@, wallpaperURL: %@, resourceURL: %@", self.uniqueId, self.categoryId, self.channelDescription, self.index, self.lastUpdated, self.rockCount, self.rockedByUser, self.coverThumbnailSmallURL, self.coverThumbnailLargeURL, self.title, self.wallpaperURL, self.resourceURL];
 }
 
 

@@ -87,14 +87,10 @@
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
-    channelThumbnailCell.channelImageViewImage = channel.thumbnailURL;
-    
+    channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
-    
     channelThumbnailCell.userNameLabel.text = channel.channelOwner.name;
-    
     channelThumbnailCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
-    
     channelThumbnailCell.rockItButton.selected = channel.rockedByUserValue;
     
     // Wire the Done button up to the correct method in the sign up controller
@@ -215,7 +211,7 @@
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;
-        [self.pinchedView setImageFromURL: [NSURL URLWithString: channel.thumbnailURL]
+        [self.pinchedView setImageFromURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
                        placeHolderImage: nil];
         
         // now add the item to the view

@@ -10,8 +10,9 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
-#import "SYNHomeSectionHeaderView.h"
 #import "SYNHomeRootViewController.h"
+#import "SYNHomeSectionHeaderView.h"
+#import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -33,6 +34,15 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
+    standardFlowLayout.minimumInteritemSpacing = 0.0f;
+    standardFlowLayout.minimumLineSpacing = 0.0f;
+    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    
+    self.videoThumbnailCollectionView.collectionViewLayout = standardFlowLayout;
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     

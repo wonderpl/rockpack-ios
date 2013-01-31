@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractCommon" representedClassName="AbstractCommon" isAbstract="YES" syncable="YES">
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Channel" representedClassName="Channel" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channelDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coverBackgroundURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
+        <attribute name="coverThumbnailLargeURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
+        <attribute name="coverThumbnailSmallURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="resourceURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="rockCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="subscribersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wallpaperURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
@@ -46,10 +49,10 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-308" positionY="-106" width="128" height="58"/>
-        <element name="Channel" positionX="-423" positionY="152" width="128" height="240"/>
+        <element name="Channel" positionX="-423" positionY="152" width="128" height="285"/>
         <element name="ChannelOwner" positionX="-641" positionY="272" width="128" height="90"/>
+        <element name="User" positionX="160" positionY="192" width="128" height="90"/>
         <element name="Video" positionX="7" positionY="216" width="128" height="150"/>
         <element name="VideoInstance" positionX="-207" positionY="257" width="128" height="120"/>
-        <element name="User" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>
