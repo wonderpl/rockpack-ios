@@ -264,7 +264,48 @@
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
-			<array class="NSMutableArray" key="connectionRecords"/>
+			<array class="NSMutableArray" key="connectionRecords">
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">followersCountLabel</string>
+						<reference key="source" ref="978391270"/>
+						<reference key="destination" ref="22068842"/>
+					</object>
+					<int key="connectionID">44</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">followersLabel</string>
+						<reference key="source" ref="978391270"/>
+						<reference key="destination" ref="7527567"/>
+					</object>
+					<int key="connectionID">45</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">videoCountLabel</string>
+						<reference key="source" ref="978391270"/>
+						<reference key="destination" ref="680899373"/>
+					</object>
+					<int key="connectionID">46</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">videosLabel</string>
+						<reference key="source" ref="978391270"/>
+						<reference key="destination" ref="692822851"/>
+					</object>
+					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">channelDescriptionTextView</string>
+						<reference key="source" ref="978391270"/>
+						<reference key="destination" ref="426588514"/>
+					</object>
+					<int key="connectionID">49</int>
+				</object>
+			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
 					<object class="IBObjectRecord">
@@ -382,7 +423,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">42</int>
+			<int key="maxID">49</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -398,12 +439,22 @@
 					<string key="className">SYNChannelHeaderView</string>
 					<string key="superclassName">UICollectionReusableView</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="channelDescriptionTextContainerView">UIView</string>
+						<string key="channelDescriptionTextView">HPGrowingTextView</string>
 						<string key="followersCountLabel">UILabel</string>
 						<string key="followersLabel">UILabel</string>
 						<string key="videoCountLabel">UILabel</string>
 						<string key="videosLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="channelDescriptionTextContainerView">
+							<string key="name">channelDescriptionTextContainerView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="channelDescriptionTextView">
+							<string key="name">channelDescriptionTextView</string>
+							<string key="candidateClassName">HPGrowingTextView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="followersCountLabel">
 							<string key="name">followersCountLabel</string>
 							<string key="candidateClassName">UILabel</string>

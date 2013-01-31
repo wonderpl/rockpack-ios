@@ -149,6 +149,9 @@ static NSEntityDescription *channelEntity = nil;
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];
     
+    self.channelDescription = [dictionary objectForKey: @"channel_description"
+                                           withDefault: @""];
+    
     // NSManagedObjects
     self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
                                    usingManagedObjectContext: managedObjectContext

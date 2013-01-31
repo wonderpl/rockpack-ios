@@ -38,10 +38,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
-@property (nonatomic, strong) IBOutlet UIView *channelDescriptionTextContainerView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;
-@property (nonatomic, strong) UIImageView *channelDescriptionHightlightView;
 @property (nonatomic, strong) SYNChannelHeaderView *supplementaryView;
 
 @end
@@ -95,35 +93,35 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNChannelHeaderView"];
     
-    // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
-    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.channelDescriptionTextView.text = self.channel.description;
-    self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
-	self.channelDescriptionTextView.minNumberOfLines = 1;
-	self.channelDescriptionTextView.maxNumberOfLines = 4;
-    self.channelDescriptionTextView.backgroundColor = [UIColor clearColor];
-    self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
-	self.channelDescriptionTextView.delegate = self;
-    self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    
-    // Add highlighted box
-    UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
-    
-    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
-                                                                       topCapHeight: 22];
-    
-    self.channelDescriptionHightlightView = [[UIImageView alloc] initWithImage: entryBackground];
-    self.channelDescriptionHightlightView.frame = CGRectInset(self.channelDescriptionTextView.frame, -10, -10);
-    self.channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.channelDescriptionTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.channelDescriptionHightlightView.hidden = TRUE;
-    
-    [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
-    
-    // Now use the same assets to create a highlight box for the channel title
-//    channelTitleLabel
-
-    self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+//    // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
+//    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    self.channelDescriptionTextView.text = self.channel.description;
+//    self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
+//	self.channelDescriptionTextView.minNumberOfLines = 1;
+//	self.channelDescriptionTextView.maxNumberOfLines = 4;
+//    self.channelDescriptionTextView.backgroundColor = [UIColor clearColor];
+//    self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
+//	self.channelDescriptionTextView.delegate = self;
+//    self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+//    
+//    // Add highlighted box
+//    UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
+//    
+//    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
+//                                                                       topCapHeight: 22];
+//    
+//    self.channelDescriptionHightlightView = [[UIImageView alloc] initWithImage: entryBackground];
+//    self.channelDescriptionHightlightView.frame = CGRectInset(self.channelDescriptionTextView.frame, -10, -10);
+//    self.channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+//    self.channelDescriptionTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    self.channelDescriptionHightlightView.hidden = TRUE;
+//    
+//    [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
+//    
+//    // Now use the same assets to create a highlight box for the channel title
+////    channelTitleLabel
+//
+//    self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
@@ -173,14 +171,14 @@
 
 - (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
-    self.channelDescriptionHightlightView.hidden = FALSE;
+    self.supplementaryView.channelDescriptionHightlightView.hidden = FALSE;
     growingTextView.text = @"";
 }
 
 
 - (void) growingTextViewDidEndEditing: (HPGrowingTextView *) growingTextView
 {
-    self.channelDescriptionHightlightView.hidden = TRUE;
+    self.supplementaryView.channelDescriptionHightlightView.hidden = TRUE;
     [self.channelDescriptionTextView scrollRangeToVisible: NSMakeRange (0,0)];
     [self.channelDescriptionTextView resignFirstResponder];
     
@@ -196,10 +194,10 @@
 {
     float diff = (growingTextView.frame.size.height - height);
     
-	CGRect containerViewFrame = self.channelDescriptionTextContainerView.frame;
+	CGRect containerViewFrame = self.supplementaryView.channelDescriptionTextContainerView.frame;
     containerViewFrame.size.height -= diff;
 //    containerViewFrame.origin.y += diff;
-	self.channelDescriptionTextContainerView.frame = containerViewFrame;
+	self.supplementaryView.channelDescriptionTextContainerView.frame = containerViewFrame;
 }
 
 //Code from Brett Schumann
@@ -216,7 +214,7 @@
                                      toView: nil];
     
 	// get a rect for the textView frame
-	CGRect containerFrame = self.channelDescriptionTextContainerView.frame;
+	CGRect containerFrame = self.supplementaryView.channelDescriptionTextContainerView.frame;
     containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
     
 	// animations settings
@@ -228,7 +226,7 @@
     [UIView setAnimationCurve: [curve intValue]];
 	
 	// set views with new info
-	self.channelDescriptionTextContainerView.frame = containerFrame;
+	self.supplementaryView.channelDescriptionTextContainerView.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
@@ -240,7 +238,7 @@
     NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
 	
 	// get a rect for the textView frame
-	CGRect containerFrame = self.channelDescriptionTextContainerView.frame;
+	CGRect containerFrame = self.supplementaryView.channelDescriptionTextContainerView.frame;
     containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
 	
 	// animations settings
@@ -252,7 +250,7 @@
     [UIView setAnimationCurve: [curve intValue]];
     
 	// set views with new info
-	self.channelDescriptionTextContainerView.frame = containerFrame;
+	self.supplementaryView.channelDescriptionTextContainerView.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
@@ -421,7 +419,7 @@
                                                                                                       forIndexPath: indexPath];
         // Special case, remember the first section view
         headerSupplementaryView.viewControllerDelegate = self;
-//        headerSupplementaryView.sectionTitleLabel.text = sectionText;
+        headerSupplementaryView.channelDescriptionTextView.text = self.channel.channelDescription;
         sectionSupplementaryView = headerSupplementaryView;
     }
     
