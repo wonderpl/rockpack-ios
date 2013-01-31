@@ -66,7 +66,7 @@ static NSEntityDescription *channelEntity = nil;
         else
         {
             instance.viewId = @"";
-            instance.channelDescription = [dictionary objectForKey: @"channel_description"
+            instance.channelDescription = [dictionary objectForKey: @"description"
                                                    withDefault: @"Description of channel goes here"];
         }
         
@@ -151,7 +151,7 @@ static NSEntityDescription *channelEntity = nil;
     self.resourceURL = [dictionary objectForKey: @"resource_url"
                                     withDefault: @"http://localhost"];
     
-    self.channelDescription = [dictionary objectForKey: @"channel_description"
+    self.channelDescription = [dictionary objectForKey: @"description"
                                            withDefault: @"Description of channel goes here"];
     
     // NSManagedObjects
