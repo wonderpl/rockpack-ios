@@ -79,7 +79,7 @@
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(258.0f , 179.0f);
+    layout.itemSize = CGSizeMake(256.0f , 179.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -148,6 +148,7 @@
     
     self.channelCoverCarouselCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
+    self.channelCoverCarouselCollectionView.hidden = TRUE;
     
     // Initially hide this view
 //    self.channelCoverCarouselCollectionView.alpha = 0.0f;
@@ -355,10 +356,11 @@
     else
     {
         VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
+        [self displayVideoViewer: videoInstance];
         
-        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
-        
-        [self animatedPushViewController: movieVC];
+//        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
+//        
+//        [self animatedPushViewController: movieVC];
     }
 }
 

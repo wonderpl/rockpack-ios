@@ -33,6 +33,7 @@
 @property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
+@property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) AVAudioRecorder *avRecorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
@@ -48,8 +49,8 @@
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) IBOutlet UIView *messageInboxView;
-@property (nonatomic, strong) IBOutlet UIView *topButtonView;
 @property (nonatomic, strong) IBOutlet UIView *shareMenuView;
+@property (nonatomic, strong) IBOutlet UIView *topButtonView;
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 @property (nonatomic, strong) UISwipeGestureRecognizer *messageInboxSwipeLeftRecognizer;
@@ -816,36 +817,45 @@
 
 - (void) showBackButton
 {
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         CGRect containerViewFrame = self.topButtonView.frame;
-         containerViewFrame.origin.x += 75;
-         self.topButtonView.frame = containerViewFrame;
-     }
-     completion: ^(BOOL finished)
-     {
-     }];
+    // Only slide out if not already visible
+    if (self.isShowingBackButton == FALSE)
+    {
+        [UIView animateWithDuration: 0.25f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect containerViewFrame = self.topButtonView.frame;
+             containerViewFrame.origin.x += 75;
+             self.topButtonView.frame = containerViewFrame;
+         }
+                         completion: ^(BOOL finished)
+         {
+             self.showingBackButton = TRUE;
+         }];
+    }
 }
 
 
-- (void) hideBackButton;
-
+- (void) hideBackButton
 {
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         CGRect containerViewFrame = self.topButtonView.frame;
-         containerViewFrame.origin.x -= 75;
-         self.topButtonView.frame = containerViewFrame;
-     }
-     completion: ^(BOOL finished)
-     {
-     }];
+    // Only hide if  already visible
+    if (self.isShowingBackButton == FALSE)
+    {
+        [UIView animateWithDuration: 0.25f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect containerViewFrame = self.topButtonView.frame;
+             containerViewFrame.origin.x -= 75;
+             self.topButtonView.frame = containerViewFrame;
+         }
+         completion: ^(BOOL finished)
+         {
+             self.showingBackButton = FALSE;
+         }];
+    }
 }
 
 - (IBAction) popCurrentViewController: (id) sender
@@ -856,7 +866,6 @@
     
     [abstractVC animatedPopViewController];
 }
-
 
 
 @end

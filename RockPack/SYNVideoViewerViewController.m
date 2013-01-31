@@ -144,6 +144,7 @@
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
+//    [self displayVideoViewer: videoInstance];
     
 //    SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
 //    

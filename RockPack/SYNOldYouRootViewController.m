@@ -218,9 +218,9 @@
     {
         VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
-        
-        [self animatedPushViewController: movieVC];
+//        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
+//        
+//        [self animatedPushViewController: movieVC];
     }
     else
     {

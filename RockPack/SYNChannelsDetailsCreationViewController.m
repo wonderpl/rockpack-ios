@@ -21,6 +21,7 @@
     // Hide buttons not used in channel creation
     self.editButton.hidden = TRUE;
     self.shareButton.hidden = TRUE;
+    self.channelCoverCarouselCollectionView.hidden = FALSE;
 }
 
 @end

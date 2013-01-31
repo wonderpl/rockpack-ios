@@ -227,7 +227,7 @@
      }
                  errorBlock: ^(NSError* error)
      {
-         AssertOrLog(@"API request failed");
+         NSLog(@"API request failed");
      }];
 }
 
@@ -312,7 +312,7 @@
      }
                  errorBlock: ^(NSError* error)
      {
-         AssertOrLog(@"API request failed");
+         NSLog(@"API request failed");
      }];
 }
 
