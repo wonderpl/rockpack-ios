@@ -18,5 +18,7 @@
 - (void) slideShareMenuLeft: (UISwipeGestureRecognizer *) swipeGesture;
 - (void) slideShareMenuRight: (UISwipeGestureRecognizer *) swipeGesture;
 - (void) toggleShareMenu;
+- (void) showBackButton;
+- (void) hideBackButton;
 
 @end

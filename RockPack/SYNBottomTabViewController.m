@@ -48,6 +48,7 @@
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) IBOutlet UIView *messageInboxView;
+@property (nonatomic, strong) IBOutlet UIView *topButtonView;
 @property (nonatomic, strong) IBOutlet UIView *shareMenuView;
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
@@ -810,5 +811,52 @@
         return NO;
     }
 }
+
+#pragma mark - Back button handling
+
+- (void) showBackButton
+{
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         CGRect containerViewFrame = self.topButtonView.frame;
+         containerViewFrame.origin.x += 75;
+         self.topButtonView.frame = containerViewFrame;
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
+}
+
+
+- (void) hideBackButton;
+
+{
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         CGRect containerViewFrame = self.topButtonView.frame;
+         containerViewFrame.origin.x -= 75;
+         self.topButtonView.frame = containerViewFrame;
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
+}
+
+- (IBAction) popCurrentViewController: (id) sender
+{
+    UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
+    
+    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+    
+    [abstractVC animatedPopViewController];
+}
+
+
 
 @end

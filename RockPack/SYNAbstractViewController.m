@@ -385,12 +385,19 @@
          vc.view.alpha = 1.0f;
          
      }
-                     completion: ^(BOOL finished)
+     completion: ^(BOOL finished)
      {
      }];
     
     [self.navigationController pushViewController: vc
                                          animated: NO];
+    
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    
+    // Show back button
+    [bottomTabViewController showBackButton];
 }
 
 
@@ -414,6 +421,13 @@
                      completion: ^(BOOL finished)
      {
      }];
+    
+    // Hide back button
+    
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    [bottomTabViewController hideBackButton];
 }
 
 
