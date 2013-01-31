@@ -255,7 +255,7 @@
         
         // Special case, remember the first section view
         headerSupplementaryView.viewControllerDelegate = self;
-        headerSupplementaryView.sectionTitleLabel.text = sectionText;
+//        headerSupplementaryView.description.text = sectionText;
         sectionSupplementaryView = headerSupplementaryView;
     }
     

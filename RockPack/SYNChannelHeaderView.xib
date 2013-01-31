@@ -45,6 +45,7 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{15, 0}, {2, 100}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="680899373"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -59,6 +60,7 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{132, 0}, {2, 100}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="22068842"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -70,6 +72,7 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{250, 0}, {2, 100}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="821046923"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="892230425">
@@ -85,6 +88,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{25, 30}, {99, 21}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="380244148"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -116,6 +120,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{148, 30}, {90, 21}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="692822851"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="892230425"/>
@@ -141,6 +146,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{25, 54}, {99, 21}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="7527567"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="892230425"/>
@@ -173,6 +179,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{149, 54}, {90, 21}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="220850635"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="892230425"/>
@@ -209,6 +216,8 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{5, 5}, {743, 25}}</string>
 										<reference key="NSSuperview" ref="821046923"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="892230425"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -218,6 +227,7 @@
 								</array>
 								<string key="NSFrame">{{261, 0}, {753, 86}}</string>
 								<reference key="NSSuperview" ref="68309008"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="426588514"/>
 								<string key="NSReuseIdentifierKey">_NS:10</string>
 								<reference key="IBUIBackgroundColor" ref="892230425"/>
@@ -227,6 +237,7 @@
 						</array>
 						<string key="NSFrame">{{0, 289}, {1024, 101}}</string>
 						<reference key="NSSuperview" ref="978391270"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="749636259"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -238,6 +249,7 @@
 				</array>
 				<string key="NSFrameSize">{1024, 390}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="68309008"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="892230425"/>
@@ -296,14 +308,6 @@
 						<reference key="parent" ref="978391270"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">29</int>
-						<reference key="object" ref="821046923"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="426588514"/>
-						</array>
-						<reference key="parent" ref="68309008"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">30</int>
 						<reference key="object" ref="749636259"/>
 						<reference key="parent" ref="68309008"/>
@@ -319,10 +323,27 @@
 						<reference key="parent" ref="68309008"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">33</int>
-						<reference key="object" ref="680899373"/>
+						<int key="objectID">29</int>
+						<reference key="object" ref="821046923"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="426588514"/>
+						</array>
 						<reference key="parent" ref="68309008"/>
-						<string key="objectName">Label - Videos count</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">37</int>
+						<reference key="object" ref="426588514"/>
+						<reference key="parent" ref="821046923"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">36</int>
+						<reference key="object" ref="7527567"/>
+						<reference key="parent" ref="68309008"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">35</int>
+						<reference key="object" ref="692822851"/>
+						<reference key="parent" ref="68309008"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">34</int>
@@ -331,19 +352,10 @@
 						<string key="objectName">Label -  Followers count</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">35</int>
-						<reference key="object" ref="692822851"/>
+						<int key="objectID">33</int>
+						<reference key="object" ref="680899373"/>
 						<reference key="parent" ref="68309008"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">36</int>
-						<reference key="object" ref="7527567"/>
-						<reference key="parent" ref="68309008"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">37</int>
-						<reference key="object" ref="426588514"/>
-						<reference key="parent" ref="821046923"/>
+						<string key="objectName">Label - Videos count</string>
 					</object>
 				</array>
 			</object>
@@ -370,9 +382,60 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">37</int>
+			<int key="maxID">42</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">HPGrowingTextView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/HPGrowingTextView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNChannelHeaderView</string>
+					<string key="superclassName">UICollectionReusableView</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="followersCountLabel">UILabel</string>
+						<string key="followersLabel">UILabel</string>
+						<string key="videoCountLabel">UILabel</string>
+						<string key="videosLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="followersCountLabel">
+							<string key="name">followersCountLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="followersLabel">
+							<string key="name">followersLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="videoCountLabel">
+							<string key="name">videoCountLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="videosLabel">
+							<string key="name">videosLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNChannelHeaderView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICollectionReusableView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICollectionReusableView.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

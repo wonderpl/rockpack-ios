@@ -36,16 +36,13 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
-@property (nonatomic, strong) IBOutlet UILabel *followersCountLabel;
-@property (nonatomic, strong) IBOutlet UILabel *followersLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet UILabel *videoCountLabel;
-@property (nonatomic, strong) IBOutlet UILabel *videosLabel;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) IBOutlet UIView *channelDescriptionTextContainerView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;
 @property (nonatomic, strong) UIImageView *channelDescriptionHightlightView;
+@property (nonatomic, strong) SYNChannelHeaderView *supplementaryView;
 
 @end
 
@@ -71,12 +68,7 @@
     
     // Set all the labels to use the custom font
     self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
-    self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
-    self.videosLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.followersLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.videoCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
-    self.followersCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
-    
+    self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];  
 
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
@@ -401,8 +393,8 @@
 
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-referenceSizeForHeaderInSection: (NSInteger) section
+           layout: (UICollectionViewLayout*) collectionViewLayout
+           referenceSizeForHeaderInSection: (NSInteger) section
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
@@ -427,19 +419,8 @@ referenceSizeForHeaderInSection: (NSInteger) section
         SYNChannelHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNChannelHeaderView"
                                                                                                       forIndexPath: indexPath];
-        NSString *sectionText;
-        
-        if (indexPath.section == 0)
-        {
-            sectionText = @"FAVOURITES (7)";
-        }
-        else
-        {
-            sectionText = @"FRIENDS (327)";
-        }
-        
         // Special case, remember the first section view
-//        headerSupplementaryView.viewControllerDelegate = self;
+        headerSupplementaryView.viewControllerDelegate = self;
 //        headerSupplementaryView.sectionTitleLabel.text = sectionText;
         sectionSupplementaryView = headerSupplementaryView;
     }

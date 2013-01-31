@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HPGrowingTextView.h"
 
 @interface SYNChannelHeaderView : UICollectionReusableView
 
-@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *subtitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *videoCountLabel;
+@property (nonatomic, strong) IBOutlet UILabel *videosLabel;
+@property (nonatomic, strong) IBOutlet UILabel *followersCountLabel;
+@property (nonatomic, strong) IBOutlet UILabel *followersLabel;
+
+@property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 @end

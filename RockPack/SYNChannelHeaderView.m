@@ -40,8 +40,10 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.subtitleLabel.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.videosLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.followersLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.videoCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
+    self.followersCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
 }
 
 @end
