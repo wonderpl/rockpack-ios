@@ -105,7 +105,7 @@
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateHomeScreen];
-    [appDelegate.networkEngine updateChannelsScreen];
+//    [appDelegate.networkEngine updateChannelsScreen];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)

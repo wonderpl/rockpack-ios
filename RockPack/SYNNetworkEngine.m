@@ -160,8 +160,11 @@
                  
                  [self.appDelegate saveContext: TRUE];
                  
-                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-                                                                     object: nil];
+//                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+//                                                                     object: nil];
+                 
+                 // TODO: Not sure that this belongs here...
+                 [self updateChannelsScreen];
              }
              else
              {
