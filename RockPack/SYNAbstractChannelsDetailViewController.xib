@@ -46,13 +46,14 @@
 						<string key="NSFrame">{{0, 115}, {1024, 571}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="566198242"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<int key="IBUIContentMode">2</int>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 					<object class="IBUIView" id="1057793844">
 						<reference key="NSNextResponder" ref="65885460"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{0, 508}, {1024, 179}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
@@ -87,12 +88,12 @@
 								<string key="NSFrameSize">{72, 72}</string>
 								<reference key="NSSuperview" ref="317724372"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="999418921"/>
+								<reference key="NSNextKeyView" ref="825374445"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
-							<object class="IBUIImageView" id="999418921">
+							<object class="IBUIImageView" id="825374445">
 								<reference key="NSNextResponder" ref="317724372"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{72, 72}</string>
@@ -461,7 +462,7 @@
 							<reference ref="177447989"/>
 							<reference ref="173783547"/>
 							<reference ref="621335574"/>
-							<reference ref="999418921"/>
+							<reference ref="825374445"/>
 						</array>
 						<reference key="parent" ref="65885460"/>
 					</object>
@@ -526,7 +527,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">105</int>
-						<reference key="object" ref="999418921"/>
+						<reference key="object" ref="825374445"/>
 						<reference key="parent" ref="317724372"/>
 						<string key="objectName">Image View - User avatar</string>
 					</object>
@@ -578,7 +579,6 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelChooserView">UIView</string>
 						<string key="channelCoverCarouselCollectionView">UICollectionView</string>
-						<string key="channelDescriptionTextContainerView">UIView</string>
 						<string key="channelDescriptionTextView">HPGrowingTextView</string>
 						<string key="channelTitleTextField">SYNTextField</string>
 						<string key="channelWallpaperImageView">UIImageView</string>
@@ -598,10 +598,6 @@
 						<object class="IBToOneOutletInfo" key="channelCoverCarouselCollectionView">
 							<string key="name">channelCoverCarouselCollectionView</string>
 							<string key="candidateClassName">UICollectionView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelDescriptionTextContainerView">
-							<string key="name">channelDescriptionTextContainerView</string>
-							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="channelDescriptionTextView">
 							<string key="name">channelDescriptionTextView</string>
