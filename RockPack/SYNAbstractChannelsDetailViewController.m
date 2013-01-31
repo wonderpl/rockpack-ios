@@ -20,6 +20,7 @@
 #import "SYNVideoThumbnailRegularCell.h"
 #import "TPKeyboardAvoidingScrollView.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
@@ -83,7 +84,7 @@
     layout.itemSize = CGSizeMake(256.0f , 179.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+//    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
 
@@ -93,6 +94,14 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
+    
+    // Register collection view header view
+    UINib *headerViewNib = [UINib nibWithNibName: @"SYNChannelHeaderView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib: headerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                               withReuseIdentifier: @"SYNChannelHeaderView"];
     
     // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
     self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -165,7 +174,6 @@
 //    self.channelNameTextField.font = [UIFont rockpackFontOfSize: 36.0f];
 //    self.channelNameTextField.delegate = self;
 //    [self.channelChooserView addSubview: self.channelNameTextField];
-
 }
 
 
@@ -389,6 +397,54 @@
     [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
     
     [self saveDB];
+}
+
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+referenceSizeForHeaderInSection: (NSInteger) section
+{
+    if (collectionView == self.videoThumbnailCollectionView)
+    {
+        return CGSizeMake(1024, 390);
+    }
+    else
+    {
+        return CGSizeMake(0, 0);
+    }
+}
+
+
+// Used for the collection view header
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionReusableView *sectionSupplementaryView = nil;
+    
+    if (collectionView == self.videoThumbnailCollectionView)
+    {
+        SYNChannelHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                               withReuseIdentifier: @"SYNChannelHeaderView"
+                                                                                                      forIndexPath: indexPath];
+        NSString *sectionText;
+        
+        if (indexPath.section == 0)
+        {
+            sectionText = @"FAVOURITES (7)";
+        }
+        else
+        {
+            sectionText = @"FRIENDS (327)";
+        }
+        
+        // Special case, remember the first section view
+//        headerSupplementaryView.viewControllerDelegate = self;
+//        headerSupplementaryView.sectionTitleLabel.text = sectionText;
+        sectionSupplementaryView = headerSupplementaryView;
+    }
+    
+    return sectionSupplementaryView;
 }
 
 @end

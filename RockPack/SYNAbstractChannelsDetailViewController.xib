@@ -53,7 +53,7 @@
 					</object>
 					<object class="IBUIScrollView" id="1013153826">
 						<reference key="NSNextResponder" ref="65885460"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">-2147483356</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUIView" id="210431810">
 								<reference key="NSNextResponder" ref="1013153826"/>
@@ -282,7 +282,6 @@
 						<string key="NSFrame">{{0, 508}, {1024, 179}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -305,10 +304,21 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">PanelChannelsTitle.png</string>
+									<string key="NSResourceName">PanelHeaderChannel.png</string>
 								</object>
 							</object>
 							<object class="IBUIImageView" id="621335574">
+								<reference key="NSNextResponder" ref="317724372"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{72, 72}</string>
+								<reference key="NSSuperview" ref="317724372"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="910173106"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+							</object>
+							<object class="IBUIImageView" id="910173106">
 								<reference key="NSNextResponder" ref="317724372"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{72, 72}</string>
@@ -318,6 +328,10 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossAvatarChannel.png</string>
+								</object>
 							</object>
 							<object class="IBUITextField" id="177447989">
 								<reference key="NSNextResponder" ref="317724372"/>
@@ -447,11 +461,11 @@
 								<reference key="IBUINormalTitleShadowColor" ref="346029630"/>
 								<object class="NSCustomResource" key="IBUIHighlightedImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonShareHighlighted.png</string>
+									<string key="NSResourceName">ButtonShareHeaderHighlighted.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonShare.png</string>
+									<string key="NSResourceName">ButtonShareHeader.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="549930349"/>
 								<reference key="IBUIFont" ref="958108162"/>
@@ -498,7 +512,7 @@
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{0, 507}, {1024, 179}}</string>
+						<string key="NSFrame">{{0, 115}, {1024, 571}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1057793844"/>
@@ -507,8 +521,8 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<bool key="IBUIAlwaysBounceHorizontal">YES</bool>
-						<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
+						<bool key="IBUIAlwaysBounceVertical">YES</bool>
+						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 						<float key="IBUIMinimumZoomScale">0.0</float>
 						<float key="IBUIMaximumZoomScale">0.0</float>
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="76285968">
@@ -808,6 +822,7 @@
 							<reference ref="177447989"/>
 							<reference ref="173783547"/>
 							<reference ref="621335574"/>
+							<reference ref="910173106"/>
 						</array>
 						<reference key="parent" ref="65885460"/>
 					</object>
@@ -870,6 +885,12 @@
 						<reference key="parent" ref="317724372"/>
 						<string key="objectName">Image View - User avatar</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">105</int>
+						<reference key="object" ref="910173106"/>
+						<reference key="parent" ref="317724372"/>
+						<string key="objectName">Image View - User avatar</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -879,6 +900,7 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="100.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="103.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -890,7 +912,7 @@
 				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="52.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="53.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="53.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="54.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="55.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="56.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -912,7 +934,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">104</int>
+			<int key="maxID">105</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1108,12 +1130,13 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="ButtonBack.png">{53, 30}</string>
 			<string key="ButtonBackHighlighted.png">{53, 30}</string>
-			<string key="ButtonEdit.png">{43, 43}</string>
-			<string key="ButtonEditHighlighted.png">{43, 43}</string>
-			<string key="ButtonShare.png">{43, 43}</string>
-			<string key="ButtonShareHighlighted.png">{43, 43}</string>
+			<string key="ButtonEdit.png">{43, 44}</string>
+			<string key="ButtonEditHighlighted.png">{43, 44}</string>
+			<string key="ButtonShareHeader.png">{43, 44}</string>
+			<string key="ButtonShareHeaderHighlighted.png">{43, 44}</string>
 			<string key="DividerChannelGlass.png">{2, 100}</string>
-			<string key="PanelChannelsTitle.png">{1024, 73}</string>
+			<string key="GlossAvatarChannel.png">{72, 72}</string>
+			<string key="PanelHeaderChannel.png">{1024, 73}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
