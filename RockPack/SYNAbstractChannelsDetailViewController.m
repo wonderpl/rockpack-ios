@@ -8,6 +8,7 @@
 
 #import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
+#import "ChannelOwner.h"
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractChannelsDetailViewController.h"
@@ -29,11 +30,11 @@
 
 @property (nonatomic, assign) BOOL keyboardShown;
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) IBOutlet HPGrowingTextView *channelDescriptionTextView;
 @property (nonatomic, strong) IBOutlet SYNTextField *channelTitleTextField;
 @property (nonatomic, strong) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *followersCountLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followersLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
@@ -95,7 +96,7 @@
     
     // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
     self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.channelDescriptionTextView.text = @"Describe your channel...";
+    self.channelDescriptionTextView.text = self.channel.description;
     self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
 	self.channelDescriptionTextView.minNumberOfLines = 1;
 	self.channelDescriptionTextView.maxNumberOfLines = 4;
@@ -185,7 +186,7 @@
     
     if ([growingTextView.text isEqualToString: @""])
     {
-        growingTextView.text = @"Describe your channel...";
+//        growingTextView.text = @"Describe your channel...";
     }
 }
 
@@ -263,6 +264,13 @@
     
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = self.channel.title;
+    self.userNameLabel.text = self.channel.channelOwner.name;
+    
+    // set User's avatar picture
+    [self.userAvatarImageView setImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
+                                   placeHolderImage: nil];
+    
+    // Set wallpaper
     [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
                                    placeHolderImage: nil];
     

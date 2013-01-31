@@ -300,13 +300,24 @@
 								<string key="NSFrameSize">{1024, 73}</string>
 								<reference key="NSSuperview" ref="317724372"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="177447989"/>
+								<reference key="NSNextKeyView" ref="621335574"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">PanelChannelsTitle.png</string>
 								</object>
+							</object>
+							<object class="IBUIImageView" id="621335574">
+								<reference key="NSNextResponder" ref="317724372"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{72, 72}</string>
+								<reference key="NSSuperview" ref="317724372"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="177447989"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 							<object class="IBUITextField" id="177447989">
 								<reference key="NSNextResponder" ref="317724372"/>
@@ -644,6 +655,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">userAvatarImageView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="621335574"/>
+					</object>
+					<int key="connectionID">104</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="566198242"/>
 						<reference key="destination" ref="841351856"/>
@@ -788,6 +807,7 @@
 							<reference ref="849493723"/>
 							<reference ref="177447989"/>
 							<reference ref="173783547"/>
+							<reference ref="621335574"/>
 						</array>
 						<reference key="parent" ref="65885460"/>
 					</object>
@@ -844,6 +864,12 @@
 						<reference key="object" ref="1057793844"/>
 						<reference key="parent" ref="65885460"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">103</int>
+						<reference key="object" ref="621335574"/>
+						<reference key="parent" ref="317724372"/>
+						<string key="objectName">Image View - User avatar</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -852,6 +878,7 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="100.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="103.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -885,7 +912,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">102</int>
+			<int key="maxID">104</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -913,6 +940,7 @@
 						<string key="scrollView">TPKeyboardAvoidingScrollView</string>
 						<string key="shareButton">UIButton</string>
 						<string key="textPanelView">UIView</string>
+						<string key="userAvatarImageView">UIImageView</string>
 						<string key="userNameLabel">UILabel</string>
 						<string key="videoCountLabel">UILabel</string>
 						<string key="videoThumbnailCollectionView">UICollectionView</string>
@@ -966,6 +994,10 @@
 						<object class="IBToOneOutletInfo" key="textPanelView">
 							<string key="name">textPanelView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="userAvatarImageView">
+							<string key="name">userAvatarImageView</string>
+							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="userNameLabel">
 							<string key="name">userNameLabel</string>

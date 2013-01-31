@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "HPGrowingTextView.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 
 @interface SYNChannelsDetailsCreationViewController ()
@@ -22,6 +23,7 @@
     self.editButton.hidden = TRUE;
     self.shareButton.hidden = TRUE;
     self.channelCoverCarouselCollectionView.hidden = FALSE;
+    self.channelDescriptionTextView.text = @"Describe your channel...";
 }
 
 @end
