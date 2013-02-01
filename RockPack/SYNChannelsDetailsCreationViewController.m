@@ -27,6 +27,7 @@
     self.channelDescriptionTextView.text = @"Describe your channel...";
 }
 
+
 - (void) viewWillAppear: (BOOL) animated
 {
     

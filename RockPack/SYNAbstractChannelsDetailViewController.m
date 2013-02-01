@@ -297,7 +297,8 @@
                                      {
                                          if (isInCache)
                                          {
-                                             channelCarouselCell.imageView.image = fetchedImage;
+                                             [self addTransparentBorderFromSourceImage: fetchedImage
+                                                                              intoView: channelCarouselCell.imageView];
                                          }
                                          else
                                          {
@@ -306,24 +307,8 @@
                                                                 options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
                                                              animations: ^
                                               {
-                                                  // Crafty aliasing fix
-                                                  UIImage *image = fetchedImage;
-
-                                                  CGRect imageRect = CGRectMake( 0 , 0 , fetchedImage.size.width + 4 , fetchedImage.size.height + 4 );
-                                                  UIGraphicsBeginImageContext(imageRect.size);
-                                                  [fetchedImage drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
-                                                  CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
-                                                  image = UIGraphicsGetImageFromCurrentImageContext();
-                                                  UIGraphicsEndImageContext();
-                                                  
-                                                  channelCarouselCell.imageView.image = fetchedImage;
-                                                  
-                                                  channelCarouselCell.imageView.layer.shouldRasterize = YES;
-                                                  channelCarouselCell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
-                                                  channelCarouselCell.imageView.clipsToBounds = NO;
-                                                  channelCarouselCell.imageView.layer.masksToBounds = NO;
-                                                  
-                                                  // End of clever jaggie reduction
+                                                  [self addTransparentBorderFromSourceImage: fetchedImage
+                                                                                   intoView: channelCarouselCell.imageView];
                                               }
                                                              completion: nil];
                                          }
@@ -350,6 +335,26 @@
     }
     
     return cell;
+}
+
+- (void) addTransparentBorderFromSourceImage: (UIImage *) sourceImage
+                                    intoView: (UIImageView *) destinationView
+{
+    CGRect imageRect = CGRectMake( 0 , 0 , sourceImage.size.width + 4 , sourceImage.size.height + 4 );
+    UIGraphicsBeginImageContext(imageRect.size);
+    [sourceImage drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
+    CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
+    sourceImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    destinationView.image = sourceImage;
+    
+    destinationView.layer.shouldRasterize = YES;
+    destinationView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
+    destinationView.clipsToBounds = NO;
+    destinationView.layer.masksToBounds = NO;
+    
+    // End of clever jaggie reduction
 }
 
 
