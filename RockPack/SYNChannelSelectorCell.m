@@ -7,10 +7,9 @@
 //
 
 #import "SYNChannelSelectorCell.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 
 @interface SYNChannelSelectorCell ()
-
-@property (readwrite, nonatomic, weak) IBOutlet UIImageView *imageView;
 
 @end
 
@@ -55,29 +54,5 @@
     
     self.imageView.image = nil;
 }
-
-// TODO: WE NEED TO PUT THIS JAGGIE REDUCTION IN...
-
-//        NSString *imageName = [NSString stringWithFormat: @"ChannelCreationCover%d.png", (indexPath.row % 10) + 1];
-//
-//        // Now add a 2 pixel transparent edge on the image (which dramatically reduces jaggies on transformation)
-//        UIImage *image = [UIImage imageNamed: imageName];
-//        CGRect imageRect = CGRectMake( 0 , 0 , image.size.width + 4 , image.size.height + 4 );
-//
-//        UIGraphicsBeginImageContext(imageRect.size);
-//        [image drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
-//        CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
-//        image = UIGraphicsGetImageFromCurrentImageContext();
-//        UIGraphicsEndImageContext();
-
-
-//        channelCarouselCell.imageView.image = image;
-//
-//        channelCarouselCell.imageView.layer.shouldRasterize = YES;
-//        channelCarouselCell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
-//        channelCarouselCell.imageView.clipsToBounds = NO;
-//        channelCarouselCell.imageView.layer.masksToBounds = NO;
-
-// End of clever jaggie reduction
 
 @end

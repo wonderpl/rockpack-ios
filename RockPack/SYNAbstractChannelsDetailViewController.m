@@ -11,6 +11,8 @@
 #import "ChannelOwner.h"
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
+#import "SYNNetworkEngine.h"
+#import "SYNAppDelegate.h"  
 #import "SYNAbstractChannelsDetailViewController.h"
 #import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
@@ -41,6 +43,7 @@
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;
 @property (nonatomic, strong) SYNChannelHeaderView *supplementaryView;
+@property (nonatomic, strong) MKNetworkOperation *imageLoadingOperation;
 
 @end
 
@@ -103,7 +106,7 @@
     
     // Set carousel collection view to use custom layout algorithm
     CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
-    channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(341.0f , 190.0f);
+    channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(345.0f , 195.0f);
     channelCoverCarouselHorizontalLayout.cellSpacing = 40.0f;
     
     self.channelCoverCarouselCollectionView.collectionViewLayout = channelCoverCarouselHorizontalLayout;
@@ -279,11 +282,58 @@
         SYNChannelSelectorCell *channelCarouselCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                                     forIndexPath: indexPath];
         
+        //http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverThumb1.jpg
+        
+        NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverThumb%d.jpg", (indexPath.row % 13) + 1];
+        
+//        channelCarouselCell.channelImageViewImage = imageURLString;
+        SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+        
+        self.imageLoadingOperation = [appDelegate.networkEngine imageAtURL: [NSURL URLWithString: imageURLString]
+                                                                      size: CGSizeMake (341, 190)
+                                                         completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
+                                 {
+                                     if([imageURLString isEqualToString: [url absoluteString]])
+                                     {
+                                         if (isInCache)
+                                         {
+                                             channelCarouselCell.imageView.image = fetchedImage;
+                                         }
+                                         else
+                                         {
+                                             [UIView transitionWithView: channelCarouselCell.imageView
+                                                               duration: 0.4f
+                                                                options: UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionAllowUserInteraction
+                                                             animations: ^
+                                              {
+                                                  // Crafty aliasing fix
+                                                  UIImage *image = fetchedImage;
 
-        
-        NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverThumb%d.png", (indexPath.row % 13) + 1];
-        
-        channelCarouselCell.channelImageViewImage = imageURLString;
+                                                  CGRect imageRect = CGRectMake( 0 , 0 , fetchedImage.size.width + 4 , fetchedImage.size.height + 4 );
+                                                  UIGraphicsBeginImageContext(imageRect.size);
+                                                  [fetchedImage drawInRect: CGRectMake(imageRect.origin.x + 2, imageRect.origin.y + 2, imageRect.size.width - 4, imageRect.size.height - 4)];
+                                                  CGContextSetInterpolationQuality(UIGraphicsGetCurrentContext(), kCGInterpolationHigh);
+                                                  image = UIGraphicsGetImageFromCurrentImageContext();
+                                                  UIGraphicsEndImageContext();
+                                                  
+                                                  channelCarouselCell.imageView.image = fetchedImage;
+                                                  
+                                                  channelCarouselCell.imageView.layer.shouldRasterize = YES;
+                                                  channelCarouselCell.imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
+                                                  channelCarouselCell.imageView.clipsToBounds = NO;
+                                                  channelCarouselCell.imageView.layer.masksToBounds = NO;
+                                                  
+                                                  // End of clever jaggie reduction
+                                              }
+                                                             completion: nil];
+                                         }
+                                     }
+                                 }
+                                                         errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
+                                 {
+                                     channelCarouselCell.imageView.image = nil;;
+                                 }];
+
         
         cell = channelCarouselCell;
     }
@@ -375,6 +425,7 @@
     return sectionSupplementaryView;
 }
 
+//
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
     CGFloat pointX = 450 + self.channelCoverCarouselCollectionView.contentOffset.x;
@@ -382,9 +433,9 @@
     
     NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (pointX, pointY)]; 
     
-    NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverBackground%d.png", (indexPath.row % 13) + 1];
+    NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverBackground%d.jpg", (indexPath.row % 13) + 1];
     
-    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString   ]
+    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString]
                                    placeHolderImage: nil];
 }
 

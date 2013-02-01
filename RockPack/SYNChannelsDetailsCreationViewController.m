@@ -30,7 +30,7 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     
-    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverBackground1.png"]
+    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverBackground1.jpg"]
                                    placeHolderImage: nil];
 }
 

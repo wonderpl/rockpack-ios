@@ -76,12 +76,12 @@
 								<string key="NSFrameSize">{72, 72}</string>
 								<reference key="NSSuperview" ref="317724372"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="851526005"/>
+								<reference key="NSNextKeyView" ref="312573594"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
-							<object class="IBUIImageView" id="851526005">
+							<object class="IBUIImageView" id="312573594">
 								<reference key="NSNextResponder" ref="317724372"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{72, 72}</string>
@@ -281,7 +281,7 @@
 						<string key="NSFrame">{{0, 115}, {1024, 571}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="66530665"/>
+						<reference key="NSNextKeyView" ref="245815771"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="381457900"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -297,13 +297,14 @@
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
-					<object class="IBUICollectionView" id="66530665">
+					<object class="IBUICollectionView" id="245815771">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">-2147483374</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{62, 167}, {900, 190}}</string>
+						<string key="NSFrame">{{62, 165}, {900, 194}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="381457900"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -314,8 +315,8 @@
 						<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 						<float key="IBUIMinimumZoomScale">0.0</float>
 						<float key="IBUIMaximumZoomScale">0.0</float>
-						<object class="IBUICollectionViewLayout" key="IBUICollectionViewLayout" id="174529513">
-							<reference key="IBUICollectionView" ref="66530665"/>
+						<object class="IBUICollectionViewLayout" key="IBUICollectionViewLayout" id="226205844">
+							<reference key="IBUICollectionView" ref="245815771"/>
 						</object>
 						<reference key="IBUICells" ref="0"/>
 					</object>
@@ -403,7 +404,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">channelCoverCarouselCollectionView</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="66530665"/>
+						<reference key="destination" ref="245815771"/>
 					</object>
 					<int key="connectionID">109</int>
 				</object>
@@ -435,7 +436,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
-						<reference key="source" ref="66530665"/>
+						<reference key="source" ref="245815771"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">110</int>
@@ -443,7 +444,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="66530665"/>
+						<reference key="source" ref="245815771"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">111</int>
@@ -475,7 +476,7 @@
 							<reference ref="317724372"/>
 							<reference ref="915393374"/>
 							<reference ref="566198242"/>
-							<reference ref="66530665"/>
+							<reference ref="245815771"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">View - Main</string>
@@ -497,7 +498,7 @@
 							<reference ref="177447989"/>
 							<reference ref="173783547"/>
 							<reference ref="621335574"/>
-							<reference ref="851526005"/>
+							<reference ref="312573594"/>
 						</array>
 						<reference key="parent" ref="65885460"/>
 						<string key="objectName">View - Header bar</string>
@@ -559,23 +560,23 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">105</int>
-						<reference key="object" ref="851526005"/>
+						<reference key="object" ref="312573594"/>
 						<reference key="parent" ref="317724372"/>
 						<string key="objectName">Image View - User avatar</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">106</int>
-						<reference key="object" ref="66530665"/>
+						<reference key="object" ref="245815771"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="174529513"/>
+							<reference ref="226205844"/>
 						</array>
 						<reference key="parent" ref="65885460"/>
 						<string key="objectName">Collection View - Channel cover carousel view</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">113</int>
-						<reference key="object" ref="174529513"/>
-						<reference key="parent" ref="66530665"/>
+						<reference key="object" ref="226205844"/>
+						<reference key="parent" ref="245815771"/>
 					</object>
 				</array>
 			</object>
