@@ -967,11 +967,7 @@
 }
 
 
-- (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
-{
-    //    NSIndexPath *indexPath = [self.channelCoverCarousel indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarousel.contentOffset.x,
-    //                                                                                              70 + self.channelCoverCarousel.contentOffset.y)];
-}
+
 
 //
 //// User has pressed the Done button, so create a new channel

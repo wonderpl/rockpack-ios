@@ -8,6 +8,7 @@
 
 #import "HPGrowingTextView.h"
 #import "SYNChannelsDetailsCreationViewController.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 
 @interface SYNChannelsDetailsCreationViewController ()
 
@@ -24,6 +25,13 @@
     self.shareButton.hidden = TRUE;
     self.channelCoverCarouselCollectionView.hidden = FALSE;
     self.channelDescriptionTextView.text = @"Describe your channel...";
+}
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    
+    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverBackground1.png"]
+                                   placeHolderImage: nil];
 }
 
 @end

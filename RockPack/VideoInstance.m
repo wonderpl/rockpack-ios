@@ -69,7 +69,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
         }
         else
         {
-            instance.viewId = @"";
+//            instance.viewId = @"";
         }
         
         return instance;

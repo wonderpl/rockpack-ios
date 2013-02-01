@@ -65,9 +65,9 @@ static NSEntityDescription *channelEntity = nil;
         }
         else
         {
-            instance.viewId = @"";
-            instance.channelDescription = [dictionary objectForKey: @"description"
-                                                   withDefault: @"Description of channel goes here"];
+//            instance.viewId = @"";
+//            instance.channelDescription = [dictionary objectForKey: @"description"
+//                                                   withDefault: @"Description of channel goes here"];
         }
         
         return instance;
@@ -153,6 +153,39 @@ static NSEntityDescription *channelEntity = nil;
     
     self.channelDescription = [dictionary objectForKey: @"description"
                                            withDefault: @"Description of channel goes here"];
+    
+//    if (rootObject == kChannelRootObject)
+//    {
+//        // NSManagedObjects
+////        self.videoInstances = [VideoInstance instanceFromDictionary: [dictionary objectForKey: @"videos"]
+////                                          usingManagedObjectContext: managedObjectContext
+////                                                 withRootObjectType: rootObject
+////                                                          andViewId: viewId];
+//        
+//
+//        NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+//        
+//        // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
+//        if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
+//        {
+//            // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+//            NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+//            
+//            if ([itemArray isKindOfClass: [NSArray class]])
+//            {
+//                for (NSDictionary *itemDictionary in itemArray)
+//                {
+//                    if ([itemDictionary isKindOfClass: [NSDictionary class]])
+//                    {
+//                        [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
+//                                                                   usingManagedObjectContext: managedObjectContext
+//                                                                          withRootObjectType: rootObject
+//                                                                                   andViewId: viewId]];
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     // NSManagedObjects
     self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]

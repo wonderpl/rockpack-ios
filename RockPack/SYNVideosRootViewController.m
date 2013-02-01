@@ -141,8 +141,6 @@
 
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    //    // No predicate
-    //    return nil;
     return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
 }
 

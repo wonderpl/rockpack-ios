@@ -27,14 +27,14 @@
 
 @interface SYNAbstractChannelsDetailViewController () <HPGrowingTextViewDelegate,
                                                UICollectionViewDataSource,
-                                               UICollectionViewDelegate>
+                                               UICollectionViewDelegate,
+                                               UITextFieldDelegate>
 
 @property (nonatomic, assign) BOOL keyboardShown;
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet SYNTextField *channelTitleTextField;
 @property (nonatomic, strong) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
@@ -74,7 +74,6 @@
     layout.itemSize = CGSizeMake(256.0f , 179.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
-//    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
 
@@ -93,78 +92,51 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNChannelHeaderView"];
     
-//    // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
-//    self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//    self.channelDescriptionTextView.text = self.channel.description;
-//    self.channelDescriptionTextView.font = [UIFont rockpackFontOfSize: 15.0f];
-//	self.channelDescriptionTextView.minNumberOfLines = 1;
-//	self.channelDescriptionTextView.maxNumberOfLines = 4;
-//    self.channelDescriptionTextView.backgroundColor = [UIColor clearColor];
-//    self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
-//	self.channelDescriptionTextView.delegate = self;
-//    self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-//    
-//    // Add highlighted box
-//    UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
-//    
-//    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
-//                                                                       topCapHeight: 22];
-//    
-//    self.channelDescriptionHightlightView = [[UIImageView alloc] initWithImage: entryBackground];
-//    self.channelDescriptionHightlightView.frame = CGRectInset(self.channelDescriptionTextView.frame, -10, -10);
-//    self.channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-//    self.channelDescriptionTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    self.channelDescriptionHightlightView.hidden = TRUE;
-//    
-//    [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
-//    
-//    // Now use the same assets to create a highlight box for the channel title
-////    channelTitleLabel
-//
-//    self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-    
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
     
     
     // Carousel collection view
+    // Register our coverview style cell
+    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
+                                forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
     
     // Set carousel collection view to use custom layout algorithm
     CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
     channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(341.0f , 190.0f);
     channelCoverCarouselHorizontalLayout.cellSpacing = 40.0f;
     
-    self.channelCoverCarouselCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(62, 167, 900, 190)
-                                                                 collectionViewLayout: channelCoverCarouselHorizontalLayout];
-    
-    self.channelCoverCarouselCollectionView.delegate = self;
-    self.channelCoverCarouselCollectionView.dataSource = self;
-    self.channelCoverCarouselCollectionView.backgroundColor = [UIColor clearColor];
-    self.channelCoverCarouselCollectionView.showsHorizontalScrollIndicator = FALSE;
-    
-    // Set up our carousel
-    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
-                                forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
-    
-    self.channelCoverCarouselCollectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
+    self.channelCoverCarouselCollectionView.collectionViewLayout = channelCoverCarouselHorizontalLayout;
 
-    self.channelCoverCarouselCollectionView.hidden = TRUE;
-    
-    // Initially hide this view
-//    self.channelCoverCarouselCollectionView.alpha = 0.0f;
-    [self.view addSubview: self.channelCoverCarouselCollectionView];
-
-    
-//    self.channelNameTextField = [[UITextField alloc] initWithFrame: CGRectMake(319, 330, 384, 35)];
-//    
-//    self.channelNameTextField.textAlignment = NSTextAlignmentCenter;
-//    self.channelNameTextField.textColor = [UIColor whiteColor];
-//    self.channelNameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-//    self.channelNameTextField.returnKeyType = UIReturnKeyDone;
-//    self.channelNameTextField.font = [UIFont rockpackFontOfSize: 36.0f];
-//    self.channelNameTextField.delegate = self;
-//    [self.channelChooserView addSubview: self.channelNameTextField];
+    self.channelTitleTextField.textAlignment = NSTextAlignmentLeft;
+    self.channelTitleTextField.textColor = [UIColor whiteColor];
+    self.channelTitleTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+    self.channelTitleTextField.returnKeyType = UIReturnKeyDone;
+    self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
+    self.channelTitleTextField.delegate = self;
 }
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    // Set all labels and images to correspond to the selected channel
+    self.channelTitleTextField.text = self.channel.title;
+    self.userNameLabel.text = self.channel.channelOwner.name;
+    
+    // set User's avatar picture
+    [self.userAvatarImageView setImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
+                             placeHolderImage: nil];
+    
+    // Set wallpaper
+    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
+                                   placeHolderImage: nil];
+    
+    // Refresh our view
+    [self.videoThumbnailCollectionView reloadData];
+}
+
 
 
 #pragma mark - Growable UITextView delegates
@@ -256,26 +228,6 @@
 	[UIView commitAnimations];
 }
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-    // Set all labels and images to correspond to the selected channel
-    self.channelTitleTextField.text = self.channel.title;
-    self.userNameLabel.text = self.channel.channelOwner.name;
-    
-    // set User's avatar picture
-    [self.userAvatarImageView setImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                                   placeHolderImage: nil];
-    
-    // Set wallpaper
-    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                                   placeHolderImage: nil];
-    
-    // Refresh our view
-    [self.videoThumbnailCollectionView reloadData];
-}
-
 
 #pragma mark - Collection view support
 
@@ -361,12 +313,9 @@
     }
     else
     {
+        // Display the video viewer
         VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
         [self displayVideoViewer: videoInstance];
-        
-//        SYNMyRockpackMovieViewController *movieVC = [[SYNMyRockpackMovieViewController alloc] initWithVideo: videoInstance.video];
-//        
-//        [self animatedPushViewController: movieVC];
     }
 }
 
@@ -424,6 +373,18 @@
     }
     
     return sectionSupplementaryView;
+}
+
+- (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
+{
+//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.videoThumbnailCollectionView.contentOffset.x,70 + self.videoThumbnailCollectionView.contentOffset.y)];
+    
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: CGPointMake (450 ,70)];
+    
+    NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverBackground%d.png", (indexPath.row % 13) + 1];
+    
+    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString   ]
+                                   placeHolderImage: nil];
 }
 
 @end
