@@ -377,9 +377,10 @@
 
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
 {
-//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.videoThumbnailCollectionView.contentOffset.x,70 + self.videoThumbnailCollectionView.contentOffset.y)];
+    CGFloat pointX = 450 + self.channelCoverCarouselCollectionView.contentOffset.x;
+    CGFloat pointY = 70 + self.channelCoverCarouselCollectionView.contentOffset.y;
     
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: CGPointMake (450 ,70)];
+    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (pointX, pointY)]; 
     
     NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverBackground%d.png", (indexPath.row % 13) + 1];
     
