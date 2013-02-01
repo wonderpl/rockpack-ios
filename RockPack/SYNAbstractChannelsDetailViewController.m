@@ -20,7 +20,6 @@
 #import "SYNMyRockpackMovieViewController.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
-#import "TPKeyboardAvoidingScrollView.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "Video.h"
@@ -34,15 +33,10 @@
 
 @property (nonatomic, assign) BOOL keyboardShown;
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) IBOutlet SYNTextField *channelTitleTextField;
-@property (nonatomic, strong) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;
-@property (nonatomic, strong) SYNChannelHeaderView *supplementaryView;
 @property (nonatomic, strong) MKNetworkOperation *imageLoadingOperation;
 
 @end
@@ -71,7 +65,6 @@
     self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];  
 
-    
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(256.0f , 179.0f);
@@ -117,12 +110,6 @@
     self.channelTitleTextField.returnKeyType = UIReturnKeyDone;
     self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
     self.channelTitleTextField.delegate = self;
-}
-
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
     
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = self.channel.title;
@@ -135,6 +122,13 @@
     // Set wallpaper
     [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
                                    placeHolderImage: nil];
+}
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -146,16 +140,16 @@
 
 - (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
-    self.supplementaryView.channelDescriptionHightlightView.hidden = FALSE;
-    growingTextView.text = @"";
+    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
+//    growingTextView.text = @"";
 }
 
 
 - (void) growingTextViewDidEndEditing: (HPGrowingTextView *) growingTextView
 {
-    self.supplementaryView.channelDescriptionHightlightView.hidden = TRUE;
-    [self.channelDescriptionTextView scrollRangeToVisible: NSMakeRange (0,0)];
-    [self.channelDescriptionTextView resignFirstResponder];
+    self.collectionHeaderView.channelDescriptionHightlightView.hidden = TRUE;
+    [self.collectionHeaderView.channelDescriptionTextView scrollRangeToVisible: NSMakeRange (0,0)];
+    [self.collectionHeaderView.channelDescriptionTextView resignFirstResponder];
     
     if ([growingTextView.text isEqualToString: @""])
     {
@@ -169,11 +163,12 @@
 {
     float diff = (growingTextView.frame.size.height - height);
     
-	CGRect containerViewFrame = self.supplementaryView.channelDescriptionTextContainerView.frame;
+	CGRect containerViewFrame = self.collectionHeaderView.channelDescriptionTextContainerView.frame;
     containerViewFrame.size.height -= diff;
 //    containerViewFrame.origin.y += diff;
-	self.supplementaryView.channelDescriptionTextContainerView.frame = containerViewFrame;
+	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerViewFrame;
 }
+
 
 //Code from Brett Schumann
 - (void) keyboardWillShow: (NSNotification *) notification
@@ -189,7 +184,7 @@
                                      toView: nil];
     
 	// get a rect for the textView frame
-	CGRect containerFrame = self.supplementaryView.channelDescriptionTextContainerView.frame;
+	CGRect containerFrame = self.collectionHeaderView.channelDescriptionTextContainerView.frame;
     containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
     
 	// animations settings
@@ -201,7 +196,7 @@
     [UIView setAnimationCurve: [curve intValue]];
 	
 	// set views with new info
-	self.supplementaryView.channelDescriptionTextContainerView.frame = containerFrame;
+	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
@@ -213,7 +208,7 @@
     NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
 	
 	// get a rect for the textView frame
-	CGRect containerFrame = self.supplementaryView.channelDescriptionTextContainerView.frame;
+	CGRect containerFrame = self.collectionHeaderView.channelDescriptionTextContainerView.frame;
     containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
 	
 	// animations settings
@@ -225,7 +220,7 @@
     [UIView setAnimationCurve: [curve intValue]];
     
 	// set views with new info
-	self.supplementaryView.channelDescriptionTextContainerView.frame = containerFrame;
+	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
@@ -414,17 +409,17 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionReusableView *sectionSupplementaryView = nil;
+    SYNChannelHeaderView *sectionSupplementaryView = nil;
     
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        SYNChannelHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                               withReuseIdentifier: @"SYNChannelHeaderView"
-                                                                                                      forIndexPath: indexPath];
+        sectionSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                      withReuseIdentifier: @"SYNChannelHeaderView"
+                                                                             forIndexPath: indexPath];
         // Special case, remember the first section view
-        headerSupplementaryView.viewControllerDelegate = self;
-        headerSupplementaryView.channelDescriptionTextView.text = self.channel.channelDescription;
-        sectionSupplementaryView = headerSupplementaryView;
+        sectionSupplementaryView.viewControllerDelegate = self;
+        sectionSupplementaryView.channelDescriptionTextView.text = self.channel.channelDescription;
+        self.collectionHeaderView = sectionSupplementaryView;
     }
     
     return sectionSupplementaryView;

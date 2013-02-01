@@ -44,6 +44,12 @@
     self.followersLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.videoCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
     self.followersCountLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
+}
+
+// Need to do this outside awakeFromNib as the delegate is not set at that point
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+{
+    _viewControllerDelegate = viewControllerDelegate;
     
     // Set up editable description text view (this is somewhat specialy, as it has a resizeable glow around it
     self.channelDescriptionTextView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -52,7 +58,7 @@
 	self.channelDescriptionTextView.maxNumberOfLines = 4;
     self.channelDescriptionTextView.backgroundColor = [UIColor clearColor];
     self.channelDescriptionTextView.textColor = [UIColor colorWithRed: 0.725f green: 0.812f blue: 0.824f alpha: 1.0f];
-	self.channelDescriptionTextView.delegate = self.viewControllerDelegate;
+	self.channelDescriptionTextView.delegate = (id)self.viewControllerDelegate;
     self.channelDescriptionTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     [self.channelDescriptionTextView resignFirstResponder];
     
@@ -69,10 +75,6 @@
     self.channelDescriptionHightlightView.hidden = TRUE;
     
     [self.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
-    
-    // Now use the same assets to create a highlight box for the channel title
-    //    channelTitleLabel
-    
     self.channelDescriptionTextContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
 }
 
