@@ -10,8 +10,8 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *coverBackgroundURL;
 	__unsafe_unretained NSString *coverThumbnailLargeURL;
 	__unsafe_unretained NSString *coverThumbnailSmallURL;
-	__unsafe_unretained NSString *index;
 	__unsafe_unretained NSString *lastUpdated;
+	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *resourceURL;
 	__unsafe_unretained NSString *rockCount;
 	__unsafe_unretained NSString *rockedByUser;
@@ -110,25 +110,25 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* index;
-
-
-
-@property int64_t indexValue;
-- (int64_t)indexValue;
-- (void)setIndexValue:(int64_t)value_;
-
-//- (BOOL)validateIndex:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSDate* lastUpdated;
 
 
 
 //- (BOOL)validateLastUpdated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* position;
+
+
+
+@property int64_t positionValue;
+- (int64_t)positionValue;
+- (void)setPositionValue:(int64_t)value_;
+
+//- (BOOL)validatePosition:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -275,17 +275,17 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSNumber*)primitiveIndex;
-- (void)setPrimitiveIndex:(NSNumber*)value;
-
-- (int64_t)primitiveIndexValue;
-- (void)setPrimitiveIndexValue:(int64_t)value_;
-
-
-
-
 - (NSDate*)primitiveLastUpdated;
 - (void)setPrimitiveLastUpdated:(NSDate*)value;
+
+
+
+
+- (NSNumber*)primitivePosition;
+- (void)setPrimitivePosition:(NSNumber*)value;
+
+- (int64_t)primitivePositionValue;
+- (void)setPrimitivePositionValue:(int64_t)value_;
 
 
 

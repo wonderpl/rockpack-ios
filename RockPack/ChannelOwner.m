@@ -16,7 +16,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                       withRootObjectType: (RootObject) rootObject
+                      ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                                 andViewId: (NSString *) viewId;
 {
     NSError *error = nil;
@@ -67,7 +67,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                           withRootObjectType: rootObject
+                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
         NSLog(@"Created ChannelOwner instance with id %@", instance.uniqueId);
@@ -80,7 +80,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
-                  withRootObjectType: (RootObject) rootObject
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 
 {
@@ -96,6 +96,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
     
     self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
                                      withDefault: @"http://"];
+
     
     self.name = [dictionary upperCaseStringForKey: @"name"
                                       withDefault: @""];

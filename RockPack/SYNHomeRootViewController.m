@@ -10,9 +10,11 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
+#import "SYNAppDelegate.h"
 #import "SYNHomeRootViewController.h"
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
+#import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -34,6 +36,11 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadCollectionViews)
+                                                 name: kDataUpdated
+                                               object: nil];
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
@@ -67,6 +74,20 @@
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+}
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
+    [appDelegate.networkEngine updateHomeScreen];
+}
+
+- (void) reloadCollectionViews
+{
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 - (BOOL) hasVideoQueue
@@ -114,7 +135,7 @@
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
     // Sort by index
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"index"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }

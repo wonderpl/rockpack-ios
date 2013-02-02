@@ -5,6 +5,7 @@
 
 const struct VideoInstanceAttributes VideoInstanceAttributes = {
 	.dateAdded = @"dateAdded",
+	.position = @"position",
 	.title = @"title",
 	.viewId = @"viewId",
 };
@@ -43,6 +44,11 @@ const struct VideoInstanceFetchedProperties VideoInstanceFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"positionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"position"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -52,6 +58,32 @@ const struct VideoInstanceFetchedProperties VideoInstanceFetchedProperties = {
 
 @dynamic dateAdded;
 
+
+
+
+
+
+@dynamic position;
+
+
+
+- (int64_t)positionValue {
+	NSNumber *result = [self position];
+	return [result longLongValue];
+}
+
+- (void)setPositionValue:(int64_t)value_ {
+	[self setPosition:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitivePositionValue {
+	NSNumber *result = [self primitivePosition];
+	return [result longLongValue];
+}
+
+- (void)setPrimitivePositionValue:(int64_t)value_ {
+	[self setPrimitivePosition:[NSNumber numberWithLongLong:value_]];
+}
 
 
 

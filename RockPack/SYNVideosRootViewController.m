@@ -104,8 +104,7 @@
     
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
-    [appDelegate.networkEngine updateHomeScreen];
-//    [appDelegate.networkEngine updateChannelsScreen];
+    [appDelegate.networkEngine updateVideosScreen];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
@@ -141,14 +140,14 @@
 
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
+    return [NSPredicate predicateWithFormat: @"viewId == \"Videos\""];
 }
 
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
-                                                                   ascending: NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
+                                                                   ascending: YES];
     return @[sortDescriptor];
 }
 

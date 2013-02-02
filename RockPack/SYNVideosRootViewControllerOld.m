@@ -29,6 +29,11 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadCollectionViews)
+                                                 name: kDataUpdated
+                                               object: nil];
 
     // Init collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -37,16 +42,15 @@
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-											                         selector: @selector(reloadCollectionViews)
-												                             name: kDataUpdated
-											                           object: nil];
-    
     // TODO: Remove this video download hack once we have real data from the API
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateHomeScreen];
-    [appDelegate.networkEngine updateChannelsScreen];
+}
+
+- (void) reloadCollectionViews
+{
+    [self.videoThumbnailCollectionView reloadData];
 }
 
 
@@ -85,12 +89,6 @@
 {
     //    return @"daysAgo";
     return nil;
-}
-
-
-- (void) reloadCollectionViews
-{
-    [self.videoThumbnailCollectionView reloadData];
 }
 
 #pragma mark - Collection view support

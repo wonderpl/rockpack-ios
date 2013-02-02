@@ -17,7 +17,7 @@ static NSEntityDescription *videoEntity = nil;
 
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                withRootObjectType: (RootObject) rootObject
+                ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                          andViewId: (NSString *) viewId;
 {
     NSError *error = nil;
@@ -69,7 +69,7 @@ static NSEntityDescription *videoEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                           withRootObjectType: rootObject
+                          ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
         NSLog(@"Created Video instance with id %@", instance.uniqueId);
@@ -82,7 +82,7 @@ static NSEntityDescription *videoEntity = nil;
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                  withRootObjectType: (RootObject) rootObject
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 
 {

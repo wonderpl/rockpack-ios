@@ -15,6 +15,7 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 -(id) initWithDefaultSettings;
 
 - (void) updateHomeScreen;
+- (void) updateVideosScreen;
 - (void) updateChannelsScreen;
 - (void) updateChannel: (NSString *) resourceURL;
 

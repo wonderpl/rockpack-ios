@@ -580,7 +580,7 @@
                 
                 channel.uniqueId = [NSString stringWithFormat: @"%d", index];
                 channel.categoryId = @"funny";
-                channel.indexValue = index;
+                channel.positionValue = index;
                 channel.coverThumbnailSmallURL = channelDetailsDictionary [@"keyframeURL"];
                 channel.wallpaperURL = channelDetailsDictionary [@"wallpaperURL"];
                 channel.title = channelDetailsDictionary [@"title"];

@@ -4,10 +4,11 @@
 @interface AbstractCommon : _AbstractCommon
 
 typedef enum {
-    kVideoInstanceRootObject = 0,
-    kChannelRootObject = 1,
-    kChannelOwnerRootObject = 2,
-    kVideoRootObject = 3,
-} RootObject;
+    kIgnoreNothing = 0,
+    kIgnoreVideoInstanceObjects = 1,
+    kIgnoreChannelObjects = 2,
+    kIgnoreChannelOwnerObjects = 4,
+    kIgnoreVideoObjects = 8
+} IgnoringObjects;
 
 @end

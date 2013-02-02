@@ -426,17 +426,20 @@
 }
 
 //
-- (void) scrollViewDidEndDecelerating: (UICollectionView *) cv
+- (void) scrollViewDidEndDecelerating: (UICollectionView *) collectionView
 {
-    CGFloat pointX = 450 + self.channelCoverCarouselCollectionView.contentOffset.x;
-    CGFloat pointY = 70 + self.channelCoverCarouselCollectionView.contentOffset.y;
-    
-    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (pointX, pointY)]; 
-    
-    NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverBackground%d.jpg", (indexPath.row % 13) + 1];
-    
-    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                                   placeHolderImage: nil];
+    if (collectionView == self.channelCoverCarouselCollectionView)
+    {
+        CGFloat pointX = 450 + self.channelCoverCarouselCollectionView.contentOffset.x;
+        CGFloat pointY = 70 + self.channelCoverCarouselCollectionView.contentOffset.y;
+        
+        NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (pointX, pointY)]; 
+        
+        NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverBackground%d.jpg", (indexPath.row % 13) + 1];
+        
+        [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                                       placeHolderImage: nil];
+    }
 }
 
 @end

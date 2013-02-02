@@ -34,6 +34,9 @@
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
+// Returns a list of the trending videos
+#define kAPIPopularVideos @"ws/videos/"
+
 // Returns a list of
 #define kAPIPopularChannels @"ws/channels/"
 

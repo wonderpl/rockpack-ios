@@ -9,12 +9,15 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "MBProgressHUD.h"
+#import "SYNAppDelegate.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNMyRockpackCell.h"
+#import "SYNNetworkEngine.h"
 #import "SYNVideoDB.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 #import "Video.h"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
@@ -47,6 +50,14 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 }
 
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
+    [appDelegate.networkEngine updateChannelsScreen];
+}
 
 #pragma mark - Core Data Support
 

@@ -195,8 +195,6 @@
 		01677F1316554CFD00B1B1D8 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1216554CFD00B1B1D8 /* iTunesArtwork */; };
 		01677F1616554D2700B1B1D8 /* DINNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1416554D2700B1B1D8 /* DINNextLTPro-Bold.otf */; };
 		01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 01677F1516554D2700B1B1D8 /* DINNextLTPro-Regular.otf */; };
-		01702F4616B1386100FF3D4D /* SYNVideosRootViewControllerOld.m in Sources */ = {isa = PBXBuildFile; fileRef = 01702F4416B1386100FF3D4D /* SYNVideosRootViewControllerOld.m */; };
-		01702F4716B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01702F4516B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib */; };
 		0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716016554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m */; };
 		0170717516554E9B00A3C7C4 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716416554E9B00A3C7C4 /* NSDate+RFC1123.m */; };
 		0170717616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0170716616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m */; };
@@ -459,7 +457,6 @@
 		01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
-		01C6FD0C169DA76F00E01AA3 /* SYNAbstractUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */; };
 		01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */; };
 		01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */; };
 		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
@@ -1072,8 +1069,6 @@
 		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
 		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
 		01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelThumbnailCell.xib; sourceTree = "<group>"; };
-		01C6FD0A169DA76F00E01AA3 /* SYNAbstractUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractUpdater.h; sourceTree = "<group>"; };
-		01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractUpdater.m; sourceTree = "<group>"; };
 		01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Validation.h"; sourceTree = "<group>"; };
 		01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Validation.m"; sourceTree = "<group>"; };
 		01C6FD10169E11B000E01AA3 /* _AbstractCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _AbstractCommon.h; sourceTree = "<group>"; };
@@ -2404,8 +2399,6 @@
 		01C6FD09169DA73000E01AA3 /* Updaters */ = {
 			isa = PBXGroup;
 			children = (
-				01C6FD0A169DA76F00E01AA3 /* SYNAbstractUpdater.h */,
-				01C6FD0B169DA76F00E01AA3 /* SYNAbstractUpdater.m */,
 			);
 			name = Updaters;
 			sourceTree = "<group>";
@@ -2989,7 +2982,6 @@
 				01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */,
 				01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */,
 				01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */,
-				01702F4716B1386100FF3D4D /* SYNVideosRootViewControllerOld.xib in Resources */,
 				0142ED8116B1439B008694DA /* CategoryBar.png in Resources */,
 				0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */,
 				0142ED8B16B19FBE008694DA /* SYNYouRootViewController.xib in Resources */,
@@ -3136,7 +3128,6 @@
 				01946B971683339F00354601 /* ChannelOwner.m in Sources */,
 				01946B981683339F00354601 /* VideoInstance.m in Sources */,
 				01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */,
-				01C6FD0C169DA76F00E01AA3 /* SYNAbstractUpdater.m in Sources */,
 				01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */,
 				01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */,
 				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
@@ -3148,7 +3139,6 @@
 				015CB01916AE03B200FEB8E7 /* _User.m in Sources */,
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
 				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
-				01702F4616B1386100FF3D4D /* SYNVideosRootViewControllerOld.m in Sources */,
 				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
 				01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				01E566F516B5847100B8B218 /* UIImageView+MKNetworkKitAdditions.m in Sources */,

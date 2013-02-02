@@ -21,7 +21,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                        withRootObjectType: (RootObject) rootObject
+                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                                  andViewId: (NSString *) viewId
 {
     NSError *error = nil;
@@ -49,7 +49,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     [videoInstanceFetchRequest setEntity: videoInstanceEntity];
     
     // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
     [videoInstanceFetchRequest setPredicate: predicate];
     
     NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: videoInstanceFetchRequest
@@ -60,17 +60,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     if (matchingVideoInstanceEntries.count > 0)
     {
         instance = matchingVideoInstanceEntries[0];
-        NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
-        
-        // Check to see if we need to fill in the viewId
-        if (rootObject == kVideoInstanceRootObject)
-        {
-            instance.viewId = viewId;
-        }
-        else
-        {
-//            instance.viewId = @"";
-        }
+        NSLog(@"Using existing VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
         
         return instance;
     }
@@ -83,10 +73,10 @@ static NSEntityDescription *videoInstanceEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                           withRootObjectType: rootObject
+                          ignoringObjectTypes: kIgnoreVideoInstanceObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
+        NSLog(@"Created VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
         
         return instance;
     }
@@ -96,7 +86,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                  withRootObjectType: (RootObject) rootObject
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
     // Is we are not actually a dictionary, then bail
@@ -108,17 +98,10 @@ static NSEntityDescription *videoInstanceEntity = nil;
     
     // Simple objects
     self.uniqueId = uniqueId;
+    self.viewId = viewId;
     
-    // If we are initially creating Channel objects, then set our viewId of the appropriate vide name
-    // otherwise just set to blank
-    if (rootObject == kVideoInstanceRootObject)
-    {
-        self.viewId = viewId;
-    }
-    else
-    {
-        self.viewId = @"";
-    }
+    self.position = [dictionary objectForKey: @"position"
+                                 withDefault: [NSNumber numberWithInt: 0]];
     
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];
@@ -129,13 +112,16 @@ static NSEntityDescription *videoInstanceEntity = nil;
     // NSManagedObjects
     self.video = [Video instanceFromDictionary: [dictionary objectForKey: @"video"]
                      usingManagedObjectContext: managedObjectContext
-                            withRootObjectType: rootObject
+                           ignoringObjectTypes: ignoringObjects
                                      andViewId: viewId];
     
-    self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
-                     usingManagedObjectContext: managedObjectContext
-                            withRootObjectType: rootObject
+    if (!(ignoringObjects & kIgnoreChannelObjects))
+    {
+        self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
+                         usingManagedObjectContext: managedObjectContext
+                               ignoringObjectTypes: kIgnoreChannelObjects
                                          andViewId: viewId];
+    }
 }
 
 

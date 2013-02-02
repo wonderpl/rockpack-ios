@@ -9,8 +9,8 @@ const struct ChannelAttributes ChannelAttributes = {
 	.coverBackgroundURL = @"coverBackgroundURL",
 	.coverThumbnailLargeURL = @"coverThumbnailLargeURL",
 	.coverThumbnailSmallURL = @"coverThumbnailSmallURL",
-	.index = @"index",
 	.lastUpdated = @"lastUpdated",
+	.position = @"position",
 	.resourceURL = @"resourceURL",
 	.rockCount = @"rockCount",
 	.rockedByUser = @"rockedByUser",
@@ -54,8 +54,8 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"indexValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"index"];
+	if ([key isEqualToString:@"positionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"position"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -116,34 +116,34 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
-@dynamic index;
-
-
-
-- (int64_t)indexValue {
-	NSNumber *result = [self index];
-	return [result longLongValue];
-}
-
-- (void)setIndexValue:(int64_t)value_ {
-	[self setIndex:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveIndexValue {
-	NSNumber *result = [self primitiveIndex];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveIndexValue:(int64_t)value_ {
-	[self setPrimitiveIndex:[NSNumber numberWithLongLong:value_]];
-}
-
-
-
-
-
 @dynamic lastUpdated;
 
+
+
+
+
+
+@dynamic position;
+
+
+
+- (int64_t)positionValue {
+	NSNumber *result = [self position];
+	return [result longLongValue];
+}
+
+- (void)setPositionValue:(int64_t)value_ {
+	[self setPosition:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitivePositionValue {
+	NSNumber *result = [self primitivePosition];
+	return [result longLongValue];
+}
+
+- (void)setPrimitivePositionValue:(int64_t)value_ {
+	[self setPrimitivePosition:[NSNumber numberWithLongLong:value_]];
+}
 
 
 

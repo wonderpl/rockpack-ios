@@ -18,7 +18,7 @@ static NSEntityDescription *channelEntity = nil;
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                  withRootObjectType: (RootObject) rootObject
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
     NSLog (@"Creating Channel");
@@ -46,7 +46,7 @@ static NSEntityDescription *channelEntity = nil;
     [channelFetchRequest setEntity: channelEntity];
     
     // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
     [channelFetchRequest setPredicate: predicate];
     
     NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
@@ -59,15 +59,39 @@ static NSEntityDescription *channelEntity = nil;
         NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
         
         // Check to see if we need to fill in the viewId
-        if (rootObject == kChannelRootObject)
+        if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
         {
             instance.viewId = viewId;
+            
+            if (instance.videoInstancesSet.count == 0)
+            {
+                NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+                
+                // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
+                if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
+                {
+                    // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+                    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+                    
+                    if ([itemArray isKindOfClass: [NSArray class]])
+                    {
+                        for (NSDictionary *itemDictionary in itemArray)
+                        {
+                            if ([itemDictionary isKindOfClass: [NSDictionary class]])
+                            {
+                                [instance.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
+                                                                                   usingManagedObjectContext: managedObjectContext
+                                                                                         ignoringObjectTypes: kIgnoreChannelObjects
+                                                                                                   andViewId: viewId]];
+                            }
+                        }
+                    }
+                }
+            }
         }
         else
         {
-//            instance.viewId = @"";
-//            instance.channelDescription = [dictionary objectForKey: @"description"
-//                                                   withDefault: @"Description of channel goes here"];
+           
         }
         
         return instance;
@@ -81,7 +105,7 @@ static NSEntityDescription *channelEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                           withRootObjectType: rootObject
+                          ignoringObjectTypes:ignoringObjects
                                     andViewId: viewId];
         
         NSLog(@"Created Channel instance with id %@", instance.uniqueId);
@@ -94,7 +118,7 @@ static NSEntityDescription *channelEntity = nil;
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                  withRootObjectType: (RootObject) rootObject
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
     // Is we are not actually a dictionary, then bail
@@ -109,20 +133,23 @@ static NSEntityDescription *channelEntity = nil;
     
     // If we are initially creating Channel objects, then set our viewId of the appropriate vide name
     // otherwise just set to blank
-    if (rootObject == kChannelRootObject)
-    {
-       self.viewId = viewId; 
-    }
-    else
-    {
-        self.viewId = @"";
-    }
+    
+    self.viewId = viewId;
+    
+//    if (rootObject == kChannelRootObject)
+//    {
+//       self.viewId = viewId; 
+//    }
+//    else
+//    {
+//        self.viewId = @"";
+//    }
     
     self.categoryId = [dictionary objectForKey: @"category_id"
                                    withDefault: @""];
     
-    self.index = [dictionary objectForKey: @"position"
-                              withDefault: [NSNumber numberWithInt: 0]];
+    self.position = [dictionary objectForKey: @"position"
+                                 withDefault: [NSNumber numberWithInt: 0]];
     
     self.title = [dictionary upperCaseStringForKey: @"title"
                                        withDefault: @""];
@@ -154,43 +181,43 @@ static NSEntityDescription *channelEntity = nil;
     self.channelDescription = [dictionary objectForKey: @"description"
                                            withDefault: @"Description of channel goes here"];
     
-//    if (rootObject == kChannelRootObject)
-//    {
-//        // NSManagedObjects
-////        self.videoInstances = [VideoInstance instanceFromDictionary: [dictionary objectForKey: @"videos"]
-////                                          usingManagedObjectContext: managedObjectContext
-////                                                 withRootObjectType: rootObject
-////                                                          andViewId: viewId];
-//        
-//
-//        NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
-//        
-//        // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
-//        if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
-//        {
-//            // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
-//            NSArray *itemArray = [videosDictionary objectForKey: @"items"];
-//            
-//            if ([itemArray isKindOfClass: [NSArray class]])
-//            {
-//                for (NSDictionary *itemDictionary in itemArray)
-//                {
-//                    if ([itemDictionary isKindOfClass: [NSDictionary class]])
-//                    {
-//                        [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
-//                                                                   usingManagedObjectContext: managedObjectContext
-//                                                                          withRootObjectType: rootObject
-//                                                                                   andViewId: viewId]];
-//                    }
-//                }
-//            }
-//        }
-//    }
+    if (!(ignoringObjects & kIgnoreChannelObjects))
+    {
+        // NSManagedObjects
+//        self.videoInstances = [VideoInstance instanceFromDictionary: [dictionary objectForKey: @"videos"]
+//                                          usingManagedObjectContext: managedObjectContext
+//                                                 withRootObjectType: rootObject
+//                                                          andViewId: viewId];
+        
+
+        NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+        
+        // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
+        if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
+        {
+            // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+            NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+            
+            if ([itemArray isKindOfClass: [NSArray class]])
+            {
+                for (NSDictionary *itemDictionary in itemArray)
+                {
+                    if ([itemDictionary isKindOfClass: [NSDictionary class]])
+                    {
+                        [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
+                                                                   usingManagedObjectContext: managedObjectContext
+                                                                          ignoringObjectTypes: kIgnoreChannelObjects
+                                                                                   andViewId: viewId]];
+                    }
+                }
+            }
+        }
+    }
     
     // NSManagedObjects
     self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
                                    usingManagedObjectContext: managedObjectContext
-                                          withRootObjectType: rootObject
+                                         ignoringObjectTypes: ignoringObjects
                                                    andViewId: viewId];
 }
 
@@ -227,7 +254,7 @@ static NSEntityDescription *channelEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"Channel(%@) categoryId: %@, channelDescription: %@, index: %@, lastUpdated: %@, rockCount: %@, rockedByUser: %@, coverThumbnailSmallURL: %@, coverThumbnailLargeURL: %@,, title: %@, wallpaperURL: %@, resourceURL: %@", self.uniqueId, self.categoryId, self.channelDescription, self.index, self.lastUpdated, self.rockCount, self.rockedByUser, self.coverThumbnailSmallURL, self.coverThumbnailLargeURL, self.title, self.wallpaperURL, self.resourceURL];
+    return [NSString stringWithFormat: @"Channel(%@) categoryId: %@, channelDescription: %@, position: %@, lastUpdated: %@, rockCount: %@, rockedByUser: %@, coverThumbnailSmallURL: %@, coverThumbnailLargeURL: %@,, title: %@, wallpaperURL: %@, resourceURL: %@", self.uniqueId, self.categoryId, self.channelDescription, self.position, self.lastUpdated, self.rockCount, self.rockedByUser, self.coverThumbnailSmallURL, self.coverThumbnailLargeURL, self.title, self.wallpaperURL, self.resourceURL];
 }
 
 

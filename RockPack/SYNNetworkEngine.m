@@ -101,22 +101,17 @@
 }
 
 
-
-
-- (void) updateHomeScreen
+- (void) updateVideoInstancesWithURL: (NSString *) apiURL
+                           andViewId: (NSString *) viewId
 {
-    // TODO: We need to replace USERID with actual userId ASAP
-    
     // Patch the USERID into the path
     NSString *path = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
     
-    // Now add on the locale as a query parameter
-    path = [NSString stringWithFormat: @"%@?locale=%@", path, self.localeString];
     
     path = @"ws/USERID/subscriptions/recent_videos/";
     
     [self JSONObjectForPath: path
-                     completionBlock: ^(NSDictionary *dictionary)
+            completionBlock: ^(NSDictionary *dictionary)
      {
          if (dictionary)
          {
@@ -137,8 +132,8 @@
                          {
                              [VideoInstance instanceFromDictionary: itemDictionary
                                          usingManagedObjectContext: self.importManagedObjectContext
-                                                withRootObjectType: kVideoInstanceRootObject
-                                                         andViewId: @"Home"];
+                                               ignoringObjectTypes: kIgnoreNothing
+                                                         andViewId: viewId];
                          }
                      }
                  }
@@ -160,11 +155,8 @@
                  
                  [self.appDelegate saveContext: TRUE];
                  
-//                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-//                                                                     object: nil];
-                 
-                 // TODO: Not sure that this belongs here...
-                 [self updateChannelsScreen];
+                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+                                                                     object: nil];
              }
              else
              {
@@ -172,10 +164,28 @@
              }
          }
      }
-                          errorBlock: ^(NSError* error)
+                 errorBlock: ^(NSError* error)
      {
          AssertOrLog(@"API request failed");
      }];
+}
+
+
+- (void) updateHomeScreen
+{
+    // TODO: We need to replace USERID with actual userId ASAP
+    
+    // Patch the USERID into the path
+    NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
+    
+    [self updateVideoInstancesWithURL: apiURL
+                            andViewId: @"Home"];
+}
+
+- (void) updateVideosScreen
+{
+    [self updateVideoInstancesWithURL: kAPIPopularVideos
+                            andViewId: @"Videos"];
 }
 
 
@@ -196,7 +206,7 @@
          {
              [Channel instanceFromDictionary: dictionary
                    usingManagedObjectContext: importManagedObjectContext
-                          withRootObjectType: kChannelRootObject
+                           ignoringObjectTypes: kIgnoreNothing
                                    andViewId: @"Channels"];
 
              NSError *error = nil;
@@ -281,7 +291,7 @@
                          {
                              [Channel instanceFromDictionary: itemDictionary
                                    usingManagedObjectContext: importManagedObjectContext
-                                          withRootObjectType: kChannelRootObject
+                                         ignoringObjectTypes: kIgnoreNothing
                                                    andViewId: @"Channels"];
                          }
                      }
