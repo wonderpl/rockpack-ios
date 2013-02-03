@@ -92,7 +92,7 @@
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
                                                                    ascending: YES];
     return @[sortDescriptor];
 }

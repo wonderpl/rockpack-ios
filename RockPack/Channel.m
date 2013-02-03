@@ -64,6 +64,7 @@ static NSEntityDescription *channelEntity = nil;
             instance.viewId = viewId;
             
             if (instance.videoInstancesSet.count == 0)
+//            [instance.videoInstancesSet removeAllObjects];
             {
                 NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
                 
