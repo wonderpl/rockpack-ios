@@ -131,6 +131,19 @@
                                                   object: nil];
 }
 
+
+- (void) reloadCollectionViews
+{
+    [self.videoThumbnailCollectionView reloadData];
+    
+    // Set the first video
+    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
+    {
+        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
+                                                           inSection: 0]];
+    }
+}
+
 - (BOOL) hasVideoQueue
 {
     return TRUE;
@@ -156,12 +169,6 @@
 {
     //    return @"daysAgo";
     return nil;
-}
-
-
-- (void) reloadCollectionViews
-{
-    [self.videoThumbnailCollectionView reloadData];
 }
 
 
