@@ -155,8 +155,8 @@
                  
                  [self.appDelegate saveContext: TRUE];
                  
-                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-                                                                     object: nil];
+//                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+//                                                                     object: nil];
              }
              else
              {
@@ -230,8 +230,8 @@
              // TODO: I think that we need to work out how to save asynchronously
              [appDelegate saveContext: TRUE];
              
-             [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-                                                                 object: nil];
+//             [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+//                                                                 object: nil];
          }
          else
          {
@@ -314,8 +314,8 @@
                  
                  [appDelegate saveContext: TRUE];
                  
-                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-                                                                     object: nil];
+//                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+//                                                                     object: nil];
              }
              else
              {

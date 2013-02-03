@@ -311,6 +311,17 @@
 //			[self.view addSubview: toViewController.view];
             [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
 		}
+        
+        // We need to see if we need to hide/show the back button for the new view controller
+        
+        if ([toViewController isKindOfClass: [UINavigationController class]] && [[(UINavigationController *)toViewController viewControllers] count] > 1)
+        {
+            [self showBackButton];
+        }
+        else
+        {
+            [self hideBackButton];
+        }
 	}
 }
 
@@ -817,8 +828,7 @@
 
 - (void) showBackButton
 {
-    // Only slide out if not already visible
-    if (self.isShowingBackButton == FALSE)
+    if (self.topButtonView.frame.origin.x < 0)
     {
         [UIView animateWithDuration: 0.25f
                               delay: 0.0f
@@ -840,7 +850,7 @@
 - (void) hideBackButton
 {
     // Only hide if  already visible
-    if (self.isShowingBackButton == FALSE)
+    if (self.topButtonView.frame.origin.x >= 0)
     {
         [UIView animateWithDuration: 0.25f
                               delay: 0.0f

@@ -268,6 +268,9 @@
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     NSLog (@"controller updated");
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+                                                        object: nil];
 }
 
 // Abstract functions, should be overidden in subclasses
