@@ -105,10 +105,10 @@ static NSEntityDescription *channelEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                          ignoringObjectTypes:ignoringObjects
+                          ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created Channel instance with id %@", instance.uniqueId);
+        NSLog(@"Created Channel instance with id %@ and viewId &@", instance.uniqueId, instance.viewId);
         
         return instance;
     }
@@ -134,16 +134,10 @@ static NSEntityDescription *channelEntity = nil;
     // If we are initially creating Channel objects, then set our viewId of the appropriate vide name
     // otherwise just set to blank
     
-    self.viewId = viewId;
-    
-//    if (rootObject == kChannelRootObject)
-//    {
-//       self.viewId = viewId; 
-//    }
-//    else
-//    {
-//        self.viewId = @"";
-//    }
+    if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
+    {
+        self.viewId = viewId;
+    }
     
     self.categoryId = [dictionary objectForKey: @"category_id"
                                    withDefault: @""];

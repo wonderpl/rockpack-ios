@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "MBProgressHUD.h"
@@ -23,7 +24,7 @@
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
@@ -36,12 +37,17 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadCollectionViews)
+                                                 name: kDataUpdated
+                                               object: nil];
 
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.channelThumbnailCollection registerNib: thumbnailCellNib
+    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                       forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
 
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
@@ -49,6 +55,7 @@
     
     [self.view addGestureRecognizer: pinchOnChannelView];
 }
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -59,12 +66,19 @@
     [appDelegate.networkEngine updateChannelsScreen];
 }
 
+
+- (void) reloadCollectionViews
+{
+    [self.channelThumbnailCollectionView reloadData];
+}
+
 #pragma mark - Core Data Support
 
 - (NSPredicate *) channelFetchedResultsControllerPredicate
 {
     return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
 }
+
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
 {
@@ -167,7 +181,7 @@
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (!indexPath)
@@ -178,7 +192,7 @@
     [self toggleChannelRockItAtIndex: indexPath];
     
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
     cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
@@ -194,7 +208,7 @@
         
         DebugLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollection]];
+        NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollectionView]];
         
         if (!indexPath)
         {
@@ -204,14 +218,14 @@
         self.pinchedIndexPath = indexPath;
         
         Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
         
         // Get the various frames we need to calculate the actual position
         CGRect imageViewFrame = channelCell.imageView.frame;
         CGRect viewFrame = channelCell.superview.frame;
         CGRect cellFrame = channelCell.frame;
         
-        CGPoint offset = self.channelThumbnailCollection.contentOffset;
+        CGPoint offset = self.channelThumbnailCollectionView.contentOffset;
         
         // Now add them together to get the real pos in the top view
         imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;

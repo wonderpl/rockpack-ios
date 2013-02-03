@@ -119,7 +119,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     {
         self.channel = [Channel instanceFromDictionary: [dictionary objectForKey: @"channel"]
                          usingManagedObjectContext: managedObjectContext
-                               ignoringObjectTypes: kIgnoreChannelObjects
+                               ignoringObjectTypes: ignoringObjects
                                          andViewId: viewId];
     }
 }

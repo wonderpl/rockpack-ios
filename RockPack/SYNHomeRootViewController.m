@@ -85,11 +85,12 @@
     [appDelegate.networkEngine updateHomeScreen];
 }
 
+
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
 }
-
+\
 - (BOOL) hasVideoQueue
 {
     return TRUE;
