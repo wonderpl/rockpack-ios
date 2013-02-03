@@ -73,7 +73,8 @@ static NSEntityDescription *videoInstanceEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-                          ignoringObjectTypes: kIgnoreVideoInstanceObjects
+//                          ignoringObjectTypes: kIgnoreVideoInstanceObjects
+                          ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects: kIgnoreVideoInstanceObjects
                                     andViewId: viewId];
         
         NSLog(@"Created VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);

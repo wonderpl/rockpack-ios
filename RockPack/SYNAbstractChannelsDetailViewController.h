@@ -23,6 +23,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
+@property (nonatomic, strong) NSMutableArray *videoInstancesArray;
 @property (nonatomic, strong) SYNChannelHeaderView *collectionHeaderView;
 @property (nonatomic, strong, readonly) Channel *channel;
 

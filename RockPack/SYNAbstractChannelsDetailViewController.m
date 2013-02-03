@@ -36,7 +36,6 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
-@property (nonatomic, strong) NSMutableArray *videoInstancesArray;
 @property (nonatomic, strong) MKNetworkOperation *imageLoadingOperation;
 
 @end
@@ -129,7 +128,6 @@
 {
     [super viewWillAppear: animated];
 
-    
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
 }

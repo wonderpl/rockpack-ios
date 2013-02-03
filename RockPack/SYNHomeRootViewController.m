@@ -37,11 +37,6 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
-    
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
@@ -76,13 +71,29 @@
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
 }
 
+
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadCollectionViews)
+                                                 name: kDataUpdated
+                                               object: nil];
+    
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateHomeScreen];
+}
+
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    [super viewWillDisappear: animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kDataUpdated
+                                                  object: nil];
 }
 
 

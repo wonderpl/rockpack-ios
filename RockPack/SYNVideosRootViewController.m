@@ -64,12 +64,6 @@
     
     self.videoThumbnailCollectionView.collectionViewLayout = standardFlowLayout;
 
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
-
     // Set the labels to use the custom font
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.channelLabel.font = [UIFont rockpackFontOfSize: 14.0f];
@@ -102,6 +96,11 @@
 {
     [super viewWillAppear: animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadCollectionViews)
+                                                 name: kDataUpdated
+                                               object: nil];
+    
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateVideosScreen];
@@ -123,8 +122,10 @@
 }
 
 
-- (void) dealloc
+- (void) viewWillDisappear: (BOOL) animated
 {
+    [super viewWillDisappear: animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kDataUpdated
                                                   object: nil];

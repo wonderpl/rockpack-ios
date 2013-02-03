@@ -37,11 +37,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
 
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
@@ -61,9 +56,24 @@
 {
     [super viewWillAppear: animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadCollectionViews)
+                                                 name: kDataUpdated
+                                               object: nil];
+    
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateChannelsScreen];
+}
+
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    [super viewWillDisappear: animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kDataUpdated
+                                                  object: nil];
 }
 
 
