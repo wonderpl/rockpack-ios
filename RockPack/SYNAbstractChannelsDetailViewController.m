@@ -62,7 +62,8 @@
     
     // Set all the labels to use the custom font
     self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
-    self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];  
+    self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.saveOrDoneButtonLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
 
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
@@ -438,6 +439,16 @@
         [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString]
                                        placeHolderImage: nil];
     }
+}
+
+- (IBAction) userTouchedSaveButton: (id) sender
+{
+    NSLog (@"User touched save button");
+}
+
+- (IBAction) userTouchedDoneButton: (id) sender
+{
+    NSLog (@"User touched done button");
 }
 
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "HPGrowingTextView.h"
+#import "SYNAppDelegate.h"
+#import "SYNBottomTabViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "SYNChannelHeaderView.h"
@@ -25,7 +27,12 @@
     // Hide buttons not used in channel creation
     self.editButton.hidden = TRUE;
     self.shareButton.hidden = TRUE;
-    self.channelCoverCarouselCollectionView.hidden = FALSE;
+    self.saveOrDoneButtonLabel.hidden = FALSE;
+
+    [self showDoneButton];
+    
+    self.channelCoverCarouselCollectionView.hidden = TRUE;
+    
     self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
     self.collectionHeaderView.channelDescriptionTextView.text = @"Describe your channel...";
     
@@ -43,5 +50,50 @@
 }
 
 
+#pragma mark - UI Helpers
+
+- (void) showDoneButton
+{
+    self.saveButton.hidden = TRUE;
+    
+    // We need to start off with the DONE button visible as user may choose not to customise anything
+    self.doneButton.hidden = FALSE;
+    self.saveOrDoneButtonLabel.text = NSLocalizedString(@"DONE", @"Save / Done button");
+}
+
+- (void) showSaveButton
+{
+    self.doneButton.hidden = TRUE;
+    
+    // We need to start off with the DONE button visible as user may choose not to customise anything
+    self.saveButton.hidden = FALSE;
+    self.saveOrDoneButtonLabel.text = NSLocalizedString(@"SAVE", @"Save / Done button");
+}
+
+
+#pragma mark - User Interaction
+
+- (IBAction) userTouchedSaveButton: (id) sender
+{
+    NSLog (@"User touched save button");
+}
+
+- (IBAction) userTouchedDoneButton: (id) sender
+{
+    NSLog (@"User touched done button");
+    
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    
+    [bottomTabViewController popCurrentViewController: nil];
+}
+
+#pragma mark - Text Field delegate
+
+- (BOOL) textFieldShouldReturn: (UITextField *) textField
+{
+    [self showSaveButton];
+}
 
 @end

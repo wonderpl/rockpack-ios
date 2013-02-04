@@ -11,7 +11,6 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
-#import "SYNBottomTabViewController.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoDB.h"
@@ -71,7 +70,6 @@
     self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    
     
     // Set up large video view
     self.videoWebView.backgroundColor = [UIColor blackColor];

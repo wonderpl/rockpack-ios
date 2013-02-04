@@ -20,5 +20,6 @@
 - (void) toggleShareMenu;
 - (void) showBackButton;
 - (void) hideBackButton;
+- (IBAction) popCurrentViewController: (id) sender;
 
 @end
