@@ -278,89 +278,6 @@
 		019E82041654043A00744A03 /* Trash.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FE1654043A00744A03 /* Trash.aif */; };
 		019E829A1654051600744A03 /* BackgroundChannelThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82451654051600744A03 /* BackgroundChannelThumbnail.png */; };
 		019E829B1654051600744A03 /* BackgroundChannelThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82461654051600744A03 /* BackgroundChannelThumbnail@2x.png */; };
-		019E829C1654051600744A03 /* ChannelCover1.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82471654051600744A03 /* ChannelCover1.png */; };
-		019E829D1654051600744A03 /* ChannelCover1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82481654051600744A03 /* ChannelCover1@2x.png */; };
-		019E829E1654051600744A03 /* ChannelCover2.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82491654051600744A03 /* ChannelCover2.png */; };
-		019E829F1654051600744A03 /* ChannelCover2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E824A1654051600744A03 /* ChannelCover2@2x.png */; };
-		019E82A01654051600744A03 /* ChannelCover3.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E824B1654051600744A03 /* ChannelCover3.png */; };
-		019E82A11654051600744A03 /* ChannelCover3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E824C1654051600744A03 /* ChannelCover3@2x.png */; };
-		019E82A21654051600744A03 /* ChannelCover4.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E824D1654051600744A03 /* ChannelCover4.png */; };
-		019E82A31654051600744A03 /* ChannelCover4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E824E1654051600744A03 /* ChannelCover4@2x.png */; };
-		019E82A41654051600744A03 /* ChannelCover5.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E824F1654051600744A03 /* ChannelCover5.png */; };
-		019E82A51654051600744A03 /* ChannelCover5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82501654051600744A03 /* ChannelCover5@2x.png */; };
-		019E82A61654051600744A03 /* ChannelCover6.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82511654051600744A03 /* ChannelCover6.png */; };
-		019E82A71654051600744A03 /* ChannelCover6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82521654051600744A03 /* ChannelCover6@2x.png */; };
-		019E82A81654051600744A03 /* ChannelCover7.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82531654051600744A03 /* ChannelCover7.png */; };
-		019E82A91654051600744A03 /* ChannelCover7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82541654051600744A03 /* ChannelCover7@2x.png */; };
-		019E82AA1654051600744A03 /* ChannelCover8.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82551654051600744A03 /* ChannelCover8.png */; };
-		019E82AB1654051600744A03 /* ChannelCover8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82561654051600744A03 /* ChannelCover8@2x.png */; };
-		019E82AC1654051600744A03 /* ChannelCover9.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82571654051600744A03 /* ChannelCover9.png */; };
-		019E82AD1654051600744A03 /* ChannelCover9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82581654051600744A03 /* ChannelCover9@2x.png */; };
-		019E82AE1654051600744A03 /* ChannelCover10.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82591654051600744A03 /* ChannelCover10.png */; };
-		019E82AF1654051600744A03 /* ChannelCover10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E825A1654051600744A03 /* ChannelCover10@2x.png */; };
-		019E82B01654051600744A03 /* ChannelCover11.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E825B1654051600744A03 /* ChannelCover11.png */; };
-		019E82B11654051600744A03 /* ChannelCover11@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E825C1654051600744A03 /* ChannelCover11@2x.png */; };
-		019E82B21654051600744A03 /* ChannelCover12.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E825D1654051600744A03 /* ChannelCover12.png */; };
-		019E82B31654051600744A03 /* ChannelCover12@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E825E1654051600744A03 /* ChannelCover12@2x.png */; };
-		019E82B41654051600744A03 /* ChannelCover13.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E825F1654051600744A03 /* ChannelCover13.png */; };
-		019E82B51654051600744A03 /* ChannelCover13@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82601654051600744A03 /* ChannelCover13@2x.png */; };
-		019E82B61654051600744A03 /* ChannelCover14.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82611654051600744A03 /* ChannelCover14.png */; };
-		019E82B71654051600744A03 /* ChannelCover14@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82621654051600744A03 /* ChannelCover14@2x.png */; };
-		019E82B81654051600744A03 /* ChannelCover15.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82631654051600744A03 /* ChannelCover15.png */; };
-		019E82B91654051600744A03 /* ChannelCover15@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82641654051600744A03 /* ChannelCover15@2x.png */; };
-		019E82BA1654051600744A03 /* ChannelCover16.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82651654051600744A03 /* ChannelCover16.png */; };
-		019E82BB1654051600744A03 /* ChannelCover16@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82661654051600744A03 /* ChannelCover16@2x.png */; };
-		019E82BC1654051600744A03 /* ChannelCover17.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82671654051600744A03 /* ChannelCover17.png */; };
-		019E82BD1654051600744A03 /* ChannelCover17@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82681654051600744A03 /* ChannelCover17@2x.png */; };
-		019E82BE1654051600744A03 /* ChannelCover18.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82691654051600744A03 /* ChannelCover18.png */; };
-		019E82BF1654051600744A03 /* ChannelCover18@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E826A1654051600744A03 /* ChannelCover18@2x.png */; };
-		019E82C01654051600744A03 /* ChannelCover19.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E826B1654051600744A03 /* ChannelCover19.png */; };
-		019E82C11654051600744A03 /* ChannelCover19@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E826C1654051600744A03 /* ChannelCover19@2x.png */; };
-		019E82C21654051600744A03 /* ChannelCover20.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E826D1654051600744A03 /* ChannelCover20.png */; };
-		019E82C31654051600744A03 /* ChannelCover20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E826E1654051600744A03 /* ChannelCover20@2x.png */; };
-		019E82C41654051600744A03 /* ChannelCover21.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E826F1654051600744A03 /* ChannelCover21.png */; };
-		019E82C51654051600744A03 /* ChannelCover21@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82701654051600744A03 /* ChannelCover21@2x.png */; };
-		019E82C61654051600744A03 /* ChannelCover22.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82711654051600744A03 /* ChannelCover22.png */; };
-		019E82C71654051600744A03 /* ChannelCover22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82721654051600744A03 /* ChannelCover22@2x.png */; };
-		019E82C81654051600744A03 /* ChannelCover23.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82731654051600744A03 /* ChannelCover23.png */; };
-		019E82C91654051600744A03 /* ChannelCover23@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82741654051600744A03 /* ChannelCover23@2x.png */; };
-		019E82CA1654051600744A03 /* ChannelCover24.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82751654051600744A03 /* ChannelCover24.png */; };
-		019E82CB1654051600744A03 /* ChannelCover24@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82761654051600744A03 /* ChannelCover24@2x.png */; };
-		019E82CC1654051600744A03 /* ChannelCover25.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82771654051600744A03 /* ChannelCover25.png */; };
-		019E82CD1654051600744A03 /* ChannelCover25@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82781654051600744A03 /* ChannelCover25@2x.png */; };
-		019E82CE1654051600744A03 /* ChannelCover26.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82791654051600744A03 /* ChannelCover26.png */; };
-		019E82CF1654051600744A03 /* ChannelCover26@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E827A1654051600744A03 /* ChannelCover26@2x.png */; };
-		019E82D01654051600744A03 /* ChannelCover27.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E827B1654051600744A03 /* ChannelCover27.png */; };
-		019E82D11654051600744A03 /* ChannelCover27@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E827C1654051600744A03 /* ChannelCover27@2x.png */; };
-		019E82D21654051600744A03 /* ChannelCover28.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E827D1654051600744A03 /* ChannelCover28.png */; };
-		019E82D31654051600744A03 /* ChannelCover28@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E827E1654051600744A03 /* ChannelCover28@2x.png */; };
-		019E82D41654051600744A03 /* ChannelCover29.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E827F1654051600744A03 /* ChannelCover29.png */; };
-		019E82D51654051600744A03 /* ChannelCover29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82801654051600744A03 /* ChannelCover29@2x.png */; };
-		019E82D61654051600744A03 /* ChannelCover30.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82811654051600744A03 /* ChannelCover30.png */; };
-		019E82D71654051600744A03 /* ChannelCover30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82821654051600744A03 /* ChannelCover30@2x.png */; };
-		019E82D81654051600744A03 /* ChannelCover31.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82831654051600744A03 /* ChannelCover31.png */; };
-		019E82D91654051600744A03 /* ChannelCover31@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82841654051600744A03 /* ChannelCover31@2x.png */; };
-		019E82DA1654051600744A03 /* ChannelCover32.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82851654051600744A03 /* ChannelCover32.png */; };
-		019E82DB1654051600744A03 /* ChannelCover32@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82861654051600744A03 /* ChannelCover32@2x.png */; };
-		019E82DC1654051600744A03 /* ChannelCover33.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82871654051600744A03 /* ChannelCover33.png */; };
-		019E82DD1654051600744A03 /* ChannelCover33@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82881654051600744A03 /* ChannelCover33@2x.png */; };
-		019E82DE1654051600744A03 /* ChannelHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82891654051600744A03 /* ChannelHeader.png */; };
-		019E82DF1654051600744A03 /* ChannelHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E828A1654051600744A03 /* ChannelHeader@2x.png */; };
-		019E82E01654051600744A03 /* ChannelSideBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E828B1654051600744A03 /* ChannelSideBar.png */; };
-		019E82E11654051600744A03 /* ChannelSideBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E828C1654051600744A03 /* ChannelSideBar@2x.png */; };
-		019E82E21654051600744A03 /* ChannelStatsPanel.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E828D1654051600744A03 /* ChannelStatsPanel.png */; };
-		019E82E31654051600744A03 /* ChannelStatsPanel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E828E1654051600744A03 /* ChannelStatsPanel@2x.png */; };
-		019E82E41654051600744A03 /* ChannelWallpaper1.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E828F1654051600744A03 /* ChannelWallpaper1.png */; };
-		019E82E51654051600744A03 /* ChannelWallpaper2.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82901654051600744A03 /* ChannelWallpaper2.png */; };
-		019E82E61654051600744A03 /* ChannelWallpaper3.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82911654051600744A03 /* ChannelWallpaper3.png */; };
-		019E82E71654051600744A03 /* ChannelWallpaper4.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82921654051600744A03 /* ChannelWallpaper4.png */; };
-		019E82E81654051600744A03 /* ChannelWallpaper5.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82931654051600744A03 /* ChannelWallpaper5.png */; };
-		019E82E91654051600744A03 /* ChannelWallpaper6.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82941654051600744A03 /* ChannelWallpaper6.png */; };
-		019E82EA1654051600744A03 /* ChannelWallpaper7.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82951654051600744A03 /* ChannelWallpaper7.png */; };
-		019E82EB1654051600744A03 /* ChannelWallpaper8.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82961654051600744A03 /* ChannelWallpaper8.png */; };
-		019E82EC1654051600744A03 /* ChannelWallpaper9.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82971654051600744A03 /* ChannelWallpaper9.png */; };
-		019E82ED1654051600744A03 /* ChannelWallpaperGeneric.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82981654051600744A03 /* ChannelWallpaperGeneric.png */; };
-		019E82EE1654051600744A03 /* ChannelWallpaperGeneric@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82991654051600744A03 /* ChannelWallpaperGeneric@2x.png */; };
 		019E8324165405E500744A03 /* Avatar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82FD165405E500744A03 /* Avatar1.png */; };
 		019E8325165405E500744A03 /* Avatar1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82FE165405E500744A03 /* Avatar1@2x.png */; };
 		019E8326165405E500744A03 /* Avatar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82FF165405E500744A03 /* Avatar2.png */; };
@@ -510,7 +427,6 @@
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
 		01EA81CB16B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */; };
 		01EA81CC16B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */; };
-		01EA81CD16B94E770069AFF9 /* placeholder12.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81CA16B94E770069AFF9 /* placeholder12.png */; };
 		01EA81D016B94F330069AFF9 /* GlossVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */; };
 		01EA81D116B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */; };
 		01EA81D416B9773E0069AFF9 /* SYNChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */; };
@@ -884,89 +800,6 @@
 		019E81FE1654043A00744A03 /* Trash.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = Trash.aif; path = Assets/Audio/Trash.aif; sourceTree = "<group>"; };
 		019E82451654051600744A03 /* BackgroundChannelThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundChannelThumbnail.png; path = Assets/Images/BackgroundChannelThumbnail.png; sourceTree = "<group>"; };
 		019E82461654051600744A03 /* BackgroundChannelThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundChannelThumbnail@2x.png"; path = "Assets/Images/BackgroundChannelThumbnail@2x.png"; sourceTree = "<group>"; };
-		019E82471654051600744A03 /* ChannelCover1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover1.png; path = Assets/Images/ChannelCover1.png; sourceTree = "<group>"; };
-		019E82481654051600744A03 /* ChannelCover1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover1@2x.png"; path = "Assets/Images/ChannelCover1@2x.png"; sourceTree = "<group>"; };
-		019E82491654051600744A03 /* ChannelCover2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover2.png; path = Assets/Images/ChannelCover2.png; sourceTree = "<group>"; };
-		019E824A1654051600744A03 /* ChannelCover2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover2@2x.png"; path = "Assets/Images/ChannelCover2@2x.png"; sourceTree = "<group>"; };
-		019E824B1654051600744A03 /* ChannelCover3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover3.png; path = Assets/Images/ChannelCover3.png; sourceTree = "<group>"; };
-		019E824C1654051600744A03 /* ChannelCover3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover3@2x.png"; path = "Assets/Images/ChannelCover3@2x.png"; sourceTree = "<group>"; };
-		019E824D1654051600744A03 /* ChannelCover4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover4.png; path = Assets/Images/ChannelCover4.png; sourceTree = "<group>"; };
-		019E824E1654051600744A03 /* ChannelCover4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover4@2x.png"; path = "Assets/Images/ChannelCover4@2x.png"; sourceTree = "<group>"; };
-		019E824F1654051600744A03 /* ChannelCover5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover5.png; path = Assets/Images/ChannelCover5.png; sourceTree = "<group>"; };
-		019E82501654051600744A03 /* ChannelCover5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover5@2x.png"; path = "Assets/Images/ChannelCover5@2x.png"; sourceTree = "<group>"; };
-		019E82511654051600744A03 /* ChannelCover6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover6.png; path = Assets/Images/ChannelCover6.png; sourceTree = "<group>"; };
-		019E82521654051600744A03 /* ChannelCover6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover6@2x.png"; path = "Assets/Images/ChannelCover6@2x.png"; sourceTree = "<group>"; };
-		019E82531654051600744A03 /* ChannelCover7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover7.png; path = Assets/Images/ChannelCover7.png; sourceTree = "<group>"; };
-		019E82541654051600744A03 /* ChannelCover7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover7@2x.png"; path = "Assets/Images/ChannelCover7@2x.png"; sourceTree = "<group>"; };
-		019E82551654051600744A03 /* ChannelCover8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover8.png; path = Assets/Images/ChannelCover8.png; sourceTree = "<group>"; };
-		019E82561654051600744A03 /* ChannelCover8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover8@2x.png"; path = "Assets/Images/ChannelCover8@2x.png"; sourceTree = "<group>"; };
-		019E82571654051600744A03 /* ChannelCover9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover9.png; path = Assets/Images/ChannelCover9.png; sourceTree = "<group>"; };
-		019E82581654051600744A03 /* ChannelCover9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover9@2x.png"; path = "Assets/Images/ChannelCover9@2x.png"; sourceTree = "<group>"; };
-		019E82591654051600744A03 /* ChannelCover10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover10.png; path = Assets/Images/ChannelCover10.png; sourceTree = "<group>"; };
-		019E825A1654051600744A03 /* ChannelCover10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover10@2x.png"; path = "Assets/Images/ChannelCover10@2x.png"; sourceTree = "<group>"; };
-		019E825B1654051600744A03 /* ChannelCover11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover11.png; path = Assets/Images/ChannelCover11.png; sourceTree = "<group>"; };
-		019E825C1654051600744A03 /* ChannelCover11@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover11@2x.png"; path = "Assets/Images/ChannelCover11@2x.png"; sourceTree = "<group>"; };
-		019E825D1654051600744A03 /* ChannelCover12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover12.png; path = Assets/Images/ChannelCover12.png; sourceTree = "<group>"; };
-		019E825E1654051600744A03 /* ChannelCover12@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover12@2x.png"; path = "Assets/Images/ChannelCover12@2x.png"; sourceTree = "<group>"; };
-		019E825F1654051600744A03 /* ChannelCover13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover13.png; path = Assets/Images/ChannelCover13.png; sourceTree = "<group>"; };
-		019E82601654051600744A03 /* ChannelCover13@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover13@2x.png"; path = "Assets/Images/ChannelCover13@2x.png"; sourceTree = "<group>"; };
-		019E82611654051600744A03 /* ChannelCover14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover14.png; path = Assets/Images/ChannelCover14.png; sourceTree = "<group>"; };
-		019E82621654051600744A03 /* ChannelCover14@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover14@2x.png"; path = "Assets/Images/ChannelCover14@2x.png"; sourceTree = "<group>"; };
-		019E82631654051600744A03 /* ChannelCover15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover15.png; path = Assets/Images/ChannelCover15.png; sourceTree = "<group>"; };
-		019E82641654051600744A03 /* ChannelCover15@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover15@2x.png"; path = "Assets/Images/ChannelCover15@2x.png"; sourceTree = "<group>"; };
-		019E82651654051600744A03 /* ChannelCover16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover16.png; path = Assets/Images/ChannelCover16.png; sourceTree = "<group>"; };
-		019E82661654051600744A03 /* ChannelCover16@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover16@2x.png"; path = "Assets/Images/ChannelCover16@2x.png"; sourceTree = "<group>"; };
-		019E82671654051600744A03 /* ChannelCover17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover17.png; path = Assets/Images/ChannelCover17.png; sourceTree = "<group>"; };
-		019E82681654051600744A03 /* ChannelCover17@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover17@2x.png"; path = "Assets/Images/ChannelCover17@2x.png"; sourceTree = "<group>"; };
-		019E82691654051600744A03 /* ChannelCover18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover18.png; path = Assets/Images/ChannelCover18.png; sourceTree = "<group>"; };
-		019E826A1654051600744A03 /* ChannelCover18@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover18@2x.png"; path = "Assets/Images/ChannelCover18@2x.png"; sourceTree = "<group>"; };
-		019E826B1654051600744A03 /* ChannelCover19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover19.png; path = Assets/Images/ChannelCover19.png; sourceTree = "<group>"; };
-		019E826C1654051600744A03 /* ChannelCover19@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover19@2x.png"; path = "Assets/Images/ChannelCover19@2x.png"; sourceTree = "<group>"; };
-		019E826D1654051600744A03 /* ChannelCover20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover20.png; path = Assets/Images/ChannelCover20.png; sourceTree = "<group>"; };
-		019E826E1654051600744A03 /* ChannelCover20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover20@2x.png"; path = "Assets/Images/ChannelCover20@2x.png"; sourceTree = "<group>"; };
-		019E826F1654051600744A03 /* ChannelCover21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover21.png; path = Assets/Images/ChannelCover21.png; sourceTree = "<group>"; };
-		019E82701654051600744A03 /* ChannelCover21@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover21@2x.png"; path = "Assets/Images/ChannelCover21@2x.png"; sourceTree = "<group>"; };
-		019E82711654051600744A03 /* ChannelCover22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover22.png; path = Assets/Images/ChannelCover22.png; sourceTree = "<group>"; };
-		019E82721654051600744A03 /* ChannelCover22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover22@2x.png"; path = "Assets/Images/ChannelCover22@2x.png"; sourceTree = "<group>"; };
-		019E82731654051600744A03 /* ChannelCover23.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover23.png; path = Assets/Images/ChannelCover23.png; sourceTree = "<group>"; };
-		019E82741654051600744A03 /* ChannelCover23@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover23@2x.png"; path = "Assets/Images/ChannelCover23@2x.png"; sourceTree = "<group>"; };
-		019E82751654051600744A03 /* ChannelCover24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover24.png; path = Assets/Images/ChannelCover24.png; sourceTree = "<group>"; };
-		019E82761654051600744A03 /* ChannelCover24@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover24@2x.png"; path = "Assets/Images/ChannelCover24@2x.png"; sourceTree = "<group>"; };
-		019E82771654051600744A03 /* ChannelCover25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover25.png; path = Assets/Images/ChannelCover25.png; sourceTree = "<group>"; };
-		019E82781654051600744A03 /* ChannelCover25@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover25@2x.png"; path = "Assets/Images/ChannelCover25@2x.png"; sourceTree = "<group>"; };
-		019E82791654051600744A03 /* ChannelCover26.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover26.png; path = Assets/Images/ChannelCover26.png; sourceTree = "<group>"; };
-		019E827A1654051600744A03 /* ChannelCover26@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover26@2x.png"; path = "Assets/Images/ChannelCover26@2x.png"; sourceTree = "<group>"; };
-		019E827B1654051600744A03 /* ChannelCover27.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover27.png; path = Assets/Images/ChannelCover27.png; sourceTree = "<group>"; };
-		019E827C1654051600744A03 /* ChannelCover27@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover27@2x.png"; path = "Assets/Images/ChannelCover27@2x.png"; sourceTree = "<group>"; };
-		019E827D1654051600744A03 /* ChannelCover28.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover28.png; path = Assets/Images/ChannelCover28.png; sourceTree = "<group>"; };
-		019E827E1654051600744A03 /* ChannelCover28@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover28@2x.png"; path = "Assets/Images/ChannelCover28@2x.png"; sourceTree = "<group>"; };
-		019E827F1654051600744A03 /* ChannelCover29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover29.png; path = Assets/Images/ChannelCover29.png; sourceTree = "<group>"; };
-		019E82801654051600744A03 /* ChannelCover29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover29@2x.png"; path = "Assets/Images/ChannelCover29@2x.png"; sourceTree = "<group>"; };
-		019E82811654051600744A03 /* ChannelCover30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover30.png; path = Assets/Images/ChannelCover30.png; sourceTree = "<group>"; };
-		019E82821654051600744A03 /* ChannelCover30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover30@2x.png"; path = "Assets/Images/ChannelCover30@2x.png"; sourceTree = "<group>"; };
-		019E82831654051600744A03 /* ChannelCover31.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover31.png; path = Assets/Images/ChannelCover31.png; sourceTree = "<group>"; };
-		019E82841654051600744A03 /* ChannelCover31@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover31@2x.png"; path = "Assets/Images/ChannelCover31@2x.png"; sourceTree = "<group>"; };
-		019E82851654051600744A03 /* ChannelCover32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover32.png; path = Assets/Images/ChannelCover32.png; sourceTree = "<group>"; };
-		019E82861654051600744A03 /* ChannelCover32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover32@2x.png"; path = "Assets/Images/ChannelCover32@2x.png"; sourceTree = "<group>"; };
-		019E82871654051600744A03 /* ChannelCover33.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCover33.png; path = Assets/Images/ChannelCover33.png; sourceTree = "<group>"; };
-		019E82881654051600744A03 /* ChannelCover33@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCover33@2x.png"; path = "Assets/Images/ChannelCover33@2x.png"; sourceTree = "<group>"; };
-		019E82891654051600744A03 /* ChannelHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelHeader.png; path = Assets/Images/ChannelHeader.png; sourceTree = "<group>"; };
-		019E828A1654051600744A03 /* ChannelHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelHeader@2x.png"; path = "Assets/Images/ChannelHeader@2x.png"; sourceTree = "<group>"; };
-		019E828B1654051600744A03 /* ChannelSideBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelSideBar.png; path = Assets/Images/ChannelSideBar.png; sourceTree = "<group>"; };
-		019E828C1654051600744A03 /* ChannelSideBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelSideBar@2x.png"; path = "Assets/Images/ChannelSideBar@2x.png"; sourceTree = "<group>"; };
-		019E828D1654051600744A03 /* ChannelStatsPanel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelStatsPanel.png; path = Assets/Images/ChannelStatsPanel.png; sourceTree = "<group>"; };
-		019E828E1654051600744A03 /* ChannelStatsPanel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelStatsPanel@2x.png"; path = "Assets/Images/ChannelStatsPanel@2x.png"; sourceTree = "<group>"; };
-		019E828F1654051600744A03 /* ChannelWallpaper1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper1.png; path = Assets/Images/ChannelWallpaper1.png; sourceTree = "<group>"; };
-		019E82901654051600744A03 /* ChannelWallpaper2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper2.png; path = Assets/Images/ChannelWallpaper2.png; sourceTree = "<group>"; };
-		019E82911654051600744A03 /* ChannelWallpaper3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper3.png; path = Assets/Images/ChannelWallpaper3.png; sourceTree = "<group>"; };
-		019E82921654051600744A03 /* ChannelWallpaper4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper4.png; path = Assets/Images/ChannelWallpaper4.png; sourceTree = "<group>"; };
-		019E82931654051600744A03 /* ChannelWallpaper5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper5.png; path = Assets/Images/ChannelWallpaper5.png; sourceTree = "<group>"; };
-		019E82941654051600744A03 /* ChannelWallpaper6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper6.png; path = Assets/Images/ChannelWallpaper6.png; sourceTree = "<group>"; };
-		019E82951654051600744A03 /* ChannelWallpaper7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper7.png; path = Assets/Images/ChannelWallpaper7.png; sourceTree = "<group>"; };
-		019E82961654051600744A03 /* ChannelWallpaper8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper8.png; path = Assets/Images/ChannelWallpaper8.png; sourceTree = "<group>"; };
-		019E82971654051600744A03 /* ChannelWallpaper9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaper9.png; path = Assets/Images/ChannelWallpaper9.png; sourceTree = "<group>"; };
-		019E82981654051600744A03 /* ChannelWallpaperGeneric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelWallpaperGeneric.png; path = Assets/Images/ChannelWallpaperGeneric.png; sourceTree = "<group>"; };
-		019E82991654051600744A03 /* ChannelWallpaperGeneric@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelWallpaperGeneric@2x.png"; path = "Assets/Images/ChannelWallpaperGeneric@2x.png"; sourceTree = "<group>"; };
 		019E82FD165405E500744A03 /* Avatar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar1.png; path = Assets/Images/Avatar1.png; sourceTree = "<group>"; };
 		019E82FE165405E500744A03 /* Avatar1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Avatar1@2x.png"; path = "Assets/Images/Avatar1@2x.png"; sourceTree = "<group>"; };
 		019E82FF165405E500744A03 /* Avatar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Avatar2.png; path = Assets/Images/Avatar2.png; sourceTree = "<group>"; };
@@ -1148,7 +981,6 @@
 		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
 		01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundVideoThumbnailSmall.png; path = RockPack/BackgroundVideoThumbnailSmall.png; sourceTree = "<group>"; };
 		01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundVideoThumbnailSmall@2x.png"; path = "RockPack/BackgroundVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
-		01EA81CA16B94E770069AFF9 /* placeholder12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = placeholder12.png; path = RockPack/placeholder12.png; sourceTree = "<group>"; };
 		01EA81CE16B94F330069AFF9 /* GlossVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossVideoThumbnailSmall.png; path = RockPack/GlossVideoThumbnailSmall.png; sourceTree = "<group>"; };
 		01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossVideoThumbnailSmall@2x.png"; path = "RockPack/GlossVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
 		01EA81D216B9773E0069AFF9 /* SYNChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDetailViewController.h; sourceTree = "<group>"; };
@@ -2290,89 +2122,6 @@
 				01B7CD8D166D1E24001F4AF0 /* Placeholder2.png */,
 				019E82451654051600744A03 /* BackgroundChannelThumbnail.png */,
 				019E82461654051600744A03 /* BackgroundChannelThumbnail@2x.png */,
-				019E82471654051600744A03 /* ChannelCover1.png */,
-				019E82481654051600744A03 /* ChannelCover1@2x.png */,
-				019E82491654051600744A03 /* ChannelCover2.png */,
-				019E824A1654051600744A03 /* ChannelCover2@2x.png */,
-				019E824B1654051600744A03 /* ChannelCover3.png */,
-				019E824C1654051600744A03 /* ChannelCover3@2x.png */,
-				019E824D1654051600744A03 /* ChannelCover4.png */,
-				019E824E1654051600744A03 /* ChannelCover4@2x.png */,
-				019E824F1654051600744A03 /* ChannelCover5.png */,
-				019E82501654051600744A03 /* ChannelCover5@2x.png */,
-				019E82511654051600744A03 /* ChannelCover6.png */,
-				019E82521654051600744A03 /* ChannelCover6@2x.png */,
-				019E82531654051600744A03 /* ChannelCover7.png */,
-				019E82541654051600744A03 /* ChannelCover7@2x.png */,
-				019E82551654051600744A03 /* ChannelCover8.png */,
-				019E82561654051600744A03 /* ChannelCover8@2x.png */,
-				019E82571654051600744A03 /* ChannelCover9.png */,
-				019E82581654051600744A03 /* ChannelCover9@2x.png */,
-				019E82591654051600744A03 /* ChannelCover10.png */,
-				019E825A1654051600744A03 /* ChannelCover10@2x.png */,
-				019E825B1654051600744A03 /* ChannelCover11.png */,
-				019E825C1654051600744A03 /* ChannelCover11@2x.png */,
-				019E825D1654051600744A03 /* ChannelCover12.png */,
-				019E825E1654051600744A03 /* ChannelCover12@2x.png */,
-				019E825F1654051600744A03 /* ChannelCover13.png */,
-				019E82601654051600744A03 /* ChannelCover13@2x.png */,
-				019E82611654051600744A03 /* ChannelCover14.png */,
-				019E82621654051600744A03 /* ChannelCover14@2x.png */,
-				019E82631654051600744A03 /* ChannelCover15.png */,
-				019E82641654051600744A03 /* ChannelCover15@2x.png */,
-				019E82651654051600744A03 /* ChannelCover16.png */,
-				019E82661654051600744A03 /* ChannelCover16@2x.png */,
-				019E82671654051600744A03 /* ChannelCover17.png */,
-				019E82681654051600744A03 /* ChannelCover17@2x.png */,
-				019E82691654051600744A03 /* ChannelCover18.png */,
-				019E826A1654051600744A03 /* ChannelCover18@2x.png */,
-				019E826B1654051600744A03 /* ChannelCover19.png */,
-				019E826C1654051600744A03 /* ChannelCover19@2x.png */,
-				019E826D1654051600744A03 /* ChannelCover20.png */,
-				019E826E1654051600744A03 /* ChannelCover20@2x.png */,
-				019E826F1654051600744A03 /* ChannelCover21.png */,
-				019E82701654051600744A03 /* ChannelCover21@2x.png */,
-				019E82711654051600744A03 /* ChannelCover22.png */,
-				019E82721654051600744A03 /* ChannelCover22@2x.png */,
-				019E82731654051600744A03 /* ChannelCover23.png */,
-				019E82741654051600744A03 /* ChannelCover23@2x.png */,
-				019E82751654051600744A03 /* ChannelCover24.png */,
-				019E82761654051600744A03 /* ChannelCover24@2x.png */,
-				019E82771654051600744A03 /* ChannelCover25.png */,
-				019E82781654051600744A03 /* ChannelCover25@2x.png */,
-				019E82791654051600744A03 /* ChannelCover26.png */,
-				019E827A1654051600744A03 /* ChannelCover26@2x.png */,
-				019E827B1654051600744A03 /* ChannelCover27.png */,
-				019E827C1654051600744A03 /* ChannelCover27@2x.png */,
-				019E827D1654051600744A03 /* ChannelCover28.png */,
-				019E827E1654051600744A03 /* ChannelCover28@2x.png */,
-				019E827F1654051600744A03 /* ChannelCover29.png */,
-				019E82801654051600744A03 /* ChannelCover29@2x.png */,
-				019E82811654051600744A03 /* ChannelCover30.png */,
-				019E82821654051600744A03 /* ChannelCover30@2x.png */,
-				019E82831654051600744A03 /* ChannelCover31.png */,
-				019E82841654051600744A03 /* ChannelCover31@2x.png */,
-				019E82851654051600744A03 /* ChannelCover32.png */,
-				019E82861654051600744A03 /* ChannelCover32@2x.png */,
-				019E82871654051600744A03 /* ChannelCover33.png */,
-				019E82881654051600744A03 /* ChannelCover33@2x.png */,
-				019E82891654051600744A03 /* ChannelHeader.png */,
-				019E828A1654051600744A03 /* ChannelHeader@2x.png */,
-				019E828B1654051600744A03 /* ChannelSideBar.png */,
-				019E828C1654051600744A03 /* ChannelSideBar@2x.png */,
-				019E828D1654051600744A03 /* ChannelStatsPanel.png */,
-				019E828E1654051600744A03 /* ChannelStatsPanel@2x.png */,
-				019E828F1654051600744A03 /* ChannelWallpaper1.png */,
-				019E82901654051600744A03 /* ChannelWallpaper2.png */,
-				019E82911654051600744A03 /* ChannelWallpaper3.png */,
-				019E82921654051600744A03 /* ChannelWallpaper4.png */,
-				019E82931654051600744A03 /* ChannelWallpaper5.png */,
-				019E82941654051600744A03 /* ChannelWallpaper6.png */,
-				019E82951654051600744A03 /* ChannelWallpaper7.png */,
-				019E82961654051600744A03 /* ChannelWallpaper8.png */,
-				019E82971654051600744A03 /* ChannelWallpaper9.png */,
-				019E82981654051600744A03 /* ChannelWallpaperGeneric.png */,
-				019E82991654051600744A03 /* ChannelWallpaperGeneric@2x.png */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -2521,7 +2270,6 @@
 				01EA81CF16B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png */,
 				01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */,
 				01EA81C916B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png */,
-				01EA81CA16B94E770069AFF9 /* placeholder12.png */,
 				01F8E78116B0554B000D44B9 /* ButtonClose.png */,
 				01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */,
 				01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */,
@@ -2629,89 +2377,6 @@
 				019E82041654043A00744A03 /* Trash.aif in Resources */,
 				019E829A1654051600744A03 /* BackgroundChannelThumbnail.png in Resources */,
 				019E829B1654051600744A03 /* BackgroundChannelThumbnail@2x.png in Resources */,
-				019E829C1654051600744A03 /* ChannelCover1.png in Resources */,
-				019E829D1654051600744A03 /* ChannelCover1@2x.png in Resources */,
-				019E829E1654051600744A03 /* ChannelCover2.png in Resources */,
-				019E829F1654051600744A03 /* ChannelCover2@2x.png in Resources */,
-				019E82A01654051600744A03 /* ChannelCover3.png in Resources */,
-				019E82A11654051600744A03 /* ChannelCover3@2x.png in Resources */,
-				019E82A21654051600744A03 /* ChannelCover4.png in Resources */,
-				019E82A31654051600744A03 /* ChannelCover4@2x.png in Resources */,
-				019E82A41654051600744A03 /* ChannelCover5.png in Resources */,
-				019E82A51654051600744A03 /* ChannelCover5@2x.png in Resources */,
-				019E82A61654051600744A03 /* ChannelCover6.png in Resources */,
-				019E82A71654051600744A03 /* ChannelCover6@2x.png in Resources */,
-				019E82A81654051600744A03 /* ChannelCover7.png in Resources */,
-				019E82A91654051600744A03 /* ChannelCover7@2x.png in Resources */,
-				019E82AA1654051600744A03 /* ChannelCover8.png in Resources */,
-				019E82AB1654051600744A03 /* ChannelCover8@2x.png in Resources */,
-				019E82AC1654051600744A03 /* ChannelCover9.png in Resources */,
-				019E82AD1654051600744A03 /* ChannelCover9@2x.png in Resources */,
-				019E82AE1654051600744A03 /* ChannelCover10.png in Resources */,
-				019E82AF1654051600744A03 /* ChannelCover10@2x.png in Resources */,
-				019E82B01654051600744A03 /* ChannelCover11.png in Resources */,
-				019E82B11654051600744A03 /* ChannelCover11@2x.png in Resources */,
-				019E82B21654051600744A03 /* ChannelCover12.png in Resources */,
-				019E82B31654051600744A03 /* ChannelCover12@2x.png in Resources */,
-				019E82B41654051600744A03 /* ChannelCover13.png in Resources */,
-				019E82B51654051600744A03 /* ChannelCover13@2x.png in Resources */,
-				019E82B61654051600744A03 /* ChannelCover14.png in Resources */,
-				019E82B71654051600744A03 /* ChannelCover14@2x.png in Resources */,
-				019E82B81654051600744A03 /* ChannelCover15.png in Resources */,
-				019E82B91654051600744A03 /* ChannelCover15@2x.png in Resources */,
-				019E82BA1654051600744A03 /* ChannelCover16.png in Resources */,
-				019E82BB1654051600744A03 /* ChannelCover16@2x.png in Resources */,
-				019E82BC1654051600744A03 /* ChannelCover17.png in Resources */,
-				019E82BD1654051600744A03 /* ChannelCover17@2x.png in Resources */,
-				019E82BE1654051600744A03 /* ChannelCover18.png in Resources */,
-				019E82BF1654051600744A03 /* ChannelCover18@2x.png in Resources */,
-				019E82C01654051600744A03 /* ChannelCover19.png in Resources */,
-				019E82C11654051600744A03 /* ChannelCover19@2x.png in Resources */,
-				019E82C21654051600744A03 /* ChannelCover20.png in Resources */,
-				019E82C31654051600744A03 /* ChannelCover20@2x.png in Resources */,
-				019E82C41654051600744A03 /* ChannelCover21.png in Resources */,
-				019E82C51654051600744A03 /* ChannelCover21@2x.png in Resources */,
-				019E82C61654051600744A03 /* ChannelCover22.png in Resources */,
-				019E82C71654051600744A03 /* ChannelCover22@2x.png in Resources */,
-				019E82C81654051600744A03 /* ChannelCover23.png in Resources */,
-				019E82C91654051600744A03 /* ChannelCover23@2x.png in Resources */,
-				019E82CA1654051600744A03 /* ChannelCover24.png in Resources */,
-				019E82CB1654051600744A03 /* ChannelCover24@2x.png in Resources */,
-				019E82CC1654051600744A03 /* ChannelCover25.png in Resources */,
-				019E82CD1654051600744A03 /* ChannelCover25@2x.png in Resources */,
-				019E82CE1654051600744A03 /* ChannelCover26.png in Resources */,
-				019E82CF1654051600744A03 /* ChannelCover26@2x.png in Resources */,
-				019E82D01654051600744A03 /* ChannelCover27.png in Resources */,
-				019E82D11654051600744A03 /* ChannelCover27@2x.png in Resources */,
-				019E82D21654051600744A03 /* ChannelCover28.png in Resources */,
-				019E82D31654051600744A03 /* ChannelCover28@2x.png in Resources */,
-				019E82D41654051600744A03 /* ChannelCover29.png in Resources */,
-				019E82D51654051600744A03 /* ChannelCover29@2x.png in Resources */,
-				019E82D61654051600744A03 /* ChannelCover30.png in Resources */,
-				019E82D71654051600744A03 /* ChannelCover30@2x.png in Resources */,
-				019E82D81654051600744A03 /* ChannelCover31.png in Resources */,
-				019E82D91654051600744A03 /* ChannelCover31@2x.png in Resources */,
-				019E82DA1654051600744A03 /* ChannelCover32.png in Resources */,
-				019E82DB1654051600744A03 /* ChannelCover32@2x.png in Resources */,
-				019E82DC1654051600744A03 /* ChannelCover33.png in Resources */,
-				019E82DD1654051600744A03 /* ChannelCover33@2x.png in Resources */,
-				019E82DE1654051600744A03 /* ChannelHeader.png in Resources */,
-				019E82DF1654051600744A03 /* ChannelHeader@2x.png in Resources */,
-				019E82E01654051600744A03 /* ChannelSideBar.png in Resources */,
-				019E82E11654051600744A03 /* ChannelSideBar@2x.png in Resources */,
-				019E82E21654051600744A03 /* ChannelStatsPanel.png in Resources */,
-				019E82E31654051600744A03 /* ChannelStatsPanel@2x.png in Resources */,
-				019E82E41654051600744A03 /* ChannelWallpaper1.png in Resources */,
-				019E82E51654051600744A03 /* ChannelWallpaper2.png in Resources */,
-				019E82E61654051600744A03 /* ChannelWallpaper3.png in Resources */,
-				019E82E71654051600744A03 /* ChannelWallpaper4.png in Resources */,
-				019E82E81654051600744A03 /* ChannelWallpaper5.png in Resources */,
-				019E82E91654051600744A03 /* ChannelWallpaper6.png in Resources */,
-				019E82EA1654051600744A03 /* ChannelWallpaper7.png in Resources */,
-				019E82EB1654051600744A03 /* ChannelWallpaper8.png in Resources */,
-				019E82EC1654051600744A03 /* ChannelWallpaper9.png in Resources */,
-				019E82ED1654051600744A03 /* ChannelWallpaperGeneric.png in Resources */,
-				019E82EE1654051600744A03 /* ChannelWallpaperGeneric@2x.png in Resources */,
 				019E8324165405E500744A03 /* Avatar1.png in Resources */,
 				019E8325165405E500744A03 /* Avatar1@2x.png in Resources */,
 				019E8326165405E500744A03 /* Avatar2.png in Resources */,
@@ -3016,7 +2681,6 @@
 				01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */,
 				01EA81CB16B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png in Resources */,
 				01EA81CC16B94E770069AFF9 /* BackgroundVideoThumbnailSmall@2x.png in Resources */,
-				01EA81CD16B94E770069AFF9 /* placeholder12.png in Resources */,
 				01EA81D016B94F330069AFF9 /* GlossVideoThumbnailSmall.png in Resources */,
 				01EA81D116B94F330069AFF9 /* GlossVideoThumbnailSmall@2x.png in Resources */,
 				0111B80E16BA9DE6007DD78C /* ButtonRockHeader.png in Resources */,

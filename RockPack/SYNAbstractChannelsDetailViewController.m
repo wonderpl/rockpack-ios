@@ -277,7 +277,7 @@
         
         //http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverThumb1.jpg
         
-        NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverThumb%d.jpg", (indexPath.row % 13) + 1];
+        NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverThumb%d@2x.jpg", (indexPath.row % 13) + 1];
         
 //        channelCarouselCell.channelImageViewImage = imageURLString;
         SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
