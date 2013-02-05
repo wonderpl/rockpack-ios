@@ -24,6 +24,7 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelTitleHighlightImageView;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *saveOrDoneButtonLabel;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;

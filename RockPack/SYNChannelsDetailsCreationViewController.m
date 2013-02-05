@@ -70,6 +70,71 @@
     self.saveOrDoneButtonLabel.text = NSLocalizedString(@"SAVE", @"Save / Done button");
 }
 
+- (void) highlightAll
+{
+    [self highlightChannelTitleFadingOthers: FALSE];
+    [self highlightCoverCarouselFadingOthers: FALSE];
+    [self highlightChannelDescriptionFadingOthers: FALSE];
+}
+
+- (void) highlightChannelTitleFadingOthers: (BOOL) fadeOthers
+{
+    self.channelTitleTextField.alpha = 1.0f;
+    self.channelTitleTextField.enabled = TRUE;
+    self.channelTitleHighlightImageView.alpha = 1.0f;
+    
+    if (fadeOthers == TRUE)
+    {
+        [self fadeCoverCarousel];
+        [self fadeChannelDescription];
+    }
+}
+
+
+- (void) fadeChannelTitle
+{
+    self.channelTitleTextField.alpha = 1.0f;
+    self.channelTitleTextField.enabled = TRUE;
+    self.channelTitleHighlightImageView.alpha = 1.0f;
+}
+
+
+- (void) highlightCoverCarouselFadingOthers: (BOOL) fadeOthers
+{
+    self.channelCoverCarouselCollectionView.alpha = 1.0f;
+//    self.channelCoverCarouselCollectionView.enabled = TRUE;
+    self.channelCoverCarouselCollectionView.hidden = FALSE;
+    
+    if (fadeOthers == TRUE)
+    {
+        [self fadeChannelTitle];
+        [self fadeChannelDescription];
+    }
+}
+
+
+- (void) fadeCoverCarousel
+{
+    self.channelTitleTextField.alpha = 1.0f;
+//    self.channelCoverCarouselCollectionView.enabled = TRUE;
+    self.channelTitleHighlightImageView.alpha = 1.0f;
+}
+
+- (void) highlightChannelDescriptionFadingOthers: (BOOL) fadeOthers
+{
+    if (fadeOthers == TRUE)
+    {
+        [self fadeChannelTitle];
+        [self fadeCoverCarousel];
+    }
+}
+
+
+- (void) fadeChannelDescription
+{
+}
+
+
 
 #pragma mark - User Interaction
 
@@ -94,6 +159,8 @@
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
     [self showSaveButton];
+    
+    return YES;
 }
 
 @end
