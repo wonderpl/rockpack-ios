@@ -63,6 +63,7 @@
     self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.saveOrDoneButtonLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
+    self.changeCoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
 
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
@@ -448,6 +449,11 @@
 - (IBAction) userTouchedDoneButton: (id) sender
 {
     NSLog (@"User touched done button");
+}
+
+- (IBAction) userTouchedChangeCoverButton: (id) sender;
+{
+    NSLog (@"User touched change cover button");
 }
 
 @end

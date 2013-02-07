@@ -267,7 +267,6 @@
 		019E82041654043A00744A03 /* Trash.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81FE1654043A00744A03 /* Trash.aif */; };
 		019E829A1654051600744A03 /* BackgroundChannelThumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82451654051600744A03 /* BackgroundChannelThumbnail.png */; };
 		019E829B1654051600744A03 /* BackgroundChannelThumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E82461654051600744A03 /* BackgroundChannelThumbnail@2x.png */; };
-		019E83581654064D00744A03 /* BackgroundFriendsTemplate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E834B1654064D00744A03 /* BackgroundFriendsTemplate@2x.png */; };
 		019E83591654064D00744A03 /* ButtonCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E834C1654064D00744A03 /* ButtonCamera.png */; };
 		019E835A1654064D00744A03 /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E834D1654064D00744A03 /* ButtonCamera@2x.png */; };
 		019E835B1654064D00744A03 /* ButtonCameraHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E834E1654064D00744A03 /* ButtonCameraHighlighted.png */; };
@@ -720,7 +719,6 @@
 		019E81FE1654043A00744A03 /* Trash.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = Trash.aif; path = Assets/Audio/Trash.aif; sourceTree = "<group>"; };
 		019E82451654051600744A03 /* BackgroundChannelThumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundChannelThumbnail.png; path = Assets/Images/BackgroundChannelThumbnail.png; sourceTree = "<group>"; };
 		019E82461654051600744A03 /* BackgroundChannelThumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundChannelThumbnail@2x.png"; path = "Assets/Images/BackgroundChannelThumbnail@2x.png"; sourceTree = "<group>"; };
-		019E834B1654064D00744A03 /* BackgroundFriendsTemplate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundFriendsTemplate@2x.png"; path = "Assets/Images/BackgroundFriendsTemplate@2x.png"; sourceTree = "<group>"; };
 		019E834C1654064D00744A03 /* ButtonCamera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCamera.png; path = Assets/Images/ButtonCamera.png; sourceTree = "<group>"; };
 		019E834D1654064D00744A03 /* ButtonCamera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCamera@2x.png"; path = "Assets/Images/ButtonCamera@2x.png"; sourceTree = "<group>"; };
 		019E834E1654064D00744A03 /* ButtonCameraHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraHighlighted.png; path = Assets/Images/ButtonCameraHighlighted.png; sourceTree = "<group>"; };
@@ -1004,7 +1002,6 @@
 				015CB01B16AE189700FEB8E7 /* BackgroundFriendThumbnail.png */,
 				015CB01016ADC07D00FEB8E7 /* PanelFriendsToolbar.png */,
 				015CB01116ADC07D00FEB8E7 /* PanelFriendsToolbar@2x.png */,
-				019E834B1654064D00744A03 /* BackgroundFriendsTemplate@2x.png */,
 				019E834C1654064D00744A03 /* ButtonCamera.png */,
 				019E834D1654064D00744A03 /* ButtonCamera@2x.png */,
 				019E834E1654064D00744A03 /* ButtonCameraHighlighted.png */,
@@ -2159,7 +2156,6 @@
 				019E82041654043A00744A03 /* Trash.aif in Resources */,
 				019E829A1654051600744A03 /* BackgroundChannelThumbnail.png in Resources */,
 				019E829B1654051600744A03 /* BackgroundChannelThumbnail@2x.png in Resources */,
-				019E83581654064D00744A03 /* BackgroundFriendsTemplate@2x.png in Resources */,
 				019E83591654064D00744A03 /* ButtonCamera.png in Resources */,
 				019E835A1654064D00744A03 /* ButtonCamera@2x.png in Resources */,
 				019E835B1654064D00744A03 /* ButtonCameraHighlighted.png in Resources */,
