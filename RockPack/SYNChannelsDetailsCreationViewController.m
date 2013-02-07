@@ -87,8 +87,8 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.channelTitleTextField.alpha = 1.0f;
-         self.channelTitleHighlightImageView.alpha = 1.0f;
+         self.headerBarView.alpha = 1.0;
+         self.videoThumbnailCollectionView.alpha = 1.0;
      }
      completion: ^(BOOL finished)
      {
@@ -103,6 +103,8 @@
 }
 
 
+
+
 - (void) fadeChannelTitle
 {
     [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
@@ -110,8 +112,8 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.channelTitleTextField.alpha = 0.5f;
-         self.channelTitleHighlightImageView.alpha = 0.0f;
+         self.headerBarView.alpha = 0.5;
+         self.videoThumbnailCollectionView.alpha = 0.5;
      }
                      completion: ^(BOOL finished)
      {
@@ -121,15 +123,12 @@
 
 - (void) highlightCoverCarouselFadingOthers: (BOOL) fadeOthers
 {
-    self.channelCoverCarouselCollectionView.hidden = FALSE;
-    
     [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.channelCoverCarouselCollectionView.alpha = 1.0f;
-         self.channelTitleHighlightImageView.alpha = 1.0f;
+         self.coverSelectionView.alpha = 1.0f;
      }
      completion: ^(BOOL finished)
      {
@@ -151,8 +150,7 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.channelCoverCarouselCollectionView.alpha = 0.5f;
-         self.channelTitleHighlightImageView.alpha = 0.5f;
+         self.coverSelectionView.alpha = 0.5f;
      }
                      completion: ^(BOOL finished)
      {
@@ -162,15 +160,11 @@
 
 - (void) highlightChannelDescriptionFadingOthers: (BOOL) fadeOthers
 {
-    self.channelCoverCarouselCollectionView.hidden = FALSE;
-    
     [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.channelCoverCarouselCollectionView.alpha = 1.0f;
-         self.channelTitleHighlightImageView.alpha = 1.0f;
      }
                      completion: ^(BOOL finished)
      {
@@ -233,6 +227,8 @@
 {
     [self highlightAll];
     [self showDoneButton];
+    [self.channelTitleTextField resignFirstResponder];
+//    [self.channelTitleTextField resignFirstResponder];
 }
 
 - (IBAction) userTouchedDoneButton: (id) sender
@@ -248,9 +244,40 @@
 
 #pragma mark - UITextField delegate
 
+- (BOOL) textFieldShouldBeginEditing: (UITextField *) textField
+{
+    // Only enable editing if we have the focus
+    if (self.channelTitleTextField.alpha == 1.0f)
+    {
+        if ([textField.text isEqualToString: @"NAME YOUR CHANNEL..."])
+        {
+            textField.text = @"";
+        }
+        
+        [self highlightChannelTitleFadingOthers: YES];
+        [self showSaveButton];
+        
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+
+
+
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
-    [self showSaveButton];
+    if ([textField.text isEqualToString: @""])
+    {
+        textField.text = @"NAME YOUR CHANNEL...";
+    }
+    
+    [self showDoneButton];
+    [self.channelTitleTextField resignFirstResponder];
+    [self highlightAll];
     
     return YES;
 }
@@ -260,8 +287,13 @@
 - (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
     self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
-    
     [self highlightChannelDescriptionFadingOthers: YES];
+    [self showSaveButton];
+    
+    if ([growingTextView.text isEqualToString: @"Describe your channel..."])
+    {
+        growingTextView.text = @"Describe your channel...";
+    }
 }
 
 
@@ -273,8 +305,10 @@
     
     if ([growingTextView.text isEqualToString: @""])
     {
-        //        growingTextView.text = @"Describe your channel...";
+        growingTextView.text = @"Describe your channel...";
     }
+    
+    [self showDoneButton];
 }
 
 
@@ -309,6 +343,7 @@
          self.changeCoverButton.enabled = FALSE;
      }];
     
+    [self highlightCoverCarouselFadingOthers: YES];
     [self showSaveButton];
 }
 
