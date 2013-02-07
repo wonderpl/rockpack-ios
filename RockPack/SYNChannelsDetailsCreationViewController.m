@@ -78,6 +78,22 @@
     [self highlightChannelTitleFadingOthers: FALSE];
     [self highlightCoverCarouselFadingOthers: FALSE];
     [self highlightChannelDescriptionFadingOthers: FALSE];
+    
+    self.changeCoverButton.enabled = TRUE;
+    
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.changeCoverButton.alpha = 1.0f;
+         self.changeCoverLabel.alpha = 1.0f;
+        self.channelCoverCarouselCollectionView.alpha = 0.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+
 }
 
 - (void) highlightChannelTitleFadingOthers: (BOOL) fadeOthers
@@ -264,8 +280,6 @@
         return NO;
     }
 }
-
-
 
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
