@@ -96,6 +96,7 @@
 
     if (fadeOthers == TRUE)
     {
+        [self fadeDownBackground];
         [self fadeCoverCarousel];
         [self fadeChannelDescription];
     }
@@ -120,11 +121,23 @@
 
 - (void) highlightCoverCarouselFadingOthers: (BOOL) fadeOthers
 {
-    self.channelCoverCarouselCollectionView.alpha = 1.0f;
     self.channelCoverCarouselCollectionView.hidden = FALSE;
+    
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.channelTitleHighlightImageView.alpha = 1.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
     
     if (fadeOthers == TRUE)
     {
+        [self fadeDownBackground];
         [self fadeChannelTitle];
         [self fadeChannelDescription];
     }
@@ -133,15 +146,39 @@
 
 - (void) fadeCoverCarousel
 {
-    self.channelTitleTextField.alpha = 1.0f;
-//    self.channelCoverCarouselCollectionView.enabled = TRUE;
-    self.channelTitleHighlightImageView.alpha = 1.0f;
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelCoverCarouselCollectionView.alpha = 0.5f;
+         self.channelTitleHighlightImageView.alpha = 0.5f;
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
 }
+
 
 - (void) highlightChannelDescriptionFadingOthers: (BOOL) fadeOthers
 {
+    self.channelCoverCarouselCollectionView.hidden = FALSE;
+    
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.channelTitleHighlightImageView.alpha = 1.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+    
     if (fadeOthers == TRUE)
     {
+        [self fadeDownBackground];
         [self fadeChannelTitle];
         [self fadeCoverCarousel];
     }
@@ -150,15 +187,52 @@
 
 - (void) fadeChannelDescription
 {
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
 }
 
+
+- (void) fadeUpBackground
+{
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+}
+
+
+- (void) fadeDownBackground
+{
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+}
 
 
 #pragma mark - User Interaction
 
 - (IBAction) userTouchedSaveButton: (id) sender
 {
-    NSLog (@"User touched save button");
+    [self highlightAll];
+    [self showDoneButton];
 }
 
 - (IBAction) userTouchedDoneButton: (id) sender
@@ -226,6 +300,7 @@
                      animations: ^
      {
          self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.channelTitleHighlightImageView.alpha = 1.0f;
          self.changeCoverButton.alpha = 0.0;
          self.changeCoverLabel.alpha = 0.0;
      }
@@ -233,6 +308,8 @@
      {
          self.changeCoverButton.enabled = FALSE;
      }];
+    
+    [self showSaveButton];
 }
 
 
