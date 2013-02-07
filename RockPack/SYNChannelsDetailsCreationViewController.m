@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "HPGrowingTextView.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
@@ -28,6 +29,8 @@
     self.editButton.hidden = TRUE;
     self.shareButton.hidden = TRUE;
     self.saveOrDoneButtonLabel.hidden = FALSE;
+    
+    self.channelTitleTextField.enabled = TRUE;
 
     [self showDoneButton];
     
@@ -79,10 +82,18 @@
 
 - (void) highlightChannelTitleFadingOthers: (BOOL) fadeOthers
 {
-    self.channelTitleTextField.alpha = 1.0f;
-    self.channelTitleTextField.enabled = TRUE;
-    self.channelTitleHighlightImageView.alpha = 1.0f;
-    
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelTitleTextField.alpha = 1.0f;
+         self.channelTitleHighlightImageView.alpha = 1.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
+
     if (fadeOthers == TRUE)
     {
         [self fadeCoverCarousel];
@@ -93,16 +104,23 @@
 
 - (void) fadeChannelTitle
 {
-    self.channelTitleTextField.alpha = 1.0f;
-    self.channelTitleTextField.enabled = TRUE;
-    self.channelTitleHighlightImageView.alpha = 1.0f;
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelTitleTextField.alpha = 0.5f;
+         self.channelTitleHighlightImageView.alpha = 0.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 
 - (void) highlightCoverCarouselFadingOthers: (BOOL) fadeOthers
 {
     self.channelCoverCarouselCollectionView.alpha = 1.0f;
-//    self.channelCoverCarouselCollectionView.enabled = TRUE;
     self.channelCoverCarouselCollectionView.hidden = FALSE;
     
     if (fadeOthers == TRUE)
@@ -154,7 +172,7 @@
     [bottomTabViewController popCurrentViewController: nil];
 }
 
-#pragma mark - Text Field delegate
+#pragma mark - UITextField delegate
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
@@ -162,5 +180,61 @@
     
     return YES;
 }
+
+#pragma mark - Growable UITextView delegates
+
+- (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
+{
+    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
+    
+    [self highlightChannelDescriptionFadingOthers: YES];
+}
+
+
+- (void) growingTextViewDidEndEditing: (HPGrowingTextView *) growingTextView
+{
+    self.collectionHeaderView.channelDescriptionHightlightView.hidden = TRUE;
+    [self.collectionHeaderView.channelDescriptionTextView scrollRangeToVisible: NSMakeRange (0,0)];
+    [self.collectionHeaderView.channelDescriptionTextView resignFirstResponder];
+    
+    if ([growingTextView.text isEqualToString: @""])
+    {
+        //        growingTextView.text = @"Describe your channel...";
+    }
+}
+
+
+- (void) growingTextView: (HPGrowingTextView *) growingTextView
+        willChangeHeight: (float) height
+{
+    float diff = (growingTextView.frame.size.height - height);
+    
+	CGRect containerViewFrame = self.collectionHeaderView.channelDescriptionTextContainerView.frame;
+    containerViewFrame.size.height -= diff;
+    //    containerViewFrame.origin.y += diff;
+	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerViewFrame;
+}
+
+
+- (IBAction) userTouchedChangeCoverButton: (id) sender
+{
+    self.channelCoverCarouselCollectionView.hidden = FALSE;
+    self.channelCoverCarouselCollectionView.alpha = 0.0f;
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.changeCoverButton.alpha = 0.0;
+         self.changeCoverLabel.alpha = 0.0;
+     }
+                     completion: ^(BOOL finished)
+     {
+         self.changeCoverButton.enabled = FALSE;
+     }];
+}
+
+
 
 @end

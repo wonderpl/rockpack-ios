@@ -1448,8 +1448,8 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				01982563162ADEAD00216900 /* Abstract */,
 				0162285316C2AA7F008D1587 /* Miscellaneous */,
+				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,

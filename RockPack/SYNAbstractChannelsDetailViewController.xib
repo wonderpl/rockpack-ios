@@ -387,7 +387,7 @@
 						<string key="NSFrame">{{0, 115}, {1024, 571}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="214810493"/>
+						<reference key="NSNextKeyView" ref="846636088"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="381457900"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -403,6 +403,21 @@
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
+					<object class="IBUIImageView" id="846636088">
+						<reference key="NSNextResponder" ref="65885460"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{0, 123}, {1024, 278}}</string>
+						<reference key="NSSuperview" ref="65885460"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="245815771"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">PanelCoverSelection.png</string>
+						</object>
+					</object>
 					<object class="IBUICollectionView" id="245815771">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">-2147483374</int>
@@ -410,7 +425,7 @@
 						<string key="NSFrame">{{62, 165}, {900, 194}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1025431332"/>
+						<reference key="NSNextKeyView" ref="805404496"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="381457900"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -426,22 +441,7 @@
 						</object>
 						<reference key="IBUICells" ref="0"/>
 					</object>
-					<object class="IBUIImageView" id="214810493">
-						<reference key="NSNextResponder" ref="65885460"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 123}, {1024, 278}}</string>
-						<reference key="NSSuperview" ref="65885460"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="245815771"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">PanelCoverSelection.png</string>
-						</object>
-					</object>
-					<object class="IBUILabel" id="1018890354">
+					<object class="IBUILabel" id="346649105">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{414, 301}, {197, 29}}</string>
@@ -476,13 +476,13 @@
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
-					<object class="IBUIButton" id="1025431332">
+					<object class="IBUIButton" id="805404496">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{475, 227}, {75, 70}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1018890354"/>
+						<reference key="NSNextKeyView" ref="346649105"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -630,7 +630,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">changeCoverLabel</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="1018890354"/>
+						<reference key="destination" ref="346649105"/>
 					</object>
 					<int key="connectionID">128</int>
 				</object>
@@ -638,7 +638,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">changeCoverButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="1025431332"/>
+						<reference key="destination" ref="805404496"/>
 					</object>
 					<int key="connectionID">130</int>
 				</object>
@@ -704,7 +704,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">userTouchedChangeCoverButton:</string>
-						<reference key="source" ref="1025431332"/>
+						<reference key="source" ref="805404496"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -738,9 +738,9 @@
 							<reference ref="915393374"/>
 							<reference ref="566198242"/>
 							<reference ref="245815771"/>
-							<reference ref="1018890354"/>
-							<reference ref="1025431332"/>
-							<reference ref="214810493"/>
+							<reference ref="346649105"/>
+							<reference ref="805404496"/>
+							<reference ref="846636088"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">View - Main</string>
@@ -871,17 +871,17 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">125</int>
-						<reference key="object" ref="214810493"/>
+						<reference key="object" ref="846636088"/>
 						<reference key="parent" ref="65885460"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">126</int>
-						<reference key="object" ref="1018890354"/>
+						<reference key="object" ref="346649105"/>
 						<reference key="parent" ref="65885460"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">127</int>
-						<reference key="object" ref="1025431332"/>
+						<reference key="object" ref="805404496"/>
 						<reference key="parent" ref="65885460"/>
 						<string key="objectName">Button - Change cover</string>
 					</object>
