@@ -442,16 +442,20 @@
         UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
                                                                            topCapHeight: 22];
         
-        UIImageView *channelDescriptionHightlightView;
-        channelDescriptionHightlightView = [[UIImageView alloc] initWithImage: entryBackground];
-        channelDescriptionHightlightView.frame = CGRectInset(self.collectionHeaderView.channelDescriptionTextView.frame, -10, -10);
-//        channelDescriptionHightlightView.backgroundColor = [UIColor redColor];
-        channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-//        self.channelDescriptionHightlightView.hidden = TRUE;
-        [self.collectionHeaderView.channelDescriptionTextContainerView addSubview: channelDescriptionHightlightView];
+        self.channelDescriptionHightlightView = [[UIImageView alloc] initWithImage: entryBackground];
+        self.channelDescriptionHightlightView.frame = CGRectInset(self.collectionHeaderView.channelDescriptionTextView.frame, -10, -10);
+        self.channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        self.channelDescriptionHightlightView.hidden = self.hideChannelDescriptionHighlight;
+        self.collectionHeaderView.channelDescriptionTextView.editable = !self.hideChannelDescriptionHighlight;
+        [self.collectionHeaderView.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
     }
     
     return sectionSupplementaryView;
+}
+
+- (BOOL) hideChannelDescriptionHighlight
+{
+    return TRUE;
 }
 
 //
@@ -484,6 +488,16 @@
 - (IBAction) userTouchedChangeCoverButton: (id) sender;
 {
     NSLog (@"User touched change cover button");
+}
+
+- (IBAction) userTouchedEditButton: (id) sender
+{
+    NSLog (@"User touched edit button");
+}
+
+- (IBAction) userTouchedShareButton: (id) sender
+{
+    NSLog (@"User touched share button");
 }
 
 @end

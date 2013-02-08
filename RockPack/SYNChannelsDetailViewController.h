@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNAbstractChannelsDetailsEditViewController.h"
 
-@interface SYNChannelsDetailViewController : SYNAbstractChannelsDetailViewController
+@interface SYNChannelsDetailViewController : SYNAbstractChannelsDetailsEditViewController
 
 @end

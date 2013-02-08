@@ -1,14 +1,14 @@
-
 //
-//  SYNtChannelsDetailsCreationViewController.h
+//  SYNChannelsDetailsCreationViewController.h
 //  rockpack
 //
-//  Created by Nick Banks on 30/01/2013.
+//  Created by Nick Banks on 08/02/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractChannelsDetailViewController.h"
+#import <UIKit/UIKit.h>
+#import "SYNAbstractChannelsDetailsEditViewController.h"
 
-@interface SYNChannelsDetailsCreationViewController : SYNAbstractChannelsDetailViewController
+@interface SYNChannelsDetailsCreationViewController : SYNAbstractChannelsDetailsEditViewController
 
 @end

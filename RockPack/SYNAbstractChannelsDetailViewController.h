@@ -26,6 +26,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelTitleHighlightImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelWallpaperImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelDescriptionHightlightView;
 @property (nonatomic, strong) IBOutlet UILabel *changeCoverLabel;
 @property (nonatomic, strong) IBOutlet UILabel *saveOrDoneButtonLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
@@ -40,5 +41,6 @@
 - (id) initWithChannel: (Channel *) channel;
 
 - (IBAction) userTouchedChangeCoverButton: (id) sender;
+
 
 @end
