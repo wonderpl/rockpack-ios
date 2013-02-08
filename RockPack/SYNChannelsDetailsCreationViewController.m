@@ -310,13 +310,14 @@
 
 - (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
+    [growingTextView becomeFirstResponder];
 //    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
     [self highlightChannelDescriptionFadingOthers: YES];
     [self showSaveButton];
     
     if ([growingTextView.text isEqualToString: @"Describe your channel..."])
     {
-        growingTextView.text = @"Describe your channel...";
+        growingTextView.text = @"";
     }
 }
 

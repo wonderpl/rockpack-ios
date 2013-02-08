@@ -198,7 +198,7 @@
                                      toView: nil];
     
 	// get a rect for the textView frame
-	CGRect containerFrame = self.view.frame;
+	CGRect containerFrame = self.slideView.frame;
     containerFrame.origin.y -= 120;
     
 	// animations settings
@@ -210,7 +210,7 @@
     [UIView setAnimationCurve: [curve intValue]];
 	
 	// set views with new info
-	self.view.frame = containerFrame;
+	self.slideView.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
@@ -222,7 +222,7 @@
     NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
 	
 	// get a rect for the textView frame
-	CGRect containerFrame = self.view.frame;
+	CGRect containerFrame = self.slideView.frame;
     containerFrame.origin.y += 120;
 	
 	// animations settings
@@ -234,7 +234,7 @@
     [UIView setAnimationCurve: [curve intValue]];
     
 	// set views with new info
-	self.view.frame = containerFrame;
+	self.slideView.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
