@@ -139,7 +139,6 @@
                      animations: ^
      {
          self.headerBarView.alpha = 0.5;
-         self.videoThumbnailCollectionView.alpha = 0.5;
      }
                      completion: ^(BOOL finished)
      {
@@ -190,6 +189,7 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
+         self.videoThumbnailCollectionView.alpha = 1.0;
      }
                      completion: ^(BOOL finished)
      {
@@ -210,6 +210,7 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
+        self.videoThumbnailCollectionView.alpha = 0.5;
      }
                      completion: ^(BOOL finished)
      {
@@ -332,6 +333,8 @@
     }
     
     [self showDoneButton];
+    [self.channelTitleTextField resignFirstResponder];
+    [self highlightAll];
 }
 
 
