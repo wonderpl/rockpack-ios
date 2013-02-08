@@ -430,6 +430,19 @@
         sectionSupplementaryView.viewControllerDelegate = self;
         sectionSupplementaryView.channelDescriptionTextView.text = self.channel.channelDescription;
         self.collectionHeaderView = sectionSupplementaryView;
+        
+        UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
+        
+        UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth: 13
+                                                                           topCapHeight: 22];
+        
+        UIImageView *channelDescriptionHightlightView;
+        channelDescriptionHightlightView = [[UIImageView alloc] initWithImage: entryBackground];
+        channelDescriptionHightlightView.frame = CGRectInset(self.collectionHeaderView.channelDescriptionTextView.frame, -10, -10);
+//        channelDescriptionHightlightView.backgroundColor = [UIColor redColor];
+        channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+//        self.channelDescriptionHightlightView.hidden = TRUE;
+        [self.collectionHeaderView.channelDescriptionTextContainerView addSubview: channelDescriptionHightlightView];
     }
     
     return sectionSupplementaryView;
