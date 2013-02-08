@@ -91,6 +91,8 @@
     [self highlightChannelDescriptionFadingOthers: FALSE];
     
     self.changeCoverButton.enabled = TRUE;
+    self.changeCoverButton.alpha = 1.0f;
+    self.changeCoverLabel.alpha = 1.0f;
     
     [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
                           delay: 0.0f
@@ -99,7 +101,7 @@
      {
          self.changeCoverButton.alpha = 1.0f;
          self.changeCoverLabel.alpha = 1.0f;
-        self.channelCoverCarouselCollectionView.alpha = 0.0f;
+         self.channelCoverCarouselCollectionView.alpha = 1.0f;
      }
                      completion: ^(BOOL finished)
      {
@@ -260,6 +262,7 @@
     
     [self highlightCoverCarouselFadingOthers: YES];
     [self showSaveButton];
+    [self.channelCoverCarouselCollectionView reloadData];
 }
 
 

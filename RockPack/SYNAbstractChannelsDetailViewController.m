@@ -187,57 +187,63 @@
 //Code from Brett Schumann
 - (void) keyboardWillShow: (NSNotification *) notification
 {
-    // get keyboard size and loctaion
-	CGRect keyboardBounds;
-    [[notification.userInfo valueForKey: UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-    NSNumber *duration = [notification.userInfo objectForKey: UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
-    
-    // Need to translate the bounds to account for rotation.
-    keyboardBounds = [self.view convertRect: keyboardBounds
-                                     toView: nil];
-    
-	// get a rect for the textView frame
-	CGRect containerFrame = self.slideView.frame;
-    containerFrame.origin.y -= 120;
-    
-	// animations settings
-	[UIView beginAnimations: nil
-                    context: NULL];
-    
-	[UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration: [duration doubleValue]];
-    [UIView setAnimationCurve: [curve intValue]];
-	
-	// set views with new info
-	self.slideView.frame = containerFrame;
-	
-	// commit animations
-	[UIView commitAnimations];
+    if (self.channelTitleTextField.isFirstResponder == FALSE)
+    {
+        // get keyboard size and loctaion
+        CGRect keyboardBounds;
+        [[notification.userInfo valueForKey: UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+        NSNumber *duration = [notification.userInfo objectForKey: UIKeyboardAnimationDurationUserInfoKey];
+        NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
+        
+        // Need to translate the bounds to account for rotation.
+        keyboardBounds = [self.view convertRect: keyboardBounds
+                                         toView: nil];
+        
+        // get a rect for the textView frame
+        CGRect containerFrame = self.slideView.frame;
+        containerFrame.origin.y -= 120;
+        
+        // animations settings
+        [UIView beginAnimations: nil
+                        context: NULL];
+        
+        [UIView setAnimationBeginsFromCurrentState: YES];
+        [UIView setAnimationDuration: [duration doubleValue]];
+        [UIView setAnimationCurve: [curve intValue]];
+        
+        // set views with new info
+        self.slideView.frame = containerFrame;
+        
+        // commit animations
+        [UIView commitAnimations];
+    }
 }
 
 - (void) keyboardWillHide: (NSNotification *) notification
 {
-    NSNumber *duration = [notification.userInfo objectForKey: UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
-	
-	// get a rect for the textView frame
-	CGRect containerFrame = self.slideView.frame;
-    containerFrame.origin.y += 120;
-	
-	// animations settings
-	[UIView beginAnimations: nil
-                    context: NULL];
-    
-	[UIView setAnimationBeginsFromCurrentState: YES];
-    [UIView setAnimationDuration: [duration doubleValue]];
-    [UIView setAnimationCurve: [curve intValue]];
-    
-	// set views with new info
-	self.slideView.frame = containerFrame;
-	
-	// commit animations
-	[UIView commitAnimations];
+    if (self.channelTitleTextField.isFirstResponder == FALSE)
+    {
+        NSNumber *duration = [notification.userInfo objectForKey: UIKeyboardAnimationDurationUserInfoKey];
+        NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
+        
+        // get a rect for the textView frame
+        CGRect containerFrame = self.slideView.frame;
+        containerFrame.origin.y += 120;
+        
+        // animations settings
+        [UIView beginAnimations: nil
+                        context: NULL];
+        
+        [UIView setAnimationBeginsFromCurrentState: YES];
+        [UIView setAnimationDuration: [duration doubleValue]];
+        [UIView setAnimationCurve: [curve intValue]];
+        
+        // set views with new info
+        self.slideView.frame = containerFrame;
+        
+        // commit animations
+        [UIView commitAnimations];
+    }
 }
 
 
