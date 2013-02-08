@@ -59,6 +59,16 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(keyboardWillShow:)
+                                                 name: UIKeyboardWillShowNotification
+                                               object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(keyboardWillHide:)
+                                                 name: UIKeyboardWillHideNotification
+                                               object: nil];
+    
     // Set all the labels to use the custom font
     self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
@@ -133,6 +143,11 @@
     [self.videoThumbnailCollectionView reloadData];
 }
 
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
 
 
 #pragma mark - Growable UITextView delegates
@@ -183,8 +198,8 @@
                                      toView: nil];
     
 	// get a rect for the textView frame
-	CGRect containerFrame = self.collectionHeaderView.channelDescriptionTextContainerView.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+	CGRect containerFrame = self.view.frame;
+    containerFrame.origin.y -= 120;
     
 	// animations settings
 	[UIView beginAnimations: nil
@@ -195,7 +210,7 @@
     [UIView setAnimationCurve: [curve intValue]];
 	
 	// set views with new info
-	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerFrame;
+	self.view.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
@@ -207,8 +222,8 @@
     NSNumber *curve = [notification.userInfo objectForKey: UIKeyboardAnimationCurveUserInfoKey];
 	
 	// get a rect for the textView frame
-	CGRect containerFrame = self.collectionHeaderView.channelDescriptionTextContainerView.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+	CGRect containerFrame = self.view.frame;
+    containerFrame.origin.y += 120;
 	
 	// animations settings
 	[UIView beginAnimations: nil
@@ -219,7 +234,7 @@
     [UIView setAnimationCurve: [curve intValue]];
     
 	// set views with new info
-	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerFrame;
+	self.view.frame = containerFrame;
 	
 	// commit animations
 	[UIView commitAnimations];

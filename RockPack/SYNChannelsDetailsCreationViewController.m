@@ -302,6 +302,11 @@
 
 #pragma mark - Growable UITextView delegates
 
+- (void) growingTextViewDidChange: (HPGrowingTextView *) growingTextView
+{
+    NSLog (@"Changed");
+}
+
 - (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
 //    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;

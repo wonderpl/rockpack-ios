@@ -217,7 +217,6 @@
 										<string key="NSFrame">{{5, 5}, {743, 25}}</string>
 										<reference key="NSSuperview" ref="821046923"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="892230425"/>
 										<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -304,6 +303,14 @@
 						<reference key="destination" ref="426588514"/>
 					</object>
 					<int key="connectionID">49</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">channelDescriptionTextContainerView</string>
+						<reference key="source" ref="978391270"/>
+						<reference key="destination" ref="821046923"/>
+					</object>
+					<int key="connectionID">50</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -423,7 +430,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">49</int>
+			<int key="maxID">50</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
