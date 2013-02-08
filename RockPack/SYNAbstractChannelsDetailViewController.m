@@ -269,10 +269,6 @@
             AudioServicesPlaySystemSound(sound);
         }
 #endif
-        
-//    http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverBackground1.png
-//    http://demo.dev.rockpack.com.s3.amazonaws.com/images/ChannelCreationCoverThumb1.png
-        
         SYNChannelSelectorCell *channelCarouselCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                                     forIndexPath: indexPath];
         

@@ -14,6 +14,7 @@
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNTextField.h"
+#import "Channel.h"
 
 @interface SYNChannelsDetailsCreationViewController ()
 
@@ -51,7 +52,16 @@
     
     [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverBackground1.jpg"]
                                    placeHolderImage: nil];
+    
+    // As we don't actually have a real channel at the moment, fake up the channel description
+    self.channel.channelDescription = @"Describe your channel...";
 }
+
+//- (void) viewDidAppear: (BOOL) animated
+//{
+//    [super viewDidAppear: animated];
+//    self.channel.channelDescription = @"Describe your channel...";
+//}
 
 
 #pragma mark - UI Helpers
