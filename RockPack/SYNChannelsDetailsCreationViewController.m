@@ -31,6 +31,7 @@
     self.saveOrDoneButtonLabel.hidden = FALSE;
     
     self.channelTitleTextField.enabled = TRUE;
+    self.collectionHeaderView.viewControllerDelegate = self;
 
     [self showDoneButton];
     
@@ -112,7 +113,6 @@
 
     if (fadeOthers == TRUE)
     {
-        [self fadeDownBackground];
         [self fadeCoverCarousel];
         [self fadeChannelDescription];
     }
@@ -152,7 +152,6 @@
     
     if (fadeOthers == TRUE)
     {
-        [self fadeDownBackground];
         [self fadeChannelTitle];
         [self fadeChannelDescription];
     }
@@ -188,7 +187,6 @@
     
     if (fadeOthers == TRUE)
     {
-        [self fadeDownBackground];
         [self fadeChannelTitle];
         [self fadeCoverCarousel];
     }
@@ -209,34 +207,6 @@
 }
 
 
-- (void) fadeUpBackground
-{
-    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-}
-
-
-- (void) fadeDownBackground
-{
-    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-}
-
-
 #pragma mark - User Interaction
 
 - (IBAction) userTouchedSaveButton: (id) sender
@@ -244,7 +214,7 @@
     [self highlightAll];
     [self showDoneButton];
     [self.channelTitleTextField resignFirstResponder];
-//    [self.channelTitleTextField resignFirstResponder];
+    [self.collectionHeaderView.channelDescriptionTextView resignFirstResponder];
 }
 
 - (IBAction) userTouchedDoneButton: (id) sender
@@ -257,6 +227,30 @@
     
     [bottomTabViewController popCurrentViewController: nil];
 }
+
+- (IBAction) userTouchedChangeCoverButton: (id) sender
+{
+    self.channelCoverCarouselCollectionView.hidden = FALSE;
+    self.channelCoverCarouselCollectionView.alpha = 0.0f;
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.channelTitleHighlightImageView.alpha = 1.0f;
+         self.changeCoverButton.alpha = 0.0;
+         self.changeCoverLabel.alpha = 0.0;
+     }
+                     completion: ^(BOOL finished)
+     {
+         self.changeCoverButton.enabled = FALSE;
+     }];
+    
+    [self highlightCoverCarouselFadingOthers: YES];
+    [self showSaveButton];
+}
+
 
 #pragma mark - UITextField delegate
 
@@ -300,7 +294,7 @@
 
 - (void) growingTextViewDidBeginEditing: (HPGrowingTextView *) growingTextView
 {
-    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
+//    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
     [self highlightChannelDescriptionFadingOthers: YES];
     [self showSaveButton];
     
@@ -313,7 +307,7 @@
 
 - (void) growingTextViewDidEndEditing: (HPGrowingTextView *) growingTextView
 {
-    self.collectionHeaderView.channelDescriptionHightlightView.hidden = TRUE;
+//    self.collectionHeaderView.channelDescriptionHightlightView.hidden = TRUE;
     [self.collectionHeaderView.channelDescriptionTextView scrollRangeToVisible: NSMakeRange (0,0)];
     [self.collectionHeaderView.channelDescriptionTextView resignFirstResponder];
     
@@ -338,28 +332,6 @@
 }
 
 
-- (IBAction) userTouchedChangeCoverButton: (id) sender
-{
-    self.channelCoverCarouselCollectionView.hidden = FALSE;
-    self.channelCoverCarouselCollectionView.alpha = 0.0f;
-    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.channelCoverCarouselCollectionView.alpha = 1.0f;
-         self.channelTitleHighlightImageView.alpha = 1.0f;
-         self.changeCoverButton.alpha = 0.0;
-         self.changeCoverLabel.alpha = 0.0;
-     }
-                     completion: ^(BOOL finished)
-     {
-         self.changeCoverButton.enabled = FALSE;
-     }];
-    
-    [self highlightCoverCarouselFadingOthers: YES];
-    [self showSaveButton];
-}
 
 
 
