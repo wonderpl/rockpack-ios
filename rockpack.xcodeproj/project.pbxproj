@@ -50,6 +50,7 @@
 		011CC680164AA42300F02B6D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67F164AA42300F02B6D /* AVFoundation.framework */; };
 		011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC682164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m */; };
 		011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */; };
+		012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 012502B016C958FA0029C7C8 /* UIView+Toast.m */; };
 		012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */; };
 		012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */; };
 		012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */; };
@@ -451,6 +452,8 @@
 		011CC682164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
 		011CC6A7164D19D800F02B6D /* SYNPassthroughView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNPassthroughView.h; sourceTree = "<group>"; };
 		011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNPassthroughView.m; sourceTree = "<group>"; };
+		012502AF16C958FA0029C7C8 /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
+		012502B016C958FA0029C7C8 /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
 		012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselVerticalLayout.h; sourceTree = "<group>"; };
 		012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselVerticalLayout.m; sourceTree = "<group>"; };
 		012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselCell.h; sourceTree = "<group>"; };
@@ -1711,6 +1714,8 @@
 				01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */,
 				01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */,
 				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
+				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
+				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2546,6 +2551,7 @@
 				01EA81D816B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m in Sources */,
 				015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */,
 				01B3DCE516C5597900ED54D3 /* SYNChannelsDetailsCreationViewController.m in Sources */,
+				012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
