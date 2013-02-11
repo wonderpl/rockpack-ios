@@ -10,10 +10,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
-/*
- *  CONFIGURE THESE VALUES TO ADJUST LOOK & FEEL,
- *  DISPLAY DURATION, ETC.
- */
+// Required for 'bounce' animation
+typedef void (^AnimationBlock)(void);
+typedef void (^CompletionBlock)(BOOL finished);
 
 // general appearance
 static const CGFloat CSToastMaxWidth = 0.8;                 // 80% of parent view width
@@ -52,8 +51,12 @@ static const NSString *CSToastActivityViewKey = @"CSToastActivityViewKey";
 
 @interface UIView (ToastPrivate)
 
-- (CGPoint)  centerPointForPosition: (id) position withToast: (UIView *) toast;
-- (UIView *) viewForMessage: (NSString *) message title: (NSString *) title image: (UIImage *) image;
+- (CGPoint)  centerPointForPosition: (id) position
+                          withToast: (UIView *) toast;
+
+- (UIView *) viewForMessage: (NSString *) message
+                      title: (NSString *) title
+                      image: (UIImage *) image;
 
 @end
 
@@ -125,36 +128,48 @@ static const NSString *CSToastActivityViewKey = @"CSToastActivityViewKey";
            position: CSToastDefaultPosition];
 }
 
+
+// Perform a subtle bounce animation to draw attention to the toast
+// These bounce animation parameters could do with some tweaking as I
+// suspect that they are not mathematically correct.
+// Will need to plot the bounce somehow
 - (void) showToast: (UIView *) toast duration: (CGFloat) interval position: (id) point
 {
-    toast.center = [self centerPointForPosition: point
-                                      withToast: toast];
-    
+    toast.center = [self centerPointForPosition: point withToast: toast];
     toast.alpha = 0.0;
-    
     [self addSubview: toast];
     
-    [UIView animateWithDuration: CSToastFadeDuration
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^ 
-                     {
-                         toast.alpha = 1.0;
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         [UIView  animateWithDuration: CSToastFadeDuration
-                                                delay: interval
-                                              options: UIViewAnimationOptionCurveEaseIn
-                                           animations: ^
-                                           {
-                                               toast.alpha = 0.0;
-                                           }
-                                           completion: ^(BOOL finished)
-                                           {
-                                               [toast removeFromSuperview];
-                                           }];
-                     }];
+    toast.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    toast.alpha = 0.0f;
+    
+    // Define the three stages of the animation in forward order
+    AnimationBlock makeSmall = ^(void)
+    {
+        toast.transform = CGAffineTransformMakeScale(1.15, 1.15);
+        toast.alpha = 1.0f;
+    };
+    AnimationBlock makeLarge = ^(void)
+    {
+        toast.transform = CGAffineTransformMakeScale(0.95f, 0.95f);
+    };
+    AnimationBlock restoreToOriginal = ^(void)
+    {
+        toast.transform = CGAffineTransformIdentity;
+    };
+    
+    // Create the three completion links in reverse order
+    CompletionBlock reenable = ^(BOOL finished) {};
+    CompletionBlock shrinkBack = ^(BOOL finished)
+    {
+        [UIView animateWithDuration: 0.1f animations: restoreToOriginal completion: reenable];
+    };
+    CompletionBlock bounceLarge = ^(BOOL finished)
+    {
+        [UIView animateWithDuration: 0.15f animations: makeLarge completion: shrinkBack];
+    };
+    
+    // Start the animation
+    [UIView animateWithDuration: 0.2f animations: makeSmall completion: bounceLarge];
 }
 
 #pragma mark - Toast Activity Methods
@@ -207,9 +222,9 @@ static const NSString *CSToastActivityViewKey = @"CSToastActivityViewKey";
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^
-                     {
-                         activityView.alpha = 1.0;
-                     }
+     {
+         activityView.alpha = 1.0;
+     }
      
                      completion: nil];
 }
@@ -224,14 +239,15 @@ static const NSString *CSToastActivityViewKey = @"CSToastActivityViewKey";
                               delay: 0.0
                             options: (UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)
                          animations: ^
-                         {
-                             existingActivityView.alpha = 0.0;
-                         }
+         {
+             existingActivityView.alpha = 0.0;
+         }
+         
                          completion:^(BOOL finished)
-                         {
-                             [existingActivityView removeFromSuperview];
-                             objc_setAssociatedObject(self, &CSToastActivityViewKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                         }];
+         {
+             [existingActivityView removeFromSuperview];
+             objc_setAssociatedObject(self, &CSToastActivityViewKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+         }];
     }
 }
 
@@ -267,7 +283,9 @@ static const NSString *CSToastActivityViewKey = @"CSToastActivityViewKey";
                               withToast: toast];
 }
 
-- (UIView *) viewForMessage: (NSString *) message title: (NSString *) title image: (UIImage *) image
+- (UIView *) viewForMessage: (NSString *) message
+                      title: (NSString *) title
+                      image: (UIImage *) image
 {
     // sanity
     if ((message == nil) && (title == nil) && (image == nil))
