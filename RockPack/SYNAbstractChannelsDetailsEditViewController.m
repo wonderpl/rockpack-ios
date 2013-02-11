@@ -105,7 +105,7 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.headerBarView.alpha = 0.5;
+         self.headerBarView.alpha = 0.1;
      }
                      completion: ^(BOOL finished)
      {
@@ -141,7 +141,7 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         self.coverSelectionView.alpha = 0.5f;
+         self.coverSelectionView.alpha = 0.1f;
      }
                      completion: ^(BOOL finished)
      {
@@ -177,7 +177,7 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-        self.videoThumbnailCollectionView.alpha = 0.5;
+        self.videoThumbnailCollectionView.alpha = 0.1;
      }
                      completion: ^(BOOL finished)
      {
