@@ -9,13 +9,14 @@
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "MKNetworkEngine.h"
+#import "SYNActivityPopoverViewController.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelsTopTabViewController.h"
-#import "SYNDiscoverTopTabViewController.h"
-#import "SYNFriendsViewController.h"
-#import "SYNHomeTopTabViewController.h"
+#import "SYNChannelsRootViewController.h"
+#import "SYNVideosRootViewController.h"
+#import "SYNFriendsRootViewController.h"
+#import "SYNHomeRootViewController.h"
 #import "SYNMovableView.h"
-#import "SYNMyRockpackViewController.h"
+#import "SYNYouRootViewController.h"
 #import "SYNVideoDB.h"
 #import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
@@ -24,27 +25,36 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIGestureRecognizerDelegate,
+                                          UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
-@property (nonatomic, assign) BOOL didNotSwipe;
+@property (nonatomic, assign) BOOL didNotSwipeMessageInbox;
+@property (nonatomic, assign) BOOL didNotSwipeShareMenu;
+@property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
+@property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) AVAudioRecorder *avRecorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
+@property (nonatomic, strong) IBOutlet UIButton *messageInboxButton;
+@property (nonatomic, strong) IBOutlet UIButton *notificationsButton;
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
-@property (nonatomic, strong) IBOutlet UIButton *rockieTalkieButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfNotificationsLabel;
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
-@property (nonatomic, strong) IBOutlet UIView *rightSwipeOverlayView;
-@property (nonatomic, strong) IBOutlet UIView *rockieTalkiePanelView;
+@property (nonatomic, strong) IBOutlet UIView *messageInboxView;
+@property (nonatomic, strong) IBOutlet UIView *shareMenuView;
+@property (nonatomic, strong) IBOutlet UIView *topButtonView;
 @property (nonatomic, strong) NSTimer *levelTimer;
-@property (nonatomic, strong) UISwipeGestureRecognizer *swipeLeftRecognizer;
+@property (nonatomic, strong) UIPopoverController *actionButtonPopover;
+@property (nonatomic, strong) UISwipeGestureRecognizer *messageInboxSwipeLeftRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *shareMenuSwipeLeftRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
@@ -61,46 +71,51 @@
 
 #pragma mark - View lifecycle
  	
-
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
     // Wallpack tab
-    SYNHomeTopTabViewController *wallPackViewController = [[SYNHomeTopTabViewController alloc] init];
+    SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] init];
+    UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
+    homeRootNavigationViewController.navigationBarHidden = TRUE;
+    homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
     // Channels tab
-    SYNChannelsTopTabViewController *channelsViewController = [[SYNChannelsTopTabViewController alloc] init];
-    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsViewController];
+    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] init];
+    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
     channelsRootNavigationViewController.navigationBarHidden = TRUE;
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
-
     
-    // Discover tab 
-    SYNDiscoverTopTabViewController *discoverViewController = [[SYNDiscoverTopTabViewController alloc] init];
-    
+    // Discover tab
+    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] init];
+    UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
+    videosRootNavigationViewController.navigationBarHidden = TRUE;
+    videosRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // My Rockpack tab
-    SYNMyRockpackViewController *myRockpackViewController = [[SYNMyRockpackViewController alloc] init];
-    UINavigationController *myRockpackRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
-    myRockpackRootNavigationViewController.navigationBarHidden = TRUE;
-    myRockpackRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    myRockpackRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] init];
+    UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
+    youRootRootNavigationViewController.navigationBarHidden = TRUE;
+    youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // Friends tab
-    SYNFriendsViewController *friendsViewController = [[SYNFriendsViewController alloc] init];
+    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] init];
     
     // Using new array syntax
-    self.viewControllers = @[wallPackViewController,
+    self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
-                             discoverViewController,
-                             myRockpackRootNavigationViewController,
-                             friendsViewController];
+                             videosRootNavigationViewController,
+                             youRootRootNavigationViewController,
+                             friendsRootViewController];
 
     _selectedIndex = NSNotFound;
     
-    self.selectedViewController = discoverViewController;
+    self.selectedViewController = videosRootNavigationViewController;
     
     // Now fade in gracefully from splash screen (do this here as opposed to the app delegate so that the orientation is known)
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
@@ -114,7 +129,7 @@
      {
          splashView.alpha = 0.0f;
      }
-                     completion: ^(BOOL finished)
+        completion: ^(BOOL finished)
      {
          splashView.alpha = 0.0f;
          [splashView removeFromSuperview];
@@ -123,32 +138,38 @@
     // Add swipe recoginisers for Rockie-Talkie
     // Right swipe
     self.swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                     action: @selector(swipeRockieTalkieRight:)];
+                                                                     action: @selector(slideMessageInboxRight:)];
     
-    [self.swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.swipeRightRecognizer setDirection: UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer: self.swipeRightRecognizer];
     
     // We need this to check that we can swipe
     self.swipeRightRecognizer.delegate = self;
     
-    // Left swipe
-    self.swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                    action: @selector(swipeRockieTalkieLeft:)];
+    // Left swipe on message inbox
+    self.messageInboxSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                    action: @selector(slideMessageInboxLeft:)];
     
-    [self.swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.rockieTalkiePanelView addGestureRecognizer: self.swipeLeftRecognizer];
+    [self.messageInboxSwipeLeftRecognizer setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.messageInboxView addGestureRecognizer: self.messageInboxSwipeLeftRecognizer];
+    
+    // Left swipe on share menu 
+    self.shareMenuSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                     action: @selector(slideShareMenuLeft:)];
+    
+    [self.shareMenuSwipeLeftRecognizer setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.shareMenuView addGestureRecognizer: self.shareMenuSwipeLeftRecognizer];
     
     // Set initial state
-    self.rockieTalkiePanelView.userInteractionEnabled = TRUE;
-    self.didNotSwipe = TRUE;
-    
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(selectMyRockpackTab)
-//                                                 name: @"SelectMyRockpackTab"
-//                                               object: nil];
+    self.messageInboxView.userInteractionEnabled = TRUE;
+    self.didNotSwipeMessageInbox = TRUE;
+    self.didNotSwipeShareMenu = TRUE;
     
     // Setup number of messages number font in title bar
     self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    
+    // Setup number of messages number font in title bar
+    self.numberOfNotificationsLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     
     // Setup rockie-talkie message view
     self.messageTextView.font = [UIFont rockpackFontOfSize: 15.0f];
@@ -156,17 +177,20 @@
     
     // Placeholder for rockie-talkie message view to show message only when no text in main view
     self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
+    
+    self.backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BackgroundGeneric"]];
 }
+
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
 }
 
+
 #pragma mark - Tab & Container switching mechanism
 
 // Add the five tab view controllers as sub-view controllers of this view controller
-
 - (void) setViewControllers: (NSArray *) newViewControllers
 {
 	UIViewController *oldSelectedViewController = self.selectedViewController;
@@ -184,11 +208,17 @@
 	// re-select the previously selected view controller.
 	NSUInteger newIndex = [_viewControllers indexOfObject: oldSelectedViewController];
 	if (newIndex != NSNotFound)
+    {
 		_selectedIndex = newIndex;
+    }
 	else if (newIndex < [_viewControllers count])
+    {
 		_selectedIndex = newIndex;
+    }
 	else
+    {
 		_selectedIndex = 0;
+    }
     
 	// Add the new child view controllers.
 	for (UIViewController *viewController in _viewControllers)
@@ -196,32 +226,6 @@
 		[self addChildViewController: viewController];
 		[viewController didMoveToParentViewController: self];
 	}
-}
-
-
-- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
-        shouldReceiveTouch: (UITouch *) touch
-{
-    if (self.rockieTalkieButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
-{
-    if ([SYNMovableView allowDragging]  == TRUE && gestureRecognizer == self.swipeRightRecognizer)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
 }
 
 
@@ -307,6 +311,17 @@
 //			[self.view addSubview: toViewController.view];
             [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
 		}
+        
+        // We need to see if we need to hide/show the back button for the new view controller
+        
+        if ([toViewController isKindOfClass: [UINavigationController class]] && [[(UINavigationController *)toViewController viewControllers] count] > 1)
+        {
+            [self showBackButton];
+        }
+        else
+        {
+            [self hideBackButton];
+        }
 	}
 }
 
@@ -361,13 +376,17 @@
 }
 
 
-#pragma mark - Rockie-Talkie gesture handlers
+#pragma mark - Side menu gesture handlers
 
--(void) swipeRockieTalkieLeft: (UISwipeGestureRecognizer *) swipeGesture
+// Swipe rockie-talkie off screen
+- (void) slideMessageInboxLeft: (UISwipeGestureRecognizer *) swipeGesture
 {
-    if (!self.didNotSwipe)
+    if (!self.didNotSwipeMessageInbox)
     {
-        self.didNotSwipe = TRUE;
+        self.didNotSwipeMessageInbox = TRUE;
+        
+        // Stop recording
+        [self endRecording];
     
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -386,29 +405,31 @@
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = -495;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
+             CGRect messageInboxViewFrame = self.messageInboxView.frame;
+             messageInboxViewFrame.origin.x = -495;
+             self.messageInboxView.frame =  messageInboxViewFrame;
 
          }
                          completion: ^(BOOL finished)
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = -495;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
-             
              // Set the button to the appropriate state
-             self.rockieTalkieButton.selected = FALSE;
+             self.messageInboxButton.selected = FALSE;
          }];
     }
 }
 
 
-- (void) swipeRockieTalkieRight: (UISwipeGestureRecognizer *) swipeGesture
+// Swipe rockie-talkie onto screen
+- (void) slideMessageInboxRight: (UISwipeGestureRecognizer *) swipeGesture
 {
-    if (self.didNotSwipe)
+    if (self.didNotSwipeMessageInbox)
     {
-        self.didNotSwipe = FALSE;
+        self.didNotSwipeMessageInbox = FALSE;
+        
+        if (self.didNotSwipeShareMenu == FALSE)
+        {
+            [self slideShareMenuLeft: nil];
+        }
 
 #ifdef SOUND_ENABLED
         // Play a suitable sound
@@ -427,22 +448,112 @@
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = 0;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
+             CGRect messageInboxViewFrame = self.messageInboxView.frame;
+             messageInboxViewFrame.origin.x = 0;
+             self.messageInboxView.frame =  messageInboxViewFrame;
              
          }
                          completion: ^(BOOL finished)
          {
-             CGRect rockieTalkiePanelFrame = self.rockieTalkiePanelView.frame;
-             rockieTalkiePanelFrame.origin.x = 0;
-             self.rockieTalkiePanelView.frame =  rockieTalkiePanelFrame;
-             
              // Set the button to the appropriate state
-             self.rockieTalkieButton.selected = TRUE;
+             self.messageInboxButton.selected = TRUE;
          }];
     }
 }
+
+- (void) toggleShareMenu
+{
+    if (self.didNotSwipeShareMenu == TRUE)
+    {
+        [self slideShareMenuRight: nil];
+    }
+    else
+    {
+        [self slideShareMenuLeft: nil];
+    }
+}
+
+// Swipe rockie-talkie off screen
+- (void) slideShareMenuLeft: (UISwipeGestureRecognizer *) swipeGesture
+{
+    if (!self.didNotSwipeShareMenu)
+    {
+        self.didNotSwipeShareMenu = TRUE;
+        
+#ifdef SOUND_ENABLED
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideOut"
+                                                              ofType: @"aif"];
+        
+        NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+        AudioServicesPlaySystemSound(sound);
+#endif
+        
+        // Animate the view out onto the screen
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect shareMenuViewFrame = self.shareMenuView.frame;
+             shareMenuViewFrame.origin.x = -495;
+             self.shareMenuView.frame =  shareMenuViewFrame;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+             // Set the button to the appropriate state
+//             self.messageInboxButton.selected = FALSE;
+         }];
+    }
+}
+
+
+// Swipe rockie-talkie onto screen
+- (void) slideShareMenuRight: (UISwipeGestureRecognizer *) swipeGesture
+{
+    if (self.didNotSwipeShareMenu)
+    {
+        self.didNotSwipeShareMenu = FALSE;
+        
+        if (self.didNotSwipeMessageInbox == FALSE)
+        {
+            [self slideMessageInboxLeft: nil];
+        }
+        
+#ifdef SOUND_ENABLED
+        // Play a suitable sound
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideIn"
+                                                              ofType: @"aif"];
+        
+        NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+        AudioServicesPlaySystemSound(sound);
+#endif
+        
+        // Animate the view out onto the screen
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect shareMenuViewFrame = self.shareMenuView.frame;
+             shareMenuViewFrame.origin.x = 0;
+             self.shareMenuView.frame =  shareMenuViewFrame;
+             
+         }
+                         completion: ^(BOOL finished)
+         {
+             // Set the button to the appropriate state
+//             self.messageInboxButton.selected = TRUE;
+         }];
+    }
+}
+
+
 
 - (IBAction) clearSearchField: (id) sender
 {
@@ -451,41 +562,85 @@
     [self.searchTextField resignFirstResponder];
 }
 
+
 - (IBAction) recordAction: (UIButton*) button
 {
     button.selected = !button.selected;
 }
 
-- (IBAction) rockieTalkieAction: (UIButton*) button
+
+- (IBAction) userTouchedInboxButton: (UIButton*) button
 {
     button.selected = !button.selected;
     
     if (button.selected)
     {
         // Need to slide rockie talkie out
-        [self swipeRockieTalkieRight: nil];
+        [self slideMessageInboxRight: nil];
     }
     else
     {
         // Need to slide rockie talkie back in
-        [self swipeRockieTalkieLeft: nil];
+        [self slideMessageInboxLeft: nil];
     }
 }
 
-- (IBAction) recordTouchDown
+- (IBAction) userTouchedNotificationButton: (UIButton*) button
 {
-    [self startRecording];
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        SYNActivityPopoverViewController *actionPopoverController = [[SYNActivityPopoverViewController alloc] init];
+        // Need show the popover controller
+        self.actionButtonPopover = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.actionButtonPopover.popoverContentSize = CGSizeMake(320, 166);
+        self.actionButtonPopover.delegate = self;
+        
+        [self.actionButtonPopover presentPopoverFromRect: button.frame
+                                                  inView: self.view
+                                permittedArrowDirections: UIPopoverArrowDirectionUp
+                                                animated: YES];
+    }
+    else
+    {
+        // Need to hide the popover controller
+        [self.actionButtonPopover dismissPopoverAnimated: YES];
+    }
 }
 
-- (IBAction) recordTouchUp
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    [self endRecording];
+	// Any cleanup
+    self.notificationsButton.selected = FALSE;
 }
 
-//- (void) selectMyRockpackTab
+// Keep just in case hold to record is back in fashion again
+//- (IBAction) recordTouchDown
 //{
-//    [self setSelectedIndex: 2];
+//    [self startRecording];
 //}
+//
+//
+//- (IBAction) recordTouchUp
+//{
+//    [self endRecording];
+//}
+
+- (IBAction) toggleRecording
+{
+    if (self.isRecording)
+    {
+        self.isRecording = FALSE;
+        [self endRecording];
+    }
+    else
+    {
+        self.isRecording = TRUE;
+        [self startRecording];
+    }
+}
+
 
 #pragma mark - Rockie-talkie recording actions
 
@@ -533,7 +688,7 @@
   	}
     else
     {
-  		NSLog(@"%@", [error description]);
+  		DebugLog(@"%@", [error description]);
     }
 }
 
@@ -557,7 +712,7 @@
     // Convert from dB to linear
 	double averagePowerForChannel = pow(10, (0.05 * [self.avRecorder averagePowerForChannel: 0]));
     
-    NSLog (@"Power %f", averagePowerForChannel);
+    DebugLog (@"Power %f", averagePowerForChannel);
     
     // And clip to 0 > x > 1
     if (averagePowerForChannel < 0.0)
@@ -571,8 +726,6 @@
     
     // Adjust size of glow, Adding 1 for the scale factor
     double scaleFactor = 1.0f + averagePowerForChannel;
-    
-//    NSLog (@"Scale %f", scaleFactor);
 
     [self.recordButtonGlowImageView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
 }
@@ -642,6 +795,87 @@
     }
 }
 
+
+#pragma mark - Gesture recognizers
+
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
+        shouldReceiveTouch: (UITouch *) touch
+{
+    if (self.messageInboxButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+
+- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
+{
+    if ([SYNMovableView allowDragging]  == TRUE && gestureRecognizer == self.swipeRightRecognizer)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+#pragma mark - Back button handling
+
+- (void) showBackButton
+{
+    if (self.topButtonView.frame.origin.x < 0)
+    {
+        [UIView animateWithDuration: 0.25f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect containerViewFrame = self.topButtonView.frame;
+             containerViewFrame.origin.x += 75;
+             self.topButtonView.frame = containerViewFrame;
+         }
+                         completion: ^(BOOL finished)
+         {
+             self.showingBackButton = TRUE;
+         }];
+    }
+}
+
+
+- (void) hideBackButton
+{
+    // Only hide if  already visible
+    if (self.topButtonView.frame.origin.x >= 0)
+    {
+        [UIView animateWithDuration: 0.25f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             CGRect containerViewFrame = self.topButtonView.frame;
+             containerViewFrame.origin.x -= 75;
+             self.topButtonView.frame = containerViewFrame;
+         }
+         completion: ^(BOOL finished)
+         {
+             self.showingBackButton = FALSE;
+         }];
+    }
+}
+
+- (IBAction) popCurrentViewController: (id) sender
+{
+    UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
+    
+    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+    
+    [abstractVC animatedPopViewController];
+}
 
 
 @end

@@ -12,10 +12,7 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *subtitleLabel;
-@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
-@property (nonatomic, strong) IBOutlet UIButton *addItButton;
-@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
+
+- (void) setVideoImageViewImage: (NSString*) imageURLString;
 
 @end

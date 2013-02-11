@@ -9,6 +9,57 @@
 #ifndef RockPack_AppContants_h
 #define RockPack_AppContants_h
 
+
+//
+// API
+//
+
+// Host for API
+
+#if 0
+
+#define kAPIHostName @"demo.rockpack.com"
+
+// Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
+#define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"test/ws/%@/subscriptions/recent_videos/"
+
+// Returns a list of 
+#define kAPIPopularChannels @"test/ws/channels/"
+
+#else
+
+//#define kAPIHostName @"dev.rockpack.com"
+#define kAPIHostName @"demo.rockpack.com"
+
+// Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
+#define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
+
+// Returns a list of the trending videos
+#define kAPIPopularVideos @"ws/videos/"
+
+// Returns a list of
+#define kAPIPopularChannels @"ws/channels/"
+
+#endif
+
+// Timeout for API calls
+
+#define kAPIDefaultTimout 30
+
+// API default batch size (we may need different ones for each API at some stage)
+#define kDefaultBatchSize 20
+
+// Savecontext
+
+#define kSaveSynchronously TRUE
+#define kSaveAsynchronously FALSE
+
+
+// Notifications
+
+// One the APIs imported some new data - we will need to be more specific at some stage.
+#define kDataUpdated @"kDataUpdated"
+
 // Settings
 
 #define kDownloadedVideoContentBool @"kDownloadedVideoContentBool"
@@ -20,6 +71,16 @@
 
 // Enable full screen thumbnail view 
 #define FULL_SCREEN_THUMBNAILS__
+
+//
+// Colours
+//
+
+// Highlighted RockIt number text colour
+#define kHighlightedRockItTextColour [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f]
+
+// Default
+#define kDefaultRockItTextColour
 
 //
 // Animations
@@ -38,15 +99,31 @@
 // Rockie-talkie
 #define kRockieTalkieAnimationDuration 0.3f
 
+// Image well
+#define kVideoQueueAnimationDuration 0.3f
+#define kVideoQueueOnScreenDuration 10.0f
+//#define kVideoQueueOnScreenDuration 10000.0f
+
 // Large Video panel
 #define kLargeVideoPanelAnimationDuration 0.3f
 
 // Camera preview animation
 #define kCameraPreviewAnimationDuration 0.3f
 
+// Large Video panel
+#define kCreateChannelPanelAnimationDuration 0.3f
+
 //
 // Dimensions
 //
+
+// Effective height (exlcuding shadow) of the image well
+//#define kVideoQueueEffectiveHeight 99
+#define kVideoQueueEffectiveHeight 103
+
+#define kVideoQueueWidth 490
+//#define kVideoQueueWidth 475
+#define kVideoQueueOffsetX 10
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62

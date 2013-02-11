@@ -5,10 +5,9 @@
 
 
 extern const struct UserAttributes {
-	__unsafe_unretained NSString *avatarURL;
-	__unsafe_unretained NSString *dateJoined;
-	__unsafe_unretained NSString *emailAddress;
-	__unsafe_unretained NSString *screenName;
+	__unsafe_unretained NSString *forename;
+	__unsafe_unretained NSString *surname;
+	__unsafe_unretained NSString *thumbnailURL;
 } UserAttributes;
 
 extern const struct UserRelationships {
@@ -16,7 +15,6 @@ extern const struct UserRelationships {
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
-
 
 
 
@@ -36,41 +34,31 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* avatarURL;
+@property (nonatomic, strong) NSString* forename;
 
 
 
-//- (BOOL)validateAvatarURL:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSDate* dateJoined;
-
-
-
-//- (BOOL)validateDateJoined:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateForename:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSString* emailAddress;
+@property (nonatomic, strong) NSString* surname;
 
 
 
-//- (BOOL)validateEmailAddress:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateSurname:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSString* screenName;
+@property (nonatomic, strong) NSString* thumbnailURL;
 
 
 
-//- (BOOL)validateScreenName:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -86,26 +74,20 @@ extern const struct UserFetchedProperties {
 @interface _User (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveAvatarURL;
-- (void)setPrimitiveAvatarURL:(NSString*)value;
+- (NSString*)primitiveForename;
+- (void)setPrimitiveForename:(NSString*)value;
 
 
 
 
-- (NSDate*)primitiveDateJoined;
-- (void)setPrimitiveDateJoined:(NSDate*)value;
+- (NSString*)primitiveSurname;
+- (void)setPrimitiveSurname:(NSString*)value;
 
 
 
 
-- (NSString*)primitiveEmailAddress;
-- (void)setPrimitiveEmailAddress:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveScreenName;
-- (void)setPrimitiveScreenName:(NSString*)value;
+- (NSString*)primitiveThumbnailURL;
+- (void)setPrimitiveThumbnailURL:(NSString*)value;
 
 
 

@@ -14,5 +14,6 @@
 
 @property (readwrite, nonatomic, weak) IBOutlet UIImageView *imageView;
 
+- (void) setChannelImageViewImage: (NSString*) imageURLString;
 
 @end

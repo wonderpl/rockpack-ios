@@ -6,8 +6,13 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "MKNetworkKit.h"
 #import "SYNChannelThumbnailCell.h"
 #import "UIFont+SYNFont.h"
+
+@interface SYNChannelThumbnailCell ()
+
+@end
 
 @implementation SYNChannelThumbnailCell
 
@@ -25,12 +30,12 @@
             return nil;
         }
         
-        if (![[arrayOfViews objectAtIndex: 0] isKindOfClass: [UICollectionViewCell class]])
+        if (![arrayOfViews[0] isKindOfClass: [UICollectionViewCell class]])
         {
             return nil;
         }
         
-        self = [arrayOfViews objectAtIndex: 0];
+        self = arrayOfViews[0];
     }
     
     return self;
@@ -41,18 +46,22 @@
     [super awakeFromNib];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.subtitleLabel.font = [UIFont rockpackFontOfSize: 17.0f];
-    self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.userNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
 }
 
-/*
- // Only override drawRect: if you perform custom drawing.
- // An empty implementation adversely affects performance during animation.
- - (void)drawRect:(CGRect)rect
- {
- // Drawing code
- }
- */
 
+- (void) setChannelImageViewImage: (NSString*) imageURLString
+{
+    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                        placeHolderImage: nil];
+}
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+
+    self.imageView.image = nil;
+}
 
 @end

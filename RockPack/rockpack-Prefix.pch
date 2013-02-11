@@ -11,6 +11,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "MKNetworkKit.h"
 #endif
 
 #ifdef DEBUG
@@ -25,3 +26,6 @@
 #endif
 
 #define ZAssert(condition, ...) do { if (!(condition)) { AssertOrLog(__VA_ARGS__); }} while(0)
+
+#define UIDeviceOrientationIsPortrait(orientation)  ((orientation) == UIDeviceOrientationPortrait || (orientation) == UIDeviceOrientationPortraitUpsideDown)
+#define UIDeviceOrientationIsLandscape(orientation) ((orientation) == UIDeviceOrientationLandscapeLeft || (orientation) == UIDeviceOrientationLandscapeRight)

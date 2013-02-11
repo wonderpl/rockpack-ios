@@ -7,6 +7,12 @@
 //
 
 #import "SYNChannelSelectorCell.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
+
+@interface SYNChannelSelectorCell ()
+
+@end
+
 
 @implementation SYNChannelSelectorCell
 
@@ -24,15 +30,29 @@
             return nil;
         }
         
-        if (![[arrayOfViews objectAtIndex: 0] isKindOfClass: [UICollectionViewCell class]])
+        if (![arrayOfViews[0] isKindOfClass: [UICollectionViewCell class]])
         {
             return nil;
         }
         
-        self = [arrayOfViews objectAtIndex: 0];
+        self = arrayOfViews[0];
     }
     
     return self;
+}
+
+
+- (void) setChannelImageViewImage: (NSString*) imageURLString
+{
+    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                   placeHolderImage: nil];
+}
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+    
+    self.imageView.image = nil;
 }
 
 @end

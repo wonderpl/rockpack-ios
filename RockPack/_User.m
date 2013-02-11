@@ -4,10 +4,9 @@
 #import "_User.h"
 
 const struct UserAttributes UserAttributes = {
-	.avatarURL = @"avatarURL",
-	.dateJoined = @"dateJoined",
-	.emailAddress = @"emailAddress",
-	.screenName = @"screenName",
+	.forename = @"forename",
+	.surname = @"surname",
+	.thumbnailURL = @"thumbnailURL",
 };
 
 const struct UserRelationships UserRelationships = {
@@ -49,28 +48,21 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
-@dynamic avatarURL;
+@dynamic forename;
 
 
 
 
 
 
-@dynamic dateJoined;
+@dynamic surname;
 
 
 
 
 
 
-@dynamic emailAddress;
-
-
-
-
-
-
-@dynamic screenName;
+@dynamic thumbnailURL;
 
 
 

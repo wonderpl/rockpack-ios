@@ -48,17 +48,17 @@
             }
 			else
             {
-				NSLog(@"Couldn't add video input");
+				DebugLog(@"Couldn't add video input");
             }
 		}
 		else
         {
-			NSLog(@"Couldn't create video input");
+			DebugLog(@"Couldn't create video input");
         }
 	}
 	else
     {
-		NSLog(@"Couldn't create video capture device");
+		DebugLog(@"Couldn't create video capture device");
     }
 }
 

@@ -9,23 +9,38 @@
 #import "AppConstants.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
+#import "SYNNetworkEngine.h"
 #import "TestFlight.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
+#import "ChannelOwner.h"
+
+@interface SYNAppDelegate ()
+
+@property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
+@property (nonatomic, strong) SYNNetworkEngine *networkEngine;
+
+@end
 
 @implementation SYNAppDelegate
-
-// We must use explicit synthesise here, as we need to access the underlying ivars
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
+    // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
     [self performSelector: @selector(installUncaughtExceptionHandler)
                withObject: nil
                afterDelay: 0];
+    
+    // Se up core data
+    [self initializeCoreDataStack];
+    
+    // Set up network engine
+    [self initializeNetworkEngine];
+    
+    // Create default user
+    [self createDefaultUser];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -52,6 +67,9 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    // We need to save out database here (not in background)
+    [self saveContext: kSaveSynchronously];
 }
 
 
@@ -59,6 +77,9 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    // We need to save out database here (not in background)
+    [self saveContext: kSaveSynchronously];
 }
 
 
@@ -77,22 +98,9 @@
 - (void) applicationWillTerminate: (UIApplication *) application
 {
     // Saves changes in the application's managed object context before the application terminates.
-    [self saveContext];
-}
-
-
-- (void) saveContext
-{
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
-    if (managedObjectContext != nil)
-    {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save: &error])
-        {
-            NSAssert2(FALSE, @"Unresolved error %@, %@", error, [error userInfo]);
-        }
-    }
+    // We need to save out database here (not in background)
+    [self saveContext: kSaveSynchronously];
 }
 
 
@@ -108,107 +116,162 @@
 
 #pragma mark - Core Data stack
 
-// Returns the managed object context for the application.
-// If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
-- (NSManagedObjectContext *) managedObjectContext
+- (void) initializeCoreDataStack
 {
-    if (_managedObjectContext != nil)
-    {
-        return _managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    
-    if (coordinator != nil)
-    {
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [_managedObjectContext setPersistentStoreCoordinator: coordinator];
-    }
-    return _managedObjectContext;
-}
-
-
-// Returns the managed object model for the application.
-// If the model doesn't already exist, it is created from the application's model.
-- (NSManagedObjectModel *) managedObjectModel
-{
-    if (_managedObjectModel != nil)
-    {
-        return _managedObjectModel;
-    }
-    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack"
                                               withExtension: @"momd"];
+    ZAssert(modelURL, @"Failed to find model URL");
     
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL];
-    return _managedObjectModel;
-}
-
-
-// Returns the persistent store coordinator for the application.
-// If the coordinator doesn't already exist, it is created and the application's store added to it.
-- (NSPersistentStoreCoordinator *) persistentStoreCoordinator
-{
-    if (_persistentStoreCoordinator != nil)
+    NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL];
+    ZAssert(managedObjectModel, @"Failed to initialize model");
+    
+    NSPersistentStoreCoordinator *persistentStoreCoordinator = nil;
+    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
+    ZAssert(persistentStoreCoordinator, @"Failed to initialize persistent store coordinator");
+    
+    NSManagedObjectContext *privateManagedObjectContext = nil;
+    privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
+    privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
+    
+    NSManagedObjectContext *mainManagedObjectContext = nil;
+    mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    mainManagedObjectContext.parentContext = privateManagedObjectContext;
+    
+    self.privateManagedObjectContext = privateManagedObjectContext;
+    self.mainManagedObjectContext = mainManagedObjectContext;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
-        return _persistentStoreCoordinator;
-    }
+        NSError *error = nil;
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent: @"Rockpack.sqlite"];
-    
-    NSError *error = nil;
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
-    
-    // Handle the case where we have changed the schema so that the old store is incompatible
-    // Normally, this would result in an empty database, but it we detect this, then delete the existing file
-    // so that it can be recreated.
-    
-    // Check if we already have a persistent store
-    if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
-    {
-        NSDictionary *existingPersistentStoreMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType: NSSQLiteStoreType
-                                                                                                                   URL: storeURL
-                                                                                                                 error: &error];
+        NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
+                                                                  inDomains: NSUserDomainMask] lastObject];
         
-        if (!existingPersistentStoreMetadata)
-        {
-            // Something *really* bad has happened to the persistent store
-            [NSException raise: NSInternalInconsistencyException
-                        format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
-        }
+        storeURL = [storeURL URLByAppendingPathComponent: @"PPRecipes.sqlite"];
         
-        if (![_managedObjectModel isConfiguration: nil
-                     compatibleWithStoreMetadata: existingPersistentStoreMetadata])
+        if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
         {
-            if (![[NSFileManager defaultManager] removeItemAtURL: storeURL
-                                                            error: &error])
+            NSDictionary *existingPersistentStoreMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType: NSSQLiteStoreType
+                                                                                                                       URL: storeURL
+                                                                                                                     error: &error];
+            
+            if (!existingPersistentStoreMetadata)
             {
-                NSLog(@"*** Could not delete persistent store, %@", error);
+                // Something *really* bad has happened to the persistent store
+                [NSException raise: NSInternalInconsistencyException
+                            format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
             }
-        } // else the existing persistent store is compatible with the current model - nice!
-    } // else no database file yet
+            
+            if (![managedObjectModel isConfiguration: nil
+                          compatibleWithStoreMetadata: existingPersistentStoreMetadata])
+            {
+                if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
+                                                               error: &error])
+                {
+                    DebugLog(@"Existing database - incompatible schema detected, so deleted");
+                }
+                else
+                {
+                    DebugLog(@"*** Could not delete persistent store, %@", error);
+                }
+            } // else the existing persistent store is compatible with the current model - nice!
+        } // else no database file yet
+
+        NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
+                                                                            configuration: nil
+                                                                                      URL: storeURL
+                                                                                  options: nil
+                                                                                    error: &error];
+        if (store == nil)
+        {
+            DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
+        }
+    });
+}
+
+// This is the new and improved saveContext.
+// The mainManagedObjectContexts is saved first (if dirty), which propogates any chances to the privateManagedObjectContext, which is performed on the main
+// thread, but causes minimal UI blocking as hopefully v. quick.
+// Then the privateManagedObjectContext is saved, on a background thread, which should not cause UI blocking
+- (void) saveContext: (BOOL) wait
+{
+    // If we don't have a valid MOC, then bail
+    if (nil == self.mainManagedObjectContext) return;
     
-    if (![_persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
-                                                   configuration: nil
-                                                             URL: storeURL
-                                                         options: nil
-                                                           error: &error])
+    if ([self.mainManagedObjectContext hasChanges])
     {
-        [NSException raise: NSInternalInconsistencyException
-                    format: @"Failed to add persistent store %@: %@", storeURL, error];
+        [self.mainManagedObjectContext performBlockAndWait:^
+         {
+             NSError *error = nil;
+             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving MOC: %@\n%@",
+                     [error localizedDescription], [error userInfo]);
+         }];
     }
     
-    return _persistentStoreCoordinator;
+    void (^savePrivate) (void) = ^
+    {
+        NSError *error = nil;
+        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving private moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
+    };
+    
+    if ([self.privateManagedObjectContext hasChanges])
+    {
+        if (wait)
+        {
+            [self.privateManagedObjectContext performBlockAndWait: savePrivate];
+        }
+        else
+        {
+            [self.privateManagedObjectContext performBlock: savePrivate];
+        }
+    }
 }
 
 
-#pragma mark - Application's Documents directory
+#pragma mark - Network engine suport
 
-// Returns the URL to the application's Documents directory.
-- (NSURL *) applicationDocumentsDirectory
+- (void) initializeNetworkEngine
 {
-    return [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
-                                                   inDomains: NSUserDomainMask] lastObject];
+    self.networkEngine = [[SYNNetworkEngine alloc] initWithDefaultSettings];
+    [self.networkEngine useCache];
+    
+    // Use this engine as the default for the asynchronous image loading category on UIImageView
+    UIImageView.defaultEngine = self.networkEngine;
+}
+
+
+- (void) createDefaultUser
+{
+    // See if we have already created a default user object, and if not create one
+    NSError *error = nil;
+    NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
+                                                          inManagedObjectContext: self.mainManagedObjectContext];
+    
+    // Find out how many Video objects we have in the database
+    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
+    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
+    [channelOwnerFetchRequest setPredicate: predicate];
+    
+    NSArray *channelOwnerEntries = [self.mainManagedObjectContext executeFetchRequest: channelOwnerFetchRequest
+                                                                                error: &error];
+    
+    if (channelOwnerEntries.count > 0)
+    {
+        self.channelOwnerMe = (ChannelOwner *)channelOwnerEntries[0];
+    }
+    else
+    {
+        ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
+        
+        channelOwnerMe.name = @"PAUL CACKETT";
+        channelOwnerMe.uniqueId = @"666";
+        channelOwnerMe.thumbnailURL = @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png";
+        
+        self.channelOwnerMe = channelOwnerMe;
+    }
 }
 
 @end

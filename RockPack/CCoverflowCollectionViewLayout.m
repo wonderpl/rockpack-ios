@@ -73,7 +73,7 @@
 
 - (void)setup
 {
-    self.cellSize = (CGSize){ 360.0f, 226.0f };
+    self.cellSize = (CGSize){ 345.0f, 195.0f };
     self.cellSpacing = 40.0f;
 	self.snapToCells = YES;
     
@@ -91,6 +91,7 @@
                                @(-1.0f): @(0.9),
                                @(-0.5f): @(1.0f),
                                }] interpolatorWithReflection:NO];
+
     
 	self.darknessInterpolator = [[CInterpolator interpolatorWithDictionary:@{
                                   @(-2.5f): @(0.5f),

@@ -2,29 +2,39 @@
 // Make changes to Channel.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "AbstractCommon.h"
 
 extern const struct ChannelAttributes {
-	__unsafe_unretained NSString *biog;
-	__unsafe_unretained NSString *biogTitle;
-	__unsafe_unretained NSString *index;
-	__unsafe_unretained NSString *keyframeURL;
+	__unsafe_unretained NSString *categoryId;
+	__unsafe_unretained NSString *channelDescription;
+	__unsafe_unretained NSString *coverBackgroundURL;
+	__unsafe_unretained NSString *coverThumbnailLargeURL;
+	__unsafe_unretained NSString *coverThumbnailSmallURL;
+	__unsafe_unretained NSString *lastUpdated;
+	__unsafe_unretained NSString *position;
+	__unsafe_unretained NSString *resourceURL;
+	__unsafe_unretained NSString *rockCount;
 	__unsafe_unretained NSString *rockedByUser;
-	__unsafe_unretained NSString *subtitle;
+	__unsafe_unretained NSString *subscribersCount;
 	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *totalRocks;
-	__unsafe_unretained NSString *userGenerated;
+	__unsafe_unretained NSString *viewId;
 	__unsafe_unretained NSString *wallpaperURL;
 } ChannelAttributes;
 
 extern const struct ChannelRelationships {
-	__unsafe_unretained NSString *videos;
+	__unsafe_unretained NSString *channelOwner;
+	__unsafe_unretained NSString *videoInstances;
 } ChannelRelationships;
 
 extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
-@class Video;
+@class ChannelOwner;
+@class VideoInstance;
+
+
+
+
 
 
 
@@ -40,7 +50,7 @@ extern const struct ChannelFetchedProperties {
 @interface ChannelID : NSManagedObjectID {}
 @end
 
-@interface _Channel : NSManagedObject {}
+@interface _Channel : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -50,45 +60,99 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* biog;
+@property (nonatomic, strong) NSString* categoryId;
 
 
 
-//- (BOOL)validateBiog:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* biogTitle;
-
-
-
-//- (BOOL)validateBiogTitle:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateCategoryId:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSNumber* index;
+@property (nonatomic, strong) NSString* channelDescription;
 
 
 
-@property int64_t indexValue;
-- (int64_t)indexValue;
-- (void)setIndexValue:(int64_t)value_;
-
-//- (BOOL)validateIndex:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateChannelDescription:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSString* keyframeURL;
+@property (nonatomic, strong) NSString* coverBackgroundURL;
 
 
 
-//- (BOOL)validateKeyframeURL:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateCoverBackgroundURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* coverThumbnailLargeURL;
+
+
+
+//- (BOOL)validateCoverThumbnailLargeURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* coverThumbnailSmallURL;
+
+
+
+//- (BOOL)validateCoverThumbnailSmallURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* lastUpdated;
+
+
+
+//- (BOOL)validateLastUpdated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* position;
+
+
+
+@property int64_t positionValue;
+- (int64_t)positionValue;
+- (void)setPositionValue:(int64_t)value_;
+
+//- (BOOL)validatePosition:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* resourceURL;
+
+
+
+//- (BOOL)validateResourceURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* rockCount;
+
+
+
+@property int64_t rockCountValue;
+- (int64_t)rockCountValue;
+- (void)setRockCountValue:(int64_t)value_;
+
+//- (BOOL)validateRockCount:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -108,11 +172,15 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* subtitle;
+@property (nonatomic, strong) NSNumber* subscribersCount;
 
 
 
-//- (BOOL)validateSubtitle:(id*)value_ error:(NSError**)error_;
+@property int64_t subscribersCountValue;
+- (int64_t)subscribersCountValue;
+- (void)setSubscribersCountValue:(int64_t)value_;
+
+//- (BOOL)validateSubscribersCount:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -128,29 +196,11 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* totalRocks;
+@property (nonatomic, strong) NSString* viewId;
 
 
 
-@property int64_t totalRocksValue;
-- (int64_t)totalRocksValue;
-- (void)setTotalRocksValue:(int64_t)value_;
-
-//- (BOOL)validateTotalRocks:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* userGenerated;
-
-
-
-@property BOOL userGeneratedValue;
-- (BOOL)userGeneratedValue;
-- (void)setUserGeneratedValue:(BOOL)value_;
-
-//- (BOOL)validateUserGenerated:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -166,9 +216,16 @@ extern const struct ChannelFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSOrderedSet *videos;
+@property (nonatomic, strong) ChannelOwner *channelOwner;
 
-- (NSMutableOrderedSet*)videosSet;
+//- (BOOL)validateChannelOwner:(id*)value_ error:(NSError**)error_;
+
+
+
+
+@property (nonatomic, strong) NSOrderedSet *videoInstances;
+
+- (NSMutableOrderedSet*)videoInstancesSet;
 
 
 
@@ -178,39 +235,72 @@ extern const struct ChannelFetchedProperties {
 
 @interface _Channel (CoreDataGeneratedAccessors)
 
-- (void)addVideos:(NSOrderedSet*)value_;
-- (void)removeVideos:(NSOrderedSet*)value_;
-- (void)addVideosObject:(Video*)value_;
-- (void)removeVideosObject:(Video*)value_;
+- (void)addVideoInstances:(NSOrderedSet*)value_;
+- (void)removeVideoInstances:(NSOrderedSet*)value_;
+- (void)addVideoInstancesObject:(VideoInstance*)value_;
+- (void)removeVideoInstancesObject:(VideoInstance*)value_;
 
 @end
 
 @interface _Channel (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveBiog;
-- (void)setPrimitiveBiog:(NSString*)value;
+- (NSString*)primitiveCategoryId;
+- (void)setPrimitiveCategoryId:(NSString*)value;
 
 
 
 
-- (NSString*)primitiveBiogTitle;
-- (void)setPrimitiveBiogTitle:(NSString*)value;
+- (NSString*)primitiveChannelDescription;
+- (void)setPrimitiveChannelDescription:(NSString*)value;
 
 
 
 
-- (NSNumber*)primitiveIndex;
-- (void)setPrimitiveIndex:(NSNumber*)value;
-
-- (int64_t)primitiveIndexValue;
-- (void)setPrimitiveIndexValue:(int64_t)value_;
+- (NSString*)primitiveCoverBackgroundURL;
+- (void)setPrimitiveCoverBackgroundURL:(NSString*)value;
 
 
 
 
-- (NSString*)primitiveKeyframeURL;
-- (void)setPrimitiveKeyframeURL:(NSString*)value;
+- (NSString*)primitiveCoverThumbnailLargeURL;
+- (void)setPrimitiveCoverThumbnailLargeURL:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveCoverThumbnailSmallURL;
+- (void)setPrimitiveCoverThumbnailSmallURL:(NSString*)value;
+
+
+
+
+- (NSDate*)primitiveLastUpdated;
+- (void)setPrimitiveLastUpdated:(NSDate*)value;
+
+
+
+
+- (NSNumber*)primitivePosition;
+- (void)setPrimitivePosition:(NSNumber*)value;
+
+- (int64_t)primitivePositionValue;
+- (void)setPrimitivePositionValue:(int64_t)value_;
+
+
+
+
+- (NSString*)primitiveResourceURL;
+- (void)setPrimitiveResourceURL:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveRockCount;
+- (void)setPrimitiveRockCount:(NSNumber*)value;
+
+- (int64_t)primitiveRockCountValue;
+- (void)setPrimitiveRockCountValue:(int64_t)value_;
 
 
 
@@ -224,8 +314,11 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSString*)primitiveSubtitle;
-- (void)setPrimitiveSubtitle:(NSString*)value;
+- (NSNumber*)primitiveSubscribersCount;
+- (void)setPrimitiveSubscribersCount:(NSNumber*)value;
+
+- (int64_t)primitiveSubscribersCountValue;
+- (void)setPrimitiveSubscribersCountValue:(int64_t)value_;
 
 
 
@@ -236,20 +329,8 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSNumber*)primitiveTotalRocks;
-- (void)setPrimitiveTotalRocks:(NSNumber*)value;
-
-- (int64_t)primitiveTotalRocksValue;
-- (void)setPrimitiveTotalRocksValue:(int64_t)value_;
-
-
-
-
-- (NSNumber*)primitiveUserGenerated;
-- (void)setPrimitiveUserGenerated:(NSNumber*)value;
-
-- (BOOL)primitiveUserGeneratedValue;
-- (void)setPrimitiveUserGeneratedValue:(BOOL)value_;
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 
@@ -261,8 +342,13 @@ extern const struct ChannelFetchedProperties {
 
 
 
-- (NSMutableOrderedSet*)primitiveVideos;
-- (void)setPrimitiveVideos:(NSMutableOrderedSet*)value;
+- (ChannelOwner*)primitiveChannelOwner;
+- (void)setPrimitiveChannelOwner:(ChannelOwner*)value;
+
+
+
+- (NSMutableOrderedSet*)primitiveVideoInstances;
+- (void)setPrimitiveVideoInstances:(NSMutableOrderedSet*)value;
 
 
 @end

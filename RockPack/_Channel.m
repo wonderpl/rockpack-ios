@@ -4,20 +4,25 @@
 #import "_Channel.h"
 
 const struct ChannelAttributes ChannelAttributes = {
-	.biog = @"biog",
-	.biogTitle = @"biogTitle",
-	.index = @"index",
-	.keyframeURL = @"keyframeURL",
+	.categoryId = @"categoryId",
+	.channelDescription = @"channelDescription",
+	.coverBackgroundURL = @"coverBackgroundURL",
+	.coverThumbnailLargeURL = @"coverThumbnailLargeURL",
+	.coverThumbnailSmallURL = @"coverThumbnailSmallURL",
+	.lastUpdated = @"lastUpdated",
+	.position = @"position",
+	.resourceURL = @"resourceURL",
+	.rockCount = @"rockCount",
 	.rockedByUser = @"rockedByUser",
-	.subtitle = @"subtitle",
+	.subscribersCount = @"subscribersCount",
 	.title = @"title",
-	.totalRocks = @"totalRocks",
-	.userGenerated = @"userGenerated",
+	.viewId = @"viewId",
 	.wallpaperURL = @"wallpaperURL",
 };
 
 const struct ChannelRelationships ChannelRelationships = {
-	.videos = @"videos",
+	.channelOwner = @"channelOwner",
+	.videoInstances = @"videoInstances",
 };
 
 const struct ChannelFetchedProperties ChannelFetchedProperties = {
@@ -49,8 +54,13 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"indexValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"index"];
+	if ([key isEqualToString:@"positionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"position"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"rockCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"rockCount"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -59,13 +69,8 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"totalRocksValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"totalRocks"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-	if ([key isEqualToString:@"userGeneratedValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"userGenerated"];
+	if ([key isEqualToString:@"subscribersCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"subscribersCount"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -76,48 +81,102 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
-@dynamic biog;
+@dynamic categoryId;
 
 
 
 
 
 
-@dynamic biogTitle;
+@dynamic channelDescription;
 
 
 
 
 
 
-@dynamic index;
+@dynamic coverBackgroundURL;
 
 
 
-- (int64_t)indexValue {
-	NSNumber *result = [self index];
+
+
+
+@dynamic coverThumbnailLargeURL;
+
+
+
+
+
+
+@dynamic coverThumbnailSmallURL;
+
+
+
+
+
+
+@dynamic lastUpdated;
+
+
+
+
+
+
+@dynamic position;
+
+
+
+- (int64_t)positionValue {
+	NSNumber *result = [self position];
 	return [result longLongValue];
 }
 
-- (void)setIndexValue:(int64_t)value_ {
-	[self setIndex:[NSNumber numberWithLongLong:value_]];
+- (void)setPositionValue:(int64_t)value_ {
+	[self setPosition:[NSNumber numberWithLongLong:value_]];
 }
 
-- (int64_t)primitiveIndexValue {
-	NSNumber *result = [self primitiveIndex];
+- (int64_t)primitivePositionValue {
+	NSNumber *result = [self primitivePosition];
 	return [result longLongValue];
 }
 
-- (void)setPrimitiveIndexValue:(int64_t)value_ {
-	[self setPrimitiveIndex:[NSNumber numberWithLongLong:value_]];
+- (void)setPrimitivePositionValue:(int64_t)value_ {
+	[self setPrimitivePosition:[NSNumber numberWithLongLong:value_]];
 }
 
 
 
 
 
-@dynamic keyframeURL;
+@dynamic resourceURL;
 
+
+
+
+
+
+@dynamic rockCount;
+
+
+
+- (int64_t)rockCountValue {
+	NSNumber *result = [self rockCount];
+	return [result longLongValue];
+}
+
+- (void)setRockCountValue:(int64_t)value_ {
+	[self setRockCount:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveRockCountValue {
+	NSNumber *result = [self primitiveRockCount];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveRockCountValue:(int64_t)value_ {
+	[self setPrimitiveRockCount:[NSNumber numberWithLongLong:value_]];
+}
 
 
 
@@ -149,8 +208,27 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
-@dynamic subtitle;
+@dynamic subscribersCount;
 
+
+
+- (int64_t)subscribersCountValue {
+	NSNumber *result = [self subscribersCount];
+	return [result longLongValue];
+}
+
+- (void)setSubscribersCountValue:(int64_t)value_ {
+	[self setSubscribersCount:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveSubscribersCountValue {
+	NSNumber *result = [self primitiveSubscribersCount];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveSubscribersCountValue:(int64_t)value_ {
+	[self setPrimitiveSubscribersCount:[NSNumber numberWithLongLong:value_]];
+}
 
 
 
@@ -163,53 +241,8 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
-@dynamic totalRocks;
+@dynamic viewId;
 
-
-
-- (int64_t)totalRocksValue {
-	NSNumber *result = [self totalRocks];
-	return [result longLongValue];
-}
-
-- (void)setTotalRocksValue:(int64_t)value_ {
-	[self setTotalRocks:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveTotalRocksValue {
-	NSNumber *result = [self primitiveTotalRocks];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveTotalRocksValue:(int64_t)value_ {
-	[self setPrimitiveTotalRocks:[NSNumber numberWithLongLong:value_]];
-}
-
-
-
-
-
-@dynamic userGenerated;
-
-
-
-- (BOOL)userGeneratedValue {
-	NSNumber *result = [self userGenerated];
-	return [result boolValue];
-}
-
-- (void)setUserGeneratedValue:(BOOL)value_ {
-	[self setUserGenerated:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitiveUserGeneratedValue {
-	NSNumber *result = [self primitiveUserGenerated];
-	return [result boolValue];
-}
-
-- (void)setPrimitiveUserGeneratedValue:(BOOL)value_ {
-	[self setPrimitiveUserGenerated:[NSNumber numberWithBool:value_]];
-}
 
 
 
@@ -222,15 +255,19 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 
-@dynamic videos;
+@dynamic channelOwner;
 
 	
-- (NSMutableOrderedSet*)videosSet {
-	[self willAccessValueForKey:@"videos"];
+
+@dynamic videoInstances;
+
+	
+- (NSMutableOrderedSet*)videoInstancesSet {
+	[self willAccessValueForKey:@"videoInstances"];
   
-	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"videos"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"videoInstances"];
   
-	[self didAccessValueForKey:@"videos"];
+	[self didAccessValueForKey:@"videoInstances"];
 	return result;
 }
 	

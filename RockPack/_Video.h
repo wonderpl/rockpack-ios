@@ -2,27 +2,25 @@
 // Make changes to Video.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "AbstractCommon.h"
 
 extern const struct VideoAttributes {
-	__unsafe_unretained NSString *keyframeURL;
-	__unsafe_unretained NSString *rockedByUser;
-	__unsafe_unretained NSString *sourceIndex;
-	__unsafe_unretained NSString *subtitle;
-	__unsafe_unretained NSString *title;
-	__unsafe_unretained NSString *totalRocks;
-	__unsafe_unretained NSString *videoURL;
+	__unsafe_unretained NSString *categoryId;
+	__unsafe_unretained NSString *source;
+	__unsafe_unretained NSString *sourceId;
+	__unsafe_unretained NSString *starCount;
+	__unsafe_unretained NSString *starredByUser;
+	__unsafe_unretained NSString *thumbnailURL;
 } VideoAttributes;
 
 extern const struct VideoRelationships {
-	__unsafe_unretained NSString *channels;
+	__unsafe_unretained NSString *videoInstances;
 } VideoRelationships;
 
 extern const struct VideoFetchedProperties {
 } VideoFetchedProperties;
 
-@class Channel;
-
+@class VideoInstance;
 
 
 
@@ -34,7 +32,7 @@ extern const struct VideoFetchedProperties {
 @interface VideoID : NSManagedObjectID {}
 @end
 
-@interface _Video : NSManagedObject {}
+@interface _Video : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -44,91 +42,77 @@ extern const struct VideoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* keyframeURL;
+@property (nonatomic, strong) NSString* categoryId;
 
 
 
-//- (BOOL)validateKeyframeURL:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* rockedByUser;
-
-
-
-@property BOOL rockedByUserValue;
-- (BOOL)rockedByUserValue;
-- (void)setRockedByUserValue:(BOOL)value_;
-
-//- (BOOL)validateRockedByUser:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateCategoryId:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSNumber* sourceIndex;
+@property (nonatomic, strong) NSString* source;
 
 
 
-@property int64_t sourceIndexValue;
-- (int64_t)sourceIndexValue;
-- (void)setSourceIndexValue:(int64_t)value_;
-
-//- (BOOL)validateSourceIndex:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateSource:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSString* subtitle;
+@property (nonatomic, strong) NSString* sourceId;
 
 
 
-//- (BOOL)validateSubtitle:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* title;
-
-
-
-//- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateSourceId:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSNumber* totalRocks;
+@property (nonatomic, strong) NSNumber* starCount;
 
 
 
-@property int64_t totalRocksValue;
-- (int64_t)totalRocksValue;
-- (void)setTotalRocksValue:(int64_t)value_;
+@property int64_t starCountValue;
+- (int64_t)starCountValue;
+- (void)setStarCountValue:(int64_t)value_;
 
-//- (BOOL)validateTotalRocks:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* videoURL;
-
-
-
-//- (BOOL)validateVideoURL:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateStarCount:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSSet *channels;
+@property (nonatomic, strong) NSNumber* starredByUser;
 
-- (NSMutableSet*)channelsSet;
+
+
+@property BOOL starredByUserValue;
+- (BOOL)starredByUserValue;
+- (void)setStarredByUserValue:(BOOL)value_;
+
+//- (BOOL)validateStarredByUser:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* thumbnailURL;
+
+
+
+//- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSSet *videoInstances;
+
+- (NSMutableSet*)videoInstancesSet;
 
 
 
@@ -138,70 +122,61 @@ extern const struct VideoFetchedProperties {
 
 @interface _Video (CoreDataGeneratedAccessors)
 
-- (void)addChannels:(NSSet*)value_;
-- (void)removeChannels:(NSSet*)value_;
-- (void)addChannelsObject:(Channel*)value_;
-- (void)removeChannelsObject:(Channel*)value_;
+- (void)addVideoInstances:(NSSet*)value_;
+- (void)removeVideoInstances:(NSSet*)value_;
+- (void)addVideoInstancesObject:(VideoInstance*)value_;
+- (void)removeVideoInstancesObject:(VideoInstance*)value_;
 
 @end
 
 @interface _Video (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveKeyframeURL;
-- (void)setPrimitiveKeyframeURL:(NSString*)value;
+- (NSString*)primitiveCategoryId;
+- (void)setPrimitiveCategoryId:(NSString*)value;
 
 
 
 
-- (NSNumber*)primitiveRockedByUser;
-- (void)setPrimitiveRockedByUser:(NSNumber*)value;
-
-- (BOOL)primitiveRockedByUserValue;
-- (void)setPrimitiveRockedByUserValue:(BOOL)value_;
+- (NSString*)primitiveSource;
+- (void)setPrimitiveSource:(NSString*)value;
 
 
 
 
-- (NSNumber*)primitiveSourceIndex;
-- (void)setPrimitiveSourceIndex:(NSNumber*)value;
-
-- (int64_t)primitiveSourceIndexValue;
-- (void)setPrimitiveSourceIndexValue:(int64_t)value_;
+- (NSString*)primitiveSourceId;
+- (void)setPrimitiveSourceId:(NSString*)value;
 
 
 
 
-- (NSString*)primitiveSubtitle;
-- (void)setPrimitiveSubtitle:(NSString*)value;
+- (NSNumber*)primitiveStarCount;
+- (void)setPrimitiveStarCount:(NSNumber*)value;
+
+- (int64_t)primitiveStarCountValue;
+- (void)setPrimitiveStarCountValue:(int64_t)value_;
 
 
 
 
-- (NSString*)primitiveTitle;
-- (void)setPrimitiveTitle:(NSString*)value;
+- (NSNumber*)primitiveStarredByUser;
+- (void)setPrimitiveStarredByUser:(NSNumber*)value;
+
+- (BOOL)primitiveStarredByUserValue;
+- (void)setPrimitiveStarredByUserValue:(BOOL)value_;
 
 
 
 
-- (NSNumber*)primitiveTotalRocks;
-- (void)setPrimitiveTotalRocks:(NSNumber*)value;
-
-- (int64_t)primitiveTotalRocksValue;
-- (void)setPrimitiveTotalRocksValue:(int64_t)value_;
-
-
-
-
-- (NSString*)primitiveVideoURL;
-- (void)setPrimitiveVideoURL:(NSString*)value;
+- (NSString*)primitiveThumbnailURL;
+- (void)setPrimitiveThumbnailURL:(NSString*)value;
 
 
 
 
 
-- (NSMutableSet*)primitiveChannels;
-- (void)setPrimitiveChannels:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveVideoInstances;
+- (void)setPrimitiveVideoInstances:(NSMutableSet*)value;
 
 
 @end

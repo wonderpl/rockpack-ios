@@ -10,20 +10,28 @@
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
-@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate>
+@class VideoInstance;
 
+@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
+                                                         UICollectionViewDataSource,
+                                                         UICollectionViewDelegate>
 // Public properties
-
-@property (readonly) NSManagedObjectContext *managedObjectContext;
-
+@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
+@property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
+@property (nonatomic, strong) UIView *videoQueueView;
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
+@property (nonatomic, assign) BOOL inDrag;
+@property (nonatomic, assign) CGPoint initialDragCenter;
+@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
+@property (nonatomic, strong) UIImageView *draggedView;
 // Public methods
 
 // Core Data support
 
 // Generalised fetchedResultsControllers
-- (NSFetchedResultsController *) videoFetchedResultsController;
-- (NSPredicate *) videoFetchedResultsControllerPredicate;
-- (NSArray *) videoFetchedResultsControllerSortDescriptors;
+- (NSFetchedResultsController *) videoInstanceFetchedResultsController;
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate;
+- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
 
 - (NSFetchedResultsController *) channelFetchedResultsController;
 - (NSPredicate *) channelFetchedResultsControllerPredicate;
@@ -41,5 +49,32 @@
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath;
+
+- (BOOL) collectionView: (UICollectionView *) cv
+         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
+
+// Is this tab videoQueue compatible (returns false by default)
+- (BOOL) hasVideoQueue;
+
+
+// Override if the image w
+- (BOOL) isVideoQueueVisibleOnStart;
+
+- (void) startVideoQueueDismissalTimer;
+- (void) showVideoQueue: (BOOL) animated;
+- (void) hideVideoQueue: (BOOL) animated;
+
+
+// Highlights video queue for when drag is in operation
+- (void) highlightVideoQueue: (BOOL) showHighlight;
+- (BOOL) pointInVideoQueue: (CGPoint) point;
+
+- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
+
+- (void) displayVideoViewer: (VideoInstance *) videoInstance;
+- (IBAction) dismissVideoViewer;
 
 @end

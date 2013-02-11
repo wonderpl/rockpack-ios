@@ -11,7 +11,7 @@
 
 // Something new!
 
-@class SYNBottomTabViewController;
+@class SYNBottomTabViewController, ChannelOwner, SYNNetworkEngine;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -19,15 +19,17 @@
 @property (strong, nonatomic) UIWindow *window;
 
 // Support for Core Data
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (readonly, strong, nonatomic) NSManagedObjectContext *mainManagedObjectContext;
 
+// Comms support
+@property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
 
 // Root view controller
 @property (strong, nonatomic) SYNBottomTabViewController *viewController;
 
-- (void) saveContext;
-- (NSURL *) applicationDocumentsDirectory;
+// Bit of a hack to represent the current user
+@property (weak, nonatomic) ChannelOwner *channelOwnerMe;
+
+- (void) saveContext: (BOOL) wait;
 
 @end

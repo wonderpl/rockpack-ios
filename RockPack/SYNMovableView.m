@@ -22,7 +22,6 @@ static BOOL canDrag = TRUE;
 
 + (BOOL) allowDragging
 {
-    NSLog (@"canDrag %d", canDrag);
     return canDrag;
 }
 
