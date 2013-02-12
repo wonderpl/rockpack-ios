@@ -12,6 +12,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
+#import "Category.h"
 
 @interface SYNNetworkEngine ()
 
@@ -79,6 +80,10 @@
 }
 
 
+
+
+
+
 - (void) JSONObjectForURLString: (NSString *) URLString
                 completionBlock: (JSONResponseBlock) completionBlock
                      errorBlock: (MKNKErrorBlock) errorBlock
@@ -98,6 +103,65 @@
      }];
     
     [self enqueueOperation: networkOperation];
+}
+
+
+// Categories Call
+
+- (void) updateCategories
+{
+    
+    
+    // ex. locale=en-us
+    NSString *path = @"ws/categories/";
+    
+    [self JSONObjectForPath:path completionBlock: ^(NSDictionary *dictionary) {
+        
+         if (dictionary)
+         {
+             // Get Root Object
+             NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
+             
+             
+             if (categoriesDictionary && [categoriesDictionary isKindOfClass:[NSDictionary class]])
+             {
+                 
+                 NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
+                 
+                 if ([itemArray isKindOfClass: [NSArray class]])
+                 {
+                     
+                     // === Main Processing === //
+                     for (NSDictionary *categoryDictionary in itemArray)
+                     {
+                         if ([categoryDictionary isKindOfClass: [NSDictionary class]])
+                         {
+                             
+                             
+                             Category* category = [Category instanceFromDictionary: categoryDictionary usingManagedObjectContext: self.importManagedObjectContext];
+                             
+                             DebugLog(@"Found Category: %@\n", category);
+                         }
+                     }
+                     
+                     // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
+                     
+                 }
+                 
+                 
+                 
+                 
+             }
+             else
+             {
+                 AssertOrLog(@"Not a dictionary");
+             }
+         }
+     }
+                 errorBlock: ^(NSError* error)
+     {
+         AssertOrLog(@"API request failed");
+     }];
 }
 
 

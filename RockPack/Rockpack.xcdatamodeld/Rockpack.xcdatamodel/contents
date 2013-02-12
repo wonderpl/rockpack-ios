@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3103" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractCommon" representedClassName="AbstractCommon" isAbstract="YES" syncable="YES">
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Category" representedClassName="Category" parentEntity="AbstractCommon" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="subcategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Subcategory" inverseName="category" inverseEntity="Subcategory" syncable="YES"/>
     </entity>
     <entity name="Channel" representedClassName="Channel" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
@@ -25,6 +29,10 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
         <relationship name="channels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Channel" inverseName="channelOwner" inverseEntity="Channel" syncable="YES"/>
+    </entity>
+    <entity name="Subcategory" representedClassName="Subcategory" parentEntity="AbstractCommon" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="subcategories" inverseEntity="Category" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="forename" optional="YES" attributeType="String" syncable="YES"/>
@@ -50,8 +58,10 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-308" positionY="-106" width="128" height="58"/>
+        <element name="Category" positionX="-630" positionY="-85" width="128" height="73"/>
         <element name="Channel" positionX="-423" positionY="152" width="128" height="285"/>
         <element name="ChannelOwner" positionX="-641" positionY="272" width="128" height="90"/>
+        <element name="Subcategory" positionX="-632" positionY="65" width="128" height="73"/>
         <element name="User" positionX="160" positionY="192" width="128" height="90"/>
         <element name="Video" positionX="7" positionY="216" width="128" height="150"/>
         <element name="VideoInstance" positionX="-207" positionY="257" width="128" height="135"/>

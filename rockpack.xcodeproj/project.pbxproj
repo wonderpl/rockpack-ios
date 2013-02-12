@@ -410,6 +410,12 @@
 		01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */; };
 		01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78116B0554B000D44B9 /* ButtonClose.png */; };
 		01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */; };
+		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
+		BEA043E116CAA8C2005406E7 /* _Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043DE16CAA8C2005406E7 /* _Category.m */; };
+		BEA043E216CAA8C2005406E7 /* _Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E016CAA8C2005406E7 /* _Subcategory.m */; };
+		BEA043E716CAA8E1005406E7 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Category.m */; };
+		BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* Subcategory.m */; };
+		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -901,6 +907,18 @@
 		01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoViewerViewController.xib; sourceTree = "<group>"; };
 		01F8E78116B0554B000D44B9 /* ButtonClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonClose.png; path = Assets/Images/ButtonClose.png; sourceTree = "<group>"; };
 		01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonClose@2x.png"; path = "Assets/Images/ButtonClose@2x.png"; sourceTree = "<group>"; };
+		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
+		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
+		BEA043DD16CAA8C2005406E7 /* _Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Category.h; sourceTree = "<group>"; };
+		BEA043DE16CAA8C2005406E7 /* _Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Category.m; sourceTree = "<group>"; };
+		BEA043DF16CAA8C2005406E7 /* _Subcategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Subcategory.h; sourceTree = "<group>"; };
+		BEA043E016CAA8C2005406E7 /* _Subcategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Subcategory.m; sourceTree = "<group>"; };
+		BEA043E316CAA8E1005406E7 /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
+		BEA043E416CAA8E1005406E7 /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		BEA043E516CAA8E1005406E7 /* Subcategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subcategory.h; sourceTree = "<group>"; };
+		BEA043E616CAA8E1005406E7 /* Subcategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Subcategory.m; sourceTree = "<group>"; };
+		BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoryItemView.h; sourceTree = "<group>"; };
+		BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoryItemView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1245,6 +1263,10 @@
 			children = (
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
+				BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */,
+				BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */,
+				BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */,
+				BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */,
 			);
 			name = "Category bar";
 			sourceTree = "<group>";
@@ -1970,6 +1992,10 @@
 		01E427F21664F32D009B941F /* Auto generated files */ = {
 			isa = PBXGroup;
 			children = (
+				BEA043DD16CAA8C2005406E7 /* _Category.h */,
+				BEA043DE16CAA8C2005406E7 /* _Category.m */,
+				BEA043DF16CAA8C2005406E7 /* _Subcategory.h */,
+				BEA043E016CAA8C2005406E7 /* _Subcategory.m */,
 				015CB01716AE03B200FEB8E7 /* _User.h */,
 				015CB01816AE03B200FEB8E7 /* _User.m */,
 				01C6FD10169E11B000E01AA3 /* _AbstractCommon.h */,
@@ -1989,6 +2015,10 @@
 		01E427F31664F346009B941F /* Editable files */ = {
 			isa = PBXGroup;
 			children = (
+				BEA043E316CAA8E1005406E7 /* Category.h */,
+				BEA043E416CAA8E1005406E7 /* Category.m */,
+				BEA043E516CAA8E1005406E7 /* Subcategory.h */,
+				BEA043E616CAA8E1005406E7 /* Subcategory.m */,
 				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
 				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
 				01E427E31664DF21009B941F /* Channel.h */,
@@ -2552,6 +2582,12 @@
 				015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */,
 				01B3DCE516C5597900ED54D3 /* SYNChannelsDetailsCreationViewController.m in Sources */,
 				012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */,
+				BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */,
+				BEA043E116CAA8C2005406E7 /* _Category.m in Sources */,
+				BEA043E216CAA8C2005406E7 /* _Subcategory.m in Sources */,
+				BEA043E716CAA8E1005406E7 /* Category.m in Sources */,
+				BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */,
+				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

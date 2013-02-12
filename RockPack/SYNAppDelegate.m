@@ -39,6 +39,9 @@
     // Set up network engine
     [self initializeNetworkEngine];
     
+    // Set up Categories
+    [self getCategories];
+    
     // Create default user
     [self createDefaultUser];
     
@@ -272,6 +275,13 @@
         
         self.channelOwnerMe = channelOwnerMe;
     }
+}
+
+
+-(void)getCategories
+{
+    
+    [self.networkEngine updateCategories];
 }
 
 @end
