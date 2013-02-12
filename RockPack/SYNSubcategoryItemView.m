@@ -1,30 +1,28 @@
 //
-//  SYNCategoryItemView.m
+//  SYNSubcategoryItemView.m
 //  rockpack
 //
 //  Created by Michael Michailidis on 12/02/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNCategoryItemView.h"
+#import "SYNSubcategoryItemView.h"
 
-
-@implementation SYNCategoryItemView
-
+@implementation SYNSubcategoryItemView
 @synthesize mainLabel;
-@synthesize categoryId;
 
-- (id)initWithCategory:(Category *)category andFrame:(CGRect)frame
+- (id)initWithCategory:(Subcategory *)subcategory andFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     
     if (self) {
         
-        self.categoryId = category.uniqueId;
+        self.categoryId = subcategory.uniqueId;
         
         self.mainLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
         self.mainLabel.textAlignment = NSTextAlignmentCenter;
-        self.mainLabel.text = category.name;
+        self.mainLabel.text = subcategory.name;
+        
         [self addSubview:mainLabel];
         
     }

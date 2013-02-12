@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "SYNTabImageView.h"
 #import "SYNAbstractViewController.h"
+#import "SYNTabViewDelegate.h"
 #import "SYNCategoriesTabView.h"
 
-@interface SYNAbstractTopTabViewController : SYNAbstractViewController
+@interface SYNAbstractTopTabViewController : SYNAbstractViewController <SYNTabViewDelegate>
 
 
 @property (nonatomic, strong) SYNCategoriesTabView* tabView;

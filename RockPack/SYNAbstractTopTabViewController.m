@@ -12,6 +12,7 @@
 #import "SYNAppDelegate.h"
 #import <CoreData/CoreData.h>
 #import "SYNAppDelegate.h"
+#import "SYNCategoryItemView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractTopTabViewController ()
@@ -65,16 +66,51 @@
    
     // Create tab
     
-    self.tabView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries];
-    
+    self.tabView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
+    self.tabView.tapDelegate = self;
     [self.view addSubview:self.tabView];
     
     
 }
 
+#pragma mark - TabViewDelegate
 
+-(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+{
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity:categoryEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", tab.categoryId];
+    [categoriesFetchRequest setPredicate: predicate];
+    
+    NSError* error = nil;
+    
+    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                                   error: &error];
+    
+    if (matchingCategoryInstanceEntries.count <= 0)
+    {
+        DebugLog(@"Found multiple (%i) categories", matchingCategoryInstanceEntries.count);
+        
+    }
+    
+    Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
+    
+    [self.tabView createSubcategoriesTab:categoryTapped.subcategories];
+    
+    // DebugLog(@"Pressed on Category: %@", categoryTapped);
+}
 
-
+-(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
+{
+    
+}
 
 
 // Highlight selected tab by revealing a portion of the hightlight image corresponing to the active tab
@@ -93,20 +129,6 @@
 }
 
 
-// Use the tag index of the button (100 - 103) to calculate the button index
 
-- (IBAction) tabButtonPressed: (UIButton *) sender
-{
-    [self setSelectedIndex: sender.tag - kBottomTabIndexOffset];
-}
-
-- (IBAction) tabButtonTouched: (CGPoint) touchPoint
-{
-    CGFloat tabWidth = 1024.0f / kTopTabCount;
-    
-    int tab = trunc(touchPoint.x / tabWidth);
-
-	[self setSelectedIndex: tab];
-}
 
 @end

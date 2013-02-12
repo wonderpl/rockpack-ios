@@ -1,5 +1,5 @@
 //
-//  SYNCategoryItemView.h
+//  SYNSubcategoryItemView.h
 //  rockpack
 //
 //  Created by Michael Michailidis on 12/02/2013.
@@ -7,14 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Category.h"
 
-@interface SYNCategoryItemView : UIView
+#import "Subcategory.h"
+
+@interface SYNSubcategoryItemView : UIView
 
 @property (nonatomic, strong) UILabel* mainLabel;
 
 @property (nonatomic, strong) NSString* categoryId;
 
-- (id)initWithCategory:(Category *)category andFrame:(CGRect)frame;
+- (id)initWithCategory:(Subcategory *)subcategory andFrame:(CGRect)frame;
 
 @end

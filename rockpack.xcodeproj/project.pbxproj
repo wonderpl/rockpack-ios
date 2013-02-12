@@ -416,6 +416,7 @@
 		BEA043E716CAA8E1005406E7 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Category.m */; };
 		BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* Subcategory.m */; };
 		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
+		BEA043EF16CACD55005406E7 /* SYNSubcategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EE16CACD55005406E7 /* SYNSubcategoryItemView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -919,6 +920,9 @@
 		BEA043E616CAA8E1005406E7 /* Subcategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Subcategory.m; sourceTree = "<group>"; };
 		BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoryItemView.h; sourceTree = "<group>"; };
 		BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoryItemView.m; sourceTree = "<group>"; };
+		BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNTabViewDelegate.h; sourceTree = "<group>"; };
+		BEA043ED16CACD55005406E7 /* SYNSubcategoryItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSubcategoryItemView.h; sourceTree = "<group>"; };
+		BEA043EE16CACD55005406E7 /* SYNSubcategoryItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSubcategoryItemView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1263,10 +1267,13 @@
 			children = (
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
+				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
 				BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */,
 				BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */,
 				BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */,
 				BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */,
+				BEA043ED16CACD55005406E7 /* SYNSubcategoryItemView.h */,
+				BEA043EE16CACD55005406E7 /* SYNSubcategoryItemView.m */,
 			);
 			name = "Category bar";
 			sourceTree = "<group>";
@@ -2588,6 +2595,7 @@
 				BEA043E716CAA8E1005406E7 /* Category.m in Sources */,
 				BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */,
 				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
+				BEA043EF16CACD55005406E7 /* SYNSubcategoryItemView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
