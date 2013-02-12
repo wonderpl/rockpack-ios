@@ -12,9 +12,6 @@
 
 @interface SYNAbstractTopTabViewController : SYNAbstractViewController
 
-//@property (nonatomic, strong) SYNTabImageView *topTabView;
-@property (nonatomic, strong) UIImageView *topTabView;
-@property (nonatomic, strong) UIImageView *topTabHighlightedView;
 
 - (void) highlightTab: (int) tabIndex;
 

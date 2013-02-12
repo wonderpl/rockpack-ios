@@ -11,30 +11,7 @@
 
 @implementation SYNVideoQueueCell
 
-- (id) initWithFrame: (CGRect) frame
-{
-    if ((self = [super initWithFrame: frame]))
-    {
-        // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNVideoQueueCell"
-                                                              owner: self
-                                                            options: nil];
-        
-        if ([arrayOfViews count] < 1)
-        {
-            return nil;
-        }
-        
-        if (![arrayOfViews[0] isKindOfClass: [UICollectionViewCell class]])
-        {
-            return nil;
-        }
-        
-        self = arrayOfViews[0];
-    }
-    
-    return self;
-}
+
 
 #pragma mark - Asynchronous image loading support
 

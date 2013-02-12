@@ -108,7 +108,7 @@ static NSEntityDescription *channelEntity = nil;
                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created Channel instance with id %@ and viewId &@", instance.uniqueId, instance.viewId);
+        NSLog(@"Created Channel instance with id %@ and viewId %@", instance.uniqueId, instance.viewId);
         
         return instance;
     }
