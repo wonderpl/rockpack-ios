@@ -423,6 +423,8 @@
 		BE95B91616CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */; };
 		BE95B91716CBAB2D00EC2E72 /* TapTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */; };
 		BE95B91816CBAB2D00EC2E72 /* TapTopSub@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */; };
+		BE95B91B16CBAE1000EC2E72 /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B91916CBAE1000EC2E72 /* TabTop.png */; };
+		BE95B91C16CBAE1000EC2E72 /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B91A16CBAE1000EC2E72 /* TabTop@2x.png */; };
 		BEA043E116CAA8C2005406E7 /* _Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043DE16CAA8C2005406E7 /* _Category.m */; };
 		BEA043E216CAA8C2005406E7 /* _Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E016CAA8C2005406E7 /* _Subcategory.m */; };
 		BEA043E716CAA8E1005406E7 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Category.m */; };
@@ -933,6 +935,8 @@
 		BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSubSelectedGlow@2x.png"; sourceTree = "<group>"; };
 		BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TapTopSub.png; sourceTree = "<group>"; };
 		BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TapTopSub@2x.png"; sourceTree = "<group>"; };
+		BE95B91916CBAE1000EC2E72 /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
+		BE95B91A16CBAE1000EC2E72 /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 		BEA043DD16CAA8C2005406E7 /* _Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Category.h; sourceTree = "<group>"; };
 		BEA043DE16CAA8C2005406E7 /* _Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Category.m; sourceTree = "<group>"; };
 		BEA043DF16CAA8C2005406E7 /* _Subcategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Subcategory.h; sourceTree = "<group>"; };
@@ -2157,6 +2161,8 @@
 		BE95B90016CBAAD500EC2E72 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				BE95B91916CBAE1000EC2E72 /* TabTop.png */,
+				BE95B91A16CBAE1000EC2E72 /* TabTop@2x.png */,
 				BE95B90116CBAB2D00EC2E72 /* TabTopDivider.png */,
 				BE95B90216CBAB2D00EC2E72 /* TabTopDivider@2x.png */,
 				BE95B90316CBAB2D00EC2E72 /* TabTopSelected.png */,
@@ -2524,6 +2530,8 @@
 				BE95B91616CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png in Resources */,
 				BE95B91716CBAB2D00EC2E72 /* TapTopSub.png in Resources */,
 				BE95B91816CBAB2D00EC2E72 /* TapTopSub@2x.png in Resources */,
+				BE95B91B16CBAE1000EC2E72 /* TabTop.png in Resources */,
+				BE95B91C16CBAE1000EC2E72 /* TabTop@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

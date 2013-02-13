@@ -35,11 +35,20 @@
     
     if (self) {
         
+        // Set Background
+        
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
         
-        [self addSubview:self.mainTabsView];
+        UIImage* backimage = [UIImage imageNamed:@"TabTop.png"];
+        
+        self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:backimage];
+        self.mainTabsView.opaque = NO;
+        
+        // Add in correct order so that main is above secondary.
+        
         [self addSubview:self.secondaryTabsView];
+        [self addSubview:self.mainTabsView];
        
         SYNCategoryItemView* tab = nil;
         CGFloat nextOrigin = 0.0;
@@ -48,12 +57,19 @@
         
         CGRect itemFrame;
         
+        CGFloat midMainFrame = mainFrame.size.height * 0.5;
+        
         for (Category* category in categories)
         {
             itemFrame = CGRectMake(nextOrigin, 0.0, itemWidth, mainFrame.size.height);
+            itemFrame = CGRectIntegral(itemFrame);
             
             tab = [[SYNCategoryItemView alloc] initWithName:category.name Id:category.uniqueId andFrame:itemFrame];
             [self.mainTabsView addSubview:tab];
+            
+            UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopDivider.png"]];
+            dividerImageView.center = CGPointMake(nextOrigin, midMainFrame);
+            [self.mainTabsView addSubview:dividerImageView];
             
             singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)];
             [tab addGestureRecognizer:singleFingerTap];

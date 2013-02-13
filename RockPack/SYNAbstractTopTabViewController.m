@@ -67,7 +67,7 @@
     // Create tab
     
     self.tabView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
-    self.tabView.center = CGPointMake(self.tabView.center.x, 80.0);
+    self.tabView.frame = CGRectMake(0.0, 44.0, self.tabView.frame.size.width, self.tabView.frame.size.height);
     self.tabView.tapDelegate = self;
     [self.view addSubview:self.tabView];
     

@@ -26,6 +26,8 @@
         label.font = [UIFont boldRockpackFontOfSize: 14.0f];
         label.textAlignment = NSTextAlignmentCenter;
         label.text = name;
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
         [self addSubview:label];
         
     }
