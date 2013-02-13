@@ -12,7 +12,7 @@
 #import "SYNCategoryItemView.h"
 
 #define kMainTabHeight 50.0
-#define kSecondaryTabHeight 40.0
+#define kSecondaryTabHeight 20.0
 
 @implementation SYNCategoriesTabView
 

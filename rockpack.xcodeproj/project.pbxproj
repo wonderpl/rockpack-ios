@@ -411,6 +411,18 @@
 		01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78116B0554B000D44B9 /* ButtonClose.png */; };
 		01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
+		BE95B90D16CBAB2D00EC2E72 /* TabTopDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90116CBAB2D00EC2E72 /* TabTopDivider.png */; };
+		BE95B90E16CBAB2D00EC2E72 /* TabTopDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90216CBAB2D00EC2E72 /* TabTopDivider@2x.png */; };
+		BE95B90F16CBAB2D00EC2E72 /* TabTopSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90316CBAB2D00EC2E72 /* TabTopSelected.png */; };
+		BE95B91016CBAB2D00EC2E72 /* TabTopSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90416CBAB2D00EC2E72 /* TabTopSelected@2x.png */; };
+		BE95B91116CBAB2D00EC2E72 /* TabTopSelectedGlow.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90516CBAB2D00EC2E72 /* TabTopSelectedGlow.png */; };
+		BE95B91216CBAB2D00EC2E72 /* TabTopSelectedGlow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90616CBAB2D00EC2E72 /* TabTopSelectedGlow@2x.png */; };
+		BE95B91316CBAB2D00EC2E72 /* TabTopSubDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90716CBAB2D00EC2E72 /* TabTopSubDivider.png */; };
+		BE95B91416CBAB2D00EC2E72 /* TabTopSubDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90816CBAB2D00EC2E72 /* TabTopSubDivider@2x.png */; };
+		BE95B91516CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90916CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png */; };
+		BE95B91616CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */; };
+		BE95B91716CBAB2D00EC2E72 /* TapTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */; };
+		BE95B91816CBAB2D00EC2E72 /* TapTopSub@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */; };
 		BEA043E116CAA8C2005406E7 /* _Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043DE16CAA8C2005406E7 /* _Category.m */; };
 		BEA043E216CAA8C2005406E7 /* _Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E016CAA8C2005406E7 /* _Subcategory.m */; };
 		BEA043E716CAA8E1005406E7 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Category.m */; };
@@ -909,6 +921,18 @@
 		01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonClose@2x.png"; path = "Assets/Images/ButtonClose@2x.png"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
+		BE95B90116CBAB2D00EC2E72 /* TabTopDivider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopDivider.png; sourceTree = "<group>"; };
+		BE95B90216CBAB2D00EC2E72 /* TabTopDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopDivider@2x.png"; sourceTree = "<group>"; };
+		BE95B90316CBAB2D00EC2E72 /* TabTopSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSelected.png; sourceTree = "<group>"; };
+		BE95B90416CBAB2D00EC2E72 /* TabTopSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSelected@2x.png"; sourceTree = "<group>"; };
+		BE95B90516CBAB2D00EC2E72 /* TabTopSelectedGlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSelectedGlow.png; sourceTree = "<group>"; };
+		BE95B90616CBAB2D00EC2E72 /* TabTopSelectedGlow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSelectedGlow@2x.png"; sourceTree = "<group>"; };
+		BE95B90716CBAB2D00EC2E72 /* TabTopSubDivider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSubDivider.png; sourceTree = "<group>"; };
+		BE95B90816CBAB2D00EC2E72 /* TabTopSubDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSubDivider@2x.png"; sourceTree = "<group>"; };
+		BE95B90916CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSubSelectedGlow.png; sourceTree = "<group>"; };
+		BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSubSelectedGlow@2x.png"; sourceTree = "<group>"; };
+		BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TapTopSub.png; sourceTree = "<group>"; };
+		BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TapTopSub@2x.png"; sourceTree = "<group>"; };
 		BEA043DD16CAA8C2005406E7 /* _Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Category.h; sourceTree = "<group>"; };
 		BEA043DE16CAA8C2005406E7 /* _Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Category.m; sourceTree = "<group>"; };
 		BEA043DF16CAA8C2005406E7 /* _Subcategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Subcategory.h; sourceTree = "<group>"; };
@@ -1435,6 +1459,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BE95B90016CBAAD500EC2E72 /* Categories */,
 				0142EDB016B2E992008694DA /* Channel viewer */,
 				0142ED9316B1D72B008694DA /* Video queue */,
 				01F8E73316AFF426000D44B9 /* Video viewer */,
@@ -2129,6 +2154,25 @@
 			name = "Video viewer";
 			sourceTree = "<group>";
 		};
+		BE95B90016CBAAD500EC2E72 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				BE95B90116CBAB2D00EC2E72 /* TabTopDivider.png */,
+				BE95B90216CBAB2D00EC2E72 /* TabTopDivider@2x.png */,
+				BE95B90316CBAB2D00EC2E72 /* TabTopSelected.png */,
+				BE95B90416CBAB2D00EC2E72 /* TabTopSelected@2x.png */,
+				BE95B90516CBAB2D00EC2E72 /* TabTopSelectedGlow.png */,
+				BE95B90616CBAB2D00EC2E72 /* TabTopSelectedGlow@2x.png */,
+				BE95B90716CBAB2D00EC2E72 /* TabTopSubDivider.png */,
+				BE95B90816CBAB2D00EC2E72 /* TabTopSubDivider@2x.png */,
+				BE95B90916CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png */,
+				BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */,
+				BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */,
+				BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2468,6 +2512,18 @@
 				0162285D16C2B6FB008D1587 /* ButtonCover@2x.png in Resources */,
 				0162285E16C2B6FB008D1587 /* ButtonCoverHighlighted.png in Resources */,
 				0162285F16C2B6FB008D1587 /* ButtonCoverHighlighted@2x.png in Resources */,
+				BE95B90D16CBAB2D00EC2E72 /* TabTopDivider.png in Resources */,
+				BE95B90E16CBAB2D00EC2E72 /* TabTopDivider@2x.png in Resources */,
+				BE95B90F16CBAB2D00EC2E72 /* TabTopSelected.png in Resources */,
+				BE95B91016CBAB2D00EC2E72 /* TabTopSelected@2x.png in Resources */,
+				BE95B91116CBAB2D00EC2E72 /* TabTopSelectedGlow.png in Resources */,
+				BE95B91216CBAB2D00EC2E72 /* TabTopSelectedGlow@2x.png in Resources */,
+				BE95B91316CBAB2D00EC2E72 /* TabTopSubDivider.png in Resources */,
+				BE95B91416CBAB2D00EC2E72 /* TabTopSubDivider@2x.png in Resources */,
+				BE95B91516CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png in Resources */,
+				BE95B91616CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png in Resources */,
+				BE95B91716CBAB2D00EC2E72 /* TapTopSub.png in Resources */,
+				BE95B91816CBAB2D00EC2E72 /* TapTopSub@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
