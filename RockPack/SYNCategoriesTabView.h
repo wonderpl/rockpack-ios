@@ -11,9 +11,11 @@
 
 @interface SYNCategoriesTabView : UIView <SYNTabViewDelegate>
 
-@property (nonatomic) CGSize screenSize;
+
 @property (nonatomic, weak) id<SYNTabViewDelegate> tapDelegate;
-@property (nonatomic, strong) NSMutableArray* subviewsArray;
+
+@property (nonatomic, strong) UIView* mainTabsView;
+@property (nonatomic, strong) UIView* secondaryTabsView;
 
 -(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size;
 

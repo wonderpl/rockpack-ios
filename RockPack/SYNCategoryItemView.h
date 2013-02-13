@@ -11,10 +11,8 @@
 
 @interface SYNCategoryItemView : UIView
 
-@property (nonatomic, strong) UILabel* mainLabel;
+@property (nonatomic, strong) NSString* dataItemId;
 
-@property (nonatomic, strong) NSString* categoryId;
-
-- (id)initWithCategory:(Category *)category andFrame:(CGRect)frame;
+- (id)initWithName:(NSString *)name Id:(NSString*)cid andFrame:(CGRect)frame;
 
 @end

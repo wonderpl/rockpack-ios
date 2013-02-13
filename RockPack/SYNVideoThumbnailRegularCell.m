@@ -7,6 +7,7 @@
 //
 
 #import "UIFont+SYNFont.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 #import "SYNVideoThumbnailRegularCell.h"
 
 @implementation SYNVideoThumbnailRegularCell

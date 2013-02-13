@@ -67,6 +67,7 @@
     // Create tab
     
     self.tabView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
+    self.tabView.center = CGPointMake(self.tabView.center.x, 80.0);
     self.tabView.tapDelegate = self;
     [self.view addSubview:self.tabView];
     
@@ -86,7 +87,7 @@
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", tab.categoryId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", tab.dataItemId];
     [categoriesFetchRequest setPredicate: predicate];
     
     NSError* error = nil;

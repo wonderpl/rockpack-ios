@@ -7,25 +7,26 @@
 //
 
 #import "SYNCategoryItemView.h"
+#import "UIFont+SYNFont.h"
 
 
 @implementation SYNCategoryItemView
 
-@synthesize mainLabel;
-@synthesize categoryId;
+@synthesize dataItemId;
 
-- (id)initWithCategory:(Category *)category andFrame:(CGRect)frame
+- (id)initWithName:(NSString *)name Id:(NSString*)cid andFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     
     if (self) {
         
-        self.categoryId = category.uniqueId;
+        self.dataItemId = cid;
         
-        self.mainLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
-        self.mainLabel.textAlignment = NSTextAlignmentCenter;
-        self.mainLabel.text = category.name;
-        [self addSubview:mainLabel];
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
+        label.font = [UIFont boldRockpackFontOfSize: 14.0f];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.text = name;
+        [self addSubview:label];
         
     }
     return self;

@@ -8,32 +8,52 @@
 
 #import "SYNCategoriesTabView.h"
 #import "Category.h"
+#import "Subcategory.h"
 #import "SYNCategoryItemView.h"
-#import "SYNSubcategoryItemView.h"
+
+#define kMainTabHeight 50.0
+#define kSecondaryTabHeight 40.0
 
 @implementation SYNCategoriesTabView
+
 @synthesize tapDelegate;
-@synthesize subviewsArray;
+
+@synthesize mainTabsView;
+@synthesize secondaryTabsView;
 
 -(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size
 {
     
+    
+    
     CGFloat itemWidth = size.width / categories.count;
     
+    CGRect mainFrame = CGRectMake(0.0, 0.0, size.width, kMainTabHeight);
+    CGRect secondaryFrame = CGRectMake(0.0, kMainTabHeight, size.width, kSecondaryTabHeight);
     
-    self = [super initWithFrame:CGRectMake(0.0, 0.0, size.width, 200.0)];
+    self = [super initWithFrame:mainFrame];
     
     if (self) {
+        
+        self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
+        self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
+        
+        [self addSubview:self.mainTabsView];
+        [self addSubview:self.secondaryTabsView];
        
         SYNCategoryItemView* tab = nil;
         CGFloat nextOrigin = 0.0;
         
-        UITapGestureRecognizer *singleFingerTap = nil; 
+        UITapGestureRecognizer *singleFingerTap = nil;
+        
+        CGRect itemFrame;
         
         for (Category* category in categories)
         {
-            tab = [[SYNCategoryItemView alloc] initWithCategory:category andFrame:CGRectMake(nextOrigin, 0.0, itemWidth, 50.0)];
-            [self addSubview:tab];
+            itemFrame = CGRectMake(nextOrigin, 0.0, itemWidth, mainFrame.size.height);
+            
+            tab = [[SYNCategoryItemView alloc] initWithName:category.name Id:category.uniqueId andFrame:itemFrame];
+            [self.mainTabsView addSubview:tab];
             
             singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)];
             [tab addGestureRecognizer:singleFingerTap];
@@ -42,7 +62,6 @@
             
         }
         
-        self.subviewsArray = [[NSMutableArray alloc] init];
         
         
     }
@@ -51,34 +70,37 @@
 
 -(void)createSubcategoriesTab:(NSSet*)subcategories
 {
+    
     // Clean current subviews
     
-    for (UIView* sview in self.subviewsArray)
-    {
+    for (UIView* sview in self.secondaryTabsView.subviews)
         [sview removeFromSuperview];
-    }
+ 
+    
     
     CGFloat itemWidth = self.frame.size.width / subcategories.count;
+    CGFloat itemHeight = self.secondaryTabsView.frame.size.height;
     
-    
-    SYNSubcategoryItemView* tab = nil;
+    SYNCategoryItemView* tab = nil;
     CGFloat nextOrigin = 0.0;
         
     UITapGestureRecognizer *singleFingerTap = nil;
     
-    CGFloat currentHeight = self.frame.size.height;
+    CGRect itemFrame;
         
     for (Subcategory* subcategory in subcategories)
     {
-        tab = [[SYNSubcategoryItemView alloc] initWithCategory:subcategory andFrame:CGRectMake(nextOrigin, currentHeight, itemWidth, 60.0)];
-        [self addSubview:tab];
+        itemFrame = CGRectMake(nextOrigin, 0.0, itemWidth, itemHeight);
+        
+        
+        tab = [[SYNCategoryItemView alloc] initWithName:subcategory.name Id:subcategory.uniqueId andFrame:itemFrame];
+        [self.secondaryTabsView addSubview:tab];
             
         singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)];
         [tab addGestureRecognizer:singleFingerTap];
             
         nextOrigin += itemWidth;
         
-        [self.subviewsArray addObject:tab];
         
             
     }
