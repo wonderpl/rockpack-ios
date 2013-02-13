@@ -11,8 +11,6 @@
 #import "Subcategory.h"
 #import "SYNCategoryItemView.h"
 
-#define kMainTabHeight 50.0
-#define kSecondaryTabHeight 20.0
 
 @implementation SYNCategoriesTabView
 
@@ -26,26 +24,25 @@
     
     
     
-    CGFloat itemWidth = size.width / categories.count;
-    
-    CGRect mainFrame = CGRectMake(0.0, 0.0, size.width, kMainTabHeight);
-    CGRect secondaryFrame = CGRectMake(0.0, kMainTabHeight, size.width, kSecondaryTabHeight);
-    
-    self = [super initWithFrame:mainFrame];
-    
-    if (self) {
+    if (self = [super init]) {
         
-        // Set Background
         
+        
+        UIImage* mainTabsBGImage = [UIImage imageNamed:@"TabTop.png"];
+        CGRect mainFrame = CGRectMake(0.0, 0.0, size.width, mainTabsBGImage.size.height);
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
+        self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
+        
+        UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
+        CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height, size.width, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
+        self.secondaryTabsView.backgroundColor = [UIColor colorWithPatternImage:secondaryTabsBGImage];
         
-        UIImage* backimage = [UIImage imageNamed:@"TabTop.png"];
-        
-        self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:backimage];
-        self.mainTabsView.opaque = NO;
+        CGRect masterFrame = CGRectMake(0.0, 0.0, size.width, mainFrame.size.height + secondaryFrame.size.height);
+        self.frame = masterFrame;
         
         // Add in correct order so that main is above secondary.
+        
         
         [self addSubview:self.secondaryTabsView];
         [self addSubview:self.mainTabsView];
@@ -54,6 +51,11 @@
         CGFloat nextOrigin = 0.0;
         
         UITapGestureRecognizer *singleFingerTap = nil;
+        
+        
+        
+        
+        CGFloat itemWidth = size.width / categories.count;
         
         CGRect itemFrame;
         

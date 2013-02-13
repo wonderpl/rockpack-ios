@@ -421,8 +421,8 @@
 		BE95B91416CBAB2D00EC2E72 /* TabTopSubDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90816CBAB2D00EC2E72 /* TabTopSubDivider@2x.png */; };
 		BE95B91516CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90916CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png */; };
 		BE95B91616CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */; };
-		BE95B91716CBAB2D00EC2E72 /* TapTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */; };
-		BE95B91816CBAB2D00EC2E72 /* TapTopSub@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */; };
+		BE95B91716CBAB2D00EC2E72 /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90B16CBAB2D00EC2E72 /* TabTopSub.png */; };
+		BE95B91816CBAB2D00EC2E72 /* TabTopSub@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B90C16CBAB2D00EC2E72 /* TabTopSub@2x.png */; };
 		BE95B91B16CBAE1000EC2E72 /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B91916CBAE1000EC2E72 /* TabTop.png */; };
 		BE95B91C16CBAE1000EC2E72 /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE95B91A16CBAE1000EC2E72 /* TabTop@2x.png */; };
 		BEA043E116CAA8C2005406E7 /* _Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043DE16CAA8C2005406E7 /* _Category.m */; };
@@ -933,8 +933,8 @@
 		BE95B90816CBAB2D00EC2E72 /* TabTopSubDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSubDivider@2x.png"; sourceTree = "<group>"; };
 		BE95B90916CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSubSelectedGlow.png; sourceTree = "<group>"; };
 		BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSubSelectedGlow@2x.png"; sourceTree = "<group>"; };
-		BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TapTopSub.png; sourceTree = "<group>"; };
-		BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TapTopSub@2x.png"; sourceTree = "<group>"; };
+		BE95B90B16CBAB2D00EC2E72 /* TabTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSub.png; sourceTree = "<group>"; };
+		BE95B90C16CBAB2D00EC2E72 /* TabTopSub@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTopSub@2x.png"; sourceTree = "<group>"; };
 		BE95B91916CBAE1000EC2E72 /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		BE95B91A16CBAE1000EC2E72 /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 		BEA043DD16CAA8C2005406E7 /* _Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Category.h; sourceTree = "<group>"; };
@@ -2173,8 +2173,8 @@
 				BE95B90816CBAB2D00EC2E72 /* TabTopSubDivider@2x.png */,
 				BE95B90916CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png */,
 				BE95B90A16CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png */,
-				BE95B90B16CBAB2D00EC2E72 /* TapTopSub.png */,
-				BE95B90C16CBAB2D00EC2E72 /* TapTopSub@2x.png */,
+				BE95B90B16CBAB2D00EC2E72 /* TabTopSub.png */,
+				BE95B90C16CBAB2D00EC2E72 /* TabTopSub@2x.png */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2528,8 +2528,8 @@
 				BE95B91416CBAB2D00EC2E72 /* TabTopSubDivider@2x.png in Resources */,
 				BE95B91516CBAB2D00EC2E72 /* TabTopSubSelectedGlow.png in Resources */,
 				BE95B91616CBAB2D00EC2E72 /* TabTopSubSelectedGlow@2x.png in Resources */,
-				BE95B91716CBAB2D00EC2E72 /* TapTopSub.png in Resources */,
-				BE95B91816CBAB2D00EC2E72 /* TapTopSub@2x.png in Resources */,
+				BE95B91716CBAB2D00EC2E72 /* TabTopSub.png in Resources */,
+				BE95B91816CBAB2D00EC2E72 /* TabTopSub@2x.png in Resources */,
 				BE95B91B16CBAE1000EC2E72 /* TabTop.png in Resources */,
 				BE95B91C16CBAE1000EC2E72 /* TabTop@2x.png in Resources */,
 			);
