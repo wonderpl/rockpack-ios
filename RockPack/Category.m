@@ -94,14 +94,13 @@ static NSEntityDescription *categoryEntity = nil;
         return;
     }
     
+    
     for (NSDictionary* subcategoryData in [dictionary objectForKey: @"sub_categories"])
     {
         Subcategory* subcategory = [Subcategory instanceFromDictionary: subcategoryData usingManagedObjectContext: managedObjectContext];
-        
         [self addSubcategoriesObject:subcategory];
+        
     }
-    
-    
     
     
 }
@@ -109,7 +108,12 @@ static NSEntityDescription *categoryEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"Category(%@) name: %@, subcategories: %d", self.uniqueId, self.name, self.subcategories.count];
+    NSMutableString* descriptioString = [[NSMutableString alloc] init];
+    [descriptioString appendFormat: @"Category(%@) name: %@, subcategories:", self.uniqueId, self.name];
+    for (Subcategory* sub in self.subcategories) {
+        [descriptioString appendFormat:@"\n- %@", sub];
+    }
+    return descriptioString;
 }
 
 @end

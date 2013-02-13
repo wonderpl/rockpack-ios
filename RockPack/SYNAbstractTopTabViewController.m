@@ -41,7 +41,10 @@
 
 
 
-
+- (void) highlightTab: (int) tabIndex
+{
+    
+}
 -(void)createTab
 {
     SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
@@ -91,6 +94,8 @@
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
     
+    //DebugLog(@"Tag clicked : %d", tab.tag);
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
     [categoriesFetchRequest setPredicate: predicate];
     
@@ -118,7 +123,7 @@
     
     [self.tabView createSubcategoriesTab:categoryTapped.subcategories];
     
-    // DebugLog(@"Pressed on Category: %@", categoryTapped);
+    DebugLog(@"Pressed on Category:\n%@", categoryTapped);
 }
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser

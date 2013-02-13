@@ -58,9 +58,6 @@
         
         UITapGestureRecognizer *singleFingerTap = nil;
         
-        
-        
-        
         CGFloat itemWidth = size.width / categories.count;
         
         CGRect itemFrame;
@@ -69,12 +66,11 @@
         
         for (Category* category in categories)
         {
-            itemFrame = CGRectMake(nextOrigin, 0.0, itemWidth, mainFrame.size.height);
+            itemFrame = CGRectMake(nextOrigin + 2.0, 0.0, itemWidth - 2.0, mainFrame.size.height);
             itemFrame = CGRectIntegral(itemFrame);
             
             tab = [[SYNCategoryItemView alloc] initWithTabItemModel:category andFrame:itemFrame];
             [self.mainTabsView addSubview:tab];
-            
             
             
             singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)];
@@ -115,22 +111,26 @@
     
     CGFloat midSecondaryFrame = self.secondaryTabsView.frame.size.height * 0.5;
     
+    
+    NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"uniqueId" ascending:YES];
+    NSArray* sortedSubcategories = [subcategories sortedArrayUsingDescriptors:[NSArray arrayWithObject:idSortDescriptor]];
         
-    for (Subcategory* subcategory in subcategories)
+    for (Subcategory* subcategory in sortedSubcategories)
     {
         
         
         // Change the font for the subcategory tab
-        UIFont *fontToUse = [UIFont rockpackFontOfSize: 12.0f];
+        UIFont *fontToUse = [UIFont rockpackFontOfSize: 13.0f];
         CGSize tabMinSize = [subcategory.name sizeWithFont:fontToUse];
+        tabMinSize.width += 20.0;
         
         itemFrame = CGRectMake(nextOrigin, 0.0, tabMinSize.width, itemHeight);
         
         tab = [[SYNCategoryItemView alloc] initWithTabItemModel:subcategory andFrame:itemFrame];
         [self.secondaryTabsView addSubview:tab];
         
+        tab.label.font = fontToUse;
         
-        tab.backgroundColor = [UIColor greenColor];
         
         singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSecondaryTap:)];
         [tab addGestureRecognizer:singleFingerTap];
