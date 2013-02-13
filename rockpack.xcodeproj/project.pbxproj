@@ -21,8 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0106E82316510A5900DC5173 /* SYNWallpackThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0106E82216510A5900DC5173 /* SYNWallpackThumbnailCell.m */; };
-		0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */; };
 		0109D1BD16B7F03900673FC4 /* PanelLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */; };
 		0109D1BE16B7F03900673FC4 /* PanelLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */; };
 		010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD41629BDC40080F26B /* UIKit.framework */; };
@@ -51,8 +49,13 @@
 		011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC682164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m */; };
 		011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */; };
 		012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 012502B016C958FA0029C7C8 /* UIView+Toast.m */; };
+		012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 012502BC16CA8FE30029C7C8 /* SYNFacebookManager.m */; };
+		012502BF16CA942F0029C7C8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502BE16CA942F0029C7C8 /* FacebookSDK.framework */; };
+		012502C116CA94650029C7C8 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 012502C016CA94650029C7C8 /* FacebookSDKResources.bundle */; };
+		012502C316CA99630029C7C8 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C216CA99630029C7C8 /* AdSupport.framework */; };
+		012502C516CA99710029C7C8 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C416CA99710029C7C8 /* Accounts.framework */; };
+		012502C716CA997A0029C7C8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C616CA99790029C7C8 /* Social.framework */; };
 		012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */; };
-		012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */; };
 		012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */; };
 		012632F5162E130C0009FF9C /* SYNVideosRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
@@ -67,8 +70,6 @@
 		01363F7A1631A01000FFAA09 /* SYNVideoQueueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNVideoQueueCell.m */; };
 		01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */; };
 		01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */; };
-		01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */; };
-		01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */; };
 		0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0140F1F916B6D12D0094B069 /* SYNTextField.m */; };
 		0142ED8116B1439B008694DA /* CategoryBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED7F16B1439B008694DA /* CategoryBar.png */; };
 		0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8016B1439B008694DA /* CategoryBar@2x.png */; };
@@ -435,9 +436,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0106E82116510A5900DC5173 /* SYNWallpackThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackThumbnailCell.h; sourceTree = "<group>"; };
-		0106E82216510A5900DC5173 /* SYNWallpackThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackThumbnailCell.m; sourceTree = "<group>"; };
-		0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNWallpackThumbnailCell.xib; sourceTree = "<group>"; };
 		0109D1BB16B7F03900673FC4 /* PanelLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelLargeVideoView.png; path = Assets/Images/PanelLargeVideoView.png; sourceTree = "<group>"; };
 		0109D1BC16B7F03900673FC4 /* PanelLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelLargeVideoView@2x.png"; path = "Assets/Images/PanelLargeVideoView@2x.png"; sourceTree = "<group>"; };
 		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -476,10 +474,15 @@
 		011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNPassthroughView.m; sourceTree = "<group>"; };
 		012502AF16C958FA0029C7C8 /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
 		012502B016C958FA0029C7C8 /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
+		012502BB16CA8FE30029C7C8 /* SYNFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFacebookManager.h; sourceTree = "<group>"; };
+		012502BC16CA8FE30029C7C8 /* SYNFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFacebookManager.m; sourceTree = "<group>"; };
+		012502BE16CA942F0029C7C8 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		012502C016CA94650029C7C8 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
+		012502C216CA99630029C7C8 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		012502C416CA99710029C7C8 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		012502C616CA99790029C7C8 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselVerticalLayout.h; sourceTree = "<group>"; };
 		012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselVerticalLayout.m; sourceTree = "<group>"; };
-		012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselCell.h; sourceTree = "<group>"; };
-		012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselCell.m; sourceTree = "<group>"; };
 		012632F1162E130C0009FF9C /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
 		012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
 		012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideosRootViewController.xib; sourceTree = "<group>"; };
@@ -503,9 +506,6 @@
 		01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoQueueCell.xib; sourceTree = "<group>"; };
 		01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouseHorizontallLayout.h; sourceTree = "<group>"; };
 		01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouseHorizontallLayout.m; sourceTree = "<group>"; };
-		01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMyRockpackCell.xib; sourceTree = "<group>"; };
-		01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackCell.h; sourceTree = "<group>"; };
-		01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackCell.m; sourceTree = "<group>"; };
 		0140F1F816B6D12D0094B069 /* SYNTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTextField.h; sourceTree = "<group>"; };
 		0140F1F916B6D12D0094B069 /* SYNTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTextField.m; sourceTree = "<group>"; };
 		0142ED7F16B1439B008694DA /* CategoryBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategoryBar.png; sourceTree = "<group>"; };
@@ -961,6 +961,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				012502C716CA997A0029C7C8 /* Social.framework in Frameworks */,
+				012502C516CA99710029C7C8 /* Accounts.framework in Frameworks */,
+				012502C316CA99630029C7C8 /* AdSupport.framework in Frameworks */,
 				01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */,
 				019824F01629CC7600216900 /* libTestFlight.a in Frameworks */,
 				019824F21629CE1600216900 /* libz.dylib in Frameworks */,
@@ -974,6 +977,7 @@
 				01707180165550BE00A3C7C4 /* Security.framework in Frameworks */,
 				0170717E165550A900A3C7C4 /* SystemConfiguration.framework in Frameworks */,
 				010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */,
+				012502BF16CA942F0029C7C8 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -983,6 +987,9 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
+				012502C616CA99790029C7C8 /* Social.framework */,
+				012502C416CA99710029C7C8 /* Accounts.framework */,
+				012502C216CA99630029C7C8 /* AdSupport.framework */,
 				010DEFDA1629BDC40080F26B /* Source */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
 				010DEFD11629BDC40080F26B /* Products */,
@@ -1007,6 +1014,8 @@
 				01E427BB1664C5F1009B941F /* CoreData.framework */,
 				010DEFD81629BDC40080F26B /* CoreGraphics.framework */,
 				011CC67D164AA41700F02B6D /* CoreMedia.framework */,
+				012502BE16CA942F0029C7C8 /* FacebookSDK.framework */,
+				012502C016CA94650029C7C8 /* FacebookSDKResources.bundle */,
 				010DEFD61629BDC40080F26B /* Foundation.framework */,
 				0126331E162E2A060009FF9C /* MediaPlayer.framework */,
 				01982575162AFB9600216900 /* QuartzCore.framework */,
@@ -1091,6 +1100,15 @@
 			name = "Sliding panels";
 			sourceTree = "<group>";
 		};
+		012502BA16CA8FCE0029C7C8 /* Social Media */ = {
+			isa = PBXGroup;
+			children = (
+				012502BB16CA8FE30029C7C8 /* SYNFacebookManager.h */,
+				012502BC16CA8FE30029C7C8 /* SYNFacebookManager.m */,
+			);
+			name = "Social Media";
+			sourceTree = "<group>";
+		};
 		012632C7162DF4C40009FF9C /* Layout Engine Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -1119,7 +1137,6 @@
 				01B7CD9D166E1616001F4AF0 /* Video cells */,
 				01B7CD9E166E163D001F4AF0 /* Channel cells */,
 				01B7CD9F166E1661001F4AF0 /* Video queue cells */,
-				01B7CD9C166E1607001F4AF0 /* Wallpack cells */,
 			);
 			name = "Collection Cells";
 			sourceTree = "<group>";
@@ -1556,6 +1573,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				012502BA16CA8FCE0029C7C8 /* Social Media */,
 				01E566FA16B5E2AA00B8B218 /* Resizeable Text View */,
 				01E42805166666F4009B941F /* Coverflow */,
 				019E6A5E165FD958002B312A /* OAuth2 */,
@@ -1898,24 +1916,9 @@
 			name = "Channel Thumbnail";
 			sourceTree = "<group>";
 		};
-		01B7CD9C166E1607001F4AF0 /* Wallpack cells */ = {
-			isa = PBXGroup;
-			children = (
-				0106E82116510A5900DC5173 /* SYNWallpackThumbnailCell.h */,
-				0106E82216510A5900DC5173 /* SYNWallpackThumbnailCell.m */,
-				0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */,
-				012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */,
-				012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */,
-			);
-			name = "Wallpack cells";
-			sourceTree = "<group>";
-		};
 		01B7CD9D166E1616001F4AF0 /* Video cells */ = {
 			isa = PBXGroup;
 			children = (
-				01363FC816348BCB00FFAA09 /* SYNMyRockpackCell.h */,
-				01363FC916348BCC00FFAA09 /* SYNMyRockpackCell.m */,
-				01363FC616348BB700FFAA09 /* SYNMyRockpackCell.xib */,
 				01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */,
 				01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */,
 				01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */,
@@ -2247,9 +2250,7 @@
 				012632F5162E130C0009FF9C /* SYNVideosRootViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */,
-				01363FC716348BB800FFAA09 /* SYNMyRockpackCell.xib in Resources */,
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
-				0106E82516510CB900DC5173 /* SYNWallpackThumbnailCell.xib in Resources */,
 				019E81FF1654043A00744A03 /* Mail Sent.aif in Resources */,
 				019E82001654043A00744A03 /* NewSlideIn.aif in Resources */,
 				019E82011654043A00744A03 /* NewSlideOut.aif in Resources */,
@@ -2542,6 +2543,7 @@
 				BE95B91816CBAB2D00EC2E72 /* TabTopSub@2x.png in Resources */,
 				BE95B91B16CBAE1000EC2E72 /* TabTop.png in Resources */,
 				BE95B91C16CBAE1000EC2E72 /* TabTop@2x.png in Resources */,
+				012502C116CA94650029C7C8 /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2580,7 +2582,6 @@
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
 				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
 				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
-				012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */,
 				012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */,
 				01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */,
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
@@ -2588,14 +2589,12 @@
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
 				01363F7A1631A01000FFAA09 /* SYNVideoQueueCell.m in Sources */,
 				01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */,
-				01363FCA16348BCD00FFAA09 /* SYNMyRockpackCell.m in Sources */,
 				011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */,
 				011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */,
 				011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */,
 				011CC683164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m in Sources */,
 				011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */,
 				01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */,
-				0106E82316510A5900DC5173 /* SYNWallpackThumbnailCell.m in Sources */,
 				0170717316554E9B00A3C7C4 /* NSAlert+MKNetworkKitAdditions.m in Sources */,
 				0170717516554E9B00A3C7C4 /* NSDate+RFC1123.m in Sources */,
 				0170717616554E9B00A3C7C4 /* NSDictionary+RequestEncoding.m in Sources */,
@@ -2666,6 +2665,7 @@
 				BEA043E716CAA8E1005406E7 /* Category.m in Sources */,
 				BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */,
 				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
+				012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2742,6 +2742,10 @@
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nick Banks (QWB4Z97ECZ)";
 				COMPRESS_PNG_FILES = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
@@ -2749,6 +2753,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 				);
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = rockpack;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0EE419CB-9B49-4341-AA31-A0A30B5FC14F";
 				WRAPPER_EXTENSION = app;
@@ -2760,6 +2765,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				COMPRESS_PNG_FILES = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
@@ -2767,6 +2776,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 				);
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = rockpack;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2802,6 +2812,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COMPRESS_PNG_FILES = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
@@ -2809,6 +2823,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
 				);
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

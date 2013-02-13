@@ -69,6 +69,8 @@
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+    
+    [self refreshVideoThumbnails];
 }
 
 
@@ -80,10 +82,7 @@
                                              selector: @selector(reloadCollectionViews)
                                                  name: kDataUpdated
                                                object: nil];
-    
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
-    
-    [appDelegate.networkEngine updateHomeScreen];
+
 }
 
 
@@ -109,29 +108,34 @@
 
 - (void) refreshVideoThumbnails
 {
-    self.refreshing = TRUE;
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+    [self startRefreshCycle];
     
-    [self.refreshControl beginRefreshing];
-    
-    self.timer = [NSTimer timerWithTimeInterval: 5.0f
-                            target: self
-                          selector: @selector(refreshVideoThumbnailsFinished)
-                          userInfo: nil
-                           repeats: NO];
-    
-    NSRunLoop * theRunLoop = [NSRunLoop currentRunLoop];
-    
-    [theRunLoop addTimer: self.timer
-                 forMode: NSDefaultRunLoopMode];
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    [appDelegate.networkEngine updateHomeScreenOnCompletion: ^
+     {
+         // TODO: Might want to put in some error reporting here
+         [self endRefreshCycle];
+     }
+     onError: ^(NSError *error)
+     {
+         [self endRefreshCycle];
+     }];
 }
 
-- (void) refreshVideoThumbnailsFinished
+- (void) startRefreshCycle
 {
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: FALSE];
+    self.refreshing = TRUE;
+    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+    [self.refreshControl beginRefreshing];
+}
+
+- (void) endRefreshCycle
+{
     self.refreshing = FALSE;
+    [self.supplementaryViewWithRefreshButton spinRefreshButton: FALSE];
     [self.refreshControl endRefreshing];
 }
+
 
 #pragma mark - Core Data support
 

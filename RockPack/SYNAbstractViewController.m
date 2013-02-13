@@ -17,7 +17,7 @@
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelSelectorCell.h"
+//#import "SYNChannelSelectorCell.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoQueueCell.h"

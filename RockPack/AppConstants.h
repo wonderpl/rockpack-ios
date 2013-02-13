@@ -16,17 +16,6 @@
 
 // Host for API
 
-#if 0
-
-#define kAPIHostName @"demo.rockpack.com"
-
-// Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
-#define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"test/ws/%@/subscriptions/recent_videos/"
-
-// Returns a list of 
-#define kAPIPopularChannels @"test/ws/channels/"
-
-#else
 
 //#define kAPIHostName @"dev.rockpack.com"
 #define kAPIHostName @"demo.rockpack.com"
@@ -40,7 +29,6 @@
 // Returns a list of
 #define kAPIPopularChannels @"ws/channels/"
 
-#endif
 
 // Timeout for API calls
 

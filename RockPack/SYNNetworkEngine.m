@@ -173,14 +173,11 @@
 
 - (void) updateVideoInstancesWithURL: (NSString *) apiURL
                            andViewId: (NSString *) viewId
+                        onCompletion: (MKNKVoidBlock) completionBlock
+                             onError: (MKNKErrorBlock) errorBlock
 {
-    // Patch the USERID into the path
-    NSString *path = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
-    
-    
-    path = @"ws/USERID/subscriptions/recent_videos/";
-    
-    [self JSONObjectForPath: path
+
+    [self JSONObjectForPath: apiURL
             completionBlock: ^(NSDictionary *dictionary)
      {
          if (dictionary)
@@ -225,8 +222,10 @@
                  
                  [self.appDelegate saveContext: TRUE];
                  
-//                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-//                                                                     object: nil];
+                 if (completionBlock)
+                 {
+                     completionBlock();
+                 }
              }
              else
              {
@@ -236,26 +235,35 @@
      }
                  errorBlock: ^(NSError* error)
      {
+         if (errorBlock)
+         {
+             errorBlock(error);
+         }
          AssertOrLog(@"API request failed");
      }];
 }
 
 
-- (void) updateHomeScreen
+- (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
+                              onError: (MKNKErrorBlock) errorBlock
 {
     // TODO: We need to replace USERID with actual userId ASAP
     
     // Patch the USERID into the path
     NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
-    
+
     [self updateVideoInstancesWithURL: apiURL
-                            andViewId: @"Home"];
+                            andViewId: @"Home"
+                         onCompletion: completionBlock
+                              onError: errorBlock];
 }
 
 - (void) updateVideosScreen
 {
     [self updateVideoInstancesWithURL: kAPIPopularVideos
-                            andViewId: @"Videos"];
+                            andViewId: @"Videos"
+                         onCompletion: nil
+                              onError: nil];
 }
 
 

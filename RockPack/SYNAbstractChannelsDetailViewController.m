@@ -104,8 +104,13 @@
     
     // Carousel collection view
     // Register our coverview style cell
-    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
-                                forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
+    
+    // Init collection view
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelSelectorCell"
+                                             bundle: nil];
+    
+    [self.channelCoverCarouselCollectionView registerNib: thumbnailCellNib
+                          forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
     
     // Set carousel collection view to use custom layout algorithm
     CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];

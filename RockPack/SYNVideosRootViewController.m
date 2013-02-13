@@ -18,7 +18,6 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
 #import "SYNWallpackCarouseHorizontallLayout.h"
-#import "SYNWallpackCarouselCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
