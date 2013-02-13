@@ -16,6 +16,11 @@
     return [UIColor colorWithRed: 1.0f green: 1.0f blue: 1.0f alpha: 1.0f];
 }
 
++ (UIColor *) rockpackLogoColor
+{
+    return [UIColor colorWithRed: 29.0f/255.0f green: 194.0f/255.0f blue: 224.0f/255.0f alpha: 1.0f];
+}
+
 
 + (UIColor *) rockpackSubtitleColor
 {

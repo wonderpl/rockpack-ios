@@ -2,10 +2,9 @@
 // Make changes to Subcategory.h instead.
 
 #import <CoreData/CoreData.h>
-#import "AbstractCommon.h"
+#import "TabItem.h"
 
 extern const struct SubcategoryAttributes {
-	__unsafe_unretained NSString *name;
 } SubcategoryAttributes;
 
 extern const struct SubcategoryRelationships {
@@ -18,25 +17,14 @@ extern const struct SubcategoryFetchedProperties {
 @class Category;
 
 
-
 @interface SubcategoryID : NSManagedObjectID {}
 @end
 
-@interface _Subcategory : AbstractCommon {}
+@interface _Subcategory : TabItem {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (SubcategoryID*)objectID;
-
-
-
-
-
-@property (nonatomic, strong) NSString* name;
-
-
-
-//- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -57,12 +45,6 @@ extern const struct SubcategoryFetchedProperties {
 @end
 
 @interface _Subcategory (CoreDataGeneratedPrimitiveAccessors)
-
-
-- (NSString*)primitiveName;
-- (void)setPrimitiveName:(NSString*)value;
-
-
 
 
 

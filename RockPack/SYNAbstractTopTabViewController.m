@@ -13,6 +13,8 @@
 #import <CoreData/CoreData.h>
 #import "SYNAppDelegate.h"
 #import "SYNCategoryItemView.h"
+#import "Category.h"
+#import "Subcategory.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractTopTabViewController ()
@@ -89,7 +91,7 @@
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", tab.dataItemId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
     [categoriesFetchRequest setPredicate: predicate];
     
     NSError* error = nil;
@@ -97,11 +99,20 @@
     NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                                    error: &error];
     
-    if (matchingCategoryInstanceEntries.count <= 0)
+    if(matchingCategoryInstanceEntries.count == 0)
     {
-        DebugLog(@"Found multiple (%i) categories", matchingCategoryInstanceEntries.count);
+        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
+        return;
+    }
+    
+    if (matchingCategoryInstanceEntries.count > 1)
+    {
+        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
         
     }
+    
+    
+    
     
     Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
     
@@ -116,20 +127,7 @@
 }
 
 
-// Highlight selected tab by revealing a portion of the hightlight image corresponing to the active tab
 
-- (void) highlightTab: (int) tabIndex
-{
-    
-}
-
-
-// Set the selected tab (with no animation)
-
-- (void) setSelectedIndex: (NSUInteger) newSelectedIndex
-{
-    [self highlightTab: newSelectedIndex];
-}
 
 
 

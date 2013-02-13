@@ -4,7 +4,6 @@
 #import "_Category.h"
 
 const struct CategoryAttributes CategoryAttributes = {
-	.name = @"name",
 };
 
 const struct CategoryRelationships CategoryRelationships = {
@@ -43,13 +42,6 @@ const struct CategoryFetchedProperties CategoryFetchedProperties = {
 
 	return keyPaths;
 }
-
-
-
-
-@dynamic name;
-
-
 
 
 

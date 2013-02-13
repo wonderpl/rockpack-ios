@@ -7,12 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Category.h"
+#import "TabItem.h"
 
-@interface SYNCategoryItemView : UIView
+typedef enum {
+    TabItemTypeMain,
+    TabItemTypeSub
+} TabItemType;
 
-@property (nonatomic, strong) NSString* dataItemId;
+@interface SYNCategoryItemView : UIView {
+    
+}
 
-- (id)initWithName:(NSString *)name Id:(NSString*)cid andFrame:(CGRect)frame;
+@property (nonatomic, strong) UIImageView* topGlowImageView;
+
+@property (nonatomic, strong) UILabel* label;
+
+- (id)initWithTabItemModel:(TabItem*)tabItemModel andFrame:(CGRect)frame;
+-(void)makeHighlighted;
+
+
+-(void)makeStandard;
 
 @end

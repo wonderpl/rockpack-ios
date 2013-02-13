@@ -4,7 +4,6 @@
 #import "_Subcategory.h"
 
 const struct SubcategoryAttributes SubcategoryAttributes = {
-	.name = @"name",
 };
 
 const struct SubcategoryRelationships SubcategoryRelationships = {
@@ -43,13 +42,6 @@ const struct SubcategoryFetchedProperties SubcategoryFetchedProperties = {
 
 	return keyPaths;
 }
-
-
-
-
-@dynamic name;
-
-
 
 
 
