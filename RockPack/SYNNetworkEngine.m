@@ -55,6 +55,9 @@
 }
 
 
+#pragma mark - Utility Methods
+
+
 - (void) JSONObjectForPath: (NSString *) path
            completionBlock: (JSONResponseBlock) completionBlock
                 errorBlock: (MKNKErrorBlock) errorBlock
@@ -106,7 +109,10 @@
 }
 
 
-// Categories Call
+
+
+#pragma mark - Main Calls
+
 
 - (void) updateCategories
 {

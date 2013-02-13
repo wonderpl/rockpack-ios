@@ -128,7 +128,7 @@
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
 {
-    
+    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
 }
 
 
