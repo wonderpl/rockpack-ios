@@ -14,7 +14,9 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 
 -(id) initWithDefaultSettings;
 
-- (void) updateHomeScreen;
+- (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
+                              onError: (MKNKErrorBlock) errorBlock;
+
 - (void) updateVideosScreen;
 - (void) updateChannelsScreen;
 - (void) updateChannel: (NSString *) resourceURL;
