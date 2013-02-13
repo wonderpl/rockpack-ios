@@ -58,7 +58,6 @@
 		012502C516CA99710029C7C8 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C416CA99710029C7C8 /* Accounts.framework */; };
 		012502C716CA997A0029C7C8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C616CA99790029C7C8 /* Social.framework */; };
 		012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */; };
-		012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */; };
 		012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */; };
 		012632F5162E130C0009FF9C /* SYNVideosRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
@@ -469,8 +468,6 @@
 		012502C616CA99790029C7C8 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselVerticalLayout.h; sourceTree = "<group>"; };
 		012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselVerticalLayout.m; sourceTree = "<group>"; };
-		012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselCell.h; sourceTree = "<group>"; };
-		012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselCell.m; sourceTree = "<group>"; };
 		012632F1162E130C0009FF9C /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
 		012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
 		012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideosRootViewController.xib; sourceTree = "<group>"; };
@@ -1877,8 +1874,6 @@
 				0106E82116510A5900DC5173 /* SYNWallpackThumbnailCell.h */,
 				0106E82216510A5900DC5173 /* SYNWallpackThumbnailCell.m */,
 				0106E82416510CB900DC5173 /* SYNWallpackThumbnailCell.xib */,
-				012632D6162DF8CE0009FF9C /* SYNWallpackCarouselCell.h */,
-				012632D7162DF8CE0009FF9C /* SYNWallpackCarouselCell.m */,
 			);
 			name = "Wallpack cells";
 			sourceTree = "<group>";
@@ -2505,7 +2500,6 @@
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
 				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
 				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
-				012632D8162DF8CE0009FF9C /* SYNWallpackCarouselCell.m in Sources */,
 				012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */,
 				01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */,
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
