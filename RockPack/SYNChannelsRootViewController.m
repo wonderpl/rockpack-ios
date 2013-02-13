@@ -14,7 +14,6 @@
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNChannelsRootViewController.h"
-#import "SYNMyRockpackCell.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoDB.h"
 #import "UIFont+SYNFont.h"

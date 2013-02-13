@@ -112,9 +112,6 @@
     [self.channelCoverCarouselCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
     
-//    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
-//                                forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
-    
     // Set carousel collection view to use custom layout algorithm
     CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
     channelCoverCarouselHorizontalLayout.cellSize = CGSizeMake(345.0f , 195.0f);
