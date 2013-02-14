@@ -115,7 +115,7 @@
 
 
 
-#pragma mark - Main Calls
+#pragma mark - Main Update Calls
 
 
 - (void) updateCategories
@@ -211,11 +211,7 @@
      {
          NSManagedObjectContext *importManagedObjectContext;
          
-         // This is where the magic occurs
-         // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
-         SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
-         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-         importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
+         
          
          if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
          {
@@ -227,7 +223,7 @@
              NSError *error = nil;
              
              // Merge local context into main context
-             if (![importManagedObjectContext save: &error])
+             if (![self.importManagedObjectContext save: &error])
              {
                  NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
                  
@@ -243,7 +239,7 @@
              // Save main context and save asynchronously into persistent database
              
              // TODO: I think that we need to work out how to save asynchronously
-             [appDelegate saveContext: TRUE];
+             [self.appDelegate saveContext: TRUE];
              
 //             [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
 //                                                                 object: nil];
@@ -269,13 +265,7 @@
     [self JSONObjectForPath: path
             completionBlock: ^(NSDictionary *dictionary)
      {
-         NSManagedObjectContext *importManagedObjectContext;
          
-         // This is where the magic occurs
-         // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
-         SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
-         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-         importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
          
          NSError *error;
          
@@ -283,7 +273,7 @@
          NSFetchRequest *channelInstanceFetchRequest = [[NSFetchRequest alloc] init];
          [channelInstanceFetchRequest setEntity: self.channelEntity];
          
-         NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: channelInstanceFetchRequest
+         NSArray *matchingChannelEntries = [self.importManagedObjectContext executeFetchRequest: channelInstanceFetchRequest
                                                                                      error: &error];
          NSLog (@"channel instances %@", matchingChannelEntries);
          
@@ -305,7 +295,7 @@
                          if ([itemDictionary isKindOfClass: [NSDictionary class]])
                          {
                              [Channel instanceFromDictionary: itemDictionary
-                                   usingManagedObjectContext: importManagedObjectContext
+                                   usingManagedObjectContext: self.importManagedObjectContext
                                          ignoringObjectTypes: kIgnoreNothing
                                                    andViewId: @"Channels"];
                          }
@@ -314,7 +304,7 @@
                  
                  NSError *error = nil;
                  
-                 if (![importManagedObjectContext save: &error])
+                 if (![self.importManagedObjectContext save: &error])
                  {
                      NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
                      
@@ -327,7 +317,7 @@
                      }
                  }
                  
-                 [appDelegate saveContext: TRUE];
+                 [self.appDelegate saveContext: TRUE];
                  
 //                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
 //                                                                     object: nil];
