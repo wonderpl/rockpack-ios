@@ -35,6 +35,7 @@
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = @"NAME YOUR CHANNEL...";
     self.userNameLabel.text = @"BY YOU";
+    self.changeCoverLabel.text = @"ADD A COVER";
     
     // set User's avatar picture
     [self.userAvatarImageView setImageFromURL: [NSURL URLWithString: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Sofia.png"]

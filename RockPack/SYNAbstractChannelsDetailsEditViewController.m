@@ -189,6 +189,11 @@
 
 - (IBAction) userTouchedSaveButton: (id) sender
 {
+    if (self.coverSelectionView.alpha == 1.0f)
+    {
+            self.changeCoverLabel.text = @"CHANGE COVER";
+    }
+    
     [self highlightAll];
     [self showDoneButton];
     [self.channelTitleTextField resignFirstResponder];
@@ -199,11 +204,31 @@
 {
     NSLog (@"User touched done button");
     
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    
+//    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+//    
+//    [bottomTabViewController popCurrentViewController: nil];
     
-    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    self.editButton.hidden = FALSE;
+    self.shareButton.hidden = FALSE;
     
-    [bottomTabViewController popCurrentViewController: nil];
+    self.saveButton.hidden = TRUE;
+    
+    // We need to start off with the DONE button visible as user may choose not to customise anything
+    self.doneButton.hidden = TRUE;
+    self.saveOrDoneButtonLabel.hidden = TRUE;
+    
+    // Hide save or done buttons and hide cover selection carousel
+    self.saveOrDoneButtonLabel.hidden = TRUE;
+    self.coverSelectionView.hidden = TRUE;
+    
+    // Remove text field highlightes
+    self.channelTitleHighlightImageView.hidden = TRUE;
+    self.channelDescriptionHightlightView.hidden = TRUE;
+    
+    // Disable text fields until edit button selected
+    self.channelTitleTextField.enabled = FALSE;
 }
 
 - (IBAction) userTouchedChangeCoverButton: (id) sender

@@ -83,6 +83,7 @@
     
     // Hide save or done buttons and hide cover selection carousel
     self.saveOrDoneButtonLabel.hidden = FALSE;
+    self.doneButton.hidden = FALSE;
     self.coverSelectionView.hidden = FALSE;
     
     // Remove text field highlightes
