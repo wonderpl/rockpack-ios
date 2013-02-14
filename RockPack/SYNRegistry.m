@@ -58,59 +58,42 @@
     NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
     
     
-    if (categoriesDictionary && [categoriesDictionary isKindOfClass:[NSDictionary class]])
-    {
-        
-        NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
-        
-        if ([itemArray isKindOfClass: [NSArray class]])
-        {
-            // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
-            // and should be removed in a post-import cleanup
-            NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
-                                                                                              andViewId: nil
-                                                                                 inManagedObjectContext: self.importManagedObjectContext];
-            
-            // === Main Processing === //
-            for (NSDictionary *categoryDictionary in itemArray)
-            {
-                if ([categoryDictionary isKindOfClass: [NSDictionary class]])
-                {
-                    Category* category = [Category instanceFromDictionary: categoryDictionary
-                                                usingManagedObjectContext: self.importManagedObjectContext];
-                    
-                    DebugLog(@"Found Category: %@\n", category);
-                }
-            }
-            
-            // Now remove any Category objects that are no longer referenced in the import
-            [self removeUnusedManagedObjects: existingObjectsInViewId
-                      inManagedObjectContext: self.importManagedObjectContext];
-            
-            // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
-            
-        }
-        else
-        {
-            AssertOrLog(@"Not a dictionary");
-            return NO;
-        }
-        
-        
-        BOOL saveResult = [self saveImportContext];
-        if(!saveResult)
-            return NO;
-        
-        
-        
-        
-    }
-    else
-    {
-        AssertOrLog(@"Not a dictionary");
+    if (!categoriesDictionary || ![categoriesDictionary isKindOfClass:[NSDictionary class]])
         return NO;
+    
+    
+    NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
+    
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
+    // and should be removed in a post-import cleanup
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
+                                                                                      andViewId: nil
+                                                                         inManagedObjectContext: self.importManagedObjectContext];
+    
+    // === Main Processing === //
+    for (NSDictionary *categoryDictionary in itemArray)
+    {
+        if ([categoryDictionary isKindOfClass: [NSDictionary class]])
+        {
+            Category* category = [Category instanceFromDictionary: categoryDictionary
+                                        usingManagedObjectContext: self.importManagedObjectContext];
+            
+            DebugLog(@"Found Category: %@\n", category);
+        }
     }
     
+    // Now remove any Category objects that are no longer referenced in the import
+    [self removeUnusedManagedObjects: existingObjectsInViewId
+              inManagedObjectContext: self.importManagedObjectContext];
+    
+    // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
     
     return YES;
 }

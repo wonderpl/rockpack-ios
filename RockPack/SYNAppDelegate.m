@@ -121,8 +121,7 @@
 
 - (void) initializeCoreDataStack
 {
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack"
-                                              withExtension: @"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
     ZAssert(modelURL, @"Failed to find model URL");
     
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL];
