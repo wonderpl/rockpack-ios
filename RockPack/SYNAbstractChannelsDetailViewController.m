@@ -74,6 +74,13 @@
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.saveOrDoneButtonLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.changeCoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    
+    UIColor *color = [UIColor blackColor];
+    self.changeCoverLabel.layer.shadowColor = [color CGColor];
+    self.changeCoverLabel.layer.shadowRadius = 7.0f;
+    self.changeCoverLabel.layer.shadowOpacity = 1.0;
+    self.changeCoverLabel.layer.shadowOffset = CGSizeZero;
+    self.changeCoverLabel.layer.masksToBounds = NO;
 
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
