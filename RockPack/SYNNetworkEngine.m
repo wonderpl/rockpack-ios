@@ -13,6 +13,7 @@
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
 #import "Category.h"
+#import "SYNRegistry.h"
 
 @interface SYNNetworkEngine ()
 
@@ -21,6 +22,7 @@
 @property (nonatomic, strong) NSEntityDescription *channelEntity;
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
+@property (nonatomic, strong) SYNRegistry* registry;
 
 @end
 
@@ -49,6 +51,8 @@
         
         self.channelEntity = [NSEntityDescription entityForName: @"Channel"
                                          inManagedObjectContext: self.importManagedObjectContext];
+        
+        self.registry = [[SYNRegistry alloc] initWithManagedObjectContext:nil];
     }
 
     return self;
@@ -118,50 +122,14 @@
 {
     
     
-    // ex. locale=en-us
+    
     NSString *path = @"ws/categories/";
     
     [self JSONObjectForPath:path completionBlock: ^(NSDictionary *dictionary) {
         
          if (dictionary)
          {
-             // Get Root Object
-             NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
-             
-             
-             if (categoriesDictionary && [categoriesDictionary isKindOfClass:[NSDictionary class]])
-             {
-                 
-                 NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
-                 
-                 if ([itemArray isKindOfClass: [NSArray class]])
-                 {
-                     
-                     // === Main Processing === //
-                     for (NSDictionary *categoryDictionary in itemArray)
-                     {
-                         if ([categoryDictionary isKindOfClass: [NSDictionary class]])
-                         {
-                             
-                             
-                             Category* category = [Category instanceFromDictionary: categoryDictionary usingManagedObjectContext: self.importManagedObjectContext];
-                             
-                             DebugLog(@"Found Category: %@\n", category);
-                         }
-                     }
-                     
-                     // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
-                     
-                 }
-                 
-                 
-                 
-                 
-             }
-             else
-             {
-                 AssertOrLog(@"Not a dictionary");
-             }
+             [self.registry registerCategoriesFromDictionary:dictionary];
          }
      }
                  errorBlock: ^(NSError* error)

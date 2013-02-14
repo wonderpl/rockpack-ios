@@ -433,6 +433,7 @@
 		BEA043E716CAA8E1005406E7 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Category.m */; };
 		BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* Subcategory.m */; };
 		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
+		BEA1E32E16CCFF70000AB59D /* SYNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E32D16CCFF70000AB59D /* SYNRegistry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -954,6 +955,8 @@
 		BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoryItemView.h; sourceTree = "<group>"; };
 		BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoryItemView.m; sourceTree = "<group>"; };
 		BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNTabViewDelegate.h; sourceTree = "<group>"; };
+		BEA1E32C16CCFF70000AB59D /* SYNRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNRegistry.h; sourceTree = "<group>"; };
+		BEA1E32D16CCFF70000AB59D /* SYNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRegistry.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1037,6 +1040,7 @@
 				019824E31629CADE00216900 /* Custom Views */,
 				019824E11629CAB600216900 /* View Controllers */,
 				01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */,
+				01677DDA1655491100B1B1D8 /* Networking */,
 				019824E41629CAF500216900 /* Helpers */,
 				01E427D01664C701009B941F /* Data Model */,
 				010DEFDB1629BDC40080F26B /* Supporting Files */,
@@ -1579,7 +1583,6 @@
 				019E6A5E165FD958002B312A /* OAuth2 */,
 				019E6A56165FD7A2002B312A /* Keychain */,
 				012ECA42165B8EE700A60980 /* HUD */,
-				01677DDA1655491100B1B1D8 /* Networking */,
 				011CC679164A9E9C00F02B6D /* Camera Overlay */,
 				01363EC616304D5E00FFAA09 /* Databases */,
 				019824ED1629CC6600216900 /* TestFlight */,
@@ -2022,6 +2025,7 @@
 		01E427D01664C701009B941F /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
+				BEA1E32B16CCFF5E000AB59D /* Registry */,
 				01E427D11664C726009B941F /* Rockpack.xcdatamodeld */,
 				01E427F21664F32D009B941F /* Auto generated files */,
 				01E427F31664F346009B941F /* Editable files */,
@@ -2190,6 +2194,15 @@
 				BE95B90C16CBAB2D00EC2E72 /* TabTopSub@2x.png */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		BEA1E32B16CCFF5E000AB59D /* Registry */ = {
+			isa = PBXGroup;
+			children = (
+				BEA1E32C16CCFF70000AB59D /* SYNRegistry.h */,
+				BEA1E32D16CCFF70000AB59D /* SYNRegistry.m */,
+			);
+			name = Registry;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2666,6 +2679,7 @@
 				BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */,
 				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
 				012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */,
+				BEA1E32E16CCFF70000AB59D /* SYNRegistry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
