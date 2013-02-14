@@ -209,14 +209,11 @@
     [self JSONObjectForURLString: resourceURL
                  completionBlock: ^(NSDictionary *dictionary)
      {
-         NSManagedObjectContext *importManagedObjectContext;
-         
-         
          
          if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
          {
              [Channel instanceFromDictionary: dictionary
-                   usingManagedObjectContext: importManagedObjectContext
+                   usingManagedObjectContext: self.importManagedObjectContext
                            ignoringObjectTypes: kIgnoreNothing
                                    andViewId: @"Channels"];
 
