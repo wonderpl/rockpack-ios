@@ -6,21 +6,22 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNRegistry.h"
-#import <CoreData/CoreData.h>
-#import "SYNAppDelegate.h"
 #import "Category.h"
 #import "Channel.h"
+#import "NSDictionary+Validation.h"
+#import "SYNAppDelegate.h"
+#import "SYNRegistry.h"
 #import "VideoInstance.h"
+#import <CoreData/CoreData.h>
 
 #define kChannelsViewId @"Channels"
 
 @interface SYNRegistry ()
 
-@property (nonatomic, strong) NSString *localeString;
-@property (nonatomic, strong) NSEntityDescription *videoInstanceEntity;
 @property (nonatomic, strong) NSEntityDescription *channelEntity;
+@property (nonatomic, strong) NSEntityDescription *videoInstanceEntity;
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
+@property (nonatomic, strong) NSString *localeString;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
 
 @end
@@ -168,21 +169,11 @@
 }
 
 -(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary
-{
-    // We need to mark all of out existing objects corresponding to this viewId, just in case they are no longer required
-    // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
-                                                                                      andViewId: kChannelsViewId
-                                                                         inManagedObjectContext: self.importManagedObjectContext];
-    
+{    
     [Channel instanceFromDictionary: dictionary
           usingManagedObjectContext: self.importManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing
                           andViewId: @"Channels"];
-    
-    // Now remove any objects that are no longer referenced in the import
-    [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: self.importManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
