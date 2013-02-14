@@ -8,12 +8,12 @@
 
 #import "SYNRegistry.h"
 #import <CoreData/CoreData.h>
-
 #import "SYNAppDelegate.h"
 #import "Category.h"
 #import "Channel.h"
 #import "VideoInstance.h"
 
+#define kChannelsViewId @"Channels"
 
 @interface SYNRegistry ()
 
@@ -22,8 +22,6 @@
 @property (nonatomic, strong) NSEntityDescription *channelEntity;
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
-
--(BOOL)saveImportContext;
 
 @end
 
@@ -45,7 +43,6 @@
         
         self.channelEntity = [NSEntityDescription entityForName: @"Channel"
                                          inManagedObjectContext: self.importManagedObjectContext];
-        
     }
     
     return self;
@@ -67,19 +64,27 @@
         
         if ([itemArray isKindOfClass: [NSArray class]])
         {
+            // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
+            // and should be removed in a post-import cleanup
+            NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
+                                                                                              andViewId: nil
+                                                                                 inManagedObjectContext: self.importManagedObjectContext];
             
             // === Main Processing === //
             for (NSDictionary *categoryDictionary in itemArray)
             {
                 if ([categoryDictionary isKindOfClass: [NSDictionary class]])
                 {
-                    
-                    
-                    Category* category = [Category instanceFromDictionary: categoryDictionary usingManagedObjectContext: self.importManagedObjectContext];
+                    Category* category = [Category instanceFromDictionary: categoryDictionary
+                                                usingManagedObjectContext: self.importManagedObjectContext];
                     
                     DebugLog(@"Found Category: %@\n", category);
                 }
             }
+            
+            // Now remove any Category objects that are no longer referenced in the import
+            [self removeUnusedManagedObjects: existingObjectsInViewId
+                      inManagedObjectContext: self.importManagedObjectContext];
             
             // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
             
@@ -122,6 +127,12 @@
         
         if ([itemArray isKindOfClass: [NSArray class]])
         {
+            // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
+            // and should be removed in a post-import cleanup
+            NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"VideoInstance"
+                                                                                              andViewId: viewId
+                                                                                 inManagedObjectContext: self.importManagedObjectContext];
+            
             for (NSDictionary *itemDictionary in itemArray)
             {
                 if ([itemDictionary isKindOfClass: [NSDictionary class]])
@@ -132,6 +143,10 @@
                                                 andViewId: viewId];
                 }
             }
+            
+            // Now remove any VideoInstance objects that are no longer referenced in the import
+            [self removeUnusedManagedObjects: existingObjectsInViewId
+                      inManagedObjectContext: self.importManagedObjectContext];
         }
         else
         {
@@ -154,10 +169,20 @@
 
 -(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary
 {
+    // We need to mark all of out existing objects corresponding to this viewId, just in case they are no longer required
+    // and should be removed in a post-import cleanup
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
+                                                                                      andViewId: kChannelsViewId
+                                                                         inManagedObjectContext: self.importManagedObjectContext];
+    
     [Channel instanceFromDictionary: dictionary
           usingManagedObjectContext: self.importManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing
                           andViewId: @"Channels"];
+    
+    // Now remove any objects that are no longer referenced in the import
+    [self removeUnusedManagedObjects: existingObjectsInViewId
+              inManagedObjectContext: self.importManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -180,6 +205,12 @@
         
         if ([itemArray isKindOfClass: [NSArray class]])
         {
+            // We need to mark all of out existing objects corresponding to this viewId, just in case they are no longer required
+            // and should be removed in a post-import cleanup
+            NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
+                                                                                              andViewId: kChannelsViewId
+                                                                                 inManagedObjectContext: self.importManagedObjectContext];
+            
             for (NSDictionary *itemDictionary in itemArray)
             {
                 if ([itemDictionary isKindOfClass: [NSDictionary class]])
@@ -187,9 +218,13 @@
                     [Channel instanceFromDictionary: itemDictionary
                           usingManagedObjectContext: self.importManagedObjectContext
                                 ignoringObjectTypes: kIgnoreNothing
-                                          andViewId: @"Channels"];
+                                          andViewId: kChannelsViewId];
                 }
             }
+            
+            // Now remove any objects that are no longer referenced in the import
+            [self removeUnusedManagedObjects: existingObjectsInViewId
+                      inManagedObjectContext: self.importManagedObjectContext];
         }
         else
         {
@@ -232,6 +267,59 @@
         return NO;
     }
     return YES;
+}
+
+
+#pragma mark - Database garbage collection
+
+// Before we start adding objects to the import context for a particular viewId, mark them all for possible deletion.
+// We will unmark them if any of them are re-used by the import. All new objects are created with this marked for deletion flag already false
+- (NSArray *) markManagedObjectForPossibleDeletionWithEntityName: (NSString *) entityName
+                                                       andViewId: (NSString *) viewId
+                                          inManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    // ARC based compiler now inits all local vars to nil by default
+    NSError *error;
+    
+    // Create an entity description based on the name passed in
+    NSEntityDescription *entityToMark = [NSEntityDescription entityForName: entityName
+                                                    inManagedObjectContext: managedObjectContext];
+    
+    NSFetchRequest *entityFetchRequest = [[NSFetchRequest alloc] init];
+    [entityFetchRequest setEntity: entityToMark];
+    
+    // Only use the viewId as a predicate if we actually have one (makes no sense for categories)
+    if (viewId)
+    {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", viewId];
+        [entityFetchRequest setPredicate: predicate];
+    }
+
+    NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: entityFetchRequest
+                                                                                   error: &error];
+    
+    [matchingCategoryInstanceEntries enumerateObjectsUsingBlock: ^(id managedObject, NSUInteger idx, BOOL *stop)
+     {
+         ((AbstractCommon *)managedObject).markedForDeletionValue = TRUE;
+     }];
+    
+    // Return the array of pre-existing objects, so that we don't have to perform another fetch for cleanup
+    return matchingCategoryInstanceEntries;
+}
+
+
+// Iterate through all previously existing NSManaged objects that corresponded to a viewId and delete them if necessary
+- (void) removeUnusedManagedObjects: (NSArray *) managedObjects
+             inManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    [managedObjects enumerateObjectsUsingBlock: ^(id managedObject, NSUInteger idx, BOOL *stop)
+     {
+         if (((AbstractCommon *)managedObject).markedForDeletionValue == TRUE)
+         {
+             [managedObjectContext deleteObject: (NSManagedObject *)managedObject];
+             DebugLog (@"Deleted NSManagedObject that is no longer used after import");
+         }
+     }];
 }
 
 @end

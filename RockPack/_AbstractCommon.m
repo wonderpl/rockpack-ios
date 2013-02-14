@@ -4,6 +4,7 @@
 #import "_AbstractCommon.h"
 
 const struct AbstractCommonAttributes AbstractCommonAttributes = {
+	.markedForDeletion = @"markedForDeletion",
 	.uniqueId = @"uniqueId",
 };
 
@@ -39,9 +40,40 @@ const struct AbstractCommonFetchedProperties AbstractCommonFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"markedForDeletionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"markedForDeletion"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic markedForDeletion;
+
+
+
+- (BOOL)markedForDeletionValue {
+	NSNumber *result = [self markedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setMarkedForDeletionValue:(BOOL)value_ {
+	[self setMarkedForDeletion:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveMarkedForDeletionValue {
+	NSNumber *result = [self primitiveMarkedForDeletion];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_ {
+	[self setPrimitiveMarkedForDeletion:[NSNumber numberWithBool:value_]];
+}
+
 
 
 

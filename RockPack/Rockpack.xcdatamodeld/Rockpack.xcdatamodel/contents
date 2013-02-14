@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3103" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractCommon" representedClassName="AbstractCommon" isAbstract="YES" syncable="YES">
+        <attribute name="markedForDeletion" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="Category" parentEntity="TabItem" syncable="YES">
@@ -58,14 +59,14 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstances" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractCommon" positionX="-308" positionY="-106" width="128" height="58"/>
+        <element name="AbstractCommon" positionX="-308" positionY="-106" width="128" height="75"/>
         <element name="Category" positionX="-711" positionY="-9" width="128" height="58"/>
         <element name="Channel" positionX="-423" positionY="152" width="128" height="285"/>
         <element name="ChannelOwner" positionX="-641" positionY="272" width="128" height="90"/>
         <element name="Subcategory" positionX="-515" positionY="-9" width="128" height="58"/>
+        <element name="TabItem" positionX="-603" positionY="-108" width="128" height="58"/>
         <element name="User" positionX="-2" positionY="45" width="128" height="90"/>
         <element name="Video" positionX="7" positionY="216" width="128" height="150"/>
         <element name="VideoInstance" positionX="-207" positionY="257" width="128" height="135"/>
-        <element name="TabItem" positionX="-603" positionY="-108" width="128" height="58"/>
     </elements>
 </model>
