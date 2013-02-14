@@ -11,6 +11,8 @@
 
 #import "SYNAppDelegate.h"
 #import "Category.h"
+#import "VideoInstance.h"
+
 
 @interface SYNRegistry ()
 
@@ -20,7 +22,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
 
--(void)saveImportContext;
+-(BOOL)saveImportContext;
 
 @end
 
@@ -51,7 +53,7 @@
 
 #pragma mark - Update Data Methods
 
--(void)registerCategoriesFromDictionary:(NSDictionary*)dictionary
+-(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary
 {
     // Get Root Object
     NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
@@ -81,9 +83,16 @@
             // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
             
         }
+        else
+        {
+            AssertOrLog(@"Not a dictionary");
+            return NO;
+        }
         
         
-        [self saveImportContext];
+        BOOL saveResult = [self saveImportContext];
+        if(!saveResult)
+            return NO;
         
         
         
@@ -92,13 +101,60 @@
     else
     {
         AssertOrLog(@"Not a dictionary");
+        return NO;
     }
+    
+    
+    return YES;
+}
+
+
+-(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId
+{
+    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+    
+    // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
+    if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
+    {
+        // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+        NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+        
+        if ([itemArray isKindOfClass: [NSArray class]])
+        {
+            for (NSDictionary *itemDictionary in itemArray)
+            {
+                if ([itemDictionary isKindOfClass: [NSDictionary class]])
+                {
+                    [VideoInstance instanceFromDictionary: itemDictionary
+                                usingManagedObjectContext: self.importManagedObjectContext
+                                      ignoringObjectTypes: kIgnoreNothing
+                                                andViewId: viewId];
+                }
+            }
+        }
+        else
+        {
+            AssertOrLog(@"No itemArray for videos");
+            return NO;
+        }
+        
+        BOOL saveResult = [self saveImportContext];
+        if(!saveResult)
+            return NO;
+    }
+    else
+    {
+        AssertOrLog(@"Not videos in dictionary");
+        return NO;
+    }
+    
+    return YES;
 }
 
 
 #pragma mark - Context Management
 
--(void)saveImportContext
+-(BOOL)saveImportContext
 {
     NSError* error;
     if (![self.importManagedObjectContext save: &error])
@@ -112,7 +168,9 @@
                 DebugLog(@" DetailedError: %@", [detailedError userInfo]);
             }
         }
+        return NO;
     }
+    return YES;
 }
 
 @end

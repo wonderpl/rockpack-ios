@@ -13,6 +13,7 @@
 
 -(id)initWithManagedObjectContext:(NSManagedObjectContext*)moc;
 
--(void)registerCategoriesFromDictionary:(NSDictionary*)dictionary;
+-(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary;
+-(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId;
 
 @end

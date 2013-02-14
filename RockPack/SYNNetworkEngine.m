@@ -121,8 +121,6 @@
 - (void) updateCategories
 {
     
-    
-    
     NSString *path = @"ws/categories/";
     
     [self JSONObjectForPath:path completionBlock: ^(NSDictionary *dictionary) {
@@ -132,11 +130,16 @@
              [self.registry registerCategoriesFromDictionary:dictionary];
          }
      }
-                 errorBlock: ^(NSError* error)
+                 errorBlock:^(NSError* error)
      {
          AssertOrLog(@"API request failed");
      }];
 }
+
+
+
+
+
 
 
 - (void) updateVideoInstancesWithURL: (NSString *) apiURL
@@ -150,44 +153,9 @@
      {
          if (dictionary)
          {
-             // Get Data dictionary
-             NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
-             
-             // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
-             if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
+             BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:viewId];
+             if (registryResultOk)
              {
-                 // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
-                 NSArray *itemArray = [videosDictionary objectForKey: @"items"];
-                 
-                 if ([itemArray isKindOfClass: [NSArray class]])
-                 {
-                     for (NSDictionary *itemDictionary in itemArray)
-                     {
-                         if ([itemDictionary isKindOfClass: [NSDictionary class]])
-                         {
-                             [VideoInstance instanceFromDictionary: itemDictionary
-                                         usingManagedObjectContext: self.importManagedObjectContext
-                                               ignoringObjectTypes: kIgnoreNothing
-                                                         andViewId: viewId];
-                         }
-                     }
-                 }
-                 
-                 NSError *error = nil;
-                 
-                 if (![self.importManagedObjectContext save: &error])
-                 {
-                     NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-                     
-                     if ([detailedErrors count] > 0)
-                     {
-                         for(NSError* detailedError in detailedErrors)
-                         {
-                             DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-                         }
-                     }
-                 }
-                 
                  [self.appDelegate saveContext: TRUE];
                  
                  if (completionBlock)
@@ -195,6 +163,7 @@
                      completionBlock();
                  }
              }
+                
              else
              {
                  AssertOrLog(@"Not a dictionary");
