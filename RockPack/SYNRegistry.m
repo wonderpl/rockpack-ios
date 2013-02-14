@@ -11,6 +11,7 @@
 
 #import "SYNAppDelegate.h"
 #import "Category.h"
+#import "Channel.h"
 #import "VideoInstance.h"
 
 
@@ -151,13 +152,73 @@
     return YES;
 }
 
+-(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary
+{
+    [Channel instanceFromDictionary: dictionary
+          usingManagedObjectContext: self.importManagedObjectContext
+                ignoringObjectTypes: kIgnoreNothing
+                          andViewId: @"Channels"];
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    return YES;
+}
+
+-(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary
+{
+    
+    // Get Data dictionary
+    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+    
+    // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
+    if (channelsDictionary && [channelsDictionary isKindOfClass: [NSDictionary class]])
+    {
+        // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+        NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+        
+        if ([itemArray isKindOfClass: [NSArray class]])
+        {
+            for (NSDictionary *itemDictionary in itemArray)
+            {
+                if ([itemDictionary isKindOfClass: [NSDictionary class]])
+                {
+                    [Channel instanceFromDictionary: itemDictionary
+                          usingManagedObjectContext: self.importManagedObjectContext
+                                ignoringObjectTypes: kIgnoreNothing
+                                          andViewId: @"Channels"];
+                }
+            }
+        }
+        else
+        {
+            AssertOrLog(@"items array not an array");
+            return NO;
+        }
+        
+        BOOL saveResult = [self saveImportContext];
+        if(!saveResult)
+            return NO;
+        
+        
+    }
+    else
+    {
+        AssertOrLog(@"Not videos in dictionary");
+        return NO;
+    }
+    
+    
+    return YES;
+}
 
 #pragma mark - Context Management
 
 -(BOOL)saveImportContext
 {
     NSError* error;
-    if (![self.importManagedObjectContext save: &error])
+    if (![self.importManagedObjectContext save:&error])
     {
         NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
         

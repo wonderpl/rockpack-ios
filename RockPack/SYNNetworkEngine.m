@@ -42,15 +42,7 @@
         // This is where the magic occurs
         // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
         self.appDelegate = UIApplication.sharedApplication.delegate;
-        self.importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-        self.importManagedObjectContext.parentContext = self.appDelegate.mainManagedObjectContext;
         
-        // Cache frequently used vars
-        self.videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-                                               inManagedObjectContext: self.importManagedObjectContext];
-        
-        self.channelEntity = [NSEntityDescription entityForName: @"Channel"
-                                         inManagedObjectContext: self.importManagedObjectContext];
         
         self.registry = [[SYNRegistry alloc] initWithManagedObjectContext:nil];
     }
@@ -212,28 +204,12 @@
          
          if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
          {
-             [Channel instanceFromDictionary: dictionary
-                   usingManagedObjectContext: self.importManagedObjectContext
-                           ignoringObjectTypes: kIgnoreNothing
-                                   andViewId: @"Channels"];
-
-             NSError *error = nil;
              
-             // Merge local context into main context
-             if (![self.importManagedObjectContext save: &error])
+             BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
+             if (registryResultOk)
              {
-                 NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
                  
-                 if ([detailedErrors count] > 0)
-                 {
-                     for(NSError* detailedError in detailedErrors)
-                     {
-                         DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-                     }
-                 }
              }
-             
-             // Save main context and save asynchronously into persistent database
              
              // TODO: I think that we need to work out how to save asynchronously
              [self.appDelegate saveContext: TRUE];
@@ -274,58 +250,21 @@
                                                                                      error: &error];
          NSLog (@"channel instances %@", matchingChannelEntries);
          
+         
+         
          if (dictionary)
          {
-             // Get Data dictionary
-             NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+             BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
+             if (registryResultOk)
+             {
+                 [self.appDelegate saveContext:TRUE];
+                 
+                 //                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
+                 //                                                                     object: nil];
+             }
              
-             // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
-             if (channelsDictionary && [channelsDictionary isKindOfClass: [NSDictionary class]])
-             {
-                 // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
-                 NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
-                 
-                 if ([itemArray isKindOfClass: [NSArray class]])
-                 {
-                     for (NSDictionary *itemDictionary in itemArray)
-                     {
-                         if ([itemDictionary isKindOfClass: [NSDictionary class]])
-                         {
-                             [Channel instanceFromDictionary: itemDictionary
-                                   usingManagedObjectContext: self.importManagedObjectContext
-                                         ignoringObjectTypes: kIgnoreNothing
-                                                   andViewId: @"Channels"];
-                         }
-                     }
-                 }
-                 
-                 NSError *error = nil;
-                 
-                 if (![self.importManagedObjectContext save: &error])
-                 {
-                     NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-                     
-                     if ([detailedErrors count] > 0)
-                     {
-                         for(NSError* detailedError in detailedErrors)
-                         {
-                             DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-                         }
-                     }
-                 }
-                 
-                 [self.appDelegate saveContext: TRUE];
-                 
-//                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-//                                                                     object: nil];
-             }
-             else
-             {
-                 AssertOrLog(@"Not a dictionary");
-             }
          }
-     }
-                 errorBlock: ^(NSError* error)
+     } errorBlock: ^(NSError* error)
      {
          NSLog(@"API request failed");
      }];
