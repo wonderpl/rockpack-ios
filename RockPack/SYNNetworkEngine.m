@@ -38,9 +38,6 @@
         self.localeString =   [NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier];
         
         
-        
-        // This is where the magic occurs
-        // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
         self.appDelegate = UIApplication.sharedApplication.delegate;
         
         
@@ -56,17 +53,16 @@
 
 - (void) JSONObjectForPath: (NSString *) path
            completionBlock: (JSONResponseBlock) completionBlock
-                errorBlock: (MKNKErrorBlock) errorBlock
-{
+                errorBlock: (MKNKErrorBlock) errorBlock {
+    
     // Append additional parameters
     path = [NSString stringWithFormat: @"%@?locale=%@", path, self.localeString];
     
     MKNetworkOperation *networkOperation = [self operationWithPath: path];
     
-    [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
-    {
-        [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject)
-        {
+    [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation) {
+        
+        [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject) {
           completionBlock(jsonObject);
         }];
     }
