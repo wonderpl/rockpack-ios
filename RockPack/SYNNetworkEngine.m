@@ -50,40 +50,50 @@
 
 #pragma mark - Utility Methods
 
-
 - (void) JSONObjectForPath: (NSString *) path
            completionBlock: (JSONResponseBlock) completionBlock
                 errorBlock: (MKNKErrorBlock) errorBlock {
     
-    // Append additional parameters
-    path = [NSString stringWithFormat: @"%@?locale=%@", path, self.localeString];
-    
-    MKNetworkOperation *networkOperation = [self operationWithPath: path];
-    
-    [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation) {
-        
-        [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject) {
-          completionBlock(jsonObject);
-        }];
-    }
-    errorHandler: ^(MKNetworkOperation *errorOp, NSError* error)
-    {
-        errorBlock(error);
-    }];
-    
-    [self enqueueOperation: networkOperation];
+    [self JSONObjectForPath:path
+             withParameters:[NSDictionary dictionary]
+            completionBlock:completionBlock
+                 errorBlock:errorBlock];
 }
 
-
-
-
-
+- (void) JSONObjectForPath: (NSString *) path
+            withParameters: (NSDictionary*)parameters
+           completionBlock: (JSONResponseBlock) completionBlock
+                errorBlock: (MKNKErrorBlock) errorBlock {
+    
+    NSString* fullPath = [NSString stringWithFormat:@"http://%@/%@", kAPIHostName, path];
+    
+    NSMutableDictionary* dictionaryWithLocale = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+    [dictionaryWithLocale setValue:self.localeString forKey:@"locale"];
+    
+    [self JSONObjectForURLString:fullPath
+                  withParameters:dictionaryWithLocale
+                 completionBlock:completionBlock
+                      errorBlock:errorBlock];
+}
 
 - (void) JSONObjectForURLString: (NSString *) URLString
                 completionBlock: (JSONResponseBlock) completionBlock
                      errorBlock: (MKNKErrorBlock) errorBlock
 {
-    MKNetworkOperation *networkOperation = [self operationWithURLString: URLString];
+    [self JSONObjectForPath:URLString
+             withParameters:[NSDictionary dictionary]
+            completionBlock:completionBlock
+                 errorBlock:errorBlock];
+}
+
+// All methods finally call this
+
+- (void) JSONObjectForURLString: (NSString *) URLString
+                 withParameters: (NSDictionary*)parameters
+                completionBlock: (JSONResponseBlock) completionBlock
+                     errorBlock: (MKNKErrorBlock) errorBlock
+{
+    MKNetworkOperation *networkOperation = [self operationWithURLString: URLString params:parameters];
     
     [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
      {
@@ -92,7 +102,7 @@
               completionBlock(jsonObject);
           }];
      }
-     errorHandler: ^(MKNetworkOperation *errorOp, NSError* error)
+                              errorHandler: ^(MKNetworkOperation *errorOp, NSError* error)
      {
          errorBlock(error);
      }];

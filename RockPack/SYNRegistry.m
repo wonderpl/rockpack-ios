@@ -54,10 +54,10 @@
 
 -(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary
 {
-    // Get Root Object
+    
+    // == Check for Validity == //
+    
     NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
-    
-    
     if (!categoriesDictionary || ![categoriesDictionary isKindOfClass:[NSDictionary class]])
         return NO;
     
@@ -67,6 +67,8 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
+    // == =============== == //
+    
     // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
     // and should be removed in a post-import cleanup
     NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
@@ -74,16 +76,18 @@
                                                                          inManagedObjectContext: self.importManagedObjectContext];
     
     // === Main Processing === //
+    
     for (NSDictionary *categoryDictionary in itemArray)
-    {
         if ([categoryDictionary isKindOfClass: [NSDictionary class]])
-        {
-            Category* category = [Category instanceFromDictionary: categoryDictionary
-                                        usingManagedObjectContext: self.importManagedObjectContext];
-            
-            DebugLog(@"Found Category: %@\n", category);
-        }
-    }
+            [Category instanceFromDictionary: categoryDictionary
+                   usingManagedObjectContext: self.importManagedObjectContext];
+    
+    
+    
+    
+    // == =============== == //
+    
+    
     
     // Now remove any Category objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: existingObjectsInViewId
@@ -101,58 +105,66 @@
 
 -(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId
 {
-    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
     
-    // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
-    if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
-    {
-        // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
-        NSArray *itemArray = [videosDictionary objectForKey: @"items"];
-        
-        if ([itemArray isKindOfClass: [NSArray class]])
-        {
-            // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
-            // and should be removed in a post-import cleanup
-            NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"VideoInstance"
-                                                                                              andViewId: viewId
-                                                                                 inManagedObjectContext: self.importManagedObjectContext];
-            
-            for (NSDictionary *itemDictionary in itemArray)
-            {
-                if ([itemDictionary isKindOfClass: [NSDictionary class]])
-                {
-                    [VideoInstance instanceFromDictionary: itemDictionary
-                                usingManagedObjectContext: self.importManagedObjectContext
-                                      ignoringObjectTypes: kIgnoreNothing
-                                                andViewId: viewId];
-                }
-            }
-            
-            // Now remove any VideoInstance objects that are no longer referenced in the import
-            [self removeUnusedManagedObjects: existingObjectsInViewId
-                      inManagedObjectContext: self.importManagedObjectContext];
-        }
-        else
-        {
-            AssertOrLog(@"No itemArray for videos");
-            return NO;
-        }
-        
-        BOOL saveResult = [self saveImportContext];
-        if(!saveResult)
-            return NO;
-    }
-    else
-    {
-        AssertOrLog(@"Not videos in dictionary");
+    // == Check for Validity == //
+    
+    NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+    if (!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
         return NO;
-    }
+    
+    
+    NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    
+    // == =============== == //
+    
+    
+    
+    // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
+    // and should be removed in a post-import cleanup
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"VideoInstance"
+                                                                                      andViewId: viewId
+                                                                         inManagedObjectContext: self.importManagedObjectContext];
+    
+    // === Main Processing === //
+    
+    for (NSDictionary *itemDictionary in itemArray)
+        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+            [VideoInstance instanceFromDictionary: itemDictionary
+                        usingManagedObjectContext: self.importManagedObjectContext
+                              ignoringObjectTypes: kIgnoreNothing
+                                        andViewId: viewId];
+    
+    
+    
+    // == =============== == //
+    
+    // Now remove any VideoInstance objects that are no longer referenced in the import
+    [self removeUnusedManagedObjects: existingObjectsInViewId
+              inManagedObjectContext: self.importManagedObjectContext];
+    
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
     
     return YES;
 }
 
 -(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary
-{    
+{
+    
+    // == Check for Validity == //
+    
+    if (!dictionary)
+        return NO;
+    
+    // == =============== == //
+    
     [Channel instanceFromDictionary: dictionary
           usingManagedObjectContext: self.importManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing
@@ -168,56 +180,50 @@
 -(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary
 {
     
-    // Get Data dictionary
+    // == Check for Validity == //
+    
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
-    
-    // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
-    if (channelsDictionary && [channelsDictionary isKindOfClass: [NSDictionary class]])
-    {
-        // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
-        NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
-        
-        if ([itemArray isKindOfClass: [NSArray class]])
-        {
-            // We need to mark all of out existing objects corresponding to this viewId, just in case they are no longer required
-            // and should be removed in a post-import cleanup
-            NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
-                                                                                              andViewId: kChannelsViewId
-                                                                                 inManagedObjectContext: self.importManagedObjectContext];
-            
-            for (NSDictionary *itemDictionary in itemArray)
-            {
-                if ([itemDictionary isKindOfClass: [NSDictionary class]])
-                {
-                    [Channel instanceFromDictionary: itemDictionary
-                          usingManagedObjectContext: self.importManagedObjectContext
-                                ignoringObjectTypes: kIgnoreNothing
-                                          andViewId: kChannelsViewId];
-                }
-            }
-            
-            // Now remove any objects that are no longer referenced in the import
-            [self removeUnusedManagedObjects: existingObjectsInViewId
-                      inManagedObjectContext: self.importManagedObjectContext];
-        }
-        else
-        {
-            AssertOrLog(@"items array not an array");
-            return NO;
-        }
-        
-        BOOL saveResult = [self saveImportContext];
-        if(!saveResult)
-            return NO;
-        
-        
-    }
-    else
-    {
-        AssertOrLog(@"Not videos in dictionary");
+    if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
-    }
     
+    
+    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    
+    // == ================ == //
+    
+    
+    
+    // We need to mark all of out existing objects corresponding to this viewId, just in case they are no longer required
+    // and should be removed in a post-import cleanup
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
+                                                                                      andViewId: kChannelsViewId
+                                                                         inManagedObjectContext: self.importManagedObjectContext];
+    
+    
+    // === Main Processing === //
+    
+    
+    for (NSDictionary *itemDictionary in itemArray)
+        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+            [Channel instanceFromDictionary: itemDictionary
+                  usingManagedObjectContext: self.importManagedObjectContext
+                        ignoringObjectTypes: kIgnoreNothing
+                                  andViewId: kChannelsViewId];
+    
+    // == ================ == //
+    
+    
+    
+    // Now remove any objects that are no longer referenced in the import
+    [self removeUnusedManagedObjects: existingObjectsInViewId
+              inManagedObjectContext: self.importManagedObjectContext];
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
     
     return YES;
 }
