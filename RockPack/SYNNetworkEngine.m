@@ -62,6 +62,11 @@
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
+ 
+    
+    
+    // TODO: We need to replace USERID with actual userId ASAP
+    // TODO: Figure out the REST parameters and format
     
     NSString *apiURL = [NSString stringWithFormat:kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
     
@@ -89,11 +94,6 @@
     [self enqueueOperation: networkOperation];
     
     
-    
-    // TODO: We need to replace USERID with actual userId ASAP
-    // TODO: Figure out the reST parameters and format
-    
-    // Patch the USERID into the path
     
 
 }
