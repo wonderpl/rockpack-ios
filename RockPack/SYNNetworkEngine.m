@@ -63,7 +63,7 @@
                               onError: (MKNKErrorBlock) errorBlock
 {
     
-    NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
+    NSString *apiURL = [NSString stringWithFormat:kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:apiURL] params:@{}];
@@ -103,7 +103,7 @@
 {
 
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:@"ws/categories/"] params:@{}];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPICategories params:[self getLocalParam]];
     
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
@@ -126,7 +126,7 @@
 {
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:kAPIPopularVideos] params:@{}];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:[self getLocalParam]];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
@@ -151,7 +151,7 @@
 {
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:resourceURL] params:@{}];
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:resourceURL params:[self getLocalParam]];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
@@ -177,7 +177,7 @@
     
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:kAPIPopularChannels] params:@{}];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularChannels params:[self getLocalParam]];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
@@ -219,11 +219,16 @@
     return [NSString stringWithFormat:@"http://%@/%@", kAPIHostName, path];
 }
 
--(NSDictionary*)getParametersWithLocaleFrom:(NSDictionary*)parameters
+-(NSDictionary*)getLocalParam
+{
+    return [NSDictionary dictionaryWithObject:self.localeString forKey:@"locale"];
+}
+
+-(NSDictionary*)getLocalParamWithParams:(NSDictionary*)parameters
 {
     
-    NSMutableDictionary* dictionaryWithLocale = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    [dictionaryWithLocale setValue:self.localeString forKey:@"locale"];
+    NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    [dictionaryWithLocale addEntriesFromDictionary:[self getLocalParam]];
     return dictionaryWithLocale;
 }
 
