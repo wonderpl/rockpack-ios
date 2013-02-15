@@ -52,21 +52,6 @@
 #pragma mark - Utility Methods
 
 
-- (void) JSONObjectForPath: (NSString *) path
-            withParameters: (NSDictionary*)parameters
-           completionBlock: (JSONResponseBlock) completionBlock
-                errorBlock: (MKNKErrorBlock) errorBlock {
-    
-    NSString* fullPath = [self getHostURLWithPath:path];
-    
-    NSMutableDictionary* dictionaryWithLocale = [[NSMutableDictionary alloc] initWithDictionary:parameters];
-    [dictionaryWithLocale setValue:self.localeString forKey:@"locale"];
-    
-    [self JSONObjectForURLString:fullPath
-                  withParameters:dictionaryWithLocale
-                 completionBlock:completionBlock
-                      errorBlock:errorBlock];
-}
 
 
 
@@ -87,12 +72,6 @@
 
 
 
-#pragma mark - Main Update Calls
-
-
-
-
-
 
 
 
@@ -102,11 +81,12 @@
                               onError: (MKNKErrorBlock) errorBlock
 {
     // TODO: We need to replace USERID with actual userId ASAP
+    // TODO: Figure out the reST parameters and format
     
     // Patch the USERID into the path
     NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
 
-    [self JSONObjectForPath: apiURL
+    [self JSONObjectForURLString: [self getHostURLWithPath:apiURL]
              withParameters:@{}
             completionBlock: ^(NSDictionary *dictionary) {
          BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Home"];
@@ -133,9 +113,9 @@
 
 - (void) updateCategories
 {
+
     
-    
-    [self JSONObjectForPath:@"ws/categories/"
+    [self JSONObjectForURLString:[self getHostURLWithPath:@"ws/categories/"]
             withParameters:@{}
             completionBlock: ^(NSDictionary *dictionary) {
         
@@ -152,7 +132,7 @@
 {
     
     
-    [self JSONObjectForPath: kAPIPopularVideos
+    [self JSONObjectForURLString:[self getHostURLWithPath: kAPIPopularVideos]
              withParameters:@{}
             completionBlock: ^(NSDictionary *dictionary)
      {
@@ -171,7 +151,7 @@
 {
     
     
-    [self JSONObjectForURLString: resourceURL
+    [self JSONObjectForURLString:[self getHostURLWithPath:resourceURL]
                   withParameters: @{}
                  completionBlock: ^(NSDictionary *dictionary)
      {
@@ -209,7 +189,7 @@
     //    NSString *path = [NSString stringWithFormat: @"%@?locale=%@&category=%@", kAPIPopularChannels, self.localeString, @"CATID"];
     NSString *path = kAPIPopularChannels;
     
-    [self JSONObjectForPath: path
+    [self JSONObjectForURLString:[self getHostURLWithPath:path]
             withParameters: @{}
             completionBlock: ^(NSDictionary *dictionary)
      {
@@ -251,6 +231,14 @@
 -(NSString*)getHostURLWithPath:(NSString*)path
 {
     return [NSString stringWithFormat:@"http://%@/%@", kAPIHostName, path];
+}
+
+-(NSDictionary*)getParametersWithLocaleFrom:(NSDictionary*)parameters
+{
+    
+    NSMutableDictionary* dictionaryWithLocale = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+    [dictionaryWithLocale setValue:self.localeString forKey:@"locale"];
+    return dictionaryWithLocale;
 }
 
 @end
