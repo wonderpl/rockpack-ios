@@ -47,9 +47,10 @@
 }
 -(void)createTab
 {
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
@@ -76,10 +77,10 @@
    
     // Create tab
     
-    self.tabView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
-    self.tabView.frame = CGRectMake(0.0, 44.0, self.tabView.frame.size.width, self.tabView.frame.size.height);
-    self.tabView.tapDelegate = self;
-    [self.view addSubview:self.tabView];
+    tabView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
+    tabView.frame = CGRectMake(0.0, 44.0, tabView.frame.size.width, tabView.frame.size.height);
+    tabView.tapDelegate = self;
+    [self.view addSubview:tabView];
     
     
     
@@ -92,9 +93,8 @@
 {
     SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
-    
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
@@ -121,19 +121,16 @@
         
     }
     
-    
-    
-    
     Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
     
-    [self.tabView createSubcategoriesTab:categoryTapped.subcategories];
+    [tabView createSubcategoriesTab:categoryTapped.subcategories];
     
-    DebugLog(@"Pressed on Category:\n%@", categoryTapped);
+    
 }
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
 {
-    //SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    // to be implemented by child
 }
 
 

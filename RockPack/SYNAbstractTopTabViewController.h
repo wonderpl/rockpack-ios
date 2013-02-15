@@ -12,10 +12,10 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNCategoriesTabView.h"
 
-@interface SYNAbstractTopTabViewController : SYNAbstractViewController <SYNTabViewDelegate>
+@interface SYNAbstractTopTabViewController : SYNAbstractViewController <SYNTabViewDelegate> {
+@protected SYNCategoriesTabView* tabView;
+}
 
-
-@property (nonatomic, strong) SYNCategoriesTabView* tabView;
 
 
 - (void) highlightTab: (int) tabIndex;

@@ -19,7 +19,7 @@
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
 
-- (void) updateVideosScreen;
+- (void) updateVideosScreenForCategory:(NSString*)categoryId;
 - (void) updateChannelsScreen;
 - (void) updateChannel: (NSString *) resourceURL;
 

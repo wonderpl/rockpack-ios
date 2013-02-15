@@ -54,7 +54,6 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
 }

@@ -22,6 +22,8 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "Subcategory.h"
+#import "SYNCategoryItemView.h"
 
 @interface SYNVideosRootViewController () <UIGestureRecognizerDelegate,
                                            UIScrollViewDelegate,
@@ -98,9 +100,8 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
-    [appDelegate.networkEngine updateVideosScreen];
+    [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
@@ -636,5 +637,41 @@
 
 }
 
+-(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
+{
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Subcategory"
+                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity:categoryEntity];
+    
+    //DebugLog(@"Tag clicked : %d", tab.tag);
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
+    [categoriesFetchRequest setPredicate: predicate];
+    
+    NSError* error = nil;
+    
+    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                                   error: &error];
+    
+    if(matchingCategoryInstanceEntries.count == 0)
+    {
+        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
+        return;
+    }
+    
+    if (matchingCategoryInstanceEntries.count > 1)
+    {
+        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
+        
+    }
+    
+    Subcategory* subcategoryTapped = (Subcategory*)matchingCategoryInstanceEntries[0];
+    DebugLog(@"Subcategory selected: %@", subcategoryTapped.uniqueId);
+    [appDelegate.networkEngine updateVideosScreenForCategory:subcategoryTapped.uniqueId];
+}
 
 @end

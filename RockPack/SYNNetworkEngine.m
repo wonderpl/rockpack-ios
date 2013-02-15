@@ -125,11 +125,16 @@
     
 }
 
-- (void) updateVideosScreen
+- (void) updateVideosScreenForCategory:(NSString*)categoryId
 {
+    NSDictionary* parameters;
+    if([categoryId isEqualToString:@"all"])
+        parameters = [self getLocalParam];
+    else
+        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:[self getLocalParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:parameters];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         

@@ -60,7 +60,6 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateChannelsScreen];
 }
