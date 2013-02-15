@@ -118,56 +118,7 @@
 #pragma mark - Main Update Calls
 
 
-- (void) updateCategories
-{
-    
-    NSString *path = @"ws/categories/";
-    
-    [self JSONObjectForPath:path completionBlock: ^(NSDictionary *dictionary) {
-        
-         if (dictionary)
-         {
-             [self.registry registerCategoriesFromDictionary:dictionary];
-         }
-     } errorBlock:^(NSError* error) {
-         AssertOrLog(@"API request failed");
-     }];
-}
 
-
-
-
-
-
-
-- (void) updateVideoInstancesWithURL: (NSString *) apiURL
-                           andViewId: (NSString *) viewId
-                        onCompletion: (MKNKVoidBlock) completionBlock
-                             onError: (MKNKErrorBlock) errorBlock
-{
-
-    [self JSONObjectForPath: apiURL
-            completionBlock: ^(NSDictionary *dictionary)
-    {
-        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:viewId];
-        if (registryResultOk)
-        {
-            [self.appDelegate saveContext: TRUE];
-            
-            if (completionBlock)
-            {
-                completionBlock();
-            }
-        }
-        else
-        {
-            AssertOrLog(@"VideoInstances could not be parsed from JSON response!");
-            
-        }
-        
-        
-     } errorBlock:errorBlock];
-}
 
 
 
@@ -183,18 +134,62 @@
     // Patch the USERID into the path
     NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
 
-    [self updateVideoInstancesWithURL: apiURL
-                            andViewId: @"Home"
-                         onCompletion: completionBlock
-                              onError: errorBlock];
+    [self JSONObjectForPath: apiURL
+            completionBlock: ^(NSDictionary *dictionary)
+     {
+         BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Home"];
+         if (registryResultOk)
+         {
+             if(errorBlock)
+             {
+                 NSError* notParsedError = [NSError errorWithDomain:@"Object not Parsed in Registry" code:1 userInfo:nil];
+                 errorBlock(notParsedError);
+             }
+         }
+         
+         [self.appDelegate saveContext: TRUE];
+         
+         if (completionBlock)
+         {
+             completionBlock();
+         }
+         
+         
+     } errorBlock:errorBlock];
+}
+
+
+- (void) updateCategories
+{
+    
+    NSString *path = @"ws/categories/";
+    
+    [self JSONObjectForPath:path completionBlock: ^(NSDictionary *dictionary) {
+        
+        if (dictionary)
+        {
+            [self.registry registerCategoriesFromDictionary:dictionary];
+        }
+    } errorBlock:^(NSError* error) {
+        AssertOrLog(@"API request failed");
+    }];
 }
 
 - (void) updateVideosScreen
 {
-    [self updateVideoInstancesWithURL: kAPIPopularVideos
-                            andViewId: @"Videos"
-                         onCompletion: nil
-                              onError: nil];
+    
+    
+    [self JSONObjectForPath: kAPIPopularVideos
+            completionBlock: ^(NSDictionary *dictionary)
+     {
+         BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
+         if (!registryResultOk)
+             return;
+         
+         [self.appDelegate saveContext: TRUE];
+         
+         
+     } errorBlock:nil];
 }
 
 
