@@ -71,7 +71,7 @@
     NSString *apiURL = [NSString stringWithFormat:kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:apiURL] params:@{}];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiURL params:[self getLocalParam]];
     
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
@@ -213,11 +213,6 @@
 
 
 #pragma mark - Utility Methods
-
--(NSString*)getHostURLWithPath:(NSString*)path
-{
-    return [NSString stringWithFormat:@"http://%@/%@", kAPIHostName, path];
-}
 
 -(NSDictionary*)getLocalParam
 {

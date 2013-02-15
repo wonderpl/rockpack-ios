@@ -1042,7 +1042,6 @@
 				012632C7162DF4C40009FF9C /* Layout Engine Support */,
 				019824E31629CADE00216900 /* Custom Views */,
 				019824E11629CAB600216900 /* View Controllers */,
-				01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */,
 				01677DDA1655491100B1B1D8 /* Networking */,
 				019824E41629CAF500216900 /* Helpers */,
 				01E427D01664C701009B941F /* Data Model */,
@@ -1198,7 +1197,7 @@
 		012ECA5C165B9D1A00A60980 /* Custom Engines */ = {
 			isa = PBXGroup;
 			children = (
-				BEA1E33216CE605A000AB59D /* Custom Operations */,
+				BEA1E33216CE605A000AB59D /* Custom Network Operations */,
 				01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */,
 				01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */,
 				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
@@ -1996,21 +1995,6 @@
 			name = Videos;
 			sourceTree = "<group>";
 		};
-		01C6FD04169C4C9700E01AA3 /* Asynchronous Operations */ = {
-			isa = PBXGroup;
-			children = (
-				01C6FD09169DA73000E01AA3 /* Updaters */,
-			);
-			name = "Asynchronous Operations";
-			sourceTree = "<group>";
-		};
-		01C6FD09169DA73000E01AA3 /* Updaters */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Updaters;
-			sourceTree = "<group>";
-		};
 		01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */ = {
 			isa = PBXGroup;
 			children = (
@@ -2209,13 +2193,13 @@
 			name = Registry;
 			sourceTree = "<group>";
 		};
-		BEA1E33216CE605A000AB59D /* Custom Operations */ = {
+		BEA1E33216CE605A000AB59D /* Custom Network Operations */ = {
 			isa = PBXGroup;
 			children = (
 				BEA1E32F16CE6045000AB59D /* SYNNetworkOperationJsonObject.h */,
 				BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */,
 			);
-			name = "Custom Operations";
+			name = "Custom Network Operations";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
