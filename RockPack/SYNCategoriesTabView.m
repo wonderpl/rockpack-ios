@@ -12,14 +12,24 @@
 #import "SYNCategoryItemView.h"
 #import "UIFont+SYNFont.h"
 
+@interface SYNCategoriesTabView ()
+
+@property (nonatomic, strong) UIView* mainTabsView;
+@property (nonatomic, strong) UIView* secondaryTabsView;
+@property (nonatomic, strong) UIView* secondaryTabsBGView;
+@property (nonatomic, strong) UIView* secondaryDividerOverlay;
+
+
+@end
+
 
 @implementation SYNCategoriesTabView
 
 @synthesize tapDelegate;
 
-@synthesize mainTabsView;
-@synthesize secondaryTabsView;
-@synthesize secondaryTabsBGView;
+
+
+
 
 -(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size
 {
@@ -43,8 +53,11 @@
         UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
         CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height - 2.0, size.width, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
+        self.secondaryDividerOverlay = [[UIView alloc] initWithFrame:secondaryFrame];
+        self.secondaryDividerOverlay.userInteractionEnabled = NO;
         self.secondaryTabsBGView = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryTabsBGView.backgroundColor = [UIColor colorWithPatternImage:secondaryTabsBGImage];
+        self.secondaryTabsBGView.userInteractionEnabled = NO;
         
         CGRect masterFrame = CGRectMake(0.0, 0.0, size.width, mainFrame.size.height + secondaryFrame.size.height);
         self.frame = masterFrame;
@@ -53,6 +66,7 @@
         
         [self addSubview:self.secondaryTabsBGView];
         [self addSubview:self.secondaryTabsView];
+        [self addSubview:self.secondaryDividerOverlay];
         [self addSubview:self.mainTabsView];
        
         SYNCategoryItemView* tab = nil;
@@ -143,7 +157,7 @@
         
         UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSubDivider.png"]];
         dividerImageView.center = CGPointMake(nextOrigin, midSecondaryFrame);
-        [self.secondaryTabsView addSubview:dividerImageView];
+        [self.secondaryDividerOverlay addSubview:dividerImageView];
         
             
     }
@@ -169,13 +183,21 @@
         [itemView makeStandard];
     
     itemView = (SYNCategoryItemView*)recogniser.view;
-    [itemView makeHighlighted];
+    [itemView makeHighlightedWithImage:YES];
     
     [self.tapDelegate handleMainTap:recogniser];
 }
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser
 {
+    SYNCategoryItemView* itemView;
+    
+    for(SYNCategoryItemView* itemView in self.secondaryTabsView.subviews)
+        [itemView makeStandard];
+    
+    itemView = (SYNCategoryItemView*)recogniser.view;
+    [itemView makeHighlightedWithImage:NO];
+    
     [self.tapDelegate handleSecondaryTap:recogniser];
 }
 
