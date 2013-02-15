@@ -65,7 +65,7 @@
     
     if (matchingCategoryInstanceEntries.count <= 0)
     {
-        DebugLog(@"Did not find Categories, loading fresh");
+        
         [appDelegate.networkEngine updateCategoriesOnCompletion:^{
             [self createTab];
         } onError:^(NSError* error){

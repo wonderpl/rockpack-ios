@@ -19,6 +19,7 @@
 
 @synthesize mainTabsView;
 @synthesize secondaryTabsView;
+@synthesize secondaryTabsBGView;
 
 -(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size
 {
@@ -42,14 +43,15 @@
         UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
         CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height - 2.0, size.width, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
-        self.secondaryTabsView.backgroundColor = [UIColor colorWithPatternImage:secondaryTabsBGImage];
+        self.secondaryTabsBGView = [[UIView alloc] initWithFrame:secondaryFrame];
+        self.secondaryTabsBGView.backgroundColor = [UIColor colorWithPatternImage:secondaryTabsBGImage];
         
         CGRect masterFrame = CGRectMake(0.0, 0.0, size.width, mainFrame.size.height + secondaryFrame.size.height);
         self.frame = masterFrame;
         
         // Add in correct order so that main is above secondary.
         
-        
+        [self addSubview:self.secondaryTabsBGView];
         [self addSubview:self.secondaryTabsView];
         [self addSubview:self.mainTabsView];
        
@@ -95,6 +97,8 @@
 {
     
     // Clean current subviews
+    
+    self.secondaryTabsView.alpha = 0.0;
     
     for (UIView* sview in self.secondaryTabsView.subviews)
         [sview removeFromSuperview];
@@ -143,6 +147,11 @@
         
             
     }
+    
+    
+    [UIView animateWithDuration:0.7 animations:^{
+        self.secondaryTabsView.alpha = 1.0;
+    }];
         
 
 }

@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) UIView* mainTabsView;
 @property (nonatomic, strong) UIView* secondaryTabsView;
+@property (nonatomic, strong) UIView* secondaryTabsBGView;
 
 -(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size;
 

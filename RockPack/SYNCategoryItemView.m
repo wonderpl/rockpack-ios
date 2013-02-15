@@ -55,13 +55,25 @@
     self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
     
     UIColor *color = [UIColor rockpackBlueColor];
+    label.textColor = color;
     label.layer.shadowColor = [color CGColor];
+    
     label.layer.shadowRadius = 7.0f;
     label.layer.shadowOpacity = 1.0;
     label.layer.shadowOffset = CGSizeZero;
+    
     label.layer.masksToBounds = NO;
     
+    topGlowImageView.alpha = 0.0;
     topGlowImageView.hidden = NO;
+    
+    topGlowImageView.alpha = 1.0;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+    }];
+    
+    
     
     
 }
@@ -69,6 +81,7 @@
 -(void)makeStandard
 {
     self.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
     label.layer.shadowColor = [[UIColor clearColor] CGColor];
     topGlowImageView.hidden = YES;
 }
