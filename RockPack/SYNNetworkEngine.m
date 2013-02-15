@@ -97,13 +97,15 @@
     
     [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
      {
-         [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject)
-          {
-              completionBlock(jsonObject);
+         [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject) {
+             if(!jsonObject) { // check whether an object is returned before calling the completeBlock
+                 NSError* noObjectParsedError = [NSError errorWithDomain:@"JSON Object Not Parsed" code:0 userInfo:nil];
+                 errorBlock(noObjectParsedError);
+                 return;
+             }
+             completionBlock(jsonObject);
           }];
-     }
-                              errorHandler: ^(MKNetworkOperation *errorOp, NSError* error)
-     {
+     } errorHandler: ^(MKNetworkOperation *errorOp, NSError* error) {
          errorBlock(error);
      }];
     
@@ -127,9 +129,7 @@
          {
              [self.registry registerCategoriesFromDictionary:dictionary];
          }
-     }
-                 errorBlock:^(NSError* error)
-     {
+     } errorBlock:^(NSError* error) {
          AssertOrLog(@"API request failed");
      }];
 }
@@ -148,36 +148,32 @@
 
     [self JSONObjectForPath: apiURL
             completionBlock: ^(NSDictionary *dictionary)
-     {
-         if (dictionary)
-         {
-             BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:viewId];
-             if (registryResultOk)
-             {
-                 [self.appDelegate saveContext: TRUE];
-                 
-                 if (completionBlock)
-                 {
-                     completionBlock();
-                 }
-             }
-                
-             else
-             {
-                 AssertOrLog(@"Not a dictionary");
-             }
-         }
-     }
-                 errorBlock: ^(NSError* error)
-     {
-         if (errorBlock)
-         {
-             errorBlock(error);
-         }
-         AssertOrLog(@"API request failed");
-     }];
+    {
+        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:viewId];
+        if (registryResultOk)
+        {
+            [self.appDelegate saveContext: TRUE];
+            
+            if (completionBlock)
+            {
+                completionBlock();
+            }
+        }
+        else
+        {
+            AssertOrLog(@"VideoInstances could not be parsed from JSON response!");
+            
+        }
+        
+        
+     } errorBlock:errorBlock];
 }
 
+
+
+
+
+#pragma mark - Engine API
 
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
