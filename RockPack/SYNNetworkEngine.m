@@ -13,8 +13,10 @@
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
 #import "Category.h"
-#import "SYNNetworkOperationJsonObject.h"
 #import "SYNRegistry.h"
+
+#define kJSONParseError 110
+#define kNetworkError   112
 
 @interface SYNNetworkEngine ()
 
@@ -43,33 +45,13 @@
         
         
         self.registry = [[SYNRegistry alloc] initWithManagedObjectContext:nil];
+        
+        // This engine is about requesting JSOn objects
+        [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
     }
 
     return self;
 }
-
-
-#pragma mark - Utility Methods
-
-
-
-
-
-- (void) JSONObjectForURLString: (NSString *) URLString
-                 withParameters: (NSDictionary*)parameters
-                completionBlock: (JSONResponseBlock) completionBlock
-                     errorBlock: (MKNKErrorBlock) errorBlock {
-    
-    [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: URLString params:parameters];
-    
-    [networkOperation addJSONCompletionHandler:completionBlock errorHandler:errorBlock];
-    
-    
-    [self enqueueOperation: networkOperation];
-}
-
-
 
 
 
@@ -80,121 +62,127 @@
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
+    
+    NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:apiURL] params:@{}];
+    
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Home"];
+        if (!registryResultOk) {
+            NSError* error = [NSError errorWithDomain:@"" code:kJSONParseError userInfo:nil];
+            errorBlock(error);
+            return;
+        }
+            
+        
+        
+        [self.appDelegate saveContext: TRUE];
+        
+        
+    } errorHandler:errorBlock];
+    
+    
+    [self enqueueOperation: networkOperation];
+    
+    
+    
     // TODO: We need to replace USERID with actual userId ASAP
     // TODO: Figure out the reST parameters and format
     
     // Patch the USERID into the path
-    NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
+    
 
-    [self JSONObjectForURLString: [self getHostURLWithPath:apiURL]
-             withParameters:@{}
-            completionBlock: ^(NSDictionary *dictionary) {
-         BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Home"];
-         if (registryResultOk)
-         {
-             if(errorBlock)
-             {
-                 NSError* notParsedError = [NSError errorWithDomain:@"Object not Parsed in Registry" code:1 userInfo:nil];
-                 errorBlock(notParsedError);
-             }
-         }
-         
-         [self.appDelegate saveContext: TRUE];
-         
-         if (completionBlock)
-         {
-             completionBlock();
-         }
-         
-         
-     } errorBlock:errorBlock];
 }
 
 
 - (void) updateCategories
 {
 
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:@"ws/categories/"] params:@{}];
     
-    [self JSONObjectForURLString:[self getHostURLWithPath:@"ws/categories/"]
-            withParameters:@{}
-            completionBlock: ^(NSDictionary *dictionary) {
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        if (dictionary)
-        {
-            [self.registry registerCategoriesFromDictionary:dictionary];
-        }
-    } errorBlock:^(NSError* error) {
+        BOOL registryResultOk = [self.registry registerCategoriesFromDictionary:dictionary];
+        if (!registryResultOk)
+            return;
+        
+    } errorHandler:^(NSError* error) {
         AssertOrLog(@"API request failed");
     }];
+    
+    
+    [self enqueueOperation: networkOperation];
+    
+    
 }
 
 - (void) updateVideosScreen
 {
     
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:kAPIPopularVideos] params:@{}];
     
-    [self JSONObjectForURLString:[self getHostURLWithPath: kAPIPopularVideos]
-             withParameters:@{}
-            completionBlock: ^(NSDictionary *dictionary)
-     {
-         BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
-         if (!registryResultOk)
-             return;
-         
-         [self.appDelegate saveContext: TRUE];
-         
-         
-     } errorBlock:nil];
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
+        if (!registryResultOk)
+            return;
+        
+        [self.appDelegate saveContext: TRUE];
+        
+    } errorHandler:^(NSError* error) {
+        AssertOrLog(@"Update Videos Screens Request Failed");
+    }];
+    
+    
+    
+    
+    [self enqueueOperation: networkOperation];
 }
 
 
 - (void) updateChannel: (NSString *) resourceURL
 {
     
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:resourceURL] params:@{}];
     
-    [self JSONObjectForURLString:[self getHostURLWithPath:resourceURL]
-                  withParameters: @{}
-                 completionBlock: ^(NSDictionary *dictionary)
-     {
-         
-         if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
-         {
-             
-             BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
-             if (registryResultOk)
-             {
-                 
-             }
-             
-             // TODO: I think that we need to work out how to save asynchronously
-             [self.appDelegate saveContext: TRUE];
-             
-//             [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-//                                                                 object: nil];
-         }
-         else
-         {
-             AssertOrLog(@"Not a dictionary");
-         }
-     }
-                 errorBlock: ^(NSError* error)
-     {
-         NSLog(@"API request failed");
-     }];
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
+        if (!registryResultOk)
+            return;
+        
+        // TODO: I think that we need to work out how to save asynchronously
+        [self.appDelegate saveContext: TRUE];
+        
+    } errorHandler:^(NSError* error) {
+        AssertOrLog(@"Update Channel Screens Request Failed");
+    }];
+    
+    [self enqueueOperation: networkOperation];
+    
 }
 
 - (void) updateChannelsScreen
 {
     // TODO: Replace category with something sensible
     // Now add on the locale and category as query parameters
-    //    NSString *path = [NSString stringWithFormat: @"%@?locale=%@&category=%@", kAPIPopularChannels, self.localeString, @"CATID"];
-    NSString *path = kAPIPopularChannels;
     
-    [self JSONObjectForURLString:[self getHostURLWithPath:path]
-            withParameters: @{}
-            completionBlock: ^(NSDictionary *dictionary)
-     {
-         
-         
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:[self getHostURLWithPath:kAPIPopularChannels] params:@{}];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        
+        /* Old code, might be needed...
          NSError *error;
          
          // Now we need to see if this object already exists, and if so return it and if not create it
@@ -202,27 +190,25 @@
          [channelInstanceFetchRequest setEntity: self.channelEntity];
          
          NSArray *matchingChannelEntries = [self.importManagedObjectContext executeFetchRequest: channelInstanceFetchRequest
-                                                                                     error: &error];
-         NSLog (@"channel instances %@", matchingChannelEntries);
-         
-         
-         
-         if (dictionary)
-         {
-             BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
-             if (registryResultOk)
-             {
-                 [self.appDelegate saveContext:TRUE];
-                 
-                 //                 [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-                 //                                                                     object: nil];
-             }
-             
-         }
-     } errorBlock: ^(NSError* error)
-     {
-         NSLog(@"API request failed");
-     }];
+         error: &error];
+         */
+        
+        BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
+        if (!registryResultOk)
+            return;
+        
+        [self.appDelegate saveContext:TRUE];
+        
+        
+    } errorHandler:^(NSError* error) {
+        AssertOrLog(@"Update Channel Screens Request Failed");
+    }];
+    
+    [self enqueueOperation: networkOperation];
+    
+    
+    
+    
 }
 
 

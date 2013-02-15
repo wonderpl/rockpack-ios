@@ -7,8 +7,7 @@
 //
 
 #import "MKNetworkEngine.h"
-
-typedef void (^JSONResponseBlock)(id jsonObject);
+#import "SYNNetworkOperationJsonObject.h"
 
 @interface SYNNetworkEngine : MKNetworkEngine
 

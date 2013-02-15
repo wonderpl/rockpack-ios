@@ -8,8 +8,11 @@
 
 #import "MKNetworkOperation.h"
 
+
+typedef void (^JSONResponseBlock)(id jsonObject);
+
 @interface SYNNetworkOperationJsonObject : MKNetworkOperation
 
--(void)addJSONCompletionHandler:(MKNKResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock;
+-(void)addJSONCompletionHandler:(JSONResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock;
 
 @end

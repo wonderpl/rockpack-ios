@@ -10,7 +10,7 @@
 
 @implementation SYNNetworkOperationJsonObject
 
--(void)addJSONCompletionHandler:(MKNKResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock
+-(void)addJSONCompletionHandler:(JSONResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock
 {
     [self addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         
