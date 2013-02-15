@@ -116,6 +116,9 @@
     
     for (UIView* sview in self.secondaryTabsView.subviews)
         [sview removeFromSuperview];
+    
+    for(SYNCategoryItemView* divider in self.secondaryDividerOverlay.subviews)
+        [divider removeFromSuperview];
  
     
     CGFloat itemHeight = self.secondaryTabsView.frame.size.height;
@@ -182,6 +185,8 @@
     for(SYNCategoryItemView* itemView in self.mainTabsView.subviews)
         [itemView makeStandard];
     
+    
+    
     itemView = (SYNCategoryItemView*)recogniser.view;
     [itemView makeHighlightedWithImage:YES];
     
@@ -194,6 +199,8 @@
     
     for(SYNCategoryItemView* itemView in self.secondaryTabsView.subviews)
         [itemView makeStandard];
+    
+    
     
     itemView = (SYNCategoryItemView*)recogniser.view;
     [itemView makeHighlightedWithImage:NO];
