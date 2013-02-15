@@ -1773,8 +1773,6 @@
 		01982563162ADEAD00216900 /* Abstract */ = {
 			isa = PBXGroup;
 			children = (
-				01E2FC4816CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.h */,
-				01E2FC4916CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.m */,
 				01E427D71664CDA5009B941F /* SYNAbstractViewController.h */,
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
 				01EC6234166EAAA5003154B1 /* SYNAbstractChannelsDetailViewController.h */,
@@ -1782,6 +1780,7 @@
 				01EC6236166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib */,
 				01EA81D616B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.h */,
 				01EA81D716B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m */,
+				01E2FC4B16CE7574006E6DA7 /* Video Players */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
@@ -2027,6 +2026,15 @@
 				01946B541683209600354601 /* PanelVideoGlow@2x.png */,
 			);
 			name = VideoThumbnailWide;
+			sourceTree = "<group>";
+		};
+		01E2FC4B16CE7574006E6DA7 /* Video Players */ = {
+			isa = PBXGroup;
+			children = (
+				01E2FC4816CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.h */,
+				01E2FC4916CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.m */,
+			);
+			name = "Video Players";
 			sourceTree = "<group>";
 		};
 		01E427D01664C701009B941F /* Data Model */ = {
