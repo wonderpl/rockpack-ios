@@ -100,7 +100,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
 }
-\
+
 - (BOOL) hasVideoQueue
 {
     return TRUE;

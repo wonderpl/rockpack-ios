@@ -83,7 +83,7 @@
             return;
         }
             
-        
+        completionBlock();
         
         [self.appDelegate saveContext: TRUE];
         
