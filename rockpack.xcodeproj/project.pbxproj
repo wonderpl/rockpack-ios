@@ -434,6 +434,7 @@
 		BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* Subcategory.m */; };
 		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
 		BEA1E32E16CCFF70000AB59D /* SYNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E32D16CCFF70000AB59D /* SYNRegistry.m */; };
+		BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -957,6 +958,8 @@
 		BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNTabViewDelegate.h; sourceTree = "<group>"; };
 		BEA1E32C16CCFF70000AB59D /* SYNRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNRegistry.h; sourceTree = "<group>"; };
 		BEA1E32D16CCFF70000AB59D /* SYNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRegistry.m; sourceTree = "<group>"; };
+		BEA1E32F16CE6045000AB59D /* SYNNetworkOperationJsonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObject.h; sourceTree = "<group>"; };
+		BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1195,6 +1198,7 @@
 		012ECA5C165B9D1A00A60980 /* Custom Engines */ = {
 			isa = PBXGroup;
 			children = (
+				BEA1E33216CE605A000AB59D /* Custom Operations */,
 				01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */,
 				01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */,
 				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
@@ -2205,6 +2209,15 @@
 			name = Registry;
 			sourceTree = "<group>";
 		};
+		BEA1E33216CE605A000AB59D /* Custom Operations */ = {
+			isa = PBXGroup;
+			children = (
+				BEA1E32F16CE6045000AB59D /* SYNNetworkOperationJsonObject.h */,
+				BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */,
+			);
+			name = "Custom Operations";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2680,6 +2693,7 @@
 				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
 				012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */,
 				BEA1E32E16CCFF70000AB59D /* SYNRegistry.m in Sources */,
+				BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
 #import "Category.h"
+#import "SYNNetworkOperationJsonObject.h"
 #import "SYNRegistry.h"
 
 @interface SYNNetworkEngine ()
@@ -50,15 +51,6 @@
 
 #pragma mark - Utility Methods
 
-- (void) JSONObjectForPath: (NSString *) path
-           completionBlock: (JSONResponseBlock) completionBlock
-                errorBlock: (MKNKErrorBlock) errorBlock {
-    
-    [self JSONObjectForPath:path
-             withParameters:[NSDictionary dictionary]
-            completionBlock:completionBlock
-                 errorBlock:errorBlock];
-}
 
 - (void) JSONObjectForPath: (NSString *) path
             withParameters: (NSDictionary*)parameters
@@ -76,38 +68,18 @@
                       errorBlock:errorBlock];
 }
 
-- (void) JSONObjectForURLString: (NSString *) URLString
-                completionBlock: (JSONResponseBlock) completionBlock
-                     errorBlock: (MKNKErrorBlock) errorBlock
-{
-    [self JSONObjectForPath:URLString
-             withParameters:[NSDictionary dictionary]
-            completionBlock:completionBlock
-                 errorBlock:errorBlock];
-}
 
-// All methods finally call this
 
 - (void) JSONObjectForURLString: (NSString *) URLString
                  withParameters: (NSDictionary*)parameters
                 completionBlock: (JSONResponseBlock) completionBlock
-                     errorBlock: (MKNKErrorBlock) errorBlock
-{
-    MKNetworkOperation *networkOperation = [self operationWithURLString: URLString params:parameters];
+                     errorBlock: (MKNKErrorBlock) errorBlock {
     
-    [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
-     {
-         [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject) {
-             if(!jsonObject) { // check whether an object is returned before calling the completeBlock
-                 NSError* noObjectParsedError = [NSError errorWithDomain:@"JSON Object Not Parsed" code:0 userInfo:nil];
-                 errorBlock(noObjectParsedError);
-                 return;
-             }
-             completionBlock(jsonObject);
-          }];
-     } errorHandler: ^(MKNetworkOperation *errorOp, NSError* error) {
-         errorBlock(error);
-     }];
+    [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: URLString params:parameters];
+    
+    [networkOperation addJSONCompletionHandler:completionBlock errorHandler:errorBlock];
+    
     
     [self enqueueOperation: networkOperation];
 }
@@ -135,8 +107,8 @@
     NSString *apiURL = [NSString stringWithFormat: kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
 
     [self JSONObjectForPath: apiURL
-            completionBlock: ^(NSDictionary *dictionary)
-     {
+             withParameters:@{}
+            completionBlock: ^(NSDictionary *dictionary) {
          BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Home"];
          if (registryResultOk)
          {
@@ -162,9 +134,10 @@
 - (void) updateCategories
 {
     
-    NSString *path = @"ws/categories/";
     
-    [self JSONObjectForPath:path completionBlock: ^(NSDictionary *dictionary) {
+    [self JSONObjectForPath:@"ws/categories/"
+            withParameters:@{}
+            completionBlock: ^(NSDictionary *dictionary) {
         
         if (dictionary)
         {
@@ -180,6 +153,7 @@
     
     
     [self JSONObjectForPath: kAPIPopularVideos
+             withParameters:@{}
             completionBlock: ^(NSDictionary *dictionary)
      {
          BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
@@ -195,7 +169,10 @@
 
 - (void) updateChannel: (NSString *) resourceURL
 {
+    
+    
     [self JSONObjectForURLString: resourceURL
+                  withParameters: @{}
                  completionBlock: ^(NSDictionary *dictionary)
      {
          
@@ -233,6 +210,7 @@
     NSString *path = kAPIPopularChannels;
     
     [self JSONObjectForPath: path
+            withParameters: @{}
             completionBlock: ^(NSDictionary *dictionary)
      {
          
