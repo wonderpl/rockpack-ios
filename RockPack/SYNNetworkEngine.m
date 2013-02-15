@@ -57,7 +57,7 @@
            completionBlock: (JSONResponseBlock) completionBlock
                 errorBlock: (MKNKErrorBlock) errorBlock {
     
-    NSString* fullPath = [NSString stringWithFormat:@"http://%@/%@", kAPIHostName, path];
+    NSString* fullPath = [self getHostURLWithPath:path];
     
     NSMutableDictionary* dictionaryWithLocale = [[NSMutableDictionary alloc] initWithDictionary:parameters];
     [dictionaryWithLocale setValue:self.localeString forKey:@"locale"];
@@ -243,6 +243,14 @@
      {
          NSLog(@"API request failed");
      }];
+}
+
+
+#pragma mark - Utility Methods
+
+-(NSString*)getHostURLWithPath:(NSString*)path
+{
+    return [NSString stringWithFormat:@"http://%@/%@", kAPIHostName, path];
 }
 
 @end
