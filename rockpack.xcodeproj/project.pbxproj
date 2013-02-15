@@ -345,6 +345,9 @@
 		01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */; };
 		01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */; };
 		01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D8C6A716807A54000059D1 /* SYNVideoSelection.m */; };
+		01E2FC4316CE6825006E6DA7 /* SYNYouTubeVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2FC4216CE6825006E6DA7 /* SYNYouTubeVideoViewController.m */; };
+		01E2FC4616CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FC4416CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */; };
+		01E2FC4716CE6913006E6DA7 /* YouTubeJSAPIPlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FC4516CE6913006E6DA7 /* YouTubeJSAPIPlayer.html */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
 		01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D81664CDA5009B941F /* SYNAbstractViewController.m */; };
@@ -373,7 +376,6 @@
 		01E98D8D165C146B0079FD7A /* SliderBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D89165C146B0079FD7A /* SliderBackground@2x.png */; };
 		01E98D8E165C146B0079FD7A /* SliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D8A165C146B0079FD7A /* SliderThumb.png */; };
 		01E98D8F165C146B0079FD7A /* SliderThumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D8B165C146B0079FD7A /* SliderThumb@2x.png */; };
-		01EA81BC16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */; };
 		01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */; };
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
 		01EA81CB16B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81C816B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png */; };
@@ -406,7 +408,7 @@
 		01F8E74B16B012A8000D44B9 /* ButtonVideoScreenPreviousHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E74316B012A8000D44B9 /* ButtonVideoScreenPreviousHighlighted@2x.png */; };
 		01F8E76616B03462000D44B9 /* VimeoIFramePlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76316B03462000D44B9 /* VimeoIFramePlayer.html */; };
 		01F8E76716B03462000D44B9 /* YouTubeIFramePlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76416B03462000D44B9 /* YouTubeIFramePlayer.html */; };
-		01F8E76816B03462000D44B9 /* YouTubeJSAPIPlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76516B03462000D44B9 /* YouTubeJSAPIPlayer.html */; };
+		01F8E76816B03462000D44B9 /* OldYouTubeJSAPIPlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E76516B03462000D44B9 /* OldYouTubeJSAPIPlayer.html */; };
 		01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */; };
 		01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */; };
 		01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78116B0554B000D44B9 /* ButtonClose.png */; };
@@ -835,6 +837,10 @@
 		01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossLargeVideoView@2x.png"; path = "Assets/Images/GlossLargeVideoView@2x.png"; sourceTree = "<group>"; };
 		01D8C6A616807A54000059D1 /* SYNVideoSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoSelection.h; sourceTree = "<group>"; };
 		01D8C6A716807A54000059D1 /* SYNVideoSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoSelection.m; sourceTree = "<group>"; };
+		01E2FC4116CE6825006E6DA7 /* SYNYouTubeVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SYNYouTubeVideoViewController.h; path = ../../../../Desktop/SYNYouTubeVideoViewController.h; sourceTree = "<group>"; };
+		01E2FC4216CE6825006E6DA7 /* SYNYouTubeVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SYNYouTubeVideoViewController.m; path = ../../../../Desktop/SYNYouTubeVideoViewController.m; sourceTree = "<group>"; };
+		01E2FC4416CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayerNoAutoplay.html; path = Assets/HTML/YouTubeJSAPIPlayerNoAutoplay.html; sourceTree = "<group>"; };
+		01E2FC4516CE6913006E6DA7 /* YouTubeJSAPIPlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayer.html; path = Assets/HTML/YouTubeJSAPIPlayer.html; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		01E427D21664C726009B941F /* Rockpack.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Rockpack.xcdatamodel; sourceTree = "<group>"; };
 		01E427D71664CDA5009B941F /* SYNAbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractViewController.h; sourceTree = "<group>"; };
@@ -878,7 +884,6 @@
 		01E98D89165C146B0079FD7A /* SliderBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SliderBackground@2x.png"; path = "Assets/Images/SliderBackground@2x.png"; sourceTree = "<group>"; };
 		01E98D8A165C146B0079FD7A /* SliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SliderThumb.png; path = Assets/Images/SliderThumb.png; sourceTree = "<group>"; };
 		01E98D8B165C146B0079FD7A /* SliderThumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SliderThumb@2x.png"; path = "Assets/Images/SliderThumb@2x.png"; sourceTree = "<group>"; };
-		01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YouTubeJSAPIPlayerNoAutoplay.html; sourceTree = "<group>"; };
 		01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonLargeVideoPanelPlay.png; path = Assets/Images/ButtonLargeVideoPanelPlay.png; sourceTree = "<group>"; };
 		01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonLargeVideoPanelPlay@2x.png"; path = "Assets/Images/ButtonLargeVideoPanelPlay@2x.png"; sourceTree = "<group>"; };
 		01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailSmallCell.h; sourceTree = "<group>"; };
@@ -918,7 +923,7 @@
 		01F8E74316B012A8000D44B9 /* ButtonVideoScreenPreviousHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoScreenPreviousHighlighted@2x.png"; path = "Assets/Images/ButtonVideoScreenPreviousHighlighted@2x.png"; sourceTree = "<group>"; };
 		01F8E76316B03462000D44B9 /* VimeoIFramePlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = VimeoIFramePlayer.html; path = Assets/HTML/VimeoIFramePlayer.html; sourceTree = "<group>"; };
 		01F8E76416B03462000D44B9 /* YouTubeIFramePlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeIFramePlayer.html; path = Assets/HTML/YouTubeIFramePlayer.html; sourceTree = "<group>"; };
-		01F8E76516B03462000D44B9 /* YouTubeJSAPIPlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayer.html; path = Assets/HTML/YouTubeJSAPIPlayer.html; sourceTree = "<group>"; };
+		01F8E76516B03462000D44B9 /* OldYouTubeJSAPIPlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = OldYouTubeJSAPIPlayer.html; path = Assets/HTML/OldYouTubeJSAPIPlayer.html; sourceTree = "<group>"; };
 		01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoViewerViewController.h; sourceTree = "<group>"; };
 		01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoViewerViewController.m; sourceTree = "<group>"; };
 		01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoViewerViewController.xib; sourceTree = "<group>"; };
@@ -1768,6 +1773,8 @@
 		01982563162ADEAD00216900 /* Abstract */ = {
 			isa = PBXGroup;
 			children = (
+				01E2FC4116CE6825006E6DA7 /* SYNYouTubeVideoViewController.h */,
+				01E2FC4216CE6825006E6DA7 /* SYNYouTubeVideoViewController.m */,
 				01E427D71664CDA5009B941F /* SYNAbstractViewController.h */,
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
 				01EC6234166EAAA5003154B1 /* SYNAbstractChannelsDetailViewController.h */,
@@ -2157,10 +2164,11 @@
 		01F8E76216B0312E000D44B9 /* HTML */ = {
 			isa = PBXGroup;
 			children = (
+				01E2FC4416CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */,
+				01E2FC4516CE6913006E6DA7 /* YouTubeJSAPIPlayer.html */,
 				01F8E76316B03462000D44B9 /* VimeoIFramePlayer.html */,
 				01F8E76416B03462000D44B9 /* YouTubeIFramePlayer.html */,
-				01F8E76516B03462000D44B9 /* YouTubeJSAPIPlayer.html */,
-				01EA81BB16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html */,
+				01F8E76516B03462000D44B9 /* OldYouTubeJSAPIPlayer.html */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -2474,7 +2482,7 @@
 				01F8E74B16B012A8000D44B9 /* ButtonVideoScreenPreviousHighlighted@2x.png in Resources */,
 				01F8E76616B03462000D44B9 /* VimeoIFramePlayer.html in Resources */,
 				01F8E76716B03462000D44B9 /* YouTubeIFramePlayer.html in Resources */,
-				01F8E76816B03462000D44B9 /* YouTubeJSAPIPlayer.html in Resources */,
+				01F8E76816B03462000D44B9 /* OldYouTubeJSAPIPlayer.html in Resources */,
 				01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */,
 				01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */,
 				01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */,
@@ -2507,7 +2515,6 @@
 				0109D1BE16B7F03900673FC4 /* PanelLargeVideoView@2x.png in Resources */,
 				01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */,
 				01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */,
-				01EA81BC16B88B390069AFF9 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */,
 				01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */,
 				01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */,
 				01EA81CB16B94E770069AFF9 /* BackgroundVideoThumbnailSmall.png in Resources */,
@@ -2557,6 +2564,8 @@
 				BE95B91B16CBAE1000EC2E72 /* TabTop.png in Resources */,
 				BE95B91C16CBAE1000EC2E72 /* TabTop@2x.png in Resources */,
 				012502C116CA94650029C7C8 /* FacebookSDKResources.bundle in Resources */,
+				01E2FC4616CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */,
+				01E2FC4716CE6913006E6DA7 /* YouTubeJSAPIPlayer.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2680,6 +2689,7 @@
 				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
 				012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */,
 				BEA1E32E16CCFF70000AB59D /* SYNRegistry.m in Sources */,
+				01E2FC4316CE6825006E6DA7 /* SYNYouTubeVideoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

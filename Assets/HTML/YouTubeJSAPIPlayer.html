@@ -16,9 +16,11 @@
         <script>
             //Load player api asynchronously.
             var tag = document.createElement('script');
-            tag.src = "//www.youtube.com/iframe_api";
+            tag.src = "https://www.youtube.com/iframe_api";
+            
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            
             var done = false;
             var player;
             
@@ -30,49 +32,193 @@
             
             function onYouTubeIframeAPIReady()
             {
-                player = new YT.Player('player', {
-                                       playerVars: { 'controls': 1, 'modestbranding': 1, 'showinfo': 0, 'rel' : 0, 'autostart' : 1},
-                                       width: '%d',
-                                       height: '%d',
-                                       videoId: '%@',
-                                       events: {
-                                       'onReady': onPlayerReady,
-                                       'onStateChange': onPlayerStateChange
-                                       }
-                                       });
+                player = new YT.Player('player',
+                                           {
+                                               playerVars:
+                                               {
+                                                    'controls': 1,
+                                                    'modestbranding': 1,
+                                                    'showinfo': 0,
+                                                    'rel' : 0,
+                                                    'autostart' : 1
+                                               },
+                                               width: '%d',
+                                               height: '%d',
+                                               videoId: '%@',
+                                               events:
+                                               {
+                                                   'onReady': onPlayerReady,
+                                                   'onStateChange': onPlayerStateChange,
+                                                   'onPlaybackQualityChange': onPlayerPlaybackQualityChange,
+                                                   'onPlaybackRateChange': onPlayerPlaybackRateChange,
+                                                   'onError': onPlayerError,
+                                                   'onApiChange': onPlayerApiChange
+                                               }
+                                           });
             }
 
-            // The API will call this function when the video player is ready.
+//            // The API will call this function when the video player is ready.
+//            function onPlayerReady(event)
+//            {
+//                // Pass the state back to the Obj-C handler
+////                window.location = 'rockpack:onReady';
+//                
+//                player.playVideo();
+//            }
+//            
+//            function onPlayerStateChange(event)
+//            {
+//                // Pass the state back to the Obj-C handler
+//                window.location = 'rockpack:onStateChange:' + event.data;
+//            }
+//            
+//            function stopVideo()
+//            {
+//                player.stopVideo();
+//            }
+//            
+//            function pauseVideo()
+//            {
+//                player.pauseVideo();
+//            }
+//            
+//            function startVideo()
+//            {
+//                alert("startVideo");
+//            }
+            
+            // All possible event functions
+            
+            // This event fires whenever a player has finished loading and is ready to begin receiving API calls.
+            // The application should implement this function if you want to automatically execute certain operations,
+            // such as playing the video or displaying information about the video, as soon as the player is ready.
             function onPlayerReady(event)
             {
-                // Pass the state back to the Obj-C handler
-//                window.location = 'rockpack:onReady';
-                
-                player.playVideo();
+                onEvent('ready', null);
             }
             
+            // This event fires whenever the player's state changes. The data property of the event object that the API
+            // passes to your event listener function will specify an integer that corresponds to the new player state
             function onPlayerStateChange(event)
             {
-                // Pass the state back to the Obj-C handler
-                window.location = 'rockpack:onStateChange:' + event.data;
+                onEvent('stateChange', playerStateToString(event.data));
             }
             
-            function stopVideo()
+            // This event fires whenever the video playback quality changes. For example, if the setPlaybackQuality(suggestedQuality)
+            // function is called, this event will fire if the playback quality actually changes
+            function onPlayerPlaybackQualityChange(event)
             {
-                player.stopVideo();
+                onEvent('playbackQuality', event.data);
             }
             
-            function pauseVideo()
+            // This event fires whenever the video playback rate changes. For example, if the setPlaybackRate(suggestedRate)
+            // functionis called, this event will fire if the playback rate actually changes
+            function onPlayerPlaybackRateChange(event)
             {
-                player.pauseVideo();
+                onEvent('playbackRateChange', event.data);
             }
             
-            function startVideo()
+            
+            // This event fires if an error occurs in the player. The API will pass an event object to the event listener function.
+            // That object's data property will specify an integer that identifies the type of error that occurred
+            function onPlayerError(event)
             {
-                alert("startVideo");
-//                player.playVideo();
+                onEvent('error', playerErrorToString(event.data));
             }
             
+            
+            // This event is fired to indicate that the player has loaded (or unloaded) a module with exposed API methods
+            // At the moment this is unlikely to be called as the only module that currently exists is for closed-captioning
+            function onPlayerApiChange(event)
+            {
+                onEvent('apiChange', event.data);
+            }
+            
+            
+            // Report the event back to the UIWebViewer (by using the URL change trick)
+            function onEvent(eventName, eventData)
+            {
+                // Contruct a new URL with the 
+                var url = "ytplayer://event/" + eventName;
+                
+                if (eventData != null)
+                {
+                    url += ('/' + eventData);
+                }
+                
+                // Now pass this back to the UIWebView
+                document.location = url;
+            }
+            
+            // Translate the Youtube player state into a human readable string
+            // Essential for debugging
+            function playerStateToString(playerState)
+            {
+                var result = null;
+                
+                switch (playerState)
+                {
+                    case -1:
+                        result = "unstarted";
+                        break;
+                    
+                    case YT.PlayerState.ENDED:
+                        result = "ended";
+                        break;
+                        
+                    case YT.PlayerState.PLAYING:
+                        result = "playing";
+                        break;
+                    
+                    case YT.PlayerState.PAUSED:
+                        result = "paused";
+                        break;
+                    
+                    case YT.PlayerState.BUFFERING:
+                        result = "buffering";
+                        break;
+                    
+                    case YT.PlayerState.CUED:
+                        result = "cued";
+                        break;
+                }
+                
+                return result;
+            }
+            
+            // Translate the Youtube player state into a human readable string
+            // Essential for debugging
+            function playerErrorToString(playerError)
+            {
+                var result = null;
+                
+                switch (playerError)
+                {
+                    // The request contains an invalid parameter value. For example, this error occurs if you specify a video ID
+                    // that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.
+                    case 2:
+                        result = "invalid_parameter_value";
+                        break;
+                    
+                    // The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.
+                    case 5:
+                        result = "cannot_be_played_in_HTML5";
+                        break;
+                    
+                    // The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.
+                    case 100:
+                        result = "video_not_found";
+                        break;
+                    
+                    // The owner of the requested video does not allow it to be played in embedded players
+                    case 101:
+                    case 150:
+                        result = "not_authorised_for_embedded_player";
+                        break;
+                }
+                
+                return result;
+            }
             </script>
     </body>
 </html>

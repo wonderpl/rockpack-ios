@@ -210,7 +210,7 @@
                                      height: (int) height
 {
     NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayer"
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"OldYouTubeJSAPIPlayer"
                                                          ofType: @"html"];
     
     NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
