@@ -99,7 +99,8 @@
 }
 
 
-- (void) updateCategories
+- (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
+                              onError: (MKNKErrorBlock) errorBlock
 {
 
     SYNNetworkOperationJsonObject *networkOperation =
@@ -111,6 +112,8 @@
         BOOL registryResultOk = [self.registry registerCategoriesFromDictionary:dictionary];
         if (!registryResultOk)
             return;
+        
+        completionBlock();
         
     } errorHandler:^(NSError* error) {
         AssertOrLog(@"API request failed");

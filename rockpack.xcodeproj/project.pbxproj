@@ -1317,18 +1317,16 @@
 			name = You;
 			sourceTree = "<group>";
 		};
-		0142ED9216B1C914008694DA /* Category bar */ = {
+		0142ED9216B1C914008694DA /* Categories Tab Bar */ = {
 			isa = PBXGroup;
 			children = (
-				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
-				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
 				BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */,
 				BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */,
 				BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */,
 				BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */,
 			);
-			name = "Category bar";
+			name = "Categories Tab Bar";
 			sourceTree = "<group>";
 		};
 		0142ED9316B1D72B008694DA /* Video queue */ = {
@@ -1543,7 +1541,6 @@
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
 				01982562162ADE5200216900 /* Tab bar */,
-				0142ED9216B1C914008694DA /* Category bar */,
 				0199F1371672199F00E479C6 /* Home */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				0198255F162ADE2900216900 /* Videos */,
@@ -1565,6 +1562,7 @@
 		019824E31629CADE00216900 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				0142ED9216B1C914008694DA /* Categories Tab Bar */,
 				0199F12D166F95C000E479C6 /* Collections */,
 				0199F127166F94C400E479C6 /* Controls */,
 				01363F4F1631789F00FFAA09 /* SYNMovableView.h */,
@@ -1778,6 +1776,8 @@
 				01EC6236166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib */,
 				01EA81D616B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.h */,
 				01EA81D716B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m */,
+				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
+				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";

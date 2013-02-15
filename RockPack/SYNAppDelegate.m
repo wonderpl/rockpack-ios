@@ -39,8 +39,6 @@
     // Set up network engine
     [self initializeNetworkEngine];
     
-    // Set up Categories
-    [self getCategories];
     
     // Create default user
     [self createDefaultUser];
@@ -276,11 +274,5 @@
     }
 }
 
-
--(void)getCategories
-{
-    
-    [self.networkEngine updateCategories];
-}
 
 @end
