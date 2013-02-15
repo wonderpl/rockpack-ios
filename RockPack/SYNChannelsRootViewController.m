@@ -61,7 +61,7 @@
                                                object: nil];
     
     
-    [appDelegate.networkEngine updateChannelsScreen];
+    [appDelegate.networkEngine updateChannelsScreenForCategory:@"all"];
 }
 
 
@@ -282,6 +282,11 @@
         DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
+}
+
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
+{
+    [appDelegate.networkEngine updateChannelsScreenForCategory:selectionId];
 }
 
 @end

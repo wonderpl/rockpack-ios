@@ -128,14 +128,48 @@
     
 }
 
+
 -(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
 {
-    // to be implemented by child
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Subcategory"
+                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity:categoryEntity];
+    
+    //DebugLog(@"Tag clicked : %d", tab.tag);
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
+    [categoriesFetchRequest setPredicate: predicate];
+    
+    NSError* error = nil;
+    
+    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                                   error: &error];
+    
+    if(matchingCategoryInstanceEntries.count == 0)
+    {
+        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
+        return;
+    }
+    
+    if (matchingCategoryInstanceEntries.count > 1)
+    {
+        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
+        
+    }
+    
+    Subcategory* subcategoryTapped = (Subcategory*)matchingCategoryInstanceEntries[0];
+    [self handleNewTabSelectionWithId:subcategoryTapped.uniqueId];
 }
 
 
-
-
+-(void)handleNewTabSelectionWithId:(NSString*)selectionId
+{
+    // to be implemented by child
+}
 
 
 

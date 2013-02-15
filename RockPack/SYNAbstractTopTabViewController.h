@@ -19,7 +19,7 @@
 
 
 - (void) highlightTab: (int) tabIndex;
-
+-(void)handleNewTabSelectionWithId:(NSString*)selectionId;
 
 -(void)createTab;
 

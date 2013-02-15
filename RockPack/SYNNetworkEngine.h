@@ -20,7 +20,7 @@
                               onError: (MKNKErrorBlock) errorBlock;
 
 - (void) updateVideosScreenForCategory:(NSString*)categoryId;
-- (void) updateChannelsScreen;
 - (void) updateChannel: (NSString *) resourceURL;
+- (void) updateChannelsScreenForCategory:(NSString*)category;
 
 @end

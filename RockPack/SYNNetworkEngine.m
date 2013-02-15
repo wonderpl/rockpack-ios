@@ -178,10 +178,15 @@
     
 }
 
-- (void) updateChannelsScreen
+- (void) updateChannelsScreenForCategory:(NSString*)categoryId
 {
-    // TODO: Replace category with something sensible
-    // Now add on the locale and category as query parameters
+    
+    
+    NSDictionary* parameters;
+    if([categoryId isEqualToString:@"all"])
+        parameters = [self getLocalParam];
+    else
+        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
     
     
     SYNNetworkOperationJsonObject *networkOperation =
