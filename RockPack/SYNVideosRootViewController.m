@@ -631,6 +631,24 @@
 
 }
 
+-(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+{
+    [super handleMainTap:recogniser];
+    
+    if(tabExpanded)
+        return;
+    
+    [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+        CGPoint currentVideoCenter = self.videoThumbnailCollectionView.center;
+        [self.videoThumbnailCollectionView setCenter:CGPointMake(currentVideoCenter.x, currentVideoCenter.y + 35)];
+        
+        CGPoint currentLargeVideoCenter = self.largeVideoPanelView.center;
+        [self.largeVideoPanelView setCenter:CGPointMake(currentLargeVideoCenter.x, currentLargeVideoCenter.y + 35.0)];
+    }  completion:^(BOOL result){
+        tabExpanded = YES;
+    }];
+}
+
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {
     
