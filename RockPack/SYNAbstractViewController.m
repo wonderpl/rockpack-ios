@@ -224,35 +224,12 @@
 // by overiding the videoInstanceFetchedResultsControllerPredicate and videoInstanceFetchedResultsControllerSortDescriptors methods
 - (NSFetchedResultsController *) videoInstanceFetchedResultsController
 {
-    NSError *error = nil;
-    
-    // Return cached version if we have already created one
+
     if (_videoInstanceFetchedResultsController != nil)
-    {
         return _videoInstanceFetchedResultsController;
-    }
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.videoInstanceFetchedResultsControllerSortDescriptors;
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                             managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                               sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
-                                                                                        cacheName: nil];
-    _videoInstanceFetchedResultsController.delegate = self;
-    
-    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _videoInstanceFetchedResultsController;
+    return [self getFetchResultsControllerForEntityName:@"VideoInstance"];
 }
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
@@ -307,38 +284,41 @@
 // by overiding the channelFetchedResultsControllerPredicate and channelFetchedResultsControllerSortDescriptors methods
 - (NSFetchedResultsController *) channelFetchedResultsController
 {
-    NSError *error = nil;
     
-    // Return cached version if we have already created one
     if (_channelFetchedResultsController != nil)
     {
         return _channelFetchedResultsController;
     }
     
+    return [self getFetchResultsControllerForEntityName:@"Channel"];;
+}
+
+-(NSFetchedResultsController *)getFetchResultsControllerForEntityName:(NSString*)entityName
+{
+    NSError *error = nil;
+    
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
+    fetchRequest.entity = [NSEntityDescription entityForName: entityName
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // Add any sort descriptors and predicates
+    
     fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
     fetchRequest.sortDescriptors = self.channelFetchedResultsControllerSortDescriptors;
     
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    self.channelFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+    
+    NSFetchedResultsController* fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                managedObjectContext: appDelegate.mainManagedObjectContext
                                                                                  sectionNameKeyPath: nil
                                                                                           cacheName: nil];
     _channelFetchedResultsController.delegate = self;
     
-    ZAssert([_channelFetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([fetchedResultsController performFetch: &error], @"Fetch Results for entity %@ failed: %@\n%@", entityName, [error localizedDescription], [error userInfo]);
     
-    return _channelFetchedResultsController;
+    return fetchedResultsController;
 }
-
-
 
 // Helper method: Save the current DB state
 - (void) saveDB
