@@ -14,8 +14,7 @@
 
 @property (nonatomic, weak) id<SYNTabViewDelegate> tapDelegate;
 
-@property (nonatomic, strong) UIView* mainTabsView;
-@property (nonatomic, strong) UIView* secondaryTabsView;
+
 
 -(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size;
 

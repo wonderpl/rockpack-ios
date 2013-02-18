@@ -7,8 +7,7 @@
 //
 
 #import "MKNetworkEngine.h"
-
-typedef void (^JSONResponseBlock)(id jsonObject);
+#import "SYNNetworkOperationJsonObject.h"
 
 @interface SYNNetworkEngine : MKNetworkEngine
 
@@ -17,9 +16,11 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
 
-- (void) updateVideosScreen;
-- (void) updateChannelsScreen;
-- (void) updateCategories;
+- (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
+                              onError: (MKNKErrorBlock) errorBlock;
+
+- (void) updateVideosScreenForCategory:(NSString*)categoryId;
 - (void) updateChannel: (NSString *) resourceURL;
+- (void) updateChannelsScreenForCategory:(NSString*)category;
 
 @end

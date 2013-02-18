@@ -15,7 +15,6 @@
 #import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
-#import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 //#import "SYNChannelSelectorCell.h"
 #import "SYNChannelsDetailsCreationViewController.h"
@@ -72,6 +71,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     if (self.hasVideoQueue)
     {
@@ -222,8 +223,8 @@
     
     dispatch_once(&onceQueue, ^
                   {
-                      SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-                      mainManagedObjectContext = delegate.mainManagedObjectContext;
+                      
+                      mainManagedObjectContext = appDelegate.mainManagedObjectContext;
                   });
     
     return mainManagedObjectContext;
@@ -395,9 +396,8 @@
     [self.navigationController pushViewController: vc
                                          animated: NO];
     
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
     
     // Show back button
     [bottomTabViewController showBackButton];
@@ -427,9 +427,8 @@
     
     // Hide back button
     
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
     [bottomTabViewController hideBackButton];
 }
 
@@ -535,9 +534,9 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    
+    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
     
     // Need to slide rockie talkie out
     [bottomTabViewController toggleShareMenu];
@@ -557,9 +556,9 @@
 
 - (void) displayVideoViewer: (VideoInstance *) videoInstance
 {
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    
+    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
     
@@ -740,8 +739,7 @@
     
     Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
     
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    newChannel.channelOwner = delegate.channelOwnerMe;    
+    newChannel.channelOwner = appDelegate.channelOwnerMe;
     
     // TODO: Make these window offsets less hard-coded
 

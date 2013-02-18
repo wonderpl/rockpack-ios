@@ -10,11 +10,17 @@
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
+#import "SYNAppDelegate.h"
+
 @class VideoInstance;
 
 @interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
                                                          UICollectionViewDataSource,
-                                                         UICollectionViewDelegate>
+                                                         UICollectionViewDelegate> {
+                                                         
+                                                         
+@protected SYNAppDelegate* appDelegate;
+}
 // Public properties
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;

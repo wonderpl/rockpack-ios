@@ -41,6 +41,7 @@
         self.topGlowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSelectedGlow.png"]];
         topGlowImageView.center = CGPointMake(self.frame.size.width*0.5, topGlowImageView.center.y);
         topGlowImageView.hidden = YES;
+        topGlowImageView.userInteractionEnabled = NO;
         [self addSubview:topGlowImageView];
         
     }
@@ -48,20 +49,41 @@
 }
 
 
--(void)makeHighlighted
+-(void)makeHighlightedWithImage:(BOOL)withImage
 {
     
-    UIImage* pressedImage = [UIImage imageNamed:@"TabTopSelected.png"];
-    self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
+    if(withImage)
+    {
+        UIImage* pressedImage = [UIImage imageNamed:@"TabTopSelected.png"];
+        self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
+    }
+    
     
     UIColor *color = [UIColor rockpackBlueColor];
+    label.textColor = color;
     label.layer.shadowColor = [color CGColor];
+    
     label.layer.shadowRadius = 7.0f;
     label.layer.shadowOpacity = 1.0;
     label.layer.shadowOffset = CGSizeZero;
+    
     label.layer.masksToBounds = NO;
     
-    topGlowImageView.hidden = NO;
+    // TODO: See what can be done with the animations
+    
+    if(withImage)
+    {
+        topGlowImageView.alpha = 0.0;
+        topGlowImageView.hidden = NO;
+        topGlowImageView.alpha = 1.0;
+    }
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+    }];
+    
+    
     
     
 }
@@ -69,6 +91,7 @@
 -(void)makeStandard
 {
     self.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
     label.layer.shadowColor = [[UIColor clearColor] CGColor];
     topGlowImageView.hidden = YES;
 }

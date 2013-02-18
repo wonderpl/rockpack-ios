@@ -22,6 +22,8 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "Subcategory.h"
+#import "SYNCategoryItemView.h"
 
 @interface SYNVideosRootViewController () <UIGestureRecognizerDelegate,
                                            UIScrollViewDelegate,
@@ -98,9 +100,8 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
-    [appDelegate.networkEngine updateVideosScreen];
+    [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
@@ -636,5 +637,10 @@
 
 }
 
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
+{
+    
+    [appDelegate.networkEngine updateVideosScreenForCategory:selectionId];
+}
 
 @end

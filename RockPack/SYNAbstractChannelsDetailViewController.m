@@ -309,8 +309,6 @@
         
         NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverThumb%d@2x.jpg", (indexPath.row % 13) + 1];
         
-//        channelCarouselCell.channelImageViewImage = imageURLString;
-        SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
         
         self.imageLoadingOperation = [appDelegate.networkEngine imageAtURL: [NSURL URLWithString: imageURLString]
                                                                       size: CGSizeMake (341, 190)

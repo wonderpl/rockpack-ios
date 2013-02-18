@@ -26,6 +26,9 @@
 // Returns a list of the trending videos
 #define kAPIPopularVideos @"ws/videos/"
 
+//
+#define kAPICategories @"ws/categories/"
+
 // Returns a list of
 #define kAPIPopularChannels @"ws/channels/"
 

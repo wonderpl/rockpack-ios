@@ -60,9 +60,8 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
-    [appDelegate.networkEngine updateChannelsScreen];
+    [appDelegate.networkEngine updateChannelsScreenForCategory:@"all"];
 }
 
 
@@ -283,6 +282,11 @@
         DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
+}
+
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
+{
+    [appDelegate.networkEngine updateChannelsScreenForCategory:selectionId];
 }
 
 @end

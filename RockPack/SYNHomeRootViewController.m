@@ -100,7 +100,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
 }
-\
+
 - (BOOL) hasVideoQueue
 {
     return TRUE;
@@ -110,9 +110,8 @@
 {
     [self startRefreshCycle];
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     [appDelegate.networkEngine updateHomeScreenOnCompletion: ^
-     {
+    {
          // TODO: Might want to put in some error reporting here
          [self endRefreshCycle];
      }
