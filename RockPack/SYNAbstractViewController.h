@@ -40,7 +40,6 @@
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
 
 - (NSFetchedResultsController *) channelFetchedResultsController;
--(NSFetchedResultsController *)getFetchResultsControllerForEntityName:(NSString*)entityName;
 - (NSPredicate *) channelFetchedResultsControllerPredicate;
 - (NSArray *) channelFetchedResultsControllerSortDescriptors;
 
