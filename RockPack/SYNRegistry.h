@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SYNRegistry : NSObject
+@interface SYNRegistry : NSObject {
+@private
+    NSManagedObjectContext* importManagedObjectContext;
+}
 
 
 -(id)initWithManagedObjectContext:(NSManagedObjectContext*)moc;

@@ -51,7 +51,7 @@
         
         // Bottom Bar //
         UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
-        CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height - 2.0, size.width, secondaryTabsBGImage.size.height);
+        CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height, size.width, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryDividerOverlay = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryDividerOverlay.userInteractionEnabled = NO;
@@ -143,7 +143,7 @@
         // Change the font for the subcategory tab
         UIFont *fontToUse = [UIFont rockpackFontOfSize: 13.0f];
         CGSize tabMinSize = [subcategory.name sizeWithFont:fontToUse];
-        tabMinSize.width += 20.0;
+        tabMinSize.width += 36.0;
         
         itemFrame = CGRectMake(nextOrigin, 0.0, tabMinSize.width, itemHeight);
         

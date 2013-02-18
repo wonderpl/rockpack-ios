@@ -179,7 +179,7 @@
     
     
     NSDictionary* parameters;
-    if([categoryId isEqualToString:@"all"])
+    if([categoryId isEqualToString:@"all"]) 
         parameters = [self getLocalParam];
     else
         parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
@@ -189,24 +189,13 @@
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularChannels params:[self getLocalParam]];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+
         
+    BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
+    if (!registryResultOk)
+        return;
         
-        /* Old code, might be needed...
-         NSError *error;
-         
-         // Now we need to see if this object already exists, and if so return it and if not create it
-         NSFetchRequest *channelInstanceFetchRequest = [[NSFetchRequest alloc] init];
-         [channelInstanceFetchRequest setEntity: self.channelEntity];
-         
-         NSArray *matchingChannelEntries = [self.importManagedObjectContext executeFetchRequest: channelInstanceFetchRequest
-         error: &error];
-         */
-        
-        BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
-        if (!registryResultOk)
-            return;
-        
-        [self.appDelegate saveContext:TRUE];
+    [self.appDelegate saveContext:TRUE];
         
         
     } errorHandler:^(NSError* error) {

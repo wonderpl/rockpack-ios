@@ -20,7 +20,6 @@
 
 @property (nonatomic, strong) NSEntityDescription *channelEntity;
 @property (nonatomic, strong) NSEntityDescription *videoInstanceEntity;
-@property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) NSString *localeString;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
 
@@ -35,15 +34,15 @@
         // This is where the magic occurs
         // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
         self.appDelegate = UIApplication.sharedApplication.delegate;
-        self.importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-        self.importManagedObjectContext.parentContext = self.appDelegate.mainManagedObjectContext;
+        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
+        importManagedObjectContext.parentContext = self.appDelegate.mainManagedObjectContext;
         
         // Cache frequently used vars
         self.videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-                                               inManagedObjectContext: self.importManagedObjectContext];
+                                               inManagedObjectContext: importManagedObjectContext];
         
         self.channelEntity = [NSEntityDescription entityForName: @"Channel"
-                                         inManagedObjectContext: self.importManagedObjectContext];
+                                         inManagedObjectContext: importManagedObjectContext];
     }
     
     return self;
@@ -73,14 +72,14 @@
     // and should be removed in a post-import cleanup
     NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
                                                                                       andViewId: nil
-                                                                         inManagedObjectContext: self.importManagedObjectContext];
+                                                                         inManagedObjectContext: importManagedObjectContext];
     
     // === Main Processing === //
     
     for (NSDictionary *categoryDictionary in itemArray)
         if ([categoryDictionary isKindOfClass: [NSDictionary class]])
             [Category instanceFromDictionary: categoryDictionary
-                   usingManagedObjectContext: self.importManagedObjectContext];
+                   usingManagedObjectContext: importManagedObjectContext];
     
     
     
@@ -91,7 +90,7 @@
     
     // Now remove any Category objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: self.importManagedObjectContext];
+              inManagedObjectContext: importManagedObjectContext];
     
     // [[NSNotificationCenter defaultCenter] postNotificationName: kCategoriesUpdated object: nil];
     
@@ -126,14 +125,14 @@
     // and should be removed in a post-import cleanup
     NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"VideoInstance"
                                                                                       andViewId: viewId
-                                                                         inManagedObjectContext: self.importManagedObjectContext];
+                                                                         inManagedObjectContext: importManagedObjectContext];
     
     // === Main Processing === //
     
     for (NSDictionary *itemDictionary in itemArray)
         if ([itemDictionary isKindOfClass: [NSDictionary class]])
             [VideoInstance instanceFromDictionary: itemDictionary
-                        usingManagedObjectContext: self.importManagedObjectContext
+                        usingManagedObjectContext: importManagedObjectContext
                               ignoringObjectTypes: kIgnoreNothing
                                         andViewId: viewId];
     
@@ -143,7 +142,7 @@
     
     // Now remove any VideoInstance objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: self.importManagedObjectContext];
+              inManagedObjectContext: importManagedObjectContext];
     
     
     
@@ -166,7 +165,7 @@
     // == =============== == //
     
     [Channel instanceFromDictionary: dictionary
-          usingManagedObjectContext: self.importManagedObjectContext
+          usingManagedObjectContext: importManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing
                           andViewId: @"Channels"];
     
@@ -200,7 +199,7 @@
     // and should be removed in a post-import cleanup
     NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
                                                                                       andViewId: kChannelsViewId
-                                                                         inManagedObjectContext: self.importManagedObjectContext];
+                                                                         inManagedObjectContext: importManagedObjectContext];
     
     
     // === Main Processing === //
@@ -209,7 +208,7 @@
     for (NSDictionary *itemDictionary in itemArray)
         if ([itemDictionary isKindOfClass: [NSDictionary class]])
             [Channel instanceFromDictionary: itemDictionary
-                  usingManagedObjectContext: self.importManagedObjectContext
+                  usingManagedObjectContext: importManagedObjectContext
                         ignoringObjectTypes: kIgnoreNothing
                                   andViewId: kChannelsViewId];
     
@@ -219,7 +218,7 @@
     
     // Now remove any objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: self.importManagedObjectContext];
+              inManagedObjectContext: importManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -234,7 +233,7 @@
 {
     NSError* error;
     
-    if([self.importManagedObjectContext save:&error])
+    if([importManagedObjectContext save:&error])
         return YES;
     
     // else...

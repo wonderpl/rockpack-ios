@@ -300,7 +300,7 @@
 
 -(void)reloadCollectionViews
 {
-    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerSortDescriptors'");
+    AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
 
 // Generalised version of channelFetchedResultsController, you can override the predicate and sort descriptors

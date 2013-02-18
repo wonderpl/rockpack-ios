@@ -55,7 +55,6 @@
 {
     [super viewWillAppear: animated];
     
-    
     [appDelegate.networkEngine updateChannelsScreenForCategory:@"all"];
 }
 
