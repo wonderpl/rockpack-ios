@@ -58,6 +58,7 @@
         self.secondaryTabsBGView = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryTabsBGView.backgroundColor = [UIColor colorWithPatternImage:secondaryTabsBGImage];
         self.secondaryTabsBGView.userInteractionEnabled = NO;
+        self.secondaryTabsBGView.alpha = 0.0;
         
         CGRect masterFrame = CGRectMake(0.0, 0.0, size.width, mainFrame.size.height + secondaryFrame.size.height);
         self.frame = masterFrame;
@@ -168,6 +169,7 @@
     
     [UIView animateWithDuration:0.7 animations:^{
         self.secondaryTabsView.alpha = 1.0;
+        self.secondaryTabsBGView.alpha = 1.0;
     }];
         
 

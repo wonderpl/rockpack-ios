@@ -13,7 +13,9 @@
 #import "SYNCategoriesTabView.h"
 
 @interface SYNAbstractTopTabViewController : SYNAbstractViewController <SYNTabViewDelegate> {
-@protected SYNCategoriesTabView* tabView;
+@protected
+    SYNCategoriesTabView* tabView;
+    BOOL tabExpanded;
 }
 
 

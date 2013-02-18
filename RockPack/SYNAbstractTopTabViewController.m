@@ -34,9 +34,6 @@
     
     
     [self createTab];
-    
-    
-
 }
 
 
@@ -45,17 +42,18 @@
 {
     
 }
+
+
 -(void)createTab
 {
     
-    
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
-                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
+                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"uniqueId" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"uniqueId" ascending:YES];
     [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
     
     
@@ -69,7 +67,7 @@
         
         [appDelegate.networkEngine updateCategoriesOnCompletion:^{
             [self createTab];
-        } onError:^(NSError* error){
+        } onError:^(NSError* error) {
             DebugLog(@"%@", [error debugDescription]);
         }];
         return;
@@ -82,7 +80,7 @@
     tabView.tapDelegate = self;
     [self.view addSubview:tabView];
     
-    
+    tabExpanded = NO;
     
     
 }
@@ -124,6 +122,8 @@
     Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
     
     [tabView createSubcategoriesTab:categoryTapped.subcategories];
+    
+    
     
     
 }

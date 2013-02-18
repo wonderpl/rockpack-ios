@@ -16,7 +16,6 @@
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
 #import "SYNBottomTabViewController.h"
-//#import "SYNChannelSelectorCell.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
@@ -152,7 +151,7 @@
         standardFlowLayout.minimumInteritemSpacing = 0.0f;
         standardFlowLayout.minimumLineSpacing = 15.0f;
         standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-         standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
         
 //        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(10, 26, 478, 73)
 //                                                          collectionViewLayout: standardFlowLayout];

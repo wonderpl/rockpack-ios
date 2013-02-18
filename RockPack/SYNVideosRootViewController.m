@@ -153,12 +153,11 @@
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                   ascending: YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES];
     return @[sortDescriptor];
 }
 
-- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
+- (NSString *)videoInstanceFetchedResultsControllerSectionNameKeyPath
 {
     //    return @"daysAgo";
     return nil;
