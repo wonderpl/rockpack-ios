@@ -66,6 +66,8 @@
     _videoQueueAnimationTimer = timer;
 }
 
+
+
 #pragma mark - View lifecycle
 
 - (void) viewDidLoad
@@ -215,20 +217,7 @@
 
 #pragma mark - Core Data support
 
-// Single cached MOC for all the view controllers
-- (NSManagedObjectContext *) mainManagedObjectContext
-{
-    static dispatch_once_t onceQueue;
-    static NSManagedObjectContext *mainManagedObjectContext = nil;
-    
-    dispatch_once(&onceQueue, ^
-                  {
-                      
-                      mainManagedObjectContext = appDelegate.mainManagedObjectContext;
-                  });
-    
-    return mainManagedObjectContext;
-}
+
 
 
 // Generalised version of videoInstanceFetchedResultsController, you can override the predicate and sort descriptors
@@ -247,7 +236,7 @@
     
     // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: self.mainManagedObjectContext];
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     // Add any sort descriptors and predicates
     fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
@@ -256,7 +245,7 @@
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                             managedObjectContext: self.mainManagedObjectContext
+                                                                             managedObjectContext: appDelegate.mainManagedObjectContext
                                                                                sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
                                                                                         cacheName: nil];
     _videoInstanceFetchedResultsController.delegate = self;
@@ -270,27 +259,48 @@
 {
     NSLog (@"controller updated");
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kDataUpdated
-                                                        object: nil];
+    [self reloadCollectionViews];
 }
 
-// Abstract functions, should be overidden in subclasses
+
+
+#pragma mark - Abstract Accessors
+
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    AssertOrLog (@"videoInstanceFetchedResultsControllerPredicate:Abstract function called");
+    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerPredicate'");
     return nil;
 }
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
-    AssertOrLog (@"videoInstanceFetchedResultsControllerSortDescriptors:Abstract function called");
+    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerSortDescriptors'");
     return nil;
 }
 
-// No section name key path by default
 - (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
 {
+    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerSectionNameKeyPath'");
     return nil;
+}
+
+- (NSPredicate *) channelFetchedResultsControllerPredicate
+{
+    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerPredicate'");
+    return nil;
+}
+
+
+- (NSArray *) channelFetchedResultsControllerSortDescriptors
+{
+    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerSortDescriptors'");
+    return nil;
+}
+
+
+-(void)reloadCollectionViews
+{
+    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerSortDescriptors'");
 }
 
 // Generalised version of channelFetchedResultsController, you can override the predicate and sort descriptors
@@ -309,7 +319,7 @@
     
     // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: self.mainManagedObjectContext];
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     // Add any sort descriptors and predicates
     fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
@@ -318,7 +328,7 @@
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     self.channelFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                               managedObjectContext: self.mainManagedObjectContext
+                                                                               managedObjectContext: appDelegate.mainManagedObjectContext
                                                                                  sectionNameKeyPath: nil
                                                                                           cacheName: nil];
     _channelFetchedResultsController.delegate = self;
@@ -328,20 +338,6 @@
     return _channelFetchedResultsController;
 }
 
-
-// Abstract functions, should be overidden in subclasses
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    AssertOrLog (@"channelFetchedResultsControllerPredicate:Abstract function called");
-    return nil;
-}
-
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    AssertOrLog (@"channelFetchedResultsControllerSortDescriptors:Abstract function called");
-    return nil;
-}
 
 
 // Helper method: Save the current DB state

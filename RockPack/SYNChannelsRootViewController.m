@@ -55,11 +55,6 @@
 {
     [super viewWillAppear: animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
-    
     
     [appDelegate.networkEngine updateChannelsScreenForCategory:@"all"];
 }
@@ -69,9 +64,6 @@
 {
     [super viewWillDisappear: animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kDataUpdated
-                                                  object: nil];
 }
 
 

@@ -233,20 +233,18 @@
 -(BOOL)saveImportContext
 {
     NSError* error;
-    if (![self.importManagedObjectContext save:&error])
-    {
-        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-        
-        if ([detailedErrors count] > 0)
-        {
-            for(NSError* detailedError in detailedErrors)
-            {
-                DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-            }
-        }
-        return NO;
-    }
-    return YES;
+    
+    if([self.importManagedObjectContext save:&error])
+        return YES;
+    
+    // else...
+    NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+    if ([detailedErrors count] > 0)
+        for(NSError* detailedError in detailedErrors)
+            DebugLog(@"Import MOC Save Error (Detailed): %@", [detailedError userInfo]);
+    
+    
+    return NO;
 }
 
 

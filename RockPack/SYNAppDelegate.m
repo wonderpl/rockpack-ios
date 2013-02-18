@@ -129,16 +129,12 @@
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
     ZAssert(persistentStoreCoordinator, @"Failed to initialize persistent store coordinator");
     
-    NSManagedObjectContext *privateManagedObjectContext = nil;
-    privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
-    privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
+    self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
+    self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
-    NSManagedObjectContext *mainManagedObjectContext = nil;
-    mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
-    mainManagedObjectContext.parentContext = privateManagedObjectContext;
+    self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
     
-    self.privateManagedObjectContext = privateManagedObjectContext;
-    self.mainManagedObjectContext = mainManagedObjectContext;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
@@ -189,14 +185,12 @@
     });
 }
 
-// This is the new and improved saveContext.
-// The mainManagedObjectContexts is saved first (if dirty), which propogates any chances to the privateManagedObjectContext, which is performed on the main
-// thread, but causes minimal UI blocking as hopefully v. quick.
-// Then the privateManagedObjectContext is saved, on a background thread, which should not cause UI blocking
+// Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
 {
     // If we don't have a valid MOC, then bail
-    if (nil == self.mainManagedObjectContext) return;
+    if (nil == self.mainManagedObjectContext)
+        return;
     
     if ([self.mainManagedObjectContext hasChanges])
     {

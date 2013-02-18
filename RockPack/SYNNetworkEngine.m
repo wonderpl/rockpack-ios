@@ -46,7 +46,7 @@
         
         self.registry = [[SYNRegistry alloc] initWithManagedObjectContext:nil];
         
-        // This engine is about requesting JSOn objects
+        // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
     }
 
@@ -91,9 +91,7 @@
     } errorHandler:errorBlock];
     
     
-    [self enqueueOperation: networkOperation];
-    
-    
+    [self enqueueOperation:networkOperation];
     
 
 }
@@ -147,8 +145,6 @@
     } errorHandler:^(NSError* error) {
         AssertOrLog(@"Update Videos Screens Request Failed");
     }];
-    
-    
     
     
     [self enqueueOperation: networkOperation];
