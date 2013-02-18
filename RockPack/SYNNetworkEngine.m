@@ -114,7 +114,7 @@
         completionBlock();
         
     } errorHandler:^(NSError* error) {
-        AssertOrLog(@"API request failed");
+        DebugLog(@"API request failed");
     }];
     
     
@@ -143,7 +143,7 @@
         [self.appDelegate saveContext: TRUE];
         
     } errorHandler:^(NSError* error) {
-        AssertOrLog(@"Update Videos Screens Request Failed");
+        DebugLog(@"Update Videos Screens Request Failed");
     }];
     
     
@@ -167,7 +167,7 @@
         [self.appDelegate saveContext: TRUE];
         
     } errorHandler:^(NSError* error) {
-        AssertOrLog(@"Update Channel Screens Request Failed");
+        DebugLog(@"Update Channel Screens Request Failed");
     }];
     
     [self enqueueOperation: networkOperation];
@@ -199,7 +199,7 @@
         
         
     } errorHandler:^(NSError* error) {
-        AssertOrLog(@"Update Channel Screens Request Failed");
+        DebugLog(@"Update Channel Screens Request Failed");
     }];
     
     [self enqueueOperation: networkOperation];
