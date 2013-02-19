@@ -38,6 +38,20 @@
     // We need to start off with the DONE button visible as user may choose not to customise anything
     self.doneButton.hidden = FALSE;
     self.saveOrDoneButtonLabel.text = NSLocalizedString(@"DONE", @"Save / Done button");
+    
+    // Need also to hide our carousel
+    
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelCoverCarouselCollectionView.alpha = 0.0f;
+         self.selectACoverLabel.alpha = 0.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 - (void) showSaveButton
@@ -66,7 +80,8 @@
      {
          self.changeCoverButton.alpha = 1.0f;
          self.changeCoverLabel.alpha = 1.0f;
-         self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.channelCoverCarouselCollectionView.alpha = 0.0f;
+         self.selectACoverLabel.alpha = 0.0f;
      }
                      completion: ^(BOOL finished)
      {
@@ -235,12 +250,14 @@
 {
     self.channelCoverCarouselCollectionView.hidden = FALSE;
     self.channelCoverCarouselCollectionView.alpha = 0.0f;
+    self.selectACoverLabel.alpha = 0.0f;
     [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
          self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.selectACoverLabel.alpha = 1.0f;
          self.channelTitleHighlightImageView.alpha = 1.0f;
          self.changeCoverButton.alpha = 0.0;
          self.changeCoverLabel.alpha = 0.0;

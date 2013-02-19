@@ -81,6 +81,14 @@
     self.changeCoverLabel.layer.shadowOpacity = 1.0;
     self.changeCoverLabel.layer.shadowOffset = CGSizeZero;
     self.changeCoverLabel.layer.masksToBounds = NO;
+    
+    self.selectACoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    
+    self.selectACoverLabel.layer.shadowColor = [color CGColor];
+    self.selectACoverLabel.layer.shadowRadius = 7.0f;
+    self.selectACoverLabel.layer.shadowOpacity = 1.0;
+    self.selectACoverLabel.layer.shadowOffset = CGSizeZero;
+    self.selectACoverLabel.layer.masksToBounds = NO;
 
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
