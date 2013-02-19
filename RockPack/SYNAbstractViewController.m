@@ -53,7 +53,6 @@
 
 // Need to explicitly synthesise these as we are using the real ivars below
 @synthesize channelFetchedResultsController = _channelFetchedResultsController;
-@synthesize mainManagedObjectContext = _mainManagedObjectContext;
 @synthesize videoInstanceFetchedResultsController = _videoInstanceFetchedResultsController;
 
 #pragma mark - Custom accessor methods
@@ -344,7 +343,7 @@
 {
     NSError *error = nil;
     
-    if (![self.mainManagedObjectContext save: &error])
+    if (![appDelegate.mainManagedObjectContext save: &error])
     {
         NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
         
@@ -732,7 +731,7 @@
 - (IBAction) createChannelFromVideoQueue
 {
     
-    Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
+    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     newChannel.channelOwner = appDelegate.channelOwnerMe;
     

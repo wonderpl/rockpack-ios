@@ -28,6 +28,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *userAvatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelDescriptionHightlightView;
 @property (nonatomic, strong) IBOutlet UILabel *changeCoverLabel;
+@property (nonatomic, strong) IBOutlet UILabel *selectACoverLabel;
 @property (nonatomic, strong) IBOutlet UILabel *saveOrDoneButtonLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *headerBarView;
