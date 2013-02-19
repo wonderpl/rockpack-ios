@@ -15,6 +15,7 @@
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 
 @interface SYNYouRootViewController ()
 
