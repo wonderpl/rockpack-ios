@@ -105,7 +105,7 @@
     
     // Friends tab
     SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] init];
-    
+    // TODO: Nest Friends Bar
     // Using new array syntax
     self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
