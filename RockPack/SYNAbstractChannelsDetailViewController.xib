@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3103</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -47,10 +47,6 @@
 						<string key="NSFrame">{{0, 115}, {1024, 571}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-<<<<<<< HEAD
-=======
-						<reference key="NSNextKeyView" ref="621335574"/>
->>>>>>> origin/develop
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">2</int>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -61,11 +57,7 @@
 						<string key="NSFrame">{{0, 44}, {1024, 73}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-<<<<<<< HEAD
 						<reference key="NSNextKeyView" ref="621335574"/>
-=======
-						<reference key="NSNextKeyView" ref="317724372"/>
->>>>>>> origin/develop
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -90,10 +82,7 @@
 						<string key="NSFrame">{{0, 44}, {72, 72}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-<<<<<<< HEAD
 						<reference key="NSNextKeyView" ref="317724372"/>
-=======
->>>>>>> origin/develop
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -325,11 +314,7 @@
 										<string key="NSFrame">{{62, 42}, {860, 195}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
 										<reference key="NSWindow"/>
-<<<<<<< HEAD
 										<reference key="NSNextKeyView" ref="950684700"/>
-=======
-										<reference key="NSNextKeyView" ref="960321968"/>
->>>>>>> origin/develop
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="381457900"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -1198,248 +1183,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractChannelsDetailsEditViewController</string>
 					<string key="superclassName">SYNAbstractChannelsDetailViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="userTouchedChangeCoverButton:">id</string>
-						<string key="userTouchedDoneButton:">id</string>
-						<string key="userTouchedSaveButton:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="userTouchedChangeCoverButton:">
-							<string key="name">userTouchedChangeCoverButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedDoneButton:">
-							<string key="name">userTouchedDoneButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedSaveButton:">
-							<string key="name">userTouchedSaveButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNAbstractChannelsDetailsEditViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNAbstractViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="animatedPopViewController">id</string>
-						<string key="dismissVideoViewer">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="animatedPopViewController">
-							<string key="name">animatedPopViewController</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="dismissVideoViewer">
-							<string key="name">dismissVideoViewer</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="channelNameTextField">UITextField</string>
-						<string key="channelOverlayView">UIImageView</string>
-						<string key="videoQueueCollectionView">UICollectionView</string>
-						<string key="videoThumbnailCollectionView">UICollectionView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="channelNameTextField">
-							<string key="name">channelNameTextField</string>
-							<string key="candidateClassName">UITextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelOverlayView">
-							<string key="name">channelOverlayView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="videoQueueCollectionView">
-							<string key="name">videoQueueCollectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="videoThumbnailCollectionView">
-							<string key="name">videoThumbnailCollectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNAbstractViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNChannelsDetailViewController</string>
-					<string key="superclassName">SYNAbstractChannelsDetailsEditViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">userTouchedEditButton:</string>
-						<string key="NS.object.0">UIButton</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">userTouchedEditButton:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">userTouchedEditButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNChannelsDetailViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNTextField</string>
-					<string key="superclassName">UITextField</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNTextField.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewFlowLayout</string>
-					<string key="superclassName">UICollectionViewLayout</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
-<<<<<<< HEAD
-=======
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNAbstractChannelsDetailViewController</string>
-					<string key="superclassName">SYNAbstractViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">userTouchedChangeCoverButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="changeCoverButton">UIButton</string>
-						<string key="changeCoverLabel">UILabel</string>
-						<string key="channelChooserView">UIView</string>
-						<string key="channelCoverCarouselCollectionView">UICollectionView</string>
-						<string key="channelDescriptionHightlightView">UIImageView</string>
-						<string key="channelTitleHighlightImageView">UIImageView</string>
-						<string key="channelTitleTextField">SYNTextField</string>
-						<string key="channelWallpaperImageView">UIImageView</string>
-						<string key="coverSelectionView">UIView</string>
-						<string key="doneButton">UIButton</string>
-						<string key="editButton">UIButton</string>
-						<string key="headerBarView">UIView</string>
-						<string key="panelCoverSelectionView">UIView</string>
-						<string key="saveButton">UIButton</string>
-						<string key="saveOrDoneButtonLabel">UILabel</string>
-						<string key="shareButton">UIButton</string>
-						<string key="slideView">UIView</string>
-						<string key="textPanelView">UIView</string>
-						<string key="userAvatarImageView">UIImageView</string>
-						<string key="userNameLabel">UILabel</string>
-						<string key="videoThumbnailCollectionView">UICollectionView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="changeCoverButton">
-							<string key="name">changeCoverButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="changeCoverLabel">
-							<string key="name">changeCoverLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelChooserView">
-							<string key="name">channelChooserView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelCoverCarouselCollectionView">
-							<string key="name">channelCoverCarouselCollectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelDescriptionHightlightView">
-							<string key="name">channelDescriptionHightlightView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelTitleHighlightImageView">
-							<string key="name">channelTitleHighlightImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelTitleTextField">
-							<string key="name">channelTitleTextField</string>
-							<string key="candidateClassName">SYNTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelWallpaperImageView">
-							<string key="name">channelWallpaperImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="coverSelectionView">
-							<string key="name">coverSelectionView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="doneButton">
-							<string key="name">doneButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="editButton">
-							<string key="name">editButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="headerBarView">
-							<string key="name">headerBarView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="panelCoverSelectionView">
-							<string key="name">panelCoverSelectionView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="saveButton">
-							<string key="name">saveButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="saveOrDoneButtonLabel">
-							<string key="name">saveOrDoneButtonLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="shareButton">
-							<string key="name">shareButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="slideView">
-							<string key="name">slideView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="textPanelView">
-							<string key="name">textPanelView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="userAvatarImageView">
-							<string key="name">userAvatarImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="userNameLabel">
-							<string key="name">userNameLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="videoThumbnailCollectionView">
-							<string key="name">videoThumbnailCollectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SYNAbstractChannelsDetailViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SYNAbstractChannelsDetailsEditViewController</string>
-					<string key="superclassName">SYNAbstractChannelsDetailViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNAbstractChannelsDetailsEditViewController.h</string>
@@ -1517,7 +1260,6 @@
 				</object>
 			</array>
 		</object>
->>>>>>> origin/develop
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
