@@ -87,7 +87,13 @@
     
     
 }
-
+-(void)makeFaded
+{
+    self.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor lightGrayColor];
+    label.layer.shadowColor = [[UIColor clearColor] CGColor];
+    topGlowImageView.hidden = YES;
+}
 -(void)makeStandard
 {
     self.backgroundColor = [UIColor clearColor];

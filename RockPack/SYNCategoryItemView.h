@@ -25,6 +25,7 @@ typedef enum {
 - (id)initWithTabItemModel:(TabItem*)tabItemModel andFrame:(CGRect)frame;
 -(void)makeHighlightedWithImage:(BOOL)withImage;
 
+-(void)makeFaded;
 
 -(void)makeStandard;
 

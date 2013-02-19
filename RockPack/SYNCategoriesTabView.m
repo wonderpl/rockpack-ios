@@ -190,7 +190,7 @@
     SYNCategoryItemView* itemView;
     
     for(SYNCategoryItemView* itemView in self.mainTabsView.subviews)
-        [itemView makeStandard];
+        [itemView makeFaded];
     
     
     
