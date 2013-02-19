@@ -75,23 +75,4 @@
     [self.videoThumbnailCollectionView reloadData];
 }
 
-- (IBAction) userTouchedEditButton: (id) sender
-{
-    // Hide share button (as that is where the save / done buttons appear
-    self.shareButton.hidden = TRUE;
-    
-    // Hide save or done buttons and hide cover selection carousel
-    self.saveOrDoneButtonLabel.hidden = FALSE;
-    self.doneButton.hidden = FALSE;
-    self.coverSelectionView.hidden = FALSE;
-    
-    // Remove text field highlightes
-    self.channelTitleHighlightImageView.hidden = FALSE;
-    self.channelDescriptionHightlightView.hidden = FALSE;
-    
-    // Disable text fields until edit button selected
-    self.channelTitleTextField.enabled = TRUE;
-    self.collectionHeaderView.channelDescriptionTextView.editable = TRUE;
-}
-
 @end

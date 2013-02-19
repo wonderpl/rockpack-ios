@@ -47,7 +47,6 @@
 						<string key="NSFrame">{{0, 115}, {1024, 571}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">2</int>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -315,7 +314,7 @@
 										<string key="NSFrame">{{62, 42}, {860, 195}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="512185905"/>
+										<reference key="NSNextKeyView" ref="950684700"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="381457900"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -348,30 +347,30 @@
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAxIDEAA</bytes>
-											<object class="NSColorSpace" key="NSCustomColorSpace" id="1016233054">
+											<object class="NSColorSpace" key="NSCustomColorSpace" id="90299402">
 												<int key="NSID">1</int>
 											</object>
 										</object>
 										<nil key="IBUIHighlightedColor"/>
-										<object class="NSColor" key="IBUIShadowColor" id="672568805">
+										<object class="NSColor" key="IBUIShadowColor" id="549754493">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MAA</bytes>
 										</object>
 										<string key="IBUIShadowOffset">{0, 0}</string>
 										<int key="IBUIBaselineAdjustment">0</int>
 										<int key="IBUITextAlignment">1</int>
-										<object class="IBUIFontDescription" key="IBUIFontDescription" id="939012570">
+										<object class="IBUIFontDescription" key="IBUIFontDescription" id="689914523">
 											<int key="type">2</int>
 											<double key="pointSize">24</double>
 										</object>
-										<object class="NSFont" key="IBUIFont" id="834677704">
+										<object class="NSFont" key="IBUIFont" id="882029718">
 											<string key="NSName">Helvetica-Bold</string>
 											<double key="NSSize">24</double>
 											<int key="NSfFlags">16</int>
 										</object>
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
-									<object class="IBUILabel" id="512185905">
+									<object class="IBUILabel" id="950684700">
 										<reference key="NSNextResponder" ref="993763524"/>
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{407, 17}, {211, 29}}</string>
@@ -389,15 +388,15 @@
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAxIDEAA</bytes>
-											<reference key="NSCustomColorSpace" ref="1016233054"/>
+											<reference key="NSCustomColorSpace" ref="90299402"/>
 										</object>
 										<nil key="IBUIHighlightedColor"/>
-										<reference key="IBUIShadowColor" ref="672568805"/>
+										<reference key="IBUIShadowColor" ref="549754493"/>
 										<string key="IBUIShadowOffset">{0, 0}</string>
 										<int key="IBUIBaselineAdjustment">0</int>
 										<int key="IBUITextAlignment">1</int>
-										<reference key="IBUIFontDescription" ref="939012570"/>
-										<reference key="IBUIFont" ref="834677704"/>
+										<reference key="IBUIFontDescription" ref="689914523"/>
+										<reference key="IBUIFont" ref="882029718"/>
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
 									<object class="IBUIButton" id="960321968">
@@ -711,7 +710,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">selectACoverLabel</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="512185905"/>
+						<reference key="destination" ref="950684700"/>
 					</object>
 					<int key="connectionID">145</int>
 				</object>
@@ -927,7 +926,7 @@
 							<reference ref="960321968"/>
 							<reference ref="802725534"/>
 							<reference ref="245815771"/>
-							<reference ref="512185905"/>
+							<reference ref="950684700"/>
 						</array>
 						<reference key="parent" ref="13768505"/>
 						<string key="objectName">View - Cover selection</string>
@@ -981,7 +980,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">144</int>
-						<reference key="object" ref="512185905"/>
+						<reference key="object" ref="950684700"/>
 						<reference key="parent" ref="993763524"/>
 					</object>
 				</array>
@@ -1257,6 +1256,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelsDetailViewController</string>
 					<string key="superclassName">SYNAbstractChannelsDetailsEditViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">userTouchedEditButton:</string>
+						<string key="NS.object.0">UIButton</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">userTouchedEditButton:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">userTouchedEditButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNChannelsDetailViewController.h</string>
