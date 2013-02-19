@@ -186,7 +186,7 @@
     
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularChannels params:[self getLocalParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularChannels params: parameters];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
 

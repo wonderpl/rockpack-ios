@@ -37,12 +37,6 @@
         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
         importManagedObjectContext.parentContext = self.appDelegate.mainManagedObjectContext;
         
-        // Cache frequently used vars
-        self.videoInstanceEntity = [NSEntityDescription entityForName: @"VideoInstance"
-                                               inManagedObjectContext: importManagedObjectContext];
-        
-        self.channelEntity = [NSEntityDescription entityForName: @"Channel"
-                                         inManagedObjectContext: importManagedObjectContext];
     }
     
     return self;

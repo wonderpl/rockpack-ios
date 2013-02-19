@@ -53,11 +53,15 @@
         UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
         CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height, size.width, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
+        
         self.secondaryDividerOverlay = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryDividerOverlay.userInteractionEnabled = NO;
+        self.secondaryDividerOverlay.alpha = 0.0;
+        
         self.secondaryTabsBGView = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryTabsBGView.backgroundColor = [UIColor colorWithPatternImage:secondaryTabsBGImage];
         self.secondaryTabsBGView.userInteractionEnabled = NO;
+        self.secondaryTabsBGView.alpha = 0.0;
         
         CGRect masterFrame = CGRectMake(0.0, 0.0, size.width, mainFrame.size.height + secondaryFrame.size.height);
         self.frame = masterFrame;
@@ -165,10 +169,13 @@
             
     }
     
-    
-    [UIView animateWithDuration:0.7 animations:^{
+    [UIView animateWithDuration:0.6 delay:0.2 options:UIViewAnimationCurveEaseOut animations:^{
         self.secondaryTabsView.alpha = 1.0;
-    }];
+        self.secondaryTabsBGView.alpha = 1.0;
+        self.secondaryDividerOverlay.alpha = 1.0;
+    } completion:^(BOOL result){}];
+    
+    
         
 
 }
