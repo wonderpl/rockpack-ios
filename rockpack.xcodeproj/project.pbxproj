@@ -429,6 +429,7 @@
 		BE08159B16D3CF9F00ADB1DC /* SYNSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE08159916D3CF9F00ADB1DC /* SYNSearchViewController.xib */; };
 		BE08159F16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */; };
 		BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A116D4DADA00ADB1DC /* SYNTabView.m */; };
+		BE0815A516D4E53600ADB1DC /* SYNTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -950,6 +951,8 @@
 		BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesBarViewController.m; sourceTree = "<group>"; };
 		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
 		BE0815A116D4DADA00ADB1DC /* SYNTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabView.m; sourceTree = "<group>"; };
+		BE0815A316D4E53500ADB1DC /* SYNTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabViewController.h; sourceTree = "<group>"; };
+		BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabViewController.m; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -1328,18 +1331,18 @@
 			name = You;
 			sourceTree = "<group>";
 		};
-		0142ED9216B1C914008694DA /* Categories Bar Views */ = {
+		0142ED9216B1C914008694DA /* Categories Tab */ = {
 			isa = PBXGroup;
 			children = (
-				BE0815A016D4DADA00ADB1DC /* SYNTabView.h */,
-				BE0815A116D4DADA00ADB1DC /* SYNTabView.m */,
+				BE08159D16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.h */,
+				BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */,
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
 				BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */,
 				BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */,
 				BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */,
 				BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */,
 			);
-			name = "Categories Bar Views";
+			name = "Categories Tab";
 			sourceTree = "<group>";
 		};
 		0142ED9316B1D72B008694DA /* Video queue */ = {
@@ -1548,7 +1551,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BE08159C16D3D7E300ADB1DC /* Categories Bar */,
+				BE08159C16D3D7E300ADB1DC /* Top Tab View Controller */,
 				0162285316C2AA7F008D1587 /* Miscellaneous */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
@@ -2187,14 +2190,16 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE08159C16D3D7E300ADB1DC /* Categories Bar */ = {
+		BE08159C16D3D7E300ADB1DC /* Top Tab View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				0142ED9216B1C914008694DA /* Categories Bar Views */,
-				BE08159D16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.h */,
-				BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */,
+				BE0815A316D4E53500ADB1DC /* SYNTabViewController.h */,
+				BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */,
+				BE0815A016D4DADA00ADB1DC /* SYNTabView.h */,
+				BE0815A116D4DADA00ADB1DC /* SYNTabView.m */,
+				0142ED9216B1C914008694DA /* Categories Tab */,
 			);
-			name = "Categories Bar";
+			name = "Top Tab View Controller";
 			sourceTree = "<group>";
 		};
 		BE95B90016CBAAD500EC2E72 /* Categories */ = {
@@ -2716,6 +2721,7 @@
 				BE08159A16D3CF9F00ADB1DC /* SYNSearchViewController.m in Sources */,
 				BE08159F16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m in Sources */,
 				BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */,
+				BE0815A516D4E53600ADB1DC /* SYNTabViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

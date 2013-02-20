@@ -13,14 +13,10 @@
 @interface SYNCategoriesTabView : SYNTabView
 
 
-@property (nonatomic, weak) id<SYNTabViewDelegate> tapDelegate;
 
 
 
 -(id)initWithSize:(CGFloat)totalWidth;
 
--(void)createCategoriesTab:(NSArray*)categories;
-
--(void)createSubcategoriesTab:(NSSet*)subcategories;
 
 @end

@@ -25,8 +25,6 @@
 
 @implementation SYNCategoriesTabView
 
-@synthesize tapDelegate;
-
 
 
 

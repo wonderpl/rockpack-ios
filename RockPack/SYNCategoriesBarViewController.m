@@ -7,10 +7,11 @@
 //
 
 #import "SYNCategoriesBarViewController.h"
-#import "SYNCategoriesTabView.h"
 #import <CoreData/CoreData.h>
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
+#import "SYNCategoryItemView.h"
+#import "Category.h"
 
 @interface SYNCategoriesBarViewController ()
 
@@ -20,12 +21,15 @@
 
 
 
+
 -(void)loadView
 {
     // Calculate height
     
+    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize:1024.0];
+    categoriesTabView.tapDelegate = self;
     
-    self.view = [[SYNCategoriesTabView alloc] initWithSize:1024.0];
+    self.view = categoriesTabView;
     self.view.frame = CGRectMake(0.0, 44.0, self.view.frame.size.width, self.view.frame.size.height);
     
     [self loadCategories];
@@ -66,8 +70,59 @@
         return;
     }
     
-    [((SYNCategoriesTabView*)self.view) createCategoriesTab:matchingCategoryInstanceEntries];
+    [self.tabView createCategoriesTab:matchingCategoryInstanceEntries];
 
 }
+
+#pragma mark - TabView Delagate methods
+
+-(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity:categoryEntity];
+    
+    //DebugLog(@"Tag clicked : %d", tab.tag);
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
+    [categoriesFetchRequest setPredicate: predicate];
+    
+    NSError* error = nil;
+    
+    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                                   error: &error];
+    
+    if(matchingCategoryInstanceEntries.count == 0)
+    {
+        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
+        return;
+    }
+    
+    if (matchingCategoryInstanceEntries.count > 1)
+    {
+        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
+        
+    }
+    
+    Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
+    
+    [self.tabView createSubcategoriesTab:categoryTapped.subcategories];
+    
+    [self.delegate handleMainTap:recogniser];
+    
+}
+
+-(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
+{
+    [self.delegate handleSecondaryTap:recogniser];
+}
+
+
 
 @end

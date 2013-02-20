@@ -11,18 +11,19 @@
 #import "SYNAbstractViewController.h"
 #import "SYNTabViewDelegate.h"
 #import "SYNCategoriesTabView.h"
+#import "SYNCategoriesBarViewController.h"
+#import "SYNTabViewController.h"
+#import "SYNTabView.h"
 
 @interface SYNAbstractTopTabViewController : SYNAbstractViewController <SYNTabViewDelegate> {
-@protected
-    
-    BOOL tabExpanded;
+    @protected BOOL tabExpanded;
+    @protected SYNTabViewController* tabViewController;
 }
 
-@property (nonatomic, strong) SYNCategoriesTabView* tabView;
+@property (nonatomic, strong) SYNTabViewController* tabViewController;
 
 - (void) highlightTab: (int) tabIndex;
 -(void)handleNewTabSelectionWithId:(NSString*)selectionId;
 
--(void)createTab;
 
 @end

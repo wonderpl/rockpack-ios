@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SYNTabViewDelegate.h"
 
-@interface SYNCategoriesBarViewController : UIViewController {
-    id <SYNTabViewDelegate> delegate;
-}
+#import "SYNTabViewController.h"
+
+@interface SYNCategoriesBarViewController : SYNTabViewController 
 
 @end

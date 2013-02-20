@@ -12,6 +12,8 @@
 
 @implementation SYNTabView
 
+@synthesize tapDelegate;
+
 -(id)initWithSize:(CGFloat)totalWidth
 {
     self = [super initWithFrame:CGRectMake(0.0, 0.0, totalWidth, kDefaultTabsHeight)];
@@ -23,10 +25,23 @@
 }
 
 
+#pragma mark - Tab View Delegate Methods
+
 -(void)handleMainTap:(UITapGestureRecognizer*)recogniser {
     // implement in subclass
 }
 -(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser {
+    // implement in subclass
+}
+
+
+#pragma mark - Basic Categories creation
+
+-(void)createCategoriesTab:(NSArray*)categories {
+    // implement in subclass
+}
+
+-(void)createSubcategoriesTab:(NSSet*)subcategories {
     // implement in subclass
 }
 

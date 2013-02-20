@@ -84,6 +84,7 @@
     
     // Channels tab
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] init];
+    channelsRootViewController.tabViewController = [[SYNCategoriesBarViewController alloc] init];
     UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
     channelsRootNavigationViewController.navigationBarHidden = TRUE;
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
@@ -91,6 +92,7 @@
     
     // Discover tab
     SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] init];
+    videosRootViewController.tabViewController = [[SYNCategoriesBarViewController alloc] init];
     UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
     videosRootNavigationViewController.navigationBarHidden = TRUE;
     videosRootNavigationViewController.view.autoresizesSubviews = TRUE;
