@@ -28,6 +28,7 @@
 
 -(void)loadView
 {
+    // Calculate height
     
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 44.0, tabsWidth, 50.0)];
     
@@ -68,9 +69,9 @@
         return;
     }
     
-    SYNCategoriesTabView* categoriesView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
+    //SYNCategoriesTabView* categoriesView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
     
-    [self.view addSubview:categoriesView];
+    //[self.view addSubview:categoriesView];
 }
 
 @end

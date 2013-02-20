@@ -31,7 +31,7 @@
 
 
 
--(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size
+-(id)initWithSize:(CGSize)size
 {
     
     
@@ -46,8 +46,7 @@
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
         self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
         
-        UIView* dividerOverlayView = [[UIView alloc] initWithFrame:mainFrame];
-        dividerOverlayView.userInteractionEnabled = NO;
+        
         
         // Bottom Bar //
         UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
@@ -73,42 +72,51 @@
         [self addSubview:self.secondaryDividerOverlay];
         [self addSubview:self.mainTabsView];
        
-        SYNCategoryItemView* tab = nil;
-        CGFloat nextOrigin = 0.0;
         
-        UITapGestureRecognizer *singleFingerTap = nil;
-        
-        CGFloat itemWidth = size.width / categories.count;
-        
-        CGRect itemFrame;
-        
-        CGFloat midMainFrame = self.mainTabsView.frame.size.height * 0.5;
-        
-        for (Category* category in categories)
-        {
-            itemFrame = CGRectMake(nextOrigin + 2.0, 0.0, itemWidth - 2.0, mainFrame.size.height);
-            itemFrame = CGRectIntegral(itemFrame);
-            
-            tab = [[SYNCategoryItemView alloc] initWithTabItemModel:category andFrame:itemFrame];
-            [self.mainTabsView addSubview:tab];
-            
-            
-            singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)];
-            [tab addGestureRecognizer:singleFingerTap];
-            
-            nextOrigin += itemWidth;
-            
-            UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopDivider.png"]];
-            dividerImageView.center = CGPointMake(nextOrigin, midMainFrame);
-            [dividerOverlayView addSubview:dividerImageView];
-            
-        }
-        
-        [self addSubview:dividerOverlayView];
         
         
     }
     return self;
+}
+
+
+-(void)createCategoriesTab:(NSArray*)categories
+{
+    SYNCategoryItemView* tab = nil;
+    CGFloat nextOrigin = 0.0;
+    
+    UIView* dividerOverlayView = [[UIView alloc] initWithFrame:self.mainTabsView.frame];
+    dividerOverlayView.userInteractionEnabled = NO;
+    
+    UITapGestureRecognizer *singleFingerTap = nil;
+    
+    CGFloat itemWidth = self.frame.size.width / categories.count;
+    
+    CGRect itemFrame;
+    
+    CGFloat midMainFrame = self.mainTabsView.frame.size.height * 0.5;
+    
+    for (Category* category in categories)
+    {
+        itemFrame = CGRectMake(nextOrigin + 2.0, 0.0, itemWidth - 2.0, self.mainTabsView.frame.size.height);
+        itemFrame = CGRectIntegral(itemFrame);
+        
+        tab = [[SYNCategoryItemView alloc] initWithTabItemModel:category andFrame:itemFrame];
+        [self.mainTabsView addSubview:tab];
+        
+        
+        singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)];
+        [tab addGestureRecognizer:singleFingerTap];
+        
+        nextOrigin += itemWidth;
+        
+        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopDivider.png"]];
+        dividerImageView.center = CGPointMake(nextOrigin, midMainFrame);
+        [dividerOverlayView addSubview:dividerImageView];
+        
+    }
+    
+    [self addSubview:dividerOverlayView];
 }
 
 -(void)createSubcategoriesTab:(NSSet*)subcategories

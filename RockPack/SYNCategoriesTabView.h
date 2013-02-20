@@ -16,7 +16,9 @@
 
 
 
--(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size;
+-(id)initWithSize:(CGSize)size;
+
+-(void)createCategoriesTab:(NSArray*)categories;
 
 -(void)createSubcategoriesTab:(NSSet*)subcategories;
 
