@@ -12,18 +12,18 @@
 @class SYNVideoPlaybackViewController;
 
 // Define our event callback delegate
-@protocol SYNYouTubeVideoViewControllerDelegate
+@protocol SYNVideoPlaybackViewControllerDelegate
 
-- (void) youTubeVideoViewController: (SYNVideoPlaybackViewController *) viewController
-               didReceiveEventNamed: (NSString *) eventName
-                          eventData: (NSString *) eventData;
+- (void) videoPlaybackViewController: (SYNVideoPlaybackViewController *) viewController
+                didReceiveEventNamed: (NSString *) eventName
+                           eventData: (NSString *) eventData;
 
 @end
 
 // Interfeace
 @interface SYNVideoPlaybackViewController : UIViewController
 
-@property (nonatomic, weak) id<SYNYouTubeVideoViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<SYNVideoPlaybackViewControllerDelegate> delegate;
 
 // Initialisation
 - (id) initWithSource: (NSString *) source
@@ -32,19 +32,22 @@
                height: (int) height
              autoPlay: (BOOL) autoPlay;
 
-- (id) initWithPlaylist: (NSArray *) playlist
-                width: (int) width
-               height: (int) height
-             autoPlay: (BOOL) autoPlay;
+- (id) initWithVideoInstances: (NSArray *) videoInstanceArray
+                        width: (int) width
+                       height: (int) height
+                     autoPlay: (BOOL) autoPlay;
 
 - (void) replaceCurrentSourceOrPlaylistWithSource: (NSString *) source
-                                         sourceId: (NSString *) sourceId;
+                                         sourceId: (NSString *) sourceId
+                                         autoPlay: (BOOL) autoPlay;
 
-- (void) replaceCurrentSourceOrPlaylistWithPlaylist: (NSArray *) playlist;
+- (void) replaceCurrentSourceOrPlaylistWithPlaylist: (NSArray *) playlist
+                                           autoPlay: (BOOL) autoPlay;
 
 
 // Player control
 - (void) play;
+- (void) playVideoAtIndex: (int) index;
 - (void) pause;
 - (void) stop;
 - (void) loadNextVideo;

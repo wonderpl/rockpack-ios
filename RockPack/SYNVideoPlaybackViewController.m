@@ -9,15 +9,19 @@
 #define kVideoBackgroundColour [UIColor blackColor]
 
 #import "SYNVideoPlaybackViewController.h"
+#import "VideoInstance.h"
+#import "Video.h"
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, strong) UIWebView *videoWebView;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSString *source;
-@property (nonatomic, strong) NSArray *playlist;
+@property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, assign) int videoIndex;
 @property (nonatomic, assign) int videoWidth;
 @property (nonatomic, assign) int videoHeight;
+@property (nonatomic, assign) BOOL autoPlay;
 
 @end
 
@@ -42,14 +46,14 @@
 }
 
 
-- (id) initWithPlaylist: (NSArray *) playlist
-                  width: (int) width
-                 height: (int) height
-               autoPlay: (BOOL) autoPlay
+- (id) initWithVideoInstances: (NSArray *) videoInstanceArray
+                        width: (int) width
+                       height: (int) height
+                     autoPlay: (BOOL) autoPlay
 {
     if ((self = [super init]))
     {
-        [self setupWithPlaylist: playlist];
+        [self setupWithVideoInstanceArray: videoInstanceArray];
     }
     
     return self;
@@ -59,26 +63,41 @@
 - (void) setupWithSource: (NSString *) source
                 sourceId: (NSString *) sourceId
 {
+    // Reset index
+    self.videoIndex = 0;
+    
+    // set sources
     self.source = source;
     self.sourceId = sourceId;
-    self.playlist = nil;
+    self.videoInstanceArray = nil;
 }
 
 
-- (void) setupWithPlaylist: (NSArray *) playlist
+- (void) setupWithVideoInstanceArray: (NSArray *) videoInstanceArray
 {
+    // Reset index
+    self.videoIndex = 0;
+    
+    // Set playlist
     self.source = nil;
     self.sourceId = nil;
-    self.playlist = playlist;
+    self.videoInstanceArray = videoInstanceArray;
 }
 
 
 #pragma mark - View lifecyle
 
+// Manually create our view
+- (void) loadView
+{
+    // Create a view of the appropriate size (clear at this stage)
+    self.view = [[UIView alloc] initWithFrame: CGRectMake (0, 0, self.videoWidth, self.videoHeight)];
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
     self.view.alpha = 0.0f;
@@ -103,35 +122,59 @@
 {
     [super viewWillAppear: animated];
     
-    [self loadWebViewWithPlayerWithSource: self.source
-                                 sourceId: self.sourceId];
-    
-//    [self loadWebViewWithJSAPIUsingYouTubeId: self.sourceId
-//                                       width: self.videoWidth
-//                                      height: self.videoHeight];
+    [self loadWebViewWithCurrentVideo];
 }
 
 
 #pragma mark - Source / Playlist management
 
+- (void) incrementVideoIndex
+{
+    // Don't bother incrementing index if we only have a single video
+    if (self.isUsingPlaylist)
+    {
+        // make sure we wrap around at the end of the video playlist
+        self.videoIndex = (self.videoIndex + 1) % self.videoInstanceArray.count;
+    }
+}
+
+
+- (void) decrementVideoIndex
+{
+    // Don't bother incrementing index if we only have a single video
+    if (self.isUsingPlaylist)
+    {
+        // make sure we wrap around at the end of the video playlist
+        self.videoIndex -= 1;
+        
+        if (self.videoIndex < 0)
+        {
+            self.videoIndex = self.videoInstanceArray.count - 1;
+        }
+    }
+}
+
+
 - (void) replaceCurrentSourceOrPlaylistWithSource: (NSString *) source
-                                         sourceId: (NSString *) sourceId;
+                                         sourceId: (NSString *) sourceId
+                                         autoPlay: (BOOL) autoPlay
 {
     [self setupWithSource: source
                  sourceId: sourceId];
 }
 
 
-- (void) replaceCurrentSourceOrPlaylistWithPlaylist: (NSArray *) playlist
+- (void) replaceCurrentSourceOrPlaylistWithPlaylist: (NSArray *) videoInstanceArray
+                                           autoPlay: (BOOL) autoPlay
 {
-    [self setupWithPlaylist: playlist];
+    [self setupWithVideoInstanceArray: videoInstanceArray];
 }
 
 
 // Returns true if we have a playlist
-- (BOOL) isPlaylist
+- (BOOL) isUsingPlaylist
 {
-    return self.playlist ? TRUE : FALSE;
+    return self.videoInstanceArray ? TRUE : FALSE;
 }
 
 
@@ -140,29 +183,54 @@
     [self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
 }
 
+- (void) playVideoAtIndex: (int) index
+{
+    // If we are already at this index, but not playing, then play
+    if (index == self.videoIndex)
+    {
+        if (!self.isPlaying)
+        {
+            [self play];
+        }
+    }
+    else
+    {
+        // OK, we are not currently playing this index, so segue to the next video
+        self.videoIndex = index;
+        
+        [self loadWebViewWithCurrentVideo];
+    }
+}
+
+
 - (void) pause
 {
     [self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
 }
+
 
 - (void) stop
 {
     [self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
 }
 
+
 - (void) loadNextVideo
 {
-    
+    [self incrementVideoIndex];
+    [self loadWebViewWithCurrentVideo];
 }
 
 - (void) loadPreviousVideo
 {
-    
+    [self decrementVideoIndex];
+    [self loadWebViewWithCurrentVideo];
 }
 
 - (void) seekInCurrentVideoToTime: (int) seconds
 {
-    
+    NSString *js = [NSString stringWithFormat: @"player.stopVideo(%d, TRUE);", seconds];
+    [self.videoWebView stringByEvaluatingJavaScriptFromString: js];
 }
 
 
@@ -191,13 +259,30 @@
 
 
 // Index of currently playing video (if using a playlist)
-- (int) playlistIndex
+- (BOOL) isPlaying
 {
-    return [[self.videoWebView stringByEvaluatingJavaScriptFromString: @"getPlaylistIndex();"] intValue];
+    return ([[self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue] == 1)
+            ? TRUE : FALSE;
 }
 
 
 #pragma mark - Video playback HTML creation
+
+- (void) loadWebViewWithCurrentVideo
+{
+    // Assume that we just have a single video as opposed to a playlist
+    NSString *currentSource = self.source;
+    NSString *currentSourceId = self.sourceId;
+    
+    // But if we do have a playlist, then load up the source and sourceId for the current video index
+    if (self.isUsingPlaylist)
+    {
+        VideoInstance *videoInstance = (VideoInstance *) self.videoInstanceArray[self.videoIndex];
+        currentSource = videoInstance.video.source;
+        currentSourceId = videoInstance.video.sourceId;
+    }
+}
+
 
 - (void) loadWebViewWithPlayerWithSource: (NSString *) source
                                 sourceId: (NSString *) sourceId
@@ -269,7 +354,7 @@
 {
     NSString *scheme = request.URL.scheme;
     
-    // If we have an event from the player, then handle it
+    // If we have an event from one of our players (as opposed to something else)
     if ([scheme isEqualToString: @"ytplayer"] || [scheme isEqualToString: @"vimeoplayer"])
     {
         // Split the URL up into it's componenents
@@ -321,7 +406,62 @@
 - (void) handleYouTubePlayerEventNamed: (NSString *) actionName
                              eventData: (NSString *) actionData
 {
-    
+    if ([actionName isEqualToString: @"ready"])
+    {
+        NSLog (@"*** YTPlayer: Ready");
+    }
+    else if ([actionName isEqualToString: @"stateChange"])
+    {
+        // Now handle the different state changes
+        if ([actionData isEqualToString: @"unstarted"])
+        {
+            
+        }
+        else if ([actionData isEqualToString: @"ended"])
+        {
+            
+        }
+        else if ([actionData isEqualToString: @"playing"])
+        {
+            
+        }
+        else if ([actionData isEqualToString: @"paused"])
+        {
+            
+        }
+        else if ([actionData isEqualToString: @"buffering"])
+        {
+            
+        }
+        else if ([actionData isEqualToString: @"cued"])
+        {
+            
+        }
+        else
+        {
+            AssertOrLog(@"Unexpected YTPlayer state change");
+        }
+    }
+    else if ([actionName isEqualToString: @"playbackQuality"])
+    {
+        
+    }
+    else if ([actionName isEqualToString: @"playbackRateChange"])
+    {
+        
+    }
+    else if ([actionName isEqualToString: @"error"])
+    {
+        
+    }
+    else if ([actionName isEqualToString: @"apiChange"])
+    {
+        
+    }
+    else
+    {
+        AssertOrLog(@"Unexpected YTPlayer event");
+    }
 }
 
 - (void) handleVimeoPlayerEventNamed: (NSString *) actionName
