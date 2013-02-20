@@ -7,6 +7,7 @@
 //
 
 #define kVideoBackgroundColour [UIColor blackColor]
+#define kBufferMonitoringTimerInterval 1.0f
 
 #import "SYNVideoPlaybackViewController.h"
 #import "VideoInstance.h"
@@ -21,6 +22,7 @@
 @property (nonatomic, assign) int videoIndex;
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) CGRect requestedFrame;
+@property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
 
 
 @end
@@ -288,7 +290,8 @@
     NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
                                                              encoding: NSUTF8StringEncoding
                                                                 error: &error];
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int)self.view.frame.size.width, (int)self.view.frame.size.height, sourceId];
+    
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
     
     [self.videoWebView loadHTMLString: iFrameHTML
                               baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
@@ -385,29 +388,30 @@
     
     if ([actionName isEqualToString: @"ready"])
     {
-        if (self.autoPlay == TRUE)
-        {
-            [self play];
-        }
+
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
         // Now handle the different state changes
         if ([actionData isEqualToString: @"unstarted"])
         {
-            
+            if (self.autoPlay == TRUE)
+            {
+                [self play];
+            }
         }
         else if ([actionData isEqualToString: @"ended"])
         {
-            
+            [self stopBufferMonitoringTimer];
+            [self loadNextVideo];
         }
         else if ([actionData isEqualToString: @"playing"])
         {
-            
+            [self startBufferMonitoringTimer];
         }
         else if ([actionData isEqualToString: @"paused"])
         {
-            
+            [self stopBufferMonitoringTimer];  
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
@@ -450,5 +454,33 @@
     
 }
 
+- (void) startBufferMonitoringTimer
+{
+    self.bufferMonitoringTimer = [NSTimer scheduledTimerWithTimeInterval: kBufferMonitoringTimerInterval
+                                                                  target: self
+                                                                selector: @selector(monitorBufferLevel)
+                                                                userInfo: nil
+                                                                 repeats: YES];
+    
+}
+
+
+- (void) stopBufferMonitoringTimer
+{
+    [self.bufferMonitoringTimer invalidate], self.bufferMonitoringTimer = nil;
+}
+
+
+- (void) monitorBufferLevel
+{
+    float bufferLevel = [self videoLoadedFraction];
+    
+    NSLog (@"Buffer Level %f", bufferLevel);
+    
+    if (bufferLevel == 1.0f)
+    {
+
+    }
+}
 
 @end
