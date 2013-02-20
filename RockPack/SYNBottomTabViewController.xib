@@ -213,7 +213,6 @@
 						<string key="NSFrame">{{819, 686}, {205, 62}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">104</int>
@@ -1047,6 +1046,12 @@
 						<string key="objectName">View - Top Buttons</string>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">123</int>
+						<reference key="object" ref="525110803"/>
+						<reference key="parent" ref="539251409"/>
+						<string key="objectName">Back button</string>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">44</int>
 						<reference key="object" ref="13664562"/>
 						<reference key="parent" ref="539251409"/>
@@ -1059,22 +1064,16 @@
 						<string key="objectName">Label - Number of messages</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">75</int>
-						<reference key="object" ref="507172389"/>
-						<reference key="parent" ref="539251409"/>
-						<string key="objectName">Button - Notifications</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">74</int>
 						<reference key="object" ref="455560408"/>
 						<reference key="parent" ref="539251409"/>
 						<string key="objectName">Label - Number of notifications</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">123</int>
-						<reference key="object" ref="525110803"/>
+						<int key="objectID">75</int>
+						<reference key="object" ref="507172389"/>
 						<reference key="parent" ref="539251409"/>
-						<string key="objectName">Back button</string>
+						<string key="objectName">Button - Notifications</string>
 					</object>
 				</array>
 			</object>

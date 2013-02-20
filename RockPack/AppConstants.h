@@ -26,6 +26,9 @@
 // Returns a list of the trending videos
 #define kAPIPopularVideos @"ws/videos/"
 
+// Search according to term, currently a wrapper around YouTube
+#define kAPISearchVideos @"/ws/search/videos"
+
 //
 #define kAPICategories @"ws/categories/"
 

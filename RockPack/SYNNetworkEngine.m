@@ -13,7 +13,7 @@
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
 #import "Category.h"
-#import "SYNRegistry.h"
+#import "SYNMainRegistry.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSEntityDescription *channelEntity;
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
-@property (nonatomic, strong) SYNRegistry* registry;
+@property (nonatomic, strong) SYNMainRegistry* registry;
 
 @end
 
@@ -44,7 +44,7 @@
         self.appDelegate = UIApplication.sharedApplication.delegate;
         
         
-        self.registry = [[SYNRegistry alloc] initWithManagedObjectContext:nil];
+        self.registry = [[SYNMainRegistry alloc] initWithManagedObjectContext:nil];
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
@@ -133,6 +133,34 @@
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:parameters];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
+        if (!registryResultOk)
+            return;
+        
+        [self.appDelegate saveContext: TRUE];
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Videos Screens Request Failed");
+    }];
+    
+    
+    [self enqueueOperation: networkOperation];
+}
+
+- (void) searchVideosForTerm:(NSString*)searchTerm
+{
+    NSDictionary* parameters;
+    
+    if(searchTerm == nil || [searchTerm isEqualToString:@""])
+        return;
+    
+    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchVideos params:parameters];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
