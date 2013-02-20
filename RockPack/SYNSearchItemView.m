@@ -8,6 +8,7 @@
 
 #import "SYNSearchItemView.h"
 #import "UIFont+SYNFont.h"
+#import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNSearchItemView ()
@@ -15,6 +16,7 @@
 @property (nonatomic, strong) UILabel* numberLabel;
 @property (nonatomic, strong) UILabel* nameLabel;
 @property (nonatomic, strong) UIImageView* bottomGlowImageView;
+@property (nonatomic, strong) NSArray* labels;
 
 @end
 
@@ -64,11 +66,15 @@
         
         // Glow
         
-        self.bottomGlowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSelectedGlow.png"]];
+        self.bottomGlowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchTabHeaderGlow.png"]];
         self.bottomGlowImageView.center = CGPointMake(self.frame.size.width*0.5, self.bottomGlowImageView.center.y);
         self.bottomGlowImageView.hidden = YES;
         self.bottomGlowImageView.userInteractionEnabled = NO;
         [self addSubview:self.bottomGlowImageView];
+        
+        // register labels in array
+        
+        self.labels = @[self.numberLabel, self.nameLabel];
         
     }
     return self;
@@ -81,31 +87,89 @@
 
 }
 
+-(void)makeHighlightedWithImage:(BOOL)withImage
+{
+    
+    if(withImage)
+    {
+        UIImage* pressedImage = [UIImage imageNamed:@"SearchTabHeaderSelected.png"];
+        self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
+    }
+    
+    
+    UIColor *color = [UIColor rockpackBlueColor];
+    
+    for (UILabel* label in self.labels)
+    {
+        
+        label.textColor = color;
+        label.layer.shadowColor = [color CGColor];
+        label.layer.shadowRadius = 7.0f;
+        label.layer.shadowOpacity = 1.0;
+        label.layer.shadowOffset = CGSizeZero;
+        label.layer.masksToBounds = NO;
+        
+    }
+    
+    
+    
+    // TODO: See what can be done with the animations
+    
+    if(withImage)
+    {
+        self.bottomGlowImageView.alpha = 0.0;
+        self.bottomGlowImageView.hidden = NO;
+        self.bottomGlowImageView.alpha = 1.0;
+    }
+    
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+    }];
+    
+    
+    
+    
+}
+
 
 -(void)makeFaded
 {
     self.backgroundColor = [UIColor clearColor];
     
-    self.numberLabel.textColor = [UIColor lightGrayColor];
-    self.numberLabel.layer.shadowColor = [[UIColor clearColor] CGColor];
-    
-    self.nameLabel.textColor = [UIColor lightGrayColor];
-    self.nameLabel.layer.shadowColor = [[UIColor clearColor] CGColor];
+    for (UILabel* label in self.labels)
+    {
+        
+        label.textColor = [UIColor lightGrayColor];
+        label.layer.shadowColor = [[UIColor clearColor] CGColor];
+        label.textColor = [UIColor lightGrayColor];
+        label.layer.shadowColor = [[UIColor clearColor] CGColor];
+        
+        
+        
+    }
     
     self.bottomGlowImageView.hidden = YES;
+    
+    
 }
 -(void)makeStandard
 {
     self.backgroundColor = [UIColor clearColor];
     
-    self.numberLabel.textColor = [UIColor whiteColor];
-    self.numberLabel.layer.shadowColor = [[UIColor clearColor] CGColor];
-    
-    
-    self.nameLabel.textColor = [UIColor whiteColor];
-    self.nameLabel.layer.shadowColor = [[UIColor clearColor] CGColor];
+    for (UILabel* label in self.labels)
+    {
+        
+        label.textColor = [UIColor whiteColor];
+        label.layer.shadowColor = [[UIColor clearColor] CGColor];
+        label.textColor = [UIColor whiteColor];
+        label.layer.shadowColor = [[UIColor clearColor] CGColor];
+        
+    }
     
     self.bottomGlowImageView.hidden = YES;
+    
+    
 }
 
 
