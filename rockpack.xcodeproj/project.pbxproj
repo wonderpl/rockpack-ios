@@ -428,6 +428,7 @@
 		BE08159A16D3CF9F00ADB1DC /* SYNSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159816D3CF9F00ADB1DC /* SYNSearchViewController.m */; };
 		BE08159B16D3CF9F00ADB1DC /* SYNSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE08159916D3CF9F00ADB1DC /* SYNSearchViewController.xib */; };
 		BE08159F16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */; };
+		BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A116D4DADA00ADB1DC /* SYNTabView.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -947,6 +948,8 @@
 		BE08159916D3CF9F00ADB1DC /* SYNSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSearchViewController.xib; sourceTree = "<group>"; };
 		BE08159D16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesBarViewController.h; sourceTree = "<group>"; };
 		BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesBarViewController.m; sourceTree = "<group>"; };
+		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
+		BE0815A116D4DADA00ADB1DC /* SYNTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabView.m; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -1328,6 +1331,8 @@
 		0142ED9216B1C914008694DA /* Categories Bar Views */ = {
 			isa = PBXGroup;
 			children = (
+				BE0815A016D4DADA00ADB1DC /* SYNTabView.h */,
+				BE0815A116D4DADA00ADB1DC /* SYNTabView.m */,
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
 				BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */,
 				BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */,
@@ -2710,6 +2715,7 @@
 				BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */,
 				BE08159A16D3CF9F00ADB1DC /* SYNSearchViewController.m in Sources */,
 				BE08159F16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m in Sources */,
+				BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

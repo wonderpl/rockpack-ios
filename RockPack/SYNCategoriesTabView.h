@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SYNTabViewDelegate.h"
+#import "SYNTabView.h"
 
-@interface SYNCategoriesTabView : UIView <SYNTabViewDelegate>
+@interface SYNCategoriesTabView : SYNTabView
 
 
 @property (nonatomic, weak) id<SYNTabViewDelegate> tapDelegate;

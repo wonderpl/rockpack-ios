@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNTabViewDelegate.h"
 
 @interface SYNCategoriesBarViewController : UIViewController {
-    @private CGFloat tabsWidth;
+    id <SYNTabViewDelegate> delegate;
 }
 
 @end

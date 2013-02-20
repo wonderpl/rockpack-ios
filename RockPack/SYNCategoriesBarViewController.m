@@ -18,25 +18,22 @@
 
 @implementation SYNCategoriesBarViewController
 
--(id)initWithSize:(CGFloat)width
-{
-    if (self = [super init]) {
-        tabsWidth = width;
-    }
-    return self;
-}
+
 
 -(void)loadView
 {
     // Calculate height
     
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 44.0, tabsWidth, 50.0)];
     
+    self.view = [[SYNCategoriesTabView alloc] initWithSize:1024.0];
+    self.view.frame = CGRectMake(0.0, 44.0, self.view.frame.size.width, self.view.frame.size.height);
+    
+    [self loadCategories];
     
 }
 
 
--(void)loadCategoriesView
+-(void)loadCategories
 {
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -60,7 +57,7 @@
         
         [appDelegate.networkEngine updateCategoriesOnCompletion:^{
             
-            [self loadView];
+            [self loadCategories];
             
         } onError:^(NSError* error) {
             DebugLog(@"%@", [error debugDescription]);
@@ -69,8 +66,8 @@
         return;
     }
     
-    //SYNCategoriesTabView* categoriesView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
-    
+    [((SYNCategoriesTabView*)self.view) createCategoriesTab:matchingCategoryInstanceEntries];
+
 }
 
 @end

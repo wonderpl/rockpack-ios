@@ -76,6 +76,8 @@
    
     // Create tab
     
+    
+    
     tabView = [[SYNCategoriesTabView alloc] initWithSize:self.view.frame.size.width];
     [tabView createCategoriesTab:matchingCategoryInstanceEntries];
     tabView.frame = CGRectMake(0.0, 44.0, tabView.frame.size.width, tabView.frame.size.height);
