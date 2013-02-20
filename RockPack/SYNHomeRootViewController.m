@@ -132,12 +132,6 @@
 #pragma mark - Core Data support
 
 
-// Not sure that
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
-}
 
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
@@ -148,14 +142,6 @@
     return @[sortDescriptor];
 }
 
-
-// The following 2 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-//    // No predicate
-//    return nil;
-        return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
-}
 
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors

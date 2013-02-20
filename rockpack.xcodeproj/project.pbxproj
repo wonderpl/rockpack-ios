@@ -1585,9 +1585,9 @@
 				0199F1371672199F00E479C6 /* Home */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				0198255F162ADE2900216900 /* Videos */,
-				BE08158F16D3C46800ADB1DC /* Search */,
 				01982560162ADE3300216900 /* You */,
 				01982561162ADE4000216900 /* Friends */,
+				BE08158F16D3C46800ADB1DC /* Search */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";

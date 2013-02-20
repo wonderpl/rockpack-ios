@@ -146,10 +146,6 @@
 
 #pragma mark - Core Data support
 
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Videos\""];
-}
 
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors

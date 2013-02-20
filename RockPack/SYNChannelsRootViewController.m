@@ -74,10 +74,6 @@
 
 #pragma mark - Core Data Support
 
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
-}
 
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
