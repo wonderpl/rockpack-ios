@@ -63,8 +63,6 @@
         
         
         
-        
-        
         [self addSubview:self.mainTabsView];
         [self addSubview:dividerView];
         

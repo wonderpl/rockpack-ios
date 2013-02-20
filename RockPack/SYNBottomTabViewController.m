@@ -103,7 +103,7 @@
     // Search tab
     SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] init];
     searchRootViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
-    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
+    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: searchRootViewController];
     searchRootNavigationViewController.navigationBarHidden = TRUE;
     searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
     searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
@@ -255,86 +255,92 @@
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
                  animated: (BOOL) animated
 {
-	NSAssert(newSelectedIndex < [self.viewControllers count], @"View controller index out of bounds");
+	
+    if(newSelectedIndex > [self.viewControllers count]) {
+        DebugLog(@"Selected index %i is out of bounds", newSelectedIndex);
+        return;
+    }
     
-	if (![self isViewLoaded])
-	{
+	if (![self isViewLoaded]) {
 		_selectedIndex = newSelectedIndex;
+        return;
 	}
-	else if (_selectedIndex != newSelectedIndex)
-	{
-		UIViewController *fromViewController;
-		UIViewController *toViewController;
+    
+    if(_selectedIndex == newSelectedIndex) {
+        return;
+    }
+    
+    UIViewController *fromViewController;
+    UIViewController *toViewController;
+    
+    if (_selectedIndex != NSNotFound)
+    {
+        UIButton *fromButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
+        fromButton.selected = FALSE;
+        fromViewController = self.selectedViewController;
+    }
+    
+    _selectedIndex = newSelectedIndex;
+    
+    UIButton *toButton;
+    if (_selectedIndex != NSNotFound)
+    {
+        toButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
+        toButton.selected = TRUE;
+        toViewController = self.selectedViewController;
+    }
+    
+    if (toViewController == nil)  // don't animate
+    {
+        [fromViewController.view removeFromSuperview];
+    }
+    else if (fromViewController == nil)  // don't animate
+    {
+        //            toViewController.view.frame = self.navControllerPlaceholderView.bounds;
         
-		if (_selectedIndex != NSNotFound)
-		{
-			UIButton *fromButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-			fromButton.selected = FALSE;
-			fromViewController = self.selectedViewController;
-		}
+        [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
+    }
+    else if (animated)
+    {
+        self.view.userInteractionEnabled = NO;
         
-		_selectedIndex = newSelectedIndex;
+        // Set new alpha to 0
+        toViewController.view.alpha = 0.0f;
         
-		UIButton *toButton;
-		if (_selectedIndex != NSNotFound)
-		{
-			toButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-			toButton.selected = TRUE;
-			toViewController = self.selectedViewController;
-		}
+        [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
         
-		if (toViewController == nil)  // don't animate
-		{
-			[fromViewController.view removeFromSuperview];
-		}
-		else if (fromViewController == nil)  // don't animate
-		{
-//            toViewController.view.frame = self.navControllerPlaceholderView.bounds;
-            
-            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
-		}
-		else if (animated)
-		{
-			self.view.userInteractionEnabled = NO;
-            
-            // Set new alpha to 0
-            toViewController.view.alpha = 0.0f;
-            
-            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
-
-            [UIView animateWithDuration: kTabAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-                                         {
-                                             fromViewController.view.alpha = 0.0f;
-                                             toViewController.view.alpha = 1.0f;
-                                         }
-                             completion: ^(BOOL finished)
-                                         {
-                                             fromViewController.view.alpha = 0.0f;
-                                             [fromViewController.view removeFromSuperview];
-                                             self.view.userInteractionEnabled = YES;
-                                         }];
-		}
-		else  // not animated
-		{
-			[fromViewController.view removeFromSuperview];
-//			[self.view addSubview: toViewController.view];
-            [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
-		}
+        [UIView animateWithDuration: kTabAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             fromViewController.view.alpha = 0.0f;
+             toViewController.view.alpha = 1.0f;
+         }
+                         completion: ^(BOOL finished)
+         {
+             fromViewController.view.alpha = 0.0f;
+             [fromViewController.view removeFromSuperview];
+             self.view.userInteractionEnabled = YES;
+         }];
+    }
+    else  // not animated
+    {
+        [fromViewController.view removeFromSuperview];
+        [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
+    }
+    
+    // We need to see if we need to hide/show the back button for the new view controller
+    
+    if ([toViewController isKindOfClass: [UINavigationController class]] &&
+        [[(UINavigationController *)toViewController viewControllers] count] > 1) {
         
-        // We need to see if we need to hide/show the back button for the new view controller
-        
-        if ([toViewController isKindOfClass: [UINavigationController class]] && [[(UINavigationController *)toViewController viewControllers] count] > 1)
-        {
-            [self showBackButton];
-        }
-        else
-        {
-            [self hideBackButton];
-        }
-	}
+        [self showBackButton];
+    }
+    else
+    {
+        [self hideBackButton];
+    }
 }
 
 
@@ -403,7 +409,7 @@
 #ifdef SOUND_ENABLED
         // Play a suitable sound
         NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"NewSlideOut"
-                                                               ofType: @"aif"];
+                                                              ofType: @"aif"];
         
         NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
         SystemSoundID sound;
@@ -421,8 +427,7 @@
              messageInboxViewFrame.origin.x = -495;
              self.messageInboxView.frame =  messageInboxViewFrame;
 
-         }
-                         completion: ^(BOOL finished)
+         } completion: ^(BOOL finished)
          {
              // Set the button to the appropriate state
              self.messageInboxButton.selected = FALSE;
