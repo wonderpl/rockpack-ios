@@ -10,6 +10,6 @@
 
 #import "SYNTabViewController.h"
 
-@interface SYNCategoriesBarViewController : SYNTabViewController 
+@interface SYNCategoriesTabViewController : SYNTabViewController 
 
 @end

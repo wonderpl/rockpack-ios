@@ -6,18 +6,18 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNCategoriesBarViewController.h"
+#import "SYNCategoriesTabViewController.h"
 #import <CoreData/CoreData.h>
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "SYNCategoryItemView.h"
 #import "Category.h"
 
-@interface SYNCategoriesBarViewController ()
+@interface SYNCategoriesTabViewController ()
 
 @end
 
-@implementation SYNCategoriesBarViewController
+@implementation SYNCategoriesTabViewController
 
 
 

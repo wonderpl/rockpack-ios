@@ -427,7 +427,7 @@
 		BE08158E16D292B800ADB1DC /* TabTopSub@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158D16D292B800ADB1DC /* TabTopSub@2x.png */; };
 		BE08159A16D3CF9F00ADB1DC /* SYNSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159816D3CF9F00ADB1DC /* SYNSearchViewController.m */; };
 		BE08159B16D3CF9F00ADB1DC /* SYNSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE08159916D3CF9F00ADB1DC /* SYNSearchViewController.xib */; };
-		BE08159F16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */; };
+		BE08159F16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159E16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.m */; };
 		BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A116D4DADA00ADB1DC /* SYNTabView.m */; };
 		BE0815A516D4E53600ADB1DC /* SYNTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
@@ -947,8 +947,8 @@
 		BE08159716D3CF9F00ADB1DC /* SYNSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchViewController.h; sourceTree = "<group>"; };
 		BE08159816D3CF9F00ADB1DC /* SYNSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchViewController.m; sourceTree = "<group>"; };
 		BE08159916D3CF9F00ADB1DC /* SYNSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSearchViewController.xib; sourceTree = "<group>"; };
-		BE08159D16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesBarViewController.h; sourceTree = "<group>"; };
-		BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesBarViewController.m; sourceTree = "<group>"; };
+		BE08159D16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabViewController.h; sourceTree = "<group>"; };
+		BE08159E16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabViewController.m; sourceTree = "<group>"; };
 		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
 		BE0815A116D4DADA00ADB1DC /* SYNTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTabView.m; sourceTree = "<group>"; };
 		BE0815A316D4E53500ADB1DC /* SYNTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabViewController.h; sourceTree = "<group>"; };
@@ -1334,9 +1334,8 @@
 		0142ED9216B1C914008694DA /* Categories Tab */ = {
 			isa = PBXGroup;
 			children = (
-				BE08159D16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.h */,
-				BE08159E16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m */,
-				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
+				BE08159D16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.h */,
+				BE08159E16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.m */,
 				BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */,
 				BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */,
 				BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */,
@@ -2193,6 +2192,7 @@
 		BE08159C16D3D7E300ADB1DC /* Top Tab View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
 				BE0815A316D4E53500ADB1DC /* SYNTabViewController.h */,
 				BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */,
 				BE0815A016D4DADA00ADB1DC /* SYNTabView.h */,
@@ -2719,7 +2719,7 @@
 				BEA1E32E16CCFF70000AB59D /* SYNRegistry.m in Sources */,
 				BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */,
 				BE08159A16D3CF9F00ADB1DC /* SYNSearchViewController.m in Sources */,
-				BE08159F16D3EF7F00ADB1DC /* SYNCategoriesBarViewController.m in Sources */,
+				BE08159F16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.m in Sources */,
 				BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */,
 				BE0815A516D4E53600ADB1DC /* SYNTabViewController.m in Sources */,
 			);

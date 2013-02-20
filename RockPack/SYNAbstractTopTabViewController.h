@@ -11,7 +11,7 @@
 #import "SYNAbstractViewController.h"
 #import "SYNTabViewDelegate.h"
 #import "SYNCategoriesTabView.h"
-#import "SYNCategoriesBarViewController.h"
+#import "SYNCategoriesTabViewController.h"
 #import "SYNTabViewController.h"
 #import "SYNTabView.h"
 
