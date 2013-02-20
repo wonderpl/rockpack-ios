@@ -15,7 +15,8 @@
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
-@property (nonatomic, strong) UIWebView *videoWebView;
+@property (nonatomic, strong) UIWebView *currentVideoWebView;
+@property (nonatomic, strong) UIWebView *nextVideoWebView;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
@@ -55,22 +56,34 @@
     self.view.frame = self.requestedFrame;
 
     // Start off by making our view transparent
-    self.view.backgroundColor = kVideoBackgroundColour;
-//    self.view.alpha = 0.0f;
+    self.view.backgroundColor = [UIColor clearColor];
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
-    self.videoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
-    self.videoWebView.backgroundColor = self.view.backgroundColor;
-	self.videoWebView.opaque = NO;
+    self.currentVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
+    self.currentVideoWebView.backgroundColor = self.view.backgroundColor;
+	self.currentVideoWebView.opaque = NO;
     
     // Stop the user from scrolling the webview
-    self.videoWebView.scrollView.scrollEnabled = false;
-    self.videoWebView.scrollView.bounces = false;
+    self.currentVideoWebView.scrollView.scrollEnabled = false;
+    self.currentVideoWebView.scrollView.bounces = false;
+    
+    // Set up out next
+    self.currentVideoWebView.delegate = self;
+    
+    [self.view addSubview: self.currentVideoWebView];
+    
+    self.nextVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
+    self.nextVideoWebView.backgroundColor = self.view.backgroundColor;
+	self.nextVideoWebView.opaque = NO;
+    
+    // Stop the user from scrolling the webview
+    self.nextVideoWebView.scrollView.scrollEnabled = false;
+    self.nextVideoWebView.scrollView.bounces = false;
     
     // Set the webview delegate so that we can received events from the JavaScript
-    self.videoWebView.delegate = self;
+    self.nextVideoWebView.delegate = self;
     
-    [self.view addSubview: self.videoWebView];
+    [self.view addSubview: self.currentVideoWebView];
 }
 
 
@@ -84,28 +97,47 @@
 
 - (void) incrementVideoIndex
 {
-    // Don't bother incrementing index if we only have a single video
-    if (self.isUsingPlaylist)
-    {
-        // make sure we wrap around at the end of the video playlist
-        self.videoIndex = (self.videoIndex + 1) % self.videoInstanceArray.count;
-    }
+    self.videoIndex = self.nextVideoIndex;
 }
 
 
 - (void) decrementVideoIndex
 {
+    self.videoIndex = self.previousVideoIndex;
+}
+
+- (int) nextVideoIndex
+{
+    int index = 0;
+    
     // Don't bother incrementing index if we only have a single video
     if (self.isUsingPlaylist)
     {
         // make sure we wrap around at the end of the video playlist
-        self.videoIndex -= 1;
+        index = (self.videoIndex + 1) % self.videoInstanceArray.count;
+    }
+    
+    return index;
+}
+
+
+- (int) previousVideoIndex
+{
+    int index = 0;
+    
+    // Don't bother incrementing index if we only have a single video
+    if (self.isUsingPlaylist)
+    {
+        // make sure we wrap around at the end of the video playlist
+        index = self.videoIndex - 1;
         
-        if (self.videoIndex < 0)
+        if (index< 0)
         {
-            self.videoIndex = self.videoInstanceArray.count - 1;
+            index = self.videoInstanceArray.count - 1;
         }
     }
+    
+    return index;
 }
 
 
@@ -155,7 +187,7 @@
 
 - (void) play
 {
-    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
 }
 
 - (void) playVideoAtIndex: (int) index
@@ -180,13 +212,13 @@
 
 - (void) pause
 {
-    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
 }
 
 
 - (void) stop
 {
-    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
 }
 
 
@@ -202,10 +234,10 @@
     [self loadWebViewWithCurrentVideo];
 }
 
-- (void) seekInCurrentVideoToTime: (int) seconds
+- (void) seekInCurrentVideoToTime: (NSTimeInterval) seconds
 {
-    NSString *js = [NSString stringWithFormat: @"player.stopVideo(%d, TRUE);", seconds];
-    [self.videoWebView stringByEvaluatingJavaScriptFromString: js];
+    NSString *js = [NSString stringWithFormat: @"player.stopVideo(%lf, TRUE);", seconds];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: js];
 }
 
 
@@ -214,14 +246,14 @@
 // Get the duration of the current video
 - (NSTimeInterval) duration
 {
-    return [[self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.getDuration();"] doubleValue];
+    return [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getDuration();"] doubleValue];
 }
 
 
 // Get the playhead time of the current video
 - (NSTimeInterval) currentTime
 {
-    return [[self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.getCurrentTime();"] doubleValue];
+    return [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getCurrentTime();"] doubleValue];
 }
 
 
@@ -229,14 +261,14 @@
 // Can use this to display a video loading progress indicator
 - (float) videoLoadedFraction
 {
-        return [[self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.getVideoLoadedFraction();"] floatValue];
+        return [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getVideoLoadedFraction();"] floatValue];
 }
 
 
 // Index of currently playing video (if using a playlist)
 - (BOOL) isPlaying
 {
-    return ([[self.videoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue] == 1)
+    return ([[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue] == 1)
             ? TRUE : FALSE;
 }
 
@@ -293,11 +325,11 @@
     
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
     
-    [self.videoWebView loadHTMLString: iFrameHTML
+    [self.currentVideoWebView loadHTMLString: iFrameHTML
                               baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
     
     // Not sure if this makes any difference
-    self.videoWebView.mediaPlaybackRequiresUserAction = FALSE;
+    self.currentVideoWebView.mediaPlaybackRequiresUserAction = FALSE;
 }
 
 
@@ -318,7 +350,7 @@
     
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, sourceId, parameterString, self.view.frame.size.width, self.view.frame.size.height];
     
-    [self.videoWebView loadHTMLString: iFrameHTML
+    [self.currentVideoWebView loadHTMLString: iFrameHTML
                               baseURL: nil];
 }
 
@@ -402,8 +434,12 @@
         }
         else if ([actionData isEqualToString: @"ended"])
         {
+            NSTimeInterval currentTime = self.currentTime;
+            NSLog (@"%lf", currentTime);
             [self stopBufferMonitoringTimer];
-            [self loadNextVideo];
+            [self pause];
+            [self seekInCurrentVideoToTime: currentTime];
+//            [self loadNextVideo];
         }
         else if ([actionData isEqualToString: @"playing"])
         {
@@ -479,8 +515,13 @@
     
     if (bufferLevel == 1.0f)
     {
-
+        [self precacheNextVideo];
     }
+}
+
+- (void) precacheNextVideo
+{
+    
 }
 
 @end

@@ -43,7 +43,7 @@
 - (void) stop;
 - (void) loadNextVideo;
 - (void) loadPreviousVideo;
-- (void) seekInCurrentVideoToTime: (int) seconds;
+- (void) seekInCurrentVideoToTime: (NSTimeInterval) seconds;
 
 // Player properties
 @property (nonatomic, assign, readonly) NSTimeInterval duration;
