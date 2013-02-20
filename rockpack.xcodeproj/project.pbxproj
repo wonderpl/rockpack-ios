@@ -347,7 +347,7 @@
 		01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D8C6A716807A54000059D1 /* SYNVideoSelection.m */; };
 		01E2FC4616CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FC4416CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */; };
 		01E2FC4716CE6913006E6DA7 /* YouTubeJSAPIPlayer.html in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FC4516CE6913006E6DA7 /* YouTubeJSAPIPlayer.html */; };
-		01E2FC4A16CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2FC4916CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.m */; };
+		01E2FC4A16CE6A1D006E6DA7 /* SYNVideoPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2FC4916CE6A1D006E6DA7 /* SYNVideoPlaybackViewController.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
 		01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D81664CDA5009B941F /* SYNAbstractViewController.m */; };
@@ -839,8 +839,8 @@
 		01D8C6A716807A54000059D1 /* SYNVideoSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoSelection.m; sourceTree = "<group>"; };
 		01E2FC4416CE6913006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayerNoAutoplay.html; path = Assets/HTML/YouTubeJSAPIPlayerNoAutoplay.html; sourceTree = "<group>"; };
 		01E2FC4516CE6913006E6DA7 /* YouTubeJSAPIPlayer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayer.html; path = Assets/HTML/YouTubeJSAPIPlayer.html; sourceTree = "<group>"; };
-		01E2FC4816CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouTubeVideoViewController.h; sourceTree = "<group>"; };
-		01E2FC4916CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouTubeVideoViewController.m; sourceTree = "<group>"; };
+		01E2FC4816CE6A1D006E6DA7 /* SYNVideoPlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoPlaybackViewController.h; sourceTree = "<group>"; };
+		01E2FC4916CE6A1D006E6DA7 /* SYNVideoPlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoPlaybackViewController.m; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		01E427D21664C726009B941F /* Rockpack.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Rockpack.xcdatamodel; sourceTree = "<group>"; };
 		01E427D71664CDA5009B941F /* SYNAbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractViewController.h; sourceTree = "<group>"; };
@@ -2031,8 +2031,8 @@
 		01E2FC4B16CE7574006E6DA7 /* Video Players */ = {
 			isa = PBXGroup;
 			children = (
-				01E2FC4816CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.h */,
-				01E2FC4916CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.m */,
+				01E2FC4816CE6A1D006E6DA7 /* SYNVideoPlaybackViewController.h */,
+				01E2FC4916CE6A1D006E6DA7 /* SYNVideoPlaybackViewController.m */,
 			);
 			name = "Video Players";
 			sourceTree = "<group>";
@@ -2697,7 +2697,7 @@
 				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
 				012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */,
 				BEA1E32E16CCFF70000AB59D /* SYNRegistry.m in Sources */,
-				01E2FC4A16CE6A1D006E6DA7 /* SYNYouTubeVideoViewController.m in Sources */,
+				01E2FC4A16CE6A1D006E6DA7 /* SYNVideoPlaybackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
