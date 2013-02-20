@@ -365,16 +365,7 @@
 }
 
 
--(void) setSearchViewController
-{
-    UIViewController *fromViewController = self.selectedViewController;
-    if(fromViewController == nil) {
-        return;
-    }
-    UIViewController *toViewController = self.searchViewController;
-    
-    [self performChangeFromController:fromViewController toController:toViewController animated:YES];
-}
+
 
 // Set the selected tab of a particular view controller (with no animation)
 
@@ -911,5 +902,30 @@
     [abstractVC animatedPopViewController];
 }
 
+
+#pragma mark - UITextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    DebugLog(@"textFieldShouldReturn:");
+    
+    [self showSearchViewController];
+    
+    [textField resignFirstResponder];
+    
+    
+    return YES;
+}
+
+-(void) showSearchViewController
+{
+    UIViewController *fromViewController = self.selectedViewController;
+    if(fromViewController == nil) {
+        return;
+    }
+    UIViewController *toViewController = self.searchViewController;
+    
+    [self performChangeFromController:fromViewController toController:toViewController animated:YES];
+}
 
 @end
