@@ -132,21 +132,6 @@
 #pragma mark - Core Data support
 
 
-// Not sure that
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
-}
-
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    // Sort by index
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
 
 
 // The following 2 methods are called by the abstract class' getFetchedResults controller methods
