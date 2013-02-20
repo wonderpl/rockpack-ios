@@ -311,8 +311,8 @@
 
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerPredicate'");
-    return nil;
+    NSString* format = [NSString stringWithFormat:@"viewId == \"%@\"", viewId];
+    return [NSPredicate predicateWithFormat:format];
 }
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors

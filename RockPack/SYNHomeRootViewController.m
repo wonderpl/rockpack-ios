@@ -134,15 +134,6 @@
 
 
 
-// The following 2 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-//    // No predicate
-//    return nil;
-        return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
-}
-
-
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
@@ -152,7 +143,6 @@
 
 - (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
 {
-//    return @"daysAgo";
     return @"dateAddedIgnoringTime";
 }
 
