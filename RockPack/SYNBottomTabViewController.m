@@ -61,7 +61,6 @@
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
-@property (weak, nonatomic) IBOutlet UIView *navControllerPlaceholderView;
 
 @end
 

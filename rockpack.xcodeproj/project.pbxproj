@@ -441,6 +441,8 @@
 		BE0815BF16D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0815B716D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png */; };
 		BE0815C016D4FBB300ADB1DC /* SearchTabPanelHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0815B816D4FBB300ADB1DC /* SearchTabPanelHeader.png */; };
 		BE0815C116D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0815B916D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png */; };
+		BE0815C616D5389C00ADB1DC /* SYNTopBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815C416D5389C00ADB1DC /* SYNTopBarViewController.m */; };
+		BE0815C716D5389C00ADB1DC /* SYNTopBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815C516D5389C00ADB1DC /* SYNTopBarViewController.xib */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -978,6 +980,9 @@
 		BE0815B716D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabHeaderSelected@2x.png"; sourceTree = "<group>"; };
 		BE0815B816D4FBB300ADB1DC /* SearchTabPanelHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchTabPanelHeader.png; sourceTree = "<group>"; };
 		BE0815B916D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabPanelHeader@2x.png"; sourceTree = "<group>"; };
+		BE0815C316D5389C00ADB1DC /* SYNTopBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTopBarViewController.h; sourceTree = "<group>"; };
+		BE0815C416D5389C00ADB1DC /* SYNTopBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTopBarViewController.m; sourceTree = "<group>"; };
+		BE0815C516D5389C00ADB1DC /* SYNTopBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNTopBarViewController.xib; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -1575,7 +1580,8 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BE08159C16D3D7E300ADB1DC /* Top Tab View Controller */,
+				BE0815C216D5386B00ADB1DC /* Top Bar Controller */,
+				BE08159C16D3D7E300ADB1DC /* Tabs View Controllers */,
 				0162285316C2AA7F008D1587 /* Miscellaneous */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
@@ -2214,7 +2220,7 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE08159C16D3D7E300ADB1DC /* Top Tab View Controller */ = {
+		BE08159C16D3D7E300ADB1DC /* Tabs View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
@@ -2225,7 +2231,7 @@
 				0142ED9216B1C914008694DA /* Categories Tab */,
 				BE0815A616D4F3B200ADB1DC /* Search Tab */,
 			);
-			name = "Top Tab View Controller";
+			name = "Tabs View Controllers";
 			sourceTree = "<group>";
 		};
 		BE0815A616D4F3B200ADB1DC /* Search Tab */ = {
@@ -2275,6 +2281,16 @@
 				BE0815B916D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png */,
 			);
 			name = Search;
+			sourceTree = "<group>";
+		};
+		BE0815C216D5386B00ADB1DC /* Top Bar Controller */ = {
+			isa = PBXGroup;
+			children = (
+				BE0815C316D5389C00ADB1DC /* SYNTopBarViewController.h */,
+				BE0815C416D5389C00ADB1DC /* SYNTopBarViewController.m */,
+				BE0815C516D5389C00ADB1DC /* SYNTopBarViewController.xib */,
+			);
+			name = "Top Bar Controller";
 			sourceTree = "<group>";
 		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
@@ -2665,6 +2681,7 @@
 				BE0815BF16D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png in Resources */,
 				BE0815C016D4FBB300ADB1DC /* SearchTabPanelHeader.png in Resources */,
 				BE0815C116D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png in Resources */,
+				BE0815C716D5389C00ADB1DC /* SYNTopBarViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2796,6 +2813,7 @@
 				BE0815A916D4F3F900ADB1DC /* SYNSearchTabViewController.m in Sources */,
 				BE0815AC16D4F41300ADB1DC /* SYNSearchTabView.m in Sources */,
 				BE0815AF16D4F6AB00ADB1DC /* SYNSearchItemView.m in Sources */,
+				BE0815C616D5389C00ADB1DC /* SYNTopBarViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
