@@ -16,7 +16,7 @@
 
 
 
--(id)initWithSize:(CGSize)size;
+-(id)initWithSize:(CGFloat)totalWidth;
 
 -(void)createCategoriesTab:(NSArray*)categories;
 

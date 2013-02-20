@@ -71,7 +71,6 @@
     
     //SYNCategoriesTabView* categoriesView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
     
-    //[self.view addSubview:categoriesView];
 }
 
 @end
