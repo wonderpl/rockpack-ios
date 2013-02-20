@@ -14,14 +14,12 @@
 
 @class VideoInstance;
 
-@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
-                                                         UICollectionViewDataSource,
-                                                         UICollectionViewDelegate> {
-                                                         
-                                                         
-@protected SYNAppDelegate* appDelegate;
+@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate> {
+    @protected SYNAppDelegate* appDelegate;
+    @protected NSString* viewId;
+
 }
-// Public properties
+
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, strong) UIView *videoQueueView;
@@ -86,5 +84,7 @@
 
 - (void) displayVideoViewer: (VideoInstance *) videoInstance;
 - (IBAction) dismissVideoViewer;
+
+-(id)initWithViewId:(NSString*)vid;
 
 @end

@@ -29,13 +29,14 @@
                                           UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
-@property (nonatomic, assign) BOOL didNotSwipeMessageInbox;
+@property (nonatomic) BOOL didNotSwipeMessageInbox;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
 @property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
+@property (nonatomic, strong) UIViewController* searchViewController;
 @property (nonatomic, strong) AVAudioRecorder *avRecorder;
 @property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton *messageInboxButton;
@@ -77,14 +78,14 @@
     [super viewDidLoad];
     
     // Wallpack tab
-    SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] init];
+    SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] initWithViewId:@"Home"];
     UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;
     homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
     homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
     // Channels tab
-    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] init];
+    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId:@"Channels"];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
     channelsRootNavigationViewController.navigationBarHidden = TRUE;
@@ -92,7 +93,7 @@
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // Discover tab
-    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] init];
+    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Videos"];
     videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
     videosRootNavigationViewController.navigationBarHidden = TRUE;
@@ -101,7 +102,7 @@
     
     
     // Search tab
-    SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] init];
+    SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Search"];
     searchRootViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: searchRootViewController];
     searchRootNavigationViewController.navigationBarHidden = TRUE;
@@ -109,14 +110,14 @@
     searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // My Rockpack tab
-    SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] init];
+    SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] initWithViewId:@"You"];
     UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
     youRootRootNavigationViewController.navigationBarHidden = TRUE;
     youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
     youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // Friends tab
-    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] init];
+    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId:@"Friends"];
     // TODO: Nest Friends Bar
     // Using new array syntax
     self.viewControllers = @[homeRootNavigationViewController,
@@ -124,6 +125,8 @@
                              videosRootNavigationViewController,
                              youRootRootNavigationViewController,
                              friendsRootViewController];
+    
+    self.searchViewController = searchRootNavigationViewController;
 
     _selectedIndex = NSNotFound;
     
@@ -296,8 +299,6 @@
     }
     else if (fromViewController == nil)  // don't animate
     {
-        //            toViewController.view.frame = self.navControllerPlaceholderView.bounds;
-        
         [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
     }
     
@@ -363,6 +364,17 @@
 	return nil;
 }
 
+
+-(void) setSearchViewController
+{
+    UIViewController *fromViewController = self.selectedViewController;
+    if(fromViewController == nil) {
+        return;
+    }
+    UIViewController *toViewController = self.searchViewController;
+    
+    [self performChangeFromController:fromViewController toController:toViewController animated:YES];
+}
 
 // Set the selected tab of a particular view controller (with no animation)
 

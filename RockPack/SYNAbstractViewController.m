@@ -57,6 +57,18 @@
 
 #pragma mark - Custom accessor methods
 
+-(id)init {
+    DebugLog(@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
+    return [self initWithViewId:@"NULL"];
+}
+
+-(id)initWithViewId:(NSString*)vid {
+    if(self = [super init]) {
+        viewId = vid;
+    }
+    return self;
+}
+
 - (void) setVideoQueueAnimationTimer: (NSTimer*) timer
 {
     // We need to invalidate our timeer before setting a new one (so that the old one doen't fire anyway)
@@ -240,9 +252,9 @@
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                             managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                               sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
-                                                                                        cacheName: nil];
+                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                       sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
+                                                                                                cacheName: nil];
     _videoInstanceFetchedResultsController.delegate = self;
     
     ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
