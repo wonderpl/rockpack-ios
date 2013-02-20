@@ -86,7 +86,6 @@
     UIView* dividerOverlayView = [[UIView alloc] initWithFrame:self.mainTabsView.frame];
     dividerOverlayView.userInteractionEnabled = NO;
     
-    UITapGestureRecognizer *singleFingerTap = nil;
     
     CGFloat itemWidth = self.frame.size.width / categories.count;
     
@@ -102,9 +101,7 @@
         tab = [[SYNCategoryItemView alloc] initWithTabItemModel:category andFrame:itemFrame];
         [self.mainTabsView addSubview:tab];
         
-        
-        singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)];
-        [tab addGestureRecognizer:singleFingerTap];
+        [tab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
         nextOrigin += itemWidth;
         
@@ -136,7 +133,6 @@
     SYNCategoryItemView* tab = nil;
     CGFloat nextOrigin = 0.0;
         
-    UITapGestureRecognizer *singleFingerTap = nil;
     
     CGRect itemFrame;
     
@@ -162,9 +158,7 @@
         
         tab.label.font = fontToUse;
         
-        
-        singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSecondaryTap:)];
-        [tab addGestureRecognizer:singleFingerTap];
+        [tab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSecondaryTap:)]];
             
         nextOrigin += tab.frame.size.width;
         

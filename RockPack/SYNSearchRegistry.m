@@ -1,13 +1,13 @@
 //
-//  SYNSearchTabView.h
+//  SYNSearchRegistry.m
 //  rockpack
 //
 //  Created by Michael Michailidis on 20/02/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNTabView.h"
+#import "SYNSearchRegistry.h"
 
-@interface SYNSearchTabView : SYNTabView 
+@implementation SYNSearchRegistry
 
 @end

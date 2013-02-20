@@ -39,6 +39,7 @@
         
         
         UIView* dividerView = [[UIView alloc] initWithFrame:self.frame];
+        dividerView.userInteractionEnabled = NO;
         
         
         NSArray* itemsX = @[[NSNumber numberWithFloat:(midBar - kSearchBarItemWidth)],
@@ -53,10 +54,24 @@
             
         }
         
-        // Create Search Tab
+        
+        // == Create Search Tab == //
+        
         self.searchVideosItemView = [[SYNSearchItemView alloc] initWithTitle:@"VIDEOS" andFrame:CGRectMake(midBar - kSearchBarItemWidth, 0.0, kSearchBarItemWidth, self.frame.size.height)];
         
+        [self.searchVideosItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+        
+        [self.mainTabsView addSubview:self.searchVideosItemView];
+        
+        
+        // == Create Channels Tab == //
+        
         self.searchChannelsItemView = [[SYNSearchItemView alloc] initWithTitle:@"CHANNELS" andFrame:CGRectMake(midBar, 0.0, kSearchBarItemWidth, self.frame.size.height)];
+        
+        [self.searchVideosItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+        
+        
+        [self.mainTabsView addSubview:self.searchChannelsItemView];
         
         
         // Create dividers
@@ -70,6 +85,26 @@
     return self;
 }
 
+#pragma mark - Delegate Methods
+
+-(void)handleMainTap:(UITapGestureRecognizer*)recogniser
+{
+    // Set as pressed
+    SYNSearchItemView* itemView;
+    
+    for(SYNSearchItemView* itemViewS in self.mainTabsView.subviews)
+        [itemViewS makeFaded];
+    
+    itemView = (SYNSearchItemView*)recogniser.view;
+    [itemView makeHighlightedWithImage:YES];
+    
+    [self.tapDelegate handleMainTap:recogniser];
+}
+
+-(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser
+{
+    // no secondary tap in this class
+}
 
 
 @end

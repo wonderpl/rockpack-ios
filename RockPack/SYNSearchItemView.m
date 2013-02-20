@@ -34,33 +34,33 @@
         
         // Number Label
         
-        UIFont* numberFontToUse = [UIFont rockpackFontOfSize: 14.0f];
+        UIFont* numberFontToUse = [UIFont rockpackFontOfSize: 20.0f];
         CGSize numberLabelSize = [@"100" sizeWithFont:numberFontToUse];
     
         self.numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, numberLabelSize.height)];
         self.numberLabel.font = numberFontToUse;
-        self.numberLabel.text = @"";
+        self.numberLabel.text = @"0";
         self.numberLabel.textAlignment = NSTextAlignmentCenter;
         self.numberLabel.textColor = [UIColor whiteColor];
         self.numberLabel.userInteractionEnabled = NO;
         self.numberLabel.backgroundColor = [UIColor clearColor];
-        self.numberLabel.center = CGPointMake(self.numberLabel.center.x, 20.0);
+        self.numberLabel.center = CGPointMake(self.numberLabel.center.x, 30.0);
         [self addSubview:self.numberLabel];
         
         
         // Name Label
         
-        UIFont* nameFontToUse = [UIFont rockpackFontOfSize: 13.0f];
+        UIFont* nameFontToUse = [UIFont rockpackFontOfSize: 15.0f];
         CGSize nameLabelSize = [name sizeWithFont:nameFontToUse];
         
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, nameLabelSize.height)];
-        self.nameLabel.font = numberFontToUse;
+        self.nameLabel.font = nameFontToUse;
         self.nameLabel.text = name;
         self.nameLabel.textAlignment = NSTextAlignmentCenter;
         self.nameLabel.textColor = [UIColor whiteColor];
         self.nameLabel.userInteractionEnabled = NO;
         self.nameLabel.backgroundColor = [UIColor clearColor];
-        self.nameLabel.center = CGPointMake(self.nameLabel.center.x, 60.0);
+        self.nameLabel.center = CGPointMake(self.nameLabel.center.x, 55.0);
         [self addSubview:self.nameLabel];
         
         
@@ -168,9 +168,11 @@
     }
     
     self.bottomGlowImageView.hidden = YES;
-    
-    
 }
+
+
+
+
 
 
 

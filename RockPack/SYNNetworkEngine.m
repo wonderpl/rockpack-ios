@@ -14,6 +14,7 @@
 #import "VideoInstance.h"
 #import "Category.h"
 #import "SYNMainRegistry.h"
+#import "SYNSearchRegistry.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
 @property (nonatomic, strong) SYNMainRegistry* registry;
+@property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
 @end
 
@@ -45,6 +47,8 @@
         
         
         self.registry = [[SYNMainRegistry alloc] initWithManagedObjectContext:nil];
+        
+        self.searchRegistry = [[SYNSearchRegistry alloc] initWithManagedObjectContext:nil];
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
@@ -168,7 +172,6 @@
         if (!registryResultOk)
             return;
         
-        [self.appDelegate saveContext: TRUE];
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");

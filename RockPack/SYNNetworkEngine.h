@@ -23,4 +23,6 @@
 - (void) updateChannel: (NSString *) resourceURL;
 - (void) updateChannelsScreenForCategory:(NSString*)category;
 
+- (void) searchVideosForTerm:(NSString*)searchTerm;
+
 @end
