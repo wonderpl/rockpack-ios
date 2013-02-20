@@ -27,6 +27,7 @@
 @implementation SYNAbstractTopTabViewController
 
 @synthesize selectedIndex = _selectedIndex;
+@synthesize tabView;
 
 - (void) viewDidLoad
 {

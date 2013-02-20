@@ -27,8 +27,18 @@
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+  
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
+                                             bundle: nil];
+    
+    [self.searchCollectionView registerNib: thumbnailCellNib
+                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning

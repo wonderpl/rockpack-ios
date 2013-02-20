@@ -14,11 +14,11 @@
 
 @interface SYNAbstractTopTabViewController : SYNAbstractViewController <SYNTabViewDelegate> {
 @protected
-    SYNCategoriesTabView* tabView;
+    
     BOOL tabExpanded;
 }
 
-
+@property (nonatomic, strong) SYNCategoriesTabView* tabView;
 
 - (void) highlightTab: (int) tabIndex;
 -(void)handleNewTabSelectionWithId:(NSString*)selectionId;
