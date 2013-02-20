@@ -300,7 +300,28 @@
         
         [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
     }
-    else if (animated)
+    
+    
+    [self performChangeFromController:fromViewController toController:toViewController animated:animated];
+    
+    
+    // We need to see if we need to hide/show the back button for the new view controller
+    
+    if ([toViewController isKindOfClass: [UINavigationController class]] &&
+        [[(UINavigationController *)toViewController viewControllers] count] > 1) {
+        
+        [self showBackButton];
+    }
+    else
+    {
+        [self hideBackButton];
+    }
+}
+
+
+-(void)performChangeFromController:(UIViewController*)fromViewController toController:(UIViewController*)toViewController animated:(BOOL)animated
+{
+    if (animated)
     {
         self.view.userInteractionEnabled = NO;
         
@@ -329,18 +350,6 @@
         [fromViewController.view removeFromSuperview];
         [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
     }
-    
-    // We need to see if we need to hide/show the back button for the new view controller
-    
-    if ([toViewController isKindOfClass: [UINavigationController class]] &&
-        [[(UINavigationController *)toViewController viewControllers] count] > 1) {
-        
-        [self showBackButton];
-    }
-    else
-    {
-        [self hideBackButton];
-    }
 }
 
 
@@ -349,13 +358,9 @@
 - (UIViewController *) selectedViewController
 {
 	if (self.selectedIndex != NSNotFound)
-    {
-		return self.viewControllers [self.selectedIndex];
-    }
-	else
-    {
-		return nil;
-    }
+        return self.viewControllers [self.selectedIndex];
+    
+	return nil;
 }
 
 
