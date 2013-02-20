@@ -20,6 +20,7 @@
 #import "SYNVideoDB.h"
 #import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
+#import "SYNSearchTabViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
@@ -101,7 +102,7 @@
     
     // Search tab
     SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] init];
-    searchRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
+    searchRootViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
     searchRootNavigationViewController.navigationBarHidden = TRUE;
     searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
