@@ -34,9 +34,11 @@
 
 // Generalised fetchedResultsControllers
 - (NSFetchedResultsController *) videoInstanceFetchedResultsController;
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate;
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
 
 - (NSFetchedResultsController *) channelFetchedResultsController;
+- (NSPredicate *) channelFetchedResultsControllerPredicate;
 - (NSArray *) channelFetchedResultsControllerSortDescriptors;
 
 

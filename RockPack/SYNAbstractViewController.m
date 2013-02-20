@@ -246,8 +246,7 @@
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     // Add any sort descriptors and predicates
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"viewId == \"%@\"", viewId];
-    
+    fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
     fetchRequest.sortDescriptors = self.videoInstanceFetchedResultsControllerSortDescriptors;
     
     // Edit the section name key path and cache name if appropriate.
@@ -283,8 +282,7 @@
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     // Add any sort descriptors and predicates
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: @"viewId == \"%@\"", viewId];
-    
+    fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
     fetchRequest.sortDescriptors = self.channelFetchedResultsControllerSortDescriptors;
     
     // Edit the section name key path and cache name if appropriate.
@@ -311,6 +309,11 @@
 
 #pragma mark - Abstract Accessors
 
+- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
+{
+    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerPredicate'");
+    return nil;
+}
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
@@ -324,6 +327,11 @@
     return nil;
 }
 
+- (NSPredicate *) channelFetchedResultsControllerPredicate
+{
+    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerPredicate'");
+    return nil;
+}
 
 
 - (NSArray *) channelFetchedResultsControllerSortDescriptors
