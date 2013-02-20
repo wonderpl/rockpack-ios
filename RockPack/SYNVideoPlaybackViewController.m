@@ -406,9 +406,14 @@
 - (void) handleYouTubePlayerEventNamed: (NSString *) actionName
                              eventData: (NSString *) actionData
 {
+    NSLog (@"*** YTPlayer: %@ : %@", actionName, actionData);
+    
     if ([actionName isEqualToString: @"ready"])
     {
-        NSLog (@"*** YTPlayer: Ready");
+        if (self.autoPlay == TRUE)
+        {
+            [self play];
+        }
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
