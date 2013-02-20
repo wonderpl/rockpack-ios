@@ -26,23 +26,14 @@
 @property (nonatomic, weak) id<SYNVideoPlaybackViewControllerDelegate> delegate;
 
 // Initialisation
-- (id) initWithSource: (NSString *) source
-             sourceId: (NSString *) sourceId
-                width: (int) width 
-               height: (int) height
-             autoPlay: (BOOL) autoPlay;
+- (id) initWithFrame: (CGRect) frame;
 
-- (id) initWithVideoInstances: (NSArray *) videoInstanceArray
-                        width: (int) width
-                       height: (int) height
-                     autoPlay: (BOOL) autoPlay;
+- (void) setVideoWithSource: (NSString *) source
+                   sourceId: (NSString *) sourceId
+                   autoPlay: (BOOL) autoPlay;
 
-- (void) replaceCurrentSourceOrPlaylistWithSource: (NSString *) source
-                                         sourceId: (NSString *) sourceId
-                                         autoPlay: (BOOL) autoPlay;
-
-- (void) replaceCurrentSourceOrPlaylistWithPlaylist: (NSArray *) playlist
-                                           autoPlay: (BOOL) autoPlay;
+- (void) setPlaylistWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                                  autoPlay: (BOOL) autoPlay;
 
 
 // Player control

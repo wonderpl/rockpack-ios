@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
 #import "Channel.h"
@@ -14,6 +15,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoDB.h"
+#import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
@@ -39,9 +41,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
-@property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) IBOutlet UIButton *largeVideoPlayButton;
+@property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 
 @end
 
@@ -71,12 +73,6 @@
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     
     // Set up large video view
-    self.videoWebView.backgroundColor = [UIColor blackColor];
-	self.videoWebView.opaque = NO;
-    self.videoWebView.scrollView.scrollEnabled = false;
-    self.videoWebView.scrollView.bounces = false;
-    self.videoWebView.alpha = 0.0f;
-    self.videoWebView.delegate = self;
     self.largeVideoPlayButton.alpha = 1.0f;
     self.largeVideoPlayButton.enabled = FALSE;
 
@@ -86,6 +82,12 @@
 
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+    
+    // New video playback view controller
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(13, 11, 494, 278)];
+    
+    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
+                aboveSubview: self.videoPlaceholderImageView];
 }
 
 
@@ -115,7 +117,9 @@
 {
     [super viewDidAppear: animated];
     
-    [self.videoThumbnailCollectionView reloadData];
+//    [self.videoThumbnailCollectionView reloadData];
+    
+    [self reloadCollectionViews];
 }
 
 
@@ -133,9 +137,13 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
+    NSArray *videoInstances = self.videoInstanceFetchedResultsController.fetchedObjects;
     // Set the first video
-    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
+    if (videoInstances.count > 0)
     {
+        [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: videoInstances
+                                                                   autoPlay: TRUE];
+        
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
                                                            inSection: 0]];
     }
@@ -249,10 +257,6 @@
         [self updateLargeVideoDetailsForIndexPath: indexPath];
         
         VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-        
-        [self loadWebViewWithJSAPIUsingYouTubeId: videoInstance.video.sourceId
-                                           width: 494
-                                          height: 278];
     }
 }
 
@@ -472,160 +476,61 @@
 
 #pragma mark - Video support
 
-- (void) loadWebViewWithIFrameUsingYouTubeId: (NSString *) videoId
-                                       width: (int) width
-                                      height: (int) height
-{
-    NSDictionary *parameterDictionary = @{@"autoplay" : @"1",
-                                          @"modestbranding" : @"1",
-                                          @"origin" : @"http://example.com\\",
-                                          @"showinfo" : @"0"};
-    
-    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
-    
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId, parameterString];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: nil];
-}
 
-
-- (void) loadWebViewWithJSAPIUsingYouTubeId: (NSString *) videoId
-                                      width: (int) width
-                                     height: (int) height
-{
-    NSError *error = nil;
-    
-    // Show placeholder, but not webview (wait until that has loaded)
-    self.videoWebView.alpha = 0.0f;
-    self.videoPlaceholderImageView.alpha = 1.0f;
-    self.largeVideoPlayButton.alpha = 1.0f;
-    
-    // Setup placeholder
-    // http://img.youtube.com/vi/<videoid>/0.jpg
-    
-    NSString *placeholderURLString = [NSString stringWithFormat: @"http://img.youtube.com/vi/%@/0.jpg", videoId];
-    
-    [self.videoPlaceholderImageView setImageFromURL: [NSURL URLWithString: placeholderURLString]
-                                   placeHolderImage: nil];
-    
-    // Now set up web view
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayerNoAutoplay"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: [NSURL URLWithString:@"http://www.youtube.com"]];
-    
-    self.videoWebView.mediaPlaybackRequiresUserAction = FALSE;
-}
-
-
-- (void) loadWebViewWithIFrameUsingVimeoId: (NSString *) videoId
-                                     width: (int) width
-                                    height: (int) height
-{
-    NSString *parameterString = @"";
-    
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, videoId, parameterString, width, height];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: nil];
-}
-
-
-- (NSString *) createParamStringFromDictionary: (NSDictionary *) params
-{
-    __block NSString *result = @"";
-    
-    [params enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop)
-     {
-         result = [result stringByAppendingFormat: @"%@=%@&", key, obj];
-     }];
-    
-    // Chop off last ampersand
-    result = [result substringToIndex: [result length] - 2];
-    return [result stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-}
-
-
-- (BOOL) webView: (UIWebView *) webView
-         shouldStartLoadWithRequest: (NSURLRequest *) request
-         navigationType: (UIWebViewNavigationType) navigationType
-{
-    // Break apart request URL
-    NSString *requestString = [[request URL] absoluteString];
-    NSArray *components = [requestString componentsSeparatedByString :@":"];
-    
-    // Check for your protocol
-    if ([components count] >= 3 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"rockpack"])
-    {
-        // Look for specific actions
-        NSString *parameter2 = (NSString *)[components objectAtIndex: 1];
-        if ([parameter2 isEqualToString: @"onStateChange"])
-        {            
-            NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
-            
-            if ([parameter3 isEqualToString: @"1"])
-            {
-                
-                [UIView animateWithDuration: 0.25f
-                                      delay: 0.0f
-                                    options: UIViewAnimationOptionCurveEaseInOut
-                                 animations: ^
-                 {
-                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
-//                    self.largeVideoPlayButton.alpha = 1.0f;
-                 }
-                 completion: ^(BOOL finished)
-                 {
-                     self.largeVideoPlayButton.enabled = TRUE;
-                 }];
-            }
-        }
-        
-        // Return 'NO' to prevent navigation
-        return NO;
-    }
-    
-    // Return 'YES', navigate to requested URL as normal
-    return YES;
-}
+//- (BOOL) webView: (UIWebView *) webView
+//         shouldStartLoadWithRequest: (NSURLRequest *) request
+//         navigationType: (UIWebViewNavigationType) navigationType
+//{
+//    // Break apart request URL
+//    NSString *requestString = [[request URL] absoluteString];
+//    NSArray *components = [requestString componentsSeparatedByString :@":"];
+//    
+//    // Check for your protocol
+//    if ([components count] >= 3 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"rockpack"])
+//    {
+//        // Look for specific actions
+//        NSString *parameter2 = (NSString *)[components objectAtIndex: 1];
+//        if ([parameter2 isEqualToString: @"onStateChange"])
+//        {            
+//            NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
+//            
+//            if ([parameter3 isEqualToString: @"1"])
+//            {
+//                
+//                [UIView animateWithDuration: 0.25f
+//                                      delay: 0.0f
+//                                    options: UIViewAnimationOptionCurveEaseInOut
+//                                 animations: ^
+//                 {
+//                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
+////                    self.largeVideoPlayButton.alpha = 1.0f;
+//                 }
+//                 completion: ^(BOOL finished)
+//                 {
+//                     self.largeVideoPlayButton.enabled = TRUE;
+//                 }];
+//            }
+//        }
+//        
+//        // Return 'NO' to prevent navigation
+//        return NO;
+//    }
+//    
+//    // Return 'YES', navigate to requested URL as normal
+//    return YES;
+//}
 
 - (IBAction) playLargeVideo: (id) sender
 {
-
-    
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         [self.videoWebView stringByEvaluatingJavaScriptFromString: @"playVideo()"];
+         [self.videoPlaybackViewController play];
          
          // Contract thumbnail view
-         self.videoWebView.alpha = 1.0;
+         self.videoPlaybackViewController.view.alpha = 1.0;
          self.videoPlaceholderImageView.alpha = 0.0f;
          self.largeVideoPlayButton.alpha = 0.0f;
      }

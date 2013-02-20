@@ -100,7 +100,7 @@ static NSEntityDescription *videoEntity = nil;
                                    withDefault: @""];
     
     self.source = [dictionary objectForKey: @"source"
-                               withDefault: @""];
+                               withDefault: @"youtube"];
     
     self.sourceId = [dictionary objectForKey: @"source_id"
                                  withDefault: @""];

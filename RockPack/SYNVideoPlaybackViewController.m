@@ -19,9 +19,9 @@
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, assign) int videoIndex;
-@property (nonatomic, assign) int videoWidth;
-@property (nonatomic, assign) int videoHeight;
 @property (nonatomic, assign) BOOL autoPlay;
+@property (nonatomic, assign) CGRect requestedFrame;
+
 
 @end
 
@@ -30,77 +30,31 @@
 
 #pragma mark - Initialization
 
-- (id) initWithSource: (NSString *) source
-             sourceId: (NSString *) sourceId
-                width: (int) width
-               height: (int) height
-             autoPlay: (BOOL) autoPlay
+- (id) initWithFrame: (CGRect) frame
 {
     if ((self = [super init]))
     {
-        [self setupWithSource: source
-                     sourceId: sourceId];
+        self.requestedFrame = frame;
     }
     
     return self;
-}
-
-
-- (id) initWithVideoInstances: (NSArray *) videoInstanceArray
-                        width: (int) width
-                       height: (int) height
-                     autoPlay: (BOOL) autoPlay
-{
-    if ((self = [super init]))
-    {
-        [self setupWithVideoInstanceArray: videoInstanceArray];
-    }
-    
-    return self;
-}
-
-
-- (void) setupWithSource: (NSString *) source
-                sourceId: (NSString *) sourceId
-{
-    // Reset index
-    self.videoIndex = 0;
-    
-    // set sources
-    self.source = source;
-    self.sourceId = sourceId;
-    self.videoInstanceArray = nil;
-}
-
-
-- (void) setupWithVideoInstanceArray: (NSArray *) videoInstanceArray
-{
-    // Reset index
-    self.videoIndex = 0;
-    
-    // Set playlist
-    self.source = nil;
-    self.sourceId = nil;
-    self.videoInstanceArray = videoInstanceArray;
 }
 
 
 #pragma mark - View lifecyle
 
 // Manually create our view
-- (void) loadView
-{
-    // Create a view of the appropriate size (clear at this stage)
-    self.view = [[UIView alloc] initWithFrame: CGRectMake (0, 0, self.videoWidth, self.videoHeight)];
-}
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Make sure we set the desired frame at this point
+    self.view.frame = self.requestedFrame;
 
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
-    self.view.alpha = 0.0f;
+//    self.view.alpha = 0.0f;
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
     self.videoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
@@ -121,8 +75,6 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
-    [self loadWebViewWithCurrentVideo];
 }
 
 
@@ -155,19 +107,40 @@
 }
 
 
-- (void) replaceCurrentSourceOrPlaylistWithSource: (NSString *) source
-                                         sourceId: (NSString *) sourceId
-                                         autoPlay: (BOOL) autoPlay
+- (void) setVideoWithSource: (NSString *) source
+                   sourceId: (NSString *) sourceId
+                   autoPlay: (BOOL) autoPlay
 {
-    [self setupWithSource: source
-                 sourceId: sourceId];
+    // Reset index
+    self.videoIndex = 0;
+    
+    // Set autoplay
+    self.autoPlay = autoPlay;
+    
+    // set sources
+    self.source = source;
+    self.sourceId = sourceId;
+    self.videoInstanceArray = nil;
+    
+    [self loadWebViewWithCurrentVideo];
 }
 
 
-- (void) replaceCurrentSourceOrPlaylistWithPlaylist: (NSArray *) videoInstanceArray
-                                           autoPlay: (BOOL) autoPlay
+- (void) setPlaylistWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                                  autoPlay: (BOOL) autoPlay
 {
-    [self setupWithVideoInstanceArray: videoInstanceArray];
+    // Reset index
+    self.videoIndex = 0;
+    
+    // Set autoplay
+    self.autoPlay = autoPlay;
+    
+    // Set playlist
+    self.source = nil;
+    self.sourceId = nil;
+    self.videoInstanceArray = videoInstanceArray;
+    
+    [self loadWebViewWithCurrentVideo];
 }
 
 
@@ -281,6 +254,9 @@
         currentSource = videoInstance.video.source;
         currentSourceId = videoInstance.video.sourceId;
     }
+    
+    [self loadWebViewWithPlayerWithSource: currentSource
+                                 sourceId: currentSourceId];
 }
 
 
@@ -312,8 +288,7 @@
     NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
                                                              encoding: NSUTF8StringEncoding
                                                                 error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, self.videoWidth, self.videoHeight, sourceId];
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int)self.view.frame.size.width, (int)self.view.frame.size.height, sourceId];
     
     [self.videoWebView loadHTMLString: iFrameHTML
                               baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
@@ -338,7 +313,7 @@
                                                              encoding: NSUTF8StringEncoding
                                                                 error: &error];
     
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, sourceId, parameterString, self.videoWidth, self.videoHeight];
+    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, sourceId, parameterString, self.view.frame.size.width, self.view.frame.size.height];
     
     [self.videoWebView loadHTMLString: iFrameHTML
                               baseURL: nil];

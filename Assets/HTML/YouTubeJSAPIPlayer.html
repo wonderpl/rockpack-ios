@@ -94,6 +94,7 @@
             // such as playing the video or displaying information about the video, as soon as the player is ready.
             function onPlayerReady(event)
             {
+                player.playVideo();
                 onEvent('ready', null);
             }
             
@@ -147,7 +148,7 @@
                 }
                 
                 // Now pass this back to the UIWebView
-                document.location = url;
+                window.location = url;
             }
             
             // Translate the Youtube player state into a human readable string
@@ -180,6 +181,10 @@
                     
                     case YT.PlayerState.CUED:
                         result = "cued";
+                        break;
+                    
+                    default:
+                       result = "unknown"
                         break;
                 }
                 
