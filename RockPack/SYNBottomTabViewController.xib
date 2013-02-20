@@ -57,6 +57,24 @@
 							<string key="NSResourceName">BackgroundGeneric.jpg</string>
 						</object>
 					</object>
+					<object class="IBUIView" id="505932827">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">292</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrame">{{0, 44}, {1024, 642}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor" id="504687637">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MCAwAA</bytes>
+						</object>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIAutoresizesSubviews">NO</bool>
+						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
 					<object class="IBUIButton" id="41472375">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">268</int>
@@ -213,7 +231,6 @@
 						<string key="NSFrame">{{819, 686}, {205, 62}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">104</int>
@@ -253,7 +270,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">PanelMainTitle.png</string>
+							<string key="NSResourceName">PanelMainTitle@2x.png</string>
 						</object>
 					</object>
 					<object class="IBUIView" id="560075072">
@@ -268,10 +285,7 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1027509953"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor" id="504687637">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MCAwAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="504687637"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -480,6 +494,20 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
+					<object class="IBUIImageView" id="293449046">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">-2147483356</int>
+						<string key="NSFrameSize">{1024, 748}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">PlaceholderVideo.png</string>
+						</object>
+					</object>
 					<object class="IBUIView" id="539251409">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
@@ -487,7 +515,7 @@
 							<object class="IBUIButton" id="525110803">
 								<reference key="NSNextResponder" ref="539251409"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, -1}, {73, 44}}</string>
+								<string key="NSFrameSize">{73, 44}</string>
 								<reference key="NSSuperview" ref="539251409"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="13664562"/>
@@ -518,7 +546,7 @@
 							<object class="IBUIButton" id="13664562">
 								<reference key="NSNextResponder" ref="539251409"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{86, -1}, {84, 43}}</string>
+								<string key="NSFrame">{{86, 0}, {84, 43}}</string>
 								<reference key="NSSuperview" ref="539251409"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="656542453"/>
@@ -552,7 +580,7 @@
 							<object class="IBUILabel" id="656542453">
 								<reference key="NSNextResponder" ref="539251409"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{151, 15}, {23, 21}}</string>
+								<string key="NSFrame">{{151, 16}, {23, 21}}</string>
 								<reference key="NSSuperview" ref="539251409"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="507172389"/>
@@ -577,7 +605,7 @@
 							<object class="IBUIButton" id="507172389">
 								<reference key="NSNextResponder" ref="539251409"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{182, -1}, {84, 43}}</string>
+								<string key="NSFrame">{{182, 0}, {84, 43}}</string>
 								<reference key="NSSuperview" ref="539251409"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="455560408"/>
@@ -611,7 +639,7 @@
 							<object class="IBUILabel" id="455560408">
 								<reference key="NSNextResponder" ref="539251409"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{236, 15}, {21, 21}}</string>
+								<string key="NSFrame">{{236, 16}, {21, 21}}</string>
 								<reference key="NSSuperview" ref="539251409"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="366077416"/>
@@ -634,7 +662,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 						</array>
-						<string key="NSFrame">{{-75, 0.5}, {300, 42}}</string>
+						<string key="NSFrame">{{-75, 0}, {300, 43}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="525110803"/>
@@ -713,6 +741,14 @@
 						<reference key="destination" ref="1027509953"/>
 					</object>
 					<int key="connectionID">63</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">navControllerPlaceholderView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="505932827"/>
+					</object>
+					<int key="connectionID">70</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -832,14 +868,6 @@
 					<int key="connectionID">36</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="426171655"/>
-						<reference key="destination" ref="841351856"/>
-					</object>
-					<int key="connectionID">128</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">toggleRecording</string>
 						<reference key="source" ref="426099012"/>
@@ -918,7 +946,9 @@
 							<reference ref="1046728159"/>
 							<reference ref="634090896"/>
 							<reference ref="366077416"/>
+							<reference ref="505932827"/>
 							<reference ref="660578725"/>
+							<reference ref="293449046"/>
 							<reference ref="539251409"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -927,7 +957,7 @@
 						<int key="objectID">9</int>
 						<reference key="object" ref="41472375"/>
 						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Button - HOME</string>
+						<string key="objectName">Button - HOMR</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
@@ -946,22 +976,6 @@
 						<reference key="object" ref="581326300"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Button - FRIENDS</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">23</int>
-						<reference key="object" ref="492712819"/>
-						<reference key="parent" ref="766721923"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">29</int>
-						<reference key="object" ref="879485860"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Button - Search Cancel</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">31</int>
-						<reference key="object" ref="426171655"/>
-						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">39</int>
@@ -1013,12 +1027,6 @@
 						<string key="objectName">Button - CHANNELS</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">4</int>
-						<reference key="object" ref="366077416"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Image - Background</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">81</int>
 						<reference key="object" ref="660578725"/>
 						<array class="NSMutableArray" key="children">
@@ -1047,10 +1055,21 @@
 						<string key="objectName">View - Top Buttons</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">44</int>
-						<reference key="object" ref="13664562"/>
+						<int key="objectID">123</int>
+						<reference key="object" ref="525110803"/>
 						<reference key="parent" ref="539251409"/>
-						<string key="objectName">Button - Inbox</string>
+						<string key="objectName">Back button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">31</int>
+						<reference key="object" ref="426171655"/>
+						<reference key="parent" ref="766721923"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">29</int>
+						<reference key="object" ref="879485860"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Button - Search Cancel</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">46</int>
@@ -1059,10 +1078,10 @@
 						<string key="objectName">Label - Number of messages</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">75</int>
-						<reference key="object" ref="507172389"/>
+						<int key="objectID">44</int>
+						<reference key="object" ref="13664562"/>
 						<reference key="parent" ref="539251409"/>
-						<string key="objectName">Button - Notifications</string>
+						<string key="objectName">Button - Inbox</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">74</int>
@@ -1071,10 +1090,32 @@
 						<string key="objectName">Label - Number of notifications</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">123</int>
-						<reference key="object" ref="525110803"/>
+						<int key="objectID">75</int>
+						<reference key="object" ref="507172389"/>
 						<reference key="parent" ref="539251409"/>
-						<string key="objectName">Back button</string>
+						<string key="objectName">Button - Notifications</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">23</int>
+						<reference key="object" ref="492712819"/>
+						<reference key="parent" ref="766721923"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">4</int>
+						<reference key="object" ref="366077416"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Image - Background</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">69</int>
+						<reference key="object" ref="505932827"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">View - nav controller placeholder</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">93</int>
+						<reference key="object" ref="293449046"/>
+						<reference key="parent" ref="766721923"/>
 					</object>
 				</array>
 			</object>
@@ -1109,6 +1150,7 @@
 				<string key="62.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="67.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="67.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="69.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="75.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="75.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
@@ -1116,6 +1158,7 @@
 				<string key="87.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="9.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="93.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
@@ -1174,17 +1217,45 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNBottomTabViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">popCurrentViewController:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">popCurrentViewController:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="clearSearchField:">id</string>
+						<string key="popCurrentViewController:">id</string>
+						<string key="recordAction:">UIButton</string>
+						<string key="tabButtonPressed:">UIButton</string>
+						<string key="userTouchedInboxButton:">UIButton</string>
+						<string key="userTouchedNotificationButton:">UIButton</string>
+						<string key="writeMessage:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="clearSearchField:">
+							<string key="name">clearSearchField:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="popCurrentViewController:">
 							<string key="name">popCurrentViewController:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+						<object class="IBActionInfo" key="recordAction:">
+							<string key="name">recordAction:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="tabButtonPressed:">
+							<string key="name">tabButtonPressed:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedInboxButton:">
+							<string key="name">userTouchedInboxButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedNotificationButton:">
+							<string key="name">userTouchedNotificationButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="writeMessage:">
+							<string key="name">writeMessage:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="cancelSearchButton">UIButton</string>
@@ -1290,8 +1361,9 @@
 			<string key="ButtonTalkHighlighted@2x.png">{308, 248}</string>
 			<string key="ButtonTalkStrobe.png">{154, 124}</string>
 			<string key="PanelInbox.png">{476, 642}</string>
-			<string key="PanelMainTitle.png">{1024, 54}</string>
+			<string key="PanelMainTitle@2x.png">{2048, 108}</string>
 			<string key="PanelShare.png">{476, 642}</string>
+			<string key="PlaceholderVideo.png">{16, 16}</string>
 			<string key="TabChannelsDefault.png">{205, 62}</string>
 			<string key="TabChannelsHighlighted.png">{205, 62}</string>
 			<string key="TabChannelsSelected.png">{205, 62}</string>
