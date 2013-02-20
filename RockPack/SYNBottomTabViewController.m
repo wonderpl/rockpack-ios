@@ -98,6 +98,15 @@
     videosRootNavigationViewController.view.autoresizesSubviews = TRUE;
     videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
+    
+    // Search tab
+    SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] init];
+    searchRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
+    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
+    searchRootNavigationViewController.navigationBarHidden = TRUE;
+    searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    
     // My Rockpack tab
     SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] init];
     UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
