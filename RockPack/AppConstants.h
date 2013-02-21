@@ -146,6 +146,11 @@
 
 #define kTopTabCount 10
 
+
+// Notifications
+#define kNoteBackButtonShow @"kNoteBackButtonShow"
+#define kNoteBackButtonHide @"kNoteBackButtonHide"
+
 //
 // Tracking
 //

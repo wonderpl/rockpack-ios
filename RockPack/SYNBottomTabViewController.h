@@ -14,8 +14,6 @@
 @property (nonatomic, strong, readonly) UIButton *messageInboxButton;
 
 
-- (void) showBackButton;
-- (void) hideBackButton;
-- (IBAction) popCurrentViewController: (id) sender;
+- (void) popCurrentViewController: (id) sender;
 
 @end

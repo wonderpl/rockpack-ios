@@ -267,11 +267,13 @@
     if ([toViewController isKindOfClass: [UINavigationController class]] &&
         [[(UINavigationController *)toViewController viewControllers] count] > 1) {
         
-        [self showBackButton];
+        //[self showBackButton];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
     }
     else
     {
-        [self hideBackButton];
+        //[self hideBackButton];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
     }
 }
 
@@ -360,21 +362,10 @@
 
 #pragma mark - Side menu gesture handlers
 
-
-
-
-
-
-
-
 - (IBAction) recordAction: (UIButton*) button
 {
     button.selected = !button.selected;
 }
-
-
-
-
 
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
@@ -509,51 +500,9 @@
 
 
 
-#pragma mark - Back button handling
-
-- (void) showBackButton
-{
-    if (self.topButtonView.frame.origin.x < 0)
-    {
-        [UIView animateWithDuration: 0.25f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             CGRect containerViewFrame = self.topButtonView.frame;
-             containerViewFrame.origin.x += 75;
-             self.topButtonView.frame = containerViewFrame;
-         }
-                         completion: ^(BOOL finished)
-         {
-             self.showingBackButton = TRUE;
-         }];
-    }
-}
 
 
-- (void) hideBackButton
-{
-    // Only hide if  already visible
-    if (self.topButtonView.frame.origin.x >= 0)
-    {
-        [UIView animateWithDuration: 0.25f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             CGRect containerViewFrame = self.topButtonView.frame;
-             containerViewFrame.origin.x -= 75;
-             self.topButtonView.frame = containerViewFrame;
-         }
-         completion: ^(BOOL finished)
-         {
-             self.showingBackButton = FALSE;
-         }];
-    }
-}
-
-- (IBAction) popCurrentViewController: (id) sender
+- (void) popCurrentViewController: (id) sender
 {
     UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
     

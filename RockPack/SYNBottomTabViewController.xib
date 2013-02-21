@@ -387,7 +387,6 @@
 								<string key="NSFrameSize">{476, 642}</string>
 								<reference key="NSSuperview" ref="660578725"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="504687637"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -468,37 +467,6 @@
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews">
-							<object class="IBUIButton" id="525110803">
-								<reference key="NSNextResponder" ref="539251409"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, -1}, {73, 44}}</string>
-								<reference key="NSSuperview" ref="539251409"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="13664562"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="504687637"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">Button</string>
-								<reference key="IBUIHighlightedTitleColor" ref="439651615"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-								</object>
-								<reference key="IBUINormalTitleShadowColor" ref="847267172"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonBackHighlighted.png</string>
-								</object>
-								<object class="NSCustomResource" key="IBUINormalImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonBack.png</string>
-								</object>
-								<reference key="IBUIFontDescription" ref="434646076"/>
-								<reference key="IBUIFont" ref="79313120"/>
-							</object>
 							<object class="IBUIButton" id="13664562">
 								<reference key="NSNextResponder" ref="539251409"/>
 								<int key="NSvFlags">292</int>
@@ -621,7 +589,7 @@
 						<string key="NSFrame">{{-75, 0.5}, {300, 42}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="525110803"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:10</string>
 						<reference key="IBUIBackgroundColor" ref="504687637"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -859,15 +827,6 @@
 					</object>
 					<int key="connectionID">78</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">popCurrentViewController:</string>
-						<reference key="source" ref="525110803"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">125</int>
-				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1019,16 +978,9 @@
 							<reference ref="507172389"/>
 							<reference ref="656542453"/>
 							<reference ref="13664562"/>
-							<reference ref="525110803"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">View - Top Buttons</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">123</int>
-						<reference key="object" ref="525110803"/>
-						<reference key="parent" ref="539251409"/>
-						<string key="objectName">Back button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">44</int>
@@ -1043,16 +995,16 @@
 						<string key="objectName">Label - Number of messages</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">74</int>
-						<reference key="object" ref="455560408"/>
-						<reference key="parent" ref="539251409"/>
-						<string key="objectName">Label - Number of notifications</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">75</int>
 						<reference key="object" ref="507172389"/>
 						<reference key="parent" ref="539251409"/>
 						<string key="objectName">Button - Notifications</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">74</int>
+						<reference key="object" ref="455560408"/>
+						<reference key="parent" ref="539251409"/>
+						<string key="objectName">Label - Number of notifications</string>
 					</object>
 				</array>
 			</object>
@@ -1066,8 +1018,6 @@
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="12.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="122.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="123.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="123.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="13.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1151,17 +1101,30 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNBottomTabViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">popCurrentViewController:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">popCurrentViewController:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="popCurrentViewController:">id</string>
+						<string key="recordAction:">UIButton</string>
+						<string key="tabButtonPressed:">UIButton</string>
+						<string key="writeMessage:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="popCurrentViewController:">
 							<string key="name">popCurrentViewController:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+						<object class="IBActionInfo" key="recordAction:">
+							<string key="name">recordAction:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="tabButtonPressed:">
+							<string key="name">tabButtonPressed:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="writeMessage:">
+							<string key="name">writeMessage:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="cancelSearchButton">UIButton</string>
@@ -1257,8 +1220,6 @@
 			<string key="ButtonActivityDefault.png">{84, 43}</string>
 			<string key="ButtonActivityHighlighted.png">{84, 43}</string>
 			<string key="ButtonActivitySelected.png">{84, 43}</string>
-			<string key="ButtonBack.png">{53, 30}</string>
-			<string key="ButtonBackHighlighted.png">{53, 30}</string>
 			<string key="ButtonCancelSearch.png">{23, 23}</string>
 			<string key="ButtonInboxDefault.png">{84, 43}</string>
 			<string key="ButtonInboxHighlighted.png">{84, 43}</string>

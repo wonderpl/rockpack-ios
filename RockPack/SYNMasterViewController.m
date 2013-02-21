@@ -17,12 +17,17 @@
 #import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
 
+#define kBackButtonHiddenX 0.0
+#define kBackButtonShownX 50.0
+
 @interface SYNMasterViewController ()
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
+@property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
+@property (nonatomic, strong) IBOutlet UIButton* backButton;
 
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
@@ -87,6 +92,9 @@
     
     [self.containerView addSubview:rootViewController.view];
     
+    self.backButton.alpha = 0.0;
+    self.backButton.hidden = YES;
+    
     
     // == Set up Recognisers == //
     
@@ -104,6 +112,12 @@
     
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
     [self.view addGestureRecognizer: leftSwipeRecogniser];
+    
+    
+    // == Set up Notifications == //
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     
     
 }
@@ -288,6 +302,59 @@
     return YES;
 }
 
+
+#pragma mark - Notification Handlers
+
+-(void)backButtonRequested:(NSNotification*)notification
+{
+    NSString* notificationName = [notification name];
+    if([notificationName isEqualToString:kNoteBackButtonShow])
+    {
+        [self.backButton addTarget:self.rootViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self showBackButton:YES];
+    }
+    else
+    {
+        [self.backButton removeTarget:self.rootViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self showBackButton:NO];
+    }
+}
+
+- (void) showBackButton:(BOOL)show
+{
+    CGPoint targetPoint;
+    CGFloat targetAlpha;
+    
+    
+    if(show)
+    {
+        targetPoint = CGPointMake(kBackButtonShownX, self.backButton.center.y);
+        targetAlpha = 1.0;
+        
+    }
+    else
+    {
+        targetPoint = CGPointMake(kBackButtonHiddenX, self.backButton.center.y);
+        targetAlpha = 0.0;
+    }
+    
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         self.topButtonsContainer.center = targetPoint;
+                         self.backButton.alpha = targetAlpha;
+                         
+                         
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                    
+                         
+                     }];
+    
+}
 
 
 @end
