@@ -54,6 +54,16 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(youTubeVideoEnter:)
+                                                 name: @"UIMoviePlayerControllerDidEnterFullscreenNotification"
+                                               object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(youTubeVideoExit:)
+                                                 name: @"UIMoviePlayerControllerDidExitFullscreenNotification"
+                                               object: nil];
+
     // Make sure we set the desired frame at this point
     self.view.frame = self.requestedFrame;
 
@@ -71,6 +81,16 @@
     // Add button that can be used to play video (if not autoplaying)
     self.videoPlayButton = [self createVideoPlayButton];
 
+}
+
+- (void) youTubeVideoEnter: (id) sender
+{
+    DebugLog (@" Entered fullscreen");
+}
+
+- (void) youTubeVideoExit: (id) sender
+{
+    DebugLog (@"Exited fullscreen");
 }
 
 
