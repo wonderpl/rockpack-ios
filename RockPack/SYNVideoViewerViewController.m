@@ -230,9 +230,6 @@
                                      width: (int) width
                                     height: (int) height
 {
-    // api=1&player_id=player
-//    NSDictionary *parameterDictionary = @{@"api" : @"0",
-//    @"player_id" : @"player"};
     
     //    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
     NSString *parameterString = @"";

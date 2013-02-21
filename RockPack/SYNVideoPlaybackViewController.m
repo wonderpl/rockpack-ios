@@ -27,7 +27,6 @@
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
 @property (nonatomic, strong) UIWebView *nextVideoWebView;
 
-
 @end
 
 
@@ -67,15 +66,16 @@
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
     self.currentVideoWebView = [self createNewVideoWebView];
-    
     [self.view addSubview: self.currentVideoWebView];
+    
+    // We don't have a 'next' web view at the moment (not strictly necessary to nil here, but just to show logic)
+    self.nextVideoWebView = nil;
+    
+    // Add button that can be used to play video (if not autoplaying)
+    self.videoPlayButton = [self createVideoPlayButton];
+    [self.view addSubview: self.videoPlayButton];
 }
 
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-}
 
 - (UIWebView *) createNewVideoWebView
 {
@@ -95,6 +95,7 @@
     return newVideoWebView;
 }
 
+
 - (UIImageView *) createNewVideoPlaceholderImageView
 {
     UIImageView *newVideoPlaceholderImageView;
@@ -103,7 +104,31 @@
     newVideoPlaceholderImageView.backgroundColor = [UIColor clearColor];
 	newVideoPlaceholderImageView.opaque = NO;
     
+    // Initially, the webview will be hidden (until playback starts)
+    newVideoPlaceholderImageView.alpha = 0.0f;
+    
     return newVideoPlaceholderImageView;
+}
+
+- (UIButton *) createVideoPlayButton
+{
+    UIButton *newVideoPlayButton;
+    
+    newVideoPlayButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    newVideoPlayButton.frame = self.view.bounds;
+    newVideoPlayButton.backgroundColor = [UIColor clearColor];
+    
+    [newVideoPlayButton setImage: [UIImage imageNamed: @"ButtonLargeVideoPanelPlay.png"]
+                        forState: UIControlStateNormal];
+    
+    [newVideoPlayButton addTarget: self
+                           action: @selector(clearVideoQueue)
+                 forControlEvents: UIControlEventTouchUpInside];
+    
+    newVideoPlayButton.alpha = 1.0f;
+//    newVideoPlayButton.enabled = FALSE;
+    
+    return newVideoPlayButton;
 }
 
 
@@ -445,6 +470,10 @@
             {
                 [self play];
             }
+            else
+            {
+                [self fadeUpPlayButton];
+            }
         }
         else if ([actionData isEqualToString: @"ended"])
         {
@@ -457,24 +486,14 @@
         }
         else if ([actionData isEqualToString: @"playing"])
         {
+            [self fadeOutPlayButton];
+            [self fadeUpVideoPlayer];
             [self startBufferMonitoringTimer];
         }
         else if ([actionData isEqualToString: @"paused"])
         {
             [self stopBufferMonitoringTimer];
-            
-            [UIView animateWithDuration: 0.25f
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 self.videoPlayButton.alpha = 1.0f;
-             }
-             completion: ^(BOOL finished)
-             {
-                 self.videoPlayButton.enabled = TRUE;
-             }];
-
+            [self fadeUpPlayButton];
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
@@ -548,7 +567,7 @@
 
 - (void) precacheNextVideo
 {
-    
+    self.nextVideoWebView = [self createNewVideoWebView];
 }
 
 - (void) swapVideoWebViews
@@ -560,25 +579,60 @@
     
 }
 
-- (IBAction) playLargeVideo: (id) sender
+- (IBAction) userTouchedPlay: (id) sender
+{
+    [self play];
+}
+
+- (void) fadeUpVideoPlayer
+{
+    [self fadeOutPlayButton];
+    
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         
+         
+         // Contract thumbnail view
+         self.currentVideoWebView.alpha = 1.0;
+         self.currentVideoPlaceholderImageView.alpha = 0.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+     }];
+}
+
+- (void) fadeUpPlayButton
 {
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
-         [self play];
-         
-         // Contract thumbnail view
-         self.currentVideoWebView.alpha = 1.0;
-         self.currentVideoPlaceholderImageView.alpha = 0.0f;
+         self.videoPlayButton.alpha = 1.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+         self.videoPlayButton.enabled = TRUE;
+     }];
+}
+
+- (void) fadeOutPlayButton
+{
+    self.videoPlayButton.enabled = FALSE;
+    
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
          self.videoPlayButton.alpha = 0.0f;
      }
                      completion: ^(BOOL finished)
      {
-         self.videoPlayButton.enabled = FALSE;
      }];
-    
 }
 
 @end

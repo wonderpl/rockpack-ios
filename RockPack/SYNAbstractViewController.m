@@ -77,7 +77,6 @@
     {
         // Initialise common views
         // Overall view to slide in and out of view
-//        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
         self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 573+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
         
         // Panel view
@@ -86,7 +85,6 @@
         [self.videoQueueView addSubview: self.videoQueuePanelView];
         
         // Buttons
-        
         self.videoQueueDeleteButton = [UIButton buttonWithType: UIButtonTypeCustom];
         self.videoQueueDeleteButton.frame = CGRectMake(949, 35, 50, 50);
         

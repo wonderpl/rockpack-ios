@@ -29,11 +29,10 @@
                                            UIScrollViewDelegate,
                                            UIWebViewDelegate>
 
-@property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *videoPlaceholderImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
@@ -42,7 +41,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
-@property (nonatomic, strong) IBOutlet UIButton *largeVideoPlayButton;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 
 @end
@@ -71,10 +69,6 @@
     self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    
-    // Set up large video view
-    self.largeVideoPlayButton.alpha = 1.0f;
-    self.largeVideoPlayButton.enabled = FALSE;
 
     // Init video thumbnail collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -87,7 +81,8 @@
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(13, 11, 494, 278)];
     
     [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
-                aboveSubview: self.videoPlaceholderImageView];
+                               aboveSubview: self.panelImageView];
+
 }
 
 
@@ -116,8 +111,6 @@
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
-    
-//    [self.videoThumbnailCollectionView reloadData];
     
     [self reloadCollectionViews];
 }
@@ -344,16 +337,6 @@
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
-//- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
-//{
-//    [self showVideoQueue: TRUE];
-//    [self startVideoQueueDismissalTimer];
-//    
-//    UIView *v = addItButton.superview.superview;
-//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-//    [self animateVideoAdditionToVideoQueue: videoInstance];
-//}
 
 - (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
@@ -471,74 +454,6 @@
     viewFrame = self.videoThumbnailCollectionView.frame;
     viewFrame.size.height += kVideoQueueEffectiveHeight;
     self.videoThumbnailCollectionView.frame = viewFrame;
-}
-
-
-#pragma mark - Video support
-
-
-//- (BOOL) webView: (UIWebView *) webView
-//         shouldStartLoadWithRequest: (NSURLRequest *) request
-//         navigationType: (UIWebViewNavigationType) navigationType
-//{
-//    // Break apart request URL
-//    NSString *requestString = [[request URL] absoluteString];
-//    NSArray *components = [requestString componentsSeparatedByString :@":"];
-//    
-//    // Check for your protocol
-//    if ([components count] >= 3 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"rockpack"])
-//    {
-//        // Look for specific actions
-//        NSString *parameter2 = (NSString *)[components objectAtIndex: 1];
-//        if ([parameter2 isEqualToString: @"onStateChange"])
-//        {            
-//            NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
-//            
-//            if ([parameter3 isEqualToString: @"1"])
-//            {
-//                
-//                [UIView animateWithDuration: 0.25f
-//                                      delay: 0.0f
-//                                    options: UIViewAnimationOptionCurveEaseInOut
-//                                 animations: ^
-//                 {
-//                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
-////                    self.largeVideoPlayButton.alpha = 1.0f;
-//                 }
-//                 completion: ^(BOOL finished)
-//                 {
-//                     self.largeVideoPlayButton.enabled = TRUE;
-//                 }];
-//            }
-//        }
-//        
-//        // Return 'NO' to prevent navigation
-//        return NO;
-//    }
-//    
-//    // Return 'YES', navigate to requested URL as normal
-//    return YES;
-//}
-
-- (IBAction) playLargeVideo: (id) sender
-{
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         [self.videoPlaybackViewController play];
-         
-         // Contract thumbnail view
-         self.videoPlaybackViewController.view.alpha = 1.0;
-         self.videoPlaceholderImageView.alpha = 0.0f;
-         self.largeVideoPlayButton.alpha = 0.0f;
-     }
-                     completion: ^(BOOL finished)
-     {
-        self.largeVideoPlayButton.enabled = FALSE;
-     }];
-
 }
 
 
