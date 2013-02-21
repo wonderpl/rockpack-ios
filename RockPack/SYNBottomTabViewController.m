@@ -37,21 +37,16 @@
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) UIViewController* searchViewController;
 @property (nonatomic, strong) AVAudioRecorder *avRecorder;
-@property (nonatomic, strong) IBOutlet UIButton *cancelSearchButton;
-@property (nonatomic, strong) IBOutlet UIButton *messageInboxButton;
-@property (nonatomic, strong) IBOutlet UIButton *notificationsButton;
+
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
-@property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
-@property (nonatomic, strong) IBOutlet UILabel *numberOfMessagesLabel;
-@property (nonatomic, strong) IBOutlet UILabel *numberOfNotificationsLabel;
-@property (nonatomic, strong) IBOutlet UITextField *searchTextField;
+
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
-@property (nonatomic, strong) IBOutlet UIView *messageInboxView;
-@property (nonatomic, strong) IBOutlet UIView *shareMenuView;
-@property (nonatomic, strong) IBOutlet UIView *topButtonView;
+
+@property (nonatomic, strong) IBOutlet UIView* containerView;
+
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
@@ -132,15 +127,9 @@
     
     
     // Set initial state
-    self.messageInboxView.userInteractionEnabled = TRUE;
     self.didNotSwipeMessageInbox = TRUE;
     self.didNotSwipeShareMenu = TRUE;
     
-    // Setup number of messages number font in title bar
-    self.numberOfMessagesLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    
-    // Setup number of messages number font in title bar
-    self.numberOfNotificationsLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     
     // Setup rockie-talkie message view
     self.messageTextView.font = [UIFont rockpackFontOfSize: 15.0f];
@@ -149,7 +138,7 @@
     // Placeholder for rockie-talkie message view to show message only when no text in main view
     self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
     
-    self.backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"BackgroundGeneric"]];
+    
 }
 
 
@@ -255,7 +244,7 @@
     }
     else if (fromViewController == nil)  // don't animate
     {
-        [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
+        [self.containerView addSubview:toViewController.view];
     }
     
     
@@ -280,34 +269,34 @@
 
 -(void)performChangeFromController:(UIViewController*)fromViewController toController:(UIViewController*)toViewController animated:(BOOL)animated
 {
+    
+    [self.containerView addSubview:toViewController.view];
+    
     if (animated)
     {
         self.view.userInteractionEnabled = NO;
-        
-        // Set new alpha to 0
+      
         toViewController.view.alpha = 0.0f;
-        
-        [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
         
         [UIView animateWithDuration: kTabAnimationDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
+                         animations: ^{
              fromViewController.view.alpha = 0.0f;
              toViewController.view.alpha = 1.0f;
-         }
-                         completion: ^(BOOL finished)
-         {
+                             
+         } completion: ^(BOOL finished) {
+             
              fromViewController.view.alpha = 0.0f;
              [fromViewController.view removeFromSuperview];
              self.view.userInteractionEnabled = YES;
+             
          }];
     }
     else  // not animated
     {
         [fromViewController.view removeFromSuperview];
-        [self.view insertSubview: toViewController.view aboveSubview: self.backgroundImageView];
+        
     }
 }
 
@@ -353,7 +342,7 @@
 
 - (IBAction) tabButtonPressed: (UIButton *) sender
 {
-    self.searchTextField.text = @"";
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteTabPressed object:self];
     
 	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
                   animated: YES];
@@ -371,7 +360,7 @@
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
 	// Any cleanup
-    self.notificationsButton.selected = FALSE;
+    // self.notificationsButton.selected = FALSE;
 }
 
 

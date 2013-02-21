@@ -12,6 +12,7 @@
 #import "SYNInboxOverlayViewController.h"
 #import "SYNShareOverlayViewController.h"
 #import "SYNBottomTabViewController.h"
+#import "UIFont+SYNFont.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudioTypes.h>
@@ -21,6 +22,10 @@
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
+
+@property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
+@property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
+
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
@@ -93,6 +98,12 @@
     
     self.topButtonsContainer.userInteractionEnabled = YES;
     
+    // == Set Up Labels == /
+    
+    UIFont* boldFont = [UIFont boldRockpackFontOfSize:17.0f];
+    
+    self.inboxLabel.font = boldFont;
+    self.notificationsLabel.font = boldFont;
     
     // == Set up Recognisers == //
     
@@ -116,6 +127,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tabPressed:) name:kNoteTabPressed object:nil];
     
     
 }
@@ -358,6 +371,12 @@
                          
                      }];
     
+}
+
+
+-(void)tabPressed:(NSNotification*)notification
+{
+    self.searchTextField.text = @"";
 }
 
 

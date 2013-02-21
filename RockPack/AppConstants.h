@@ -150,6 +150,7 @@
 // Notifications
 #define kNoteBackButtonShow @"kNoteBackButtonShow"
 #define kNoteBackButtonHide @"kNoteBackButtonHide"
+#define kNoteTabPressed @"kNoteTabPressed"
 
 //
 // Tracking
