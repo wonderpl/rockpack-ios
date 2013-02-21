@@ -398,16 +398,14 @@
      }
      completion: ^(BOOL finished)
      {
+         
      }];
     
     [self.navigationController pushViewController: vc
                                          animated: NO];
     
     
-    //SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    
-    // Show back button
-    // [bottomTabViewController showBackButton];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
 }
 
 
@@ -421,8 +419,7 @@
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
+                     animations: ^{
          // Contract thumbnail view
          self.view.alpha = 0.0f;
          parentVC.view.alpha = 1.0f;
@@ -434,9 +431,7 @@
     
     // Hide back button
     
-    
-    // SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    // [bottomTabViewController hideBackButton];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
 }
 
 
@@ -752,6 +747,7 @@
         [[newChannel videoInstancesSet] addObject: videoInstance];
     }
 
+    
     SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
     
     [self animatedPushViewController: channelCreationVC];

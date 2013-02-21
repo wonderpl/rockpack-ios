@@ -268,12 +268,12 @@
         [[(UINavigationController *)toViewController viewControllers] count] > 1) {
         
         //[self showBackButton];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
     }
     else
     {
         //[self hideBackButton];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
     }
 }
 

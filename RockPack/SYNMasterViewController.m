@@ -11,14 +11,11 @@
 #import "SYNActivityPopoverViewController.h"
 #import "SYNInboxOverlayViewController.h"
 #import "SYNShareOverlayViewController.h"
-
+#import "SYNBottomTabViewController.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
-
-#define kBackButtonHiddenX 0.0
-#define kBackButtonShownX 50.0
 
 @interface SYNMasterViewController ()
 
@@ -93,7 +90,8 @@
     [self.containerView addSubview:rootViewController.view];
     
     self.backButton.alpha = 0.0;
-    self.backButton.hidden = YES;
+    
+    self.topButtonsContainer.userInteractionEnabled = YES;
     
     
     // == Set up Recognisers == //
@@ -114,10 +112,10 @@
     [self.view addGestureRecognizer: leftSwipeRecogniser];
     
     
-    // == Set up Notifications == //
+    // == Set Up Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
     
 }
@@ -307,38 +305,44 @@
 
 -(void)backButtonRequested:(NSNotification*)notification
 {
+    
     NSString* notificationName = [notification name];
+    
+    SYNBottomTabViewController* bottomTabController = (SYNBottomTabViewController*)self.rootViewController;
+    
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
-        [self.backButton addTarget:self.rootViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButton addTarget:bottomTabController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:YES];
     }
     else
     {
-        [self.backButton removeTarget:self.rootViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButton removeTarget:bottomTabController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:NO];
     }
 }
 
 - (void) showBackButton:(BOOL)show
 {
+    CGPoint currentPoint = self.topButtonsContainer.center;
+    
     CGPoint targetPoint;
     CGFloat targetAlpha;
     
     
     if(show)
     {
-        targetPoint = CGPointMake(kBackButtonShownX, self.backButton.center.y);
+        targetPoint = CGPointMake(currentPoint.x + 60.0, self.topButtonsContainer.center.y);
         targetAlpha = 1.0;
         
     }
     else
     {
-        targetPoint = CGPointMake(kBackButtonHiddenX, self.backButton.center.y);
+        targetPoint = CGPointMake(currentPoint.x - 60.0, self.topButtonsContainer.center.y);
         targetAlpha = 0.0;
     }
     
-    [UIView animateWithDuration: 0.25f
+    [UIView animateWithDuration: 0.4f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
