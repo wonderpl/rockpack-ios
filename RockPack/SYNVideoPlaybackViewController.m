@@ -58,7 +58,7 @@
     self.view.frame = self.requestedFrame;
 
     // Start off by making our view transparent
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = kVideoBackgroundColour;
     
 //    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
 //                               aboveSubview: self.videoPlaceholderImageView];
@@ -522,7 +522,7 @@
         else if ([actionData isEqualToString: @"playing"])
         {
             [self fadeOutPlayButton];
-            [self fadeUpVideoPlayer];
+            [self fadeUpVideoPlayerInWebView: self.currentVideoWebView];
             [self startBufferMonitoringTimer];
         }
         else if ([actionData isEqualToString: @"paused"])
@@ -577,7 +577,6 @@
         // We don't actually get any events until we 'play' the video
         // The next stage is unstarted, so if not autoplay then pause the video
         [self playVideoInWebView: self.nextVideoWebView];
-        [self pauseVideoInWebView: self.nextVideoWebView];
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
@@ -598,7 +597,7 @@
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
-            
+            [self pauseVideoInWebView: self.nextVideoWebView];
         }
         else if ([actionData isEqualToString: @"cued"])
         {
@@ -690,33 +689,15 @@
 
 - (void) swapVideoWebViews
 {
-    __block UIWebView *oldVideoWebView = self.currentVideoWebView;
+    UIWebView *oldVideoWebView = self.currentVideoWebView;
     self.currentVideoWebView = self.nextVideoWebView;
     self.nextVideoWebView = nil;
     
-    if (self.isNextVideoWebViewReadyToPlay)
-    {
-        self.nextVideoWebViewReadyToPlay = FALSE;
-        
-        [self playVideoInWebView: self.currentVideoWebView];
-        
-        [UIView animateWithDuration: 0.25f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             oldVideoWebView.alpha = 0.0f;
-             self.currentVideoWebView.alpha = 1.0f;
-         }
-         completion: ^(BOOL finished)
-         {
-             oldVideoWebView = nil;
-         }];
-    }
-    else
-    {
-        // TODO: what happens if we did not manage to pre-cache
-    }
+    // Start our new view playing
+    [self playVideoInWebView: self.currentVideoWebView];
+    
+    // Now fade out our old video view
+    [self fadeOutVideoPlayerInWebView: oldVideoWebView];
 }
 
 - (IBAction) userTouchedPlay: (id) sender
@@ -726,7 +707,7 @@
 
 
 // Fades up the video player, fading out any placeholder
-- (void) fadeUpVideoPlayer
+- (void) fadeUpVideoPlayerInWebView: (UIWebView *) webView
 {
     [self fadeOutPlayButton];
     
@@ -738,12 +719,21 @@
          
          
          // Contract thumbnail view
-         self.currentVideoWebView.alpha = 1.0;
-         self.currentVideoPlaceholderImageView.alpha = 0.0f;
+         webView.alpha = 1.0;
      }
                      completion: ^(BOOL finished)
      {
      }];
+}
+
+// Fades up the video player, fading out any placeholder
+- (void) fadeOutVideoPlayerInWebView: (UIWebView *) webView
+{
+    [self fadeOutPlayButton];
+    
+    // We need to remove immediately, as returns to start immediately
+    webView.alpha = 0.0f;
+    [webView removeFromSuperview];
 }
 
 // Fades up the play button (enabling it when fully opaque)
