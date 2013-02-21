@@ -12,6 +12,11 @@
 #import "SYNInboxOverlayViewController.h"
 #import "SYNShareOverlayViewController.h"
 
+
+#import <AVFoundation/AVFoundation.h>
+#import <CoreAudio/CoreAudioTypes.h>
+#import <QuartzCore/QuartzCore.h>
+
 @interface SYNMasterViewController ()
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
@@ -76,6 +81,8 @@
          [splashView removeFromSuperview];
      }];
     
+    self.overlayView.userInteractionEnabled = NO;
+    
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
     [self.containerView addSubview:rootViewController.view];
@@ -125,8 +132,15 @@
     CGRect overlayViewFrame = overlayView.frame;
     
     
+
+    // Play a suitable sound
+    
+
+    NSString* soundResourceName;
+    
     if(fromHidden)
     {
+        soundResourceName = @"NewSlideIn";
         // Take out of screen
         overlayView.frame =  CGRectMake(-overlayViewFrame.size.width,
                                         0.0,
@@ -152,7 +166,7 @@
     else
     {
         
-        
+        soundResourceName = @"NewSlideOut";
         
         [UIView animateWithDuration: kRockieTalkieAnimationDuration
                               delay: 0.0f
@@ -169,6 +183,14 @@
                          }];
     }
     
+    
+#ifdef SOUND_ENABLED
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource:soundResourceName ofType: @"aif"];
+    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
+    AudioServicesPlaySystemSound(sound);
+#endif
     
     
 }
