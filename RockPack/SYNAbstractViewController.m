@@ -26,6 +26,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNMasterViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
@@ -542,10 +543,7 @@
 {
     
     
-    // SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    
-    // Need to slide rockie talkie out
-    // [bottomTabViewController toggleShareMenu];
+    // TODO: Use Messaging to show Share
 }
 
 
@@ -564,26 +562,26 @@
 {
     
     
-//    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-//    
-//    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
-//    
-//    self.videoViewerViewController.view.alpha = 0.0f;
-//    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
-//    
-//    [UIView animateWithDuration: 0.5f
-//                          delay: 0.0f
-//                        options: UIViewAnimationOptionCurveEaseInOut
-//                     animations: ^
-//     {
-//         self.videoViewerViewController.view.alpha = 1.0f;
-//     }
-//     completion: ^(BOOL finished)
-//     {
-//         [self.videoViewerViewController.closeButton addTarget: self
-//                                                        action: @selector(dismissVideoViewer)
-//                                              forControlEvents: UIControlEventTouchUpInside];
-//     }];
+    SYNMasterViewController *bottomTabViewController = (SYNMasterViewController*)appDelegate.viewController;
+    
+    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
+    
+    self.videoViewerViewController.view.alpha = 0.0f;
+    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.videoViewerViewController.view.alpha = 1.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+         [self.videoViewerViewController.closeButton addTarget: self
+                                                        action: @selector(dismissVideoViewer)
+                                              forControlEvents: UIControlEventTouchUpInside];
+     }];
 }
 
 - (IBAction) dismissVideoViewer
