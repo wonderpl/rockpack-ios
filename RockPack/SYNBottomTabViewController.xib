@@ -240,21 +240,6 @@
 						<reference key="IBUIFontDescription" ref="434646076"/>
 						<reference key="IBUIFont" ref="79313120"/>
 					</object>
-					<object class="IBUIImageView" id="492712819">
-						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{1024, 54}</string>
-						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="41472375"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">PanelMainTitle.png</string>
-						</object>
-					</object>
 					<object class="IBUIView" id="560075072">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
@@ -402,7 +387,7 @@
 								<string key="NSFrameSize">{476, 642}</string>
 								<reference key="NSSuperview" ref="660578725"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="492712819"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="504687637"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -908,7 +893,6 @@
 						<reference key="object" ref="766721923"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="41472375"/>
-							<reference ref="492712819"/>
 							<reference ref="879485860"/>
 							<reference ref="426171655"/>
 							<reference ref="560075072"/>
@@ -945,11 +929,6 @@
 						<reference key="object" ref="581326300"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Button - FRIENDS</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">23</int>
-						<reference key="object" ref="492712819"/>
-						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">29</int>
@@ -1092,7 +1071,6 @@
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="13.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="31.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1289,7 +1267,6 @@
 			<string key="ButtonTalkHighlighted@2x.png">{308, 248}</string>
 			<string key="ButtonTalkStrobe.png">{154, 124}</string>
 			<string key="PanelInbox.png">{476, 642}</string>
-			<string key="PanelMainTitle.png">{1024, 54}</string>
 			<string key="PanelShare.png">{476, 642}</string>
 			<string key="TabChannelsDefault.png">{205, 62}</string>
 			<string key="TabChannelsHighlighted.png">{205, 62}</string>

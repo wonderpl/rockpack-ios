@@ -445,6 +445,10 @@
 		BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */; };
 		BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815C916D5478A00ADB1DC /* SYNRegistry.m */; };
 		BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */; };
+		BE0815D216D6448200ADB1DC /* SYNInboxOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D016D6448200ADB1DC /* SYNInboxOverlayViewController.m */; };
+		BE0815D316D6448200ADB1DC /* SYNInboxOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNInboxOverlayViewController.xib */; };
+		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
+		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -989,6 +993,12 @@
 		BE0815C916D5478A00ADB1DC /* SYNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRegistry.m; sourceTree = "<group>"; };
 		BE0815CB16D5487B00ADB1DC /* SYNSearchRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRegistry.h; sourceTree = "<group>"; };
 		BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchRegistry.m; sourceTree = "<group>"; };
+		BE0815CF16D6448200ADB1DC /* SYNInboxOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNInboxOverlayViewController.h; sourceTree = "<group>"; };
+		BE0815D016D6448200ADB1DC /* SYNInboxOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNInboxOverlayViewController.m; sourceTree = "<group>"; };
+		BE0815D116D6448200ADB1DC /* SYNInboxOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNInboxOverlayViewController.xib; sourceTree = "<group>"; };
+		BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNShareOverlayViewController.h; sourceTree = "<group>"; };
+		BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNShareOverlayViewController.m; sourceTree = "<group>"; };
+		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -1586,6 +1596,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BE0815CE16D6444200ADB1DC /* Overlays */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
 				BE08159C16D3D7E300ADB1DC /* Tabs View Controllers */,
 				0162285316C2AA7F008D1587 /* Miscellaneous */,
@@ -2299,6 +2310,19 @@
 			name = "Master View Controller";
 			sourceTree = "<group>";
 		};
+		BE0815CE16D6444200ADB1DC /* Overlays */ = {
+			isa = PBXGroup;
+			children = (
+				BE0815CF16D6448200ADB1DC /* SYNInboxOverlayViewController.h */,
+				BE0815D016D6448200ADB1DC /* SYNInboxOverlayViewController.m */,
+				BE0815D116D6448200ADB1DC /* SYNInboxOverlayViewController.xib */,
+				BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */,
+				BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */,
+				BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */,
+			);
+			name = Overlays;
+			sourceTree = "<group>";
+		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2692,6 +2716,8 @@
 				BE0815C016D4FBB300ADB1DC /* SearchTabPanelHeader.png in Resources */,
 				BE0815C116D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png in Resources */,
 				BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */,
+				BE0815D316D6448200ADB1DC /* SYNInboxOverlayViewController.xib in Resources */,
+				BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2826,6 +2852,8 @@
 				BE0815C616D5389C00ADB1DC /* SYNMasterViewController.m in Sources */,
 				BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */,
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
+				BE0815D216D6448200ADB1DC /* SYNInboxOverlayViewController.m in Sources */,
+				BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
