@@ -16,6 +16,7 @@
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
+@property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) int videoIndex;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
@@ -195,7 +196,7 @@
     self.sourceId = sourceId;
     self.videoInstanceArray = nil;
     
-    [self loadWebViewWithCurrentVideo];
+    [self loadCurrentVideoWebView];
 }
 
 
@@ -213,7 +214,7 @@
     self.sourceId = nil;
     self.videoInstanceArray = videoInstanceArray;
     
-    [self loadWebViewWithCurrentVideo];
+    [self loadCurrentVideoWebView];
 }
 
 
@@ -244,7 +245,7 @@
         // OK, we are not currently playing this index, so segue to the next video
         self.videoIndex = index;
         
-        [self loadWebViewWithCurrentVideo];
+        [self loadCurrentVideoWebView];
     }
 }
 
@@ -264,13 +265,13 @@
 - (void) loadNextVideo
 {
     [self incrementVideoIndex];
-    [self loadWebViewWithCurrentVideo];
+    [self loadCurrentVideoWebView];
 }
 
 - (void) loadPreviousVideo
 {
     [self decrementVideoIndex];
-    [self loadWebViewWithCurrentVideo];
+    [self loadCurrentVideoWebView];
 }
 
 - (void) seekInCurrentVideoToTime: (NSTimeInterval) seconds
@@ -314,7 +315,7 @@
 
 #pragma mark - Video playback HTML creation
 
-- (void) loadWebViewWithCurrentVideo
+- (void) loadCurrentVideoWebView
 {
     // Assume that we just have a single video as opposed to a playlist
     NSString *currentSource = self.source;
@@ -328,21 +329,25 @@
         currentSourceId = videoInstance.video.sourceId;
     }
     
-    [self loadWebViewWithPlayerWithSource: currentSource
-                                 sourceId: currentSourceId];
+    [self loadWebView: self.currentVideoWebView
+           withSource: currentSource
+             sourceId: currentSourceId];
 }
 
 
-- (void) loadWebViewWithPlayerWithSource: (NSString *) source
-                                sourceId: (NSString *) sourceId
+- (void) loadWebView: (UIWebView *) webView
+          withSource: (NSString *) source
+            sourceId: (NSString *) sourceId
 {
     if ([source isEqualToString: @"youtube"])
     {
-        [self loadWebViewWithJSAPIUsingYouTubeId: sourceId];
+        [self loadWebViewWithJSAPI: webView
+                    usingYouTubeId: sourceId];
     }
     else if ([source isEqualToString: @"vimeo"])
     {
-        [self loadWebViewWithIFrameUsingVimeoId: sourceId];
+        [self loadWebViewWithIFrame: webView
+                       usingVimeoId: sourceId];
     }
     else
     {
@@ -352,7 +357,8 @@
 
 
 // Support for YouTube JavaScript player
-- (void) loadWebViewWithJSAPIUsingYouTubeId: (NSString *) sourceId
+- (void) loadWebViewWithJSAPI: (UIWebView *) webView
+               usingYouTubeId: (NSString *) sourceId
 {
     NSError *error = nil;
     NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayer"
@@ -364,18 +370,19 @@
     
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
     
-    [self.currentVideoWebView loadHTMLString: iFrameHTML
-                              baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+    [webView loadHTMLString: iFrameHTML
+                    baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
     
     // Not sure if this makes any difference
-    self.currentVideoWebView.mediaPlaybackRequiresUserAction = FALSE;
+    webView.mediaPlaybackRequiresUserAction = FALSE;
 }
 
 
 // Support for Vimeo player
 // TODO: We need to support http://player.vimeo.com/video/VIDEO_ID?api=1&player_id=vimeoplayer
 // See http://developer.vimeo.com/player/js-api
-- (void) loadWebViewWithIFrameUsingVimeoId: (NSString *) sourceId
+- (void) loadWebViewWithIFrame: (UIWebView *) webView
+                  usingVimeoId: (NSString *) sourceId
 {
     NSString *parameterString = @"";
     
@@ -389,8 +396,8 @@
     
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, sourceId, parameterString, self.view.frame.size.width, self.view.frame.size.height];
     
-    [self.currentVideoWebView loadHTMLString: iFrameHTML
-                              baseURL: nil];
+    [webView loadHTMLString: iFrameHTML
+                         baseURL: nil];
 }
 
 
@@ -422,13 +429,29 @@
             // Call our handler functions
             if ([scheme isEqualToString: @"ytplayer"])
             {
-                [self handleYouTubePlayerEventNamed: actionName
-                                          eventData: actionData];
+                if (webView == self.currentVideoWebView)
+                {
+                    [self handleCurrentYouTubePlayerEventNamed: actionName
+                                                     eventData: actionData];
+                }
+                else
+                {
+                    [self handleNextYouTubePlayerEventNamed: actionName
+                                                  eventData: actionData];
+                }
             }
             else
             {
-                [self handleVimeoPlayerEventNamed: actionName
-                                        eventData: actionData];
+                if (webView == self.currentVideoWebView)
+                {
+                    [self handleCurrentVimeoPlayerEventNamed: actionName
+                                                   eventData: actionData];
+                }
+                else
+                {
+                    [self handleNextVimeoPlayerEventNamed: actionName
+                                                eventData: actionData];
+                }
             }
         }
         
@@ -452,10 +475,10 @@
 
 #pragma mark - JavaScript player handlers
 
-- (void) handleYouTubePlayerEventNamed: (NSString *) actionName
-                             eventData: (NSString *) actionData
+- (void) handleCurrentYouTubePlayerEventNamed: (NSString *) actionName
+                                    eventData: (NSString *) actionData
 {
-    NSLog (@"*** YTPlayer: %@ : %@", actionName, actionData);
+    NSLog (@"*** Current YTPlayer: %@ : %@", actionName, actionData);
     
     if ([actionName isEqualToString: @"ready"])
     {
@@ -530,8 +553,78 @@
     }
 }
 
-- (void) handleVimeoPlayerEventNamed: (NSString *) actionName
+
+// Handle all the events for the fore
+- (void) handleNextYouTubePlayerEventNamed: (NSString *) actionName
+                                    eventData: (NSString *) actionData
+{
+    NSLog (@"++++ Next YTPlayer: %@ : %@", actionName, actionData);
+    
+    if ([actionName isEqualToString: @"ready"])
+    {
+        
+    }
+    else if ([actionName isEqualToString: @"stateChange"])
+    {
+        // Now handle the different state changes
+        if ([actionData isEqualToString: @"unstarted"])
+        {
+            NSLog (@"--- Next video ready to play");
+            self.nextVideoWebViewReadyToPlay = FALSE;
+        }
+        else if ([actionData isEqualToString: @"ended"])
+        {
+        }
+        else if ([actionData isEqualToString: @"playing"])
+        {
+        }
+        else if ([actionData isEqualToString: @"paused"])
+        {
+        }
+        else if ([actionData isEqualToString: @"buffering"])
+        {
+            
+        }
+        else if ([actionData isEqualToString: @"cued"])
+        {
+            
+        }
+        else
+        {
+            AssertOrLog(@"Unexpected YTPlayer state change");
+        }
+    }
+    else if ([actionName isEqualToString: @"playbackQuality"])
+    {
+        
+    }
+    else if ([actionName isEqualToString: @"playbackRateChange"])
+    {
+        
+    }
+    else if ([actionName isEqualToString: @"error"])
+    {
+        
+    }
+    else if ([actionName isEqualToString: @"apiChange"])
+    {
+        
+    }
+    else
+    {
+        AssertOrLog(@"Unexpected next YTPlayer event");
+    }
+}
+
+
+- (void) handleCurrentVimeoPlayerEventNamed: (NSString *) actionName
                            eventData: (NSString *) actionData
+{
+    
+}
+
+- (void) handleNextVimeoPlayerEventNamed: (NSString *) actionName
+                                  eventData: (NSString *) actionData
 {
     
 }
@@ -559,24 +652,41 @@
     
     NSLog (@"Buffer Level %f", bufferLevel);
     
-    if (bufferLevel == 1.0f)
+    // If we have a full buffer for the current video and are not already trying to buffer the next video
+    // then start to preload the next video
+    if (bufferLevel == 1.0f && self.nextVideoWebView == nil)
     {
         [self precacheNextVideo];
     }
 }
 
+
 - (void) precacheNextVideo
 {
+    // This flag is set to true when we get the unstarted event from the next video player
+    // indicating that it has buffered and ready to play
+    self.nextVideoWebViewReadyToPlay = FALSE;
     self.nextVideoWebView = [self createNewVideoWebView];
 }
 
 - (void) swapVideoWebViews
 {
-    // Replace our current webview with our new webview
-    self.currentVideoWebView = self.nextVideoWebView;
-    
-    // and create a new webview, ready for our next transition
-    
+    if (self.isNextVideoWebViewReadyToPlay)
+    {
+        [UIView animateWithDuration: 0.25f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^
+         {
+             self.currentVideoWebView.alpha = 0.0f;
+             self.nextVideoWebView.alpha = 1.0f;
+         }
+         completion: ^(BOOL finished)
+         {
+             self.currentVideoWebView = self.nextVideoWebView;
+             self.nextVideoWebView = nil;
+         }];
+    }    
 }
 
 - (IBAction) userTouchedPlay: (id) sender
@@ -584,6 +694,8 @@
     [self play];
 }
 
+
+// Fades up the video player, fading out any placeholder
 - (void) fadeUpVideoPlayer
 {
     [self fadeOutPlayButton];
@@ -604,6 +716,7 @@
      }];
 }
 
+// Fades up the play button (enabling it when fully opaque)
 - (void) fadeUpPlayButton
 {
     [UIView animateWithDuration: 0.25f
@@ -619,6 +732,8 @@
      }];
 }
 
+
+// Fades out the play button (disabling it immediately)
 - (void) fadeOutPlayButton
 {
     self.videoPlayButton.enabled = FALSE;
