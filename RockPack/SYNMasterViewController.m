@@ -9,6 +9,8 @@
 #import "SYNMasterViewController.h"
 #import "AppConstants.h"
 #import "SYNActivityPopoverViewController.h"
+#import "SYNInboxOverlayViewController.h"
+#import "SYNShareOverlayViewController.h"
 
 @interface SYNMasterViewController ()
 
@@ -16,6 +18,9 @@
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
+
+@property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
+@property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
 
 @property (nonatomic, strong) UIPopoverController* popoverController;
 
@@ -33,6 +38,9 @@
     self = [super initWithNibName:@"SYNMasterViewController" bundle:nil];
     if (self) {
         self.rootViewController = root;
+        
+        self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
+        self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
     }
     return self;
 }
@@ -87,16 +95,7 @@
 {
     button.selected = !button.selected;
     
-    if (button.selected)
-    {
-        // Need to slide rockie talkie out
-        //[self slideMessageInboxRight: nil];
-    }
-    else
-    {
-        // Need to slide rockie talkie back in
-        //[self slideMessageInboxLeft: nil];
-    }
+    [self slideOverlay:self.inboxOverlayViewController.view];
 }
 
 

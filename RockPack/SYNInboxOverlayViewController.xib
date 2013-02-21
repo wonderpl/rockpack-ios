@@ -32,19 +32,19 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
-			<object class="IBUIView" id="496949278">
+			<object class="IBUIView" id="1018200067">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIImageView" id="567154102">
-						<reference key="NSNextResponder" ref="496949278"/>
+					<object class="IBUIImageView" id="121311903">
+						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{476, 642}</string>
-						<reference key="NSSuperview" ref="496949278"/>
+						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="311066137"/>
+						<reference key="NSNextKeyView" ref="1006974752"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<object class="NSColor" key="IBUIBackgroundColor" id="711093655">
+						<object class="NSColor" key="IBUIBackgroundColor" id="941692993">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
@@ -55,11 +55,11 @@
 							<string key="NSResourceName">PanelInbox.png</string>
 						</object>
 					</object>
-					<object class="IBUILabel" id="311066137">
-						<reference key="NSNextResponder" ref="496949278"/>
+					<object class="IBUILabel" id="1006974752">
+						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{281, 26}, {135, 21}}</string>
-						<reference key="NSSuperview" ref="496949278"/>
+						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -92,9 +92,9 @@
 				<string key="NSFrameSize">{476, 642}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="567154102"/>
+				<reference key="NSNextKeyView" ref="121311903"/>
 				<string key="NSReuseIdentifierKey">_NS:10</string>
-				<reference key="IBUIBackgroundColor" ref="711093655"/>
+				<reference key="IBUIBackgroundColor" ref="941692993"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 		</array>
@@ -104,9 +104,17 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">serchLabel</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="311066137"/>
+						<reference key="destination" ref="1006974752"/>
 					</object>
 					<int key="connectionID">9</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="1018200067"/>
+					</object>
+					<int key="connectionID">10</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -130,23 +138,23 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">4</int>
-						<reference key="object" ref="496949278"/>
+						<reference key="object" ref="1018200067"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="567154102"/>
-							<reference ref="311066137"/>
+							<reference ref="121311903"/>
+							<reference ref="1006974752"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
-						<reference key="object" ref="567154102"/>
-						<reference key="parent" ref="496949278"/>
+						<reference key="object" ref="121311903"/>
+						<reference key="parent" ref="1018200067"/>
 						<string key="objectName">Image View - Share panel background</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
-						<reference key="object" ref="311066137"/>
-						<reference key="parent" ref="496949278"/>
+						<reference key="object" ref="1006974752"/>
+						<reference key="parent" ref="1018200067"/>
 						<string key="objectName">Search TextField</string>
 					</object>
 				</array>
@@ -164,7 +172,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">9</int>
+			<int key="maxID">10</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
