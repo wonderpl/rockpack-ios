@@ -67,14 +67,10 @@
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
     self.currentVideoWebView = [self createNewVideoWebView];
-    [self.view addSubview: self.currentVideoWebView];
-    
-    // We don't have a 'next' web view at the moment (not strictly necessary to nil here, but just to show logic)
-    self.nextVideoWebView = nil;
     
     // Add button that can be used to play video (if not autoplaying)
     self.videoPlayButton = [self createVideoPlayButton];
-    [self.view addSubview: self.videoPlayButton];
+
 }
 
 
@@ -85,6 +81,7 @@
     newVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
     newVideoWebView.backgroundColor = self.view.backgroundColor;
 	newVideoWebView.opaque = NO;
+    newVideoWebView.alpha = 0.0f;
     
     // Stop the user from scrolling the webview
     newVideoWebView.scrollView.scrollEnabled = false;
@@ -92,6 +89,9 @@
     
     // Set the webview delegate so that we can received events from the JavaScript
     newVideoWebView.delegate = self;
+    
+    [self.view insertSubview: newVideoWebView
+                aboveSubview: self.currentVideoPlaceholderImageView];
 
     return newVideoWebView;
 }
@@ -127,8 +127,9 @@
                  forControlEvents: UIControlEventTouchUpInside];
     
     newVideoPlayButton.alpha = 1.0f;
-//    newVideoPlayButton.enabled = FALSE;
+
     
+    [self.view addSubview: newVideoPlayButton];
     return newVideoPlayButton;
 }
 
