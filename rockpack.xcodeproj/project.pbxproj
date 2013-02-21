@@ -441,8 +441,8 @@
 		BE0815BF16D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0815B716D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png */; };
 		BE0815C016D4FBB300ADB1DC /* SearchTabPanelHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0815B816D4FBB300ADB1DC /* SearchTabPanelHeader.png */; };
 		BE0815C116D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE0815B916D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png */; };
-		BE0815C616D5389C00ADB1DC /* SYNTopBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815C416D5389C00ADB1DC /* SYNTopBarViewController.m */; };
-		BE0815C716D5389C00ADB1DC /* SYNTopBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815C516D5389C00ADB1DC /* SYNTopBarViewController.xib */; };
+		BE0815C616D5389C00ADB1DC /* SYNMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815C416D5389C00ADB1DC /* SYNMasterViewController.m */; };
+		BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */; };
 		BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815C916D5478A00ADB1DC /* SYNRegistry.m */; };
 		BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
@@ -982,9 +982,9 @@
 		BE0815B716D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabHeaderSelected@2x.png"; sourceTree = "<group>"; };
 		BE0815B816D4FBB300ADB1DC /* SearchTabPanelHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchTabPanelHeader.png; sourceTree = "<group>"; };
 		BE0815B916D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchTabPanelHeader@2x.png"; sourceTree = "<group>"; };
-		BE0815C316D5389C00ADB1DC /* SYNTopBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTopBarViewController.h; sourceTree = "<group>"; };
-		BE0815C416D5389C00ADB1DC /* SYNTopBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTopBarViewController.m; sourceTree = "<group>"; };
-		BE0815C516D5389C00ADB1DC /* SYNTopBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNTopBarViewController.xib; sourceTree = "<group>"; };
+		BE0815C316D5389C00ADB1DC /* SYNMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMasterViewController.h; sourceTree = "<group>"; };
+		BE0815C416D5389C00ADB1DC /* SYNMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMasterViewController.m; sourceTree = "<group>"; };
+		BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNMasterViewController.xib; sourceTree = "<group>"; };
 		BE0815C816D5478A00ADB1DC /* SYNRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNRegistry.h; sourceTree = "<group>"; };
 		BE0815C916D5478A00ADB1DC /* SYNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRegistry.m; sourceTree = "<group>"; };
 		BE0815CB16D5487B00ADB1DC /* SYNSearchRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRegistry.h; sourceTree = "<group>"; };
@@ -2292,9 +2292,9 @@
 		BE0815C216D5386B00ADB1DC /* Top Bar Controller */ = {
 			isa = PBXGroup;
 			children = (
-				BE0815C316D5389C00ADB1DC /* SYNTopBarViewController.h */,
-				BE0815C416D5389C00ADB1DC /* SYNTopBarViewController.m */,
-				BE0815C516D5389C00ADB1DC /* SYNTopBarViewController.xib */,
+				BE0815C316D5389C00ADB1DC /* SYNMasterViewController.h */,
+				BE0815C416D5389C00ADB1DC /* SYNMasterViewController.m */,
+				BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */,
 			);
 			name = "Top Bar Controller";
 			sourceTree = "<group>";
@@ -2691,7 +2691,7 @@
 				BE0815BF16D4FBB300ADB1DC /* SearchTabHeaderSelected@2x.png in Resources */,
 				BE0815C016D4FBB300ADB1DC /* SearchTabPanelHeader.png in Resources */,
 				BE0815C116D4FBB300ADB1DC /* SearchTabPanelHeader@2x.png in Resources */,
-				BE0815C716D5389C00ADB1DC /* SYNTopBarViewController.xib in Resources */,
+				BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2823,7 +2823,7 @@
 				BE0815A916D4F3F900ADB1DC /* SYNSearchTabViewController.m in Sources */,
 				BE0815AC16D4F41300ADB1DC /* SYNSearchTabView.m in Sources */,
 				BE0815AF16D4F6AB00ADB1DC /* SYNSearchItemView.m in Sources */,
-				BE0815C616D5389C00ADB1DC /* SYNTopBarViewController.m in Sources */,
+				BE0815C616D5389C00ADB1DC /* SYNMasterViewController.m in Sources */,
 				BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */,
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
 			);

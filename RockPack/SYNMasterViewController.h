@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNTopBarViewController : UIViewController
+@interface SYNMasterViewController : UIViewController
+
+@property (nonatomic, strong) UIViewController* rootViewController;
+
+-(id)initWithRootViewController:(UIViewController*)root;
 
 @end
