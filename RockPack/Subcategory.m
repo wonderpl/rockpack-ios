@@ -46,8 +46,8 @@ static NSEntityDescription *subcategoryEntity = nil;
     if (matchingVideoInstanceEntries.count > 0)
     {
         instance = matchingVideoInstanceEntries[0];
-        
-        NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
+//        
+//        NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -60,7 +60,7 @@ static NSEntityDescription *subcategoryEntity = nil;
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext];
         
-        NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
+//        NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
         
         return instance;
     }

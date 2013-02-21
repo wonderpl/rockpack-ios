@@ -81,7 +81,7 @@
             Category* category = [Category instanceFromDictionary: categoryDictionary
                                         usingManagedObjectContext: self.importManagedObjectContext];
             
-            DebugLog(@"Found Category: %@\n", category);
+//            DebugLog(@"Found Category: %@\n", category);
         }
     }
     
@@ -291,7 +291,7 @@
          if (((AbstractCommon *)managedObject).markedForDeletionValue == TRUE)
          {
              [managedObjectContext deleteObject: (NSManagedObject *)managedObject];
-             DebugLog (@"Deleted NSManagedObject that is no longer used after import");
+//             DebugLog (@"Deleted NSManagedObject that is no longer used after import");
          }
      }];
 }

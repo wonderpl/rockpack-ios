@@ -123,7 +123,7 @@
                         forState: UIControlStateNormal];
     
     [newVideoPlayButton addTarget: self
-                           action: @selector(clearVideoQueue)
+                           action: @selector(userTouchedPlay:)
                  forControlEvents: UIControlEventTouchUpInside];
     
     newVideoPlayButton.alpha = 1.0f;
@@ -225,10 +225,11 @@
 }
 
 
-- (void) play
+- (void) playVideoInWebView: (UIWebView *) webView
 {
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
+    [webView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
 }
+
 
 - (void) playVideoAtIndex: (int) index
 {
@@ -237,7 +238,7 @@
     {
         if (!self.isPlaying)
         {
-            [self play];
+            [self playVideoInWebView: self.currentVideoWebView];
         }
     }
     else
@@ -250,15 +251,15 @@
 }
 
 
-- (void) pause
+- (void) pauseVideoInWebView: (UIWebView *) webView
 {
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
+    [webView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
 }
 
 
-- (void) stop
+- (void) stopVideoInWebView: (UIWebView *) webView
 {
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();player.clearVideo();"];
+    [webView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
 }
 
 
@@ -272,12 +273,6 @@
 {
     [self decrementVideoIndex];
     [self loadCurrentVideoWebView];
-}
-
-- (void) seekInCurrentVideoToTime: (NSTimeInterval) seconds
-{
-    NSString *js = [NSString stringWithFormat: @"player.stopVideo(%lf, TRUE);", seconds];
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: js];
 }
 
 
@@ -334,6 +329,25 @@
              sourceId: currentSourceId];
 }
 
+- (void) loadNextVideoWebView
+{
+    // Assume that we just have a single video as opposed to a playlist
+    NSString *nextSource = self.source;
+    NSString *nextSourceId = self.sourceId;
+    
+    // But if we do have a playlist, then load up the source and sourceId for the current video index
+    if (self.isUsingPlaylist)
+    {
+        VideoInstance *videoInstance = (VideoInstance *) self.videoInstanceArray[self.nextVideoIndex];
+        nextSource = videoInstance.video.source;
+        nextSourceId = videoInstance.video.sourceId;
+    }
+    
+    [self loadWebView: self.nextVideoWebView
+           withSource: nextSource
+             sourceId: nextSourceId];
+}
+
 
 - (void) loadWebView: (UIWebView *) webView
           withSource: (NSString *) source
@@ -374,7 +388,7 @@
                     baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
     
     // Not sure if this makes any difference
-    webView.mediaPlaybackRequiresUserAction = FALSE;
+//    webView.mediaPlaybackRequiresUserAction = FALSE;
 }
 
 
@@ -482,30 +496,27 @@
     
     if ([actionName isEqualToString: @"ready"])
     {
-
+        // We don't actually get any events until we 'play' the video
+        // The next stage is unstarted, so if not autoplay then pause the video
+        [self playVideoInWebView: self.currentVideoWebView];
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
         // Now handle the different state changes
         if ([actionData isEqualToString: @"unstarted"])
         {
-            if (self.autoPlay == TRUE)
+            // As we have already called the play method in onReady, we should pause it here if not autoplaying
+            if (self.autoPlay == FALSE)
             {
-                [self play];
-            }
-            else
-            {
+                [self pauseVideoInWebView: self.currentVideoWebView];
                 [self fadeUpPlayButton];
             }
         }
         else if ([actionData isEqualToString: @"ended"])
         {
-            NSTimeInterval currentTime = self.currentTime;
-            NSLog (@"%lf", currentTime);
             [self stopBufferMonitoringTimer];
-            [self stop];
-
-//            [self loadNextVideo];
+            [self stopVideoInWebView: self.currentVideoWebView];
+            [self swapVideoWebViews];
         }
         else if ([actionData isEqualToString: @"playing"])
         {
@@ -562,7 +573,10 @@
     
     if ([actionName isEqualToString: @"ready"])
     {
-        
+        // We don't actually get any events until we 'play' the video
+        // The next stage is unstarted, so if not autoplay then pause the video
+        [self playVideoInWebView: self.nextVideoWebView];
+        [self pauseVideoInWebView: self.nextVideoWebView];
     }
     else if ([actionName isEqualToString: @"stateChange"])
     {
@@ -570,7 +584,7 @@
         if ([actionData isEqualToString: @"unstarted"])
         {
             NSLog (@"--- Next video ready to play");
-            self.nextVideoWebViewReadyToPlay = FALSE;
+            self.nextVideoWebViewReadyToPlay = TRUE;
         }
         else if ([actionData isEqualToString: @"ended"])
         {
@@ -650,12 +664,11 @@
 {
     float bufferLevel = [self videoLoadedFraction];
     
-    NSLog (@"Buffer Level %f", bufferLevel);
-    
     // If we have a full buffer for the current video and are not already trying to buffer the next video
     // then start to preload the next video
     if (bufferLevel == 1.0f && self.nextVideoWebView == nil)
     {
+        NSLog (@"*** Buffer full");
         [self precacheNextVideo];
     }
 }
@@ -667,31 +680,47 @@
     // indicating that it has buffered and ready to play
     self.nextVideoWebViewReadyToPlay = FALSE;
     self.nextVideoWebView = [self createNewVideoWebView];
+    
+    [self loadNextVideoWebView];
 }
+
+
+#pragma mark - View animations
 
 - (void) swapVideoWebViews
 {
+    __block UIWebView *oldVideoWebView = self.currentVideoWebView;
+    self.currentVideoWebView = self.nextVideoWebView;
+    self.nextVideoWebView = nil;
+    
     if (self.isNextVideoWebViewReadyToPlay)
     {
+        self.nextVideoWebViewReadyToPlay = FALSE;
+        
+        [self playVideoInWebView: self.currentVideoWebView];
+        
         [UIView animateWithDuration: 0.25f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^
          {
-             self.currentVideoWebView.alpha = 0.0f;
-             self.nextVideoWebView.alpha = 1.0f;
+             oldVideoWebView.alpha = 0.0f;
+             self.currentVideoWebView.alpha = 1.0f;
          }
          completion: ^(BOOL finished)
          {
-             self.currentVideoWebView = self.nextVideoWebView;
-             self.nextVideoWebView = nil;
+             oldVideoWebView = nil;
          }];
-    }    
+    }
+    else
+    {
+        // TODO: what happens if we did not manage to pre-cache
+    }
 }
 
 - (IBAction) userTouchedPlay: (id) sender
 {
-    [self play];
+    [self playVideoInWebView: self.currentVideoWebView];
 }
 
 

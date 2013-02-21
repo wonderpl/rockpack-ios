@@ -53,7 +53,7 @@ static NSEntityDescription *categoryEntity = nil;
         // Mark this object so that it is not deleted in the post-import step
         instance.markedForDeletionValue = FALSE;
         
-        NSLog(@"Using existing Category instance with id %@", instance.uniqueId);
+//        NSLog(@"Using existing Category instance with id %@", instance.uniqueId);
         
         return instance;
     }
