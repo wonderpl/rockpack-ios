@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
 
-@interface SYNBottomTabViewController : SYNAbstractViewController <UITextFieldDelegate>
+@interface SYNBottomTabViewController : SYNAbstractViewController
 
 @property (nonatomic, strong, readonly) UIButton *messageInboxButton;
 

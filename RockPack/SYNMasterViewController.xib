@@ -63,7 +63,7 @@
 						<string key="NSFrameSize">{1024, 748}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="297431086"/>
+						<reference key="NSNextKeyView" ref="307475558"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="210113303">
 							<int key="NSColorSpace">3</int>
@@ -71,7 +71,7 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
-					<object class="IBUIView" id="297431086">
+					<object class="IBUIView" id="307475558">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{1024, 748}</string>
@@ -346,7 +346,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">overlayView</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="297431086"/>
+						<reference key="destination" ref="307475558"/>
 					</object>
 					<int key="connectionID">68</int>
 				</object>
@@ -385,6 +385,14 @@
 					</object>
 					<int key="connectionID">70</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="582574319"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">73</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -412,7 +420,7 @@
 							<reference ref="836185708"/>
 							<reference ref="142621756"/>
 							<reference ref="215609239"/>
-							<reference ref="297431086"/>
+							<reference ref="307475558"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -487,7 +495,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">67</int>
-						<reference key="object" ref="297431086"/>
+						<reference key="object" ref="307475558"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Overlay View</string>
 					</object>
@@ -517,13 +525,32 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">72</int>
+			<int key="maxID">73</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="clearSearchField:">id</string>
+						<string key="userTouchedInboxButton:">UIButton</string>
+						<string key="userTouchedNotificationButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="clearSearchField:">
+							<string key="name">clearSearchField:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedInboxButton:">
+							<string key="name">userTouchedInboxButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedNotificationButton:">
+							<string key="name">userTouchedNotificationButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="containerView">UIView</string>
 						<string key="overlayView">UIView</string>

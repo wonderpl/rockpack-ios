@@ -25,8 +25,7 @@
 #import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNBottomTabViewController () <UIGestureRecognizerDelegate,
-                                          UIPopoverControllerDelegate,
+@interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
@@ -55,9 +54,7 @@
 @property (nonatomic, strong) IBOutlet UIView *topButtonView;
 @property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
-@property (nonatomic, strong) UISwipeGestureRecognizer *messageInboxSwipeLeftRecognizer;
-@property (nonatomic, strong) UISwipeGestureRecognizer *shareMenuSwipeLeftRecognizer;
-@property (nonatomic, strong) UISwipeGestureRecognizer *swipeRightRecognizer;
+
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
@@ -132,30 +129,7 @@
     self.selectedViewController = videosRootNavigationViewController;
     
     
-    // Add swipe recoginisers for Rockie-Talkie
-    // Right swipe
-    self.swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                     action: @selector(slideMessageInboxRight:)];
     
-    [self.swipeRightRecognizer setDirection: UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer: self.swipeRightRecognizer];
-    
-    // We need this to check that we can swipe
-    self.swipeRightRecognizer.delegate = self;
-    
-    // Left swipe on message inbox
-    self.messageInboxSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                    action: @selector(slideMessageInboxLeft:)];
-    
-    [self.messageInboxSwipeLeftRecognizer setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [self.messageInboxView addGestureRecognizer: self.messageInboxSwipeLeftRecognizer];
-    
-    // Left swipe on share menu 
-    self.shareMenuSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                     action: @selector(slideShareMenuLeft:)];
-    
-    [self.shareMenuSwipeLeftRecognizer setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [self.shareMenuView addGestureRecognizer: self.shareMenuSwipeLeftRecognizer];
     
     // Set initial state
     self.messageInboxView.userInteractionEnabled = TRUE;
@@ -576,45 +550,9 @@
 }
 
 
-- (IBAction) userTouchedInboxButton: (UIButton*) button
-{
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        // Need to slide rockie talkie out
-        [self slideMessageInboxRight: nil];
-    }
-    else
-    {
-        // Need to slide rockie talkie back in
-        [self slideMessageInboxLeft: nil];
-    }
-}
 
-- (IBAction) userTouchedNotificationButton: (UIButton*) button
-{
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        SYNActivityPopoverViewController *actionPopoverController = [[SYNActivityPopoverViewController alloc] init];
-        // Need show the popover controller
-        self.actionButtonPopover = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.actionButtonPopover.popoverContentSize = CGSizeMake(320, 166);
-        self.actionButtonPopover.delegate = self;
-        
-        [self.actionButtonPopover presentPopoverFromRect: button.frame
-                                                  inView: self.view
-                                permittedArrowDirections: UIPopoverArrowDirectionUp
-                                                animated: YES];
-    }
-    else
-    {
-        // Need to hide the popover controller
-        [self.actionButtonPopover dismissPopoverAnimated: YES];
-    }
-}
+
+
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
@@ -622,17 +560,7 @@
     self.notificationsButton.selected = FALSE;
 }
 
-// Keep just in case hold to record is back in fashion again
-//- (IBAction) recordTouchDown
-//{
-//    [self startRecording];
-//}
-//
-//
-//- (IBAction) recordTouchUp
-//{
-//    [self endRecording];
-//}
+
 
 - (IBAction) toggleRecording
 {
@@ -737,53 +665,19 @@
     [self.recordButtonGlowImageView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
 }
 
-#pragma mark - TextView delegate methods
 
-- (void) textViewDidChange: (UITextView *) textView
-{
-    if (self.messageTextView.text.length == 0)
-    {
-        self.messagePlaceholderTextView.hidden = NO;
-    }
-    else
-    {
-        self.messagePlaceholderTextView.hidden = YES;
-    }
-}
 
-- (BOOL) textView: (UITextView *) textView
-         shouldChangeTextInRange: (NSRange) range
-         replacementText: (NSString *) text
-{
-    if([text isEqualToString:@"\n"])
-    {
-        [textView resignFirstResponder];
-    }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    DebugLog(@"textFieldShouldReturn:");
+    
+    [self showSearchViewController];
+    
+    [textField resignFirstResponder];
+    
     
     return YES;
-}
-
-
-- (void) textViewDidBeginEditing: (UITextView *) textView
-{
-    [textView setText: @""];
-}
-
-
-- (void) textViewDidEndEditing: (UITextView * )textView
-{
-    self.writeMessageButton.selected = FALSE;
-    
-#ifdef SOUND_ENABLED
-    // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Mail Sent"
-                                                          ofType: @"aif"];
-    
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
-#endif
 }
 
 #pragma mark - Write message actions
@@ -803,33 +697,6 @@
 }
 
 
-#pragma mark - Gesture recognizers
-
-- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
-        shouldReceiveTouch: (UITouch *) touch
-{
-    if (self.messageInboxButton.selected == TRUE && gestureRecognizer == self.swipeRightRecognizer)
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
-}
-
-
-- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
-{
-    if ([SYNMovableView allowDragging]  == TRUE && gestureRecognizer == self.swipeRightRecognizer)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
-}
 
 #pragma mark - Back button handling
 
@@ -885,19 +752,7 @@
 }
 
 
-#pragma mark - UITextField Delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    
-    DebugLog(@"textFieldShouldReturn:");
-    
-    [self showSearchViewController];
-    
-    [textField resignFirstResponder];
-    
-    
-    return YES;
-}
 
 -(void) showSearchViewController
 {

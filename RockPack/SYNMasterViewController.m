@@ -79,6 +79,26 @@
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
     [self.containerView addSubview:rootViewController.view];
+    
+    
+    // == Set up Recognisers == //
+    
+    UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                               action: @selector(swipeGesturePerformed:)];
+    
+    [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:rightSwipeRecogniser];
+    
+    rightSwipeRecogniser.delegate = self;
+    
+    
+    UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                              action: @selector(swipeGesturePerformed:)];
+    
+    [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer: leftSwipeRecogniser];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,7 +108,7 @@
 }
 
 
-#pragma mark - Overlay View
+#pragma mark - Overlay Views
 
 
 - (IBAction) userTouchedInboxButton: (UIButton*) button
@@ -187,6 +207,63 @@
     self.searchTextField.text = @"";
     
     [self.searchTextField resignFirstResponder];
+}
+
+
+- (void) textViewDidChange: (UITextView *) textView
+{
+    
+}
+
+
+
+- (void) textViewDidBeginEditing: (UITextView *) textView
+{
+    [textView setText: @""];
+}
+
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    DebugLog(@"textFieldShouldReturn:");
+    
+    //[self showSearchViewController];
+    
+    [textField resignFirstResponder];
+    
+    
+    return YES;
+}
+
+
+
+#pragma mark - Gesture Recogniser Delegate
+
+-(void)swipeGesturePerformed:(UIGestureRecognizer*)recogniser
+{
+    UISwipeGestureRecognizerDirection direction = ((UISwipeGestureRecognizer*)recogniser).direction;
+    if(direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        [self slideOverlay:self.inboxOverlayViewController.view fromHidden:YES];
+    }
+    else if(direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        [self slideOverlay:self.inboxOverlayViewController.view fromHidden:NO];
+    }
+}
+
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch: (UITouch *) touch
+{
+    // TODO: Look into the exact conditions where the user can swipe
+    return YES;
+}
+
+
+- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
+{
+    // TODO: Look into the exact conditions where the user can swipe
+    return YES;
 }
 
 
