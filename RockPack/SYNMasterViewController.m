@@ -95,36 +95,61 @@
 {
     button.selected = !button.selected;
     
-    [self slideOverlay:self.inboxOverlayViewController.view];
+    [self slideOverlay:self.inboxOverlayViewController.view fromHidden:button.selected];
 }
 
 
-- (void) slideOverlay: (UIView *) overlayView
+- (void) slideOverlay: (UIView *) overlayView fromHidden:(BOOL)fromHidden
 {
     
     CGRect overlayViewFrame = overlayView.frame;
     
-    // Take out of screen
-    overlayView.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                    0.0,
-                                    overlayViewFrame.size.width,
-                                    overlayViewFrame.size.height);
     
-    [self.overlayView addSubview:overlayView];
-    
-    [UIView animateWithDuration: kRockieTalkieAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-         
-         overlayView.frame =  CGRectMake(0.0,
-                                         0.0,
-                                         overlayViewFrame.size.width,
-                                         overlayViewFrame.size.height);
-         
-     } completion: ^(BOOL finished) {
+    if(fromHidden)
+    {
+        // Take out of screen
+        overlayView.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                        0.0,
+                                        overlayViewFrame.size.width,
+                                        overlayViewFrame.size.height);
         
-     }];
+        [self.overlayView addSubview:overlayView];
+        
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
+                             
+                             overlayView.frame =  CGRectMake(0.0,
+                                                             0.0,
+                                                             overlayViewFrame.size.width,
+                                                             overlayViewFrame.size.height);
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                         }];
+    }
+    else
+    {
+        
+        
+        
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
+                             
+                             overlayView.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                                             0.0,
+                                                             overlayViewFrame.size.width,
+                                                             overlayViewFrame.size.height);
+                             
+                         } completion: ^(BOOL finished) {
+                             [overlayView removeFromSuperview];
+                         }];
+    }
+    
+    
     
 }
 
