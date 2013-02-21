@@ -68,7 +68,7 @@
         
         self.searchChannelsItemView = [[SYNSearchItemView alloc] initWithTitle:@"CHANNELS" andFrame:CGRectMake(midBar, 0.0, kSearchBarItemWidth, self.frame.size.height)];
         
-        [self.searchVideosItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+        [self.searchChannelsItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
         
         [self.mainTabsView addSubview:self.searchChannelsItemView];
