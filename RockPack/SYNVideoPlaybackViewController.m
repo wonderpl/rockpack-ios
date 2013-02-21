@@ -15,15 +15,17 @@
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
-@property (nonatomic, strong) UIWebView *currentVideoWebView;
-@property (nonatomic, strong) UIWebView *nextVideoWebView;
-@property (nonatomic, strong) NSString *sourceId;
-@property (nonatomic, strong) NSString *source;
-@property (nonatomic, strong) NSArray *videoInstanceArray;
-@property (nonatomic, assign) int videoIndex;
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) CGRect requestedFrame;
+@property (nonatomic, assign) int videoIndex;
+@property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, strong) NSString *source;
+@property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
+@property (nonatomic, strong) UIButton *videoPlayButton;
+@property (nonatomic, strong) UIImageView *currentVideoPlaceholderImageView;
+@property (nonatomic, strong) UIWebView *currentVideoWebView;
+@property (nonatomic, strong) UIWebView *nextVideoWebView;
 
 
 @end
@@ -58,30 +60,13 @@
     // Start off by making our view transparent
     self.view.backgroundColor = [UIColor clearColor];
     
+//    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
+//                               aboveSubview: self.videoPlaceholderImageView];
+    
+    self.currentVideoPlaceholderImageView = [self createNewVideoPlaceholderImageView];
+    
     // Create an UIWebView with exactly the same dimensions and background colour as our view
-    self.currentVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
-    self.currentVideoWebView.backgroundColor = self.view.backgroundColor;
-	self.currentVideoWebView.opaque = NO;
-    
-    // Stop the user from scrolling the webview
-    self.currentVideoWebView.scrollView.scrollEnabled = false;
-    self.currentVideoWebView.scrollView.bounces = false;
-    
-    // Set up out next
-    self.currentVideoWebView.delegate = self;
-    
-    [self.view addSubview: self.currentVideoWebView];
-    
-    self.nextVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
-    self.nextVideoWebView.backgroundColor = self.view.backgroundColor;
-	self.nextVideoWebView.opaque = NO;
-    
-    // Stop the user from scrolling the webview
-    self.nextVideoWebView.scrollView.scrollEnabled = false;
-    self.nextVideoWebView.scrollView.bounces = false;
-    
-    // Set the webview delegate so that we can received events from the JavaScript
-    self.nextVideoWebView.delegate = self;
+    self.currentVideoWebView = [self createNewVideoWebView];
     
     [self.view addSubview: self.currentVideoWebView];
 }
@@ -90,6 +75,35 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+}
+
+- (UIWebView *) createNewVideoWebView
+{
+    UIWebView *newVideoWebView;
+    
+    newVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
+    newVideoWebView.backgroundColor = self.view.backgroundColor;
+	newVideoWebView.opaque = NO;
+    
+    // Stop the user from scrolling the webview
+    newVideoWebView.scrollView.scrollEnabled = false;
+    newVideoWebView.scrollView.bounces = false;
+    
+    // Set the webview delegate so that we can received events from the JavaScript
+    newVideoWebView.delegate = self;
+
+    return newVideoWebView;
+}
+
+- (UIImageView *) createNewVideoPlaceholderImageView
+{
+    UIImageView *newVideoPlaceholderImageView;
+    
+    newVideoPlaceholderImageView = [[UIImageView alloc] initWithFrame: self.view.bounds];
+    newVideoPlaceholderImageView.backgroundColor = [UIColor clearColor];
+	newVideoPlaceholderImageView.opaque = NO;
+    
+    return newVideoPlaceholderImageView;
 }
 
 
@@ -218,7 +232,7 @@
 
 - (void) stop
 {
-    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();player.clearVideo();"];
 }
 
 
@@ -437,8 +451,8 @@
             NSTimeInterval currentTime = self.currentTime;
             NSLog (@"%lf", currentTime);
             [self stopBufferMonitoringTimer];
-            [self pause];
-            [self seekInCurrentVideoToTime: currentTime];
+            [self stop];
+
 //            [self loadNextVideo];
         }
         else if ([actionData isEqualToString: @"playing"])
@@ -447,7 +461,20 @@
         }
         else if ([actionData isEqualToString: @"paused"])
         {
-            [self stopBufferMonitoringTimer];  
+            [self stopBufferMonitoringTimer];
+            
+            [UIView animateWithDuration: 0.25f
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^
+             {
+                 self.videoPlayButton.alpha = 1.0f;
+             }
+             completion: ^(BOOL finished)
+             {
+                 self.videoPlayButton.enabled = TRUE;
+             }];
+
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
@@ -521,6 +548,36 @@
 
 - (void) precacheNextVideo
 {
+    
+}
+
+- (void) swapVideoWebViews
+{
+    // Replace our current webview with our new webview
+    self.currentVideoWebView = self.nextVideoWebView;
+    
+    // and create a new webview, ready for our next transition
+    
+}
+
+- (IBAction) playLargeVideo: (id) sender
+{
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         [self play];
+         
+         // Contract thumbnail view
+         self.currentVideoWebView.alpha = 1.0;
+         self.currentVideoPlaceholderImageView.alpha = 0.0f;
+         self.videoPlayButton.alpha = 0.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+         self.videoPlayButton.enabled = FALSE;
+     }];
     
 }
 
