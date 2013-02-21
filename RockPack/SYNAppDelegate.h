@@ -25,7 +25,7 @@
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
 
 // Root view controller
-@property (strong, nonatomic) SYNBottomTabViewController *viewController;
+@property (strong, nonatomic) UIViewController *viewController;
 
 // Bit of a hack to represent the current user
 @property (weak, nonatomic) ChannelOwner *channelOwnerMe;

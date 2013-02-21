@@ -14,6 +14,7 @@
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import "ChannelOwner.h"
+#import "SYNMasterViewController.h"
 
 @interface SYNAppDelegate ()
 
@@ -52,9 +53,14 @@
 
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
+
+    SYNBottomTabViewController* bottomTabVC = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
                                                                        bundle: nil];
+    
+    SYNMasterViewController* masterViewContoller = [[SYNMasterViewController alloc] initWithRootViewController:bottomTabVC];
+    
+    self.viewController = masterViewContoller;
+    
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     

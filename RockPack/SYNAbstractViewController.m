@@ -403,10 +403,10 @@
                                          animated: NO];
     
     
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
+    //SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
     
     // Show back button
-    [bottomTabViewController showBackButton];
+    // [bottomTabViewController showBackButton];
 }
 
 
@@ -434,8 +434,8 @@
     // Hide back button
     
     
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    [bottomTabViewController hideBackButton];
+    // SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
+    // [bottomTabViewController hideBackButton];
 }
 
 
@@ -542,10 +542,10 @@
 {
     
     
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
+    // SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
     
     // Need to slide rockie talkie out
-    [bottomTabViewController toggleShareMenu];
+    // [bottomTabViewController toggleShareMenu];
 }
 
 
@@ -564,26 +564,26 @@
 {
     
     
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    
-    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
-    
-    self.videoViewerViewController.view.alpha = 0.0f;
-    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoViewerViewController.view.alpha = 1.0f;
-     }
-     completion: ^(BOOL finished)
-     {
-         [self.videoViewerViewController.closeButton addTarget: self
-                                                        action: @selector(dismissVideoViewer)
-                                              forControlEvents: UIControlEventTouchUpInside];
-     }];
+//    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
+//    
+//    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
+//    
+//    self.videoViewerViewController.view.alpha = 0.0f;
+//    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
+//    
+//    [UIView animateWithDuration: 0.5f
+//                          delay: 0.0f
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations: ^
+//     {
+//         self.videoViewerViewController.view.alpha = 1.0f;
+//     }
+//     completion: ^(BOOL finished)
+//     {
+//         [self.videoViewerViewController.closeButton addTarget: self
+//                                                        action: @selector(dismissVideoViewer)
+//                                              forControlEvents: UIControlEventTouchUpInside];
+//     }];
 }
 
 - (IBAction) dismissVideoViewer

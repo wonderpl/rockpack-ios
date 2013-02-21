@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNMasterViewController : UIViewController
+@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) UIViewController* rootViewController;
 

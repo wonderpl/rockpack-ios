@@ -131,23 +131,6 @@
     
     self.selectedViewController = videosRootNavigationViewController;
     
-    // Now fade in gracefully from splash screen (do this here as opposed to the app delegate so that the orientation is known)
-    UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
-    splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];
-	[self.view addSubview: splashView];
-    
-    [UIView animateWithDuration: kSplashAnimationDuration
-                          delay: kSplashViewDuration
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         splashView.alpha = 0.0f;
-     }
-        completion: ^(BOOL finished)
-     {
-         splashView.alpha = 0.0f;
-         [splashView removeFromSuperview];
-     }];
     
     // Add swipe recoginisers for Rockie-Talkie
     // Right swipe

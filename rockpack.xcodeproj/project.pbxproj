@@ -1586,7 +1586,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				BE0815C216D5386B00ADB1DC /* Top Bar Controller */,
+				BE0815C216D5386B00ADB1DC /* Master View Controller */,
 				BE08159C16D3D7E300ADB1DC /* Tabs View Controllers */,
 				0162285316C2AA7F008D1587 /* Miscellaneous */,
 				01982563162ADEAD00216900 /* Abstract */,
@@ -2289,14 +2289,14 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE0815C216D5386B00ADB1DC /* Top Bar Controller */ = {
+		BE0815C216D5386B00ADB1DC /* Master View Controller */ = {
 			isa = PBXGroup;
 			children = (
 				BE0815C316D5389C00ADB1DC /* SYNMasterViewController.h */,
 				BE0815C416D5389C00ADB1DC /* SYNMasterViewController.m */,
 				BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */,
 			);
-			name = "Top Bar Controller";
+			name = "Master View Controller";
 			sourceTree = "<group>";
 		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
