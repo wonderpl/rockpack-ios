@@ -21,8 +21,6 @@
 #import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
 #import "SYNSearchTabViewController.h"
-#import <AVFoundation/AVFoundation.h>
-#import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
@@ -30,24 +28,19 @@
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
-@property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) UIViewController* searchViewController;
-@property (nonatomic, strong) AVAudioRecorder *avRecorder;
 
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
-@property (nonatomic, strong) IBOutlet UIImageView *recordButtonGlowImageView;
 
 @property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
-@property (nonatomic, strong) IBOutlet UITextView *messageTextView;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 
-@property (nonatomic, strong) NSTimer *levelTimer;
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
 @property (nonatomic, weak) UIViewController *selectedViewController;
@@ -131,9 +124,6 @@
     self.didNotSwipeShareMenu = TRUE;
     
     
-    // Setup rockie-talkie message view
-    self.messageTextView.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.messageTextView.delegate = self;
     
     // Placeholder for rockie-talkie message view to show message only when no text in main view
     self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
@@ -314,14 +304,8 @@
 
 
 
-// Set the selected tab of a particular view controller (with no animation)
 
-- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
-{
-	[self setSelectedViewController: newSelectedViewController
-                           animated: NO];
-}
-
+#pragma mark - Tab Selection
 
 // Set the selected tab of a particular view controller (with animation if required)
 
@@ -348,8 +332,13 @@
                   animated: YES];
 }
 
+// Set the selected tab of a particular view controller (with no animation)
 
-#pragma mark - Side menu gesture handlers
+- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
+{
+	[self setSelectedViewController: newSelectedViewController
+                           animated: NO];
+}
 
 - (IBAction) recordAction: (UIButton*) button
 {
@@ -363,129 +352,6 @@
     // self.notificationsButton.selected = FALSE;
 }
 
-
-
-- (IBAction) toggleRecording
-{
-    if (self.isRecording)
-    {
-        self.isRecording = FALSE;
-        [self endRecording];
-    }
-    else
-    {
-        self.isRecording = TRUE;
-        [self startRecording];
-    }
-}
-
-
-#pragma mark - Rockie-talkie recording actions
-
-- (void) startRecording
-{
-    // Show button 'volume glow'
-    self.recordButtonGlowImageView.hidden = FALSE;
-    
-    AVAudioSession *avSession = [AVAudioSession sharedInstance];
-	
-	[avSession setCategory: AVAudioSessionCategoryPlayAndRecord
-					 error: nil];
-	
-	[avSession setActive: YES
-				   error: nil];
-    
-    // Don't actually make a real recording (send to /dev/null)
-    NSURL *url = [NSURL fileURLWithPath: @"/dev/null"];
-    
-    // Mono, 44.1kHz should be fine
-  	NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithFloat: 44100.0],                 AVSampleRateKey,
-                              [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
-                              [NSNumber numberWithInt: 1],                         AVNumberOfChannelsKey,
-                              [NSNumber numberWithInt: AVAudioQualityMax],         AVEncoderAudioQualityKey,
-                              nil];
-    
-  	NSError *error;
-    
-  	self.avRecorder = [[AVAudioRecorder alloc] initWithURL: url
-                                                settings: settings
-                                                   error: &error];
-    
-  	if (self.avRecorder)
-    {
-  		[self.avRecorder prepareToRecord];
-  		self.avRecorder.meteringEnabled = YES;
-  		[self.avRecorder record];
-        
-		self.levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.03
-                                                           target: self
-                                                         selector: @selector(levelTimerCallback:)
-                                                         userInfo: nil
-                                                          repeats: YES];
-  	}
-    else
-    {
-  		DebugLog(@"%@", [error description]);
-    }
-}
-
-
-- (void) endRecording
-{
-    [self.avRecorder pause];
-    self.avRecorder = nil;
-    [self.levelTimer invalidate], self.levelTimer = nil;
-    
-    // Show button 'volume glow' and reset it's scale
-    self.recordButtonGlowImageView.hidden = TRUE;
-    [self.recordButtonGlowImageView setTransform: CGAffineTransformMakeScale(1.0f, 1.0f)];
-}
-
-
-- (void) levelTimerCallback: (NSTimer *) timer
-{
-    [self.avRecorder updateMeters];
-    
-    // Convert from dB to linear
-	double averagePowerForChannel = pow(10, (0.05 * [self.avRecorder averagePowerForChannel: 0]));
-    
-    DebugLog (@"Power %f", averagePowerForChannel);
-    
-    // And clip to 0 > x > 1
-    if (averagePowerForChannel < 0.0)
-    {
-        averagePowerForChannel = 0.0f;
-    }
-    else if (averagePowerForChannel > 1.0)
-    {
-        averagePowerForChannel = 1.0f;
-    }
-    
-    // Adjust size of glow, Adding 1 for the scale factor
-    double scaleFactor = 1.0f + averagePowerForChannel;
-
-    [self.recordButtonGlowImageView setTransform: CGAffineTransformMakeScale(scaleFactor, scaleFactor)];
-}
-
-
-
-
-#pragma mark - Write message actions
-
-- (IBAction) writeMessage: (UIButton *) button
-{
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        [self.messageTextView becomeFirstResponder];
-    }
-    else
-    {
-        [self.messageTextView resignFirstResponder];
-    }
-}
 
 
 
