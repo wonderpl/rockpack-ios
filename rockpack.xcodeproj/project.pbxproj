@@ -1098,8 +1098,8 @@
 				019824E31629CADE00216900 /* Custom Views */,
 				019824E11629CAB600216900 /* View Controllers */,
 				01677DDA1655491100B1B1D8 /* Networking */,
-				019824E41629CAF500216900 /* Helpers */,
 				01E427D01664C701009B941F /* Data Model */,
+				019824E41629CAF500216900 /* Helpers */,
 				010DEFDB1629BDC40080F26B /* Supporting Files */,
 				019824DD1629CA3700216900 /* Resources */,
 			);
@@ -1252,13 +1252,13 @@
 		012ECA5C165B9D1A00A60980 /* Custom Engines */ = {
 			isa = PBXGroup;
 			children = (
-				BEA1E33216CE605A000AB59D /* Custom Network Operations */,
 				01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */,
 				01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */,
 				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
 				019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */,
 				012ECA5D165B9D4300A60980 /* SYNVideoDownloadEngine.h */,
 				012ECA5E165B9D4300A60980 /* SYNVideoDownloadEngine.m */,
+				BEA1E33216CE605A000AB59D /* Custom Network Operations */,
 			);
 			name = "Custom Engines";
 			sourceTree = "<group>";
@@ -1477,13 +1477,8 @@
 		01677DDA1655491100B1B1D8 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				BEF9E58A16D7C21C00286113 /* Engine */,
 				012ECA5C165B9D1A00A60980 /* Custom Engines */,
-				0170715E16554E9B00A3C7C4 /* Categories */,
-				0170716B16554E9B00A3C7C4 /* MKNetworkEngine.h */,
-				0170716C16554E9B00A3C7C4 /* MKNetworkEngine.m */,
-				0170716D16554E9B00A3C7C4 /* MKNetworkKit.h */,
-				0170716E16554E9B00A3C7C4 /* MKNetworkOperation.h */,
-				0170716F16554E9B00A3C7C4 /* MKNetworkOperation.m */,
 				0170717016554E9B00A3C7C4 /* Reachability */,
 			);
 			name = Networking;
@@ -1637,6 +1632,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0170715E16554E9B00A3C7C4 /* Categories */,
 				012502BA16CA8FCE0029C7C8 /* Social Media */,
 				01E566FA16B5E2AA00B8B218 /* Resizeable Text View */,
 				01E42805166666F4009B941F /* Coverflow */,
@@ -2344,6 +2340,18 @@
 				BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */,
 			);
 			name = "Custom Network Operations";
+			sourceTree = "<group>";
+		};
+		BEF9E58A16D7C21C00286113 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				0170716B16554E9B00A3C7C4 /* MKNetworkEngine.h */,
+				0170716C16554E9B00A3C7C4 /* MKNetworkEngine.m */,
+				0170716D16554E9B00A3C7C4 /* MKNetworkKit.h */,
+				0170716E16554E9B00A3C7C4 /* MKNetworkOperation.h */,
+				0170716F16554E9B00A3C7C4 /* MKNetworkOperation.m */,
+			);
+			name = Engine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

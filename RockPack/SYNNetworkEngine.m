@@ -9,7 +9,6 @@
 #import "SYNNetworkEngine.h"
 #import "AppConstants.h"
 #import "Channel.h"
-#import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
 #import "Category.h"
@@ -25,7 +24,6 @@
 @property (nonatomic, strong) NSEntityDescription *videoInstanceEntity;
 @property (nonatomic, strong) NSEntityDescription *channelEntity;
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
-@property (nonatomic, strong) SYNAppDelegate *appDelegate;
 @property (nonatomic, strong) SYNMainRegistry* registry;
 @property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
@@ -42,13 +40,9 @@
         // Set our local string (i.e. en_GB, en_US or fr_FR)
         self.localeString =   [NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier];
         
+        self.registry = [SYNMainRegistry registry];
         
-        self.appDelegate = UIApplication.sharedApplication.delegate;
-        
-        
-        self.registry = [[SYNMainRegistry alloc] initWithManagedObjectContext:nil];
-        
-        self.searchRegistry = [[SYNSearchRegistry alloc] initWithManagedObjectContext:nil];
+        self.searchRegistry = [SYNSearchRegistry registry];
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
@@ -89,7 +83,6 @@
             
         completionBlock();
         
-        [self.appDelegate saveContext: TRUE];
         
         
     } errorHandler:errorBlock];
@@ -141,10 +134,12 @@
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
         BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
-        if (!registryResultOk)
+        if (!registryResultOk) {
+            DebugLog(@"Update Videos Screens Request Failed");
             return;
+        }
+            
         
-        [self.appDelegate saveContext: TRUE];
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Videos Screens Request Failed");
@@ -191,11 +186,12 @@
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
         BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
-        if (!registryResultOk)
+        if (!registryResultOk) {
+            DebugLog(@"Update Channel Screens Request Failed");
             return;
+        }
+            
         
-        // TODO: I think that we need to work out how to save asynchronously
-        [self.appDelegate saveContext: TRUE];
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Channel Screens Request Failed");
@@ -223,10 +219,10 @@
 
         
     BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
-    if (!registryResultOk)
+    if (!registryResultOk) {
+        DebugLog(@"Update Channel Screens Request Failed");
         return;
-        
-    [self.appDelegate saveContext:TRUE];
+    }
         
         
     } errorHandler:^(NSError* error) {

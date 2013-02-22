@@ -86,7 +86,7 @@
     
     
     // Search tab
-    SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Search"];
+    SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Videos"];
     searchRootViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: searchRootViewController];
     searchRootNavigationViewController.navigationBarHidden = TRUE;

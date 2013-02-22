@@ -11,15 +11,32 @@
 @implementation SYNRegistry
 
 
--(id)initWithManagedObjectContext:(NSManagedObjectContext*)moc
+-(id)init
 {
     if (self = [super init])
     {
-        // This is where the magic occurs
-        // Create our own ManagedObjectContext with NSConfinementConcurrencyType as suggested in the WWDC2011 What's new in CoreData video
         appDelegate = UIApplication.sharedApplication.delegate;
         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
         importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
+    }
+    return self;
+}
+
++(id)registry
+{
+    return [[self alloc] init];
+}
+
+-(id)initWithManagedObjectContext:(NSManagedObjectContext*)moc
+{
+    if (self = [self init])
+    {
+        
+        if(moc)
+        {
+            importManagedObjectContext.parentContext = moc;
+        }
+        
         
     }
     
