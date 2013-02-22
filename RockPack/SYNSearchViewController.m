@@ -2,15 +2,13 @@
 //  SYNSearchViewController.m
 //  rockpack
 //
-//  Created by Michael Michailidis on 19/02/2013.
+//  Created by Michael Michailidis on 22/02/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
 #import "SYNSearchViewController.h"
 
 @interface SYNSearchViewController ()
-
-@property (nonatomic, strong) IBOutlet UICollectionView* searchCollectionView;
 
 @end
 
@@ -27,18 +25,8 @@
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
-    
-  
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
-                                             bundle: nil];
-    
-    [self.searchCollectionView registerNib: thumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
-    
-    
-    
+	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning

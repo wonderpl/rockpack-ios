@@ -25,6 +25,7 @@
     
     if (self) {
         
+        // Identify what type it is (could have passed is as argument)
         if ([tabItemModel isKindOfClass:[Subcategory class]]) 
             type = TabItemTypeSub;
         else
@@ -44,7 +45,13 @@
         label.textColor = [UIColor whiteColor];
         label.userInteractionEnabled = NO;
         label.backgroundColor = [UIColor clearColor];
-        label.center = CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.5 + 3.0);
+        CGFloat correctY;
+        if(type == TabItemTypeMain)
+            correctY = self.frame.size.height*0.5 + 3.0;
+        else
+            correctY = self.frame.size.height*0.5;
+        
+        label.center = CGPointMake(self.frame.size.width*0.5, correctY);
         [self addSubview:label];
         
         if(type == TabItemTypeMain)

@@ -45,7 +45,7 @@
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">265</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{512, 88}, {512, 566}}</string>
+						<string key="NSFrame">{{512, 92}, {512, 566}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
@@ -349,7 +349,7 @@
 								<reference key="IBUIFont" ref="848676678"/>
 							</object>
 						</array>
-						<string key="NSFrame">{{0, 83}, {512, 598}}</string>
+						<string key="NSFrame">{{0, 88}, {512, 598}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSNextKeyView" ref="345025160"/>
 						<string key="NSReuseIdentifierKey">_NS:10</string>
