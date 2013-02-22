@@ -132,8 +132,6 @@
 #pragma mark - Core Data support
 
 
-
-
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"

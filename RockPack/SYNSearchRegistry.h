@@ -10,4 +10,6 @@
 
 @interface SYNSearchRegistry : SYNRegistry
 
+-(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId;
+
 @end

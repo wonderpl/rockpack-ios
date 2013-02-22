@@ -18,7 +18,7 @@ static NSEntityDescription *videoEntity = nil;
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                         andViewId: (NSString *) viewId;
+                         andViewId: (NSString *) viewId
 {
     NSError *error = nil;
     

@@ -220,22 +220,7 @@
 
 #pragma mark - Context Management
 
--(BOOL)saveImportContext
-{
-    NSError* error;
-    
-    if([importManagedObjectContext save:&error])
-        return YES;
-    
-    // else...
-    NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
-    if ([detailedErrors count] > 0)
-        for(NSError* detailedError in detailedErrors)
-            DebugLog(@"Import MOC Save Error (Detailed): %@", [detailedError userInfo]);
-    
-    
-    return NO;
-}
+
 
 
 #pragma mark - Database garbage collection
