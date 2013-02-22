@@ -85,6 +85,9 @@ static NSEntityDescription *subcategoryEntity = nil;
     self.name = [dictionary upperCaseStringForKey: @"name" withDefault: @"-?-"];
     
     
+    NSString* priorityString = [dictionary objectForKey:@"priority" withDefault:@"0"];
+    self.priority = [NSNumber numberWithInteger:[priorityString integerValue]];
+    
     
 }
 

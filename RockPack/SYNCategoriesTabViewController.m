@@ -52,7 +52,10 @@
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"uniqueId" ascending:YES];
+    NSPredicate* excludePredicate = [NSPredicate predicateWithFormat:@"priority >= 0"];
+    [categoriesFetchRequest setPredicate:excludePredicate];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:YES];
     [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
     
     

@@ -6,6 +6,7 @@
 
 extern const struct TabItemAttributes {
 	__unsafe_unretained NSString *name;
+	__unsafe_unretained NSString *priority;
 } TabItemAttributes;
 
 extern const struct TabItemRelationships {
@@ -13,6 +14,7 @@ extern const struct TabItemRelationships {
 
 extern const struct TabItemFetchedProperties {
 } TabItemFetchedProperties;
+
 
 
 
@@ -40,6 +42,20 @@ extern const struct TabItemFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* priority;
+
+
+
+@property int32_t priorityValue;
+- (int32_t)priorityValue;
+- (void)setPriorityValue:(int32_t)value_;
+
+//- (BOOL)validatePriority:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 
 @end
 
@@ -52,6 +68,15 @@ extern const struct TabItemFetchedProperties {
 
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitivePriority;
+- (void)setPrimitivePriority:(NSNumber*)value;
+
+- (int32_t)primitivePriorityValue;
+- (void)setPrimitivePriorityValue:(int32_t)value_;
 
 
 

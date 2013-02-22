@@ -88,6 +88,8 @@ static NSEntityDescription *categoryEntity = nil;
     
     
     self.name = [dictionary upperCaseStringForKey: @"name" withDefault: @"-?-"];
+    NSString* priorityString = [dictionary objectForKey:@"priority" withDefault:@"0"];
+    self.priority = [NSNumber numberWithInteger:[priorityString integerValue]];
     
     // Parse Subcategories
     
@@ -112,7 +114,7 @@ static NSEntityDescription *categoryEntity = nil;
 - (NSString *) description
 {
     NSMutableString* descriptioString = [[NSMutableString alloc] init];
-    [descriptioString appendFormat: @"Category(%@) name: %@, subcategories:", self.uniqueId, self.name];
+    [descriptioString appendFormat: @"Category(%@) name: %@, priority: %@ subcategories:", self.uniqueId, self.name, self.priority];
     for (Subcategory* sub in self.subcategories) {
         [descriptioString appendFormat:@"\n- %@", sub];
     }
