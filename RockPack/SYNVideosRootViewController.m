@@ -96,8 +96,6 @@
 {
     [super viewWillAppear: animated];
     
-        
-    
     [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
     // Set the first video
@@ -163,8 +161,7 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *)collectionView numberOfItemsInSection: (NSInteger) section
 {
     // See if this can be handled in our abstract base class
     int items = [super collectionView: collectionView

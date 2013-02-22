@@ -35,7 +35,7 @@
         label.textColor = [UIColor whiteColor];
         label.userInteractionEnabled = NO;
         label.backgroundColor = [UIColor clearColor];
-        label.center = CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.5);
+        label.center = CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.5 + 3.0);
         [self addSubview:label];
         
         self.topGlowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSelectedGlow.png"]];
@@ -61,13 +61,12 @@
     
     UIColor *color = [UIColor rockpackBlueColor];
     label.textColor = color;
-    label.layer.shadowColor = [color CGColor];
     
-    label.layer.shadowRadius = 7.0f;
-    label.layer.shadowOpacity = 1.0;
-    label.layer.shadowOffset = CGSizeZero;
-    
-    label.layer.masksToBounds = NO;
+//    label.layer.shadowColor = [color CGColor];
+//    label.layer.shadowRadius = 7.0f;
+//    label.layer.shadowOpacity = 1.0;
+//    label.layer.shadowOffset = CGSizeZero;
+//    label.layer.masksToBounds = NO;
     
     // TODO: See what can be done with the animations
     
@@ -75,12 +74,12 @@
     {
         topGlowImageView.alpha = 0.0;
         topGlowImageView.hidden = NO;
-        topGlowImageView.alpha = 1.0;
+        
     }
     
     
-    [UIView animateWithDuration:0.3 animations:^{
-        
+    [UIView animateWithDuration:0.1 animations:^{
+        topGlowImageView.alpha = 1.0;
     }];
     
     

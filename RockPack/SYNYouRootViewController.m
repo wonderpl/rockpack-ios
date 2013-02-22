@@ -65,8 +65,7 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) view
-      numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
@@ -78,8 +77,7 @@
     return 1;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
@@ -111,8 +109,7 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
     
