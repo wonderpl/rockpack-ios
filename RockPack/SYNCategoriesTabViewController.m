@@ -56,7 +56,7 @@
     NSPredicate* excludePredicate = [NSPredicate predicateWithFormat:@"priority >= 0"];
     [categoriesFetchRequest setPredicate:excludePredicate];
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:NO];
     [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
     
     
