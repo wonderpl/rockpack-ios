@@ -12,6 +12,7 @@
 #import "SYNNetworkEngine.h"
 #import "SYNCategoryItemView.h"
 #import "Category.h"
+#import "Subcategory.h"
 
 @interface SYNCategoriesTabViewController ()
 
@@ -120,7 +121,19 @@
     
     Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
     
-    [self.tabView createSubcategoriesTab:categoryTapped.subcategories];
+    NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
+    for (Subcategory* subcategory in categoryTapped.subcategories) {
+        if ([subcategory.priority integerValue] < 0) {
+            DebugLog(@"Priority less than 0, not adding");
+            continue;
+        }
+        
+        
+            
+        [filteredSet addObject:subcategory];
+    }
+    
+    [self.tabView createSubcategoriesTab:filteredSet];
     
     [self.delegate handleMainTap:recogniser];
     

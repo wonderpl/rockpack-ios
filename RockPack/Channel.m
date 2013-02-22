@@ -21,7 +21,7 @@ static NSEntityDescription *channelEntity = nil;
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
-    NSLog (@"Creating Channel");
+    // DebugLog (@"Creating Channel");
     NSError *error = nil;
     
     // Get the unique id of this object from the dictionary that has been passed in
@@ -59,7 +59,7 @@ static NSEntityDescription *channelEntity = nil;
         // Mark this object so that it is not deleted in the post-import step
         instance.markedForDeletionValue = FALSE;
         
-        NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        // NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
         
         // Check to see if we need to fill in the viewId
         if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
@@ -111,7 +111,7 @@ static NSEntityDescription *channelEntity = nil;
                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created Channel instance with id %@ and viewId %@", instance.uniqueId, instance.viewId);
+        // DebugLog(@"Created Channel instance with id %@ and viewId %@", instance.uniqueId, instance.viewId);
         
         return instance;
     }

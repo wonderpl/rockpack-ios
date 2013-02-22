@@ -54,7 +54,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
     if (matchingChannelOwnerEntries.count > 0)
     {
         instance = matchingChannelOwnerEntries[0];
-        NSLog(@"Using existing ChannelOwner instance with id %@", instance.uniqueId);
+        // NSLog(@"Using existing ChannelOwner instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -70,7 +70,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
                            ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created ChannelOwner instance with id %@", instance.uniqueId);
+        // DebugLog(@"Created ChannelOwner instance with id %@", instance.uniqueId);
         
         return instance;
     }
