@@ -78,6 +78,8 @@
     if(!saveResult)
         return NO;
     
+    [appDelegate saveContext: TRUE];
+    
     return YES;
 }
 
@@ -131,6 +133,9 @@
         return NO;
     
     
+    [appDelegate saveContext: TRUE];
+    
+    
     return YES;
 }
 
@@ -152,6 +157,9 @@
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
+    
+    
+    [appDelegate saveContext: TRUE];
     
     return YES;
 }
@@ -203,6 +211,9 @@
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
+    
+    
+    [appDelegate saveContext:TRUE];
     
     return YES;
 }
