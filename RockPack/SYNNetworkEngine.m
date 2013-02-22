@@ -46,9 +46,9 @@
         self.appDelegate = UIApplication.sharedApplication.delegate;
         
         
-        self.registry = [[SYNMainRegistry alloc] initWithManagedObjectContext:nil];
+        self.registry = [SYNMainRegistry registry];
         
-        self.searchRegistry = [[SYNSearchRegistry alloc] initWithManagedObjectContext:nil];
+        self.searchRegistry = [SYNSearchRegistry registry];
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];

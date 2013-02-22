@@ -16,5 +16,6 @@
 
 
 -(id)initWithManagedObjectContext:(NSManagedObjectContext*)moc;
++(id)registry;
 
 @end
