@@ -247,7 +247,7 @@
 
 
 
-#pragma mark - Text Field Methods
+#pragma mark - TextField Delegate Methods
 
 - (IBAction) clearSearchField: (id) sender
 {
@@ -275,7 +275,7 @@
     
     DebugLog(@"textFieldShouldReturn:");
     
-    //[self showSearchViewController];
+    [((SYNBottomTabViewController*)self.rootViewController) showSearchViewController];
     
     [textField resignFirstResponder];
     
@@ -367,7 +367,7 @@
                          
                      } completion: ^(BOOL finished) {
                          
-                    
+                         
                          
                      }];
     

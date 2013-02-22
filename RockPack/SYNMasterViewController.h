@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNBottomTabViewController.h"
 
 @interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate>
 

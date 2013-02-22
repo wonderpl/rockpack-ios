@@ -16,4 +16,6 @@
 
 - (void) popCurrentViewController: (id) sender;
 
+-(void) showSearchViewController;
+
 @end

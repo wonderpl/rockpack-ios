@@ -29,7 +29,8 @@
         // Main Bar //
         
         UIImage* mainTabsBGImage = [UIImage imageNamed:@"SearchTabPanelHeader.png"];
-        CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
+        CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height - 7.0);
+        
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
         self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
         
