@@ -65,7 +65,7 @@
         else
         {
             self.glowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSubSelectedGlow.png"]];
-            CGFloat offset = self.frame.size.height - self.glowImageView.frame.size.height * 0.5;
+            CGFloat offset = (self.frame.size.height - self.glowImageView.frame.size.height * 0.5) + 1;
             glowImageView.center = CGPointMake(self.frame.size.width*0.5, offset);
             glowImageView.hidden = YES;
             glowImageView.userInteractionEnabled = NO;
