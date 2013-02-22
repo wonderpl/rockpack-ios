@@ -15,10 +15,11 @@ typedef enum {
 } TabItemType;
 
 @interface SYNCategoryItemView : UIView {
+    @private TabItemType type;
     
 }
 
-@property (nonatomic, strong) UIImageView* topGlowImageView;
+@property (nonatomic, strong) UIImageView* glowImageView;
 
 @property (nonatomic, strong) UILabel* label;
 

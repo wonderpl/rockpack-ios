@@ -10,10 +10,13 @@
 #import "UIFont+SYNFont.h"
 #import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Category.h"
+#import "Subcategory.h"
 
 @implementation SYNCategoryItemView
 
-@synthesize topGlowImageView;
+@synthesize glowImageView;
+
 @synthesize label;
 
 - (id)initWithTabItemModel:(TabItem*)tabItemModel andFrame:(CGRect)frame
@@ -21,6 +24,12 @@
     self = [super initWithFrame:frame];
     
     if (self) {
+        
+        if ([tabItemModel isKindOfClass:[Subcategory class]]) 
+            type = TabItemTypeSub;
+        else
+            type = TabItemTypeMain;
+        
         
         self.tag = [tabItemModel.uniqueId integerValue];
         
@@ -38,11 +47,25 @@
         label.center = CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.5 + 3.0);
         [self addSubview:label];
         
-        self.topGlowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSelectedGlow.png"]];
-        topGlowImageView.center = CGPointMake(self.frame.size.width*0.5, topGlowImageView.center.y);
-        topGlowImageView.hidden = YES;
-        topGlowImageView.userInteractionEnabled = NO;
-        [self addSubview:topGlowImageView];
+        if(type == TabItemTypeMain)
+        {
+            self.glowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSelectedGlow.png"]];
+            glowImageView.center = CGPointMake(self.frame.size.width*0.5, glowImageView.center.y);
+            glowImageView.hidden = YES;
+            glowImageView.userInteractionEnabled = NO;
+            
+        }
+        else
+        {
+            self.glowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSubSelectedGlow.png"]];
+            CGFloat offset = self.frame.size.height - self.glowImageView.frame.size.height * 0.5;
+            glowImageView.center = CGPointMake(self.frame.size.width*0.5, offset);
+            glowImageView.hidden = YES;
+            glowImageView.userInteractionEnabled = NO;
+            
+        }
+        
+        [self addSubview:glowImageView];
         
     }
     return self;
@@ -61,25 +84,14 @@
     
     UIColor *color = [UIColor rockpackBlueColor];
     label.textColor = color;
+
     
-//    label.layer.shadowColor = [color CGColor];
-//    label.layer.shadowRadius = 7.0f;
-//    label.layer.shadowOpacity = 1.0;
-//    label.layer.shadowOffset = CGSizeZero;
-//    label.layer.masksToBounds = NO;
-    
-    // TODO: See what can be done with the animations
-    
-    if(withImage)
-    {
-        topGlowImageView.alpha = 0.0;
-        topGlowImageView.hidden = NO;
-        
-    }
+    glowImageView.alpha = 0.0;
+    glowImageView.hidden = NO;
     
     
     [UIView animateWithDuration:0.1 animations:^{
-        topGlowImageView.alpha = 1.0;
+        glowImageView.alpha = 1.0;
     }];
     
     
@@ -91,14 +103,14 @@
     self.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor lightGrayColor];
     label.layer.shadowColor = [[UIColor clearColor] CGColor];
-    topGlowImageView.hidden = YES;
+    glowImageView.hidden = YES;
 }
 -(void)makeStandard
 {
     self.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.layer.shadowColor = [[UIColor clearColor] CGColor];
-    topGlowImageView.hidden = YES;
+    glowImageView.hidden = YES;
 }
 
 @end
