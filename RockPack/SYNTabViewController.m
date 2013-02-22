@@ -28,6 +28,9 @@
     // implement in subclass
 }
 
+-(void)handleNewTabSelectionWithId:(NSString*)itemId {
+    // implement in cubclass
+}
 
 -(SYNTabView*)tabView
 {

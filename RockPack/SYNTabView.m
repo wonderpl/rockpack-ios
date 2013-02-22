@@ -34,6 +34,10 @@
     // implement in subclass
 }
 
+-(void)handleNewTabSelectionWithId:(NSString *)itemId {
+    // implement in subclass
+}
+
 
 #pragma mark - Basic Categories creation
 

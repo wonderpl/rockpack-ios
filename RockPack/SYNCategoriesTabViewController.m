@@ -124,12 +124,8 @@
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
     for (Subcategory* subcategory in categoryTapped.subcategories) {
         if ([subcategory.priority integerValue] < 0) {
-            DebugLog(@"Priority less than 0, not adding");
             continue;
         }
-        
-        
-            
         [filteredSet addObject:subcategory];
     }
     
@@ -137,11 +133,52 @@
     
     [self.delegate handleMainTap:recogniser];
     
+    [self.delegate handleNewTabSelectionWithId:categoryTapped.uniqueId];
+    
+    
 }
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
 {
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Subcategory"
+                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
+    [categoriesFetchRequest setEntity:categoryEntity];
+    
+    //DebugLog(@"Tag clicked : %d", tab.tag);
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
+    [categoriesFetchRequest setPredicate: predicate];
+    
+    NSError* error = nil;
+    
+    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
+                                                                                                   error: &error];
+    
+    if(matchingCategoryInstanceEntries.count == 0)
+    {
+        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
+        return;
+    }
+    
+    if (matchingCategoryInstanceEntries.count > 1)
+    {
+        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
+        
+    }
+    
+    Subcategory* subcategoryTapped = (Subcategory*)matchingCategoryInstanceEntries[0];
+    
     [self.delegate handleSecondaryTap:recogniser];
+    
+    [self.delegate handleNewTabSelectionWithId:subcategoryTapped.uniqueId];
+    
 }
 
 
