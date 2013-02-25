@@ -148,6 +148,6 @@
 //
 
 // TestFlight support
-#define  kTestFlightTeamToken @"7476be3185f5971ed3af8d0c6a136c80_MTQyOTYxMjAxMi0xMC0xMyAxMjoyMTozOS41MDgxNDA"
+#define  kTestFlightAppToken @"350faab3-e77f-4954-aa44-b85dba25d029"
 
 #endif
