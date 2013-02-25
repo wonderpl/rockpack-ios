@@ -18,6 +18,8 @@
 #import <CoreAudio/CoreAudioTypes.h>
 #import <QuartzCore/QuartzCore.h>
 
+typedef void(^AnimationCompletionBlock)(BOOL finished);
+
 @interface SYNMasterViewController ()
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
@@ -154,75 +156,103 @@
 
 - (IBAction) userTouchedInboxButton: (UIButton*) button
 {
-    button.selected = !button.selected;
-    
-    [self slideOverlayController:self.inboxOverlayViewController fromHidden:button.selected];
-}
-
-
-- (void) slideOverlayController: (UIViewController *) overlayViewController fromHidden:(BOOL)fromHidden
-{
-    
-    UIView* overlayView = overlayViewController.view;
-    CGRect overlayViewFrame = overlayView.frame;
     
     
-
-    // Play a suitable sound
-    
-
-    NSString* soundResourceName;
-    
-    if(fromHidden)
+    if(button.selected)
     {
-        
-        self.currentOverlayController = overlayViewController;
-        
-        soundResourceName = @"NewSlideIn";
-        // Take out of screen
-        overlayView.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                        0.0,
-                                        overlayViewFrame.size.width,
-                                        overlayViewFrame.size.height);
-        
-        [self.overlayView addSubview:overlayView];
-        
-        [UIView animateWithDuration: kRockieTalkieAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^{
-                             
-                             overlayView.frame =  CGRectMake(0.0,
-                                                             0.0,
-                                                             overlayViewFrame.size.width,
-                                                             overlayViewFrame.size.height);
-                             
-                         } completion: ^(BOOL finished) {
-                             
-                         }];
+        button.selected = NO;
+        [self hideOverlay:self.inboxOverlayViewController];
     }
     else
     {
-        
-        soundResourceName = @"NewSlideOut";
-        
-        [UIView animateWithDuration: kRockieTalkieAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^{
-                             
-                             overlayView.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                                             0.0,
-                                                             overlayViewFrame.size.width,
-                                                             overlayViewFrame.size.height);
-                             
-                         } completion: ^(BOOL finished) {
-                             [overlayView removeFromSuperview];
-                             self.currentOverlayController = nil;
-                         }];
+        button.selected = YES;
+        [self showOrSwapOverlay:self.inboxOverlayViewController];
     }
     
     
+}
+
+-(void)showOrSwapOverlay: (UIViewController*) overlayViewController
+{
+    if(self.currentOverlayController && self.currentOverlayController != overlayViewController)
+    {
+        [self hideOverlay:self.currentOverlayController withCompletionBlock:^(BOOL finished) {
+            [self showOverlay:overlayViewController];
+        }];
+    }
+    else
+    {
+        [self showOverlay:overlayViewController];
+    }
+}
+
+
+// Show Overlay
+
+-(void)showOverlay: (UIViewController*) overlayViewController
+{
+    [self showOverlay: overlayViewController withCompletionBlock:nil];
+}
+
+-(void)showOverlay: (UIViewController *) overlayViewController withCompletionBlock:(AnimationCompletionBlock)block
+{
+    self.currentOverlayController = overlayViewController;
+    
+    CGRect overlayViewFrame = overlayViewController.view.frame;
+    
+    [self playSound:@"NewSlideIn"];
+    
+    // Take out of screen
+    overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                                   0.0,
+                                                   overlayViewFrame.size.width,
+                                                   overlayViewFrame.size.height);
+    
+    [self.overlayView addSubview:overlayViewController.view];
+    
+    [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         overlayViewController.view.frame =  CGRectMake(0.0, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         
+                     } completion: ^(BOOL finished) {
+                         if(block) block(finished);
+                     }];
+}
+
+// Hide Overlay
+
+-(void)hideOverlay: (UIViewController*) overlayViewController
+{
+    [self hideOverlay:overlayViewController withCompletionBlock:nil];
+}
+
+-(void)hideOverlay: (UIViewController *) overlayViewController withCompletionBlock:(AnimationCompletionBlock)block
+{
+    CGRect overlayViewFrame = overlayViewController.view.frame;
+    
+    [self playSound:@"NewSlideOut"];
+    
+    [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         
+                     } completion: ^(BOOL finished) {
+                         [overlayViewController.view removeFromSuperview];
+                         self.currentOverlayController = nil;
+                         if(block) block(finished);
+                     }];
+}
+
+
+
+-(void)playSound:(NSString*)soundResourceName
+{
 #ifdef SOUND_ENABLED
     NSString *soundPath = [[NSBundle mainBundle] pathForResource:soundResourceName ofType: @"aif"];
     NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
@@ -230,8 +260,6 @@
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
     AudioServicesPlaySystemSound(sound);
 #endif
-    
-    
 }
 
 
@@ -306,12 +334,19 @@
     UISwipeGestureRecognizerDirection direction = ((UISwipeGestureRecognizer*)recogniser).direction;
     if(direction == UISwipeGestureRecognizerDirectionRight)
     {
-        [self slideOverlayController:self.inboxOverlayViewController fromHidden:YES];
+        
+        self.inboxButton.selected = YES;
+        if(!self.currentOverlayController) {
+            [self showOverlay:self.inboxOverlayViewController withCompletionBlock:nil];
+        }
+        
     }
     else if(direction == UISwipeGestureRecognizerDirectionLeft)
     {
         self.inboxButton.selected = NO;
-        [self slideOverlayController:self.currentOverlayController fromHidden:NO];
+        if(self.currentOverlayController) {
+            [self hideOverlay:self.currentOverlayController withCompletionBlock:nil];
+        }
     }
 }
 
@@ -378,8 +413,6 @@
                          self.topButtonsContainer.center = targetPoint;
                          self.backButton.alpha = targetAlpha;
                          
-                         
-                         
                      } completion: ^(BOOL finished) {
                          
                          
@@ -397,7 +430,7 @@
 -(void)sharePanelRequested:(NSNotification*)notification
 {
     
-    [self slideOverlayController:self.shareOverlayViewController fromHidden:YES];
+    [self showOrSwapOverlay:self.shareOverlayViewController];
 }
 
 @end
