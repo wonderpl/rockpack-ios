@@ -15,16 +15,18 @@ typedef enum {
 } TabItemType;
 
 @interface SYNCategoryItemView : UIView {
+    @private TabItemType type;
     
 }
 
-@property (nonatomic, strong) UIImageView* topGlowImageView;
+@property (nonatomic, strong) UIImageView* glowImageView;
 
 @property (nonatomic, strong) UILabel* label;
 
 - (id)initWithTabItemModel:(TabItem*)tabItemModel andFrame:(CGRect)frame;
 -(void)makeHighlightedWithImage:(BOOL)withImage;
 
+-(void)makeFaded;
 
 -(void)makeStandard;
 

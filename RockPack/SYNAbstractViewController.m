@@ -26,6 +26,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNMasterViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
@@ -56,6 +57,18 @@
 @synthesize videoInstanceFetchedResultsController = _videoInstanceFetchedResultsController;
 
 #pragma mark - Custom accessor methods
+
+-(id)init {
+    DebugLog(@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
+    return [self initWithViewId:@"NULL"];
+}
+
+-(id)initWithViewId:(NSString*)vid {
+    if(self = [super init]) {
+        viewId = vid;
+    }
+    return self;
+}
 
 - (void) setVideoQueueAnimationTimer: (NSTimer*) timer
 {
@@ -240,9 +253,9 @@
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                             managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                               sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
-                                                                                        cacheName: nil];
+                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                       sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
+                                                                                                cacheName: nil];
     _videoInstanceFetchedResultsController.delegate = self;
     
     ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
@@ -299,8 +312,8 @@
 
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
-    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerPredicate'");
-    return nil;
+    NSString* format = [NSString stringWithFormat:@"viewId == \"%@\"", viewId];
+    return [NSPredicate predicateWithFormat:format];
 }
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
@@ -385,16 +398,14 @@
      }
      completion: ^(BOOL finished)
      {
+         
      }];
     
     [self.navigationController pushViewController: vc
                                          animated: NO];
     
     
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    
-    // Show back button
-    [bottomTabViewController showBackButton];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
 }
 
 
@@ -408,8 +419,7 @@
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
+                     animations: ^{
          // Contract thumbnail view
          self.view.alpha = 0.0f;
          parentVC.view.alpha = 1.0f;
@@ -421,9 +431,7 @@
     
     // Hide back button
     
-    
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    [bottomTabViewController hideBackButton];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
 }
 
 
@@ -528,12 +536,9 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSharePanelRequested object: self];
     
     
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
-    
-    // Need to slide rockie talkie out
-    [bottomTabViewController toggleShareMenu];
 }
 
 
@@ -552,7 +557,7 @@
 {
     
     
-    SYNBottomTabViewController *bottomTabViewController = appDelegate.viewController;
+    SYNMasterViewController *bottomTabViewController = (SYNMasterViewController*)appDelegate.viewController;
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
     
@@ -625,8 +630,7 @@
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     UICollectionViewCell *cell = nil;
     
@@ -742,6 +746,7 @@
         [[newChannel videoInstancesSet] addObject: videoInstance];
     }
 
+    
     SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
     
     [self animatedPushViewController: channelCreationVC];

@@ -9,17 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
 
-@interface SYNBottomTabViewController : SYNAbstractViewController 
+@interface SYNBottomTabViewController : SYNAbstractViewController
 
 @property (nonatomic, strong, readonly) UIButton *messageInboxButton;
 
-- (void) slideMessageInboxLeft: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) slideMessageInboxRight: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) slideShareMenuLeft: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) slideShareMenuRight: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) toggleShareMenu;
-- (void) showBackButton;
-- (void) hideBackButton;
-- (IBAction) popCurrentViewController: (id) sender;
+
+- (void) popCurrentViewController: (id) sender;
+
+-(void) showSearchViewController;
 
 @end

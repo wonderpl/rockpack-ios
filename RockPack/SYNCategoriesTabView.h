@@ -8,16 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "SYNTabViewDelegate.h"
+#import "SYNTabView.h"
 
-@interface SYNCategoriesTabView : UIView <SYNTabViewDelegate>
-
-
-@property (nonatomic, weak) id<SYNTabViewDelegate> tapDelegate;
+@interface SYNCategoriesTabView : SYNTabView 
 
 
 
--(id)initWithCategories:(NSArray*)categories andSize:(CGSize)size;
 
--(void)createSubcategoriesTab:(NSSet*)subcategories;
+
+-(id)initWithSize:(CGFloat)totalWidth;
+
 
 @end

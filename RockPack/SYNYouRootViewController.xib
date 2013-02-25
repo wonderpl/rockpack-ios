@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12C3103</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -34,7 +34,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="345278472">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUICollectionView" id="1043283697">
@@ -81,6 +81,7 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{1024, 642}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="415812885"/>
 				<reference key="IBUIBackgroundColor" ref="624862611"/>
 				<bool key="IBUIAutoresizesSubviews">NO</bool>

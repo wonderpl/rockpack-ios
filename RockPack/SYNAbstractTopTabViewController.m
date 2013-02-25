@@ -27,13 +27,13 @@
 @implementation SYNAbstractTopTabViewController
 
 @synthesize selectedIndex = _selectedIndex;
+@synthesize tabViewController;
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
     
-    [self createTab];
 }
 
 
@@ -44,125 +44,26 @@
 }
 
 
--(void)createTab
+-(void)setTabViewController:(SYNTabViewController *)newTabViewController
 {
-    
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
-                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity:categoryEntity];
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"uniqueId" ascending:YES];
-    [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
-    
-    
-    NSError* error;
-    
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
-    
-    if (matchingCategoryInstanceEntries.count <= 0)
-    {
-        
-        [appDelegate.networkEngine updateCategoriesOnCompletion:^{
-            [self createTab];
-        } onError:^(NSError* error) {
-            DebugLog(@"%@", [error debugDescription]);
-        }];
-        return;
-    }
-   
-    // Create tab
-    
-    tabView = [[SYNCategoriesTabView alloc] initWithCategories:matchingCategoryInstanceEntries andSize:self.view.frame.size];
-    tabView.frame = CGRectMake(0.0, 44.0, tabView.frame.size.width, tabView.frame.size.height);
-    tabView.tapDelegate = self;
-    [self.view addSubview:tabView];
+    tabViewController = newTabViewController;
+    tabViewController.delegate = self;
+    [self.view addSubview:tabViewController.tabView];
     
     tabExpanded = NO;
-    
-    
 }
 
 #pragma mark - TabViewDelegate
 
 -(void)handleMainTap:(UITapGestureRecognizer *)recogniser
 {
-    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
-    
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
-                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
-    
-    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity:categoryEntity];
-    
-    //DebugLog(@"Tag clicked : %d", tab.tag);
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
-    [categoriesFetchRequest setPredicate: predicate];
-    
-    NSError* error = nil;
-    
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
-    
-    if(matchingCategoryInstanceEntries.count == 0)
-    {
-        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
-        return;
-    }
-    
-    if (matchingCategoryInstanceEntries.count > 1)
-    {
-        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
-        
-    }
-    
-    Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
-    
-    [tabView createSubcategoriesTab:categoryTapped.subcategories];
-    
-    
-    
-    
+    // to be implemented by child
 }
 
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
 {
-    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
-    
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Subcategory"
-                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
-    
-    NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity:categoryEntity];
-    
-    //DebugLog(@"Tag clicked : %d", tab.tag);
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
-    [categoriesFetchRequest setPredicate: predicate];
-    
-    NSError* error = nil;
-    
-    NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
-    
-    if(matchingCategoryInstanceEntries.count == 0)
-    {
-        DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
-        return;
-    }
-    
-    if (matchingCategoryInstanceEntries.count > 1)
-    {
-        DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
-        
-    }
-    
-    Subcategory* subcategoryTapped = (Subcategory*)matchingCategoryInstanceEntries[0];
-    [self handleNewTabSelectionWithId:subcategoryTapped.uniqueId];
+    // to be implemented by child
 }
 
 

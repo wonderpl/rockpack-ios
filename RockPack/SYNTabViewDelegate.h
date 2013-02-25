@@ -14,4 +14,7 @@
 -(void)handleMainTap:(UITapGestureRecognizer*)recogniser;
 -(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser;
 
+// general
+-(void)handleNewTabSelectionWithId:(NSString*)itemId;
+
 @end

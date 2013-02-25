@@ -53,7 +53,7 @@ static NSEntityDescription *categoryEntity = nil;
         // Mark this object so that it is not deleted in the post-import step
         instance.markedForDeletionValue = FALSE;
         
-        NSLog(@"Using existing Category instance with id %@", instance.uniqueId);
+        // NSLog(@"Using existing Category instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -88,6 +88,8 @@ static NSEntityDescription *categoryEntity = nil;
     
     
     self.name = [dictionary upperCaseStringForKey: @"name" withDefault: @"-?-"];
+    NSNumber* priorityString = (NSNumber*)[dictionary objectForKey:@"priority"];
+    self.priority = [NSNumber numberWithInteger:[priorityString integerValue]];
     
     // Parse Subcategories
     
@@ -112,7 +114,7 @@ static NSEntityDescription *categoryEntity = nil;
 - (NSString *) description
 {
     NSMutableString* descriptioString = [[NSMutableString alloc] init];
-    [descriptioString appendFormat: @"Category(%@) name: %@, subcategories:", self.uniqueId, self.name];
+    [descriptioString appendFormat: @"Category(%@) name: %@, priority: %@ subcategories:", self.uniqueId, self.name, self.priority];
     for (Subcategory* sub in self.subcategories) {
         [descriptioString appendFormat:@"\n- %@", sub];
     }

@@ -5,6 +5,7 @@
 
 const struct TabItemAttributes TabItemAttributes = {
 	.name = @"name",
+	.priority = @"priority",
 };
 
 const struct TabItemRelationships TabItemRelationships = {
@@ -39,6 +40,11 @@ const struct TabItemFetchedProperties TabItemFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"priorityValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"priority"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -48,6 +54,32 @@ const struct TabItemFetchedProperties TabItemFetchedProperties = {
 
 @dynamic name;
 
+
+
+
+
+
+@dynamic priority;
+
+
+
+- (int32_t)priorityValue {
+	NSNumber *result = [self priority];
+	return [result intValue];
+}
+
+- (void)setPriorityValue:(int32_t)value_ {
+	[self setPriority:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitivePriorityValue {
+	NSNumber *result = [self primitivePriority];
+	return [result intValue];
+}
+
+- (void)setPrimitivePriorityValue:(int32_t)value_ {
+	[self setPrimitivePriority:[NSNumber numberWithInt:value_]];
+}
 
 
 

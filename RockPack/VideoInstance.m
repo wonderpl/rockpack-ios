@@ -60,7 +60,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
     if (matchingVideoInstanceEntries.count > 0)
     {
         instance = matchingVideoInstanceEntries[0];
-        NSLog(@"Using existing VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
+        // NSLog(@"Using existing VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
         
         // Mark this object so that it is not deleted in the post-import step
         instance.markedForDeletionValue = FALSE;
@@ -79,7 +79,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
                           ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects: kIgnoreVideoInstanceObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
+        // NSLog(@"Created VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
         
         return instance;
     }

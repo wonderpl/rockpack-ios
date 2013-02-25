@@ -47,7 +47,7 @@ static NSEntityDescription *subcategoryEntity = nil;
     {
         instance = matchingVideoInstanceEntries[0];
         
-        NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
+        // NSLog(@"Using existing VideoInstance instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -60,7 +60,7 @@ static NSEntityDescription *subcategoryEntity = nil;
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext];
         
-        NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
+        // NSLog(@"Created VideoInstance instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -84,6 +84,9 @@ static NSEntityDescription *subcategoryEntity = nil;
     
     self.name = [dictionary upperCaseStringForKey: @"name" withDefault: @"-?-"];
     
+    
+    NSNumber* priorityString = (NSNumber*)[dictionary objectForKey:@"priority"];
+    self.priority = [NSNumber numberWithInteger:[priorityString integerValue]];
     
     
 }

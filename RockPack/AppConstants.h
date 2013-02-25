@@ -26,6 +26,9 @@
 // Returns a list of the trending videos
 #define kAPIPopularVideos @"ws/videos/"
 
+// Search according to term, currently a wrapper around YouTube
+#define kAPISearchVideos @"/ws/search/videos"
+
 //
 #define kAPICategories @"ws/categories/"
 
@@ -142,6 +145,13 @@
 #define kBottomTabIndexOffset 100
 
 #define kTopTabCount 10
+
+
+// Notifications
+#define kNoteBackButtonShow @"kNoteBackButtonShow"
+#define kNoteBackButtonHide @"kNoteBackButtonHide"
+#define kNoteTabPressed @"kNoteTabPressed"
+#define kNoteSharePanelRequested @"kNoteSharePanelRequested"
 
 //
 // Tracking

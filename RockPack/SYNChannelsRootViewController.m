@@ -36,13 +36,14 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
 
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
-                      forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
+                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
 
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];

@@ -18,7 +18,7 @@ static NSEntityDescription *videoEntity = nil;
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                         andViewId: (NSString *) viewId;
+                         andViewId: (NSString *) viewId
 {
     NSError *error = nil;
     
@@ -57,7 +57,7 @@ static NSEntityDescription *videoEntity = nil;
     if (matchingVideoEntries.count > 0)
     {
         instance = matchingVideoEntries[0];
-        NSLog(@"Using existing Video instance with id %@", instance.uniqueId);
+        // NSLog(@"Using existing Video instance with id %@", instance.uniqueId);
         return instance;
     }
     else
@@ -72,7 +72,7 @@ static NSEntityDescription *videoEntity = nil;
                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created Video instance with id %@", instance.uniqueId);
+        // NSLog(@"Created Video instance with id %@", instance.uniqueId);
         
         return instance;
     }

@@ -55,6 +55,7 @@
 {
     [super viewDidLoad];
     
+    
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
@@ -95,15 +96,12 @@
 {
     [super viewWillAppear: animated];
     
-        
-    
     [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
     {
-        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
-                                                           inSection: 0]];
+        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }
 }
 
@@ -132,8 +130,7 @@
     // Set the first video
     if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
     {
-        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
-                                                           inSection: 0]];
+        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }
 }
 
@@ -145,10 +142,7 @@
 
 #pragma mark - Core Data support
 
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Videos\""];
-}
+
 
 
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
@@ -159,15 +153,14 @@
 
 - (NSString *)videoInstanceFetchedResultsControllerSectionNameKeyPath
 {
-    //    return @"daysAgo";
+    
     return nil;
 }
 
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *)collectionView numberOfItemsInSection: (NSInteger) section
 {
     // See if this can be handled in our abstract base class
     int items = [super collectionView: collectionView
@@ -648,6 +641,7 @@
         tabExpanded = YES;
     }];
 }
+
 
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {

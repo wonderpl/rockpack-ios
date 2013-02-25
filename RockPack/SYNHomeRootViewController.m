@@ -132,32 +132,6 @@
 #pragma mark - Core Data support
 
 
-// Not sure that
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
-}
-
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    // Sort by index
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
-
-
-// The following 2 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-//    // No predicate
-//    return nil;
-        return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
-}
-
-
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
@@ -167,7 +141,6 @@
 
 - (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
 {
-//    return @"daysAgo";
     return @"dateAddedIgnoringTime";
 }
 
@@ -227,14 +200,6 @@
 }
 
 
-//- (void) collectionView: (UICollectionView *) collectionView
-//         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    // XXX
-//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-//    
-//    [self displayVideoViewer: videoInstance];
-//}
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
