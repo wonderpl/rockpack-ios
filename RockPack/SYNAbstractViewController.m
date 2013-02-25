@@ -27,6 +27,7 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNMasterViewController.h"
+#import "SYNVideoQueueView.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
@@ -89,94 +90,19 @@
     
     if (self.hasVideoQueue)
     {
-        // Initialise common views
-        // Overall view to slide in and out of view
-//        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 577+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
-        self.videoQueueView = [[UIView alloc] initWithFrame: CGRectMake(0, 573+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight)];
         
-        // Panel view
-        self.videoQueuePanelView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 115)];
-        self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
-        [self.videoQueueView addSubview: self.videoQueuePanelView];
+        SYNVideoQueueView* videoQV = [[SYNVideoQueueView alloc] init];
+        videoQV.delegate = self;
         
-        // Buttons
+        self.videoQueueCollectionView = videoQV.videoQueueCollectionView;
         
-        self.videoQueueDeleteButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.videoQueueDeleteButton.frame = CGRectMake(949, 35, 50, 50);
-        
-        [self.videoQueueDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDelete.png"]
-                                     forState: UIControlStateNormal];
-        
-        [self.videoQueueDeleteButton setImage: [UIImage imageNamed: @"ButtonVideoWellDeleteHighlighted.png"]
-                                     forState: UIControlStateHighlighted];
-        
-        [self.videoQueueDeleteButton addTarget: self
-                                        action: @selector(clearVideoQueue)
-                              forControlEvents: UIControlEventTouchUpInside];
-        
-        [self.videoQueueView addSubview: self.videoQueueDeleteButton];
-        
-        self.videoQueueNewButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.videoQueueNewButton.frame = CGRectMake(663, 35, 50, 50);
-        
-        [self.videoQueueNewButton setImage: [UIImage imageNamed: @"ButtonVideoWellNew.png"]
-                                  forState: UIControlStateNormal];
-        
-        [self.videoQueueNewButton setImage: [UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"]
-                                  forState: UIControlStateSelected];
-        
-        [self.videoQueueNewButton addTarget: self
-                                    action: @selector(createChannelFromVideoQueue)
-                          forControlEvents: UIControlEventTouchUpInside];
-        
-        [self.videoQueueView addSubview: self.videoQueueNewButton];
-        
-        self.videoQueueExistingButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        self.videoQueueExistingButton.frame = CGRectMake(806, 35, 50, 50);
-        
-        [self.videoQueueExistingButton setImage: [UIImage imageNamed: @"ButtonVideoWellExisting.png"]
-                                     forState: UIControlStateNormal];
-        
-        [self.videoQueueExistingButton setImage: [UIImage imageNamed: @"ButtonVideoWellExistingHighlighted.png"]
-                                     forState: UIControlStateHighlighted];
-        
-        [self.videoQueueView addSubview: self.videoQueueExistingButton];
-        
-        // Message view
-        self.videoQueueMessageView = [[UIImageView alloc] initWithFrame: CGRectMake(60, 47, 411, 31)];
-        self.videoQueueMessageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
+        self.videoQueueView = videoQV;
         
         
-        // Disable message if we already have items in the queue (from another screen)
-        if (SYNVideoSelection.sharedVideoSelectionArray.count != 0)
-        {
-            self.videoQueueMessageView.alpha = 0.0f;
-        }
-        
-        [self.videoQueueView addSubview: self.videoQueueMessageView];
-        
-        // Video Queue collection view
-        
-        // Need to create a layout first
-        UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-        standardFlowLayout.itemSize = CGSizeMake(127.0f , 73.0f);
-        standardFlowLayout.minimumInteritemSpacing = 0.0f;
-        standardFlowLayout.minimumLineSpacing = 15.0f;
-        standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        
-//        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(10, 26, 478, 73)
-//                                                          collectionViewLayout: standardFlowLayout];
-        
-        // Make this of zero width initially
-        self.videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)
-                                                           collectionViewLayout: standardFlowLayout];
         
         self.videoQueueCollectionView.delegate = self;
         self.videoQueueCollectionView.dataSource = self;
         
-        self.videoQueueCollectionView.backgroundColor = [UIColor clearColor];
-//            self.videoQueueCollectionView.backgroundColor = [UIColor blueColor];
         // Register cells
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell"
                                                  bundle: nil];
@@ -186,9 +112,6 @@
         
         [self.videoQueueView addSubview: self.videoQueueCollectionView];
         
-        // Drop zone
-        self.dropZoneView = [[UIView alloc] initWithFrame: CGRectMake(20, 640, 127, 73)];
-        [self.videoQueueView addSubview: self.dropZoneView];
         
         [self.view addSubview: self.videoQueueView];
     }
@@ -701,7 +624,7 @@
 }
 
 
-- (IBAction) createChannelFromVideoQueue
+- (void) createChannelFromVideoQueue
 {
     
     Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
@@ -905,7 +828,7 @@
     self.videoQueueView.frame = videoQueueViewFrame;
 }
 
-- (IBAction) clearVideoQueue
+- (void) clearVideoQueue
 {
 #ifdef SOUND_ENABLED
     // Play a suitable sound
@@ -1034,6 +957,7 @@
          }
                          completion: ^(BOOL finished)
          {
+             
          }];
     }
     
