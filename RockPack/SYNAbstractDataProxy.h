@@ -11,35 +11,31 @@
 
 #import "SYNAppDelegate.h"
 
-typedef enum {
-    kDataProxyTypeUndefined = -1,
-    kDataProxyTypeChannel = 0,
-    kDataProxyTypeVideos = 1
-} kDataProxyType;
+#define kDataProxyTypeAbstract @"Abstract"
+
+#define kDataProxyTypeChannel @"Channel"
+#define kDataProxyTypeVideos @"VideoInstance"
+
 
 @interface SYNAbstractDataProxy : NSObject <NSFetchedResultsControllerDelegate, UICollectionViewDataSource> {
 @protected
-    kDataProxyType type;
+    NSString* dataType;
     NSFetchedResultsController* fetchedRequestController;
     SYNAppDelegate* appDelegate;
     
 }
 
--(id)initWithType:(kDataProxyType)dataProxyType;
 +(id)proxy;
-+(id)proxyWithType:(kDataProxyType)dataProxyType;
 
 -(void)start;
 
-@property (nonatomic, readonly) kDataProxyType type;
-
-
+@property (nonatomic, readonly) NSString* dataType;
 
 @property (nonatomic, weak) NSString* ownerViewId;
 
 @property (nonatomic, readonly) NSString* proxyName;
 
-@property (nonatomic, readonly) NSString* entityName;
+
 @property (nonatomic, readonly) NSString* cacheName;
 @property (nonatomic, readonly) NSString* sectionKeyPath;
 @property (nonatomic, readonly) NSPredicate* predicate;

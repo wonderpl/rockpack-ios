@@ -9,10 +9,10 @@
 #import "SYNAbstractDataProxy.h"
 
 @implementation SYNAbstractDataProxy
-@synthesize type;
+
 @synthesize ownerViewId;
 
-@synthesize entityName;
+
 @synthesize cacheName;
 @synthesize predicate;
 @synthesize descriptors;
@@ -21,41 +21,34 @@
 
 @synthesize proxyName;
 
--(id)initWithType:(kDataProxyType)dataProxyType
+
+-(id)init
 {
-    if (self = [self init]) {
-        type = dataProxyType;
+    if (self = [super init]) {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        
     }
     return self;
 }
 
--(NSString*)proxyName
+
+
++(id)proxy
 {
-    return @"AbstractDataProxy";
+    return [[self alloc] init];
 }
 
--(NSString*)entityName
+
+
+-(NSString*)proxyName
+{
+    return  NSStringFromClass([self class]);
+}
+
+-(NSString*)dataType
 {
     return nil;
 }
 
-+(id)proxy
-{
-    return [[self alloc] initWithType:kDataProxyTypeUndefined];
-}
-
-+(id)proxyWithType:(kDataProxyType)dataProxyType
-{
-    return [[self alloc] initWithType:dataProxyType];
-}
-
--(kDataProxyType)type
-{
-    return type;
-}
 
 -(void)start
 {
@@ -64,8 +57,8 @@
         return;
     }
     
-    if(!self.entityName) {
-        DebugLog(@"No entity name for proxy '%@'", self.proxyName);
+    if(!dataType) {
+        DebugLog(@"No data type for proxy '%@'", self.proxyName);
         return;
     }
     
@@ -82,7 +75,7 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    fetchRequest.entity = [NSEntityDescription entityForName: self.entityName
+    fetchRequest.entity = [NSEntityDescription entityForName: self.dataType
                                       inManagedObjectContext: self.managedObjectContext];
     
     fetchRequest.predicate = self.predicate;
@@ -138,10 +131,7 @@
 
 
 
--(NSString*)sectionKeyPath
-{
-    return nil;
-}
+
 
 
 -(NSPredicate*)predicate
@@ -157,6 +147,14 @@
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES];
     return @[sortDescriptor];
 }
+
+-(NSString*)sectionKeyPath
+{
+    return nil;
+}
+
+
+
 
 -(NSString*)cacheName
 {
