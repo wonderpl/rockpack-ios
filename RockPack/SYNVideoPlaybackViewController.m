@@ -673,7 +673,6 @@
                                                                 selector: @selector(monitorBufferLevel)
                                                                 userInfo: nil
                                                                  repeats: YES];
-    
 }
 
 
@@ -714,10 +713,10 @@
 {
     if (self.nextVideoWebViewReadyToPlay == FALSE)
     {
-        DebugLog(@"*** Next video not ready");
+        NSLog(@"*** Next video not ready");
     }
     {
-        DebugLog(@"*** Next video ready");
+        NSLog(@"*** Next video ready");
         UIWebView *oldVideoWebView = self.currentVideoWebView;
         self.currentVideoWebView = self.nextVideoWebView;
         self.nextVideoWebView = nil;
