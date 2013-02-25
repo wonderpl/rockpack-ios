@@ -177,30 +177,17 @@
     //    AudioServicesPlaySystemSound(sound);
 #endif
     
-    // If this is the first thing we are adding then fade out the message
+    // The first video added enables the new channel button
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
         newButton.enabled = TRUE;
         newButton.selected = TRUE;
         newButton.enabled = TRUE;
         
-        [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Contract thumbnail view
-             messageView.alpha = 0.0f;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-             
-         }];
+        [self showMessage:NO];
     }
     
     
-    // OK, here goes
     
     // First, increase the size of the view by the size of the new cell to be added (+margin)
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
@@ -211,15 +198,6 @@
     [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance];
     
     [self.videoQueueCollectionView reloadData];
-    
-    [self performSelector: @selector(animateVideoAdditionToVideoQueue2:)
-               withObject: videoInstance
-               afterDelay: 0.0f];
-}
-
-- (void) animateVideoAdditionToVideoQueue2: (VideoInstance *) videoInstance
-{
-    
     
     if (self.videoQueueCollectionView.contentSize.width + 15 > kVideoQueueWidth + 142)
     {
@@ -252,12 +230,12 @@
          
          self.videoQueueCollectionView.contentOffset = contentOffset;
          self.videoQueueCollectionView.frame = videoQueueCollectionViewFrame;
-     }
-                     completion: ^(BOOL finished)
-     {
+     } completion: ^(BOOL finished) {
          
      }];
 }
+
+
 
 
 - (void) clearVideoQueue
@@ -276,18 +254,31 @@
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
+                     animations: ^{
          messageView.alpha = 1.0f;
          
-     }
-                     completion: ^(BOOL finished)
-     {
+     } completion: ^(BOOL finished) {
+         
      }];
     
     [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
     
     [self.videoQueueCollectionView reloadData];
+}
+
+
+-(void)showMessage:(BOOL)show
+{
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         messageView.alpha = show ? 1.0f : 0.0f;
+                         
+        } completion: ^(BOOL finished) {
+                         
+        }];
 }
 
 
