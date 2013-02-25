@@ -825,121 +825,25 @@
     self.videoQueueView.frame = videoQueueViewFrame;
 }
 
-- (void) clearVideoQueue
-{
-#ifdef SOUND_ENABLED
-    // Play a suitable sound
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Trash"
-                                                          ofType: @"aif"];
-    
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
-#endif
-    
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoQueueMessageView.alpha = 1.0f;
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
-    
-    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
-    
-    [self.videoQueueCollectionView reloadData];
-}
 
 
 
 
-//
-//// User has pressed the Done button, so create a new channel
-//- (BOOL) textFieldShouldReturn: (UITextField *) textField
-//{
-//    [self addChannelWithTitle: textField.text];
-//    
-//    return YES;
-//}
-//
-//- (void) textFieldDidEndEditing: (UITextField *) textField
-//{
-//    self.channelChooserView.alpha = 0.0f;
-//}
-//
-//- (void) addChannelWithTitle: (NSString *) title
-//{
-//    Channel *newChannel = [Channel insertInManagedObjectContext: self.mainManagedObjectContext];
-//    
-//    NSError *error = nil;
-//    NSEntityDescription *channelOwnerEntity = [NSEntityDescription entityForName: @"ChannelOwner"
-//                                                   inManagedObjectContext: self.mainManagedObjectContext];
-//    
-//    // Find out how many Video objects we have in the database
-//    NSFetchRequest *channelOwnerFetchRequest = [[NSFetchRequest alloc] init];
-//    [channelOwnerFetchRequest setEntity: channelOwnerEntity];
-//    
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == 666"];
-//    [channelOwnerFetchRequest setPredicate: predicate];
-//    
-//    NSArray *channelOwnerEntries = [self.mainManagedObjectContext executeFetchRequest: channelOwnerFetchRequest
-//                                                                     error: &error];
-//    
-//    DebugLog(@"unique id = %@", ((ChannelOwner *)channelOwnerEntries[0]).uniqueId);
-//    
-//    newChannel.channelOwner = (ChannelOwner *)channelOwnerEntries[0];
-//    
-//    newChannel.title = title;
-//    newChannel.rockedByUserValue = FALSE;
-//    newChannel.rockCountValue = 0;
-//    newChannel.rockedByUserValue = TRUE;
-//    
-//    // TODO: Make these window offsets less hard-coded
-//    NSIndexPath *indexPath = [self.channelCoverCarouselCollectionView indexPathForItemAtPoint: CGPointMake (450 + self.channelCoverCarouselCollectionView.contentOffset.x,
-//                                                                                                            70 + self.channelCoverCarouselCollectionView.contentOffset.y)];
-//    
-//    Channel *coverChannel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-//    
-//    newChannel.thumbnailURL = coverChannel.thumbnailURL;
-//    newChannel.wallpaperURL = coverChannel.wallpaperURL;
-//    newChannel.channelDescription = coverChannel.channelDescription;
-//    
-//    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
-//    {
-//        [[newChannel videoInstancesSet] addObject: videoInstance];
-//    }
-//    
-//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    [delegate saveContext: kSaveAsynchronously];
-//    
-//    [self.channelNameTextField resignFirstResponder];
-//    [self clearVideoQueue];
-//}
-
-#pragma mark - Image well support
+#pragma mark - Add/Remove to video queue
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
 {
     [((SYNVideoQueueView*)self.videoQueueView) addVideoToQueue:videoInstance];
 }
 
-
+- (void) clearVideoQueue
+{
+    [((SYNVideoQueueView*)self.videoQueueView) clearVideoQueue];
+}
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
 {
-    if (showHighlight)
-    {
-        self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueueHighlighted.png"];
-    }
-    else
-    {
-        self.videoQueuePanelView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
-    }
+    [((SYNVideoQueueView*)self.videoQueueView) setHighlighted:showHighlight];
 }
 
 

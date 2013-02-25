@@ -31,5 +31,6 @@
 @property (nonatomic) BOOL highlighted;
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
+- (void) clearVideoQueue;
 
 @end
