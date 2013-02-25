@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SYNVideoQueueDelegate.h"
 #import "SYNAbstractViewController.h"
+#import "VideoInstance.h"
 
 @interface SYNVideoQueueView : UIView {
     
@@ -28,5 +29,7 @@
 @property (nonatomic, weak) id <SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate> delegate;
 @property (nonatomic, strong) UICollectionView* videoQueueCollectionView;
 @property (nonatomic) BOOL highlighted;
+
+- (void) addVideoToQueue: (VideoInstance *) videoInstance;
 
 @end
