@@ -299,6 +299,12 @@
     return _channelFetchedResultsController;
 }
 
+
+
+
+
+
+
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     NSLog (@"controller updated");
@@ -307,8 +313,6 @@
 }
 
 
-
-#pragma mark - Abstract Accessors
 
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
 {
@@ -696,41 +700,6 @@
     return handledInAbstractView;
 }
 
-//- (IBAction) createChannelFromVideoQueue
-//{
-//    UIViewController *pvc = self.parentViewController;
-//    
-//    [pvc.view addSubview: self.channelChooserView];
-//    
-//    self.channelNameTextField.text = @"";
-//    [self.channelNameTextField becomeFirstResponder];
-//    
-//    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-//                          delay: 0.0f
-//                        options: UIViewAnimationOptionCurveEaseInOut
-//                     animations: ^
-//     {
-//         // Contract thumbnail view
-//         self.channelChooserView.alpha = 1.0f;
-//     }
-//                     completion: ^(BOOL finished)
-//     {
-//     }];
-//    
-//    // TODO: Work out why scrolling to position 1 actually scrolls to position 5 (suspect some dodgy maths in the 3rd party cover flow)
-//    NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
-//    [self.channelCoverCarouselCollectionView scrollToItemAtIndexPath: startIndexPath
-//                                                    atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
-//                                                            animated: NO];
-//    
-//    // Only play the scrolling click (after we have scrolled to the right position in the list,
-//    // which might not have finished in this run loop
-//    [NSObject performBlock: ^
-//     {
-//         self.shouldPlaySound = TRUE;
-//     }
-//     afterDelay: 0.1f];
-//}
 
 - (IBAction) createChannelFromVideoQueue
 {

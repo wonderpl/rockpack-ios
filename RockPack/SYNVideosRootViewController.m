@@ -205,8 +205,8 @@
 
 
 - (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath {
+    
     // See if this can be handled in our abstract base class
     BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
                    didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];

@@ -47,7 +47,6 @@
 						<string key="NSFrame">{{512, 92}, {512, 566}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
 							<int key="NSColorSpace">3</int>
@@ -761,6 +760,30 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNVideosRootViewController</string>
 					<string key="superclassName">SYNAbstractTopTabViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addToVideoQueueFromLargeVideo:">id</string>
+						<string key="longPressLargeVideo:">UIGestureRecognizer</string>
+						<string key="playLargeVideo:">id</string>
+						<string key="toggleLargeVideoPanelStarItButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addToVideoQueueFromLargeVideo:">
+							<string key="name">addToVideoQueueFromLargeVideo:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="longPressLargeVideo:">
+							<string key="name">longPressLargeVideo:</string>
+							<string key="candidateClassName">UIGestureRecognizer</string>
+						</object>
+						<object class="IBActionInfo" key="playLargeVideo:">
+							<string key="name">playLargeVideo:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleLargeVideoPanelStarItButton:">
+							<string key="name">toggleLargeVideoPanelStarItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelImageView">UIImageView</string>
 						<string key="channelLabel">UILabel</string>

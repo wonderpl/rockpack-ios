@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12C3103</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -1032,35 +1032,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractChannelsDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="userTouchedChangeCoverButton:">id</string>
-						<string key="userTouchedDoneButton:">id</string>
-						<string key="userTouchedEditButton:">id</string>
-						<string key="userTouchedSaveButton:">id</string>
-						<string key="userTouchedShareButton:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="userTouchedChangeCoverButton:">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">userTouchedChangeCoverButton:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="userTouchedDoneButton:">
-							<string key="name">userTouchedDoneButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedEditButton:">
-							<string key="name">userTouchedEditButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedSaveButton:">
-							<string key="name">userTouchedSaveButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedShareButton:">
-							<string key="name">userTouchedShareButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="changeCoverButton">UIButton</string>
 						<string key="changeCoverLabel">UILabel</string>
@@ -1194,6 +1176,10 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="animatedPopViewController">id</string>
 						<string key="dismissVideoViewer">id</string>
+						<string key="longPressThumbnail:">UIGestureRecognizer</string>
+						<string key="userTouchedVideoAddItButton:">UIButton</string>
+						<string key="userTouchedVideoRockItButton:">UIButton</string>
+						<string key="userTouchedVideoShareItButton:">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="animatedPopViewController">
@@ -1203,6 +1189,22 @@
 						<object class="IBActionInfo" key="dismissVideoViewer">
 							<string key="name">dismissVideoViewer</string>
 							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="longPressThumbnail:">
+							<string key="name">longPressThumbnail:</string>
+							<string key="candidateClassName">UIGestureRecognizer</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedVideoAddItButton:">
+							<string key="name">userTouchedVideoAddItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedVideoRockItButton:">
+							<string key="name">userTouchedVideoRockItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedVideoShareItButton:">
+							<string key="name">userTouchedVideoShareItButton:</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
