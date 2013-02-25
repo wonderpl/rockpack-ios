@@ -712,16 +712,23 @@
 
 - (void) swapVideoWebViews
 {
-    UIWebView *oldVideoWebView = self.currentVideoWebView;
-    self.currentVideoWebView = self.nextVideoWebView;
-    self.nextVideoWebView = nil;
-    
-    // Start our new view playing
-    [self playVideoInWebView: self.currentVideoWebView];
-    
-    // Now fade out our old video view
-    [self fadeOutVideoPlayerInWebView: oldVideoWebView];
-    [oldVideoWebView removeFromSuperview];
+    if (self.nextVideoWebViewReadyToPlay == FALSE)
+    {
+        DebugLog(@"*** Next video not ready");
+    }
+    {
+        DebugLog(@"*** Next video ready");
+        UIWebView *oldVideoWebView = self.currentVideoWebView;
+        self.currentVideoWebView = self.nextVideoWebView;
+        self.nextVideoWebView = nil;
+        
+        // Start our new view playing
+        [self playVideoInWebView: self.currentVideoWebView];
+        
+        // Now fade out our old video view
+        [self fadeOutVideoPlayerInWebView: oldVideoWebView];
+        [oldVideoWebView removeFromSuperview];
+    }
 }
 
 - (IBAction) userTouchedPlay: (id) sender
@@ -735,8 +742,9 @@
 {
     [self fadeOutPlayButton];
     
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.00f
+    // Tweaked this as the QuickTime logo seems to appear otherwise
+    [UIView animateWithDuration: 0.0f
+                          delay: 0.1f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
