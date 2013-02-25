@@ -113,7 +113,7 @@
 {
 	InstallUncaughtExceptionHandler();
     
-    [TestFlight takeOff: kTestFlightTeamToken];
+    [TestFlight takeOff: kTestFlightAppToken];
 }
 
 

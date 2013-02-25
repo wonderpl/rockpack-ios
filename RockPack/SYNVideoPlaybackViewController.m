@@ -70,6 +70,7 @@
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
     
+    // Use for placeholder
 //    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
 //                               aboveSubview: self.videoPlaceholderImageView];
     
@@ -130,6 +131,7 @@
     
     return newVideoPlaceholderImageView;
 }
+
 
 - (UIButton *) createVideoPlayButton
 {
@@ -265,8 +267,8 @@
     else
     {
         // OK, we are not currently playing this index, so segue to the next video
+        [self fadeOutVideoPlayerInWebView: self.currentVideoWebView];
         self.videoIndex = index;
-        
         [self loadCurrentVideoWebView];
     }
 }
@@ -376,8 +378,8 @@
 {
     if ([source isEqualToString: @"youtube"])
     {
-        [self loadWebViewWithJSAPI: webView
-                    usingYouTubeId: sourceId];
+        [self loadWebViewWithIFramePlayer: webView
+                           usingYouTubeId: sourceId];
     }
     else if ([source isEqualToString: @"vimeo"])
     {
@@ -390,13 +392,14 @@
     }
 }
 
+//YouTubeIFramePlayer
 
 // Support for YouTube JavaScript player
-- (void) loadWebViewWithJSAPI: (UIWebView *) webView
+- (void) loadWebViewWithIFramePlayer: (UIWebView *) webView
                usingYouTubeId: (NSString *) sourceId
 {
     NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayer"
+    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
                                                          ofType: @"html"];
     
     NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
@@ -409,7 +412,7 @@
                     baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
     
     // Not sure if this makes any difference
-//    webView.mediaPlaybackRequiresUserAction = FALSE;
+    webView.mediaPlaybackRequiresUserAction = FALSE;
 }
 
 
@@ -718,6 +721,7 @@
     
     // Now fade out our old video view
     [self fadeOutVideoPlayerInWebView: oldVideoWebView];
+    [oldVideoWebView removeFromSuperview];
 }
 
 - (IBAction) userTouchedPlay: (id) sender
@@ -732,7 +736,7 @@
     [self fadeOutPlayButton];
     
     [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
+                          delay: 0.00f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
@@ -753,7 +757,7 @@
     
     // We need to remove immediately, as returns to start immediately
     webView.alpha = 0.0f;
-    [webView removeFromSuperview];
+//    [webView removeFromSuperview];
 }
 
 // Fades up the play button (enabling it when fully opaque)

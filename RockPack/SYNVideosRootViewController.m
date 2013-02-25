@@ -247,9 +247,7 @@
     {        
         self.currentIndexPath = indexPath;
         
-        [self updateLargeVideoDetailsForIndexPath: indexPath];
-        
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        [self.videoPlaybackViewController playVideoAtIndex: indexPath.row];   
     }
 }
 
