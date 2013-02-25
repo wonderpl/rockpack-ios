@@ -13,8 +13,10 @@
 @implementation SYNVideoQueueView
 
 @synthesize videoQueueCollectionView;
-@synthesize delegate;
-@synthesize highlighted;
+
+@synthesize deleteButton;
+@synthesize existingButton;
+@synthesize channelButton;
 
 -(id)init
 {
@@ -57,15 +59,15 @@
         
         // == New Button
         
-        newButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        newButton.frame = CGRectMake(663, 35, 50, 50);
+        channelButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        channelButton.frame = CGRectMake(663, 35, 50, 50);
         
-        [newButton setImage:[UIImage imageNamed:@"ButtonVideoWellNew.png"] forState: UIControlStateNormal];
+        [channelButton setImage:[UIImage imageNamed:@"ButtonVideoWellNew.png"] forState: UIControlStateNormal];
         
-        [newButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
+        [channelButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
         
         
-        [self addSubview:newButton];
+        [self addSubview:channelButton];
         
         
         // == Existing Button
@@ -131,19 +133,19 @@
     return self;
 }
 
-#pragma mark - Accessors
 
--(void)setDelegate:(id<SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate>)del
+-(void)showMessageView:(BOOL)value
 {
-    delegate = del;
-    
-    videoQueueCollectionView.delegate = self.delegate;
-    videoQueueCollectionView.dataSource = self.delegate;
-    
-    
-    [deleteButton addTarget:delegate action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
-    
-    [newButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+         
+         messageView.alpha = 0.0f;
+         
+     } completion: ^(BOOL finished) {
+         
+     }];
 }
 
 -(void)setHighlighted:(BOOL)value
@@ -157,8 +159,5 @@
         backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
     }
 }
-
-
-
 
 @end

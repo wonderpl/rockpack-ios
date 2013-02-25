@@ -7,13 +7,20 @@
 //
 
 #import "SYNVideoQueueViewController.h"
-#import "SYNVideoQueueView.h"
+#import "VideoInstance.h"
+#import "SYNVideoSelection.h"
+#import "AppConstants.h"
 
 @interface SYNVideoQueueViewController ()
+
+@property (nonatomic, readonly) SYNVideoQueueView* videoQueueView;
 
 @end
 
 @implementation SYNVideoQueueViewController
+
+@synthesize delegate;
+@synthesize videoQueueView;
 
 -(void)loadView
 {
@@ -32,7 +39,27 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
+#pragma mark - Accessors
+
+-(void)setDelegate:(id<SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate>)del
+{
+    delegate = del;
+    
+    videoQueueView.videoQueueCollectionView.delegate = self.delegate;
+    videoQueueView.videoQueueCollectionView.dataSource = self.delegate;
+    
+    
+    [videoQueueView.deleteButton addTarget:delegate action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    
+    [videoQueueView.channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+}
+
+-(void)setHighlighted:(BOOL)value
+{
+    [videoQueueView setHighlighted:value];
+}
+
 
 #pragma mark - Add Videos
 
@@ -52,37 +79,24 @@
     // If this is the first thing we are adding then fade out the message
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
-        newButton.enabled = TRUE;
-        newButton.selected = TRUE;
-        newButton.enabled = TRUE;
+        videoQueueView.channelButton.enabled = TRUE;
+        videoQueueView.channelButton.selected = TRUE;
+        videoQueueView.channelButton.enabled = TRUE;
         
-        [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^
-         {
-             // Contract thumbnail view
-             messageView.alpha = 0.0f;
-             
-         }
-                         completion: ^(BOOL finished)
-         {
-             
-         }];
+        [videoQueueView showMessageView:YES];
     }
     
     
-    // OK, here goes
     
     // First, increase the size of the view by the size of the new cell to be added (+margin)
-    CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
+    CGRect videoQueueViewFrame = videoQueueView.videoQueueCollectionView.frame;
     videoQueueViewFrame.size.width += 142;
     
-    self.videoQueueCollectionView.frame = videoQueueViewFrame;
+    videoQueueView.videoQueueCollectionView.frame = videoQueueViewFrame;
     
     [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance];
     
-    [self.videoQueueCollectionView reloadData];
+    [videoQueueView.videoQueueCollectionView reloadData];
     
     [self performSelector: @selector(animateVideoAdditionToVideoQueue2:)
                withObject: videoInstance
@@ -93,11 +107,11 @@
 {
     
     
-    if (self.videoQueueCollectionView.contentSize.width + 15 > kVideoQueueWidth + 142)
+    if (videoQueueView.videoQueueCollectionView.contentSize.width + 15 > kVideoQueueWidth + 142)
     {
-        CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
-        contentOffset.x = self.videoQueueCollectionView.contentSize.width - kVideoQueueWidth;
-        self.videoQueueCollectionView.contentOffset = contentOffset;
+        CGPoint contentOffset = videoQueueView.videoQueueCollectionView.contentOffset;
+        contentOffset.x = videoQueueView.videoQueueCollectionView.contentSize.width - kVideoQueueWidth;
+        videoQueueView.videoQueueCollectionView.contentOffset = contentOffset;
     }
     
     
@@ -105,32 +119,33 @@
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.5f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
+                     animations: ^{
          // Slide origin back
-         CGRect videoQueueCollectionViewFrame = self.videoQueueCollectionView.frame;
+         CGRect videoQueueCollectionViewFrame = videoQueueView.videoQueueCollectionView.frame;
          videoQueueCollectionViewFrame.origin.x -= 142;
          
-         CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
+         CGPoint contentOffset = videoQueueView.videoQueueCollectionView.contentOffset;
          
-         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
+         if (videoQueueView.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
          {
              videoQueueCollectionViewFrame.origin.x = kVideoQueueOffsetX;
              videoQueueCollectionViewFrame.size.width = kVideoQueueWidth;
              
              
-             contentOffset.x = self.videoQueueCollectionView.contentSize.width - kVideoQueueWidth + 15;
+             contentOffset.x = videoQueueView.videoQueueCollectionView.contentSize.width - kVideoQueueWidth + 15;
          }
          
-         self.videoQueueCollectionView.contentOffset = contentOffset;
-         self.videoQueueCollectionView.frame = videoQueueCollectionViewFrame;
+         videoQueueView.videoQueueCollectionView.contentOffset = contentOffset;
+         videoQueueView.videoQueueCollectionView.frame = videoQueueCollectionViewFrame;
      }
-                     completion: ^(BOOL finished)
-     {
+                     completion: ^(BOOL finished) {
          
      }];
 }
  
- */
+-(SYNVideoQueueView*)videoQueueView
+{
+    return (SYNVideoQueueView*)self.view;
+}
 
 @end

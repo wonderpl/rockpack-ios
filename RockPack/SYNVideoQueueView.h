@@ -8,15 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "SYNVideoQueueDelegate.h"
-#import "SYNAbstractViewController.h"
 
 @interface SYNVideoQueueView : UIView {
     
     UIImageView* backgroundImageView;
     
-    UIButton* deleteButton;
-    UIButton* newButton;
-    UIButton* existingButton;
     
     UIImageView* messageView;
     
@@ -25,8 +21,13 @@
     UICollectionView* videoQueueCollectionView;
 }
 
-@property (nonatomic, weak) id <SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate> delegate;
 @property (nonatomic, strong) UICollectionView* videoQueueCollectionView;
-@property (nonatomic) BOOL highlighted;
+
+@property (nonatomic, strong) UIButton* deleteButton;
+@property (nonatomic, strong) UIButton* channelButton;
+@property (nonatomic, strong) UIButton* existingButton;
+
+-(void)setHighlighted:(BOOL)value;
+-(void)showMessageView:(BOOL)value;
 
 @end

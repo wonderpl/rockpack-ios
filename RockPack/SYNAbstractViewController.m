@@ -28,6 +28,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNMasterViewController.h"
 #import "SYNVideoQueueView.h"
+#import "SYNVideoQueueViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
@@ -90,13 +91,12 @@
     
     if (self.hasVideoQueue)
     {
+        SYNVideoQueueViewController* vvv = [[SYNVideoQueueViewController alloc] init];
+        vvv.delegate = self;
         
-        SYNVideoQueueView* videoQV = [[SYNVideoQueueView alloc] init];
-        videoQV.delegate = self;
+        self.videoQueueCollectionView = vvv.videoQueueView.videoQueueCollectionView;
         
-        self.videoQueueCollectionView = videoQV.videoQueueCollectionView;
-        
-        self.videoQueueView = videoQV;
+        self.videoQueueView = vvv.videoQueueView;
         
         
         

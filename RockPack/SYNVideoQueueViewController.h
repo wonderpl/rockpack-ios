@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SYNVideoQueueDelegate.h"
+
+#import "SYNVideoQueueView.h"
+
 @interface SYNVideoQueueViewController : UIViewController
+
+
+@property (nonatomic, weak) id <SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate> delegate;
+
+-(void)setHighlighted:(BOOL)value;
+
+-(SYNVideoQueueView*)videoQueueView;
 
 @end
