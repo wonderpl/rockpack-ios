@@ -13,10 +13,8 @@
 @implementation SYNVideoQueueView
 
 @synthesize videoQueueCollectionView;
-
-@synthesize deleteButton;
-@synthesize existingButton;
-@synthesize channelButton;
+@synthesize delegate;
+@synthesize highlighted;
 
 -(id)init
 {
@@ -59,15 +57,15 @@
         
         // == New Button
         
-        channelButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        channelButton.frame = CGRectMake(663, 35, 50, 50);
+        newButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        newButton.frame = CGRectMake(663, 35, 50, 50);
         
-        [channelButton setImage:[UIImage imageNamed:@"ButtonVideoWellNew.png"] forState: UIControlStateNormal];
+        [newButton setImage:[UIImage imageNamed:@"ButtonVideoWellNew.png"] forState: UIControlStateNormal];
         
-        [channelButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
+        [newButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
         
         
-        [self addSubview:channelButton];
+        [self addSubview:newButton];
         
         
         // == Existing Button
@@ -133,19 +131,19 @@
     return self;
 }
 
+#pragma mark - Accessors
 
--(void)showMessageView:(BOOL)value
+-(void)setDelegate:(id<SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate>)del
 {
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-         
-         messageView.alpha = 0.0f;
-         
-     } completion: ^(BOOL finished) {
-         
-     }];
+    delegate = del;
+    
+    videoQueueCollectionView.delegate = self.delegate;
+    videoQueueCollectionView.dataSource = self.delegate;
+    
+    
+    [deleteButton addTarget:delegate action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    
+    [newButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
 }
 
 -(void)setHighlighted:(BOOL)value
@@ -159,5 +157,8 @@
         backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
     }
 }
+
+
+
 
 @end
