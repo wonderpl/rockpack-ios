@@ -13,6 +13,8 @@
 @implementation SYNVideoQueueView
 
 @synthesize videoQueueCollectionView;
+@synthesize delegate;
+@synthesize highlighted;
 
 -(id)init
 {
@@ -47,7 +49,6 @@
         
         [deleteButton setImage:[UIImage imageNamed: @"ButtonVideoWellDeleteHighlighted.png"] forState: UIControlStateHighlighted];
         
-        [deleteButton addTarget:self.delegate action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
         
         
         [self addSubview:deleteButton];
@@ -63,7 +64,6 @@
         
         [newButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
         
-        [newButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
         
         [self addSubview:newButton];
         
@@ -85,9 +85,8 @@
         messageView = [[UIImageView alloc] initWithFrame: CGRectMake(60, 47, 411, 31)];
         messageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
         
-        
         // Disable message if we already have items in the queue (from another screen)
-        if (SYNVideoSelection.sharedVideoSelectionArray.count != 0)
+        if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
         {
             messageView.alpha = 0.0f;
         }
@@ -111,8 +110,7 @@
         videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)
                                                            collectionViewLayout: standardFlowLayout];
         
-        videoQueueCollectionView.delegate = self.delegate;
-        videoQueueCollectionView.dataSource = self.delegate;
+        
         
         videoQueueCollectionView.backgroundColor = [UIColor clearColor];
         
@@ -132,5 +130,35 @@
     }
     return self;
 }
+
+#pragma mark - Accessors
+
+-(void)setDelegate:(id<SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate>)del
+{
+    delegate = del;
+    
+    videoQueueCollectionView.delegate = self.delegate;
+    videoQueueCollectionView.dataSource = self.delegate;
+    
+    
+    [deleteButton addTarget:delegate action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    
+    [newButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+}
+
+-(void)setHighlighted:(BOOL)value
+{
+    if (value)
+    {
+        backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueueHighlighted.png"];
+    }
+    else
+    {
+        backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
+    }
+}
+
+
+
 
 @end

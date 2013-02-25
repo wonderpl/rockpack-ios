@@ -463,6 +463,7 @@
 		BEF9E5A016DBBA7500286113 /* SYNChannelsByPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E59F16DBBA7500286113 /* SYNChannelsByPosition.m */; };
 		BEF9E5A416DBBAD900286113 /* SYNChannelByTitleDataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A316DBBAD800286113 /* SYNChannelByTitleDataProxy.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
+		BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1034,6 +1035,8 @@
 		BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueView.h; sourceTree = "<group>"; };
 		BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueView.m; sourceTree = "<group>"; };
 		BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueDelegate.h; sourceTree = "<group>"; };
+		BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueViewController.h; sourceTree = "<group>"; };
+		BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2403,6 +2406,8 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */,
+				BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */,
 				BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */,
 				BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */,
 				BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */,
@@ -2914,6 +2919,7 @@
 				BEF9E5A016DBBA7500286113 /* SYNChannelsByPosition.m in Sources */,
 				BEF9E5A416DBBAD900286113 /* SYNChannelByTitleDataProxy.m in Sources */,
 				BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */,
+				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -100,9 +100,6 @@
         
         
         
-        self.videoQueueCollectionView.delegate = self;
-        self.videoQueueCollectionView.dataSource = self;
-        
         // Register cells
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell"
                                                  bundle: nil];
@@ -1044,18 +1041,6 @@
     return CGRectContainsPoint(self.videoQueueView.frame, point);
 }
 
-//         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
-//         {
-//             CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
-//             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - kVideoQueueWidth;
-//             self.videoQueueCollectionView.contentOffset = contentOffset;
-//         }
-//         else
-//         {
-//             CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
-//             NSLog (@"width=%f", self.videoQueueCollectionView.frame.size.width);
-//             contentOffset.x = self.videoQueueCollectionView.contentSize.width + 15 - self.videoQueueCollectionView.frame.size.width;
-//             self.videoQueueCollectionView.contentOffset = contentOffset;
-//         }
+
 
 @end

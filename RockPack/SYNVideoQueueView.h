@@ -27,5 +27,6 @@
 
 @property (nonatomic, weak) id <SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate> delegate;
 @property (nonatomic, strong) UICollectionView* videoQueueCollectionView;
+@property (nonatomic) BOOL highlighted;
 
 @end
