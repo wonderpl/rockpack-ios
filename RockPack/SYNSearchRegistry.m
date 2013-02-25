@@ -32,18 +32,19 @@
     
     
     
+    
     // === Main Processing === //
     
     for (NSDictionary *itemDictionary in itemArray) {
         
         if ([itemDictionary isKindOfClass: [NSDictionary class]]) {
             
+            NSMutableDictionary* fullItemDictionary = [NSMutableDictionary dictionaryWithDictionary:itemDictionary];
             
-            
-//            [VideoInstance instanceFromDictionary: itemDictionary
-//                        usingManagedObjectContext: importManagedObjectContext
-//                              ignoringObjectTypes: kIgnoreNothing
-//                                        andViewId: viewId];
+            [VideoInstance instanceFromDictionary: fullItemDictionary
+                        usingManagedObjectContext: importManagedObjectContext
+                              ignoringObjectTypes: kIgnoreChannelObjects
+                                        andViewId: viewId];
         }
             
     }

@@ -536,9 +536,9 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSharePanelRequested object: self];
     
     
-    // TODO: Use Messaging to show Share
 }
 
 

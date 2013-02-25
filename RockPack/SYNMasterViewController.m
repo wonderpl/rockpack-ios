@@ -123,12 +123,17 @@
     [self.view addGestureRecognizer: leftSwipeRecogniser];
     
     
+    leftSwipeRecogniser.delegate = self;
+    
+    
     // == Set Up Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tabPressed:) name:kNoteTabPressed object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharePanelRequested:) name:kNoteSharePanelRequested object:nil];
     
     
 }
@@ -379,5 +384,10 @@
     self.searchTextField.text = @"";
 }
 
+-(void)sharePanelRequested:(NSNotification*)notification
+{
+    
+    [self slideOverlay:self.shareOverlayViewController.view fromHidden:YES];
+}
 
 @end

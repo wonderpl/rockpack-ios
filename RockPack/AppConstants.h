@@ -151,6 +151,7 @@
 #define kNoteBackButtonShow @"kNoteBackButtonShow"
 #define kNoteBackButtonHide @"kNoteBackButtonHide"
 #define kNoteTabPressed @"kNoteTabPressed"
+#define kNoteSharePanelRequested @"kNoteSharePanelRequested"
 
 //
 // Tracking
