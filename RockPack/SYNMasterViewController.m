@@ -26,6 +26,9 @@
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 
+@property (nonatomic, strong) IBOutlet UIButton* inboxButton;
+@property (nonatomic, strong) IBOutlet UIButton* notificationButton;
+
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
@@ -33,6 +36,7 @@
 
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
+@property (nonatomic, weak) UIViewController* currentOverlayController;
 
 @property (nonatomic, strong) UIPopoverController* popoverController;
 
@@ -152,13 +156,14 @@
 {
     button.selected = !button.selected;
     
-    [self slideOverlay:self.inboxOverlayViewController.view fromHidden:button.selected];
+    [self slideOverlayController:self.inboxOverlayViewController fromHidden:button.selected];
 }
 
 
-- (void) slideOverlay: (UIView *) overlayView fromHidden:(BOOL)fromHidden
+- (void) slideOverlayController: (UIViewController *) overlayViewController fromHidden:(BOOL)fromHidden
 {
     
+    UIView* overlayView = overlayViewController.view;
     CGRect overlayViewFrame = overlayView.frame;
     
     
@@ -170,6 +175,9 @@
     
     if(fromHidden)
     {
+        
+        self.currentOverlayController = overlayViewController;
+        
         soundResourceName = @"NewSlideIn";
         // Take out of screen
         overlayView.frame =  CGRectMake(-overlayViewFrame.size.width,
@@ -210,6 +218,7 @@
                              
                          } completion: ^(BOOL finished) {
                              [overlayView removeFromSuperview];
+                             self.currentOverlayController = nil;
                          }];
     }
     
@@ -297,11 +306,12 @@
     UISwipeGestureRecognizerDirection direction = ((UISwipeGestureRecognizer*)recogniser).direction;
     if(direction == UISwipeGestureRecognizerDirectionRight)
     {
-        [self slideOverlay:self.inboxOverlayViewController.view fromHidden:YES];
+        [self slideOverlayController:self.inboxOverlayViewController fromHidden:YES];
     }
     else if(direction == UISwipeGestureRecognizerDirectionLeft)
     {
-        [self slideOverlay:self.inboxOverlayViewController.view fromHidden:NO];
+        self.inboxButton.selected = NO;
+        [self slideOverlayController:self.currentOverlayController fromHidden:NO];
     }
 }
 
@@ -387,7 +397,7 @@
 -(void)sharePanelRequested:(NSNotification*)notification
 {
     
-    [self slideOverlay:self.shareOverlayViewController.view fromHidden:YES];
+    [self slideOverlayController:self.shareOverlayViewController fromHidden:YES];
 }
 
 @end
