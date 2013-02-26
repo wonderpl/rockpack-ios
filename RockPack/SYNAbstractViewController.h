@@ -75,7 +75,6 @@
 // Override if the image w
 - (BOOL) isVideoQueueVisibleOnStart;
 
-- (void) startVideoQueueDismissalTimer;
 - (void) showVideoQueue: (BOOL) animated;
 - (void) hideVideoQueue: (BOOL) animated;
 

@@ -38,7 +38,7 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
-@property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
+
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
@@ -65,12 +65,7 @@
     return self;
 }
 
-- (void) setVideoQueueAnimationTimer: (NSTimer*) timer
-{
-    // We need to invalidate our timeer before setting a new one (so that the old one doen't fire anyway)
-    [_videoQueueAnimationTimer invalidate];
-    _videoQueueAnimationTimer = timer;
-}
+
 
 
 
@@ -418,7 +413,6 @@
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
     [self showVideoQueue: TRUE];
-    [self startVideoQueueDismissalTimer];
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
@@ -627,7 +621,6 @@
     {
         // Un-highlight the image well
         [self highlightVideoQueue: FALSE];
-        [self startVideoQueueDismissalTimer];
         
         // and let's figure out where we dropped it
         //        CGPoint point = [sender locationInView: self.dropZoneView];
@@ -677,45 +670,15 @@
 }
 
 
-
-
-#pragma mark - Video Queue Appearence
-
-- (void) videoQueueTimerCallback
-{
-    [self hideVideoQueue: TRUE];
-}
-
-- (void) startVideoQueueDismissalTimer
-{
-    self.videoQueueAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kVideoQueueOnScreenDuration
-                                                                     target: self
-                                                                   selector: @selector(videoQueueTimerCallback)
-                                                                   userInfo: nil
-                                                                    repeats: NO];
-}
-
 - (void) showVideoQueue: (BOOL) animated
 {
-    if (self.isVideoQueueVisible == FALSE)
-    {
-        self.videoQueueVisible = TRUE;
-        
-        [self.videoQVC showVideoQueue:animated];
-        
-    }
+    [self.videoQVC showVideoQueue:animated];
 }
 
 
 - (void) hideVideoQueue: (BOOL) animated
 {
-    if (self.videoQueueVisible == TRUE)
-    {
-        self.videoQueueAnimationTimer = nil;
-        self.videoQueueVisible = FALSE;
-        
-        [self.videoQVC hideVideoQueue:animated];
-    }
+    [self.videoQVC hideVideoQueue:animated];
 }
 
 

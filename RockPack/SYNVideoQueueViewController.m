@@ -15,9 +15,15 @@
 #import "AppConstants.h"
 #import "SYNSoundPlayer.h"
 
+#define kQueueSelectedImage @"PanelVideoQueueHighlighted.png"
+#define kQueueDefaultImage @"PanelVideoQueue.png"
+
 @interface SYNVideoQueueViewController ()
 
 @property (nonatomic, readonly) SYNVideoQueueView* videoQueueView;
+@property (nonatomic) BOOL isVisible;
+
+@property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 
 @end
 
@@ -33,6 +39,8 @@
     videoQView.videoQueueCollectionView.dataSource = self;
     videoQView.videoQueueCollectionView.delegate = self;
     self.view = videoQView;
+    
+    self.isVisible = NO;
 }
 
 - (void)viewDidLoad
@@ -103,7 +111,6 @@
 - (void) clearVideoQueue
 {
     
-    
     [self.videoQueueView showMessage:YES];
     
     self.videoQueueView.channelButton.enabled = NO;
@@ -126,13 +133,32 @@
 
 - (void) showVideoQueue: (BOOL) animated
 {
-    [self hideShowVideoQueue:YES animated:animated];
+    
+    
+    if (!self.isVisible)
+        [self hideShowVideoQueue:YES animated:animated];
+    
+    
+    self.isVisible = YES;
+    [self startVideoQueueDismissalTimer];
+    
+    
+    
 }
 
 
 - (void) hideVideoQueue: (BOOL) animated
 {
-    [self hideShowVideoQueue:NO animated:animated];
+    
+    
+    if (self.isVisible)
+        [self hideShowVideoQueue:NO animated:animated];
+    
+    self.isVisible = NO;
+    self.videoQueueAnimationTimer = nil;
+    
+    
+    
     
     
 }
@@ -171,6 +197,7 @@
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
     
     
+    [self startVideoQueueDismissalTimer];
     
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
@@ -189,14 +216,31 @@
 
 -(void)setHighlighted:(BOOL)value
 {
-    if (value)
-    {
-        self.videoQueueView.backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueueHighlighted.png"];
-    }
-    else
-    {
-        self.videoQueueView.backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
-    }
+    self.videoQueueView.backgroundImageView.image = [UIImage imageNamed: (value ? kQueueSelectedImage : kQueueDefaultImage)];
+}
+
+- (void) setVideoQueueAnimationTimer: (NSTimer*) timer
+{
+
+    
+    [_videoQueueAnimationTimer invalidate];
+    _videoQueueAnimationTimer = timer;
+}
+
+- (void) startVideoQueueDismissalTimer
+{
+    self.videoQueueAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kVideoQueueOnScreenDuration
+                                                                     target: self
+                                                                   selector: @selector(videoQueueTimerCallback)
+                                                                   userInfo: nil
+                                                                    repeats: NO];
+}
+
+
+
+- (void) videoQueueTimerCallback
+{
+    [self hideVideoQueue: TRUE];
 }
 
 @end
