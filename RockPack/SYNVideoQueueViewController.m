@@ -24,6 +24,8 @@
 
 @dynamic videoQueueView;
 
+@synthesize delegate;
+
 -(void)loadView
 {
     SYNVideoQueueView* videoQView = [[SYNVideoQueueView alloc] init];
@@ -36,7 +38,7 @@
 {
     [super viewDidLoad];
     
-    [self.videoQueueView reloadData];
+    [self reloadData];
 	
 }
 
@@ -84,6 +86,38 @@
 -(SYNVideoQueueView*)videoQueueView
 {
     return (SYNVideoQueueView*)self.view;
+}
+
+#pragma mark - Delegate
+
+-(void)setDelegate:(id<SYNVideoQueueDelegate>)del
+{
+    delegate = del;
+    
+    [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.videoQueueView.channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+}
+
+- (void) clearVideoQueue
+{
+    
+    
+    [self.videoQueueView showMessage:YES];
+    
+    self.videoQueueView.channelButton.enabled = NO;
+    self.videoQueueView.channelButton.selected = NO;
+    self.videoQueueView.deleteButton.enabled = NO;
+    
+    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
+    
+    [self.videoQueueView.videoQueueCollectionView reloadData];
+}
+
+-(void)reloadData
+{
+    [self.videoQueueView.videoQueueCollectionView reloadData];
+    
 }
 
 @end

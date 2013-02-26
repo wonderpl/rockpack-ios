@@ -14,7 +14,7 @@
 @implementation SYNVideoQueueView
 
 @synthesize videoQueueCollectionView;
-@synthesize delegate;
+@synthesize deleteButton, channelButton, existingButton;
 @synthesize highlighted;
 
 -(id)init
@@ -141,15 +141,7 @@
 
 #pragma mark - Accessors
 
--(void)setDelegate:(id<SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate>)del
-{
-    delegate = del;
-    
-    
-    [deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
-    
-    [channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
-}
+
 
 -(void)setHighlighted:(BOOL)value
 {
@@ -234,30 +226,7 @@
 
 
 
-- (void) clearVideoQueue
-{
 
-    
-    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-         messageView.alpha = 1.0f;
-        
-         
-     } completion: ^(BOOL finished) {
-         
-     }];
-    
-    channelButton.enabled = NO;
-    channelButton.selected = NO;
-    deleteButton.enabled = NO;
-    
-    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
-    
-    [self.videoQueueCollectionView reloadData];
-}
 
 
 -(void)showMessage:(BOOL)show
@@ -274,11 +243,7 @@
         }];
 }
 
--(void)reloadData
-{
-    [videoQueueCollectionView reloadData];
-    
-}
+
 
 
 @end

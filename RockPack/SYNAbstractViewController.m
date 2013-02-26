@@ -87,8 +87,7 @@
     {
         self.videoQVC = [[SYNVideoQueueViewController alloc] init];
         self.videoQueueView = self.videoQVC.view;
-        
-        [((SYNVideoQueueView*)self.videoQueueView) setDelegate:self];
+        self.videoQVC.delegate = self;
         
     
         
@@ -104,7 +103,7 @@
     if (self.hasVideoQueue)
     {
         
-        [(SYNVideoQueueView*)self.videoQueueView reloadData];
+        [self.videoQVC reloadData];
         
     }
 }
@@ -681,18 +680,23 @@
     return FALSE;
 }
 
-- (void) startVideoQueueDismissalTimer
-{
-    self.videoQueueAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kVideoQueueOnScreenDuration
-                                                                    target: self
-                                                                  selector: @selector(videoQueueTimerCallback)
-                                                                  userInfo: nil
-                                                                   repeats: NO];
-}
+
+
+
+#pragma mark - Video Queue Appearence
 
 - (void) videoQueueTimerCallback
 {
     [self hideVideoQueue: TRUE];
+}
+
+- (void) startVideoQueueDismissalTimer
+{
+    self.videoQueueAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kVideoQueueOnScreenDuration
+                                                                     target: self
+                                                                   selector: @selector(videoQueueTimerCallback)
+                                                                   userInfo: nil
+                                                                    repeats: NO];
 }
 
 - (void) showVideoQueue: (BOOL) animated

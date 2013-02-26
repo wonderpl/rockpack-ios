@@ -15,9 +15,7 @@
     
     UIImageView* backgroundImageView;
     
-    UIButton* deleteButton;
-    UIButton* channelButton;
-    UIButton* existingButton;
+    
     
     UIImageView* messageView;
     
@@ -26,12 +24,16 @@
     UICollectionView* videoQueueCollectionView;
 }
 
-@property (nonatomic, weak) id <SYNVideoQueueDelegate, UICollectionViewDataSource, UICollectionViewDelegate> delegate;
+
 @property (nonatomic, strong) UICollectionView* videoQueueCollectionView;
 @property (nonatomic) BOOL highlighted;
 
+@property (nonatomic, strong) UIButton* deleteButton;
+@property (nonatomic, strong) UIButton* channelButton;
+@property (nonatomic, strong) UIButton* existingButton;
+
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
-- (void) clearVideoQueue;
-- (void) reloadData;
+- (void) showMessage:(BOOL)show;
+
 
 @end
