@@ -88,28 +88,30 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"];
-    
-    // New video playback view controller
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
-    
-    [self.view insertSubview: self.videoPlaybackViewController.view
-                aboveSubview: self.panelImageView];
-    
-    [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: self.videoInstanceArray
-                                                               autoPlay: TRUE];
 }
 
 
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    
+    [self.view insertSubview: self.videoPlaybackViewController.view
+                aboveSubview: self.panelImageView];
+    
+    [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: self.videoInstanceArray
+                                                           currentIndex: self.currentSelectedIndex
+                                                               autoPlay: TRUE];
 }
 
 
 // Don't call these here as called when going full-screen
 
 - (void) viewWillDisappear: (BOOL) animated
-{    
+{
+    self.videoPlaybackViewController = nil;
+    
     [super viewWillDisappear: animated];
 }
 

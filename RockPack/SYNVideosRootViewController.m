@@ -128,7 +128,8 @@
     if (videoInstances.count > 0)
     {
         [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: videoInstances
-                                                                   autoPlay: TRUE];
+                                                               currentIndex: self.currentIndexPath.row
+                                                                   autoPlay: FALSE];
         
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }

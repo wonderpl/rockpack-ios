@@ -53,16 +53,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(youTubeVideoEnter:)
-                                                 name: @"UIMoviePlayerControllerDidEnterFullscreenNotification"
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(youTubeVideoExit:)
-                                                 name: @"UIMoviePlayerControllerDidExitFullscreenNotification"
-                                               object: nil];
 
     // Make sure we set the desired frame at this point
     self.view.frame = self.requestedFrame;
@@ -84,14 +74,14 @@
 
 }
 
-- (void) youTubeVideoEnter: (id) sender
-{
-    DebugLog (@" Entered fullscreen");
-}
 
-- (void) youTubeVideoExit: (id) sender
+- (void) viewDidDisappear:(BOOL)animated
 {
-    DebugLog (@"Exited fullscreen");
+    [self stopVideoInWebView: self.currentVideoWebView];
+    self.currentVideoWebView = nil;
+    self.nextVideoWebView = nil;
+    
+    [super viewDidDisappear: animated];
 }
 
 
@@ -224,7 +214,8 @@
 
 
 - (void) setPlaylistWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                                  autoPlay: (BOOL) autoPlay
+                              currentIndex: (int) currentIndex
+                                  autoPlay: (BOOL) autoPlay;
 {
     // Reset index
     self.videoIndex = 0;
@@ -236,6 +227,8 @@
     self.source = nil;
     self.sourceId = nil;
     self.videoInstanceArray = videoInstanceArray;
+    
+    self.videoIndex = currentIndex;
     
     [self loadCurrentVideoWebView];
 }

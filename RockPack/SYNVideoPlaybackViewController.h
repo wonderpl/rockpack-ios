@@ -33,6 +33,7 @@
                    autoPlay: (BOOL) autoPlay;
 
 - (void) setPlaylistWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                              currentIndex: (int) currentIndex
                                   autoPlay: (BOOL) autoPlay;
 
 
