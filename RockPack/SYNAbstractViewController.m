@@ -27,27 +27,21 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNMasterViewController.h"
-#import "SYNVideoQueueView.h"
+#import "SYNVideoQueueViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
-@property (nonatomic, strong) IBOutlet UICollectionView *videoQueueCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, strong) MKNetworkOperation *draggedImageLoadingOperation;
+
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
-@property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-@property (nonatomic, strong) UIButton *videoQueueDeleteButton;
-@property (nonatomic, strong) UIButton *videoQueueExistingButton;
-@property (nonatomic, strong) UIButton *videoQueueNewButton;
-@property (nonatomic, strong) UIImageView *videoQueueMessageView;
-@property (nonatomic, strong) UIImageView *videoQueuePanelView;
-@property (nonatomic, strong) UIView *dropZoneView;
 
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
+@property (nonatomic, strong) UIView *dropZoneView;
+@property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
 @end
 
 
@@ -71,12 +65,7 @@
     return self;
 }
 
-- (void) setVideoQueueAnimationTimer: (NSTimer*) timer
-{
-    // We need to invalidate our timeer before setting a new one (so that the old one doen't fire anyway)
-    [_videoQueueAnimationTimer invalidate];
-    _videoQueueAnimationTimer = timer;
-}
+
 
 
 
@@ -90,17 +79,10 @@
     
     if (self.hasVideoQueue)
     {
+        self.videoQVC = [[SYNVideoQueueViewController alloc] init];
+        self.videoQVC.delegate = self;
         
-        SYNVideoQueueView* videoQV = [[SYNVideoQueueView alloc] init];
-        videoQV.delegate = self;
-        
-        self.videoQueueCollectionView = videoQV.videoQueueCollectionView;
-        
-        self.videoQueueView = videoQV;
-        
-        
-        
-        [self.view addSubview: self.videoQueueView];
+        [self.view addSubview: self.videoQVC.view];
     }
 }
 
@@ -111,17 +93,9 @@
     
     if (self.hasVideoQueue)
     {
-        // Disable message if we already have items in the queue (from another screen)
-        if (SYNVideoSelection.sharedVideoSelectionArray.count != 0)
-        {
-            self.videoQueueMessageView.alpha = 0.0f;
-        }
-        else
-        {
-            self.videoQueueMessageView.alpha = 1.0f;
-        }
         
-        [self.videoQueueCollectionView reloadData];
+        [self.videoQVC reloadData];
+        
     }
 }
 
@@ -439,7 +413,6 @@
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
     [self showVideoQueue: TRUE];
-    [self startVideoQueueDismissalTimer];
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
@@ -517,15 +490,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
-    if (cv == self.videoQueueCollectionView)
-    {
-        return SYNVideoSelection.sharedVideoSelectionArray.count;
-    }
-    else
-    {
-        // Signal that we do not handle this collection view
-        return -1;
-    }
+    return -1;
 }
 
 - (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
@@ -571,21 +536,6 @@
         
         cell = videoThumbnailCell;
     }
-    else if (cv == self.videoQueueCollectionView)
-    {
-        SYNVideoQueueCell *videoQueueCell = [cv dequeueReusableCellWithReuseIdentifier: @"VideoQueueCell"
-                                                               forIndexPath: indexPath];
-        
-        VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
-        
-        // Load the image asynchronously
-        videoQueueCell.VideoImageViewImage = videoInstance.video.thumbnailURL;
-        
-        [self.draggedView setImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                         placeHolderImage: nil];
-        
-        cell = videoQueueCell;
-    }
 
     return cell;
 }
@@ -594,20 +544,8 @@
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
 {
-    // Assume for now, that we can handle this
-    BOOL handledInAbstractView = TRUE;
     
-    if (cv == self.videoQueueCollectionView)
-    {
-        DebugLog (@"Selecting image well cell does nothing");
-    }
-    else 
-    {
-        // OK, it turns out that we can't handle this (so indicate to caller)
-        handledInAbstractView = FALSE;
-    }
-    
-    return handledInAbstractView;
+    return NO;
 }
 
 // Create a channel pressed
@@ -683,7 +621,6 @@
     {
         // Un-highlight the image well
         [self highlightVideoQueue: FALSE];
-        [self startVideoQueueDismissalTimer];
         
         // and let's figure out where we dropped it
         //        CGPoint point = [sender locationInView: self.dropZoneView];
@@ -732,91 +669,17 @@
     return FALSE;
 }
 
-- (void) startVideoQueueDismissalTimer
-{
-    self.videoQueueAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kVideoQueueOnScreenDuration
-                                                                    target: self
-                                                                  selector: @selector(videoQueueTimerCallback)
-                                                                  userInfo: nil
-                                                                   repeats: NO];
-}
-
-- (void) videoQueueTimerCallback
-{
-    [self hideVideoQueue: TRUE];
-}
 
 - (void) showVideoQueue: (BOOL) animated
 {
-    if (self.isVideoQueueVisible == FALSE)
-    {
-        self.videoQueueVisible = TRUE;
-        
-        if (animated)
-        {
-            // Slide video queue view upwards (and contract any other dependent visible views)
-            [UIView animateWithDuration: kVideoQueueAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 [self slideVideoQueueUp];
-             }
-             completion: ^(BOOL finished)
-             {
-             }];
-        }
-        else
-        {
-            [self slideVideoQueueUp];
-        }
-    }
+    [self.videoQVC showVideoQueue:animated];
 }
 
 
 - (void) hideVideoQueue: (BOOL) animated
 {
-    if (self.videoQueueVisible == TRUE)
-    {
-        self.videoQueueAnimationTimer = nil;
-        self.videoQueueVisible = FALSE;
-        
-        if (animated)
-        {
-            [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 // Slide video queue view downwards (and expand any other dependent visible views)
-                 [self slideVideoQueueDown];
-             }
-             completion: ^(BOOL finished)
-             {
-             }];
-        }
-        else
-        {
-            [self slideVideoQueueDown];
-        }
-    }
+    [self.videoQVC hideVideoQueue:animated];
 }
-
-- (void) slideVideoQueueUp
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-}
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-}
-
-
 
 
 
@@ -824,19 +687,19 @@
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
 {
-    [((SYNVideoQueueView*)self.videoQueueView) addVideoToQueue:videoInstance];
+    [self.videoQVC addVideoToQueue:videoInstance];
 }
 
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
 {
-    [((SYNVideoQueueView*)self.videoQueueView) setHighlighted:showHighlight];
+    [self.videoQVC setHighlighted:showHighlight];
 }
 
 
 - (BOOL) pointInVideoQueue: (CGPoint) point
 {
-    return CGRectContainsPoint(self.videoQueueView.frame, point);
+    return CGRectContainsPoint(self.videoQVC.view.frame, point);
 }
 
 

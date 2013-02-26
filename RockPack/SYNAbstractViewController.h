@@ -13,6 +13,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNVideoQueueDelegate.h"
 
+
 @class VideoInstance;
 
 @interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
@@ -26,7 +27,6 @@
 
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-@property (nonatomic, strong) UIView *videoQueueView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
@@ -75,7 +75,6 @@
 // Override if the image w
 - (BOOL) isVideoQueueVisibleOnStart;
 
-- (void) startVideoQueueDismissalTimer;
 - (void) showVideoQueue: (BOOL) animated;
 - (void) hideVideoQueue: (BOOL) animated;
 
