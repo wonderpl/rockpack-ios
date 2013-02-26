@@ -2407,13 +2407,8 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */,
-				BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */,
-				BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */,
-				BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */,
-				BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */,
-				015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */,
-				015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */,
+				BEF9E5B516DD242A00286113 /* VideoPlayback */,
+				BEF9E5B416DD23F000286113 /* VideoQueue */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -2425,6 +2420,27 @@
 				BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */,
 			);
 			name = Sound;
+			sourceTree = "<group>";
+		};
+		BEF9E5B416DD23F000286113 /* VideoQueue */ = {
+			isa = PBXGroup;
+			children = (
+				BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */,
+				BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */,
+				BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */,
+				BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */,
+				BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */,
+			);
+			name = VideoQueue;
+			sourceTree = "<group>";
+		};
+		BEF9E5B516DD242A00286113 /* VideoPlayback */ = {
+			isa = PBXGroup;
+			children = (
+				015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */,
+				015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */,
+			);
+			name = VideoPlayback;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -37,6 +37,12 @@
 {
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(251.0, 302.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
+    flowLayout.minimumLineSpacing = 3.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
     
     CGRect collectionViewFrame = CGRectMake(0.0, 84.0, 1024.0, 600.0);
     
