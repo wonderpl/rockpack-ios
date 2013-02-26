@@ -34,7 +34,6 @@
 
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
-@property (nonatomic, strong) IBOutlet UICollectionView *videoQueueCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, strong) MKNetworkOperation *draggedImageLoadingOperation;
@@ -97,11 +96,9 @@
         
         videoQV.videoQueueCollectionView.dataSource = self.videoQVC;
         
-        self.videoQueueCollectionView = videoQV.videoQueueCollectionView;
         
         self.videoQueueView = videoQV;
-        
-        
+    
         
         [self.view addSubview: self.videoQueueView];
     }
@@ -124,7 +121,8 @@
             self.videoQueueMessageView.alpha = 1.0f;
         }
         
-        [self.videoQueueCollectionView reloadData];
+        [(SYNVideoQueueView*)self.videoQueueView reloadData];
+        
     }
 }
 
@@ -520,15 +518,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
-    if (cv == self.videoQueueCollectionView)
-    {
-        return SYNVideoSelection.sharedVideoSelectionArray.count;
-    }
-    else
-    {
-        // Signal that we do not handle this collection view
-        return -1;
-    }
+    return -1;
 }
 
 - (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
@@ -574,19 +564,6 @@
         
         cell = videoThumbnailCell;
     }
-    else if (cv == self.videoQueueCollectionView)
-    {
-        SYNVideoQueueCell *videoQueueCell = [cv dequeueReusableCellWithReuseIdentifier: @"VideoQueueCell"
-                                                               forIndexPath: indexPath];
-        
-        VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
-        
-        // Load the image asynchronously
-        videoQueueCell.VideoImageViewImage = videoInstance.video.thumbnailURL;
-        
-        
-        cell = videoQueueCell;
-    }
 
     return cell;
 }
@@ -595,20 +572,8 @@
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
 {
-    // Assume for now, that we can handle this
-    BOOL handledInAbstractView = TRUE;
     
-    if (cv == self.videoQueueCollectionView)
-    {
-        DebugLog (@"Selecting image well cell does nothing");
-    }
-    else 
-    {
-        // OK, it turns out that we can't handle this (so indicate to caller)
-        handledInAbstractView = FALSE;
-    }
-    
-    return handledInAbstractView;
+    return NO;
 }
 
 // Create a channel pressed

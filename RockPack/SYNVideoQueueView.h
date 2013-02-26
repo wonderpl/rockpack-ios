@@ -32,5 +32,6 @@
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
 - (void) clearVideoQueue;
+- (void) reloadData;
 
 @end

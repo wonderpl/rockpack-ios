@@ -271,5 +271,11 @@
         }];
 }
 
+-(void)reloadData
+{
+    [videoQueueCollectionView reloadData];
+    
+}
+
 
 @end
