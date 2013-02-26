@@ -396,8 +396,8 @@
     else
     {
         // Display the video viewer
-        VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
-        [self displayVideoViewer: videoInstance];
+        [self displayVideoViewer: self.videoInstancesArray
+                   selectedIndex: indexPath.row];
     }
 }
 

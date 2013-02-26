@@ -15,13 +15,13 @@
 
 @class VideoInstance;
 
-@interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
-                                                            UICollectionViewDataSource,
-                                                            UICollectionViewDelegate,
-                                                            SYNVideoQueueDelegate> {
+@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
+                                                         UICollectionViewDataSource,
+                                                         UICollectionViewDelegate,
+                                                         SYNVideoQueueDelegate>
+{
     @protected SYNAppDelegate* appDelegate;
     @protected NSString* viewId;
-
 }
 
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
@@ -32,6 +32,7 @@
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) UIImageView *draggedView;
+
 // Public methods
 
 // Core Data support
@@ -47,7 +48,7 @@
 
 
 
--(void)reloadCollectionViews;
+-(void) reloadCollectionViews;
 
 // Persist the current state of CoreData to the mySQL DB
 - (void) saveDB;
@@ -86,7 +87,9 @@
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
-- (void) displayVideoViewer: (VideoInstance *) videoInstance;
+- (void) displayVideoViewer: (NSArray *) videoInstanceArray
+              selectedIndex: (int) selectedIndex;
+
 - (IBAction) dismissVideoViewer;
 
 -(id)initWithViewId:(NSString*)vid;

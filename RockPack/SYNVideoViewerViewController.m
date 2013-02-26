@@ -32,7 +32,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;
-@property (nonatomic, strong) VideoInstance *videoInstance;
+@property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, assign) int currentSelectedIndex;
 
 
 @end
@@ -41,14 +42,13 @@
 
 #pragma mark - View lifecycle
 
-- (id) initWithVideoInstance: (VideoInstance *) videoInstance
+- (id) initWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                    selectedIndex: (int) selectedIndex
 {
-	
-	if ((self = [super init]))
+  	if ((self = [super init]))
     {
-		self.videoInstance = videoInstance;
-//        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
-
+		self.videoInstanceArray = videoInstanceArray;
+        self.currentSelectedIndex = selectedIndex;
 	}
     
 	return self;
@@ -58,6 +58,7 @@
 {
     [super viewDidLoad];
     
+    // Set custom fonts
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
     self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.followLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
@@ -65,11 +66,12 @@
     self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
-    
-    self.channelCreatorLabel.text = self.videoInstance.channel.channelOwner.name;
-    self.channelTitleLabel.text = self.videoInstance.channel.title;
-    self.videoTitleLabel.text = self.videoInstance.title;
-    self.numberOfRocksLabel.text = self.videoInstance.video.starCount.stringValue;
+    // Set initial label text
+    VideoInstance *videoInstance = self.videoInstanceArray[self.currentSelectedIndex];
+    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
+    self.channelTitleLabel.text = videoInstance.channel.title;
+    self.videoTitleLabel.text = videoInstance.title;
+    self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
@@ -93,8 +95,8 @@
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.panelImageView];
     
-    [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: videoInstances
-                                                               autoPlay: FALSE];
+    [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: self.videoInstanceArray
+                                                               autoPlay: TRUE];
 }
 
 

@@ -461,19 +461,20 @@
 {
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
 
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    NSArray *videoInstanceArray = [self.videoInstanceFetchedResultsController fetchedObjects];
     
-    [self displayVideoViewer: videoInstance];
+    [self displayVideoViewer: videoInstanceArray
+               selectedIndex: indexPath.row];
 }
 
 
-- (void) displayVideoViewer: (VideoInstance *) videoInstance
+- (void) displayVideoViewer: (NSArray *) videoInstanceArray
+              selectedIndex: (int) selectedIndex
 {
-    
-    
     SYNMasterViewController *bottomTabViewController = (SYNMasterViewController*)appDelegate.viewController;
     
-    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstance: videoInstance];
+    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstanceArray: videoInstanceArray
+                                                                                        selectedIndex: (int) selectedIndex];
     
     self.videoViewerViewController.view.alpha = 0.0f;
     [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
