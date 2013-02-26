@@ -449,13 +449,21 @@
     if(tabExpanded)
         return;
     
-    [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
-        CGPoint currentVideoCenter = self.videoThumbnailCollectionView.center;
-        [self.videoThumbnailCollectionView setCenter:CGPointMake(currentVideoCenter.x, currentVideoCenter.y + 35)];
+    [UIView animateWithDuration: 0.4
+                          delay: 0.0
+                        options :UIViewAnimationCurveEaseInOut
+                     animations: ^
+    {
+        CGRect videoThumbnailCollectionViewFrame = self.videoThumbnailCollectionView.frame;
+        videoThumbnailCollectionViewFrame.origin.y += kCategorySecondRowHeight;
+        videoThumbnailCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+        self.videoThumbnailCollectionView.frame = videoThumbnailCollectionViewFrame;
         
         CGPoint currentLargeVideoCenter = self.largeVideoPanelView.center;
-        [self.largeVideoPanelView setCenter:CGPointMake(currentLargeVideoCenter.x, currentLargeVideoCenter.y + 35.0)];
-    }  completion:^(BOOL result){
+        [self.largeVideoPanelView setCenter: CGPointMake(currentLargeVideoCenter.x, currentLargeVideoCenter.y + kCategorySecondRowHeight)];
+    }
+    completion: ^(BOOL result)
+    {
         tabExpanded = YES;
     }];
 }

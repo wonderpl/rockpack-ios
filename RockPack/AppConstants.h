@@ -135,6 +135,8 @@
 // Amount of overspill for top tab bar
 #define kTopTabOverspill 7
 
+#define kCategorySecondRowHeight 35.0f
+
 //
 // Tabs
 //
