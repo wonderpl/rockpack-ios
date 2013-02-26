@@ -2242,8 +2242,6 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
-				015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */,
-				015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */,
 				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
@@ -2420,6 +2418,8 @@
 				BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */,
 				BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */,
 				BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */,
+				015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */,
+				015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */,
 			);
 			name = Components;
 			sourceTree = "<group>";

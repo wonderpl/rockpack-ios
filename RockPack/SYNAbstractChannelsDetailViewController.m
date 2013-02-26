@@ -78,17 +78,17 @@
     
     UIColor *color = [UIColor blackColor];
     self.changeCoverLabel.layer.shadowColor = [color CGColor];
-    self.changeCoverLabel.layer.shadowRadius = 7.0f;
-    self.changeCoverLabel.layer.shadowOpacity = 1.0;
-    self.changeCoverLabel.layer.shadowOffset = CGSizeZero;
+    self.changeCoverLabel.layer.shadowRadius = 3.0f;
+    self.changeCoverLabel.layer.shadowOpacity = 0.25f;
+    self.changeCoverLabel.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
     self.changeCoverLabel.layer.masksToBounds = NO;
     
     self.selectACoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
     
     self.selectACoverLabel.layer.shadowColor = [color CGColor];
-    self.selectACoverLabel.layer.shadowRadius = 7.0f;
-    self.selectACoverLabel.layer.shadowOpacity = 1.0;
-    self.selectACoverLabel.layer.shadowOffset = CGSizeZero;
+    self.selectACoverLabel.layer.shadowRadius = 3.0f;
+    self.selectACoverLabel.layer.shadowOpacity = 0.25f;
+    self.selectACoverLabel.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
     self.selectACoverLabel.layer.masksToBounds = NO;
     
     //Kish & Gregory woz ere: Aligning the SELECT A COVER text to centre and spacing the Y-Axis correctly!
