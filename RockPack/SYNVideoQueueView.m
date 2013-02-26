@@ -19,7 +19,7 @@
 
 -(id)init
 {
-    CGRect stdFrame = CGRectMake(0, 573+kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
+    CGRect stdFrame = CGRectMake(0, 573 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
     if (self = [self initWithFrame:stdFrame]) {
         
     }
@@ -50,7 +50,7 @@
         
         [deleteButton setImage:[UIImage imageNamed: @"ButtonVideoWellDeleteHighlighted.png"] forState: UIControlStateHighlighted];
         
-        
+        deleteButton.enabled = NO;
         
         [self addSubview:deleteButton];
         
@@ -65,6 +65,7 @@
         
         [channelButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
         
+        channelButton.enabled = NO;
         
         [self addSubview:channelButton];
         
@@ -173,9 +174,9 @@
     // The first video added enables the new channel button
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
-        channelButton.enabled = TRUE;
-        channelButton.selected = TRUE;
-        channelButton.enabled = TRUE;
+        channelButton.enabled = YES;
+        channelButton.selected = YES;
+        deleteButton.enabled = YES;
         
         [self showMessage:NO];
     }
@@ -204,8 +205,7 @@
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.5f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
+                     animations: ^{
          // Slide origin back
          CGRect videoQueueCollectionViewFrame = self.videoQueueCollectionView.frame;
          videoQueueCollectionViewFrame.origin.x -= 142;
@@ -241,10 +241,15 @@
                      animations: ^{
                          
          messageView.alpha = 1.0f;
+        
          
      } completion: ^(BOOL finished) {
          
      }];
+    
+    channelButton.enabled = NO;
+    channelButton.selected = NO;
+    deleteButton.enabled = NO;
     
     [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
     
