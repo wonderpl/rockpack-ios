@@ -71,7 +71,6 @@
 		0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0140F1F916B6D12D0094B069 /* SYNTextField.m */; };
 		0142ED8116B1439B008694DA /* CategoryBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED7F16B1439B008694DA /* CategoryBar.png */; };
 		0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8016B1439B008694DA /* CategoryBar@2x.png */; };
-		0142ED8B16B19FBE008694DA /* SYNYouRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8916B19FBE008694DA /* SYNYouRootViewController.xib */; };
 		0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */; };
 		0142ED9016B1B85C008694DA /* HeaderYou.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8E16B1B85C008694DA /* HeaderYou.png */; };
 		0142ED9116B1B85C008694DA /* HeaderYou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8F16B1B85C008694DA /* HeaderYou@2x.png */; };
@@ -446,6 +445,7 @@
 		BE0815D316D6448200ADB1DC /* SYNInboxOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNInboxOverlayViewController.xib */; };
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
+		BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -541,7 +541,6 @@
 		0142ED8016B1439B008694DA /* CategoryBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategoryBar@2x.png"; sourceTree = "<group>"; };
 		0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouRootViewController.h; sourceTree = "<group>"; };
 		0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouRootViewController.m; sourceTree = "<group>"; };
-		0142ED8916B19FBE008694DA /* SYNYouRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNYouRootViewController.xib; sourceTree = "<group>"; };
 		0142ED8E16B1B85C008694DA /* HeaderYou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeaderYou.png; path = Assets/Images/HeaderYou.png; sourceTree = "<group>"; };
 		0142ED8F16B1B85C008694DA /* HeaderYou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeaderYou@2x.png"; path = "Assets/Images/HeaderYou@2x.png"; sourceTree = "<group>"; };
 		0142ED9416B1D8FE008694DA /* ButtonVideoWellExisting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoWellExisting.png; path = Assets/Images/ButtonVideoWellExisting.png; sourceTree = "<group>"; };
@@ -1001,6 +1000,8 @@
 		BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNShareOverlayViewController.h; sourceTree = "<group>"; };
 		BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNShareOverlayViewController.m; sourceTree = "<group>"; };
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
+		BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabView.h; sourceTree = "<group>"; };
+		BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabView.m; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -1817,7 +1818,6 @@
 			children = (
 				0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */,
 				0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */,
-				0142ED8916B19FBE008694DA /* SYNYouRootViewController.xib */,
 				01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */,
 				01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */,
 			);
@@ -2255,6 +2255,7 @@
 				BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */,
 				BE0815A016D4DADA00ADB1DC /* SYNTabView.h */,
 				BE0815A116D4DADA00ADB1DC /* SYNTabView.m */,
+				BE29A32616DD2CA900C00F92 /* User Tab */,
 				0142ED9216B1C914008694DA /* Categories Tab */,
 				BE0815A616D4F3B200ADB1DC /* Search Tab */,
 			);
@@ -2331,6 +2332,15 @@
 				BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */,
 			);
 			name = Overlays;
+			sourceTree = "<group>";
+		};
+		BE29A32616DD2CA900C00F92 /* User Tab */ = {
+			isa = PBXGroup;
+			children = (
+				BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */,
+				BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */,
+			);
+			name = "User Tab";
 			sourceTree = "<group>";
 		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
@@ -2716,7 +2726,6 @@
 				01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */,
 				0142ED8116B1439B008694DA /* CategoryBar.png in Resources */,
 				0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */,
-				0142ED8B16B19FBE008694DA /* SYNYouRootViewController.xib in Resources */,
 				0142ED9016B1B85C008694DA /* HeaderYou.png in Resources */,
 				0142ED9116B1B85C008694DA /* HeaderYou@2x.png in Resources */,
 				0142EDA016B1D8FE008694DA /* ButtonVideoWellExisting.png in Resources */,
@@ -2948,6 +2957,7 @@
 				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
+				BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

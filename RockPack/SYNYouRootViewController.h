@@ -7,6 +7,7 @@
 //
 
 #import "SYNAbstractViewController.h"
+#import "SYNAbstractTopTabViewController.h"
 
 @interface SYNYouRootViewController : SYNAbstractViewController
 
