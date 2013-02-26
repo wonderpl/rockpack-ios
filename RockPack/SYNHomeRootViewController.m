@@ -49,15 +49,17 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.videoInstanceFetchedResultsControllerSortDescriptors;
+   
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
     
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
+    fetchRequest.sortDescriptors = @[
+                                     [[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]
+                                     ];
+    
+    
     self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                      managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                       sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
+                                                                                       sectionNameKeyPath: @"dateAddedIgnoringTime"
                                                                                                 cacheName: nil];
     _videoInstanceFetchedResultsController.delegate = self;
     
@@ -161,21 +163,6 @@
     [self.refreshControl endRefreshing];
 }
 
-
-#pragma mark - Core Data support
-
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
-                                                                   ascending: NO];
-    return @[sortDescriptor];
-}
-
-- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
-{
-    return @"dateAddedIgnoringTime";
-}
 
 
 #pragma mark - Collection view support

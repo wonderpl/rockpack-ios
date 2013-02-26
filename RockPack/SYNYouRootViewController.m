@@ -46,9 +46,8 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.channelFetchedResultsControllerSortDescriptors;
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", @"Channels"]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
@@ -81,19 +80,6 @@
 }
 
 
-#pragma mark - Core Data Support
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
-}
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
 
 
 #pragma mark - Collection view support

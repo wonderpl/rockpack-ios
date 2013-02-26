@@ -50,9 +50,9 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.channelFetchedResultsControllerSortDescriptors;
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
@@ -106,20 +106,6 @@
     [self.channelThumbnailCollectionView reloadData];
 }
 
-#pragma mark - Core Data Support
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
-}
-
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
 
 
 #pragma mark - Collection view support

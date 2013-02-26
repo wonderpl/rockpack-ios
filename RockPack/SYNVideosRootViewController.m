@@ -99,23 +99,21 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.videoInstanceFetchedResultsControllerSortDescriptors;
     
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+ 
     self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                      managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                       sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
+                                                                                       sectionNameKeyPath: nil
                                                                                                 cacheName: nil];
     _videoInstanceFetchedResultsController.delegate = self;
     
-    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return _videoInstanceFetchedResultsController;
 }
@@ -173,22 +171,6 @@
 }
 
 
-#pragma mark - Core Data support
-
-
-
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES];
-    return @[sortDescriptor];
-}
-
-- (NSString *)videoInstanceFetchedResultsControllerSectionNameKeyPath
-{
-    
-    return nil;
-}
 
 
 #pragma mark - Collection view support

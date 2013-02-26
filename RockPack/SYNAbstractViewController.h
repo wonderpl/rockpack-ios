@@ -44,11 +44,7 @@
 
 // Core Data support
 
-// Generalised fetchedResultsControllers
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate;
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate;
 - (NSArray *) channelFetchedResultsControllerSortDescriptors;
 
 
