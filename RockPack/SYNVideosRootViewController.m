@@ -316,7 +316,6 @@
 - (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
     [self showVideoQueue: TRUE];
-    [self startVideoQueueDismissalTimer];
     
     VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];
@@ -409,37 +408,7 @@
 
 #pragma mark - Video queue animation
 
-- (void) slideVideoQueueUp
-{
-     CGRect videoQueueViewFrame = self.videoQueueView.frame;
-     videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-     self.videoQueueView.frame = videoQueueViewFrame;
 
-     CGRect viewFrame = self.largeVideoPanelView.frame;
-     viewFrame.size.height -= kVideoQueueEffectiveHeight;
-     self.largeVideoPanelView.frame = viewFrame;
-
-     viewFrame = self.videoThumbnailCollectionView.frame;
-     viewFrame.size.height -= kVideoQueueEffectiveHeight;
-     self.videoThumbnailCollectionView.frame = viewFrame;
-}
-
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-    
-    // Slide video queue view downwards (and expand any other dependent visible views)
-    CGRect viewFrame = self.largeVideoPanelView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.largeVideoPanelView.frame = viewFrame;
-    
-    viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
-}
 
 
 -(void)handleMainTap:(UITapGestureRecognizer *)recogniser
