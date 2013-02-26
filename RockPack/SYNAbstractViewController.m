@@ -108,13 +108,6 @@
 }
 
 
-#pragma mark - Core Data support
-
-
-
-
-
-
 
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
@@ -125,47 +118,10 @@
 }
 
 
-
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-    NSString* format = [NSString stringWithFormat:@"viewId == \"%@\"", viewId];
-    return [NSPredicate predicateWithFormat:format];
-}
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerSortDescriptors'");
-    return nil;
-}
-
-- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
-{
-    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerSectionNameKeyPath'");
-    return nil;
-}
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerPredicate'");
-    return nil;
-}
-
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerSortDescriptors'");
-    return nil;
-}
-
-
 -(void)reloadCollectionViews
 {
     AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
-
-
-
-
 
 // Helper method: Save the current DB state
 - (void) saveDB

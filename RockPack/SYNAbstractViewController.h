@@ -40,12 +40,6 @@
 @property (nonatomic, strong) NSFetchedResultsController* videoInstanceFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController* channelFetchedResultsController;
 
-// Public methods
-
-// Core Data support
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
-- (NSArray *) channelFetchedResultsControllerSortDescriptors;
 
 
 
