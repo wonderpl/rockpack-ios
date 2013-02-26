@@ -28,6 +28,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNMasterViewController.h"
 #import "SYNVideoQueueView.h"
+#import "SYNVideoQueueViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
@@ -47,7 +48,7 @@
 @property (nonatomic, strong) UIImageView *videoQueueMessageView;
 @property (nonatomic, strong) UIImageView *videoQueuePanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
-
+@property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
 @end
 
 
@@ -90,9 +91,11 @@
     
     if (self.hasVideoQueue)
     {
-        
+        self.videoQVC = [[SYNVideoQueueViewController alloc] init];
         SYNVideoQueueView* videoQV = [[SYNVideoQueueView alloc] init];
         videoQV.delegate = self;
+        
+        videoQV.videoQueueCollectionView.dataSource = self.videoQVC;
         
         self.videoQueueCollectionView = videoQV.videoQueueCollectionView;
         
@@ -581,8 +584,6 @@
         // Load the image asynchronously
         videoQueueCell.VideoImageViewImage = videoInstance.video.thumbnailURL;
         
-        [self.draggedView setImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                         placeHolderImage: nil];
         
         cell = videoQueueCell;
     }

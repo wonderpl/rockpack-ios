@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNVideoQueueViewController : UIViewController
+@interface SYNVideoQueueViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @end
