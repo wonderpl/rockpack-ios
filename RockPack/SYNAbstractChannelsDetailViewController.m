@@ -24,6 +24,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNSoundPlayer.h"
 
 @interface SYNAbstractChannelsDetailViewController () <HPGrowingTextViewDelegate,
                                                UICollectionViewDataSource,
@@ -304,19 +305,9 @@
     
     if (collectionView == self.channelCoverCarouselCollectionView)
     {
-#ifdef SOUND_ENABLED
-        // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
-                                                              ofType: @"aif"];
+
+        [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundScroll];
         
-        if (self.shouldPlaySound == TRUE)
-        {
-            NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-            SystemSoundID sound;
-            AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-            AudioServicesPlaySystemSound(sound);
-        }
-#endif
         SYNChannelSelectorCell *channelCarouselCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                                     forIndexPath: indexPath];
         

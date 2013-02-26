@@ -11,10 +11,14 @@
 #import <UIKit/UIKit.h>
 
 #import "SYNAppDelegate.h"
+#import "SYNVideoQueueDelegate.h"
 
 @class VideoInstance;
 
-@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate> {
+@interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
+                                                            UICollectionViewDataSource,
+                                                            UICollectionViewDelegate,
+                                                            SYNVideoQueueDelegate> {
     @protected SYNAppDelegate* appDelegate;
     @protected NSString* viewId;
 

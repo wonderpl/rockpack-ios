@@ -98,7 +98,6 @@
 		014A456816691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456716691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m */; };
 		014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */; };
 		014A4571166A39E60091E4E5 /* SYNChannelsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */; };
-		015487CC16DCCFFA002A41A2 /* SYNVideoPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015487CB16DCCFFA002A41A2 /* SYNVideoPlaybackViewController.m */; };
 		015CB00816AD76B100FEB8E7 /* SYNFriendsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */; };
 		015CB00916AD76B100FEB8E7 /* SYNFriendsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */; };
 		015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00C16AD932000FEB8E7 /* SYNFriendThumbnailCell.m */; };
@@ -463,6 +462,9 @@
 		BEF9E59D16DBBA3400286113 /* SYNVideosByDateDataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E59C16DBBA3400286113 /* SYNVideosByDateDataProxy.m */; };
 		BEF9E5A016DBBA7500286113 /* SYNChannelsByPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E59F16DBBA7500286113 /* SYNChannelsByPosition.m */; };
 		BEF9E5A416DBBAD900286113 /* SYNChannelByTitleDataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A316DBBAD800286113 /* SYNChannelByTitleDataProxy.m */; };
+		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
+		BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */; };
+		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -568,8 +570,6 @@
 		014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsRootViewController.h; sourceTree = "<group>"; };
 		014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsRootViewController.m; sourceTree = "<group>"; };
 		014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsRootViewController.xib; sourceTree = "<group>"; };
-		015487CA16DCCFF9002A41A2 /* SYNVideoPlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoPlaybackViewController.h; sourceTree = "<group>"; };
-		015487CB16DCCFFA002A41A2 /* SYNVideoPlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoPlaybackViewController.m; sourceTree = "<group>"; };
 		015CB00516AD76B100FEB8E7 /* SYNFriendsRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsRootViewController.h; sourceTree = "<group>"; };
 		015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsRootViewController.m; sourceTree = "<group>"; };
 		015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsRootViewController.xib; sourceTree = "<group>"; };
@@ -1033,6 +1033,13 @@
 		BEF9E59F16DBBA7500286113 /* SYNChannelsByPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsByPosition.m; sourceTree = "<group>"; };
 		BEF9E5A216DBBAD800286113 /* SYNChannelByTitleDataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelByTitleDataProxy.h; sourceTree = "<group>"; };
 		BEF9E5A316DBBAD800286113 /* SYNChannelByTitleDataProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelByTitleDataProxy.m; sourceTree = "<group>"; };
+		BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueView.h; sourceTree = "<group>"; };
+		BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueView.m; sourceTree = "<group>"; };
+		BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueDelegate.h; sourceTree = "<group>"; };
+		BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueViewController.h; sourceTree = "<group>"; };
+		BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueViewController.m; sourceTree = "<group>"; };
+		BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSoundPlayer.h; sourceTree = "<group>"; };
+		BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSoundPlayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1604,6 +1611,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BEF9E5A516DBCDEF00286113 /* Components */,
 				BE0815CE16D6444200ADB1DC /* Overlays */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
 				BE08159C16D3D7E300ADB1DC /* Tabs View Controllers */,
@@ -1650,6 +1658,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BEF9E5AD16DCBAA300286113 /* Sound */,
 				0170715E16554E9B00A3C7C4 /* Categories */,
 				012502BA16CA8FCE0029C7C8 /* Social Media */,
 				01E566FA16B5E2AA00B8B218 /* Resizeable Text View */,
@@ -2230,8 +2239,6 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
-				015487CA16DCCFF9002A41A2 /* SYNVideoPlaybackViewController.h */,
-				015487CB16DCCFFA002A41A2 /* SYNVideoPlaybackViewController.m */,
 				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
@@ -2398,6 +2405,27 @@
 				BEF9E5A316DBBAD800286113 /* SYNChannelByTitleDataProxy.m */,
 			);
 			name = "Specific Proxies";
+			sourceTree = "<group>";
+		};
+		BEF9E5A516DBCDEF00286113 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */,
+				BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */,
+				BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */,
+				BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */,
+				BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		BEF9E5AD16DCBAA300286113 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */,
+				BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */,
+			);
+			name = Sound;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2903,7 +2931,9 @@
 				BEF9E59D16DBBA3400286113 /* SYNVideosByDateDataProxy.m in Sources */,
 				BEF9E5A016DBBA7500286113 /* SYNChannelsByPosition.m in Sources */,
 				BEF9E5A416DBBAD900286113 /* SYNChannelByTitleDataProxy.m in Sources */,
-				015487CC16DCCFFA002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
+				BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */,
+				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,
+				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

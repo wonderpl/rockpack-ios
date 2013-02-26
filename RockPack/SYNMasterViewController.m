@@ -14,8 +14,8 @@
 #import "SYNBottomTabViewController.h"
 #import "UIFont+SYNFont.h"
 
-#import <AVFoundation/AVFoundation.h>
-#import <CoreAudio/CoreAudioTypes.h>
+#import "SYNSoundPlayer.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
@@ -200,7 +200,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
-    [self playSound:@"NewSlideIn"];
+    
+    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
     
     // Take out of screen
     overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
@@ -233,7 +234,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
-    [self playSound:@"NewSlideOut"];
+    
+    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideOut];
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f
@@ -250,17 +252,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
--(void)playSound:(NSString*)soundResourceName
-{
-#ifdef SOUND_ENABLED
-    NSString *soundPath = [[NSBundle mainBundle] pathForResource:soundResourceName ofType: @"aif"];
-    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    AudioServicesPlaySystemSound(sound);
-#endif
-}
 
 
 - (IBAction) userTouchedNotificationButton: (UIButton*) button
