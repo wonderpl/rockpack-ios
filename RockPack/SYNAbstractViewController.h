@@ -32,16 +32,17 @@
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) UIImageView *draggedView;
+@property (nonatomic, strong) NSFetchedResultsController* videoInstanceFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController* channelFetchedResultsController;
+
 // Public methods
 
 // Core Data support
 
 // Generalised fetchedResultsControllers
-- (NSFetchedResultsController *) videoInstanceFetchedResultsController;
 - (NSPredicate *) videoInstanceFetchedResultsControllerPredicate;
 - (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
 
-- (NSFetchedResultsController *) channelFetchedResultsController;
 - (NSPredicate *) channelFetchedResultsControllerPredicate;
 - (NSArray *) channelFetchedResultsControllerSortDescriptors;
 

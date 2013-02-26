@@ -36,8 +36,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 
-@property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
 
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UIView *dropZoneView;
