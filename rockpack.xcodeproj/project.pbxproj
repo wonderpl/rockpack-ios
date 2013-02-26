@@ -50,8 +50,6 @@
 		011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */; };
 		012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 012502B016C958FA0029C7C8 /* UIView+Toast.m */; };
 		012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 012502BC16CA8FE30029C7C8 /* SYNFacebookManager.m */; };
-		012502BF16CA942F0029C7C8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502BE16CA942F0029C7C8 /* FacebookSDK.framework */; };
-		012502C116CA94650029C7C8 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 012502C016CA94650029C7C8 /* FacebookSDKResources.bundle */; };
 		012502C316CA99630029C7C8 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C216CA99630029C7C8 /* AdSupport.framework */; };
 		012502C516CA99710029C7C8 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C416CA99710029C7C8 /* Accounts.framework */; };
 		012502C716CA997A0029C7C8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C616CA99790029C7C8 /* Social.framework */; };
@@ -99,6 +97,8 @@
 		014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */; };
 		014A4571166A39E60091E4E5 /* SYNChannelsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */; };
 		015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */; };
+		015487D116DCE35D002A41A2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015487D016DCE35D002A41A2 /* FacebookSDK.framework */; };
+		015487D316DCE399002A41A2 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 015487D216DCE399002A41A2 /* FacebookSDKResources.bundle */; };
 		015CB00816AD76B100FEB8E7 /* SYNFriendsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */; };
 		015CB00916AD76B100FEB8E7 /* SYNFriendsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */; };
 		015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00C16AD932000FEB8E7 /* SYNFriendThumbnailCell.m */; };
@@ -509,8 +509,6 @@
 		012502B016C958FA0029C7C8 /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
 		012502BB16CA8FE30029C7C8 /* SYNFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFacebookManager.h; sourceTree = "<group>"; };
 		012502BC16CA8FE30029C7C8 /* SYNFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFacebookManager.m; sourceTree = "<group>"; };
-		012502BE16CA942F0029C7C8 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		012502C016CA94650029C7C8 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
 		012502C216CA99630029C7C8 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		012502C416CA99710029C7C8 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		012502C616CA99790029C7C8 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -573,6 +571,8 @@
 		014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsRootViewController.xib; sourceTree = "<group>"; };
 		015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoPlaybackViewController.h; sourceTree = "<group>"; };
 		015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoPlaybackViewController.m; sourceTree = "<group>"; };
+		015487D016DCE35D002A41A2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		015487D216DCE399002A41A2 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
 		015CB00516AD76B100FEB8E7 /* SYNFriendsRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsRootViewController.h; sourceTree = "<group>"; };
 		015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsRootViewController.m; sourceTree = "<group>"; };
 		015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsRootViewController.xib; sourceTree = "<group>"; };
@@ -1066,7 +1066,7 @@
 				01707180165550BE00A3C7C4 /* Security.framework in Frameworks */,
 				0170717E165550A900A3C7C4 /* SystemConfiguration.framework in Frameworks */,
 				010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */,
-				012502BF16CA942F0029C7C8 /* FacebookSDK.framework in Frameworks */,
+				015487D116DCE35D002A41A2 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1076,9 +1076,6 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				012502C616CA99790029C7C8 /* Social.framework */,
-				012502C416CA99710029C7C8 /* Accounts.framework */,
-				012502C216CA99630029C7C8 /* AdSupport.framework */,
 				010DEFDA1629BDC40080F26B /* Source */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
 				010DEFD11629BDC40080F26B /* Products */,
@@ -1098,17 +1095,20 @@
 			children = (
 				019824EE1629CC7600216900 /* libTestFlight.a */,
 				019824F11629CE1600216900 /* libz.dylib */,
+				012502C416CA99710029C7C8 /* Accounts.framework */,
+				012502C216CA99630029C7C8 /* AdSupport.framework */,
 				01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */,
 				011CC67F164AA42300F02B6D /* AVFoundation.framework */,
 				01E427BB1664C5F1009B941F /* CoreData.framework */,
 				010DEFD81629BDC40080F26B /* CoreGraphics.framework */,
 				011CC67D164AA41700F02B6D /* CoreMedia.framework */,
-				012502BE16CA942F0029C7C8 /* FacebookSDK.framework */,
-				012502C016CA94650029C7C8 /* FacebookSDKResources.bundle */,
+				015487D216DCE399002A41A2 /* FacebookSDKResources.bundle */,
+				015487D016DCE35D002A41A2 /* FacebookSDK.framework */,
 				010DEFD61629BDC40080F26B /* Foundation.framework */,
 				0126331E162E2A060009FF9C /* MediaPlayer.framework */,
 				01982575162AFB9600216900 /* QuartzCore.framework */,
 				0170717F165550BE00A3C7C4 /* Security.framework */,
+				012502C616CA99790029C7C8 /* Social.framework */,
 				0170717D165550A900A3C7C4 /* SystemConfiguration.framework */,
 				010DEFD41629BDC40080F26B /* UIKit.framework */,
 			);
@@ -2769,7 +2769,6 @@
 				0162285D16C2B6FB008D1587 /* ButtonCover@2x.png in Resources */,
 				0162285E16C2B6FB008D1587 /* ButtonCoverHighlighted.png in Resources */,
 				0162285F16C2B6FB008D1587 /* ButtonCoverHighlighted@2x.png in Resources */,
-				012502C116CA94650029C7C8 /* FacebookSDKResources.bundle in Resources */,
 				01E2FC9F16D15BC1006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */,
 				01E2FCB016D15C05006E6DA7 /* TabTopDivider.png in Resources */,
 				01E2FCB116D15C05006E6DA7 /* TabTopDivider@2x.png in Resources */,
@@ -2796,6 +2795,7 @@
 				BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */,
 				BE0815D316D6448200ADB1DC /* SYNInboxOverlayViewController.xib in Resources */,
 				BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */,
+				015487D316DCE399002A41A2 /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
