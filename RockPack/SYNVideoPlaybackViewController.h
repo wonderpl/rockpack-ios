@@ -37,13 +37,9 @@
 
 
 // Player control
-- (void) play;
 - (void) playVideoAtIndex: (int) index;
-- (void) pause;
-- (void) stop;
 - (void) loadNextVideo;
 - (void) loadPreviousVideo;
-- (void) seekInCurrentVideoToTime: (NSTimeInterval) seconds;
 
 // Player properties
 @property (nonatomic, assign, readonly) NSTimeInterval duration;
