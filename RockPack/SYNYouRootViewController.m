@@ -35,10 +35,8 @@
     NSError *error = nil;
     
     // Return cached version if we have already created one
-    if (_channelFetchedResultsController != nil)
-    {
-        return _channelFetchedResultsController;
-    }
+    if (fetchedResultsController != nil)
+        return fetchedResultsController;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -51,15 +49,15 @@
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    self.channelFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                managedObjectContext: appDelegate.mainManagedObjectContext
                                                                                  sectionNameKeyPath: nil
                                                                                           cacheName: nil];
-    _channelFetchedResultsController.delegate = self;
+    fetchedResultsController.delegate = self;
     
-    ZAssert([_channelFetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([fetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
-    return _channelFetchedResultsController;
+    return fetchedResultsController;
 }
 
 - (void) viewDidLoad

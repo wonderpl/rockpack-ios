@@ -87,15 +87,11 @@
 
 }
 
-- (NSFetchedResultsController *)videoInstanceFetchedResultsController
+- (NSFetchedResultsController *)fetchedResultsController
 {
-    NSError *error = nil;
     
-    // Return cached version if we have already created one
-    if (_videoInstanceFetchedResultsController != nil)
-    {
-        return _videoInstanceFetchedResultsController;
-    }
+    if (fetchedResultsController != nil)
+        return fetchedResultsController;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -107,15 +103,17 @@
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
  
-    self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                      managedObjectContext: appDelegate.mainManagedObjectContext
                                                                                        sectionNameKeyPath: nil
                                                                                                 cacheName: nil];
-    _videoInstanceFetchedResultsController.delegate = self;
+    fetchedResultsController.delegate = self;
     
-    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    NSError *error = nil;
     
-    return _videoInstanceFetchedResultsController;
+    ZAssert([fetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
 }
 
 
@@ -126,7 +124,7 @@
     [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
     // Set the first video
-    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
+    if (self.fetchedResultsController.fetchedObjects.count > 0)
     {
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }
@@ -154,7 +152,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
-    NSArray *videoInstances = self.videoInstanceFetchedResultsController.fetchedObjects;
+    NSArray *videoInstances = self.fetchedResultsController.fetchedObjects;
     // Set the first video
     if (videoInstances.count > 0)
     {
@@ -185,7 +183,7 @@
     {
         if (collectionView == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
             items = [sectionInfo numberOfObjects];
         }
         else
@@ -270,7 +268,7 @@
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         
-        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        Video *video = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
         self.draggedView.image = video.thumbnailImage;
         
         // now add the item to the view
@@ -332,14 +330,14 @@
 {
     [self showVideoQueue: TRUE];
     
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
 
 - (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.titleLabel.text = videoInstance.title;
     self.channelLabel.text = videoInstance.channel.title;
@@ -354,7 +352,7 @@
 
 - (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
     self.rockItButton.selected = videoInstance.video.starredByUserValue;
@@ -378,7 +376,7 @@
 
 - (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (videoInstance.video.starredByUserValue == TRUE)
     {

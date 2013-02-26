@@ -61,7 +61,7 @@
 {
     [super viewDidLoad];
     
-    // Wallpack tab
+    // Home Tab
     SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] initWithViewId:@"Home"];
     UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;

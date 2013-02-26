@@ -24,8 +24,7 @@
                                                             @protected
                                                                 SYNAppDelegate* appDelegate;
                                                                 NSString* viewId;
-                                                                NSFetchedResultsController* _videoInstanceFetchedResultsController;
-                                                                NSFetchedResultsController* _channelFetchedResultsController;
+                                                                NSFetchedResultsController* fetchedResultsController;
                                                                 
 
 }
@@ -37,8 +36,7 @@
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) UIImageView *draggedView;
-@property (nonatomic, strong) NSFetchedResultsController* videoInstanceFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController* channelFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 
 
 
@@ -58,24 +56,20 @@
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath;
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath;
 
-- (BOOL) collectionView: (UICollectionView *) cv
-         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
+- (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
-// Is this tab videoQueue compatible (returns false by default)
+
+
+
+
+// Video Queue
+
 - (BOOL) hasVideoQueue;
-
-
-// Override if the image w
 - (BOOL) isVideoQueueVisibleOnStart;
-
 - (void) showVideoQueue: (BOOL) animated;
 - (void) hideVideoQueue: (BOOL) animated;
-
-
-// Highlights video queue for when drag is in operation
 - (void) highlightVideoQueue: (BOOL) showHighlight;
 - (BOOL) pointInVideoQueue: (CGPoint) point;
 

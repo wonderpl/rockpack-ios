@@ -45,9 +45,8 @@
 
 @implementation SYNAbstractViewController
 
-// Need to explicitly synthesise these as we are using the real ivars below
-@synthesize channelFetchedResultsController = _channelFetchedResultsController;
-@synthesize videoInstanceFetchedResultsController = _videoInstanceFetchedResultsController;
+
+@synthesize fetchedResultsController = fetchedResultsController;
 
 #pragma mark - Custom accessor methods
 
@@ -209,7 +208,7 @@
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -232,7 +231,7 @@
 
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (channel.rockedByUserValue == TRUE)
     {
@@ -268,7 +267,7 @@
         
         if (self.shouldUpdateRockItStatus == TRUE)
         {
-            VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+            VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
             SYNVideoThumbnailWideCell *videoThumbnailCell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
             
             [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
@@ -300,7 +299,7 @@
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
@@ -318,7 +317,7 @@
 {
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
 
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     [self displayVideoViewer: videoInstance];
 }
@@ -400,7 +399,7 @@
     if (cv == self.videoThumbnailCollectionView)
     {
         // No, but it was our collection view
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
@@ -464,7 +463,7 @@
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
         
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
         if (!indexPath)
         {
@@ -517,7 +516,7 @@
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
             
-            VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.draggedIndexPath];
+            VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.draggedIndexPath];
             [self animateVideoAdditionToVideoQueue: videoInstance];
         }
         else

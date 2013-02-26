@@ -33,15 +33,28 @@
 
 #pragma mark - View lifecycle
 
-- (NSFetchedResultsController *) videoInstanceFetchedResultsController
+-(void)loadView
 {
-    NSError *error = nil;
+    UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
-    // Return cached version if we have already created one
-    if (_videoInstanceFetchedResultsController != nil)
-    {
-        return _videoInstanceFetchedResultsController;
-    }
+    CGRect videoCollectionViewFrame = CGRectMake(0.0, 44.0, 1024.0, 642.0);
+    
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:layout];
+    self.videoThumbnailCollectionView.delegate = self;
+    self.videoThumbnailCollectionView.dataSource = self;
+    
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    [self.view addSubview:self.videoThumbnailCollectionView];
+}
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    
+    
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
@@ -57,15 +70,16 @@
                                      ];
     
     
-    self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                                      managedObjectContext: appDelegate.mainManagedObjectContext
                                                                                        sectionNameKeyPath: @"dateAddedIgnoringTime"
                                                                                                 cacheName: nil];
-    _videoInstanceFetchedResultsController.delegate = self;
+    fetchedResultsController.delegate = self;
     
-    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
-    return _videoInstanceFetchedResultsController;
+    return fetchedResultsController;
 }
 
 - (void) viewDidLoad
@@ -171,7 +185,7 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        return self.videoInstanceFetchedResultsController.sections.count;
+        return self.fetchedResultsController.sections.count;
     }
     else
     {
@@ -190,7 +204,7 @@
     {
         if (collectionView == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
             return [sectionInfo numberOfObjects];
         }
         else
@@ -246,7 +260,7 @@
     if (collectionView == self.videoThumbnailCollectionView)
     {
         // Work out the day
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
+        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex: indexPath.section];
         
         // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
         
@@ -364,7 +378,7 @@
     
     [self toggleVideoRockItAtIndex: indexPath];
     
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = videoInstance.video.starredByUserValue;
