@@ -30,7 +30,7 @@
 
 #pragma mark - View lifecycle
 
-- (NSFetchedResultsController *) channelFetchedResultsController
+- (NSFetchedResultsController *) fetchedResultsController
 {
     NSError *error = nil;
     
@@ -84,7 +84,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
     
 }
@@ -97,7 +97,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
@@ -128,7 +128,7 @@
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -139,7 +139,7 @@
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -182,7 +182,7 @@
     
     [self toggleChannelRockItAtIndex: indexPath];
     
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
@@ -208,7 +208,7 @@
         
         self.pinchedIndexPath = indexPath;
         
-        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
         
         // Get the various frames we need to calculate the actual position

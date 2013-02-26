@@ -48,6 +48,7 @@
 
 @synthesize fetchedResultsController = fetchedResultsController;
 
+
 #pragma mark - Custom accessor methods
 
 -(id)init {
