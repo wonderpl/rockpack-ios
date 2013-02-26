@@ -1489,13 +1489,13 @@
 			name = "Friend cells";
 			sourceTree = "<group>";
 		};
-		0162285316C2AA7F008D1587 /* Miscellaneous */ = {
+		0162285316C2AA7F008D1587 /* KeyboardAvoidinScroll */ = {
 			isa = PBXGroup;
 			children = (
 				01E566CE16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.h */,
 				01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */,
 			);
-			name = Miscellaneous;
+			name = KeyboardAvoidinScroll;
 			sourceTree = "<group>";
 		};
 		01677DDA1655491100B1B1D8 /* Networking */ = {
@@ -1611,13 +1611,10 @@
 			isa = PBXGroup;
 			children = (
 				BEF9E5A516DBCDEF00286113 /* Components */,
-				BE0815CE16D6444200ADB1DC /* Overlays */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
-				BE08159C16D3D7E300ADB1DC /* Tabs View Controllers */,
-				0162285316C2AA7F008D1587 /* Miscellaneous */,
+				BE08159C16D3D7E300ADB1DC /* TopTabsComponent */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
-				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
 				01982562162ADE5200216900 /* Tab bar */,
 				0199F1371672199F00E479C6 /* Home */,
@@ -2250,7 +2247,7 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE08159C16D3D7E300ADB1DC /* Tabs View Controllers */ = {
+		BE08159C16D3D7E300ADB1DC /* TopTabsComponent */ = {
 			isa = PBXGroup;
 			children = (
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
@@ -2261,7 +2258,7 @@
 				0142ED9216B1C914008694DA /* Categories Tab */,
 				BE0815A616D4F3B200ADB1DC /* Search Tab */,
 			);
-			name = "Tabs View Controllers";
+			name = TopTabsComponent;
 			sourceTree = "<group>";
 		};
 		BE0815A616D4F3B200ADB1DC /* Search Tab */ = {
@@ -2407,6 +2404,9 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				01A3EC2A16AECE0F008DCE08 /* Popover */,
+				0162285316C2AA7F008D1587 /* KeyboardAvoidinScroll */,
+				BE0815CE16D6444200ADB1DC /* Overlays */,
 				BEF9E5B516DD242A00286113 /* VideoPlayback */,
 				BEF9E5B416DD23F000286113 /* VideoQueue */,
 			);
