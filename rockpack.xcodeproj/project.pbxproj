@@ -98,6 +98,7 @@
 		014A456816691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456716691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m */; };
 		014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */; };
 		014A4571166A39E60091E4E5 /* SYNChannelsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */; };
+		015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */; };
 		015CB00816AD76B100FEB8E7 /* SYNFriendsRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */; };
 		015CB00916AD76B100FEB8E7 /* SYNFriendsRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */; };
 		015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB00C16AD932000FEB8E7 /* SYNFriendThumbnailCell.m */; };
@@ -570,6 +571,8 @@
 		014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsRootViewController.h; sourceTree = "<group>"; };
 		014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsRootViewController.m; sourceTree = "<group>"; };
 		014A456F166A39E60091E4E5 /* SYNChannelsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelsRootViewController.xib; sourceTree = "<group>"; };
+		015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoPlaybackViewController.h; sourceTree = "<group>"; };
+		015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoPlaybackViewController.m; sourceTree = "<group>"; };
 		015CB00516AD76B100FEB8E7 /* SYNFriendsRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsRootViewController.h; sourceTree = "<group>"; };
 		015CB00616AD76B100FEB8E7 /* SYNFriendsRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsRootViewController.m; sourceTree = "<group>"; };
 		015CB00716AD76B100FEB8E7 /* SYNFriendsRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNFriendsRootViewController.xib; sourceTree = "<group>"; };
@@ -2239,6 +2242,8 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				015487CD16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.h */,
+				015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */,
 				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
@@ -2934,6 +2939,7 @@
 				BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */,
 				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
+				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
