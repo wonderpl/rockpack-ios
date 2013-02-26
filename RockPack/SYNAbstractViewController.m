@@ -91,13 +91,10 @@
     if (self.hasVideoQueue)
     {
         self.videoQVC = [[SYNVideoQueueViewController alloc] init];
-        SYNVideoQueueView* videoQV = [[SYNVideoQueueView alloc] init];
-        videoQV.delegate = self;
+        self.videoQueueView = self.videoQVC.view;
         
-        videoQV.videoQueueCollectionView.dataSource = self.videoQVC;
+        [((SYNVideoQueueView*)self.videoQueueView) setDelegate:self];
         
-        
-        self.videoQueueView = videoQV;
     
         
         [self.view addSubview: self.videoQueueView];

@@ -139,9 +139,6 @@
 {
     delegate = del;
     
-    videoQueueCollectionView.delegate = self.delegate;
-    videoQueueCollectionView.dataSource = self.delegate;
-    
     
     [deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     

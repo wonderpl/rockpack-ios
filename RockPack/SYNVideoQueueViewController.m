@@ -16,19 +16,28 @@
 
 @interface SYNVideoQueueViewController ()
 
+@property (nonatomic, readonly) SYNVideoQueueView* videoQueueView;
+
 @end
 
 @implementation SYNVideoQueueViewController
 
+@dynamic videoQueueView;
+
 -(void)loadView
 {
-    self.view = [[SYNVideoQueueView alloc] init];
+    SYNVideoQueueView* videoQView = [[SYNVideoQueueView alloc] init];
+    videoQView.videoQueueCollectionView.dataSource = self;
+    videoQView.videoQueueCollectionView.delegate = self;
+    self.view = videoQView;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    [self.videoQueueView reloadData];
+	
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,7 +47,7 @@
 }
 
 
-#pragma mark - Delegate Methods
+#pragma mark - UICollectionViewDelegate Methods
 
 - (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
     
@@ -64,12 +73,17 @@
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
 {
-    // Assume for now, that we can handle this
+    
     BOOL handledInAbstractView = YES;
     
     DebugLog (@"Selecting image well cell does nothing");
     
     return handledInAbstractView;
+}
+
+-(SYNVideoQueueView*)videoQueueView
+{
+    return (SYNVideoQueueView*)self.view;
 }
 
 @end
