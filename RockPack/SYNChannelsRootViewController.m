@@ -33,6 +33,40 @@
 
 #pragma mark - View lifecycle
 
+
+- (NSFetchedResultsController *) channelFetchedResultsController
+{
+    NSError *error = nil;
+    
+    // Return cached version if we have already created one
+    if (_channelFetchedResultsController != nil)
+    {
+        return _channelFetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    // Add any sort descriptors and predicates
+    fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
+    fetchRequest.sortDescriptors = self.channelFetchedResultsControllerSortDescriptors;
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.channelFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                               managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                 sectionNameKeyPath: nil
+                                                                                          cacheName: nil];
+    _channelFetchedResultsController.delegate = self;
+    
+    ZAssert([_channelFetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return _channelFetchedResultsController;
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];

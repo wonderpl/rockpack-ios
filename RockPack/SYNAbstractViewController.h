@@ -20,8 +20,13 @@
                                                             UICollectionViewDataSource,
                                                             UICollectionViewDelegate,
                                                             SYNVideoQueueDelegate> {
-    @protected SYNAppDelegate* appDelegate;
-    @protected NSString* viewId;
+                                                                
+                                                            @protected
+                                                                SYNAppDelegate* appDelegate;
+                                                                NSString* viewId;
+                                                                NSFetchedResultsController* _videoInstanceFetchedResultsController;
+                                                                NSFetchedResultsController* _channelFetchedResultsController;
+                                                                
 
 }
 

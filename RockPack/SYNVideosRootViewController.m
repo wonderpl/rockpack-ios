@@ -87,7 +87,38 @@
 
 }
 
-
+- (NSFetchedResultsController *)videoInstanceFetchedResultsController
+{
+    NSError *error = nil;
+    
+    // Return cached version if we have already created one
+    if (_videoInstanceFetchedResultsController != nil)
+    {
+        return _videoInstanceFetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    // Add any sort descriptors and predicates
+    fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
+    fetchRequest.sortDescriptors = self.videoInstanceFetchedResultsControllerSortDescriptors;
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                       sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
+                                                                                                cacheName: nil];
+    _videoInstanceFetchedResultsController.delegate = self;
+    
+    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return _videoInstanceFetchedResultsController;
+}
 
 
 - (void) viewWillAppear: (BOOL) animated
