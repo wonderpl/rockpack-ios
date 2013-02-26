@@ -13,6 +13,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNVideoQueueDelegate.h"
 
+
 @class VideoInstance;
 
 @interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,

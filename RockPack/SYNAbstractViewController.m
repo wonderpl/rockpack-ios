@@ -36,16 +36,11 @@
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, strong) MKNetworkOperation *draggedImageLoadingOperation;
+
 @property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-@property (nonatomic, strong) UIButton *videoQueueDeleteButton;
-@property (nonatomic, strong) UIButton *videoQueueExistingButton;
-@property (nonatomic, strong) UIButton *videoQueueNewButton;
-@property (nonatomic, strong) UIImageView *videoQueueMessageView;
-@property (nonatomic, strong) UIImageView *videoQueuePanelView;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
 @end
@@ -108,15 +103,6 @@
     
     if (self.hasVideoQueue)
     {
-        // Disable message if we already have items in the queue (from another screen)
-        if (SYNVideoSelection.sharedVideoSelectionArray.count != 0)
-        {
-            self.videoQueueMessageView.alpha = 0.0f;
-        }
-        else
-        {
-            self.videoQueueMessageView.alpha = 1.0f;
-        }
         
         [(SYNVideoQueueView*)self.videoQueueView reloadData];
         
@@ -715,23 +701,28 @@
     {
         self.videoQueueVisible = TRUE;
         
+        CGRect videoQueueViewFrame = self.videoQueueView.frame;
+        videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
+        
+        
         if (animated)
         {
             // Slide video queue view upwards (and contract any other dependent visible views)
             [UIView animateWithDuration: kVideoQueueAnimationDuration
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 [self slideVideoQueueUp];
+                             animations: ^{
+                                 
+                 self.videoQueueView.frame = videoQueueViewFrame;
              }
              completion: ^(BOOL finished)
              {
+                 
              }];
         }
         else
         {
-            [self slideVideoQueueUp];
+            self.videoQueueView.frame = videoQueueViewFrame;
         }
     }
 }
@@ -744,42 +735,31 @@
         self.videoQueueAnimationTimer = nil;
         self.videoQueueVisible = FALSE;
         
+        CGRect videoQueueViewFrame = self.videoQueueView.frame;
+        videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
+        
+        
         if (animated)
         {
             [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 // Slide video queue view downwards (and expand any other dependent visible views)
-                 [self slideVideoQueueDown];
+                             animations: ^{
+                
+                                 
+                 self.videoQueueView.frame = videoQueueViewFrame;
              }
              completion: ^(BOOL finished)
              {
+                 
              }];
         }
         else
         {
-            [self slideVideoQueueDown];
+            self.videoQueueView.frame = videoQueueViewFrame;
         }
     }
 }
-
-- (void) slideVideoQueueUp
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-}
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-}
-
-
 
 
 

@@ -87,11 +87,17 @@
         messageView = [[UIImageView alloc] initWithFrame: CGRectMake(60, 47, 411, 31)];
         messageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
         
-        // Disable message if we already have items in the queue (from another screen)
+        
         if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
+        {
+            messageView.alpha = 1.0f;
+        }
+        else
         {
             messageView.alpha = 0.0f;
         }
+        
+        
         
         [self addSubview:messageView];
         
