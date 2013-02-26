@@ -26,14 +26,16 @@
 
 
 @property (nonatomic, strong) UICollectionView* videoQueueCollectionView;
-@property (nonatomic) BOOL highlighted;
 
 @property (nonatomic, strong) UIButton* deleteButton;
 @property (nonatomic, strong) UIButton* channelButton;
 @property (nonatomic, strong) UIButton* existingButton;
 
-- (void) addVideoToQueue: (VideoInstance *) videoInstance;
+@property (nonatomic, strong) UIImageView* backgroundImageView;
+
 - (void) showMessage:(BOOL)show;
+
+- (void) addVideoToQueue: (VideoInstance *) videoInstance;
 
 
 @end

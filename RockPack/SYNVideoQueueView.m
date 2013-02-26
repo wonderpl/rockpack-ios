@@ -9,13 +9,14 @@
 #import "SYNVideoQueueView.h"
 #import "AppConstants.h"
 #import "SYNVideoSelection.h"
-#import "SYNSoundPlayer.h"
+
+#define kVideoQueueCellWidth 142.0
 
 @implementation SYNVideoQueueView
 
 @synthesize videoQueueCollectionView;
 @synthesize deleteButton, channelButton, existingButton;
-@synthesize highlighted;
+@synthesize backgroundImageView;
 
 -(id)init
 {
@@ -139,56 +140,30 @@
     return self;
 }
 
-#pragma mark - Accessors
 
-
-
--(void)setHighlighted:(BOOL)value
-{
-    if (value)
-    {
-        backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueueHighlighted.png"];
-    }
-    else
-    {
-        backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
-    }
-}
 
 
 
 #pragma mark - Add to Queue
 
-#pragma mark - Add Videos
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
     
-    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
-    
-    // The first video added enables the new channel button
-    if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
-    {
-        channelButton.enabled = YES;
-        channelButton.selected = YES;
-        deleteButton.enabled = YES;
-        
-        [self showMessage:NO];
-    }
     
     
     
-    // First, increase the size of the view by the size of the new cell to be added (+margin)
+    // == Animate
+    
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
-    videoQueueViewFrame.size.width += 142;
+    videoQueueViewFrame.size.width += kVideoQueueCellWidth;
     
     self.videoQueueCollectionView.frame = videoQueueViewFrame;
     
-    [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance];
     
     [self.videoQueueCollectionView reloadData];
     
-    if (self.videoQueueCollectionView.contentSize.width + 15 > kVideoQueueWidth + 142)
+    if (self.videoQueueCollectionView.contentSize.width + 15 > kVideoQueueWidth + kVideoQueueCellWidth)
     {
         CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
         contentOffset.x = self.videoQueueCollectionView.contentSize.width - kVideoQueueWidth;
@@ -203,7 +178,7 @@
                      animations: ^{
          // Slide origin back
          CGRect videoQueueCollectionViewFrame = self.videoQueueCollectionView.frame;
-         videoQueueCollectionViewFrame.origin.x -= 142;
+         videoQueueCollectionViewFrame.origin.x -= kVideoQueueCellWidth;
          
          CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
          
@@ -218,13 +193,11 @@
          
          self.videoQueueCollectionView.contentOffset = contentOffset;
          self.videoQueueCollectionView.frame = videoQueueCollectionViewFrame;
+                         
      } completion: ^(BOOL finished) {
          
      }];
 }
-
-
-
 
 
 

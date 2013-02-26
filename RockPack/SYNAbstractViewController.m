@@ -705,29 +705,8 @@
     {
         self.videoQueueVisible = TRUE;
         
-        CGRect videoQueueViewFrame = self.videoQueueView.frame;
-        videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
+        [self.videoQVC showVideoQueue:animated];
         
-        
-        if (animated)
-        {
-            // Slide video queue view upwards (and contract any other dependent visible views)
-            [UIView animateWithDuration: kVideoQueueAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^{
-                                 
-                 self.videoQueueView.frame = videoQueueViewFrame;
-             }
-             completion: ^(BOOL finished)
-             {
-                 
-             }];
-        }
-        else
-        {
-            self.videoQueueView.frame = videoQueueViewFrame;
-        }
     }
 }
 
@@ -739,29 +718,7 @@
         self.videoQueueAnimationTimer = nil;
         self.videoQueueVisible = FALSE;
         
-        CGRect videoQueueViewFrame = self.videoQueueView.frame;
-        videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-        
-        
-        if (animated)
-        {
-            [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^{
-                
-                                 
-                 self.videoQueueView.frame = videoQueueViewFrame;
-             }
-             completion: ^(BOOL finished)
-             {
-                 
-             }];
-        }
-        else
-        {
-            self.videoQueueView.frame = videoQueueViewFrame;
-        }
+        [self.videoQVC hideVideoQueue:animated];
     }
 }
 
@@ -771,13 +728,13 @@
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
 {
-    [((SYNVideoQueueView*)self.videoQueueView) addVideoToQueue:videoInstance];
+    [self.videoQVC addVideoToQueue:videoInstance];
 }
 
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
 {
-    [((SYNVideoQueueView*)self.videoQueueView) setHighlighted:showHighlight];
+    [self.videoQVC setHighlighted:showHighlight];
 }
 
 

@@ -12,7 +12,8 @@
 #import "SYNVideoQueueCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
-
+#import "AppConstants.h"
+#import "SYNSoundPlayer.h"
 
 @interface SYNVideoQueueViewController ()
 
@@ -118,6 +119,84 @@
 {
     [self.videoQueueView.videoQueueCollectionView reloadData];
     
+}
+
+
+#pragma mark - Animation Methods
+
+- (void) showVideoQueue: (BOOL) animated
+{
+    [self hideShowVideoQueue:YES animated:animated];
+}
+
+
+- (void) hideVideoQueue: (BOOL) animated
+{
+    [self hideShowVideoQueue:NO animated:animated];
+    
+    
+}
+
+
+-(void)hideShowVideoQueue:(BOOL)show animated:(BOOL)animated
+{
+    CGRect videoQueueViewFrame = self.videoQueueView.frame;
+    if(show)
+        videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
+    else
+        videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
+    
+    if (animated)
+    {
+        [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
+                             
+                             
+                             self.videoQueueView.frame = videoQueueViewFrame;
+                         }
+                         completion: ^(BOOL finished) {
+                             
+                         }];
+    }
+    else
+    {
+        self.videoQueueView.frame = videoQueueViewFrame;
+    }
+}
+
+- (void) addVideoToQueue: (VideoInstance *) videoInstance
+{
+    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
+    
+    
+    
+    if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
+    {
+        self.videoQueueView.channelButton.enabled = YES;
+        self.videoQueueView.channelButton.selected = YES;
+        self.videoQueueView.deleteButton.enabled = YES;
+        
+        [self.videoQueueView showMessage:NO];
+    }
+    
+    
+    [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance];
+    
+    [self.videoQueueView addVideoToQueue:videoInstance];
+}
+
+-(void)setHighlighted:(BOOL)value
+{
+    if (value)
+    {
+        self.videoQueueView.backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueueHighlighted.png"];
+    }
+    else
+    {
+        self.videoQueueView.backgroundImageView.image = [UIImage imageNamed: @"PanelVideoQueue.png"];
+    }
 }
 
 @end
