@@ -11,6 +11,7 @@
 #define kSoundNewSlideIn @"NewSlideIn"
 #define kSoundNewSlideOut @"NewSlideOut"
 #define kSoundScroll @"Scroll"
+#define kSoundSelect @"Select"
 
 @interface SYNSoundPlayer : NSObject
 

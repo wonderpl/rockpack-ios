@@ -9,6 +9,7 @@
 #import "SYNVideoQueueView.h"
 #import "AppConstants.h"
 #import "SYNVideoSelection.h"
+#import "SYNSoundPlayer.h"
 
 @implementation SYNVideoQueueView
 
@@ -57,15 +58,15 @@
         
         // == New Button
         
-        newButton = [UIButton buttonWithType: UIButtonTypeCustom];
-        newButton.frame = CGRectMake(663, 35, 50, 50);
+        channelButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        channelButton.frame = CGRectMake(663, 35, 50, 50);
         
-        [newButton setImage:[UIImage imageNamed:@"ButtonVideoWellNew.png"] forState: UIControlStateNormal];
+        [channelButton setImage:[UIImage imageNamed:@"ButtonVideoWellNew.png"] forState: UIControlStateNormal];
         
-        [newButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
+        [channelButton setImage:[UIImage imageNamed: @"ButtonVideoWellNewHighlighted.png"] forState: UIControlStateSelected];
         
         
-        [self addSubview:newButton];
+        [self addSubview:channelButton];
         
         
         // == Existing Button
@@ -143,7 +144,7 @@
     
     [deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     
-    [newButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    [channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
 }
 
 -(void)setHighlighted:(BOOL)value
@@ -166,23 +167,15 @@
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
-#ifdef SOUND_ENABLED
-    //    // Play a suitable sound
-    //    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Select"
-    //                                                          ofType: @"aif"];
-    //
-    //    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-    //    SystemSoundID sound;
-    //    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-    //    AudioServicesPlaySystemSound(sound);
-#endif
+    
+    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
     
     // The first video added enables the new channel button
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
-        newButton.enabled = TRUE;
-        newButton.selected = TRUE;
-        newButton.enabled = TRUE;
+        channelButton.enabled = TRUE;
+        channelButton.selected = TRUE;
+        channelButton.enabled = TRUE;
         
         [self showMessage:NO];
     }

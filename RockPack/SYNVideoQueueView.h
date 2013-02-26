@@ -16,7 +16,7 @@
     UIImageView* backgroundImageView;
     
     UIButton* deleteButton;
-    UIButton* newButton;
+    UIButton* channelButton;
     UIButton* existingButton;
     
     UIImageView* messageView;
