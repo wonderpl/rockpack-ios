@@ -14,6 +14,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoDB.h"
+#import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
@@ -29,11 +30,10 @@
                                            UIScrollViewDelegate,
                                            UIWebViewDelegate>
 
-@property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *videoPlaceholderImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
@@ -41,9 +41,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
-@property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
-@property (nonatomic, strong) IBOutlet UIButton *largeVideoPlayButton;
+@property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 
 @end
 
@@ -72,16 +71,6 @@
     self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    
-    // Set up large video view
-    self.videoWebView.backgroundColor = [UIColor blackColor];
-	self.videoWebView.opaque = NO;
-    self.videoWebView.scrollView.scrollEnabled = false;
-    self.videoWebView.scrollView.bounces = false;
-    self.videoWebView.alpha = 0.0f;
-    self.videoWebView.delegate = self;
-    self.largeVideoPlayButton.alpha = 1.0f;
-    self.largeVideoPlayButton.enabled = FALSE;
 
     // Init video thumbnail collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -89,6 +78,13 @@
 
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
+    
+    // New video playback view controller
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(13, 11, 494, 278)];
+    
+    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
+                               aboveSubview: self.panelImageView];
+
 }
 
 
@@ -112,7 +108,7 @@
 {
     [super viewDidAppear: animated];
     
-    [self.videoThumbnailCollectionView reloadData];
+    [self reloadCollectionViews];
 }
 
 
@@ -127,9 +123,13 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
+    NSArray *videoInstances = self.videoInstanceFetchedResultsController.fetchedObjects;
     // Set the first video
-    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
+    if (videoInstances.count > 0)
     {
+        [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: videoInstances
+                                                                   autoPlay: TRUE];
+        
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }
 }
@@ -205,8 +205,8 @@
 
 
 - (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath {
-    
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
     // See if this can be handled in our abstract base class
     BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
                    didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
@@ -234,13 +234,7 @@
     {        
         self.currentIndexPath = indexPath;
         
-        [self updateLargeVideoDetailsForIndexPath: indexPath];
-        
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-        
-        [self loadWebViewWithJSAPIUsingYouTubeId: videoInstance.video.sourceId
-                                           width: 494
-                                          height: 278];
+        [self.videoPlaybackViewController playVideoAtIndex: indexPath.row];   
     }
 }
 
@@ -328,16 +322,6 @@
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
-//- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
-//{
-//    [self showVideoQueue: TRUE];
-//    [self startVideoQueueDismissalTimer];
-//    
-//    UIView *v = addItButton.superview.superview;
-//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-//    [self animateVideoAdditionToVideoQueue: videoInstance];
-//}
 
 - (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
