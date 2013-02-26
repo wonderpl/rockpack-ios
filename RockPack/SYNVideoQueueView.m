@@ -141,7 +141,7 @@
     videoQueueCollectionView.dataSource = self.delegate;
     
     
-    [deleteButton addTarget:delegate action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    [deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     
     [newButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
 }
@@ -240,21 +240,13 @@
 
 - (void) clearVideoQueue
 {
-#ifdef SOUND_ENABLED
-//    // Play a suitable sound
-//    NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Trash"
-//                                                          ofType: @"aif"];
-//    
-//    NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-//    SystemSoundID sound;
-//    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-//    AudioServicesPlaySystemSound(sound);
-#endif
+
     
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
+                         
          messageView.alpha = 1.0f;
          
      } completion: ^(BOOL finished) {

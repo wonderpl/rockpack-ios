@@ -100,16 +100,6 @@
         
         
         
-        // Register cells
-        UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell"
-                                                 bundle: nil];
-        
-        [self.videoQueueCollectionView registerNib: videoQueueCellNib
-                       forCellWithReuseIdentifier: @"VideoQueueCell"];
-        
-        [self.videoQueueView addSubview: self.videoQueueCollectionView];
-        
-        
         [self.view addSubview: self.videoQueueView];
     }
 }
@@ -620,6 +610,7 @@
     return handledInAbstractView;
 }
 
+// Create a channel pressed
 
 - (void) createChannelFromVideoQueue
 {
@@ -836,10 +827,6 @@
     [((SYNVideoQueueView*)self.videoQueueView) addVideoToQueue:videoInstance];
 }
 
-- (void) clearVideoQueue
-{
-    [((SYNVideoQueueView*)self.videoQueueView) clearVideoQueue];
-}
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
 {
