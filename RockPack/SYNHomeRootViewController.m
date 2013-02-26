@@ -35,12 +35,16 @@
 
 -(void)loadView
 {
-    UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
+    standardFlowLayout.minimumInteritemSpacing = 0.0f;
+    standardFlowLayout.minimumLineSpacing = 0.0f;
+    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
     CGRect videoCollectionViewFrame = CGRectMake(0.0, 44.0, 1024.0, 642.0);
     
-    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:layout];
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     
@@ -85,15 +89,6 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
-    standardFlowLayout.minimumInteritemSpacing = 0.0f;
-    standardFlowLayout.minimumLineSpacing = 0.0f;
-    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 5, 0, 5);
-    
-    self.videoThumbnailCollectionView.collectionViewLayout = standardFlowLayout;
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     

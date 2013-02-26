@@ -33,6 +33,22 @@
 
 #pragma mark - View lifecycle
 
+-(void)loadView
+{
+    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    
+    CGRect collectionViewFrame = CGRectMake(0.0, 84.0, 1024.0, 600.0);
+    
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
+    self.channelThumbnailCollectionView.dataSource = self;
+    self.channelThumbnailCollectionView.delegate = self;
+    
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    
+    [self.view addSubview:self.channelThumbnailCollectionView];
+}
+
 
 - (NSFetchedResultsController *) channelFetchedResultsController
 {
