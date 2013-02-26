@@ -27,7 +27,6 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNMasterViewController.h"
-#import "SYNVideoQueueView.h"
 #import "SYNVideoQueueViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -86,12 +85,9 @@
     if (self.hasVideoQueue)
     {
         self.videoQVC = [[SYNVideoQueueViewController alloc] init];
-        self.videoQueueView = self.videoQVC.view;
         self.videoQVC.delegate = self;
         
-    
-        
-        [self.view addSubview: self.videoQueueView];
+        [self.view addSubview: self.videoQVC.view];
     }
 }
 
@@ -740,7 +736,7 @@
 
 - (BOOL) pointInVideoQueue: (CGPoint) point
 {
-    return CGRectContainsPoint(self.videoQueueView.frame, point);
+    return CGRectContainsPoint(self.videoQVC.view.frame, point);
 }
 
 

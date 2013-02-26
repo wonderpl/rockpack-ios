@@ -362,31 +362,7 @@
 }
 
 
-#pragma mark - Video Queue animation
 
-- (void) slideVideoQueueUp
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-    
-    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height -= kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
-}
-
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-    
-    // Slide video queue view downwards (and expand any other dependent visible views)
-    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
-}
 
 
 @end

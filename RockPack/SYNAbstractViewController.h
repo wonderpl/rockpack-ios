@@ -27,7 +27,6 @@
 
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-@property (nonatomic, strong) UIView *videoQueueView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
