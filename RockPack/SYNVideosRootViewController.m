@@ -87,6 +87,35 @@
 
 }
 
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    
+    if (fetchedResultsController != nil)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+ 
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                       sectionNameKeyPath: nil
+                                                                                                cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    
+    ZAssert([fetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -95,9 +124,15 @@
     [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
     // Set the first video
-    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
+    if (self.fetchedResultsController.fetchedObjects.count > 0)
     {
-        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
+        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
+        
+        [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+                                                                selectedIndexPath: firstIndexPath
+                                                                         autoPlay: TRUE];
+        
+        [self setLargeVideoToIndexPath: firstIndexPath];
     }
 }
 
@@ -123,13 +158,13 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
-    NSArray *videoInstances = self.videoInstanceFetchedResultsController.fetchedObjects;
+    NSArray *videoInstances = self.fetchedResultsController.fetchedObjects;
     // Set the first video
     if (videoInstances.count > 0)
-    {
-        [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: videoInstances
-                                                               currentIndex: self.currentIndexPath.row
-                                                                   autoPlay: FALSE];
+    {       
+        [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+                                                                selectedIndexPath: self.currentIndexPath
+                                                                         autoPlay: TRUE];
         
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }
@@ -141,22 +176,6 @@
 }
 
 
-#pragma mark - Core Data support
-
-
-
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES];
-    return @[sortDescriptor];
-}
-
-- (NSString *)videoInstanceFetchedResultsControllerSectionNameKeyPath
-{
-    
-    return nil;
-}
 
 
 #pragma mark - Collection view support
@@ -171,7 +190,7 @@
     {
         if (collectionView == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
+            id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
             items = [sectionInfo numberOfObjects];
         }
         else
@@ -235,7 +254,7 @@
     {        
         self.currentIndexPath = indexPath;
         
-        [self.videoPlaybackViewController playVideoAtIndex: indexPath.row];   
+        [self.videoPlaybackViewController playVideoAtIndex: indexPath];   
     }
 }
 
@@ -256,7 +275,7 @@
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         
-        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        Video *video = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
         self.draggedView.image = video.thumbnailImage;
         
         // now add the item to the view
@@ -317,16 +336,15 @@
 - (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
     [self showVideoQueue: TRUE];
-    [self startVideoQueueDismissalTimer];
     
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
 
 - (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.titleLabel.text = videoInstance.title;
     self.channelLabel.text = videoInstance.channel.title;
@@ -341,7 +359,7 @@
 
 - (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
     self.rockItButton.selected = videoInstance.video.starredByUserValue;
@@ -365,7 +383,7 @@
 
 - (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -410,37 +428,7 @@
 
 #pragma mark - Video queue animation
 
-- (void) slideVideoQueueUp
-{
-     CGRect videoQueueViewFrame = self.videoQueueView.frame;
-     videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-     self.videoQueueView.frame = videoQueueViewFrame;
 
-     CGRect viewFrame = self.largeVideoPanelView.frame;
-     viewFrame.size.height -= kVideoQueueEffectiveHeight;
-     self.largeVideoPanelView.frame = viewFrame;
-
-     viewFrame = self.videoThumbnailCollectionView.frame;
-     viewFrame.size.height -= kVideoQueueEffectiveHeight;
-     self.videoThumbnailCollectionView.frame = viewFrame;
-}
-
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-    
-    // Slide video queue view downwards (and expand any other dependent visible views)
-    CGRect viewFrame = self.largeVideoPanelView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.largeVideoPanelView.frame = viewFrame;
-    
-    viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
-}
 
 
 -(void)handleMainTap:(UITapGestureRecognizer *)recogniser
@@ -450,13 +438,21 @@
     if(tabExpanded)
         return;
     
-    [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
-        CGPoint currentVideoCenter = self.videoThumbnailCollectionView.center;
-        [self.videoThumbnailCollectionView setCenter:CGPointMake(currentVideoCenter.x, currentVideoCenter.y + 35)];
+    [UIView animateWithDuration: 0.4
+                          delay: 0.0
+                        options :UIViewAnimationCurveEaseInOut
+                     animations: ^
+    {
+        CGRect videoThumbnailCollectionViewFrame = self.videoThumbnailCollectionView.frame;
+        videoThumbnailCollectionViewFrame.origin.y += kCategorySecondRowHeight;
+        videoThumbnailCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+        self.videoThumbnailCollectionView.frame = videoThumbnailCollectionViewFrame;
         
         CGPoint currentLargeVideoCenter = self.largeVideoPanelView.center;
-        [self.largeVideoPanelView setCenter:CGPointMake(currentLargeVideoCenter.x, currentLargeVideoCenter.y + 35.0)];
-    }  completion:^(BOOL result){
+        [self.largeVideoPanelView setCenter: CGPointMake(currentLargeVideoCenter.x, currentLargeVideoCenter.y + kCategorySecondRowHeight)];
+    }
+    completion: ^(BOOL result)
+    {
         tabExpanded = YES;
     }];
 }

@@ -27,35 +27,27 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNMasterViewController.h"
-#import "SYNVideoQueueView.h"
+#import "SYNVideoQueueViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
-@property (nonatomic, strong) IBOutlet UICollectionView *videoQueueCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, strong) MKNetworkOperation *draggedImageLoadingOperation;
-@property (nonatomic, strong) NSFetchedResultsController *channelFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *videoInstanceFetchedResultsController;
-@property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-@property (nonatomic, strong) UIButton *videoQueueDeleteButton;
-@property (nonatomic, strong) UIButton *videoQueueExistingButton;
-@property (nonatomic, strong) UIButton *videoQueueNewButton;
-@property (nonatomic, strong) UIImageView *videoQueueMessageView;
-@property (nonatomic, strong) UIImageView *videoQueuePanelView;
-@property (nonatomic, strong) UIView *dropZoneView;
 
+
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
+@property (nonatomic, strong) UIView *dropZoneView;
+@property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
 @end
 
 
 @implementation SYNAbstractViewController
 
-// Need to explicitly synthesise these as we are using the real ivars below
-@synthesize channelFetchedResultsController = _channelFetchedResultsController;
-@synthesize videoInstanceFetchedResultsController = _videoInstanceFetchedResultsController;
+
+@synthesize fetchedResultsController = fetchedResultsController;
+
 
 #pragma mark - Custom accessor methods
 
@@ -71,12 +63,7 @@
     return self;
 }
 
-- (void) setVideoQueueAnimationTimer: (NSTimer*) timer
-{
-    // We need to invalidate our timeer before setting a new one (so that the old one doen't fire anyway)
-    [_videoQueueAnimationTimer invalidate];
-    _videoQueueAnimationTimer = timer;
-}
+
 
 
 
@@ -90,17 +77,10 @@
     
     if (self.hasVideoQueue)
     {
+        self.videoQVC = [[SYNVideoQueueViewController alloc] init];
+        self.videoQVC.delegate = self;
         
-        SYNVideoQueueView* videoQV = [[SYNVideoQueueView alloc] init];
-        videoQV.delegate = self;
-        
-        self.videoQueueCollectionView = videoQV.videoQueueCollectionView;
-        
-        self.videoQueueView = videoQV;
-        
-        
-        
-        [self.view addSubview: self.videoQueueView];
+        [self.view addSubview: self.videoQVC.view];
     }
 }
 
@@ -111,17 +91,9 @@
     
     if (self.hasVideoQueue)
     {
-        // Disable message if we already have items in the queue (from another screen)
-        if (SYNVideoSelection.sharedVideoSelectionArray.count != 0)
-        {
-            self.videoQueueMessageView.alpha = 0.0f;
-        }
-        else
-        {
-            self.videoQueueMessageView.alpha = 1.0f;
-        }
         
-        [self.videoQueueCollectionView reloadData];
+        [self.videoQVC reloadData];
+        
     }
 }
 
@@ -136,83 +108,6 @@
 }
 
 
-#pragma mark - Core Data support
-
-// Generalised version of videoInstanceFetchedResultsController, you can override the predicate and sort descriptors
-// by overiding the videoInstanceFetchedResultsControllerPredicate and videoInstanceFetchedResultsControllerSortDescriptors methods
-- (NSFetchedResultsController *) videoInstanceFetchedResultsController
-{
-    NSError *error = nil;
-    
-    // Return cached version if we have already created one
-    if (_videoInstanceFetchedResultsController != nil)
-    {
-        return _videoInstanceFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.videoInstanceFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.videoInstanceFetchedResultsControllerSortDescriptors;
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    self.videoInstanceFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                       sectionNameKeyPath: self.videoInstanceFetchedResultsControllerSectionNameKeyPath
-                                                                                                cacheName: nil];
-    _videoInstanceFetchedResultsController.delegate = self;
-    
-    ZAssert([_videoInstanceFetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _videoInstanceFetchedResultsController;
-}
-
-
-// Generalised version of channelFetchedResultsController, you can override the predicate and sort descriptors
-// by overiding the channelFetchedResultsControllerPredicate and channelFetchedResultsControllerSortDescriptors methods
-- (NSFetchedResultsController *) channelFetchedResultsController
-{
-    NSError *error = nil;
-    
-    // Return cached version if we have already created one
-    if (_channelFetchedResultsController != nil)
-    {
-        return _channelFetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    // Add any sort descriptors and predicates
-    fetchRequest.predicate = self.channelFetchedResultsControllerPredicate;
-    fetchRequest.sortDescriptors = self.channelFetchedResultsControllerSortDescriptors;
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    self.channelFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                               managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                 sectionNameKeyPath: nil
-                                                                                          cacheName: nil];
-    _channelFetchedResultsController.delegate = self;
-    
-    ZAssert([_channelFetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return _channelFetchedResultsController;
-}
-
-
-
-
-
 
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
@@ -223,47 +118,10 @@
 }
 
 
-
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-    NSString* format = [NSString stringWithFormat:@"viewId == \"%@\"", viewId];
-    return [NSPredicate predicateWithFormat:format];
-}
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerSortDescriptors'");
-    return nil;
-}
-
-- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
-{
-    AssertOrLog (@"Abstract class called 'videoInstanceFetchedResultsControllerSectionNameKeyPath'");
-    return nil;
-}
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerPredicate'");
-    return nil;
-}
-
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    AssertOrLog (@"Abstract class called 'channelFetchedResultsControllerSortDescriptors'");
-    return nil;
-}
-
-
 -(void)reloadCollectionViews
 {
     AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
-
-
-
-
 
 // Helper method: Save the current DB state
 - (void) saveDB
@@ -351,7 +209,7 @@
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -374,7 +232,7 @@
 
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (channel.rockedByUserValue == TRUE)
     {
@@ -410,7 +268,7 @@
         
         if (self.shouldUpdateRockItStatus == TRUE)
         {
-            VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+            VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
             SYNVideoThumbnailWideCell *videoThumbnailCell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
             
             [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
@@ -439,11 +297,10 @@
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
     [self showVideoQueue: TRUE];
-    [self startVideoQueueDismissalTimer];
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
@@ -461,20 +318,16 @@
 {
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
 
-    NSArray *videoInstanceArray = [self.videoInstanceFetchedResultsController fetchedObjects];
-    
-    [self displayVideoViewer: videoInstanceArray
-               selectedIndex: indexPath.row];
+    [self displayVideoViewerWithSelectedIndexPath: indexPath];
 }
 
 
-- (void) displayVideoViewer: (NSArray *) videoInstanceArray
-              selectedIndex: (int) selectedIndex
+- (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) selectedIndexPath
 {
     SYNMasterViewController *bottomTabViewController = (SYNMasterViewController*)appDelegate.viewController;
     
-    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstanceArray: videoInstanceArray
-                                                                                        selectedIndex: (int) selectedIndex];
+    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: self.fetchedResultsController
+                                                                                          selectedIndexPath: (NSIndexPath *) selectedIndexPath];
     
     self.videoViewerViewController.view.alpha = 0.0f;
     [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
@@ -518,15 +371,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
-    if (cv == self.videoQueueCollectionView)
-    {
-        return SYNVideoSelection.sharedVideoSelectionArray.count;
-    }
-    else
-    {
-        // Signal that we do not handle this collection view
-        return -1;
-    }
+    return -1;
 }
 
 - (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
@@ -552,7 +397,7 @@
     if (cv == self.videoThumbnailCollectionView)
     {
         // No, but it was our collection view
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
         SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                       forIndexPath: indexPath];
@@ -572,21 +417,6 @@
         
         cell = videoThumbnailCell;
     }
-    else if (cv == self.videoQueueCollectionView)
-    {
-        SYNVideoQueueCell *videoQueueCell = [cv dequeueReusableCellWithReuseIdentifier: @"VideoQueueCell"
-                                                               forIndexPath: indexPath];
-        
-        VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
-        
-        // Load the image asynchronously
-        videoQueueCell.VideoImageViewImage = videoInstance.video.thumbnailURL;
-        
-        [self.draggedView setImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                         placeHolderImage: nil];
-        
-        cell = videoQueueCell;
-    }
 
     return cell;
 }
@@ -595,20 +425,8 @@
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
 {
-    // Assume for now, that we can handle this
-    BOOL handledInAbstractView = TRUE;
     
-    if (cv == self.videoQueueCollectionView)
-    {
-        DebugLog (@"Selecting image well cell does nothing");
-    }
-    else 
-    {
-        // OK, it turns out that we can't handle this (so indicate to caller)
-        handledInAbstractView = FALSE;
-    }
-    
-    return handledInAbstractView;
+    return NO;
 }
 
 // Create a channel pressed
@@ -643,7 +461,7 @@
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
         
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
         if (!indexPath)
         {
@@ -684,7 +502,6 @@
     {
         // Un-highlight the image well
         [self highlightVideoQueue: FALSE];
-        [self startVideoQueueDismissalTimer];
         
         // and let's figure out where we dropped it
         //        CGPoint point = [sender locationInView: self.dropZoneView];
@@ -697,7 +514,7 @@
             // Hide the dragged thumbnail and add new image to image well
             [self.draggedView removeFromSuperview];
             
-            VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.draggedIndexPath];
+            VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.draggedIndexPath];
             [self animateVideoAdditionToVideoQueue: videoInstance];
         }
         else
@@ -733,91 +550,17 @@
     return FALSE;
 }
 
-- (void) startVideoQueueDismissalTimer
-{
-    self.videoQueueAnimationTimer = [NSTimer scheduledTimerWithTimeInterval: kVideoQueueOnScreenDuration
-                                                                    target: self
-                                                                  selector: @selector(videoQueueTimerCallback)
-                                                                  userInfo: nil
-                                                                   repeats: NO];
-}
-
-- (void) videoQueueTimerCallback
-{
-    [self hideVideoQueue: TRUE];
-}
 
 - (void) showVideoQueue: (BOOL) animated
 {
-    if (self.isVideoQueueVisible == FALSE)
-    {
-        self.videoQueueVisible = TRUE;
-        
-        if (animated)
-        {
-            // Slide video queue view upwards (and contract any other dependent visible views)
-            [UIView animateWithDuration: kVideoQueueAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 [self slideVideoQueueUp];
-             }
-             completion: ^(BOOL finished)
-             {
-             }];
-        }
-        else
-        {
-            [self slideVideoQueueUp];
-        }
-    }
+    [self.videoQVC showVideoQueue:animated];
 }
 
 
 - (void) hideVideoQueue: (BOOL) animated
 {
-    if (self.videoQueueVisible == TRUE)
-    {
-        self.videoQueueAnimationTimer = nil;
-        self.videoQueueVisible = FALSE;
-        
-        if (animated)
-        {
-            [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 // Slide video queue view downwards (and expand any other dependent visible views)
-                 [self slideVideoQueueDown];
-             }
-             completion: ^(BOOL finished)
-             {
-             }];
-        }
-        else
-        {
-            [self slideVideoQueueDown];
-        }
-    }
+    [self.videoQVC hideVideoQueue:animated];
 }
-
-- (void) slideVideoQueueUp
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-}
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-}
-
-
 
 
 
@@ -825,19 +568,19 @@
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
 {
-    [((SYNVideoQueueView*)self.videoQueueView) addVideoToQueue:videoInstance];
+    [self.videoQVC addVideoToQueue:videoInstance];
 }
 
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
 {
-    [((SYNVideoQueueView*)self.videoQueueView) setHighlighted:showHighlight];
+    [self.videoQVC setHighlighted:showHighlight];
 }
 
 
 - (BOOL) pointInVideoQueue: (CGPoint) point
 {
-    return CGRectContainsPoint(self.videoQueueView.frame, point);
+    return CGRectContainsPoint(self.videoQVC.view.frame, point);
 }
 
 

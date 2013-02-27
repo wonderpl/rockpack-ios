@@ -176,6 +176,38 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    
+    
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"channel.position" ascending: YES]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"fetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
 
 
 #pragma mark - Growable UITextView delegates
@@ -396,8 +428,7 @@
     else
     {
         // Display the video viewer
-        [self displayVideoViewer: self.videoInstancesArray
-                   selectedIndex: indexPath.row];
+        [self displayVideoViewerWithSelectedIndexPath: indexPath];
     }
 }
 

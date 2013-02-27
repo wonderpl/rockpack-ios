@@ -12,10 +12,8 @@
 
 @interface SYNVideoViewerViewController : UIViewController
 
-//- (id) initWithVideoInstance: (VideoInstance *) videoInstance;
-
-- (id) initWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                    selectedIndex: (int) selectedIndex;
+- (id) initWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
+                      selectedIndexPath: (NSIndexPath *) selectedIndexPath;
 
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
 

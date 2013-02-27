@@ -10,16 +10,17 @@
 #define kBufferMonitoringTimerInterval 1.0f
 
 #import "SYNVideoPlaybackViewController.h"
-#import "VideoInstance.h"
 #import "Video.h"
+#import "VideoInstance.h"
+#import <CoreData/CoreData.h>
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
-@property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
 @property (nonatomic, assign) CGRect requestedFrame;
-@property (nonatomic, assign) int videoIndex;
-@property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
+@property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
@@ -148,46 +149,101 @@
 
 #pragma mark - Source / Playlist management
 
-- (void) incrementVideoIndex
+- (NSIndexPath *) nextIndexPath: (NSIndexPath *) currentIndexPath
 {
-    self.videoIndex = self.nextVideoIndex;
+    // Get the current number of section and calculate the next one
+    int numOfSections = self.fetchedResultsController.sections.count;
+    int nextSection = ((currentIndexPath.section + 1) % numOfSections);
+    
+    // Get the info for the current section
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[currentIndexPath.section];
+    
+    // Check to see 
+    if ((currentIndexPath.item + 1) >= sectionInfo.numberOfObjects)
+    {
+        // Wrap around to the first item in the next section (which itself may have wrapped around)
+        return [NSIndexPath indexPathForRow: 0
+                                  inSection: nextSection];
+    }
+    else
+    {
+        // Return the next row in the section
+        return [NSIndexPath indexPathForRow: currentIndexPath.item + 1
+                                  inSection: currentIndexPath.section];
+    }
 }
 
 
-- (void) decrementVideoIndex
+- (NSIndexPath *) previousIndexPath: (NSIndexPath *) currentIndexPath
 {
-    self.videoIndex = self.previousVideoIndex;
+    // Get the current number of section and calculate the next one
+    int numOfSections = self.fetchedResultsController.sections.count;
+    
+    // Calculate the previous section
+    int previousSection = currentIndexPath.section - 1;
+
+    // Check to see if we need to wrap around
+    if (previousSection < 0)
+    {
+        // Set to the last section
+        previousSection = numOfSections - 1;
+    }
+    
+    // Get the info for the current section
+    id <NSFetchedResultsSectionInfo> previousSectionInfo = self.fetchedResultsController.sections[previousSection];
+    
+    // Check to see if we need to wrap around
+    if ((currentIndexPath.item - 1) < 0)
+    {
+        // Set to the last index of the previous section
+        return [NSIndexPath indexPathForRow: previousSectionInfo.numberOfObjects - 1
+                                  inSection: previousSection];
+    }
+    else
+    {
+        // Set to the previous index in this section
+        return [NSIndexPath indexPathForRow: (currentIndexPath.item - 1)
+                                  inSection: currentIndexPath.section];
+    }
 }
 
-- (int) nextVideoIndex
+
+- (void) incrementVideoIndexPath
 {
-    int index = 0;
+    self.currentSelectedIndexPath = [self nextIndexPath: self.currentSelectedIndexPath];
+}
+
+
+- (void) decrementVideoIndexPath
+{
+    self.currentSelectedIndexPath = [self previousIndexPath: self.currentSelectedIndexPath];
+}
+
+
+- (NSIndexPath *) nextVideoIndexPath
+{
+    NSIndexPath *index = nil;
     
     // Don't bother incrementing index if we only have a single video
     if (self.isUsingPlaylist)
     {
         // make sure we wrap around at the end of the video playlist
-        index = (self.videoIndex + 1) % self.videoInstanceArray.count;
+        index = [self nextIndexPath: self.currentSelectedIndexPath];
     }
     
     return index;
 }
 
 
-- (int) previousVideoIndex
+- (NSIndexPath *) previousVideoIndexPath
 {
-    int index = 0;
+    NSIndexPath *index = nil;
     
     // Don't bother incrementing index if we only have a single video
     if (self.isUsingPlaylist)
     {
         // make sure we wrap around at the end of the video playlist
-        index = self.videoIndex - 1;
-        
-        if (index< 0)
-        {
-            index = self.videoInstanceArray.count - 1;
-        }
+        index = [self previousIndexPath: self.currentSelectedIndexPath];
     }
     
     return index;
@@ -198,37 +254,26 @@
                    sourceId: (NSString *) sourceId
                    autoPlay: (BOOL) autoPlay
 {
-    // Reset index
-    self.videoIndex = 0;
-    
-    // Set autoplay
-    self.autoPlay = autoPlay;
-    
-    // set sources
+    // Init out ivars
     self.source = source;
     self.sourceId = sourceId;
-    self.videoInstanceArray = nil;
+    self.fetchedResultsController = nil;
+    self.currentSelectedIndexPath = nil;
+    self.autoPlay = autoPlay;
     
     [self loadCurrentVideoWebView];
 }
 
-
-- (void) setPlaylistWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                              currentIndex: (int) currentIndex
-                                  autoPlay: (BOOL) autoPlay;
+- (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
+                               selectedIndexPath: (NSIndexPath *) selectedIndexPath
+                                        autoPlay: (BOOL) autoPlay
 {
-    // Reset index
-    self.videoIndex = 0;
-    
-    // Set autoplay
-    self.autoPlay = autoPlay;
-    
-    // Set playlist
+    // Init our ivars
     self.source = nil;
     self.sourceId = nil;
-    self.videoInstanceArray = videoInstanceArray;
-    
-    self.videoIndex = currentIndex;
+    self.fetchedResultsController = fetchedResultsController;
+    self.currentSelectedIndexPath = selectedIndexPath;
+    self.autoPlay = autoPlay;
     
     [self loadCurrentVideoWebView];
 }
@@ -237,7 +282,7 @@
 // Returns true if we have a playlist
 - (BOOL) isUsingPlaylist
 {
-    return self.videoInstanceArray ? TRUE : FALSE;
+    return self.fetchedResultsController ? TRUE : FALSE;
 }
 
 
@@ -247,10 +292,10 @@
 }
 
 
-- (void) playVideoAtIndex: (int) index
+- (void) playVideoAtIndex: (NSIndexPath *) newIndexPath
 {
     // If we are already at this index, but not playing, then play
-    if (index == self.videoIndex)
+    if ([newIndexPath isEqual: self.currentSelectedIndexPath] == TRUE)
     {
         if (!self.isPlaying)
         {
@@ -261,7 +306,7 @@
     {
         // OK, we are not currently playing this index, so segue to the next video
         [self fadeOutVideoPlayerInWebView: self.currentVideoWebView];
-        self.videoIndex = index;
+        self.currentSelectedIndexPath = newIndexPath;
         [self loadCurrentVideoWebView];
     }
 }
@@ -281,13 +326,13 @@
 
 - (void) loadNextVideo
 {
-    [self incrementVideoIndex];
+    [self incrementVideoIndexPath];
     [self loadCurrentVideoWebView];
 }
 
 - (void) loadPreviousVideo
 {
-    [self decrementVideoIndex];
+    [self decrementVideoIndexPath];
     [self loadCurrentVideoWebView];
 }
 
@@ -335,7 +380,7 @@
     // But if we do have a playlist, then load up the source and sourceId for the current video index
     if (self.isUsingPlaylist)
     {
-        VideoInstance *videoInstance = (VideoInstance *) self.videoInstanceArray[self.videoIndex];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
         currentSource = videoInstance.video.source;
         currentSourceId = videoInstance.video.sourceId;
     }
@@ -354,7 +399,7 @@
     // But if we do have a playlist, then load up the source and sourceId for the current video index
     if (self.isUsingPlaylist)
     {
-        VideoInstance *videoInstance = (VideoInstance *) self.videoInstanceArray[self.nextVideoIndex];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.nextVideoIndexPath];
         nextSource = videoInstance.video.source;
         nextSourceId = videoInstance.video.sourceId;
     }

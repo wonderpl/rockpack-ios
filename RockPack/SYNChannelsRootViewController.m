@@ -33,6 +33,60 @@
 
 #pragma mark - View lifecycle
 
+-(void)loadView
+{
+    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(251.0, 302.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
+    flowLayout.minimumLineSpacing = 3.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    CGRect collectionViewFrame = CGRectMake(0.0, 84.0, 1024.0, 600.0);
+    
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
+    self.channelThumbnailCollectionView.dataSource = self;
+    self.channelThumbnailCollectionView.delegate = self;
+    
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    
+    [self.view addSubview:self.channelThumbnailCollectionView];
+}
+
+
+- (NSFetchedResultsController *) channelFetchedResultsController
+{
+    
+    
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                               managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                 sectionNameKeyPath: nil
+                                                                                          cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -72,29 +126,15 @@
     [self.channelThumbnailCollectionView reloadData];
 }
 
-#pragma mark - Core Data Support
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
-}
 
 
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
-
-
-#pragma mark - Collection view support
+#pragma mark - CollectionView Delegate
 
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.channelFetchedResultsController.sections[section];
+    return sectionInfo.numberOfObjects;
 
 }
 
@@ -285,7 +325,7 @@
     
     [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
         CGPoint currentCenter = self.channelThumbnailCollectionView.center;
-        [self.channelThumbnailCollectionView setCenter:CGPointMake(currentCenter.x, currentCenter.y + 35)];
+        [self.channelThumbnailCollectionView setCenter:CGPointMake(currentCenter.x, currentCenter.y + kCategorySecondRowHeight)];
     }  completion:^(BOOL result){
         tabExpanded = YES;
     }];

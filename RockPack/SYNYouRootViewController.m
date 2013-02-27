@@ -30,6 +30,36 @@
 
 #pragma mark - View lifecycle
 
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    NSError *error = nil;
+    
+    // Return cached version if we have already created one
+    if (fetchedResultsController != nil)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", @"Channels"]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                               managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                 sectionNameKeyPath: nil
+                                                                                          cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    ZAssert([fetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -48,28 +78,14 @@
 }
 
 
-#pragma mark - Core Data Support
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
-}
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
 
 
 #pragma mark - Collection view support
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
-    
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+    return sectionInfo.numberOfObjects;
 }
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
@@ -80,7 +96,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
@@ -111,7 +127,7 @@
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -122,7 +138,7 @@
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -165,7 +181,7 @@
     
     [self toggleChannelRockItAtIndex: indexPath];
     
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
@@ -191,7 +207,7 @@
         
         self.pinchedIndexPath = indexPath;
         
-        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
         
         // Get the various frames we need to calculate the actual position

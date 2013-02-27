@@ -1,4 +1,4 @@
-//
+    //
 //  SYNVideoViewerViewController.m
 //  rockpack
 //
@@ -31,9 +31,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfRocksLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) NSMutableArray *videoInstancesArray;
-@property (nonatomic, strong) NSArray *videoInstanceArray;
-@property (nonatomic, assign) int currentSelectedIndex;
 
 
 @end
@@ -42,17 +42,18 @@
 
 #pragma mark - View lifecycle
 
-- (id) initWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                    selectedIndex: (int) selectedIndex
+- (id) initWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
+                      selectedIndexPath: (NSIndexPath *) selectedIndexPath;
 {
   	if ((self = [super init]))
     {
-		self.videoInstanceArray = videoInstanceArray;
-        self.currentSelectedIndex = selectedIndex;
+		self.fetchedResultsController = fetchedResultsController;
+        self.currentSelectedIndexPath = selectedIndexPath;
 	}
     
 	return self;
 }
+
 
 - (void) viewDidLoad
 {
@@ -67,7 +68,7 @@
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
     // Set initial label text
-    VideoInstance *videoInstance = self.videoInstanceArray[self.currentSelectedIndex];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
@@ -100,9 +101,9 @@
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.panelImageView];
     
-    [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: self.videoInstanceArray
-                                                           currentIndex: self.currentSelectedIndex
-                                                               autoPlay: TRUE];
+    [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+                                                            selectedIndexPath: self.currentSelectedIndexPath
+                                                                     autoPlay: TRUE];
 }
 
 
@@ -121,14 +122,14 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    NSLog (@"Number of items %d", self.videoInstancesArray.count);
-    return self.videoInstancesArray.count;
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+    return sectionInfo.numberOfObjects;
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
 {
-    return 1;
+        return self.fetchedResultsController.sections.count;
 }
 
 
@@ -138,7 +139,7 @@
     SYNVideoThumbnailSmallCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"
                                                                        forIndexPath: indexPath];
     
-    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     cell.videoImageViewImage = videoInstance.video.thumbnailURL;
     cell.titleLabel.text = videoInstance.title;
     
