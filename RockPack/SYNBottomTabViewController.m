@@ -27,6 +27,7 @@
                                           UITextViewDelegate>
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
+@property (nonatomic) BOOL shouldAnimateViewTransitions;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
@@ -115,6 +116,8 @@
 
     
     // Set initial
+    
+    self.shouldAnimateViewTransitions = YES;
     
     [self setSelectedIndex:2];
     
@@ -214,57 +217,59 @@
     toButton.selected = TRUE;
     
     
-    UIViewController *toViewController = (UIViewController*)self.viewControllers[_selectedIndex];
-    
-    
-    
-    [self performChangeFromController:_selectedViewController toController:toViewController animated:YES];
+    self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
     
     
 }
 
--(void)performStandardChangeFromCurrentControllerTo:(UIViewController*)toController
-{
-    [self performChangeFromController:_selectedViewController toController:toController animated:YES];
-}
-
--(void)performChangeFromController:(UIViewController*)fromViewController toController:(UIViewController*)toViewController animated:(BOOL)animated
+-(void)setSelectedViewController:(UIViewController *)newSelectedViewController
 {
     
-    [self.containerView addSubview:toViewController.view];
+    // even if nill, that is OK. It will just animate the selectedViewController out.
     
-    if (animated)
+    if(newSelectedViewController)
+        [self.containerView addSubview:newSelectedViewController.view];
+    
+    if (self.shouldAnimateViewTransitions)
     {
         self.view.userInteractionEnabled = NO;
-        self.tabsViewContainer.userInteractionEnabled = NO;
-      
-        toViewController.view.alpha = 0.0f;
+        
+        newSelectedViewController.view.alpha = 0.0f;
         
         [UIView animateWithDuration: kTabAnimationDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^{
-             fromViewController.view.alpha = 0.0f;
-             toViewController.view.alpha = 1.0f;
                              
-         } completion: ^(BOOL finished) {
-             
-             fromViewController.view.alpha = 0.0f;
-             [fromViewController.view removeFromSuperview];
-             self.view.userInteractionEnabled = YES;
-             self.tabsViewContainer.userInteractionEnabled = YES;
-             
-         }];
+                             _selectedViewController.view.alpha = 0.0f;
+                             
+                             if(newSelectedViewController)
+                                 newSelectedViewController.view.alpha = 1.0f;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             [_selectedViewController.view removeFromSuperview];
+                             
+                             self.view.userInteractionEnabled = YES;
+                             
+                             _selectedViewController = newSelectedViewController;
+                             
+                         }];
     }
     else
     {
-        [fromViewController.view removeFromSuperview];
         
+        [_selectedViewController.view removeFromSuperview];
+        
+        
+        _selectedViewController = newSelectedViewController;
     }
     
-    _selectedViewController = toViewController;
-    
 }
+
+
+
+
 
 
 
@@ -311,7 +316,7 @@
 -(void) showSearchViewControllerWithTerm:(NSString*)term
 {
     [self setSelectedIndex:-1];
-    [self performStandardChangeFromCurrentControllerTo:self.searchViewController];
+    self.selectedViewController = self.searchViewController;
 }
 
 @end
