@@ -223,7 +223,10 @@
     
 }
 
-
+-(void)performStandardChangeFromCurrentControllerTo:(UIViewController*)toController
+{
+    [self performChangeFromController:_selectedViewController toController:toController animated:YES];
+}
 
 -(void)performChangeFromController:(UIViewController*)fromViewController toController:(UIViewController*)toViewController animated:(BOOL)animated
 {
@@ -307,7 +310,8 @@
 
 -(void) showSearchViewControllerWithTerm:(NSString*)term
 {
-    [self performChangeFromController:self.selectedViewController toController:self.searchViewController animated:YES];
+    [self setSelectedIndex:-1];
+    [self performStandardChangeFromCurrentControllerTo:self.searchViewController];
 }
 
 @end
