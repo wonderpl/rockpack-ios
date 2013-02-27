@@ -21,7 +21,7 @@
 #import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
 #import "SYNSearchTabViewController.h"
-#import "SYNSearchRootViewController.h"
+#import "SYNSearchVideosViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
@@ -34,7 +34,7 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
-@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
+@property (nonatomic, strong) SYNSearchVideosViewController* searchViewController;
 
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
@@ -89,7 +89,7 @@
     
     
     // Search tab
-    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
+    self.searchViewController = [[SYNSearchVideosViewController alloc] initWithViewId:@"Search"];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
     searchRootNavigationViewController.navigationBarHidden = TRUE;

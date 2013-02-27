@@ -1,18 +1,18 @@
 //
-//  SYNSearchRootViewController.m
+//  SYNSearchChannelsViewController.m
 //  rockpack
 //
 //  Created by Michael Michailidis on 27/02/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNSearchRootViewController.h"
+#import "SYNSearchChannelsViewController.h"
 
-@interface SYNSearchRootViewController ()
+@interface SYNSearchChannelsViewController ()
 
 @end
 
-@implementation SYNSearchRootViewController
+@implementation SYNSearchChannelsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

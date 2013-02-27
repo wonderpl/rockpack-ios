@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractViewController.h"
+#import "SYNVideosRootViewController.h"
 
-@interface SYNSearchRootViewController : SYNAbstractViewController
+@interface SYNSearchVideosViewController : SYNVideosRootViewController
+
+-(void)performSearchWithTerm:(NSString*)term;
 
 @end
