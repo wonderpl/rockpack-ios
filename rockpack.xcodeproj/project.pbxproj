@@ -457,11 +457,6 @@
 		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
 		BEA1E32E16CCFF70000AB59D /* SYNMainRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */; };
 		BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */; };
-		BEF9E59716DBA63700286113 /* SYNAbstractDataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E59616DBA63700286113 /* SYNAbstractDataProxy.m */; };
-		BEF9E59A16DBB9B800286113 /* SYNVideosByPositionDataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E59916DBB9B800286113 /* SYNVideosByPositionDataProxy.m */; };
-		BEF9E59D16DBBA3400286113 /* SYNVideosByDateDataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E59C16DBBA3400286113 /* SYNVideosByDateDataProxy.m */; };
-		BEF9E5A016DBBA7500286113 /* SYNChannelsByPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E59F16DBBA7500286113 /* SYNChannelsByPosition.m */; };
-		BEF9E5A416DBBAD900286113 /* SYNChannelByTitleDataProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A316DBBAD800286113 /* SYNChannelByTitleDataProxy.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
 		BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
@@ -1022,16 +1017,6 @@
 		BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMainRegistry.m; sourceTree = "<group>"; };
 		BEA1E32F16CE6045000AB59D /* SYNNetworkOperationJsonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObject.h; sourceTree = "<group>"; };
 		BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObject.m; sourceTree = "<group>"; };
-		BEF9E59516DBA63700286113 /* SYNAbstractDataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractDataProxy.h; sourceTree = "<group>"; };
-		BEF9E59616DBA63700286113 /* SYNAbstractDataProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractDataProxy.m; sourceTree = "<group>"; };
-		BEF9E59816DBB9B800286113 /* SYNVideosByPositionDataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosByPositionDataProxy.h; sourceTree = "<group>"; };
-		BEF9E59916DBB9B800286113 /* SYNVideosByPositionDataProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosByPositionDataProxy.m; sourceTree = "<group>"; };
-		BEF9E59B16DBBA3400286113 /* SYNVideosByDateDataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosByDateDataProxy.h; sourceTree = "<group>"; };
-		BEF9E59C16DBBA3400286113 /* SYNVideosByDateDataProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosByDateDataProxy.m; sourceTree = "<group>"; };
-		BEF9E59E16DBBA7500286113 /* SYNChannelsByPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsByPosition.h; sourceTree = "<group>"; };
-		BEF9E59F16DBBA7500286113 /* SYNChannelsByPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsByPosition.m; sourceTree = "<group>"; };
-		BEF9E5A216DBBAD800286113 /* SYNChannelByTitleDataProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelByTitleDataProxy.h; sourceTree = "<group>"; };
-		BEF9E5A316DBBAD800286113 /* SYNChannelByTitleDataProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelByTitleDataProxy.m; sourceTree = "<group>"; };
 		BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueView.h; sourceTree = "<group>"; };
 		BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueView.m; sourceTree = "<group>"; };
 		BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueDelegate.h; sourceTree = "<group>"; };
@@ -2084,7 +2069,6 @@
 		01E427D01664C701009B941F /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				BEF9E59416DBA61B00286113 /* Proxies */,
 				BEA1E32B16CCFF5E000AB59D /* Registries */,
 				01E427D11664C726009B941F /* Rockpack.xcdatamodeld */,
 				01E427F21664F32D009B941F /* Auto generated files */,
@@ -2381,31 +2365,6 @@
 				0170716F16554E9B00A3C7C4 /* MKNetworkOperation.m */,
 			);
 			name = Engine;
-			sourceTree = "<group>";
-		};
-		BEF9E59416DBA61B00286113 /* Proxies */ = {
-			isa = PBXGroup;
-			children = (
-				BEF9E59516DBA63700286113 /* SYNAbstractDataProxy.h */,
-				BEF9E59616DBA63700286113 /* SYNAbstractDataProxy.m */,
-				BEF9E5A116DBBA8300286113 /* Specific Proxies */,
-			);
-			name = Proxies;
-			sourceTree = "<group>";
-		};
-		BEF9E5A116DBBA8300286113 /* Specific Proxies */ = {
-			isa = PBXGroup;
-			children = (
-				BEF9E59816DBB9B800286113 /* SYNVideosByPositionDataProxy.h */,
-				BEF9E59916DBB9B800286113 /* SYNVideosByPositionDataProxy.m */,
-				BEF9E59B16DBBA3400286113 /* SYNVideosByDateDataProxy.h */,
-				BEF9E59C16DBBA3400286113 /* SYNVideosByDateDataProxy.m */,
-				BEF9E59E16DBBA7500286113 /* SYNChannelsByPosition.h */,
-				BEF9E59F16DBBA7500286113 /* SYNChannelsByPosition.m */,
-				BEF9E5A216DBBAD800286113 /* SYNChannelByTitleDataProxy.h */,
-				BEF9E5A316DBBAD800286113 /* SYNChannelByTitleDataProxy.m */,
-			);
-			name = "Specific Proxies";
 			sourceTree = "<group>";
 		};
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
@@ -2944,11 +2903,6 @@
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
 				BE0815D216D6448200ADB1DC /* SYNInboxOverlayViewController.m in Sources */,
 				BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */,
-				BEF9E59716DBA63700286113 /* SYNAbstractDataProxy.m in Sources */,
-				BEF9E59A16DBB9B800286113 /* SYNVideosByPositionDataProxy.m in Sources */,
-				BEF9E59D16DBBA3400286113 /* SYNVideosByDateDataProxy.m in Sources */,
-				BEF9E5A016DBBA7500286113 /* SYNChannelsByPosition.m in Sources */,
-				BEF9E5A416DBBAD900286113 /* SYNChannelByTitleDataProxy.m in Sources */,
 				BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */,
 				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
