@@ -49,6 +49,14 @@
 
 #pragma mark - View lifecycle
 
+-(id)initWithViewId:(NSString *)vid
+{
+    if (self = [super initWithNibName:@"SYNVideosRootViewController" bundle:nil]) {
+        viewId = vid;
+    }
+    return self;
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];

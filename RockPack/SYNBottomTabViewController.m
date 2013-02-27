@@ -21,6 +21,7 @@
 #import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
 #import "SYNSearchTabViewController.h"
+#import "SYNSearchRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
@@ -88,7 +89,7 @@
     
     
     // Search tab
-    SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Videos"];
+    SYNSearchRootViewController *searchRootViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Videos"];
     searchRootViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: searchRootViewController];
     searchRootNavigationViewController.navigationBarHidden = TRUE;
