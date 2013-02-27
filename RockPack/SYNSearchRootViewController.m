@@ -11,6 +11,8 @@
 
 @interface SYNSearchRootViewController ()
 
+@property (nonatomic, strong) NSString* searchTerm;
+
 @end
 
 @implementation SYNSearchRootViewController
@@ -48,7 +50,9 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
-    [appDelegate.networkEngine searchVideosForTerm:term];
+    self.searchTerm = term;
+    
+    [appDelegate.networkEngine searchVideosForTerm: self.searchTerm];
     
     NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
     
@@ -68,6 +72,14 @@
     self.largeVideoPanelView.center = CGPointMake(self.largeVideoPanelView.center.x,
                                                   self.largeVideoPanelView.center.y + 30.0);
     
+}
+
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
+{
+    if([selectionId isEqualToString:@"0"])
+        [appDelegate.networkEngine searchVideosForTerm:self.searchTerm];
+    else
+        [appDelegate.networkEngine searchVideosForTerm:self.searchTerm];
 }
 
 @end

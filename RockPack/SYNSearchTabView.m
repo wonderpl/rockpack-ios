@@ -100,7 +100,14 @@
     itemView = (SYNSearchItemView*)recogniser.view;
     [itemView makeHighlightedWithImage:YES];
     
-    [self.tapDelegate handleMainTap:recogniser];
+    NSString* tabTappedId;
+    
+    if(itemView == self.searchChannelsItemView)
+        tabTappedId = @"0";
+    else
+        tabTappedId = @"1";
+    
+    [self.tapDelegate handleNewTabSelectionWithId:tabTappedId];
 }
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser

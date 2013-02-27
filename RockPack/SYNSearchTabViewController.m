@@ -32,4 +32,9 @@
     
 }
 
+-(void)handleNewTabSelectionWithId:(NSString *)itemId
+{
+    [self.delegate handleNewTabSelectionWithId:itemId];
+}
+
 @end

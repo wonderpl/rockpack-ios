@@ -317,7 +317,7 @@
 {
     [self setSelectedIndex:-1];
     self.selectedViewController = self.searchViewController;
-    [self.searchViewController performSearchWithTerm:@"mike"];
+    [self.searchViewController performSearchWithTerm: term];
 }
 
 @end

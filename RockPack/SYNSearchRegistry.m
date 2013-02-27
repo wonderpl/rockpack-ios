@@ -9,6 +9,7 @@
 #import "SYNSearchRegistry.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "Channel.h"
 
 @implementation SYNSearchRegistry
 
@@ -24,7 +25,7 @@
 }
 
 
--(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId
+-(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary
 {
     
     // == Check for Validity == //
@@ -53,20 +54,46 @@
             [VideoInstance instanceFromDictionary: fullItemDictionary
                         usingManagedObjectContext: importManagedObjectContext
                               ignoringObjectTypes: kIgnoreChannelObjects
-                                        andViewId: viewId];
+                                        andViewId: @"Search"];
         }
             
     }
-        
-    
-    
-    
-    
+       
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
     
+    return YES;
+}
+
+
+-(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary
+{
+    
+    // == Check for Validity == //
+    
+    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+    if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    
+    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    
+    for (NSDictionary *itemDictionary in itemArray)
+        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+            [Channel instanceFromDictionary: itemDictionary
+                  usingManagedObjectContext: importManagedObjectContext
+                        ignoringObjectTypes: kIgnoreNothing
+                                  andViewId: @"Search"];
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
     
     
     return YES;

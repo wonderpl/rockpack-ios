@@ -49,6 +49,7 @@
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
+    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
     
