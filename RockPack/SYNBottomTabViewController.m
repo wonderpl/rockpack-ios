@@ -52,6 +52,7 @@
 @implementation SYNBottomTabViewController
 
 @synthesize selectedIndex = _selectedIndex;
+@synthesize selectedViewController = _selectedViewController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -195,7 +196,7 @@
 {
 	
     if(newSelectedIndex > [self.viewControllers count]) {
-        DebugLog(@"Selected index %i is out of bounds", newSelectedIndex);
+        DebugLog(@"WARNING: Selected index %i is out of bounds", newSelectedIndex);
         return;
     }
     
@@ -231,10 +232,6 @@
     if (toViewController == nil)  // don't animate
     {
         [fromViewController.view removeFromSuperview];
-    }
-    else if (fromViewController == nil)  // don't animate
-    {
-        [self.containerView addSubview:toViewController.view];
     }
     
     
@@ -283,11 +280,12 @@
              
          }];
     }
-    else  // not animated
+    else
     {
         [fromViewController.view removeFromSuperview];
         
     }
+    
 }
 
 
@@ -369,15 +367,9 @@
 
 
 
--(void) showSearchViewController
+-(void) showSearchViewControllerWithTerm:(NSString*)term
 {
-    UIViewController *fromViewController = self.selectedViewController;
-    if(fromViewController == nil) {
-        return;
-    }
-    UIViewController *toViewController = self.searchViewController;
-    
-    [self performChangeFromController:fromViewController toController:toViewController animated:YES];
+    [self performChangeFromController:self.selectedViewController toController:self.searchViewController animated:YES];
 }
 
 @end

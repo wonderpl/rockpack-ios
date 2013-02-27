@@ -306,9 +306,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
-    DebugLog(@"textFieldShouldReturn:");
+
     
-    [((SYNBottomTabViewController*)self.rootViewController) showSearchViewController];
+    NSString* searchTerm = self.searchTextField.text;
+    
+    if ([searchTerm isEqualToString:@""])
+        return YES;
+    
+    [((SYNBottomTabViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
     
     [textField resignFirstResponder];
     

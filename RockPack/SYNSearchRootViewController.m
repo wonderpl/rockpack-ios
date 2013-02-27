@@ -42,6 +42,7 @@
     ZAssert([fetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
+    
 }
 
 
