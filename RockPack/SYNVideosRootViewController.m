@@ -18,7 +18,6 @@
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
-#import "SYNWallpackCarouseHorizontallLayout.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -126,7 +125,13 @@
     // Set the first video
     if (self.fetchedResultsController.fetchedObjects.count > 0)
     {
-        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
+        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
+        
+        [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+                                                                selectedIndexPath: firstIndexPath
+                                                                         autoPlay: TRUE];
+        
+        [self setLargeVideoToIndexPath: firstIndexPath];
     }
 }
 
@@ -155,9 +160,10 @@
     NSArray *videoInstances = self.fetchedResultsController.fetchedObjects;
     // Set the first video
     if (videoInstances.count > 0)
-    {
-        [self.videoPlaybackViewController setPlaylistWithVideoInstanceArray: videoInstances
-                                                                   autoPlay: TRUE];
+    {       
+        [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+                                                                selectedIndexPath: self.currentIndexPath
+                                                                         autoPlay: TRUE];
         
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
     }
@@ -183,7 +189,7 @@
     {
         if (collectionView == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+            id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
             items = [sectionInfo numberOfObjects];
         }
         else
@@ -247,7 +253,7 @@
     {        
         self.currentIndexPath = indexPath;
         
-        [self.videoPlaybackViewController playVideoAtIndex: indexPath.row];   
+        [self.videoPlaybackViewController playVideoAtIndex: indexPath];   
     }
 }
 

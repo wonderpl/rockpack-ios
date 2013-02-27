@@ -53,7 +53,6 @@
 		012502C316CA99630029C7C8 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C216CA99630029C7C8 /* AdSupport.framework */; };
 		012502C516CA99710029C7C8 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C416CA99710029C7C8 /* Accounts.framework */; };
 		012502C716CA997A0029C7C8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C616CA99790029C7C8 /* Social.framework */; };
-		012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */; };
 		012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */; };
 		012632F5162E130C0009FF9C /* SYNVideosRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
@@ -67,7 +66,6 @@
 		01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F501631789F00FFAA09 /* SYNMovableView.m */; };
 		01363F7A1631A01000FFAA09 /* SYNVideoQueueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNVideoQueueCell.m */; };
 		01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */; };
-		01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */; };
 		0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0140F1F916B6D12D0094B069 /* SYNTextField.m */; };
 		0142ED8116B1439B008694DA /* CategoryBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED7F16B1439B008694DA /* CategoryBar.png */; };
 		0142ED8216B1439B008694DA /* CategoryBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8016B1439B008694DA /* CategoryBar@2x.png */; };
@@ -241,6 +239,8 @@
 		01946B921683335400354601 /* _VideoInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 01946B901683335400354601 /* _VideoInstance.m */; };
 		01946B971683339F00354601 /* ChannelOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 01946B941683339F00354601 /* ChannelOwner.m */; };
 		01946B981683339F00354601 /* VideoInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 01946B961683339F00354601 /* VideoInstance.m */; };
+		0194FD2216DE6FE40058A7C2 /* SYNVideoThumbnailSmallCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */; };
+		0194FD2316DE6FE90058A7C2 /* SYNVideoThumbnailSmallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -510,8 +510,6 @@
 		012502C216CA99630029C7C8 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		012502C416CA99710029C7C8 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		012502C616CA99790029C7C8 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouselVerticalLayout.h; sourceTree = "<group>"; };
-		012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouselVerticalLayout.m; sourceTree = "<group>"; };
 		012632F1162E130C0009FF9C /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
 		012632F2162E130C0009FF9C /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
 		012632F3162E130C0009FF9C /* SYNVideosRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideosRootViewController.xib; sourceTree = "<group>"; };
@@ -533,8 +531,6 @@
 		01363F781631A01000FFAA09 /* SYNVideoQueueCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueCell.h; sourceTree = "<group>"; };
 		01363F791631A01000FFAA09 /* SYNVideoQueueCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueCell.m; sourceTree = "<group>"; };
 		01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoQueueCell.xib; sourceTree = "<group>"; };
-		01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNWallpackCarouseHorizontallLayout.h; sourceTree = "<group>"; };
-		01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNWallpackCarouseHorizontallLayout.m; sourceTree = "<group>"; };
 		0140F1F816B6D12D0094B069 /* SYNTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTextField.h; sourceTree = "<group>"; };
 		0140F1F916B6D12D0094B069 /* SYNTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTextField.m; sourceTree = "<group>"; };
 		0142ED7F16B1439B008694DA /* CategoryBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CategoryBar.png; sourceTree = "<group>"; };
@@ -1200,10 +1196,6 @@
 			children = (
 				015CEE3D16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.h */,
 				015CEE3E16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m */,
-				012632C9162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.h */,
-				012632CA162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m */,
-				01363FA116330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.h */,
-				01363FA216330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m */,
 				011CC673164A8CAA00F02B6D /* SYNFriendsUserLayout.h */,
 				011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */,
 				011CC676164A95CB00F02B6D /* SYNFriendsGridLayout.h */,
@@ -2813,6 +2805,7 @@
 				BE0815D316D6448200ADB1DC /* SYNInboxOverlayViewController.xib in Resources */,
 				BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */,
 				015487D316DCE399002A41A2 /* FacebookSDKResources.bundle in Resources */,
+				0194FD2216DE6FE40058A7C2 /* SYNVideoThumbnailSmallCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2850,14 +2843,12 @@
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
 				019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */,
-				012632CB162DF4F00009FF9C /* SYNWallpackCarouselVerticalLayout.m in Sources */,
 				012632F4162E130C0009FF9C /* SYNVideosRootViewController.m in Sources */,
 				01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */,
 				01363EC916304D8D00FFAA09 /* SYNVideoDB.m in Sources */,
 				01363F241630B81400FFAA09 /* SYNVideoThumbnailWideCell.m in Sources */,
 				01363F511631789F00FFAA09 /* SYNMovableView.m in Sources */,
 				01363F7A1631A01000FFAA09 /* SYNVideoQueueCell.m in Sources */,
-				01363FA316330EE700FFAA09 /* SYNWallpackCarouseHorizontallLayout.m in Sources */,
 				011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */,
 				011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */,
 				011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */,
@@ -2958,6 +2949,7 @@
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
 				BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */,
+				0194FD2316DE6FE90058A7C2 /* SYNVideoThumbnailSmallCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

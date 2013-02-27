@@ -49,7 +49,6 @@
 	if ((self = [super initWithNibName: @"SYNAbstractChannelsDetailViewController" bundle: nil]))
     {
 		self.channel = channel;
-        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
 	}
     
 	return self;
@@ -176,6 +175,38 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    
+    
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"channel.position" ascending: YES]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"fetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
 
 
 #pragma mark - Growable UITextView delegates
@@ -286,8 +317,8 @@
     }
     else
     {
-        NSLog (@"Number of items %d", self.videoInstancesArray.count);
-        return self.videoInstancesArray.count;
+        id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+        return sectionInfo.numberOfObjects;
     }
 }
 
@@ -354,7 +385,7 @@
         SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                            forIndexPath: indexPath];
         
-        VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         
@@ -396,8 +427,7 @@
     else
     {
         // Display the video viewer
-        VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
-        [self displayVideoViewer: videoInstance];
+        [self displayVideoViewerWithSelectedIndexPath: indexPath];
     }
 }
 
@@ -407,15 +437,19 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
+    // TODO: Need to change the object's priority field to change order
+    // As we can't actually change the order of the results of an
+    // NSFetchedResults controller
+    
     // Actually swap the video thumbnails around in the visible list
-    id fromItem = self.videoInstancesArray[fromIndexPath.item];
-    id fromObject = self.channel.videoInstances[fromIndexPath.item];
+//    id fromItem = [self.fetchedResultsController objectAtIndexPath: fromIndexPath];
+//    id fromObject = self.channel.videoInstances[fromIndexPath.item];
     
-    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
-    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
-    
-    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
-    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
+//    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
+//    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
+//    
+//    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
+//    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
     
     [self saveDB];
 }

@@ -133,8 +133,8 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.channelFetchedResultsController.sections[section];
+    return sectionInfo.numberOfObjects;
 
 }
 

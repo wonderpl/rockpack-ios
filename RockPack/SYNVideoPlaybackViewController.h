@@ -10,6 +10,7 @@
 
 // Forward declaration for
 @class SYNVideoPlaybackViewController;
+@class NSFetchedResultsController;
 
 // Define our event callback delegate
 @protocol SYNVideoPlaybackViewControllerDelegate
@@ -32,12 +33,13 @@
                    sourceId: (NSString *) sourceId
                    autoPlay: (BOOL) autoPlay;
 
-- (void) setPlaylistWithVideoInstanceArray: (NSArray *) videoInstanceArray
-                                  autoPlay: (BOOL) autoPlay;
+- (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
+                               selectedIndexPath: (NSIndexPath *) selectedIndexPath
+                                        autoPlay: (BOOL) autoPlay;
 
 
 // Player control
-- (void) playVideoAtIndex: (int) index;
+- (void) playVideoAtIndex: (NSIndexPath *) newIndexPath;
 - (void) loadNextVideo;
 - (void) loadPreviousVideo;
 

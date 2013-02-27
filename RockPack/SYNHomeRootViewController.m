@@ -21,10 +21,11 @@
 
 @interface SYNHomeRootViewController ()
 
-@property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
 @property (nonatomic, assign) BOOL refreshing;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -33,7 +34,7 @@
 
 #pragma mark - View lifecycle
 
--(void)loadView
+- (void) loadView
 {
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
@@ -51,41 +52,12 @@
     
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
     [self.view addSubview:self.videoThumbnailCollectionView];
+    
+    // We should only setup our date formatter once
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss Z";
 }
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    
-    
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-   
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
-    
-    fetchRequest.sortDescriptors = @[
-                                     [[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]
-                                     ];
-    
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                       sectionNameKeyPath: @"dateAddedIgnoringTime"
-                                                                                                cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
 
 - (void) viewDidLoad
 {
@@ -116,21 +88,6 @@
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
     [self refreshVideoThumbnails];
-}
-
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-
-}
-
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    [super viewWillDisappear: animated];
-    
 }
 
 
@@ -173,6 +130,40 @@
     [self.refreshControl endRefreshing];
 }
 
+#pragma mark - Fetched results
+
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    
+    fetchRequest.sortDescriptors = @[
+                                     [[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]
+                                     ];
+    
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: @"dateAddedIgnoringTime"
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
 
 
 #pragma mark - Collection view support
@@ -200,8 +191,8 @@
     {
         if (collectionView == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-            return [sectionInfo numberOfObjects];
+            id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+            return sectionInfo.numberOfObjects;
         }
         else
         {
@@ -251,20 +242,20 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
+    
     UICollectionReusableView *sectionSupplementaryView = nil;
     
     if (collectionView == self.videoThumbnailCollectionView)
     {
         // Work out the day
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex: indexPath.section];
+        id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex: indexPath.section];
         
         // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
         
         // TODO: We might want to optimise this instead of creating a new date formatter each time
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+
         
-        NSDate *date = [dateFormatter dateFromString: sectionInfo.name];
+        NSDate *date = [self.dateFormatter dateFromString: sectionInfo.name];
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
