@@ -71,7 +71,7 @@
 
 - (void) reloadCollectionViews
 {
-    self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
+//    self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
     [self.videoThumbnailCollectionView reloadData];
 }
 
