@@ -18,7 +18,7 @@
     {
         appDelegate = UIApplication.sharedApplication.delegate;
         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-        importManagedObjectContext.parentContext = appDelegate.searchManagedObjectContext;
+        importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
     }
     return self;
 }

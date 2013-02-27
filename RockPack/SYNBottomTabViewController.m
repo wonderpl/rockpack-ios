@@ -34,7 +34,7 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
-@property (nonatomic, strong) UIViewController* searchViewController;
+@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
@@ -89,9 +89,9 @@
     
     
     // Search tab
-    SYNSearchRootViewController *searchRootViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Videos"];
-    searchRootViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
-    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: searchRootViewController];
+    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
+    self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
+    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
     searchRootNavigationViewController.navigationBarHidden = TRUE;
     searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
     searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
@@ -113,7 +113,6 @@
                              youRootRootNavigationViewController,
                              friendsRootViewController];
     
-    self.searchViewController = searchRootNavigationViewController;
 
     
     // Set initial
@@ -318,6 +317,7 @@
 {
     [self setSelectedIndex:-1];
     self.selectedViewController = self.searchViewController;
+    [self.searchViewController performSearchWithTerm:@"mike"];
 }
 
 @end

@@ -10,4 +10,6 @@
 
 @interface SYNSearchRootViewController : SYNVideosRootViewController
 
+-(void)performSearchWithTerm:(NSString*)term;
+
 @end
