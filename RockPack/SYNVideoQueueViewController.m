@@ -157,10 +157,6 @@
     self.isVisible = NO;
     self.videoQueueAnimationTimer = nil;
     
-    
-    
-    
-    
 }
 
 

@@ -40,14 +40,11 @@
         
         self.frame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height);
         
-        CGFloat midBar = self.frame.size.width * 0.5;
+        //CGFloat midBar = self.frame.size.width * 0.5;
         
         
         UIView* dividerView = [[UIView alloc] initWithFrame:self.frame];
         dividerView.userInteractionEnabled = NO;
-        
-        
-        
         
         
         
