@@ -74,15 +74,6 @@
     self.videoTitleLabel.text = videoInstance.title;
     self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
     
-    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
-    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(258.0f , 179.0f);
-    layout.minimumInteritemSpacing = 0.0f;
-    layout.minimumLineSpacing = 0.0f;
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    
-    self.videoThumbnailCollectionView.collectionViewLayout = layout;
-    
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
                                                   bundle: nil];
@@ -123,13 +114,17 @@
       numberOfItemsInSection: (NSInteger) section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+    
+    DebugLog (@"Items in section %d", sectionInfo.numberOfObjects);
+    
     return sectionInfo.numberOfObjects;
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
 {
-        return self.fetchedResultsController.sections.count;
+    DebugLog (@"Section %d", self.fetchedResultsController.sections.count);
+    return self.fetchedResultsController.sections.count;
 }
 
 
@@ -151,25 +146,6 @@
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-}
-
-
-- (void) collectionView: (UICollectionView *) cv
-                 layout: (UICollectionViewLayout *) layout
-        itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *) toIndexPath
-{
-    // Actually swap the video thumbnails around in the visible list
-//    id fromItem = self.videoInstancesArray[fromIndexPath.item];
-//    id fromObject = self.channel.videoInstances[fromIndexPath.item];
-//    
-//    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
-//    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
-//    
-//    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
-//    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
-//    
-//    [self saveDB];
 }
 
 
