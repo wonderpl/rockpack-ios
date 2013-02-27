@@ -10,4 +10,6 @@
 
 @interface SYNVideosRootViewController : SYNAbstractTopTabViewController 
 
+- (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath ;
+
 @end
