@@ -12,6 +12,18 @@
 
 @implementation SYNSearchRegistry
 
+-(id)init
+{
+    if (self = [super init])
+    {
+        appDelegate = UIApplication.sharedApplication.delegate;
+        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
+        importManagedObjectContext.parentContext = appDelegate.searchManagedObjectContext;
+    }
+    return self;
+}
+
+
 -(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId
 {
     
@@ -28,9 +40,6 @@
     NSArray *itemArray = [videosDictionary objectForKey: @"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
-    
-    
-    
     
     
     // === Main Processing === //

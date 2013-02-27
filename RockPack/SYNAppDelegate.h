@@ -19,7 +19,9 @@
 @property (strong, nonatomic) UIWindow *window;
 
 // Support for Core Data
-@property (readonly, strong, nonatomic) NSManagedObjectContext *mainManagedObjectContext;
+@property (nonatomic, readonly) NSManagedObjectContext *mainManagedObjectContext;
+
+@property (nonatomic, readonly) NSManagedObjectContext *searchManagedObjectContext;
 
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;

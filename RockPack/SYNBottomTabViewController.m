@@ -27,8 +27,9 @@
                                           UITextViewDelegate>
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
+@property (nonatomic) BOOL shouldAnimateViewTransitions;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
-@property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
@@ -36,8 +37,6 @@
 
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
-
-@property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 
@@ -47,11 +46,14 @@
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
 
+@property (nonatomic, strong) IBOutlet UIView* tabsViewContainer;
+
 @end
 
 @implementation SYNBottomTabViewController
 
 @synthesize selectedIndex = _selectedIndex;
+@synthesize selectedViewController = _selectedViewController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -112,9 +114,12 @@
     
     self.searchViewController = searchRootNavigationViewController;
 
-    _selectedIndex = NSNotFound;
     
-    self.selectedViewController = videosRootNavigationViewController;
+    // Set initial
+    
+    self.shouldAnimateViewTransitions = YES;
+    
+    [self setSelectedIndex:2];
     
     
     
@@ -124,9 +129,6 @@
     self.didNotSwipeShareMenu = TRUE;
     
     
-    
-    // Placeholder for rockie-talkie message view to show message only when no text in main view
-    self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
     
     
 }
@@ -181,7 +183,7 @@
 
 // Set the selected tab (with no animation)
 
-- (void) setSelectedIndex: (NSUInteger) newSelectedIndex
+- (void) setSelectedIndex: (NSInteger) newSelectedIndex
 {
 	[self setSelectedIndex: newSelectedIndex
                   animated: NO];
@@ -194,132 +196,81 @@
                  animated: (BOOL) animated
 {
 	
-    if(newSelectedIndex > [self.viewControllers count]) {
-        DebugLog(@"Selected index %i is out of bounds", newSelectedIndex);
+    
+    
+    if(_selectedIndex == newSelectedIndex)
         return;
-    }
     
-	if (![self isViewLoaded]) {
-		_selectedIndex = newSelectedIndex;
-        return;
-	}
-    
-    if(_selectedIndex == newSelectedIndex) {
-        return;
-    }
-    
-    UIViewController *fromViewController;
-    UIViewController *toViewController;
-    
-    if (_selectedIndex != NSNotFound)
-    {
-        UIButton *fromButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-        fromButton.selected = FALSE;
-        fromViewController = self.selectedViewController;
-    }
     
     _selectedIndex = newSelectedIndex;
     
-    UIButton *toButton;
-    if (_selectedIndex != NSNotFound)
-    {
-        toButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-        toButton.selected = TRUE;
-        toViewController = self.selectedViewController;
-    }
-    
-    if (toViewController == nil)  // don't animate
-    {
-        [fromViewController.view removeFromSuperview];
-    }
-    else if (fromViewController == nil)  // don't animate
-    {
-        [self.containerView addSubview:toViewController.view];
-    }
     
     
-    [self performChangeFromController:fromViewController toController:toViewController animated:animated];
+    for (UIButton* tabButton in self.tabsViewContainer.subviews)
+        tabButton.selected = NO;
+
+    if(_selectedIndex < 0 || _selectedIndex > self.tabsViewContainer.subviews.count)
+        return;
     
     
-    // We need to see if we need to hide/show the back button for the new view controller
+    UIButton* toButton = (UIButton *)self.tabsViewContainer.subviews[_selectedIndex];
+    toButton.selected = TRUE;
     
-    if ([toViewController isKindOfClass: [UINavigationController class]] &&
-        [[(UINavigationController *)toViewController viewControllers] count] > 1) {
-        
-        //[self showBackButton];
-        //[[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
-    }
-    else
-    {
-        //[self hideBackButton];
-        //[[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
-    }
+    
+    self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
+    
+    
 }
 
-
--(void)performChangeFromController:(UIViewController*)fromViewController toController:(UIViewController*)toViewController animated:(BOOL)animated
+-(void)setSelectedViewController:(UIViewController *)newSelectedViewController
 {
     
-    [self.containerView addSubview:toViewController.view];
+    // even if nill, that is OK. It will just animate the selectedViewController out.
     
-    if (animated)
+    if(newSelectedViewController)
+        [self.containerView addSubview:newSelectedViewController.view];
+    
+    if (self.shouldAnimateViewTransitions)
     {
         self.view.userInteractionEnabled = NO;
-      
-        toViewController.view.alpha = 0.0f;
+        
+        newSelectedViewController.view.alpha = 0.0f;
         
         [UIView animateWithDuration: kTabAnimationDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^{
-             fromViewController.view.alpha = 0.0f;
-             toViewController.view.alpha = 1.0f;
                              
-         } completion: ^(BOOL finished) {
-             
-             fromViewController.view.alpha = 0.0f;
-             [fromViewController.view removeFromSuperview];
-             self.view.userInteractionEnabled = YES;
-             
-         }];
+                             _selectedViewController.view.alpha = 0.0f;
+                             
+                             if(newSelectedViewController)
+                                 newSelectedViewController.view.alpha = 1.0f;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             [_selectedViewController.view removeFromSuperview];
+                             
+                             self.view.userInteractionEnabled = YES;
+                             
+                             _selectedViewController = newSelectedViewController;
+                             
+                         }];
     }
-    else  // not animated
+    else
     {
-        [fromViewController.view removeFromSuperview];
         
+        [_selectedViewController.view removeFromSuperview];
+        
+        
+        _selectedViewController = newSelectedViewController;
     }
-}
-
-
-// Return the currently selected view controller
-
-- (UIViewController *) selectedViewController
-{
-	if (self.selectedIndex != NSNotFound)
-        return self.viewControllers [self.selectedIndex];
     
-	return nil;
 }
 
 
 
 
 
-#pragma mark - Tab Selection
-
-// Set the selected tab of a particular view controller (with animation if required)
-
-- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
-                          animated: (BOOL) animated;
-{
-	NSUInteger index = [self.viewControllers indexOfObject: newSelectedViewController];
-    
-	if (index != NSNotFound)
-    {
-		[self setSelectedIndex: index
-                      animated: animated];
-    }
-}
 
 
 // Use the tag index of the button (100 - 103) to calculate the button index
@@ -332,13 +283,6 @@
                   animated: YES];
 }
 
-// Set the selected tab of a particular view controller (with no animation)
-
-- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
-{
-	[self setSelectedViewController: newSelectedViewController
-                           animated: NO];
-}
 
 - (IBAction) recordAction: (UIButton*) button
 {
@@ -369,15 +313,10 @@
 
 
 
--(void) showSearchViewController
+-(void) showSearchViewControllerWithTerm:(NSString*)term
 {
-    UIViewController *fromViewController = self.selectedViewController;
-    if(fromViewController == nil) {
-        return;
-    }
-    UIViewController *toViewController = self.searchViewController;
-    
-    [self performChangeFromController:fromViewController toController:toViewController animated:YES];
+    [self setSelectedIndex:-1];
+    self.selectedViewController = self.searchViewController;
 }
 
 @end
