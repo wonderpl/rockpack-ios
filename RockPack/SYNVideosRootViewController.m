@@ -122,11 +122,13 @@
     
     [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
+    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
+    
+    self.currentIndexPath = firstIndexPath;
+    
     // Set the first video
     if (self.fetchedResultsController.fetchedObjects.count > 0)
-    {
-        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
-        
+    {       
         [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
                                                                 selectedIndexPath: firstIndexPath
                                                                          autoPlay: TRUE];
