@@ -245,6 +245,7 @@
 		0194FD2A16DF6A480058A7C2 /* BackgroundVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0194FD2616DF6A480058A7C2 /* BackgroundVideoThumbnailSmall.png */; };
 		0194FD2B16DF6A480058A7C2 /* BackgroundVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0194FD2716DF6A480058A7C2 /* BackgroundVideoThumbnailSmall@2x.png */; };
 		0194FD2C16DF6A480058A7C2 /* GlossVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0194FD2816DF6A480058A7C2 /* GlossVideoThumbnailSmall@2x.png */; };
+		0194FD2F16DF94BA0058A7C2 /* NSIndexPath+Arithmetic.m in Sources */ = {isa = PBXBuildFile; fileRef = 0194FD2E16DF94BA0058A7C2 /* NSIndexPath+Arithmetic.m */; };
 		019824E81629CB4300216900 /* SYNDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824E71629CB4300216900 /* SYNDebug.m */; };
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
@@ -735,6 +736,8 @@
 		0194FD2616DF6A480058A7C2 /* BackgroundVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackgroundVideoThumbnailSmall.png; path = Assets/Images/BackgroundVideoThumbnailSmall.png; sourceTree = "<group>"; };
 		0194FD2716DF6A480058A7C2 /* BackgroundVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundVideoThumbnailSmall@2x.png"; path = "Assets/Images/BackgroundVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
 		0194FD2816DF6A480058A7C2 /* GlossVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossVideoThumbnailSmall@2x.png"; path = "Assets/Images/GlossVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
+		0194FD2D16DF94B90058A7C2 /* NSIndexPath+Arithmetic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+Arithmetic.h"; sourceTree = "<group>"; };
+		0194FD2E16DF94BA0058A7C2 /* NSIndexPath+Arithmetic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+Arithmetic.m"; sourceTree = "<group>"; };
 		019824E61629CB4300216900 /* SYNDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDebug.h; sourceTree = "<group>"; };
 		019824E71629CB4300216900 /* SYNDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDebug.m; sourceTree = "<group>"; };
 		019824EA1629CBDF00216900 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
@@ -1884,6 +1887,8 @@
 				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
 				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
 				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
+				0194FD2D16DF94B90058A7C2 /* NSIndexPath+Arithmetic.h */,
+				0194FD2E16DF94BA0058A7C2 /* NSIndexPath+Arithmetic.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2966,6 +2971,7 @@
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
 				BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */,
 				0194FD2316DE6FE90058A7C2 /* SYNVideoThumbnailSmallCell.m in Sources */,
+				0194FD2F16DF94BA0058A7C2 /* NSIndexPath+Arithmetic.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

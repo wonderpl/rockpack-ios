@@ -10,6 +10,7 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
+#import "NSIndexPath+Arithmetic.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
 #import "SYNVideoViewerViewController.h"
@@ -43,7 +44,7 @@
 
 @implementation SYNVideoViewerViewController
 
-#pragma mark - View lifecycle
+#pragma mark - Initialisation
 
 - (id) initWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
                       selectedIndexPath: (NSIndexPath *) selectedIndexPath;
@@ -57,6 +58,8 @@
 	return self;
 }
 
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {
@@ -83,28 +86,30 @@
 {
     [super viewWillAppear: animated];
     
+    // Create the video playback view controller, and insert it in the right place in the view hierarchy
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
     
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.panelImageView];
     
+    // Set the video playlist (using the fetchedResults controller passed in)
     [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
                                                             selectedIndexPath: self.currentSelectedIndexPath
                                                                      autoPlay: TRUE];
     
+    // Update all the labels corresponding to the selected videos
     [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
     
-    // Horrendous hack
+    // We need to scroll the current thumbnail before the view appears (with no animation)
     [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
                                               atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                                       animated: NO];
 }
 
 
-// Don't call these here as called when going full-screen
-
 - (void) viewWillDisappear: (BOOL) animated
 {
+    // Let's make sure that we stop playing the current video
     self.videoPlaybackViewController = nil;
     
     [super viewWillDisappear: animated];
@@ -113,7 +118,7 @@
 
 - (void) playVideoAtIndexPath: (NSIndexPath *) indexPath
 {
-    // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
+    // We should start playing the selected video and scroll the thumbnnail so that it appears under the arrow
     [self.videoPlaybackViewController playVideoAtIndex: indexPath];
     [self updateVideoDetailsForIndexPath: indexPath];
     [self scrollToCellAtIndexPath: indexPath];
@@ -126,7 +131,6 @@
 
 - (void) updateVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
-    // Set initial label text
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
     self.channelTitleLabel.text = videoInstance.channel.title;
@@ -185,14 +189,16 @@
     [self playVideoAtIndexPath: indexPath];
 }
 
-#pragma mark - Flow layout delegates
 
-// These are required to make the scrollToItemAtIndexPath work correctly
+#pragma mark - UICollectionViewDelegateFlowLayout delegates
 
+// These are required to make the scrollToItemAtIndexPath work correctly, as if you use content insets, it does not
+// work as expected
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForHeaderInSection: (NSInteger) section
 {
+    // Only add a header onto the first section
     if (section == 0)
         return CGSizeMake (438.0f, 0.0f);
     else
@@ -203,8 +209,7 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
                    referenceSizeForFooterInSection: (NSInteger) section
 {
-    DebugLog (@"hello");
-    
+    // Only add a footer onto the last section
     if (section == (self.fetchedResultsController.sections.count - 1))
         return CGSizeMake (438.0f, 0.0f);
     else
@@ -215,12 +220,16 @@
 
 - (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
+    NSIndexPath *newIndexPath = [self.currentSelectedIndexPath previousIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     
+    [self playVideoAtIndexPath: newIndexPath];
 }
 
 - (IBAction) userTouchedNextVideoButton: (id) sender
 {
+    NSIndexPath *newIndexPath = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     
+    [self playVideoAtIndexPath: newIndexPath];
 }
 
 

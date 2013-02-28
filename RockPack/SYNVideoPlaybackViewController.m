@@ -9,6 +9,7 @@
 #define kVideoBackgroundColour [UIColor blackColor]
 #define kBufferMonitoringTimerInterval 1.0f
 
+#import "NSIndexPath+Arithmetic.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -149,74 +150,75 @@
 
 #pragma mark - Source / Playlist management
 
-- (NSIndexPath *) nextIndexPath: (NSIndexPath *) currentIndexPath
-{
-    // Get the current number of section and calculate the next one
-    int numOfSections = self.fetchedResultsController.sections.count;
-    int nextSection = ((currentIndexPath.section + 1) % numOfSections);
-    
-    // Get the info for the current section
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[currentIndexPath.section];
-    
-    // Check to see 
-    if ((currentIndexPath.item + 1) >= sectionInfo.numberOfObjects)
-    {
-        // Wrap around to the first item in the next section (which itself may have wrapped around)
-        return [NSIndexPath indexPathForRow: 0
-                                  inSection: nextSection];
-    }
-    else
-    {
-        // Return the next row in the section
-        return [NSIndexPath indexPathForRow: currentIndexPath.item + 1
-                                  inSection: currentIndexPath.section];
-    }
-}
-
-
-- (NSIndexPath *) previousIndexPath: (NSIndexPath *) currentIndexPath
-{
-    // Get the current number of section and calculate the next one
-    int numOfSections = self.fetchedResultsController.sections.count;
-    
-    // Calculate the previous section
-    int previousSection = currentIndexPath.section - 1;
-
-    // Check to see if we need to wrap around
-    if (previousSection < 0)
-    {
-        // Set to the last section
-        previousSection = numOfSections - 1;
-    }
-    
-    // Get the info for the current section
-    id <NSFetchedResultsSectionInfo> previousSectionInfo = self.fetchedResultsController.sections[previousSection];
-    
-    // Check to see if we need to wrap around
-    if ((currentIndexPath.item - 1) < 0)
-    {
-        // Set to the last index of the previous section
-        return [NSIndexPath indexPathForRow: previousSectionInfo.numberOfObjects - 1
-                                  inSection: previousSection];
-    }
-    else
-    {
-        // Set to the previous index in this section
-        return [NSIndexPath indexPathForRow: (currentIndexPath.item - 1)
-                                  inSection: currentIndexPath.section];
-    }
-}
+//- (NSIndexPath *) nextIndexPath: (NSIndexPath *) currentIndexPath
+//{
+//    // Get the current number of section and calculate the next one
+//    int numOfSections = self.fetchedResultsController.sections.count;
+//    int nextSection = ((currentIndexPath.section + 1) % numOfSections);
+//    
+//    // Get the info for the current section
+//    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[currentIndexPath.section];
+//    
+//    // Check to see 
+//    if ((currentIndexPath.item + 1) >= sectionInfo.numberOfObjects)
+//    {
+//        // Wrap around to the first item in the next section (which itself may have wrapped around)
+//        return [NSIndexPath indexPathForRow: 0
+//                                  inSection: nextSection];
+//    }
+//    else
+//    {
+//        // Return the next row in the section
+//        return [NSIndexPath indexPathForRow: currentIndexPath.item + 1
+//                                  inSection: currentIndexPath.section];
+//    }
+//}
+//
+//
+//- (NSIndexPath *) previousIndexPath: (NSIndexPath *) currentIndexPath
+//{
+//    // Get the current number of section and calculate the next one
+//    int numOfSections = self.fetchedResultsController.sections.count;
+//    
+//    // Calculate the previous section
+//    int previousSection = currentIndexPath.section - 1;
+//
+//    // Check to see if we need to wrap around
+//    if (previousSection < 0)
+//    {
+//        // Set to the last section
+//        previousSection = numOfSections - 1;
+//    }
+//    
+//    // Get the info for the current section
+//    id <NSFetchedResultsSectionInfo> previousSectionInfo = self.fetchedResultsController.sections[previousSection];
+//    
+//    // Check to see if we need to wrap around
+//    if ((currentIndexPath.item - 1) < 0)
+//    {
+//        // Set to the last index of the previous section
+//        return [NSIndexPath indexPathForRow: previousSectionInfo.numberOfObjects - 1
+//                                  inSection: previousSection];
+//    }
+//    else
+//    {
+//        // Set to the previous index in this section
+//        return [NSIndexPath indexPathForRow: (currentIndexPath.item - 1)
+//                                  inSection: currentIndexPath.section];
+//    }
+//}
 
 
 - (void) incrementVideoIndexPath
 {
-    self.currentSelectedIndexPath = [self nextIndexPath: self.currentSelectedIndexPath];
+//    self.currentSelectedIndexPath = [self nextIndexPath: self.currentSelectedIndexPath];
+    self.currentSelectedIndexPath = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
 }
 
 
 - (void) decrementVideoIndexPath
 {
-    self.currentSelectedIndexPath = [self previousIndexPath: self.currentSelectedIndexPath];
+    self.currentSelectedIndexPath = [self.currentSelectedIndexPath previousIndexPathUsingFetchedResultsController: self.fetchedResultsController];
 }
 
 
@@ -228,7 +230,7 @@
     if (self.isUsingPlaylist)
     {
         // make sure we wrap around at the end of the video playlist
-        index = [self nextIndexPath: self.currentSelectedIndexPath];
+        index = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     }
     
     return index;
@@ -243,7 +245,7 @@
     if (self.isUsingPlaylist)
     {
         // make sure we wrap around at the end of the video playlist
-        index = [self previousIndexPath: self.currentSelectedIndexPath];
+        index = [self.currentSelectedIndexPath previousIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     }
     
     return index;
