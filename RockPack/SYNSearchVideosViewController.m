@@ -11,7 +11,7 @@
 
 @interface SYNSearchVideosViewController ()
 
-@property (nonatomic, strong) NSString* searchTerm;
+
 
 @end
 
@@ -25,6 +25,7 @@
         return fetchedResultsController;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
     
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
@@ -50,9 +51,8 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
-    self.searchTerm = term;
     
-    [appDelegate.networkEngine searchVideosForTerm: self.searchTerm];
+    [appDelegate.networkEngine searchVideosForTerm: term];
     
     NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
     
@@ -62,8 +62,10 @@
 }
 
 
-- (void) viewDidAppear: (BOOL) animated
+-(void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     // override the data loading
     
     self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
@@ -71,8 +73,15 @@
     
     self.largeVideoPanelView.center = CGPointMake(self.largeVideoPanelView.center.x,
                                                   self.largeVideoPanelView.center.y + 30.0);
-    
 }
+
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    // override with empty function
+}
+
 
 
 

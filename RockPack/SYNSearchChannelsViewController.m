@@ -14,25 +14,53 @@
 
 @implementation SYNSearchChannelsViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (NSFetchedResultsController *)fetchedResultsController
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    
+    if (fetchedResultsController != nil)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    
+    ZAssert([fetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
 }
 
-- (void)viewDidLoad
+
+-(void)performSearchWithTerm:(NSString*)term
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    [appDelegate.networkEngine searchChannelsForTerm: term];
+
+    [self reloadCollectionViews];
 }
 
-- (void)didReceiveMemoryWarning
+
+- (void) viewWillAppear: (BOOL) animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // override the data loading
+    
+    self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
+                                                           self.videoThumbnailCollectionView.center.y + 30.0);
+    
+    
 }
 
 @end

@@ -374,10 +374,14 @@
 - (void) loadCurrentVideoWebView
 {
     // Assume that we just have a single video as opposed to a playlist
+    
     NSString *currentSource = self.source;
     NSString *currentSourceId = self.sourceId;
     
+    
+    
     // But if we do have a playlist, then load up the source and sourceId for the current video index
+    
     if (self.isUsingPlaylist)
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
@@ -426,7 +430,8 @@
     }
     else
     {
-        AssertOrLog(@"Unknown video source type");
+        // AssertOrLog(@"Unknown video source type");
+        DebugLog(@"WARNING: No Source! ");
     }
 }
 

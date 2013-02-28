@@ -8,31 +8,87 @@
 
 #import "SYNSearchRootViewController.h"
 
+#import "SYNSearchVideosViewController.h"
+#import "SYNSearchChannelsViewController.h"
+
 @interface SYNSearchRootViewController ()
+
+@property (nonatomic) NSInteger tabSelected;
+
+@property (nonatomic, strong) SYNSearchVideosViewController* searchVideosController;
+@property (nonatomic, strong) SYNSearchChannelsViewController* searchChannelsController;
+
+@property (nonatomic, weak) SYNAbstractViewController* currentController;
+
+@property (nonatomic, strong) NSString* currentSelectionId;
+
 
 @end
 
 @implementation SYNSearchRootViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+@synthesize searchTerm = _searchTerm;
+
+
+-(void)loadView
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGRect frame = CGRectMake(0.0, 0.0, screenBounds.size.width, screenBounds.size.height);
+    self.view = [[UIView alloc] initWithFrame:frame];
+    self.view.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
+    self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
+    
+    [self.searchVideosController view];
+    
+    [self handleNewTabSelectionWithId:@"0"];
+	
 }
 
-- (void)didReceiveMemoryWarning
+-(void)setSearchTerm:(NSString *)term
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    if(!_searchTerm)
+        [self handleNewTabSelectionWithId:@"0"];
+    
+    _searchTerm = term;
 }
+
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
+{
+    
+    SYNAbstractViewController* newController;
+    
+    if ([selectionId isEqualToString:@"0"])
+    {
+        
+        [self.view insertSubview:self.searchVideosController.view belowSubview:self.tabViewController.view];
+    
+        [self.searchVideosController performSearchWithTerm:self.searchTerm];
+        newController = self.searchVideosController;
+        
+    }
+    else
+    {
+        [self.view insertSubview:self.searchChannelsController.view belowSubview:self.tabViewController.view];
+        [self.searchChannelsController performSearchWithTerm:self.searchTerm];
+        newController = self.searchChannelsController;
+    }
+    
+    
+    
+    if(self.currentController)
+        [self.currentController.view removeFromSuperview];
+    
+    self.currentController = newController;
+    
+    
+}
+
 
 @end

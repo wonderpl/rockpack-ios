@@ -10,4 +10,6 @@
 
 @interface SYNSearchChannelsViewController : SYNChannelsRootViewController
 
+-(void)performSearchWithTerm:(NSString*)term;
+
 @end

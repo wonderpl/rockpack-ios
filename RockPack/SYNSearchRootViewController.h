@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractViewController.h"
+#import "SYNAbstractTopTabViewController.h"
 
-@interface SYNSearchRootViewController : SYNAbstractViewController
+@interface SYNSearchRootViewController : SYNAbstractTopTabViewController
+
+@property (nonatomic, strong) NSString* searchTerm;
 
 @end

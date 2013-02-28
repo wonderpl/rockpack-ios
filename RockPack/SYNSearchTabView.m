@@ -17,6 +17,8 @@
 @property (nonatomic, strong) SYNSearchItemView* searchVideosItemView;
 @property (nonatomic, strong) SYNSearchItemView* searchChannelsItemView;
 
+@property (nonatomic, weak) SYNSearchItemView* currentItemView;
+
 @end
 
 @implementation SYNSearchTabView
@@ -92,17 +94,22 @@
 -(void)handleMainTap:(UITapGestureRecognizer*)recogniser
 {
     // Set as pressed
-    SYNSearchItemView* itemView;
+    
+    SYNSearchItemView* viewClicked = (SYNSearchItemView*)recogniser.view;
+    if (self.currentItemView == viewClicked) 
+        return;
+    
+    self.currentItemView = viewClicked;
     
     for(SYNSearchItemView* itemViewS in self.mainTabsView.subviews)
         [itemViewS makeFaded];
     
-    itemView = (SYNSearchItemView*)recogniser.view;
-    [itemView makeHighlightedWithImage:YES];
+    
+    [self.currentItemView makeHighlightedWithImage:YES];
     
     NSString* tabTappedId;
     
-    if(itemView == self.searchChannelsItemView)
+    if(self.currentItemView == self.searchVideosItemView)
         tabTappedId = @"0";
     else
         tabTappedId = @"1";

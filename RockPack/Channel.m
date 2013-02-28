@@ -235,7 +235,7 @@ static NSEntityDescription *channelEntity = nil;
     }
     else
     {
-        // DebugLog(@"Multiple references to ChannelOwner object, not deleted");
+        DebugLog(@"Multiple references to ChannelOwner object, not deleted");
     }
     
     // Delete any VideoInstances that are associated with this channel (I am assuming that as they only have a to-one relationship

@@ -21,7 +21,7 @@
 #import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
 #import "SYNSearchTabViewController.h"
-#import "SYNSearchVideosViewController.h"
+#import "SYNSearchRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
@@ -34,7 +34,7 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
-@property (nonatomic, strong) SYNSearchVideosViewController* searchViewController;
+@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
@@ -64,14 +64,16 @@
 {
     [super viewDidLoad];
     
-    // Home Tab
+    // == Home Tab
+    
     SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] initWithViewId:@"Home"];
     UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;
     homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
     homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
-    // Channels tab
+    // == Channels Tab
+    
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId:@"Channels"];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
@@ -79,7 +81,8 @@
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    // Discover tab
+    // == Videos Tab
+    
     SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Videos"];
     videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
@@ -88,43 +91,50 @@
     videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     
-    // Search tab
-    self.searchViewController = [[SYNSearchVideosViewController alloc] initWithViewId:@"Search"];
-    self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
-    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
-    searchRootNavigationViewController.navigationBarHidden = TRUE;
-    searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    // == You Tab
     
-    // My Rockpack tab
     SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] initWithViewId:@"You"];
     UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
     youRootRootNavigationViewController.navigationBarHidden = TRUE;
     youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
     youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    // Friends tab
-    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId:@"Friends"];
+    // == Friends tab
     // TODO: Nest Friends Bar
-    // Using new array syntax
+    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId:@"Friends"];
+    
+    
+    
+    // == Register Controllers
+    
     self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
                              videosRootNavigationViewController,
                              youRootRootNavigationViewController,
                              friendsRootViewController];
     
+    
+    // == Search (out of normal controller array)
+    
+    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
+    self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
+    
+    // For the moment no navigation controller
+//    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
+//    searchRootNavigationViewController.navigationBarHidden = TRUE;
+//    searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
+//    searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    
 
     
-    // Set initial
+    
+    // Set Initial View Controller
     
     self.shouldAnimateViewTransitions = YES;
     
     [self setSelectedIndex:2];
     
     
-    
-    
-    // Set initial state
     self.didNotSwipeMessageInbox = TRUE;
     self.didNotSwipeShareMenu = TRUE;
     
@@ -315,9 +325,13 @@
 
 -(void) showSearchViewControllerWithTerm:(NSString*)term
 {
-    [self setSelectedIndex:-1];
+    [self setSelectedIndex:-1]; // turn all off
+    
+    
+    self.searchViewController.searchTerm = term;
+    
     self.selectedViewController = self.searchViewController;
-    [self.searchViewController performSearchWithTerm: term];
+    
 }
 
 @end
