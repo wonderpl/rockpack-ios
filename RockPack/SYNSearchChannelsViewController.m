@@ -50,7 +50,6 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
-    
     if(self.currentSearchTerm && [self.currentSearchTerm isEqualToString:term]) // same search
         return;
     
@@ -66,20 +65,26 @@
 {
     
     [self reloadCollectionViews];
+    
 }
+
 
 
 - (void) viewWillAppear: (BOOL) animated
 {
     // override the data loading
     
-    self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
-                                                           self.videoThumbnailCollectionView.center.y + 30.0);
     
     
 }
 
-
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
+                                                           self.channelThumbnailCollectionView.center.y + 30.0);
+}
 
 
 

@@ -23,7 +23,7 @@
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
+
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 

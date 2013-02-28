@@ -79,6 +79,7 @@
     for (id basket in result)
         [importManagedObjectContext deleteObject:basket];
     
+    
     return YES;
     
     

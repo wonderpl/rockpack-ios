@@ -67,6 +67,10 @@
 {
     [super viewWillDisappear:animated];
     self.searchTerm = nil;
+    
+    // clear the context
+    
+    
 }
 
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
