@@ -136,15 +136,33 @@
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
     ZAssert(persistentStoreCoordinator, @"Failed to initialize persistent store coordinator");
     
+    
+    
+    // == Main Context
+    
     self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
     self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
     self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
     
-    // search will have no parent since it will not be saved persistently
+    
+    
+    
+    // == Search Context
+    
     self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
-    self.searchManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
+    NSPersistentStoreCoordinator *searchPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
+    NSError* error;
+    NSPersistentStore* searchStore = [searchPersistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                                                    configuration:nil
+                                                                                              URL:nil
+                                                                                          options:nil
+                                                                                            error:&error];
+    ZAssert(searchStore, @"Failed to initialize search managed context in app delegate");
+    
+    
+    self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
@@ -168,8 +186,7 @@
                             format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
             }
             
-            if (![managedObjectModel isConfiguration: nil
-                          compatibleWithStoreMetadata: existingPersistentStoreMetadata])
+            if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
             {
                 if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
                                                                error: &error])

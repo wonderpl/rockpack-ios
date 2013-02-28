@@ -59,9 +59,14 @@
     
     self.currentIndexPath = firstIndexPath;
     
-    [self reloadCollectionViews];
+    //[self reloadCollectionViews];
 }
 
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    
+    [self reloadCollectionViews];
+}
 
 -(void)viewDidLoad
 {
@@ -76,7 +81,10 @@
                                                   self.largeVideoPanelView.center.y + 30.0);
 }
 
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    //override with empty function
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {

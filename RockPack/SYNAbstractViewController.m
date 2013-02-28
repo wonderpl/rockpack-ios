@@ -114,7 +114,6 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    NSLog (@"controller updated");
     
     [self reloadCollectionViews];
 }
