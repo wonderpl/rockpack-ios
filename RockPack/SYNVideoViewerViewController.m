@@ -27,6 +27,7 @@
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
+@property (nonatomic, strong) IBOutlet UIButton *starItButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
@@ -133,6 +134,8 @@
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
+    
+    self.starItButton.selected = videoInstance.video.starredByUserValue;
 }
 
 
@@ -245,6 +248,30 @@
 - (BOOL) hasTabBar
 {
     return FALSE;
+}
+
+- (IBAction) toggleStarItButton: (UIButton *) button
+{
+    button.selected = !button.selected;
+    
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    if (videoInstance.video.starredByUserValue == TRUE)
+    {
+        // Currently highlighted, so decrement
+        videoInstance.video.starredByUserValue = FALSE;
+        videoInstance.video.starCountValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        videoInstance.video.starredByUserValue = TRUE;
+        videoInstance.video.starCountValue += 1;
+    }
+
+    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
+    
+    [self saveDB];
 }
 
 
