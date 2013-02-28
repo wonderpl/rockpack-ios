@@ -69,7 +69,8 @@
 {
     NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
     
-    [fetchRequest setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:importManagedObjectContext]];
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:importManagedObjectContext];
+    [fetchRequest setEntity:entityDescription];
     
     NSError* error = nil;
     NSArray * result = [importManagedObjectContext executeFetchRequest:fetchRequest error:&error];

@@ -70,6 +70,8 @@
     
     // clear the context
     
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
     
 }
 
