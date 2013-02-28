@@ -18,6 +18,7 @@
 #import "VideoInstance.h"
 
 #define kThumbnailContentOffset 438
+#define kThumbnailCellWidth 147
 
 @interface SYNVideoViewerViewController () 
 
@@ -95,11 +96,8 @@
     
     // Horrendous hack
     [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
-                                              atScrollPosition: UICollectionViewScrollPositionLeft
+                                              atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                                       animated: NO];
-    
-//    [self.videoThumbnailCollectionView setContentOffset: CGPointMake (self.videoThumbnailCollectionView.contentOffset.x  - kThumbnailContentOffset, 0)
-//                                               animated: YES];
 }
 
 
@@ -123,6 +121,7 @@
     self.currentSelectedIndexPath = indexPath;
 }
 
+
 #pragma mark - Update details
 
 - (void) updateVideoDetailsForIndexPath: (NSIndexPath *) indexPath
@@ -139,11 +138,9 @@
 // The built in UICollectionView scroll to index doesn't work correctly with contentOffset set to non-zero, so roll our own here
 - (void) scrollToCellAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = [self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-    // Use the content offset (which is designed to place the center of the first cell under the arrow)
-    [self.videoThumbnailCollectionView setContentOffset: CGPointMake (cell.frame.origin.x - kThumbnailContentOffset, 0)
-                                               animated: YES];
+    [self.videoThumbnailCollectionView scrollToItemAtIndexPath: indexPath
+                                              atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
+                                                      animated: YES];
 }
 
 
@@ -188,6 +185,31 @@
     [self playVideoAtIndexPath: indexPath];
 }
 
+#pragma mark - Flow layout delegates
+
+// These are required to make the scrollToItemAtIndexPath work correctly
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+                   referenceSizeForHeaderInSection: (NSInteger) section
+{
+    if (section == 0)
+        return CGSizeMake (438.0f, 0.0f);
+    else
+        return CGSizeZero;
+}
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+                   referenceSizeForFooterInSection: (NSInteger) section
+{
+    DebugLog (@"hello");
+    
+    if (section == (self.fetchedResultsController.sections.count - 1))
+        return CGSizeMake (438.0f, 0.0f);
+    else
+        return CGSizeZero;
+}
 
 #pragma mark - Video view
 
