@@ -10,6 +10,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import "Channel.h"
+#import "SYNAppDelegate.h"
 
 @implementation SYNSearchRegistry
 

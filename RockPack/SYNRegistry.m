@@ -7,6 +7,7 @@
 //
 
 #import "SYNRegistry.h"
+#import "SYNAppDelegate.h"
 
 @implementation SYNRegistry
 

@@ -27,6 +27,8 @@
 
 @implementation SYNAppDelegate
 
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
+
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
@@ -126,6 +128,10 @@
 
 - (void) initializeCoreDataStack
 {
+    
+    
+    
+    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
     ZAssert(modelURL, @"Failed to find model URL");
     
@@ -210,6 +216,11 @@
             DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
         }
     });
+    
+    // Registries
+    
+    _mainRegistry = [SYNMainRegistry registry];
+    _searchRegistry = [SYNSearchRegistry registry];
 }
 
 // Save the main context first (propagating the changes to the private) and then the private

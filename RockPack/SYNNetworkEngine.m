@@ -14,6 +14,7 @@
 #import "Category.h"
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
+#import "SYNAppDelegate.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -40,9 +41,11 @@
         // Set our local string (i.e. en_GB, en_US or fr_FR)
         self.localeString =   [NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier];
         
-        self.registry = [SYNMainRegistry registry];
+        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
         
-        self.searchRegistry = [SYNSearchRegistry registry];
+        self.registry = appDelegate.mainRegistry;
+        
+        self.searchRegistry = appDelegate.searchRegistry;
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];

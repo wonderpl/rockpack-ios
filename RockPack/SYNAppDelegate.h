@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "SYNMainRegistry.h"
+#import "SYNSearchRegistry.h"
+#import "SYNRegistry.h"
 
 // Something new!
 
@@ -31,6 +34,9 @@
 
 // Bit of a hack to represent the current user
 @property (weak, nonatomic) ChannelOwner *channelOwnerMe;
+
+@property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
+@property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
