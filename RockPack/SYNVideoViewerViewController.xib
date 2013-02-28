@@ -41,17 +41,20 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUICollectionView" id="558394908">
 						<reference key="NSNextResponder" ref="753127512"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">256</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 629}, {1024, 106}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="485997429">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
+						<bool key="IBUIAutoresizesSubviews">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<double key="IBUIContentInset.top">0.0</double>
@@ -836,6 +839,20 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNVideoViewerViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="userTouchedNextVideoButton:">id</string>
+						<string key="userTouchedPreviousVideoButton:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="userTouchedNextVideoButton:">
+							<string key="name">userTouchedNextVideoButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedPreviousVideoButton:">
+							<string key="name">userTouchedPreviousVideoButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelCreatorLabel">UILabel</string>
 						<string key="channelTitleLabel">UILabel</string>
@@ -911,6 +928,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICollectionViewLayout</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
 					</object>
 				</object>
 			</array>

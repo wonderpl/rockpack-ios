@@ -17,6 +17,8 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
+#define kThumbnailContentOffset 438
+
 @interface SYNVideoViewerViewController () 
 
 
@@ -67,8 +69,6 @@
     self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
-    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
-    
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
                                                   bundle: nil];
@@ -90,6 +90,16 @@
     [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
                                                             selectedIndexPath: self.currentSelectedIndexPath
                                                                      autoPlay: TRUE];
+    
+    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
+    
+    // Horrendous hack
+    [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
+                                              atScrollPosition: UICollectionViewScrollPositionLeft
+                                                      animated: NO];
+    
+//    [self.videoThumbnailCollectionView setContentOffset: CGPointMake (self.videoThumbnailCollectionView.contentOffset.x  - kThumbnailContentOffset, 0)
+//                                               animated: YES];
 }
 
 
@@ -100,6 +110,17 @@
     self.videoPlaybackViewController = nil;
     
     [super viewWillDisappear: animated];
+}
+
+
+- (void) playVideoAtIndexPath: (NSIndexPath *) indexPath
+{
+    // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
+    [self.videoPlaybackViewController playVideoAtIndex: indexPath];
+    [self updateVideoDetailsForIndexPath: indexPath];
+    [self scrollToCellAtIndexPath: indexPath];
+    
+    self.currentSelectedIndexPath = indexPath;
 }
 
 #pragma mark - Update details
@@ -115,6 +136,15 @@
 }
 
 
+// The built in UICollectionView scroll to index doesn't work correctly with contentOffset set to non-zero, so roll our own here
+- (void) scrollToCellAtIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionViewCell *cell = [self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+    
+    // Use the content offset (which is designed to place the center of the first cell under the arrow)
+    [self.videoThumbnailCollectionView setContentOffset: CGPointMake (cell.frame.origin.x - kThumbnailContentOffset, 0)
+                                               animated: YES];
+}
 
 
 #pragma mark - Collection view support
@@ -154,16 +184,9 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    self.currentSelectedIndexPath = indexPath;
-    
     // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
-    [self.videoPlaybackViewController playVideoAtIndex: self.currentSelectedIndexPath];
-    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
-    [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
-                                              atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
-                                                      animated: YES];
+    [self playVideoAtIndexPath: indexPath];
 }
-
 
 
 #pragma mark - Video view
