@@ -28,6 +28,7 @@
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos @"/ws/search/videos"
+#define kAPISearchChannels @"/ws/search/channels"
 
 //
 #define kAPICategories @"ws/categories/"

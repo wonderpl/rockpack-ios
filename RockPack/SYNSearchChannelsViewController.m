@@ -10,6 +10,8 @@
 
 @interface SYNSearchChannelsViewController ()
 
+@property (nonatomic, strong) NSString* currentSearchTerm;
+
 @end
 
 @implementation SYNSearchChannelsViewController
@@ -22,7 +24,7 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.searchManagedObjectContext];
     
     
@@ -47,9 +49,18 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
+    if(self.currentSearchTerm && [self.currentSearchTerm isEqualToString:term]) // same search
+        return;
     
-    [appDelegate.networkEngine searchChannelsForTerm: term];
+    self.currentSearchTerm = term;
+    
+    [appDelegate.networkEngine searchChannelsForTerm:term];
 
+}
+
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    
     [self reloadCollectionViews];
 }
 

@@ -265,7 +265,7 @@
     parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchVideos params:parameters];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         

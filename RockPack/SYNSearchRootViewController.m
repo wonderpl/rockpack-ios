@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSString* currentSelectionId;
 
 
+
 @end
 
 @implementation SYNSearchRootViewController
@@ -51,12 +52,14 @@
 
 -(void)setSearchTerm:(NSString *)term
 {
-    if(!_searchTerm && term) {
+    if(!_searchTerm && term) { // first time
         _searchTerm = term;
         [self.tabViewController setSelectedWithId:@"0"];
+        return;
     }
         
     _searchTerm = term;
+    
     
 }
 
@@ -85,7 +88,6 @@
         [self.searchChannelsController performSearchWithTerm:self.searchTerm];
         newController = self.searchChannelsController;
     }
-    
     
     
     if(self.currentController)
