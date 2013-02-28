@@ -33,5 +33,6 @@
 @property (weak, nonatomic) ChannelOwner *channelOwnerMe;
 
 - (void) saveContext: (BOOL) wait;
+-(void) saveSearchContext;
 
 @end

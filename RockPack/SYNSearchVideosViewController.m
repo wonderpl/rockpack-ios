@@ -59,7 +59,7 @@
     
     self.currentIndexPath = firstIndexPath;
     
-    //[self reloadCollectionViews];
+    
 }
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller

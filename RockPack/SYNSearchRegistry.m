@@ -64,13 +64,14 @@
     if(!saveResult)
         return NO;
     
+    [appDelegate saveSearchContext];
+    
     return YES;
 }
 
 
 -(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary
 {
-    
     
     
     // == Check for Validity == //
@@ -96,6 +97,8 @@
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
+    
+    [appDelegate saveSearchContext];
     
     
     return YES;

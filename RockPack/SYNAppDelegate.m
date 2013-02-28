@@ -216,7 +216,7 @@
 - (void) saveContext: (BOOL) wait
 {
     // If we don't have a valid MOC, then bail
-    if (nil == self.mainManagedObjectContext)
+    if (!self.mainManagedObjectContext)
         return;
     
     if ([self.mainManagedObjectContext hasChanges])
@@ -224,7 +224,7 @@
         [self.mainManagedObjectContext performBlockAndWait:^
          {
              NSError *error = nil;
-             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving MOC: %@\n%@",
+             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving Main moc: %@\n%@",
                      [error localizedDescription], [error userInfo]);
          }];
     }
@@ -232,7 +232,7 @@
     void (^savePrivate) (void) = ^
     {
         NSError *error = nil;
-        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving private moc: %@\n%@",
+        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving Private moc: %@\n%@",
                 [error localizedDescription], [error userInfo]);
     };
     
@@ -246,6 +246,19 @@
         {
             [self.privateManagedObjectContext performBlock: savePrivate];
         }
+    }
+}
+
+-(void) saveSearchContext
+{
+    if(!self.searchManagedObjectContext)
+        return;
+    
+    if([self.searchManagedObjectContext hasChanges])
+    {
+        NSError *error = nil;
+        ZAssert([self.searchManagedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
     }
 }
 

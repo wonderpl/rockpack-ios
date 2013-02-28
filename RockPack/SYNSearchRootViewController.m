@@ -51,11 +51,13 @@
 
 -(void)setSearchTerm:(NSString *)term
 {
-    if(!_searchTerm && term)
+    if(!_searchTerm && term) {
+        _searchTerm = term;
         [self.tabViewController setSelectedWithId:@"0"];
-    
-    
+    }
+        
     _searchTerm = term;
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
