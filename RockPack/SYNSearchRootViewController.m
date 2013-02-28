@@ -53,13 +53,26 @@
 
 -(void)setSearchTerm:(NSString *)term
 {
-    if(!_searchTerm && term) { // first time
-        _searchTerm = term;
-        [self.tabViewController setSelectedWithId:@"0"];
-        return;
-    }
+     
         
     _searchTerm = term;
+    
+    if(!_searchTerm)
+        return;
+    
+    if(!self.currentController) { // first time
+        [self.tabViewController setSelectedWithId:@"0"];
+    }
+    else if(self.currentController == self.searchVideosController) {
+        [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+        [self.searchVideosController performSearchWithTerm:self.searchTerm];
+    }
+    
+    else {
+        [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+        [self.searchChannelsController performSearchWithTerm:self.searchTerm];
+    }
+    
     
     
 }

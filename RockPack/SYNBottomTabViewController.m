@@ -235,6 +235,14 @@
 -(void)setSelectedViewController:(UIViewController *)newSelectedViewController
 {
     
+    
+    // if we try and push the same controller, escape
+    
+    if(_selectedViewController == newSelectedViewController)
+        return;
+    
+    
+    
     // even if nill, that is OK. It will just animate the selectedViewController out.
     
     if(newSelectedViewController)
