@@ -32,6 +32,10 @@
     // implement in cubclass
 }
 
+-(void)setSelectedWithId:(NSString*)selectedId {
+    [self.tabView setSelectedWithId:selectedId];
+}
+
 -(SYNTabView*)tabView
 {
     return (SYNTabView*)self.view;

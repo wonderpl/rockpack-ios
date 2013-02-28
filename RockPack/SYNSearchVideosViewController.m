@@ -52,7 +52,7 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
-    [appDelegate.networkEngine searchVideosForTerm: term];
+    [appDelegate.networkEngine searchVideosForTerm:term];
     
     NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
     

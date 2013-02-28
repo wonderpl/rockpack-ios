@@ -21,5 +21,7 @@
 
 -(void)createSubcategoriesTab:(NSSet*)subcategories;
 
+-(void)setSelectedWithId:(NSString*)selectedId;
+
 
 @end

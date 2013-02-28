@@ -49,4 +49,8 @@
     // implement in subclass
 }
 
+-(void)setSelectedWithId:(NSString*)selectedId {
+    // implement in subclass
+}
+
 @end

@@ -101,11 +101,6 @@
     
     self.currentItemView = viewClicked;
     
-    for(SYNSearchItemView* itemViewS in self.mainTabsView.subviews)
-        [itemViewS makeFaded];
-    
-    
-    [self.currentItemView makeHighlightedWithImage:YES];
     
     NSString* tabTappedId;
     
@@ -114,12 +109,24 @@
     else
         tabTappedId = @"1";
     
-    [self.tapDelegate handleNewTabSelectionWithId:tabTappedId];
+    [self setSelectedWithId:tabTappedId];
+    
 }
 
--(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser
+
+-(void)setSelectedWithId:(NSString*)selectedId
 {
-    // no secondary tap in this class
+    
+    for(SYNSearchItemView* itemViewS in self.mainTabsView.subviews)
+        [itemViewS makeFaded];
+    
+    if([selectedId isEqualToString:@"0"])
+        [self.searchVideosItemView makeHighlightedWithImage:YES];
+    else
+        [self.searchChannelsItemView makeHighlightedWithImage:YES];
+    
+    
+    [self.tapDelegate handleNewTabSelectionWithId:selectedId];
 }
 
 

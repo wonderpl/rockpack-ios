@@ -45,18 +45,23 @@
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
     
-    [self.searchVideosController view];
-    
-    [self handleNewTabSelectionWithId:@"0"];
 	
 }
 
+
 -(void)setSearchTerm:(NSString *)term
 {
-    if(!_searchTerm)
-        [self handleNewTabSelectionWithId:@"0"];
+    if(!_searchTerm && term)
+        [self.tabViewController setSelectedWithId:@"0"];
+    
     
     _searchTerm = term;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.searchTerm = nil;
 }
 
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
@@ -68,7 +73,6 @@
     {
         
         [self.view insertSubview:self.searchVideosController.view belowSubview:self.tabViewController.view];
-    
         [self.searchVideosController performSearchWithTerm:self.searchTerm];
         newController = self.searchVideosController;
         
