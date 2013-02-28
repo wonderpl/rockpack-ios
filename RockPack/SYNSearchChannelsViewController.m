@@ -23,7 +23,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+                                      inManagedObjectContext: appDelegate.searchManagedObjectContext];
     
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
@@ -31,14 +31,15 @@
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                        managedObjectContext: appDelegate.searchManagedObjectContext
                                                                           sectionNameKeyPath: nil
                                                                                    cacheName: nil];
     fetchedResultsController.delegate = self;
     
-    NSError *error = nil;
+    NSError* error = nil;
     
-    ZAssert([fetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([fetchedResultsController performFetch: &error],
+            @"Search Channels Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
 }

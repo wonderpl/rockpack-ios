@@ -19,7 +19,7 @@
     {
         appDelegate = UIApplication.sharedApplication.delegate;
         importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-        importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
+        importManagedObjectContext.parentContext = appDelegate.searchManagedObjectContext;
     }
     return self;
 }
@@ -70,6 +70,8 @@
 
 -(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary
 {
+    
+    
     
     // == Check for Validity == //
     

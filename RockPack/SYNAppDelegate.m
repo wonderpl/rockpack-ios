@@ -144,7 +144,7 @@
     
     // search will have no parent since it will not be saved persistently
     self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
-    
+    self.searchManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
