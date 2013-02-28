@@ -35,10 +35,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfRocksLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
-@property (nonatomic, strong) NSMutableArray *videoInstancesArray;
-
 
 @end
 
@@ -46,12 +43,12 @@
 
 #pragma mark - Initialisation
 
-- (id) initWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
+- (id) initWithFetchedResultsController: (NSFetchedResultsController *) initFetchedResultsController
                       selectedIndexPath: (NSIndexPath *) selectedIndexPath;
 {
   	if ((self = [super init]))
     {
-		self.fetchedResultsController = fetchedResultsController;
+		self.fetchedResultsController = initFetchedResultsController;
         self.currentSelectedIndexPath = selectedIndexPath;
 	}
     
@@ -216,7 +213,7 @@
         return CGSizeZero;
 }
 
-#pragma mark - Video view
+#pragma mark - User actions
 
 - (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
@@ -230,6 +227,21 @@
     NSIndexPath *newIndexPath = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     
     [self playVideoAtIndexPath: newIndexPath];
+}
+
+- (IBAction) userTouchedStarButton: (id) sender
+{
+    
+}
+
+- (IBAction) userTouchedShareButton: (id) sender
+{
+    
+}
+
+- (IBAction) userTouchedAddButton: (id) sender
+{
+    
 }
 
 

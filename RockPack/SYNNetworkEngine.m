@@ -37,8 +37,8 @@
     if ((self = [super initWithHostName: kAPIHostName
                      customHeaderFields: @{@"x-client-identifier" : @"Rockpack iPad client"}]))
     {
-        // Set our local string (i.e. en_GB, en_US or fr_FR)
-        self.localeString =   [NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier];
+        // Set our locale string (i.e. en_GB, en_US or fr_FR)
+       self.localeString = (NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier]));
         
         self.registry = [SYNMainRegistry registry];
         
@@ -69,7 +69,7 @@
     NSString *apiURL = [NSString stringWithFormat:kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiURL params:[self getLocalParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiURL params:[self getLocaleParam]];
     
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
@@ -99,7 +99,7 @@
 {
 
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPICategories params:[self getLocalParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPICategories params:[self getLocaleParam]];
     
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
@@ -124,9 +124,9 @@
 {
     NSDictionary* parameters;
     if([categoryId isEqualToString:@"all"])
-        parameters = [self getLocalParam];
+        parameters = [self getLocaleParam];
     else
-        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
+        parameters = [self getLocaleParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:parameters];
@@ -156,7 +156,7 @@
     if(searchTerm == nil || [searchTerm isEqualToString:@""])
         return;
     
-    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    parameters = [self getLocaleParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchVideos params:parameters];
@@ -181,7 +181,7 @@
 {
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString:resourceURL params:[self getLocalParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:resourceURL params:[self getLocaleParam]];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
@@ -207,9 +207,9 @@
     
     NSDictionary* parameters;
     if([categoryId isEqualToString:@"all"]) 
-        parameters = [self getLocalParam];
+        parameters = [self getLocaleParam];
     else
-        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
+        parameters = [self getLocaleParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
     
     
     SYNNetworkOperationJsonObject *networkOperation =
@@ -236,16 +236,16 @@
 
 #pragma mark - Utility Methods
 
--(NSDictionary*)getLocalParam
+-(NSDictionary*)getLocaleParam
 {
     return [NSDictionary dictionaryWithObject:self.localeString forKey:@"locale"];
 }
 
--(NSDictionary*)getLocalParamWithParams:(NSDictionary*)parameters
+-(NSDictionary*)getLocaleParamWithParams:(NSDictionary*)parameters
 {
     
     NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [dictionaryWithLocale addEntriesFromDictionary:[self getLocalParam]];
+    [dictionaryWithLocale addEntriesFromDictionary:[self getLocaleParam]];
     return dictionaryWithLocale;
 }
 

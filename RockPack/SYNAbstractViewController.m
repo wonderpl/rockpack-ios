@@ -51,20 +51,21 @@
 
 #pragma mark - Custom accessor methods
 
--(id)init {
+- (id) init
+{
     DebugLog(@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
-    return [self initWithViewId:@"NULL"];
+    return [self initWithViewId: @"NULL"];
 }
 
--(id)initWithViewId:(NSString*)vid {
-    if(self = [super init]) {
+- (id) initWithViewId: (NSString*) vid
+{
+    if ((self = [super init]))
+    {
         viewId = vid;
     }
+    
     return self;
 }
-
-
-
 
 
 #pragma mark - View lifecycle
@@ -91,9 +92,7 @@
     
     if (self.hasVideoQueue)
     {
-        
         [self.videoQVC reloadData];
-        
     }
 }
 
@@ -118,7 +117,7 @@
 }
 
 
--(void)reloadCollectionViews
+-(void) reloadCollectionViews
 {
     AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
@@ -390,7 +389,8 @@
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     UICollectionViewCell *cell = nil;
     
@@ -412,7 +412,6 @@
         [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
                                          selected: videoInstance.video.starredByUserValue];
         
-//        videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
         videoThumbnailCell.viewControllerDelegate = self;
         
         cell = videoThumbnailCell;
