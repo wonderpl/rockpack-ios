@@ -19,12 +19,15 @@
 @interface SYNAppDelegate ()
 
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 
 @end
 
 @implementation SYNAppDelegate
+
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -125,6 +128,10 @@
 
 - (void) initializeCoreDataStack
 {
+    
+    
+    
+    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
     ZAssert(modelURL, @"Failed to find model URL");
     
@@ -135,12 +142,33 @@
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
     ZAssert(persistentStoreCoordinator, @"Failed to initialize persistent store coordinator");
     
+    
+    
+    // == Main Context
+    
     self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
     self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
     self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
     
+    
+    
+    
+    // == Search Context
+    
+    self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    NSPersistentStoreCoordinator *searchPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
+    NSError* error;
+    NSPersistentStore* searchStore = [searchPersistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                                                    configuration:nil
+                                                                                              URL:nil
+                                                                                          options:nil
+                                                                                            error:&error];
+    ZAssert(searchStore, @"Failed to initialize search managed context in app delegate");
+    
+    
+    self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
@@ -164,8 +192,7 @@
                             format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
             }
             
-            if (![managedObjectModel isConfiguration: nil
-                          compatibleWithStoreMetadata: existingPersistentStoreMetadata])
+            if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
             {
                 if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
                                                                error: &error])
@@ -189,13 +216,18 @@
             DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
         }
     });
+    
+    // Registries
+    
+    _mainRegistry = [SYNMainRegistry registry];
+    _searchRegistry = [SYNSearchRegistry registry];
 }
 
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
 {
     // If we don't have a valid MOC, then bail
-    if (nil == self.mainManagedObjectContext)
+    if (!self.mainManagedObjectContext)
         return;
     
     if ([self.mainManagedObjectContext hasChanges])
@@ -203,7 +235,7 @@
         [self.mainManagedObjectContext performBlockAndWait:^
          {
              NSError *error = nil;
-             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving MOC: %@\n%@",
+             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving Main moc: %@\n%@",
                      [error localizedDescription], [error userInfo]);
          }];
     }
@@ -211,7 +243,7 @@
     void (^savePrivate) (void) = ^
     {
         NSError *error = nil;
-        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving private moc: %@\n%@",
+        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving Private moc: %@\n%@",
                 [error localizedDescription], [error userInfo]);
     };
     
@@ -225,6 +257,19 @@
         {
             [self.privateManagedObjectContext performBlock: savePrivate];
         }
+    }
+}
+
+-(void) saveSearchContext
+{
+    if(!self.searchManagedObjectContext)
+        return;
+    
+    if([self.searchManagedObjectContext hasChanges])
+    {
+        NSError *error = nil;
+        ZAssert([self.searchManagedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
     }
 }
 

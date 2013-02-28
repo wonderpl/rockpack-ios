@@ -151,7 +151,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - Overlay Views
+#pragma mark - Overlay/Popup Views
 
 
 - (IBAction) userTouchedInboxButton: (UIButton*) button
@@ -306,9 +306,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
-    DebugLog(@"textFieldShouldReturn:");
+
     
-    [((SYNBottomTabViewController*)self.rootViewController) showSearchViewController];
+    NSString* searchTerm = self.searchTextField.text;
+    
+    if ([searchTerm isEqualToString:@""])
+        return NO;
+    
+    [((SYNBottomTabViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
     
     [textField resignFirstResponder];
     
@@ -399,7 +404,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [UIView animateWithDuration: 0.4f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
+                     animations: ^
+                    {
                          
                          self.topButtonsContainer.center = targetPoint;
                          self.backButton.alpha = targetAlpha;

@@ -270,7 +270,7 @@
          if (((AbstractCommon *)managedObject).markedForDeletionValue == TRUE)
          {
              [managedObjectContext deleteObject: (NSManagedObject *)managedObject];
-             DebugLog (@"Deleted NSManagedObject that is no longer used after import");
+             // DebugLog (@"Deleted NSManagedObject that is no longer used after import");
          }
      }];
 }

@@ -39,8 +39,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
-@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 
 @end
@@ -48,6 +46,14 @@
 @implementation SYNVideosRootViewController
 
 #pragma mark - View lifecycle
+
+-(id)initWithViewId:(NSString *)vid
+{
+    if (self = [super initWithNibName:@"SYNVideosRootViewController" bundle:nil]) {
+        viewId = vid;
+    }
+    return self;
+}
 
 - (void) viewDidLoad
 {
@@ -116,25 +122,6 @@
 }
 
 
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-    [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
-    
-    // Set the first video
-    if (self.fetchedResultsController.fetchedObjects.count > 0)
-    {
-        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
-        
-        [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
-                                                                selectedIndexPath: firstIndexPath
-                                                                         autoPlay: TRUE];
-        
-        [self setLargeVideoToIndexPath: firstIndexPath];
-    }
-}
-
 
 
 
@@ -142,14 +129,13 @@
 {
     [super viewDidAppear: animated];
     
-    [self reloadCollectionViews];
-}
-
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    [super viewWillDisappear: animated];
+    [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
     
+    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
+    
+    self.currentIndexPath = firstIndexPath;
+    
+    [self reloadCollectionViews];
 }
 
 

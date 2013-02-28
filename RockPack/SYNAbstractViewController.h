@@ -13,6 +13,8 @@
 #import "SYNAppDelegate.h"
 #import "SYNVideoQueueDelegate.h"
 
+#import "SYNNetworkEngine.h"
+
 
 @class VideoInstance;
 

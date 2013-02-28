@@ -150,9 +150,6 @@
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
     
-    
-    
-    
     // == Animate
     
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;

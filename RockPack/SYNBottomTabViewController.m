@@ -21,23 +21,23 @@
 #import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
 #import "SYNSearchTabViewController.h"
+#import "SYNSearchRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
+@property (nonatomic) BOOL shouldAnimateViewTransitions;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
-@property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
-@property (nonatomic, strong) UIViewController* searchViewController;
+@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
-
-@property (nonatomic, strong) IBOutlet UITextView *messagePlaceholderTextView;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 
@@ -47,11 +47,14 @@
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
 
+@property (nonatomic, strong) IBOutlet UIView* tabsViewContainer;
+
 @end
 
 @implementation SYNBottomTabViewController
 
 @synthesize selectedIndex = _selectedIndex;
+@synthesize selectedViewController = _selectedViewController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -61,14 +64,16 @@
 {
     [super viewDidLoad];
     
-    // Home Tab
+    // == Home Tab
+    
     SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] initWithViewId:@"Home"];
     UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;
     homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
     homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
-    // Channels tab
+    // == Channels Tab
+    
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId:@"Channels"];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
@@ -76,7 +81,8 @@
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    // Discover tab
+    // == Videos Tab
+    
     SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Videos"];
     videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
@@ -85,48 +91,54 @@
     videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     
-    // Search tab
-    SYNVideosRootViewController *searchRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Videos"];
-    searchRootViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
-    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: searchRootViewController];
-    searchRootNavigationViewController.navigationBarHidden = TRUE;
-    searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    // == You Tab
     
-    // My Rockpack tab
     SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] initWithViewId:@"You"];
     UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
     youRootRootNavigationViewController.navigationBarHidden = TRUE;
     youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
     youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    // Friends tab
-    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId:@"Friends"];
+    // == Friends tab
     // TODO: Nest Friends Bar
-    // Using new array syntax
+    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId:@"Friends"];
+    
+    
+    
+    // == Register Controllers
+    
     self.viewControllers = @[homeRootNavigationViewController,
                              channelsRootNavigationViewController,
                              videosRootNavigationViewController,
                              youRootRootNavigationViewController,
                              friendsRootViewController];
     
-    self.searchViewController = searchRootNavigationViewController;
+    
+    // == Search (out of normal controller array)
+    
+    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
+    self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
+    
+    // For the moment no navigation controller
+//    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
+//    searchRootNavigationViewController.navigationBarHidden = TRUE;
+//    searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
+//    searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    
 
-    _selectedIndex = NSNotFound;
-    
-    self.selectedViewController = videosRootNavigationViewController;
     
     
+    // Set Initial View Controller
+    
+    self.shouldAnimateViewTransitions = YES;
+    
+    [self setSelectedIndex:2];
     
     
-    // Set initial state
     self.didNotSwipeMessageInbox = TRUE;
     self.didNotSwipeShareMenu = TRUE;
     
     
-    
-    // Placeholder for rockie-talkie message view to show message only when no text in main view
-    self.messagePlaceholderTextView.font = [UIFont rockpackFontOfSize: 15.0f];
     
     
 }
@@ -181,7 +193,7 @@
 
 // Set the selected tab (with no animation)
 
-- (void) setSelectedIndex: (NSUInteger) newSelectedIndex
+- (void) setSelectedIndex: (NSInteger) newSelectedIndex
 {
 	[self setSelectedIndex: newSelectedIndex
                   animated: NO];
@@ -194,132 +206,89 @@
                  animated: (BOOL) animated
 {
 	
-    if(newSelectedIndex > [self.viewControllers count]) {
-        DebugLog(@"Selected index %i is out of bounds", newSelectedIndex);
+    
+    
+    if(_selectedIndex == newSelectedIndex)
         return;
-    }
     
-	if (![self isViewLoaded]) {
-		_selectedIndex = newSelectedIndex;
-        return;
-	}
-    
-    if(_selectedIndex == newSelectedIndex) {
-        return;
-    }
-    
-    UIViewController *fromViewController;
-    UIViewController *toViewController;
-    
-    if (_selectedIndex != NSNotFound)
-    {
-        UIButton *fromButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-        fromButton.selected = FALSE;
-        fromViewController = self.selectedViewController;
-    }
     
     _selectedIndex = newSelectedIndex;
     
-    UIButton *toButton;
-    if (_selectedIndex != NSNotFound)
-    {
-        toButton = (UIButton *)[self.view viewWithTag: kBottomTabIndexOffset + _selectedIndex];
-        toButton.selected = TRUE;
-        toViewController = self.selectedViewController;
-    }
-    
-    if (toViewController == nil)  // don't animate
-    {
-        [fromViewController.view removeFromSuperview];
-    }
-    else if (fromViewController == nil)  // don't animate
-    {
-        [self.containerView addSubview:toViewController.view];
-    }
     
     
-    [self performChangeFromController:fromViewController toController:toViewController animated:animated];
+    for (UIButton* tabButton in self.tabsViewContainer.subviews)
+        tabButton.selected = NO;
+
+    if(_selectedIndex < 0 || _selectedIndex > self.tabsViewContainer.subviews.count)
+        return;
     
     
-    // We need to see if we need to hide/show the back button for the new view controller
+    UIButton* toButton = (UIButton *)self.tabsViewContainer.subviews[_selectedIndex];
+    toButton.selected = TRUE;
     
-    if ([toViewController isKindOfClass: [UINavigationController class]] &&
-        [[(UINavigationController *)toViewController viewControllers] count] > 1) {
-        
-        //[self showBackButton];
-        //[[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
-    }
-    else
-    {
-        //[self hideBackButton];
-        //[[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
-    }
+    
+    self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
+    
+    
 }
 
-
--(void)performChangeFromController:(UIViewController*)fromViewController toController:(UIViewController*)toViewController animated:(BOOL)animated
+-(void)setSelectedViewController:(UIViewController *)newSelectedViewController
 {
     
-    [self.containerView addSubview:toViewController.view];
     
-    if (animated)
+    // if we try and push the same controller, escape
+    
+    if(_selectedViewController == newSelectedViewController)
+        return;
+    
+    
+    
+    // even if nill, that is OK. It will just animate the selectedViewController out.
+    
+    if(newSelectedViewController)
+        [self.containerView addSubview:newSelectedViewController.view];
+    
+    if (self.shouldAnimateViewTransitions)
     {
         self.view.userInteractionEnabled = NO;
-      
-        toViewController.view.alpha = 0.0f;
+        
+        newSelectedViewController.view.alpha = 0.0f;
         
         [UIView animateWithDuration: kTabAnimationDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^{
-             fromViewController.view.alpha = 0.0f;
-             toViewController.view.alpha = 1.0f;
                              
-         } completion: ^(BOOL finished) {
-             
-             fromViewController.view.alpha = 0.0f;
-             [fromViewController.view removeFromSuperview];
-             self.view.userInteractionEnabled = YES;
-             
-         }];
+                             _selectedViewController.view.alpha = 0.0f;
+                             
+                             if(newSelectedViewController)
+                                 newSelectedViewController.view.alpha = 1.0f;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             [_selectedViewController.view removeFromSuperview];
+                             
+                             self.view.userInteractionEnabled = YES;
+                             
+                             _selectedViewController = newSelectedViewController;
+                             
+                         }];
     }
-    else  // not animated
+    else
     {
-        [fromViewController.view removeFromSuperview];
         
+        [_selectedViewController.view removeFromSuperview];
+        
+        
+        _selectedViewController = newSelectedViewController;
     }
-}
-
-
-// Return the currently selected view controller
-
-- (UIViewController *) selectedViewController
-{
-	if (self.selectedIndex != NSNotFound)
-        return self.viewControllers [self.selectedIndex];
     
-	return nil;
 }
 
 
 
 
 
-#pragma mark - Tab Selection
-
-// Set the selected tab of a particular view controller (with animation if required)
-
-- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
-                          animated: (BOOL) animated;
-{
-	NSUInteger index = [self.viewControllers indexOfObject: newSelectedViewController];
-    
-	if (index != NSNotFound)
-    {
-		[self setSelectedIndex: index
-                      animated: animated];
-    }
-}
 
 
 // Use the tag index of the button (100 - 103) to calculate the button index
@@ -332,13 +301,6 @@
                   animated: YES];
 }
 
-// Set the selected tab of a particular view controller (with no animation)
-
-- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
-{
-	[self setSelectedViewController: newSelectedViewController
-                           animated: NO];
-}
 
 - (IBAction) recordAction: (UIButton*) button
 {
@@ -369,15 +331,16 @@
 
 
 
--(void) showSearchViewController
+-(void) showSearchViewControllerWithTerm:(NSString*)term
 {
-    UIViewController *fromViewController = self.selectedViewController;
-    if(fromViewController == nil) {
-        return;
-    }
-    UIViewController *toViewController = self.searchViewController;
+    [self setSelectedIndex:-1]; // turn all off
     
-    [self performChangeFromController:fromViewController toController:toViewController animated:YES];
+    
+    self.selectedViewController = self.searchViewController;
+    
+    self.searchViewController.searchTerm = term;
+    
+    
 }
 
 @end

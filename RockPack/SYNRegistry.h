@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SYNAppDelegate.h"
+
+@class SYNAppDelegate;
 
 @interface SYNRegistry : NSObject {
-    @protected SYNAppDelegate *appDelegate;
+    @protected __weak SYNAppDelegate *appDelegate;
     @protected NSManagedObjectContext* importManagedObjectContext;
 }
 

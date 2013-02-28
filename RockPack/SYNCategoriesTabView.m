@@ -193,27 +193,30 @@
         [itemView makeFaded];
     
     
-    
     itemView = (SYNCategoryItemView*)recogniser.view;
     [itemView makeHighlightedWithImage:YES];
     
+    
+    // tapDelegate is the SYNCategoryViewController
     [self.tapDelegate handleMainTap:recogniser];
 }
 
 -(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser
 {
+    
     SYNCategoryItemView* itemView;
     
     for(SYNCategoryItemView* itemView in self.secondaryTabsView.subviews)
         [itemView makeStandard];
-    
-    
     
     itemView = (SYNCategoryItemView*)recogniser.view;
     [itemView makeHighlightedWithImage:NO];
     
     [self.tapDelegate handleSecondaryTap:recogniser];
 }
+
+
+
 
 
 

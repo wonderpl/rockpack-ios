@@ -24,5 +24,7 @@
 - (void) updateChannelsScreenForCategory:(NSString*)category;
 
 - (void) searchVideosForTerm:(NSString*)searchTerm;
+- (void) searchChannelsForTerm:(NSString*)searchTerm;
+
 
 @end

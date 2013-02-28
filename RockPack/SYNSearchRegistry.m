@@ -9,15 +9,29 @@
 #import "SYNSearchRegistry.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "Channel.h"
+#import "SYNAppDelegate.h"
 
 @implementation SYNSearchRegistry
 
--(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId
+-(id)init
+{
+    if (self = [super init])
+    {
+        appDelegate = UIApplication.sharedApplication.delegate;
+        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
+        importManagedObjectContext.parentContext = appDelegate.searchManagedObjectContext;
+    }
+    return self;
+}
+
+
+-(BOOL)registerVideosFromDictionary:(NSDictionary *)dictionary
 {
     
     // == Check for Validity == //
     
-    [self clearImportContextFromEntityName:@"Video"];
+    //[self clearImportContextFromEntityName:@"VideoInstance"];
     
     NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
     if (!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
@@ -28,9 +42,6 @@
     NSArray *itemArray = [videosDictionary objectForKey: @"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
-    
-    
-    
     
     
     // === Main Processing === //
@@ -44,20 +55,51 @@
             [VideoInstance instanceFromDictionary: fullItemDictionary
                         usingManagedObjectContext: importManagedObjectContext
                               ignoringObjectTypes: kIgnoreChannelObjects
-                                        andViewId: viewId];
+                                        andViewId: @"Search"];
         }
             
     }
-        
+       
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveSearchContext];
+    
+    return YES;
+}
+
+
+-(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary
+{
+    //[self clearImportContextFromEntityName:@"Channel"];
+    
+    // == Check for Validity == //
+    
+    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+    if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+        return NO;
     
     
+    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
     
+    
+    for (NSDictionary *itemDictionary in itemArray)
+        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+            [Channel instanceFromDictionary: itemDictionary
+                  usingManagedObjectContext: importManagedObjectContext
+                        ignoringObjectTypes: kIgnoreNothing
+                                  andViewId: @"Search"];
     
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
     
+    [appDelegate saveSearchContext];
     
     
     return YES;

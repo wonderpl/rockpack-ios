@@ -23,7 +23,7 @@
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
+
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
@@ -49,6 +49,7 @@
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
+    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
     
@@ -56,7 +57,7 @@
 }
 
 
-- (NSFetchedResultsController *) channelFetchedResultsController
+- (NSFetchedResultsController *) fetchedResultsController
 {
     
     
@@ -82,7 +83,7 @@
     fetchedResultsController.delegate = self;
     
     NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"channelFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([fetchedResultsController performFetch: &error], @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
 }
@@ -114,11 +115,7 @@
 }
 
 
-- (void) viewWillDisappear: (BOOL) animated
-{
-    [super viewWillDisappear: animated];
-    
-}
+
 
 
 - (void) reloadCollectionViews
@@ -133,7 +130,7 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.channelFetchedResultsController.sections[section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
     return sectionInfo.numberOfObjects;
 
 }
@@ -147,7 +144,7 @@
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
 
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
@@ -175,7 +172,7 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -186,7 +183,7 @@
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -232,7 +229,7 @@
     
     [self toggleChannelRockItAtIndex: indexPath];
     
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
@@ -258,7 +255,7 @@
         
         self.pinchedIndexPath = indexPath;
         
-        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
         
         // Get the various frames we need to calculate the actual position

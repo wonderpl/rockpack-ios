@@ -19,4 +19,6 @@
 
 @property (nonatomic, readonly) SYNTabView* tabView;
 
+-(void)setSelectedWithId:(NSString*)selectedId;
+
 @end

@@ -14,6 +14,7 @@
 #import "Category.h"
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
+#import "SYNAppDelegate.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -40,9 +41,11 @@
         // Set our locale string (i.e. en_GB, en_US or fr_FR)
        self.localeString = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
         
-        self.registry = [SYNMainRegistry registry];
+        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
         
-        self.searchRegistry = [SYNSearchRegistry registry];
+        self.registry = appDelegate.mainRegistry;
+        
+        self.searchRegistry = appDelegate.searchRegistry;
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
@@ -174,7 +177,7 @@
     
     
     [self enqueueOperation: networkOperation];
-}
+
 
 
 - (void) updateChannel: (NSString *) resourceURL
@@ -247,6 +250,64 @@
     NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary:parameters];
     [dictionaryWithLocale addEntriesFromDictionary:[self getLocaleParam]];
     return dictionaryWithLocale;
+}
+
+
+#pragma mark - Search
+
+- (void) searchVideosForTerm:(NSString*)searchTerm
+{
+    NSDictionary* parameters;
+    
+    if(searchTerm == nil || [searchTerm isEqualToString:@""])
+        return;
+    
+    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchVideos params:parameters];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        BOOL registryResultOk = [self.searchRegistry registerVideosFromDictionary:dictionary];
+        if (!registryResultOk)
+            return;
+        
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Videos Screens Request Failed");
+    }];
+    
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
+- (void) searchChannelsForTerm:(NSString*)searchTerm
+{
+    NSDictionary* parameters;
+    
+    if(searchTerm == nil || [searchTerm isEqualToString:@""])
+        return;
+    
+    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        BOOL registryResultOk = [self.searchRegistry registerChannelFromDictionary:dictionary];
+        if (!registryResultOk)
+            return;
+        
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Videos Screens Request Failed");
+    }];
+    
+    
+    [self enqueueOperation: networkOperation];
 }
 
 @end

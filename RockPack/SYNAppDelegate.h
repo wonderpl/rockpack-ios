@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "SYNMainRegistry.h"
+#import "SYNSearchRegistry.h"
+#import "SYNRegistry.h"
 
 // Something new!
 
@@ -19,7 +22,9 @@
 @property (strong, nonatomic) UIWindow *window;
 
 // Support for Core Data
-@property (readonly, strong, nonatomic) NSManagedObjectContext *mainManagedObjectContext;
+@property (nonatomic, readonly) NSManagedObjectContext *mainManagedObjectContext;
+
+@property (nonatomic, readonly) NSManagedObjectContext *searchManagedObjectContext;
 
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
@@ -30,6 +35,10 @@
 // Bit of a hack to represent the current user
 @property (weak, nonatomic) ChannelOwner *channelOwnerMe;
 
+@property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
+@property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
+
 - (void) saveContext: (BOOL) wait;
+-(void) saveSearchContext;
 
 @end

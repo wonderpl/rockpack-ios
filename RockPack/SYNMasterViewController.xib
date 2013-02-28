@@ -629,17 +629,17 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundGeneric.jpg">{1024, 748}</string>
-			<string key="ButtonActivityDefault.png">{84, 43}</string>
-			<string key="ButtonActivityHighlighted.png">{84, 43}</string>
-			<string key="ButtonActivitySelected.png">{84, 43}</string>
-			<string key="ButtonBack.png">{53, 30}</string>
-			<string key="ButtonBackHighlighted.png">{53, 30}</string>
-			<string key="ButtonCancelSearch.png">{23, 23}</string>
-			<string key="ButtonInboxDefault.png">{84, 43}</string>
-			<string key="ButtonInboxHighlighted.png">{84, 43}</string>
-			<string key="ButtonInboxSelected.png">{84, 43}</string>
-			<string key="PanelMainTitle.png">{1024, 54}</string>
+			<string key="BackgroundGeneric.jpg">{16, 16}</string>
+			<string key="ButtonActivityDefault.png">{16, 16}</string>
+			<string key="ButtonActivityHighlighted.png">{16, 16}</string>
+			<string key="ButtonActivitySelected.png">{16, 16}</string>
+			<string key="ButtonBack.png">{16, 16}</string>
+			<string key="ButtonBackHighlighted.png">{16, 16}</string>
+			<string key="ButtonCancelSearch.png">{16, 16}</string>
+			<string key="ButtonInboxDefault.png">{16, 16}</string>
+			<string key="ButtonInboxHighlighted.png">{16, 16}</string>
+			<string key="ButtonInboxSelected.png">{16, 16}</string>
+			<string key="PanelMainTitle.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
