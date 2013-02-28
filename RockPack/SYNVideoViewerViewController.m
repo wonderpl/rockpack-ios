@@ -229,19 +229,22 @@
     [self playVideoAtIndexPath: newIndexPath];
 }
 
-- (IBAction) userTouchedStarButton: (id) sender
+- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
+    [self showVideoQueue: TRUE];
     
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
-- (IBAction) userTouchedShareButton: (id) sender
+- (BOOL) hasVideoQueue
 {
-    
+    return TRUE;
 }
 
-- (IBAction) userTouchedAddButton: (id) sender
+- (BOOL) hasTabBar
 {
-    
+    return FALSE;
 }
 
 

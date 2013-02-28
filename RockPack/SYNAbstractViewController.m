@@ -81,6 +81,13 @@
         self.videoQVC = [[SYNVideoQueueViewController alloc] init];
         self.videoQVC.delegate = self;
         
+        if (self.hasTabBar == FALSE)
+        {
+//            CGRect stdFrame = CGRectMake(0, 573 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
+            CGRect lowerFrame = CGRectMake(0, 573 + 62 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
+            self.videoQVC.view.frame = lowerFrame;
+        }
+        
         [self.view addSubview: self.videoQVC.view];
     }
 }
@@ -329,7 +336,8 @@
                                                                                           selectedIndexPath: (NSIndexPath *) selectedIndexPath];
     
     self.videoViewerViewController.view.alpha = 0.0f;
-    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
+    self.videoViewerViewController.hidesBottomBarWhenPushed = YES;
+    [bottomTabViewController.containerView addSubview: self.videoViewerViewController.view];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -542,6 +550,11 @@
     return FALSE;
 }
 
+- (BOOL) hasTabBar
+{
+    return TRUE;
+}
+
 
 // Assume that the video queue is not visible on first entry to the tab
 - (BOOL) isVideoQueueVisibleOnStart;
@@ -549,18 +562,15 @@
     return FALSE;
 }
 
-
 - (void) showVideoQueue: (BOOL) animated
 {
-    [self.videoQVC showVideoQueue:animated];
+    [self.videoQVC showVideoQueue: animated];
 }
-
 
 - (void) hideVideoQueue: (BOOL) animated
 {
-    [self.videoQVC hideVideoQueue:animated];
+    [self.videoQVC hideVideoQueue: animated];
 }
-
 
 
 #pragma mark - Add/Remove to video queue

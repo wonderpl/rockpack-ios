@@ -125,42 +125,28 @@
 -(void)reloadData
 {
     [self.videoQueueView.videoQueueCollectionView reloadData];
-    
 }
 
 
 #pragma mark - Animation Methods
 
-- (void) showVideoQueue: (BOOL) animated
+- (void) showVideoQueue: (BOOL) animated;
 {
-    
-    
     if (!self.isVisible)
         [self hideShowVideoQueue:YES animated:animated];
     
-    
     self.isVisible = YES;
-    [self startVideoQueueDismissalTimer];
-    
-    
-    
+    [self startVideoQueueDismissalTimer];  
 }
 
 
-- (void) hideVideoQueue: (BOOL) animated
+- (void) hideVideoQueue: (BOOL) animated;
 {
-    
-    
     if (self.isVisible)
         [self hideShowVideoQueue:NO animated:animated];
     
     self.isVisible = NO;
     self.videoQueueAnimationTimer = nil;
-    
-    
-    
-    
-    
 }
 
 

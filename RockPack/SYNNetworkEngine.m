@@ -38,7 +38,7 @@
                      customHeaderFields: @{@"x-client-identifier" : @"Rockpack iPad client"}]))
     {
         // Set our locale string (i.e. en_GB, en_US or fr_FR)
-       self.localeString = (NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier]));
+       self.localeString = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
         
         self.registry = [SYNMainRegistry registry];
         

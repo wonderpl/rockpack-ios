@@ -22,8 +22,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
 
-@property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
+@property (nonatomic, strong) IBOutlet UIView* containerView;
 
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;

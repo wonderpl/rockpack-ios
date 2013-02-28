@@ -16,9 +16,8 @@
 
 - (void) reloadData;
 
-- (void) hideVideoQueue: (BOOL) animated;
-
 - (void) showVideoQueue: (BOOL) animated;
+- (void) hideVideoQueue: (BOOL) animated;
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
 
