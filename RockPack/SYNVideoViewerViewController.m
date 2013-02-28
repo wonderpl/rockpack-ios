@@ -67,12 +67,7 @@
     self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
-    // Set initial label text
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
-    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
-    self.channelTitleLabel.text = videoInstance.channel.title;
-    self.videoTitleLabel.text = videoInstance.title;
-    self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
+    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
     
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
@@ -106,6 +101,20 @@
     
     [super viewWillDisappear: animated];
 }
+
+#pragma mark - Update details
+
+- (void) updateVideoDetailsForIndexPath: (NSIndexPath *) indexPath
+{
+    // Set initial label text
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
+    self.channelTitleLabel.text = videoInstance.channel.title;
+    self.videoTitleLabel.text = videoInstance.title;
+    self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
+}
+
+
 
 
 #pragma mark - Collection view support
@@ -145,7 +154,14 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    self.currentSelectedIndexPath = indexPath;
     
+    // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
+    [self.videoPlaybackViewController playVideoAtIndex: self.currentSelectedIndexPath];
+    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
+    [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
+                                              atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
+                                                      animated: YES];
 }
 
 

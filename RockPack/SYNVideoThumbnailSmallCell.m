@@ -17,7 +17,7 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 10.0f];
 }
 
 #pragma mark - Asynchronous image loading support
