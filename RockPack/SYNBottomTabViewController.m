@@ -328,9 +328,10 @@
     [self setSelectedIndex:-1]; // turn all off
     
     
+    self.selectedViewController = self.searchViewController;
+    
     self.searchViewController.searchTerm = term;
     
-    self.selectedViewController = self.searchViewController;
     
 }
 

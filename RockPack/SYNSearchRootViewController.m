@@ -41,6 +41,7 @@
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
@@ -72,6 +73,9 @@
     
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+    
+    [self.currentController.view removeFromSuperview];
+    self.currentController = nil;
     
 }
 

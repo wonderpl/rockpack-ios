@@ -311,7 +311,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     NSString* searchTerm = self.searchTextField.text;
     
     if ([searchTerm isEqualToString:@""])
-        return YES;
+        return NO;
     
     [((SYNBottomTabViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
     
