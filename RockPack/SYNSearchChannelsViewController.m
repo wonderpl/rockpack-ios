@@ -49,12 +49,16 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
+    
+    
     if(self.currentSearchTerm && [self.currentSearchTerm isEqualToString:term]) // same search
         return;
     
     self.currentSearchTerm = term;
     
     [appDelegate.networkEngine searchChannelsForTerm:term];
+    
+    
 
 }
 
@@ -73,6 +77,22 @@
                                                            self.videoThumbnailCollectionView.center.y + 30.0);
     
     
+}
+
+
+
+
+
+#pragma mark - Override
+
+-(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+{
+    // override with empty functiokn
+}
+
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
+{
+    // override with emtpy function
 }
 
 @end

@@ -30,7 +30,7 @@
     
     // == Check for Validity == //
     
-    [self clearImportContextFromEntityName:@"Video"];
+    [appDelegate.searchManagedObjectContext reset];
     
     NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
     if (!videosDictionary || ![videosDictionary isKindOfClass: [NSDictionary class]])
@@ -73,6 +73,7 @@
 -(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary
 {
     
+    [appDelegate.searchManagedObjectContext reset];
     
     // == Check for Validity == //
     
