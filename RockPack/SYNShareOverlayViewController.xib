@@ -42,6 +42,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{476, 642}</string>
 						<reference key="NSSuperview" ref="791553993"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="865528558"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="703501868">
@@ -60,6 +61,7 @@
 						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{169, 513}, {154, 124}}</string>
 						<reference key="NSSuperview" ref="791553993"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1019525074"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -74,6 +76,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{169, 513}, {154, 124}}</string>
 						<reference key="NSSuperview" ref="791553993"/>
+						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -114,6 +117,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 495}, {308, 47}}</string>
 						<reference key="NSSuperview" ref="791553993"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="68250698"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="703501868"/>
@@ -147,6 +151,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 495}, {308, 47}}</string>
 						<reference key="NSSuperview" ref="791553993"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="205576839"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="703501868"/>
@@ -171,6 +176,7 @@
 				</array>
 				<string key="NSFrameSize">{476, 642}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="579425819"/>
 				<string key="NSReuseIdentifierKey">_NS:10</string>
 				<reference key="IBUIBackgroundColor" ref="703501868"/>
@@ -274,7 +280,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">31</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNShareOverlayViewController</string>

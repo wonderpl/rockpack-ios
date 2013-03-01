@@ -38,8 +38,8 @@
     if ((self = [super initWithHostName: kAPIHostName
                      customHeaderFields: @{@"x-client-identifier" : @"Rockpack iPad client"}]))
     {
-        // Set our locale string (i.e. en_GB, en_US or fr_FR)
-       self.localeString = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
+        // Set our local string (i.e. en_GB, en_US or fr_FR)
+        self.localeString = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
         
         SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
         
@@ -50,7 +50,7 @@
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
     }
-
+    
     return self;
 }
 
@@ -63,7 +63,7 @@
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
- 
+    
     
     
     // TODO: We need to replace USERID with actual userId ASAP
@@ -72,7 +72,7 @@
     NSString *apiURL = [NSString stringWithFormat:kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiURL params:[self getLocaleParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiURL params:[self getLocalParam]];
     
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
@@ -83,7 +83,7 @@
             errorBlock(error);
             return;
         }
-            
+        
         completionBlock();
         
         
@@ -93,16 +93,16 @@
     
     [self enqueueOperation:networkOperation];
     
-
+    
 }
 
 
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
-
+    
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPICategories params:[self getLocaleParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPICategories params:[self getLocalParam]];
     
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
@@ -127,9 +127,9 @@
 {
     NSDictionary* parameters;
     if([categoryId isEqualToString:@"all"])
-        parameters = [self getLocaleParam];
+        parameters = [self getLocalParam];
     else
-        parameters = [self getLocaleParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
+        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:parameters];
@@ -141,7 +141,7 @@
             DebugLog(@"Update Videos Screens Request Failed");
             return;
         }
-            
+        
         
         
     } errorHandler:^(NSError* error) {
@@ -152,31 +152,6 @@
     [self enqueueOperation: networkOperation];
 }
 
-- (void) searchVideosForTerm:(NSString*)searchTerm
-{
-    NSDictionary* parameters;
-    
-    if(searchTerm == nil || [searchTerm isEqualToString:@""])
-        return;
-    
-    parameters = [self getLocaleParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
-    
-    SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchVideos params:parameters];
-    
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
-        
-        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Search"];
-        if (!registryResultOk)
-            return;
-        
-        
-    } errorHandler:^(NSError* error) {
-        DebugLog(@"Update Videos Screens Request Failed");
-    }];
-    
-    
-    [self enqueueOperation: networkOperation];
 
 
 
@@ -184,7 +159,7 @@
 {
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString:resourceURL params:[self getLocaleParam]];
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:resourceURL params:[self getLocalParam]];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
@@ -193,7 +168,7 @@
             DebugLog(@"Update Channel Screens Request Failed");
             return;
         }
-            
+        
         
         
     } errorHandler:^(NSError* error) {
@@ -209,23 +184,23 @@
     
     
     NSDictionary* parameters;
-    if([categoryId isEqualToString:@"all"]) 
-        parameters = [self getLocaleParam];
+    if([categoryId isEqualToString:@"all"])
+        parameters = [self getLocalParam];
     else
-        parameters = [self getLocaleParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
+        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
     
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularChannels params: parameters];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
-
         
-    BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
-    if (!registryResultOk) {
-        DebugLog(@"Update Channel Screens Request Failed");
-        return;
-    }
+        
+        BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Update Channel Screens Request Failed");
+            return;
+        }
         
         
     } errorHandler:^(NSError* error) {
@@ -239,16 +214,16 @@
 
 #pragma mark - Utility Methods
 
--(NSDictionary*)getLocaleParam
+-(NSDictionary*)getLocalParam
 {
     return [NSDictionary dictionaryWithObject:self.localeString forKey:@"locale"];
 }
 
--(NSDictionary*)getLocaleParamWithParams:(NSDictionary*)parameters
+-(NSDictionary*)getLocalParamWithParams:(NSDictionary*)parameters
 {
     
     NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [dictionaryWithLocale addEntriesFromDictionary:[self getLocaleParam]];
+    [dictionaryWithLocale addEntriesFromDictionary:[self getLocalParam]];
     return dictionaryWithLocale;
 }
 

@@ -54,9 +54,6 @@
 {
     DebugLog(@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
     return [self initWithViewId: @"NULL"];
-        
-    }
-    return self;
 }
 
 - (id) initWithViewId: (NSString*) vid
