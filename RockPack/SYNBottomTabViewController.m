@@ -315,10 +315,6 @@
 }
 
 
-
-
-
-
 - (void) popCurrentViewController: (id) sender
 {
     UINavigationController *navVC = (UINavigationController *)self.selectedViewController;

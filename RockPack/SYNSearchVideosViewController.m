@@ -9,6 +9,7 @@
 #import "SYNSearchVideosViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNSearchItemView.h"
+#import "SYNSearchRootViewController.h"
 
 @interface SYNSearchVideosViewController ()
 
@@ -99,6 +100,17 @@
 }
 
 
+#pragma mark - Navigation Controller
 
+- (void) animatedPushViewController: (UIViewController *) vc
+{
+    [self.parent animatedPushViewController:vc];
+}
+
+
+- (void) animatedPopViewController
+{
+    [self.parent animatedPopViewController];
+}
 
 @end

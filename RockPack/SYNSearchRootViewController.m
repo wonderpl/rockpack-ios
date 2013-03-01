@@ -10,7 +10,7 @@
 
 #import "SYNSearchVideosViewController.h"
 #import "SYNSearchChannelsViewController.h"
-
+#import "AppConstants.h"
 #import "SYNSearchTabViewController.h"
 
 @interface SYNSearchRootViewController ()
@@ -85,10 +85,12 @@
     // TODO: Check why we have to invert
     
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
-    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchChannelsItemView;
+    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchVideosItemView;
+    self.searchVideosController.parent = self;
     
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
-    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchVideosItemView;
+    self.searchChannelsController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchChannelsItemView;
+    self.searchChannelsController.parent = self;
     
     [self.searchVideosController view];
     [self.searchChannelsController view];
@@ -150,6 +152,63 @@
     self.currentController = newController;
     
     
+}
+
+
+
+
+#pragma mark - Animation support
+
+// Special animation of pushing new view controller onto UINavigationController's stack
+- (void) animatedPushViewController: (UIViewController *) vc
+{
+    
+    vc.view.alpha = 0.0f;
+    [self.view insertSubview:vc.view belowSubview:self.tabViewController.view];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+         vc.view.alpha = 1.0f;
+         
+     } completion: ^(BOOL finished) {
+         
+     }];
+    
+    [self.navigationController pushViewController: vc
+                                         animated: NO];
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
+}
+
+
+- (void) animatedPopViewController
+{
+//    UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
+//    parentVC.view.alpha = 0.0f;
+//    
+//    [self.navigationController popViewControllerAnimated: NO];
+//    
+//    [UIView animateWithDuration: 0.5f
+//                          delay: 0.0f
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations: ^{
+//                         // Contract thumbnail view
+//                         self.view.alpha = 0.0f;
+//                         parentVC.view.alpha = 1.0f;
+//                         
+//                     }
+//                     completion: ^(BOOL finished)
+//     {
+//         
+//     }];
+    
+    // Hide back button
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
 }
 
 

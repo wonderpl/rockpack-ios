@@ -185,7 +185,7 @@
 }
 
 
-- (IBAction) animatedPopViewController
+- (void) animatedPopViewController
 {
     UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
     parentVC.view.alpha = 0.0f;
@@ -203,6 +203,7 @@
      }
                      completion: ^(BOOL finished)
      {
+         
      }];
     
     // Hide back button

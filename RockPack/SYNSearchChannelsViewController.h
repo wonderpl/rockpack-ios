@@ -9,10 +9,12 @@
 #import "SYNChannelsRootViewController.h"
 
 @class SYNSearchItemView;
+@class SYNSearchRootViewController;
 
 @interface SYNSearchChannelsViewController : SYNChannelsRootViewController
 
 
+@property (nonatomic, weak) SYNSearchRootViewController* parent;
 @property (nonatomic, weak) SYNSearchItemView* itemToUpdate;
 
 -(void)performSearchWithTerm:(NSString*)term;

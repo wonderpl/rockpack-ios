@@ -8,12 +8,15 @@
 
 #import "SYNSearchChannelsViewController.h"
 
+#import "SYNSearchRootViewController.h"
 #import "SYNSearchItemView.h"
 
 @interface SYNSearchChannelsViewController ()
 
 
 @end
+
+
 
 @implementation SYNSearchChannelsViewController
 
@@ -94,6 +97,21 @@
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {
     // override with emtpy function
+}
+
+
+
+#pragma mark - Navigation Controller
+
+- (void) animatedPushViewController: (UIViewController *) vc
+{
+    [self.parent animatedPushViewController:vc];
+}
+
+
+- (void) animatedPopViewController
+{
+    [self.parent animatedPopViewController];
 }
 
 @end
