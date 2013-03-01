@@ -334,8 +334,7 @@
                                                                                           selectedIndexPath: (NSIndexPath *) selectedIndexPath];
     
     self.videoViewerViewController.view.alpha = 0.0f;
-    self.videoViewerViewController.hidesBottomBarWhenPushed = YES;
-    [bottomTabViewController.containerView addSubview: self.videoViewerViewController.view];
+    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
