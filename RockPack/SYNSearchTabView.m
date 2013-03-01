@@ -7,17 +7,19 @@
 //
 
 #import "SYNSearchTabView.h"
-#import "SYNSearchItemView.h"
+
 
 #define kSearchBarItemWidth 100.0
 
 @interface SYNSearchTabView ()
 
 @property (nonatomic, strong) UIView* mainTabsView;
-@property (nonatomic, strong) SYNSearchItemView* searchVideosItemView;
-@property (nonatomic, strong) SYNSearchItemView* searchChannelsItemView;
 
 @property (nonatomic, weak) SYNSearchItemView* currentItemView;
+
+
+@property (nonatomic, strong) SYNSearchItemView* searchVideosItemView;
+@property (nonatomic, strong) SYNSearchItemView* searchChannelsItemView;
 
 @end
 

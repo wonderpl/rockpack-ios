@@ -8,6 +8,12 @@
 
 #import "SYNTabViewController.h"
 
+#import "SYNSearchItemView.h"
+
 @interface SYNSearchTabViewController : SYNTabViewController
+
+
+@property (nonatomic, readonly) SYNSearchItemView* searchVideosItemView;
+@property (nonatomic, readonly) SYNSearchItemView* searchChannelsItemView;
 
 @end

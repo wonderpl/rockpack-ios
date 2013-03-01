@@ -8,7 +8,11 @@
 
 #import "SYNVideosRootViewController.h"
 
+@class SYNSearchItemView;
+
 @interface SYNSearchVideosViewController : SYNVideosRootViewController
+
+@property (nonatomic, weak) SYNSearchItemView* itemToUpdate;
 
 -(void)performSearchWithTerm:(NSString*)term;
 

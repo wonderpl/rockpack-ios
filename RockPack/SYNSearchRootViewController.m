@@ -11,6 +11,8 @@
 #import "SYNSearchVideosViewController.h"
 #import "SYNSearchChannelsViewController.h"
 
+#import "SYNSearchTabViewController.h"
+
 @interface SYNSearchRootViewController ()
 
 @property (nonatomic) NSInteger tabSelected;
@@ -73,7 +75,6 @@
     
     
     [self.searchVideosController performSearchWithTerm:searchTerm];
-    
     [self.searchChannelsController performSearchWithTerm:searchTerm];
 }
 
@@ -81,8 +82,13 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     
+    // TODO: Check why we have to invert
+    
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
+    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchChannelsItemView;
+    
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
+    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchVideosItemView;
     
     [self.searchVideosController view];
     [self.searchChannelsController view];

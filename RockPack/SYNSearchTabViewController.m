@@ -17,6 +17,8 @@
 
 @implementation SYNSearchTabViewController
 
+@dynamic searchChannelsItemView, searchVideosItemView;
+
 -(void)loadView
 {
     // Calculate height
@@ -36,5 +38,17 @@
 {
     [self.delegate handleNewTabSelectionWithId:itemId];
 }
+
+
+-(SYNSearchItemView*)searchVideosItemView
+{
+    return ((SYNSearchTabView*)self.tabView).searchVideosItemView;
+}
+
+-(SYNSearchItemView*)searchChannelsItemView
+{
+    return ((SYNSearchTabView*)self.tabView).searchChannelsItemView;
+}
+
 
 @end

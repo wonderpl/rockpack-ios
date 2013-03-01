@@ -8,12 +8,16 @@
 
 #import "SYNSearchChannelsViewController.h"
 
+#import "SYNSearchItemView.h"
+
 @interface SYNSearchChannelsViewController ()
 
 
 @end
 
 @implementation SYNSearchChannelsViewController
+
+@synthesize itemToUpdate;
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -53,6 +57,8 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
+    if(self.itemToUpdate)
+        [self.itemToUpdate setNumberOfItems: [controller.fetchedObjects count]];
     
     [self reloadCollectionViews];
     

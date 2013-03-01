@@ -8,13 +8,18 @@
 
 #import "SYNSearchVideosViewController.h"
 #import "SYNAppDelegate.h"
+#import "SYNSearchItemView.h"
 
 @interface SYNSearchVideosViewController ()
+
+
 
 
 @end
 
 @implementation SYNSearchVideosViewController
+
+@synthesize itemToUpdate;
 
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -64,6 +69,8 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
+    if(self.itemToUpdate)
+        [self.itemToUpdate setNumberOfItems: [controller.fetchedObjects count]];
     
     [self reloadCollectionViews];
 }
