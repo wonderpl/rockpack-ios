@@ -260,13 +260,16 @@
 
 - (void) searchChannelsForTerm:(NSString*)searchTerm
 {
+    
+    
+    if(!searchTerm) return;
+    
+    
     NSDictionary* parameters;
     
-    if(searchTerm == nil || [searchTerm isEqualToString:@""])
-        return;
     
-    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
-    
+//    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    parameters = [NSDictionary dictionaryWithObject:searchTerm forKey:@"q"];
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
     

@@ -310,6 +310,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     NSString* searchTerm = self.searchTextField.text;
     
+    // remove whitespace from beginning and end of string so as to check easily if it is blank
+    searchTerm = [searchTerm stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    
     if ([searchTerm isEqualToString:@""])
         return NO;
     

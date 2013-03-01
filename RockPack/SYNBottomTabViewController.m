@@ -335,8 +335,8 @@
 {
     [self setSelectedIndex:-1]; // turn all off
     
-    
-    self.selectedViewController = self.searchViewController;
+    if(self.selectedViewController != self.searchViewController)
+        self.selectedViewController = self.searchViewController;
     
     [self.searchViewController showSearchResultsForTerm:searchTerm];
     

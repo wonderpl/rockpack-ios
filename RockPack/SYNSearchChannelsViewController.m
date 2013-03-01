@@ -10,7 +10,6 @@
 
 @interface SYNSearchChannelsViewController ()
 
-@property (nonatomic, strong) NSString* currentSearchTerm;
 
 @end
 
@@ -49,16 +48,7 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
-    
-    if(self.currentSearchTerm && [self.currentSearchTerm isEqualToString:term]) // same search
-        return;
-    
-    self.currentSearchTerm = term;
-    
     [appDelegate.networkEngine searchChannelsForTerm:term];
-    
-    
-
 }
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
@@ -74,17 +64,17 @@
 {
     // override the data loading
     
-    
-    
 }
 
 -(void)viewDidLoad
 {
     [super viewDidLoad];
     
+    
     self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
-                                                           self.channelThumbnailCollectionView.center.y + 30.0);
+                                                             self.channelThumbnailCollectionView.center.y + 30.0);
 }
+
 
 
 

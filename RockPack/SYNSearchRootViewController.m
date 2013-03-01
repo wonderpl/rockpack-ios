@@ -41,7 +41,11 @@
 
 -(void)showSearchResultsForTerm:(NSString*)newSearchTerm
 {
-     
+    
+    if(searchTerm && [searchTerm isEqualToString:newSearchTerm])
+        return;
+    
+    
         
     searchTerm = newSearchTerm;
     
@@ -65,9 +69,11 @@
     }
     
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    
+    
     [self.searchVideosController performSearchWithTerm:searchTerm];
     
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     [self.searchChannelsController performSearchWithTerm:searchTerm];
 }
 
@@ -77,6 +83,9 @@
     
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
+    
+    [self.searchVideosController view];
+    [self.searchChannelsController view];
     
     viewIsOnScreen = YES;
     
