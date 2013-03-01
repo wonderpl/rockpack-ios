@@ -44,11 +44,14 @@
     </entity>
     <entity name="Video" representedClassName="Video" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateUploaded" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="source" attributeType="String" syncable="YES"/>
         <attribute name="sourceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="starredByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
+        <attribute name="viewCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="videoInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="video" inverseEntity="VideoInstance" syncable="YES"/>
     </entity>
     <entity name="VideoInstance" representedClassName="VideoInstance" parentEntity="AbstractCommon" syncable="YES">
@@ -67,7 +70,7 @@
         <element name="Subcategory" positionX="-515" positionY="-9" width="128" height="58"/>
         <element name="TabItem" positionX="-603" positionY="-108" width="128" height="73"/>
         <element name="User" positionX="-2" positionY="45" width="128" height="90"/>
-        <element name="Video" positionX="7" positionY="216" width="128" height="150"/>
+        <element name="Video" positionX="7" positionY="216" width="128" height="195"/>
         <element name="VideoInstance" positionX="-207" positionY="257" width="128" height="135"/>
     </elements>
 </model>

@@ -10,6 +10,12 @@
 #import "SYNAppDelegate.h"
 #import "SYNSearchItemView.h"
 #import "SYNSearchRootViewController.h"
+#import "SYNVideoThumbnailWideCell.h"
+#import "VideoInstance.h"
+#import "Video.h"
+#import "Channel.h"
+#import "ChannelOwner.h"
+#import "NSDate-Utilities.h"
 
 @interface SYNSearchVideosViewController ()
 
@@ -111,6 +117,71 @@
 - (void) animatedPopViewController
 {
     [self.parent animatedPopViewController];
+}
+
+
+#pragma mark - Collection View Delegate
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionViewCell *cell = nil;
+    
+    if (cv == self.videoThumbnailCollectionView)
+    {
+        // No, but it was our collection view
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+                                                                                      forIndexPath: indexPath];
+        
+        
+        videoThumbnailCell.displayMode = kDisplayModeYoutube;
+        videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
+        videoThumbnailCell.videoTitle.text = videoInstance.title;
+        
+        Video* video = videoInstance.video;
+        
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        NSString* viewsNumberString = [numberFormatter stringFromNumber:video.viewCount];
+        
+        videoThumbnailCell.numberOfViewLabel.text = [NSString stringWithFormat:@"%@ views", viewsNumberString];
+        
+        
+        NSCalendar* currentCalendar = [NSCalendar currentCalendar];
+        NSDateComponents* differenceDateComponents = [currentCalendar components:(NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:video.dateUploaded toDate:[NSDate date] options:0];
+        
+        NSMutableString* format = [[NSMutableString alloc] init];
+        if(differenceDateComponents.year > 0)
+            [format appendFormat:@"%i Year%@ Ago", differenceDateComponents.year, (differenceDateComponents.year > 1 ? @"s" : @"")];
+        else if(differenceDateComponents.month > 0)
+            [format appendFormat:@"%i Month%@ Ago", differenceDateComponents.month, (differenceDateComponents.month > 1 ? @"s" : @"")];
+        else if(differenceDateComponents.day > 1)
+            [format appendFormat:@"%i Days Ago", differenceDateComponents.day];
+        else if(differenceDateComponents.day > 0)
+            [format appendString:@"Yesterday"];
+        else
+            [format appendString:@"Today"];
+        
+        
+        
+        videoThumbnailCell.dateAddedLabel.text = format;
+        
+        NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
+        NSUInteger seconds = [video.duration integerValue] % 60;
+        videoThumbnailCell.durationLabel.text = [NSString stringWithFormat:@"%i:%i", minutes, seconds];
+        
+        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+        
+      //  [self updateVideoCellRockItButtonAndCount: videoThumbnailCell selected: videoInstance.video.starredByUserValue];
+        
+        videoThumbnailCell.viewControllerDelegate = self;
+        
+        cell = videoThumbnailCell;
+    }
+    
+    return cell;
 }
 
 @end

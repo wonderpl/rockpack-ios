@@ -50,7 +50,6 @@
         return;
     
     
-        
     searchTerm = newSearchTerm;
     
     if(!searchTerm)

@@ -6,11 +6,14 @@
 
 extern const struct VideoAttributes {
 	__unsafe_unretained NSString *categoryId;
+	__unsafe_unretained NSString *dateUploaded;
+	__unsafe_unretained NSString *duration;
 	__unsafe_unretained NSString *source;
 	__unsafe_unretained NSString *sourceId;
 	__unsafe_unretained NSString *starCount;
 	__unsafe_unretained NSString *starredByUser;
 	__unsafe_unretained NSString *thumbnailURL;
+	__unsafe_unretained NSString *viewCount;
 } VideoAttributes;
 
 extern const struct VideoRelationships {
@@ -21,6 +24,9 @@ extern const struct VideoFetchedProperties {
 } VideoFetchedProperties;
 
 @class VideoInstance;
+
+
+
 
 
 
@@ -47,6 +53,30 @@ extern const struct VideoFetchedProperties {
 
 
 //- (BOOL)validateCategoryId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* dateUploaded;
+
+
+
+//- (BOOL)validateDateUploaded:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* duration;
+
+
+
+@property int64_t durationValue;
+- (int64_t)durationValue;
+- (void)setDurationValue:(int64_t)value_;
+
+//- (BOOL)validateDuration:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -110,6 +140,20 @@ extern const struct VideoFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* viewCount;
+
+
+
+@property int64_t viewCountValue;
+- (int64_t)viewCountValue;
+- (void)setViewCountValue:(int64_t)value_;
+
+//- (BOOL)validateViewCount:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSSet *videoInstances;
 
 - (NSMutableSet*)videoInstancesSet;
@@ -134,6 +178,21 @@ extern const struct VideoFetchedProperties {
 
 - (NSString*)primitiveCategoryId;
 - (void)setPrimitiveCategoryId:(NSString*)value;
+
+
+
+
+- (NSDate*)primitiveDateUploaded;
+- (void)setPrimitiveDateUploaded:(NSDate*)value;
+
+
+
+
+- (NSNumber*)primitiveDuration;
+- (void)setPrimitiveDuration:(NSNumber*)value;
+
+- (int64_t)primitiveDurationValue;
+- (void)setPrimitiveDurationValue:(int64_t)value_;
 
 
 
@@ -170,6 +229,15 @@ extern const struct VideoFetchedProperties {
 
 - (NSString*)primitiveThumbnailURL;
 - (void)setPrimitiveThumbnailURL:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveViewCount;
+- (void)setPrimitiveViewCount:(NSNumber*)value;
+
+- (int64_t)primitiveViewCountValue;
+- (void)setPrimitiveViewCountValue:(int64_t)value_;
 
 
 

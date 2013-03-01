@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-enum {
-    kShowAddButton = 0,
-    kShowShareButton = 1
-};
+typedef enum {
+    kDisplayModeChannel = 0,
+    kDisplayModeYoutube = 1
+} kDisplayMode;
 
 @interface SYNVideoThumbnailWideCell : UICollectionViewCell
 
@@ -24,6 +24,15 @@ enum {
 @property (nonatomic, strong) IBOutlet UIButton *addItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
+@property (nonatomic, strong) IBOutlet UIView* channelInfoView;
+@property (nonatomic, strong) IBOutlet UIView* videoInfoView;
+
+
+@property (nonatomic, strong) IBOutlet UILabel *numberOfViewLabel;
+@property (nonatomic, strong) IBOutlet UILabel *dateAddedLabel;
+@property (nonatomic, strong) IBOutlet UILabel *durationLabel;
+
+@property (nonatomic) kDisplayMode displayMode;
 
 // This is used to indicate the UIViewController that 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;

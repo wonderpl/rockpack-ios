@@ -1,6 +1,8 @@
 #import "NSDictionary+Validation.h"
 #import "Video.h"
 #import <Foundation/Foundation.h>
+#import "NSDate-Utilities.h"
+
 
 static NSEntityDescription *videoEntity = nil;
 
@@ -98,6 +100,18 @@ static NSEntityDescription *videoEntity = nil;
     
     self.categoryId = [dictionary objectForKey: @"category_id"
                                    withDefault: @""];
+    
+    self.viewCount = [dictionary objectForKey: @"source_view_count"
+                                   withDefault: [NSNumber numberWithInt: 0]];
+    
+    self.dateUploaded = [dictionary dateFromISO6801StringForKey:@"source_date_uploaded"
+                                                    withDefault:[NSDate date]];
+    
+    self.duration = [dictionary objectForKey: @"duration"
+                                 withDefault: [NSNumber numberWithInt: 0]];
+    
+    self.viewCount = [dictionary objectForKey: @"source_view_count"
+                                  withDefault: [NSNumber numberWithInt: 0]];
     
     self.source = [dictionary objectForKey: @"source"
                                withDefault: @""];
