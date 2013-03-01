@@ -13,6 +13,8 @@
 #import "NSIndexPath+Arithmetic.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
+#import "SYNVideoViewerThumbnailLayout.h"
+#import "SYNVideoViewerThumbnailLayoutAttributes.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
@@ -37,6 +39,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
+@property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
 @end
 
@@ -77,6 +80,18 @@
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"];
+    
+    // Set custom flow layout to handle the chroma highlighting
+    
+    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
+    self.layout = [[SYNVideoViewerThumbnailLayout alloc] init];
+    self.layout.itemSize = CGSizeMake(147.0f , 106.0f);
+    self.layout.minimumInteritemSpacing = 0.0f;
+    self.layout.minimumLineSpacing = 0.0f;
+    self.layout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
+    self.layout.selectedItemIndexPath = self.currentSelectedIndexPath;
+    
+    self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
 }
 
 
@@ -178,6 +193,15 @@
     cell.videoImageViewImage = videoInstance.video.thumbnailURL;
     cell.titleLabel.text = videoInstance.title;
     
+  SYNVideoViewerThumbnailLayoutAttributes* attributes = (SYNVideoViewerThumbnailLayoutAttributes *)[self.layout layoutAttributesForItemAtIndexPath: indexPath];
+    
+    BOOL thumbnailIsColour = attributes.isHighlighted;
+    
+    if (thumbnailIsColour)
+    {
+        cell.titleLabel.text = @"xxx";
+    }
+    
     return cell;
 }
 
@@ -194,26 +218,44 @@
 
 // These are required to make the scrollToItemAtIndexPath work correctly, as if you use content insets, it does not
 // work as expected
-- (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-                   referenceSizeForHeaderInSection: (NSInteger) section
-{
-    // Only add a header onto the first section
-    if (section == 0)
-        return CGSizeMake (438.0f, 0.0f);
-    else
-        return CGSizeZero;
-}
+//- (CGSize) collectionView: (UICollectionView *) collectionView
+//                   layout: (UICollectionViewLayout*) collectionViewLayout
+//                   referenceSizeForHeaderInSection: (NSInteger) section
+//{
+//    // Only add a header onto the first section
+//    if (section == 0)
+//        return CGSizeMake (438.0f, 0.0f);
+//    else
+//        return CGSizeZero;
+//}
+//
+//- (CGSize) collectionView: (UICollectionView *) collectionView
+//                   layout: (UICollectionViewLayout*) collectionViewLayout
+//                   referenceSizeForFooterInSection: (NSInteger) section
+//{
+//    // Only add a footer onto the last section
+//    if (section == (self.fetchedResultsController.sections.count - 1))
+//        return CGSizeMake (438.0f, 0.0f);
+//    else
+//        return CGSizeZero;
+//}
 
-- (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-                   referenceSizeForFooterInSection: (NSInteger) section
+- (UIEdgeInsets) collectionView: (UICollectionView *) collectionView
+                         layout: (UICollectionViewLayout*) collectionViewLayout
+         insetForSectionAtIndex: (NSInteger)section
 {
-    // Only add a footer onto the last section
-    if (section == (self.fetchedResultsController.sections.count - 1))
-        return CGSizeMake (438.0f, 0.0f);
+    if (section == 0)
+    {
+        return UIEdgeInsetsMake (0, 438, 0, 0);
+    }
+    else if (section == (self.fetchedResultsController.sections.count - 1))
+    {
+        return UIEdgeInsetsMake (0, 0, 0, 438);
+    }
     else
-        return CGSizeZero;
+    {
+        return UIEdgeInsetsMake (0, 0, 0, 0);
+    }
 }
 
 #pragma mark - User actions
@@ -274,5 +316,32 @@
     [self saveDB];
 }
 
+- (void) setCurrentSelectedIndexPath: (NSIndexPath *) currentSelectedIndexPath
+{
+    if (_currentSelectedIndexPath && currentSelectedIndexPath)
+    {
+        NSArray *indexPaths = @[_currentSelectedIndexPath, currentSelectedIndexPath];
+
+        _currentSelectedIndexPath = currentSelectedIndexPath;
+        self.layout.selectedItemIndexPath = currentSelectedIndexPath;
+        
+        // Disable any animations
+        [UIView setAnimationsEnabled: NO];
+        
+        [self.videoThumbnailCollectionView performBatchUpdates:^
+        {
+            [self.videoThumbnailCollectionView reloadItemsAtIndexPaths: indexPaths];
+        }
+        completion:^(BOOL finished)
+        {
+            [UIView setAnimationsEnabled: YES];
+        }];
+    }
+    else
+    {
+        _currentSelectedIndexPath = currentSelectedIndexPath;
+        self.layout.selectedItemIndexPath = currentSelectedIndexPath;
+    }
+}
 
 @end

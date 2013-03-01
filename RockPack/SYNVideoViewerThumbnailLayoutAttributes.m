@@ -10,14 +10,19 @@
 
 @implementation SYNVideoViewerThumbnailLayoutAttributes
 
-- (id) init
+// We need to implement this custom copy, otherwise our new attribute will not be copied correctly
+- (id) copyWithZone: (NSZone *) zone;
 {
-    if ((self = [super init]))
-    {
-        self.highlighted = FALSE;
-    }
-    
-    return self;
+    SYNVideoViewerThumbnailLayoutAttributes *newCopy = [super copyWithZone: zone];
+	newCopy.highlighted = self.isHighlighted;
+    return(newCopy);
 }
+
+
+- (NSString *) description
+{
+    return([NSString stringWithFormat:@"%@ (Highlighted = %@)", [super description], self.isHighlighted ? @"YES" : @"NO"]);
+}
+
 
 @end

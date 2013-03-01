@@ -10,4 +10,8 @@
 
 @interface SYNVideoViewerThumbnailLayout : UICollectionViewFlowLayout
 
+@property (strong, nonatomic, strong) NSIndexPath *selectedItemIndexPath;
+
+- (UICollectionViewLayoutAttributes *) layoutAttributesForItemAtIndexPath: (NSIndexPath *) indexPath;
+
 @end
