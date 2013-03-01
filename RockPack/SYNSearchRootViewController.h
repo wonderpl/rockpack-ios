@@ -8,8 +8,12 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNSearchRootViewController : SYNAbstractTopTabViewController
+@interface SYNSearchRootViewController : SYNAbstractTopTabViewController {
+    @private
+    NSString* searchTerm;
+    BOOL viewIsOnScreen;
+}
 
-@property (nonatomic, strong) NSString* searchTerm;
+-(void)showSearchResultsForTerm:(NSString*)newSearchTerm;
 
 @end

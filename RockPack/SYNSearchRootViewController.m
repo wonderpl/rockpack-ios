@@ -23,12 +23,10 @@
 @property (nonatomic, strong) NSString* currentSelectionId;
 
 
-
 @end
 
 @implementation SYNSearchRootViewController
 
-@synthesize searchTerm = _searchTerm;
 
 
 -(void)loadView
@@ -39,56 +37,76 @@
     self.view.backgroundColor = [UIColor clearColor];
 }
 
-- (void)viewDidLoad
-{
-    
-    [super viewDidLoad];
-    
-    self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
-    self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
-    
-	
-}
 
 
--(void)setSearchTerm:(NSString *)term
+-(void)showSearchResultsForTerm:(NSString*)newSearchTerm
 {
      
         
-    _searchTerm = term;
+    searchTerm = newSearchTerm;
     
-    if(!_searchTerm)
+    if(!searchTerm)
         return;
+    
+    if(!viewIsOnScreen)
+        return;
+    
+    
+    [self performSearchForCurrentSearchTerm];
+    
+    
+}
+
+-(void)performSearchForCurrentSearchTerm
+{
     
     if(!self.currentController) { // first time
         [self.tabViewController setSelectedWithId:@"0"];
     }
-    else if(self.currentController == self.searchVideosController) {
-        [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
-        [self.searchVideosController performSearchWithTerm:self.searchTerm];
-    }
     
-    else {
-        [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
-        [self.searchChannelsController performSearchWithTerm:self.searchTerm];
-    }
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+    [self.searchVideosController performSearchWithTerm:searchTerm];
     
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    [self.searchChannelsController performSearchWithTerm:searchTerm];
+}
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
     
+    self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
+    self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
     
+    viewIsOnScreen = YES;
+    
+    if(searchTerm)
+        [self performSearchForCurrentSearchTerm];
+        
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.searchTerm = nil;
+    
+    searchTerm = nil;
+    
+    viewIsOnScreen = NO;
     
     // clear the context
     
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
     
+    
+    
     [self.currentController.view removeFromSuperview];
+    
     self.currentController = nil;
+    
+    
+    self.searchVideosController = nil;
+    self.searchChannelsController = nil;
     
 }
 
@@ -101,14 +119,12 @@
     {
         
         [self.view insertSubview:self.searchVideosController.view belowSubview:self.tabViewController.view];
-        [self.searchVideosController performSearchWithTerm:self.searchTerm];
         newController = self.searchVideosController;
         
     }
     else
     {
         [self.view insertSubview:self.searchChannelsController.view belowSubview:self.tabViewController.view];
-        [self.searchChannelsController performSearchWithTerm:self.searchTerm];
         newController = self.searchChannelsController;
     }
     
