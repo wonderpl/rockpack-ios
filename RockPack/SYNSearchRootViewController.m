@@ -22,6 +22,8 @@
 
 @property (nonatomic, weak) SYNAbstractViewController* currentController;
 
+@property (nonatomic, weak) UIView* currentOverlayView;
+
 @property (nonatomic, strong) NSString* currentSelectionId;
 
 
@@ -171,7 +173,9 @@
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
-         vc.view.alpha = 1.0f;
+                         vc.view.alpha = 1.0f;
+                         self.tabViewController.view.alpha = 0.0;
+        
          
      } completion: ^(BOOL finished) {
          
@@ -180,6 +184,7 @@
     [self.navigationController pushViewController: vc
                                          animated: NO];
     
+    _currentOverlayView = vc.view;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
 }
@@ -187,26 +192,26 @@
 
 - (void) animatedPopViewController
 {
-//    UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
-//    parentVC.view.alpha = 0.0f;
-//    
-//    [self.navigationController popViewControllerAnimated: NO];
-//    
-//    [UIView animateWithDuration: 0.5f
-//                          delay: 0.0f
-//                        options: UIViewAnimationOptionCurveEaseInOut
-//                     animations: ^{
-//                         // Contract thumbnail view
-//                         self.view.alpha = 0.0f;
-//                         parentVC.view.alpha = 1.0f;
-//                         
-//                     }
-//                     completion: ^(BOOL finished)
-//     {
-//         
-//     }];
     
-    // Hide back button
+    [self.navigationController popViewControllerAnimated: NO];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         _currentOverlayView.alpha = 0.0f;
+                         self.tabViewController.view.alpha = 1.0;
+                         
+                     }
+                     completion: ^(BOOL finished) {
+                         [self.navigationController popViewControllerAnimated: NO];
+                         _currentOverlayView = nil;
+         
+                     }];
+    
+    
+    
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
 }

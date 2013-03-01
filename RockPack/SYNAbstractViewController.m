@@ -591,5 +591,11 @@
 }
 
 
+#pragma mark - Trace
+
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"ViewController: %@", viewId];
+}
 
 @end

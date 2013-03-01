@@ -317,6 +317,14 @@
 
 - (void) popCurrentViewController: (id) sender
 {
+    // TODO: Might want to abstract al the push and pop into the master
+    
+    if(self.selectedViewController == self.searchViewController)
+    {
+        [self.searchViewController animatedPopViewController];
+        return;
+    }
+    
     UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
     
     SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
