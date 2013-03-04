@@ -197,7 +197,6 @@
                                                                        forIndexPath: indexPath];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
     cell.titleLabel.text = videoInstance.title;
     
   SYNVideoViewerThumbnailLayoutAttributes* attributes = (SYNVideoViewerThumbnailLayoutAttributes *)[self.layout layoutAttributesForItemAtIndexPath: indexPath];
@@ -206,8 +205,14 @@
     
     if (thumbnailIsColour)
     {
-        cell.titleLabel.text = @"xxx";
+        cell.isColour = TRUE;
     }
+    else
+    {
+        cell.isColour = FALSE;
+    }
+    
+    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
     
     return cell;
 }

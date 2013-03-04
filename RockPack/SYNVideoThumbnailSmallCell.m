@@ -17,7 +17,7 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
-    
+
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 10.0f];
 }
 
@@ -27,12 +27,22 @@
 {
 //    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
 //                   placeHolderImage: nil];
-    
-    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                   placeHolderImage: nil
-                        usingEngine: nil
-                          animation: YES
-                         monochrome: TRUE];
+    if (self.isColour == TRUE)
+    {
+        [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                       placeHolderImage: nil
+                            usingEngine: nil
+                              animation: YES
+                             monochrome: FALSE];
+    }
+    else
+    {
+        [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+                       placeHolderImage: nil
+                            usingEngine: nil
+                              animation: YES
+                             monochrome: TRUE];
+    }
 }
 
 
@@ -41,6 +51,7 @@
 {
     // We need to clean up any asynchronous image uploads
     self.imageView.image = nil;
+    self.isColour = FALSE;
 }
 
 @end

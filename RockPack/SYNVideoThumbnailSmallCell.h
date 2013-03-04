@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic) BOOL isColour;
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString;
 
