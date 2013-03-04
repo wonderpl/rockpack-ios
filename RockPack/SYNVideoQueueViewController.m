@@ -183,7 +183,7 @@
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
     
     
-    [self startVideoQueueDismissalTimer];
+    [self showVideoQueue:YES];
     
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
