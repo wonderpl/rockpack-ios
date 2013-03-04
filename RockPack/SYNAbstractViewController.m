@@ -11,6 +11,7 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
@@ -399,18 +400,6 @@
     return NO;
 }
 
-// Create a channel pressed
-
-- (void) showChannelFromVideoQueue:(Channel*)newChannel
-{
-    
-    
-
-    
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
-    
-    [self animatedPushViewController: channelCreationVC];
-}
 
 
 - (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender

@@ -15,7 +15,6 @@
 
 #import "SYNNetworkEngine.h"
 
-#import "Channel.h"
 
 @class VideoInstance;
 
@@ -40,7 +39,7 @@
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 
-- (void) showChannelFromVideoQueue:(Channel*)newChannel;
+
 
 
 

@@ -146,7 +146,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueHide:) name:kVideoQueueHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueShow:) name:kVideoQueueShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueAdd:) name:kVideoQueueAdd object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createChannelFromVideoQueue:) name:kVideoQueueCreateChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createChannelFromVideoQueue:) name:kVideoQueueCreateChannel object:self];
     
     // Set Initial View Controller
     
@@ -197,7 +197,9 @@
     }
     
     
-    [self.selectedViewController showChannelFromVideoQueue:newChannel];
+    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
+    
+    [self.selectedViewController animatedPushViewController: channelCreationVC];
 }
 
 
@@ -284,8 +286,8 @@
     UIButton* toButton = (UIButton *)self.tabsViewContainer.subviews[_selectedIndex];
     toButton.selected = TRUE;
     
-    UINavigationController* navigationControllerSelected = (UINavigationController*)self.viewControllers[_selectedIndex];
-    self.selectedViewController = (SYNAbstractViewController*)navigationControllerSelected.topViewController;
+    
+    self.selectedViewController = (SYNAbstractViewController*)self.viewControllers[_selectedIndex];
     
     
 }
@@ -383,9 +385,11 @@
         return;
     }
     
+    UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
     
+    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
     
-    [self.selectedViewController animatedPopViewController];
+    [abstractVC animatedPopViewController];
 }
 
 
