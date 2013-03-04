@@ -1,0 +1,24 @@
+//
+//  UIImageView+ImageProcessing.h
+//  rockpack
+//
+//  Created by Nick Banks on 01/03/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class MKNetworkEngine;
+@class MKNetworkOperation;
+
+@interface UIImageView (ImageProcessing)
+
++ (void) setDefaultEngine2: (MKNetworkEngine*) engine;
+
+- (MKNetworkOperation*) setImageFromURL: (NSURL*) url
+                       placeHolderImage: (UIImage*) image
+                            usingEngine: (MKNetworkEngine*) imageCacheEngine
+                              animation: (BOOL) yesOrNo
+                             monochrome: (BOOL) isMonochrome;
+
+@end

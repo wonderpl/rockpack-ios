@@ -32,6 +32,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *starItButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followLabel;
@@ -92,13 +93,19 @@
     self.layout.selectedItemIndexPath = self.currentSelectedIndexPath;
     
     self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
+    
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    [self.channelThumbnailImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                   placeHolderImage: nil];
+//        self.channelThumbnailImageView.image = [UIImage imageNamed: @"Default-Landscape.png"];
 }
 
 
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
+        
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
     
@@ -216,47 +223,28 @@
 
 #pragma mark - UICollectionViewDelegateFlowLayout delegates
 
-// These are required to make the scrollToItemAtIndexPath work correctly, as if you use content insets, it does not
-// work as expected
-//- (CGSize) collectionView: (UICollectionView *) collectionView
-//                   layout: (UICollectionViewLayout*) collectionViewLayout
-//                   referenceSizeForHeaderInSection: (NSInteger) section
-//{
-//    // Only add a header onto the first section
-//    if (section == 0)
-//        return CGSizeMake (438.0f, 0.0f);
-//    else
-//        return CGSizeZero;
-//}
-//
-//- (CGSize) collectionView: (UICollectionView *) collectionView
-//                   layout: (UICollectionViewLayout*) collectionViewLayout
-//                   referenceSizeForFooterInSection: (NSInteger) section
-//{
-//    // Only add a footer onto the last section
-//    if (section == (self.fetchedResultsController.sections.count - 1))
-//        return CGSizeMake (438.0f, 0.0f);
-//    else
-//        return CGSizeZero;
-//}
-
+// A better solution than the previous implementation that used referenceSizeForHeaderInSection and referenceSizeForFooterInSection
 - (UIEdgeInsets) collectionView: (UICollectionView *) collectionView
                          layout: (UICollectionViewLayout*) collectionViewLayout
          insetForSectionAtIndex: (NSInteger)section
 {
     if (section == 0)
     {
+        // Leading inset on first section
         return UIEdgeInsetsMake (0, 438, 0, 0);
     }
     else if (section == (self.fetchedResultsController.sections.count - 1))
     {
+        // Trailing inset on last section
         return UIEdgeInsetsMake (0, 0, 0, 438);
     }
     else
     {
+        // No insets on other sections
         return UIEdgeInsetsMake (0, 0, 0, 0);
     }
 }
+
 
 #pragma mark - User actions
 
@@ -267,12 +255,14 @@
     [self playVideoAtIndexPath: newIndexPath];
 }
 
+
 - (IBAction) userTouchedNextVideoButton: (id) sender
 {
     NSIndexPath *newIndexPath = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     
     [self playVideoAtIndexPath: newIndexPath];
 }
+
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
@@ -282,15 +272,18 @@
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
+
 - (BOOL) hasVideoQueue
 {
     return TRUE;
 }
 
+// Required to ensure that the video queue bar appears in the right (vertical) place
 - (BOOL) hasTabBar
 {
     return FALSE;
 }
+
 
 - (IBAction) toggleStarItButton: (UIButton *) button
 {
@@ -316,6 +309,8 @@
     [self saveDB];
 }
 
+
+// We need to override the standard setter so that we can update our flow layout for highlighting (colour / monochrome)
 - (void) setCurrentSelectedIndexPath: (NSIndexPath *) currentSelectedIndexPath
 {
     if (_currentSelectedIndexPath && currentSelectedIndexPath)
@@ -327,21 +322,24 @@
         
         // Disable any animations
         [UIView setAnimationsEnabled: NO];
-        
-        [self.videoThumbnailCollectionView performBatchUpdates:^
-        {
-            [self.videoThumbnailCollectionView reloadItemsAtIndexPaths: indexPaths];
-        }
-        completion:^(BOOL finished)
-        {
-            [UIView setAnimationsEnabled: YES];
-        }];
+
+        [self.videoThumbnailCollectionView reloadItemsAtIndexPaths: indexPaths];
     }
     else
     {
         _currentSelectedIndexPath = currentSelectedIndexPath;
         self.layout.selectedItemIndexPath = currentSelectedIndexPath;
     }
+    
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: currentSelectedIndexPath];
+    
+    [self.channelThumbnailImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                   placeHolderImage: nil];
+}
+
+- (IBAction) abc:(id)sender
+{
+    
 }
 
 @end

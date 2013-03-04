@@ -8,6 +8,7 @@
 
 #import "SYNVideoThumbnailSmallCell.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 
 @implementation SYNVideoThumbnailSmallCell
 
@@ -24,8 +25,14 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
+//    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+//                   placeHolderImage: nil];
+    
     [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                   placeHolderImage: nil];
+                   placeHolderImage: nil
+                        usingEngine: nil
+                          animation: YES
+                         monochrome: TRUE];
 }
 
 

@@ -11,6 +11,7 @@
 #import "SYNBottomTabViewController.h"
 #import "SYNNetworkEngine.h"
 #import "TestFlight.h"
+#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import "ChannelOwner.h"
@@ -128,10 +129,6 @@
 
 - (void) initializeCoreDataStack
 {
-    
-    
-    
-    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
     ZAssert(modelURL, @"Failed to find model URL");
     
@@ -142,8 +139,6 @@
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
     ZAssert(persistentStoreCoordinator, @"Failed to initialize persistent store coordinator");
     
-    
-    
     // == Main Context
     
     self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
@@ -151,9 +146,6 @@
     
     self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
-    
-    
-    
     
     // == Search Context
     
@@ -283,6 +275,10 @@
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
+    
+    // TODO: Replace this shameful piece of hackery
+    UIImageView.defaultEngine2 = self.networkEngine;
+    
 }
 
 
