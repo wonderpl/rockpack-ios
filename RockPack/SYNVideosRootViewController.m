@@ -320,12 +320,10 @@
 
 - (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
-    
+    [self showVideoQueue: TRUE];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
-                                                        object:self
-                                                      userInfo:@{@"VideoInstance" : videoInstance}];
+    [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
 

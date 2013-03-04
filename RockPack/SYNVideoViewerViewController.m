@@ -17,7 +17,6 @@
 #import "UIFont+SYNFont.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "AppConstants.h"
 
 #define kThumbnailContentOffset 438
 #define kThumbnailCellWidth 147
@@ -235,12 +234,10 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-    
+    [self showVideoQueue: TRUE];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
-                                                        object:self
-                                                      userInfo:@{@"VideoInstance" : videoInstance}];
+    [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
 - (BOOL) hasVideoQueue
