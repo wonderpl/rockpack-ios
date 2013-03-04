@@ -68,17 +68,12 @@
 
 // Video Queue
 
-- (BOOL) hasVideoQueue;
 - (BOOL) hasTabBar;
-- (BOOL) isVideoQueueVisibleOnStart;
 
-- (void) showVideoQueue: (BOOL) animated;
-- (void) hideVideoQueue: (BOOL) animated;
 
 - (void) highlightVideoQueue: (BOOL) showHighlight;
 - (BOOL) pointInVideoQueue: (CGPoint) point;
 
-- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
 

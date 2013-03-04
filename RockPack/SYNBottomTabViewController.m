@@ -202,7 +202,7 @@
 		[viewController removeFromParentViewController];
 	}
     
-	_viewControllers = [newViewControllers copy];
+	_viewControllers = newViewControllers;
     
 	// This follows the same rules as UITabBarController for trying to
 	// re-select the previously selected view controller.

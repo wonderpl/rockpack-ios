@@ -79,20 +79,6 @@
 }
 
 
-
-- (void) viewDidDisappear: (BOOL) animated
-{
-    [super viewDidDisappear: animated];
-    
-    if (self.hasVideoQueue)
-    {
-        [self hideVideoQueue:YES];
-    }
-}
-
-
-
-
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     
@@ -285,7 +271,9 @@
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    [self animateVideoAdditionToVideoQueue: videoInstance];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
+                                                        object:self
+                                                      userInfo:@{@"VideoInstance" : videoInstance}];
 }
 
 
@@ -440,7 +428,9 @@
 {
     if (sender.state == UIGestureRecognizerStateBegan)
     {
-        [self showVideoQueue: TRUE];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
+                                                            object:self];
         
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
@@ -499,7 +489,9 @@
             [self.draggedView removeFromSuperview];
             
             VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.draggedIndexPath];
-            [self animateVideoAdditionToVideoQueue: videoInstance];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
+                                                                object:self
+                                                              userInfo:@{@"VideoInstance" : videoInstance}];
         }
         else
         {
@@ -521,11 +513,6 @@
 }
 
 
-// Assume no image well by default
-- (BOOL) hasVideoQueue
-{
-    return FALSE;
-}
 
 - (BOOL) hasTabBar
 {
@@ -535,31 +522,6 @@
 
 #pragma mark - Video Queue Methods
 
-- (BOOL) isVideoQueueVisibleOnStart;
-{
-    return FALSE;
-}
-
-- (void) showVideoQueue: (BOOL) animated
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
-                                                        object:self];
-}
-
-- (void) hideVideoQueue: (BOOL) animated
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
-}
-
-
-
-- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
-                                                        object:self
-                                                      userInfo:@{@"VideoInstance" : videoInstance}];
-}
 
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
