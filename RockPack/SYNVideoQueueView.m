@@ -121,13 +121,14 @@
         
         
         
-        videoQueueCollectionView.backgroundColor = [UIColor clearColor];
+        videoQueueCollectionView.backgroundColor = [UIColor greenColor];
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         
         [videoQueueCollectionView registerNib: videoQueueCellNib forCellWithReuseIdentifier: @"VideoQueueCell"];
         
         [self addSubview:videoQueueCollectionView];
+        
         
         
         // == Drop Zone
@@ -141,16 +142,15 @@
 }
 
 
-
-
-
 #pragma mark - Add to Queue
-
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
     
     // == Animate
+    
+    
+    // 1. Expand Collection View
     
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
     videoQueueViewFrame.size.width += kVideoQueueCellWidth;
@@ -158,41 +158,25 @@
     self.videoQueueCollectionView.frame = videoQueueViewFrame;
     
     
+    // 2. Load New Cell
+    
     [self.videoQueueCollectionView reloadData];
     
-    if (self.videoQueueCollectionView.contentSize.width + 15 > kVideoQueueWidth + kVideoQueueCellWidth)
-    {
-        CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
-        contentOffset.x = self.videoQueueCollectionView.contentSize.width - kVideoQueueWidth;
-        self.videoQueueCollectionView.contentOffset = contentOffset;
-    }
     
     
-    // Animate the view out onto the screen
     [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
                           delay: 0.5f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-         // Slide origin back
-         CGRect videoQueueCollectionViewFrame = self.videoQueueCollectionView.frame;
-         videoQueueCollectionViewFrame.origin.x -= kVideoQueueCellWidth;
+                        
+                         
+                         self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x - kVideoQueueCellWidth,
+                                                                            self.videoQueueCollectionView.center.y);
+                         
          
-         CGPoint contentOffset = self.videoQueueCollectionView.contentOffset;
-         
-         if (self.videoQueueCollectionView.contentSize.width > kVideoQueueWidth)
-         {
-             videoQueueCollectionViewFrame.origin.x = kVideoQueueOffsetX;
-             videoQueueCollectionViewFrame.size.width = kVideoQueueWidth;
-             
-             
-             contentOffset.x = self.videoQueueCollectionView.contentSize.width - kVideoQueueWidth + 15;
-         }
-         
-         self.videoQueueCollectionView.contentOffset = contentOffset;
-         self.videoQueueCollectionView.frame = videoQueueCollectionViewFrame;
                          
      } completion: ^(BOOL finished) {
-         
+         // self.videoQueueCollectionView.contentOffset = contentOffset;
      }];
 }
 

@@ -183,6 +183,7 @@
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
     
     
+    
     [self showVideoQueue:YES];
     
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
@@ -195,9 +196,11 @@
     }
     
     
-    [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance];
+    [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance]; 
     
     [self.videoQueueView addVideoToQueue:videoInstance];
+    
+    
 }
 
 -(void)setHighlighted:(BOOL)value
