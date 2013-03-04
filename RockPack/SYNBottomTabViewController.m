@@ -37,7 +37,6 @@
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 
-@property (nonatomic, strong) IBOutlet UIView* queueViewContainer;
 
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
@@ -141,7 +140,7 @@
 //    CGRect lowerFrame = CGRectMake(0, 573 + 62 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
 //    videoQueueController.view.frame = lowerFrame;
     
-    [self.queueViewContainer addSubview: videoQueueController.view];
+    [self.view insertSubview:videoQueueController.view belowSubview:self.tabsViewContainer];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueHide:) name:kVideoQueueHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueShow:) name:kVideoQueueShow object:nil];

@@ -47,6 +47,9 @@
 {
     [super viewDidLoad];
     
+    
+    [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    
     [self reloadData];
 	
 }
@@ -103,7 +106,6 @@
 {
     delegate = del;
     
-    [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     
     [self.videoQueueView.channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
 }
@@ -119,7 +121,7 @@
     
     [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
     
-    [self.videoQueueView.videoQueueCollectionView reloadData];
+    [self.videoQueueView clearVideoQueue];
 }
 
 -(void)reloadData

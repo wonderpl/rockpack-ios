@@ -38,4 +38,7 @@
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
 
 
+-(void)clearVideoQueue;
+
+
 @end
