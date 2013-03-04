@@ -135,6 +135,7 @@
     // == Video Queue
     
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
+    videoQueueController.delegate = self;
 //    
 //    CGRect lowerFrame = CGRectMake(0, 573 + 62 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
 //    videoQueueController.view.frame = lowerFrame;

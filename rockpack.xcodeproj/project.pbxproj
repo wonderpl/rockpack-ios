@@ -1039,6 +1039,7 @@
 		BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObject.m; sourceTree = "<group>"; };
 		BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueView.h; sourceTree = "<group>"; };
 		BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueView.m; sourceTree = "<group>"; };
+		BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueDelegate.h; sourceTree = "<group>"; };
 		BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueViewController.h; sourceTree = "<group>"; };
 		BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueViewController.m; sourceTree = "<group>"; };
 		BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSoundPlayer.h; sourceTree = "<group>"; };
@@ -2460,6 +2461,7 @@
 				BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */,
 				BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */,
 				BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */,
+				BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */,
 			);
 			name = VideoQueue;
 			sourceTree = "<group>";

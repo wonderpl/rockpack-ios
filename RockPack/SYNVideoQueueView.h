@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNVideoQueueDelegate.h"
 #import "SYNAbstractViewController.h"
 #import "VideoInstance.h"
 

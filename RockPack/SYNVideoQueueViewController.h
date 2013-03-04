@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNVideoQueueDelegate.h"
 #import "VideoInstance.h"
 
 @interface SYNVideoQueueViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property (nonatomic, weak) id <SYNVideoQueueDelegate> delegate;
 
 - (void) reloadData;
 

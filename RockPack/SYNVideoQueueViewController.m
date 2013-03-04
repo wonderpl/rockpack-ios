@@ -31,6 +31,7 @@
 
 @dynamic videoQueueView;
 
+@synthesize delegate;
 
 -(void)loadView
 {
@@ -49,17 +50,8 @@
     
     [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     
-    
-    
-    [self.videoQueueView.channelButton addTarget:self action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
-    
     [self reloadData];
 	
-}
-
--(void)createChannelFromVideoQueue
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueChannel object:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,6 +100,15 @@
     return (SYNVideoQueueView*)self.view;
 }
 
+#pragma mark - Delegate
+
+-(void)setDelegate:(id<SYNVideoQueueDelegate>)del
+{
+    delegate = del;
+    
+    
+    [self.videoQueueView.channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+}
 
 - (void) clearVideoQueue
 {
