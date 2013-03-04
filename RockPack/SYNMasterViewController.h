@@ -15,6 +15,6 @@
 
 -(id)initWithRootViewController:(UIViewController*)root;
 
-@property (nonatomic, strong, readonly) IBOutlet UIView* containerView;
+@property (nonatomic, strong) IBOutlet UIView* containerView;
 
 @end

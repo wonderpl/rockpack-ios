@@ -24,7 +24,7 @@
 @implementation SYNVideoThumbnailWideCell
 
 @synthesize viewControllerDelegate = _viewControllerDelegate;
-
+@synthesize displayMode = _displayMode;
 
 - (void) awakeFromNib
 {
@@ -35,8 +35,23 @@
     self.userName.font = [UIFont rockpackFontOfSize: 12.0f];
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.highlightedBackgroundView.hidden = TRUE;
+    
+    self.displayMode = kDisplayModeChannel; // default is channel
 }
 
+
+#pragma mark - Switch Between Modes
+
+-(void)setDisplayMode:(kDisplayMode)displayMode
+{
+    if (displayMode == kDisplayModeChannel) {
+        self.videoInfoView.hidden = YES;
+        self.channelInfoView.hidden = NO;
+    } else if (displayMode == kDisplayModeYoutube) {
+        self.channelInfoView.hidden = YES;
+        self.videoInfoView.hidden = NO;
+    }
+}
 
 #pragma mark - Asynchronous image loading support
 

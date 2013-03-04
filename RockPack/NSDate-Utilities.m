@@ -110,6 +110,8 @@
 	return [self isEqualToDateIgnoringTime:[NSDate dateYesterday]];
 }
 
+
+
 // This hard codes the assumption that a week is 7 days
 - (BOOL) isSameWeekAsDate: (NSDate *) aDate
 {

@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12C3103</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -259,7 +259,11 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+<<<<<<< HEAD
 			<string key="BackgroundVideoThumbnailRegular.png">{254, 176}</string>
+=======
+			<string key="BackgroundVideoThumbnailRegular.png">{256, 179}</string>
+>>>>>>> origin/develop
 			<string key="GlossVideoThumbnailRegular.png">{256, 179}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

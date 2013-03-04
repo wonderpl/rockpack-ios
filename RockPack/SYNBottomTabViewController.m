@@ -315,12 +315,16 @@
 }
 
 
-
-
-
-
 - (void) popCurrentViewController: (id) sender
 {
+    // TODO: Might want to abstract al the push and pop into the master
+    
+    if(self.selectedViewController == self.searchViewController)
+    {
+        [self.searchViewController animatedPopViewController];
+        return;
+    }
+    
     UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
     
     SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
@@ -331,14 +335,14 @@
 
 
 
--(void) showSearchViewControllerWithTerm:(NSString*)term
+-(void) showSearchViewControllerWithTerm:(NSString*)searchTerm
 {
     [self setSelectedIndex:-1]; // turn all off
     
+    if(self.selectedViewController != self.searchViewController)
+        self.selectedViewController = self.searchViewController;
     
-    self.selectedViewController = self.searchViewController;
-    
-    self.searchViewController.searchTerm = term;
+    [self.searchViewController showSearchResultsForTerm:searchTerm];
     
     
 }

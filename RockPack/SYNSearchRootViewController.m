@@ -10,6 +10,8 @@
 
 #import "SYNSearchVideosViewController.h"
 #import "SYNSearchChannelsViewController.h"
+#import "AppConstants.h"
+#import "SYNSearchTabViewController.h"
 
 @interface SYNSearchRootViewController ()
 
@@ -20,15 +22,15 @@
 
 @property (nonatomic, weak) SYNAbstractViewController* currentController;
 
-@property (nonatomic, strong) NSString* currentSelectionId;
+@property (nonatomic, weak) UIView* currentOverlayView;
 
+@property (nonatomic, strong) NSString* currentSelectionId;
 
 
 @end
 
 @implementation SYNSearchRootViewController
 
-@synthesize searchTerm = _searchTerm;
 
 
 -(void)loadView
@@ -39,56 +41,90 @@
     self.view.backgroundColor = [UIColor clearColor];
 }
 
-- (void)viewDidLoad
+
+
+-(void)showSearchResultsForTerm:(NSString*)newSearchTerm
 {
     
-    [super viewDidLoad];
+    if(searchTerm && [searchTerm isEqualToString:newSearchTerm])
+        return;
     
-    self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
-    self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
     
-	
+    searchTerm = newSearchTerm;
+    
+    if(!searchTerm)
+        return;
+    
+    if(!viewIsOnScreen)
+        return;
+    
+    
+    [self performSearchForCurrentSearchTerm];
+    
+    
 }
 
-
--(void)setSearchTerm:(NSString *)term
+-(void)performSearchForCurrentSearchTerm
 {
-     
-        
-    _searchTerm = term;
-    
-    if(!_searchTerm)
-        return;
     
     if(!self.currentController) { // first time
         [self.tabViewController setSelectedWithId:@"0"];
     }
-    else if(self.currentController == self.searchVideosController) {
-        [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
-        [self.searchVideosController performSearchWithTerm:self.searchTerm];
-    }
     
-    else {
-        [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
-        [self.searchChannelsController performSearchWithTerm:self.searchTerm];
-    }
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     
     
+    [self.searchVideosController performSearchWithTerm:searchTerm];
+    [self.searchChannelsController performSearchWithTerm:searchTerm];
+}
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
     
+    // TODO: Check why we have to invert
+    
+    self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
+    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchVideosItemView;
+    self.searchVideosController.parent = self;
+    
+    self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
+    self.searchChannelsController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchChannelsItemView;
+    self.searchChannelsController.parent = self;
+    
+    [self.searchVideosController view];
+    [self.searchChannelsController view];
+    
+    viewIsOnScreen = YES;
+    
+    if(searchTerm)
+        [self performSearchForCurrentSearchTerm];
+        
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.searchTerm = nil;
+    
+    searchTerm = nil;
+    
+    viewIsOnScreen = NO;
     
     // clear the context
     
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
     
+    
+    
     [self.currentController.view removeFromSuperview];
+    
     self.currentController = nil;
+    
+    
+    self.searchVideosController = nil;
+    self.searchChannelsController = nil;
     
 }
 
@@ -101,14 +137,12 @@
     {
         
         [self.view insertSubview:self.searchVideosController.view belowSubview:self.tabViewController.view];
-        [self.searchVideosController performSearchWithTerm:self.searchTerm];
         newController = self.searchVideosController;
         
     }
     else
     {
         [self.view insertSubview:self.searchChannelsController.view belowSubview:self.tabViewController.view];
-        [self.searchChannelsController performSearchWithTerm:self.searchTerm];
         newController = self.searchChannelsController;
     }
     
@@ -119,6 +153,66 @@
     self.currentController = newController;
     
     
+}
+
+
+
+
+#pragma mark - Animation support
+
+// Special animation of pushing new view controller onto UINavigationController's stack
+- (void) animatedPushViewController: (UIViewController *) vc
+{
+    
+    vc.view.alpha = 0.0f;
+    [self.view insertSubview:vc.view belowSubview:self.tabViewController.view];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         vc.view.alpha = 1.0f;
+                         self.tabViewController.view.alpha = 0.0;
+        
+         
+     } completion: ^(BOOL finished) {
+         
+     }];
+    
+    [self.navigationController pushViewController: vc
+                                         animated: NO];
+    
+    _currentOverlayView = vc.view;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
+}
+
+
+- (void) animatedPopViewController
+{
+    
+    [self.navigationController popViewControllerAnimated: NO];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         _currentOverlayView.alpha = 0.0f;
+                         self.tabViewController.view.alpha = 1.0;
+                         
+                     }
+                     completion: ^(BOOL finished) {
+                         [self.navigationController popViewControllerAnimated: NO];
+                         _currentOverlayView = nil;
+         
+                     }];
+    
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
 }
 
 

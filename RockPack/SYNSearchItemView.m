@@ -84,7 +84,12 @@
 
 -(void)setNumberOfItems:(NSInteger)noi
 {
+    self.nameLabel.alpha = 0.0f;
     self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
+    [UIView animateWithDuration:0.2 animations:^{
+        self.nameLabel.alpha = 1.0;
+    }];
+    
 
 }
 

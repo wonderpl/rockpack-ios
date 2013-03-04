@@ -420,7 +420,7 @@
 {
     [super handleMainTap:recogniser];
     
-    if(tabExpanded)
+    if(tabExpanded || ![self showSubcategories])
         return;
     
     [UIView animateWithDuration: 0.4
@@ -440,6 +440,11 @@
     {
         tabExpanded = YES;
     }];
+}
+
+-(BOOL)showSubcategories
+{
+    return NO;
 }
 
 

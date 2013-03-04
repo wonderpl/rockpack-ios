@@ -53,4 +53,8 @@
     // implement in subclass
 }
 
+-(BOOL)showSubcategories
+{
+    return YES;
+}
 @end

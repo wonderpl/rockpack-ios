@@ -72,6 +72,9 @@
     // to be implemented by child
 }
 
-
+-(BOOL)showSubcategories
+{
+    return YES;
+}
 
 @end

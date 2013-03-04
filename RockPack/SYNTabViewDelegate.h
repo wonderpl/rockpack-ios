@@ -16,5 +16,6 @@
 
 // general
 -(void)handleNewTabSelectionWithId:(NSString*)itemId;
+-(BOOL)showSubcategories;
 
 @end

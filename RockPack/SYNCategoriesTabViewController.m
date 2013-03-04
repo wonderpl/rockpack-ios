@@ -129,7 +129,10 @@
         [filteredSet addObject:subcategory];
     }
     
-    [self.tabView createSubcategoriesTab:filteredSet];
+    // TODO: Maybe put the expressiokns above in the conditional
+    
+    if(self.delegate && [self.delegate showSubcategories])
+        [self.tabView createSubcategoriesTab:filteredSet];
     
     [self.delegate handleMainTap:recogniser];
     

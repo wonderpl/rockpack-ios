@@ -7,7 +7,12 @@
 //
 
 #import "SYNTabView.h"
+#import "SYNSearchItemView.h"
 
-@interface SYNSearchTabView : SYNTabView 
+@interface SYNSearchTabView : SYNTabView
+
+
+@property (nonatomic, readonly) SYNSearchItemView* searchVideosItemView;
+@property (nonatomic, readonly) SYNSearchItemView* searchChannelsItemView;
 
 @end
