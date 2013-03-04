@@ -76,6 +76,7 @@
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     
+    
 }
 
 
@@ -84,6 +85,9 @@
 {
     [super viewDidDisappear: animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+   
     if (self.hasVideoQueue)
     {
         [self hideVideoQueue:YES];

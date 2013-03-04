@@ -11,7 +11,6 @@
 #import <UIKit/UIKit.h>
 
 #import "SYNAppDelegate.h"
-#import "SYNVideoQueueDelegate.h"
 
 #import "SYNNetworkEngine.h"
 
@@ -20,8 +19,7 @@
 
 @interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
                                                             UICollectionViewDataSource,
-                                                            UICollectionViewDelegate,
-                                                            SYNVideoQueueDelegate>
+                                                            UICollectionViewDelegate>
 {
 @protected
     SYNAppDelegate* appDelegate;
