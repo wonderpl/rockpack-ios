@@ -12,7 +12,9 @@
 
 @interface SYNVideoQueueViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (nonatomic, weak) id <SYNVideoQueueDelegate> delegate;
+
+
+@property (nonatomic, strong) NSMutableArray *videoSelectionArray;
 
 - (void) reloadData;
 
@@ -22,5 +24,6 @@
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
 
 -(void) setHighlighted:(BOOL)highlighted;
+
 
 @end

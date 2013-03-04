@@ -10,6 +10,5 @@
 
 @protocol SYNVideoQueueDelegate <NSObject>
 
--(void)createChannelFromVideoQueue;
 
 @end

@@ -18,7 +18,6 @@
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNVideoQueueCell.h"
-#import "SYNVideoSelection.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
@@ -401,27 +400,6 @@
     return NO;
 }
 
-// Create a channel pressed
-
-- (void) createChannelFromVideoQueue
-{
-    
-    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    newChannel.channelOwner = appDelegate.channelOwnerMe;
-    
-    // TODO: Make these window offsets less hard-coded
-
-    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
-    {
-        [[newChannel videoInstancesSet] addObject: videoInstance];
-    }
-
-    
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
-    
-    [self animatedPushViewController: channelCreationVC];
-}
 
 
 - (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender
