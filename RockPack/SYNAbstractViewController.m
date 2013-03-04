@@ -75,32 +75,10 @@
     
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    if (self.hasVideoQueue)
-    {
-        self.videoQVC = [[SYNVideoQueueViewController alloc] init];
-        self.videoQVC.delegate = self;
-        
-        if (self.hasTabBar == FALSE)
-        {
-//            CGRect stdFrame = CGRectMake(0, 573 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
-            CGRect lowerFrame = CGRectMake(0, 573 + 62 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
-            self.videoQVC.view.frame = lowerFrame;
-        }
-        
-        [self.view addSubview: self.videoQVC.view];
-    }
-}
-
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
     
-    if (self.hasVideoQueue)
-    {
-        [self.videoQVC reloadData];
-    }
 }
+
+
 
 - (void) viewDidDisappear: (BOOL) animated
 {
@@ -108,7 +86,7 @@
     
     if (self.hasVideoQueue)
     {
-        [self hideVideoQueue: NO];
+        [self hideVideoQueue:YES];
     }
 }
 
@@ -555,7 +533,8 @@
 }
 
 
-// Assume that the video queue is not visible on first entry to the tab
+#pragma mark - Video Queue Methods
+
 - (BOOL) isVideoQueueVisibleOnStart;
 {
     return FALSE;
@@ -563,32 +542,35 @@
 
 - (void) showVideoQueue: (BOOL) animated
 {
-    [self.videoQVC showVideoQueue: animated];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
+                                                        object:self];
 }
 
 - (void) hideVideoQueue: (BOOL) animated
 {
-    [self.videoQVC hideVideoQueue: animated];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
+                                                        object:self];
 }
 
 
-#pragma mark - Add/Remove to video queue
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
 {
-    [self.videoQVC addVideoToQueue:videoInstance];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
+                                                        object:self
+                                                      userInfo:@{@"VideoInstance" : videoInstance}];
 }
 
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
 {
-    [self.videoQVC setHighlighted:showHighlight];
+    
 }
 
 
 - (BOOL) pointInVideoQueue: (CGPoint) point
 {
-    return CGRectContainsPoint(self.videoQVC.view.frame, point);
+    return YES;
 }
 
 

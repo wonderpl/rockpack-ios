@@ -153,6 +153,7 @@
 -(void)hideShowVideoQueue:(BOOL)show animated:(BOOL)animated
 {
     CGRect videoQueueViewFrame = self.videoQueueView.frame;
+    
     if(show)
         videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
     else
