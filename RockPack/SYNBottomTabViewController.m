@@ -186,6 +186,16 @@
     [super viewWillAppear: animated];
 }
 
+-(void)createChannelFromVideoQueue
+{
+    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    {
+        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
+        [child createChannelFromVideoQueue];
+    }
+    
+}
+
 
 #pragma mark - Tab & Container switching mechanism
 

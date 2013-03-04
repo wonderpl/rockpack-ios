@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
+#import "SYNVideoQueueDelegate.h"
 
-@interface SYNBottomTabViewController : SYNAbstractViewController
+@interface SYNBottomTabViewController : SYNAbstractViewController <SYNVideoQueueDelegate>
 
 @property (nonatomic, strong, readonly) UIButton *messageInboxButton;
 

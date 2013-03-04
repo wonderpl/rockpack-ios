@@ -104,9 +104,6 @@
 
 -(void)setDelegate:(id<SYNVideoQueueDelegate>)del
 {
-    delegate = del;
-    
-    
     [self.videoQueueView.channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
 }
 
