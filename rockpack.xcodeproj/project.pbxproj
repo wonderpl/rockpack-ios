@@ -351,6 +351,7 @@
 		01CF11CD1695CC1600E64620 /* ButtonRefreshBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */; };
 		01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */; };
 		01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */; };
+		01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D8C6A716807A54000059D1 /* SYNVideoSelection.m */; };
 		01E2FC9F16D15BC1006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FC9E16D15BC1006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */; };
 		01E2FCB016D15C05006E6DA7 /* TabTopDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FCA216D15C05006E6DA7 /* TabTopDivider.png */; };
 		01E2FCB116D15C05006E6DA7 /* TabTopDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FCA316D15C05006E6DA7 /* TabTopDivider@2x.png */; };
@@ -873,6 +874,8 @@
 		01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshBackground@2x.png"; path = "Assets/Images/ButtonRefreshBackground@2x.png"; sourceTree = "<group>"; };
 		01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossLargeVideoView.png; path = Assets/Images/GlossLargeVideoView.png; sourceTree = "<group>"; };
 		01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossLargeVideoView@2x.png"; path = "Assets/Images/GlossLargeVideoView@2x.png"; sourceTree = "<group>"; };
+		01D8C6A616807A54000059D1 /* SYNVideoSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoSelection.h; sourceTree = "<group>"; };
+		01D8C6A716807A54000059D1 /* SYNVideoSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoSelection.m; sourceTree = "<group>"; };
 		01E2FC9E16D15BC1006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayerNoAutoplay.html; path = Assets/HTML/YouTubeJSAPIPlayerNoAutoplay.html; sourceTree = "<group>"; };
 		01E2FCA216D15C05006E6DA7 /* TabTopDivider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TabTopDivider.png; path = Assets/Images/TabTopDivider.png; sourceTree = "<group>"; };
 		01E2FCA316D15C05006E6DA7 /* TabTopDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TabTopDivider@2x.png"; path = "Assets/Images/TabTopDivider@2x.png"; sourceTree = "<group>"; };
@@ -1691,6 +1694,8 @@
 				019824ED1629CC6600216900 /* TestFlight */,
 				019824E91629CBD000216900 /* Exception Handler */,
 				019824E51629CB1D00216900 /* Debug */,
+				01D8C6A616807A54000059D1 /* SYNVideoSelection.h */,
+				01D8C6A716807A54000059D1 /* SYNVideoSelection.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -2916,6 +2921,7 @@
 				0199F136167215BE00E479C6 /* NSData+MKBase64.m in Sources */,
 				0199F13B16721A4500E479C6 /* SYNHomeRootViewController.m in Sources */,
 				018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */,
+				01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */,
 				01946B911683335400354601 /* _ChannelOwner.m in Sources */,
 				01946B921683335400354601 /* _VideoInstance.m in Sources */,
 				01946B971683339F00354601 /* ChannelOwner.m in Sources */,

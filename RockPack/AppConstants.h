@@ -125,8 +125,6 @@
 #define kVideoQueueHide @"kVideoQueueHide"
 #define kVideoQueueAdd @"kVideoQueueAdd"
 
-#define kVideoQueueCreateChannel @"kVideoQueueCreateChannel"
-
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
 

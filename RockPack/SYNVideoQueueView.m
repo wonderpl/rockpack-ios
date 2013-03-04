@@ -8,6 +8,7 @@
 
 #import "SYNVideoQueueView.h"
 #import "AppConstants.h"
+#import "SYNVideoSelection.h"
 
 #define kVideoQueueCellWidth 142.0
 
@@ -88,6 +89,15 @@
         messageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
         
         
+        if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
+        {
+            messageView.alpha = 1.0f;
+        }
+        else
+        {
+            messageView.alpha = 0.0f;
+        }
+        
         
         
         [self addSubview:messageView];
@@ -111,7 +121,7 @@
         
         
         
-        videoQueueCollectionView.backgroundColor = [UIColor clearColor];
+        videoQueueCollectionView.backgroundColor = [UIColor greenColor];
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         

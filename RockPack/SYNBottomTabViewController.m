@@ -24,8 +24,6 @@
 #import "SYNSearchRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNVideoQueueViewController.h"
-#import "Channel.h"
-#import "SYNChannelsDetailsCreationViewController.h"
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -39,6 +37,7 @@
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 
+@property (nonatomic, strong) IBOutlet UIView* queueViewContainer;
 
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
@@ -49,7 +48,7 @@
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
-@property (nonatomic, weak) SYNAbstractViewController *selectedViewController;
+@property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 @property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
 
@@ -137,16 +136,16 @@
     // == Video Queue
     
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
+    videoQueueController.delegate = self;
 //    
 //    CGRect lowerFrame = CGRectMake(0, 573 + 62 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
 //    videoQueueController.view.frame = lowerFrame;
     
-    [self.view insertSubview:videoQueueController.view belowSubview:self.tabsViewContainer];
+    [self.queueViewContainer addSubview: videoQueueController.view];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueHide:) name:kVideoQueueHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueShow:) name:kVideoQueueShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueAdd:) name:kVideoQueueAdd object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createChannelFromVideoQueue:) name:kVideoQueueCreateChannel object:self];
     
     // Set Initial View Controller
     
@@ -164,7 +163,7 @@
 }
 
 
-#pragma mark - Video Queue Methods
+#pragma mark - Video Queue Handlers
 
 -(void)videoQueueHide:(NSNotification*)notification
 {
@@ -182,26 +181,6 @@
     [self.videoQueueController addVideoToQueue:videoInstanceToAdd];
 }
 
-- (void) createChannelFromVideoQueue:(NSNotification*)notification
-{
-    
-    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    newChannel.channelOwner = appDelegate.channelOwnerMe;
-    
-    // TODO: Make these window offsets less hard-coded
-    
-    for (VideoInstance *videoInstance in self.videoQueueController.videoSelectionArray)
-    {
-        [[newChannel videoInstancesSet] addObject: videoInstance];
-    }
-    
-    
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
-    
-    [self.selectedViewController animatedPushViewController: channelCreationVC];
-}
-
 
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -211,8 +190,7 @@
 
 #pragma mark - Tab & Container switching mechanism
 
-// == Being called every time we pass a new set of view controllers through self.viewControllers (currently only once) == //
-
+// Add the five tab view controllers as sub-view controllers of this view controller
 - (void) setViewControllers: (NSArray *) newViewControllers
 {
 	UIViewController *oldSelectedViewController = self.selectedViewController;
@@ -287,12 +265,12 @@
     toButton.selected = TRUE;
     
     
-    self.selectedViewController = (SYNAbstractViewController*)self.viewControllers[_selectedIndex];
+    self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
     
     
 }
 
--(void)setSelectedViewController:(SYNAbstractViewController *)newSelectedViewController
+-(void)setSelectedViewController:(UIViewController *)newSelectedViewController
 {
     
     

@@ -8,6 +8,7 @@
 
 #import "SYNVideoQueueViewController.h"
 #import "SYNVideoQueueView.h"
+#import "SYNVideoSelection.h"
 #import "SYNVideoQueueCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -22,7 +23,6 @@
 @property (nonatomic, readonly) SYNVideoQueueView* videoQueueView;
 @property (nonatomic) BOOL isVisible;
 
-
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 
 @end
@@ -30,8 +30,8 @@
 @implementation SYNVideoQueueViewController
 
 @dynamic videoQueueView;
-@synthesize videoSelectionArray;
 
+@synthesize delegate;
 
 -(void)loadView
 {
@@ -47,19 +47,14 @@
 {
     [super viewDidLoad];
     
-    videoSelectionArray = [[NSMutableArray alloc] init];
-    
-    
-    [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
-    [self.videoQueueView.channelButton addTarget:self action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
-    
     [self reloadData];
 	
 }
 
--(void)createChannelFromVideoQueue
+- (void)didReceiveMemoryWarning
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueCreateChannel object:self];
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 
@@ -67,7 +62,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
     
-    return videoSelectionArray.count;
+    return SYNVideoSelection.sharedVideoSelectionArray.count;
 }
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -77,7 +72,7 @@
     SYNVideoQueueCell *videoQueueCell = [cv dequeueReusableCellWithReuseIdentifier: @"VideoQueueCell"
                                                                       forIndexPath: indexPath];
     
-    VideoInstance *videoInstance = [videoSelectionArray objectAtIndex: indexPath.item];
+    VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
     
     // Load the image asynchronously
     videoQueueCell.VideoImageViewImage = videoInstance.video.thumbnailURL;
@@ -102,7 +97,16 @@
     return (SYNVideoQueueView*)self.view;
 }
 
+#pragma mark - Delegate
 
+-(void)setDelegate:(id<SYNVideoQueueDelegate>)del
+{
+    delegate = del;
+    
+    [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.videoQueueView.channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+}
 
 - (void) clearVideoQueue
 {
@@ -113,7 +117,7 @@
     self.videoQueueView.channelButton.selected = NO;
     self.videoQueueView.deleteButton.enabled = NO;
     
-    [videoSelectionArray removeAllObjects];
+    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
     
     [self.videoQueueView.videoQueueCollectionView reloadData];
 }
@@ -183,7 +187,7 @@
     
     [self showVideoQueue:YES];
     
-    if (videoSelectionArray.count == 0)
+    if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
     {
         self.videoQueueView.channelButton.enabled = YES;
         self.videoQueueView.channelButton.selected = YES;
@@ -193,7 +197,7 @@
     }
     
     
-    [videoSelectionArray addObject: videoInstance]; 
+    [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance]; 
     
     [self.videoQueueView addVideoToQueue:videoInstance];
     
