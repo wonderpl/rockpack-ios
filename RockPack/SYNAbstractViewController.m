@@ -301,11 +301,12 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-    [self showVideoQueue: TRUE];
+   
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "MKNetworkKit.h"
+#import "AppConstants.h"
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
@@ -100,6 +101,10 @@
     [self.longPressView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
     
     [self.longPressView addGestureRecognizer: tapOnThumbnailGestureRecognizer];
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHideRequested object:self];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShowRequested object:self];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAddVideo object:self];
     
     // Add button targets
     [self.rockItButton addTarget: self.viewControllerDelegate
