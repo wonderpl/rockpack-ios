@@ -41,4 +41,9 @@
     return (SYNTabView*)self.view;
 }
 
+-(BOOL)showSubcategories
+{
+    return YES;
+}
+
 @end

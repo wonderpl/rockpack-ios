@@ -97,6 +97,8 @@
 {
     // Set as pressed
     
+    
+    
     SYNSearchItemView* viewClicked = (SYNSearchItemView*)recogniser.view;
     if (self.currentItemView == viewClicked) 
         return;

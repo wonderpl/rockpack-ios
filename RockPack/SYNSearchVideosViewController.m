@@ -20,9 +20,9 @@
 @interface SYNSearchVideosViewController ()
 
 
-
-
 @end
+
+
 
 @implementation SYNSearchVideosViewController
 
@@ -34,7 +34,7 @@
     
     if (fetchedResultsController != nil)
         return fetchedResultsController;
-    
+        
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     
