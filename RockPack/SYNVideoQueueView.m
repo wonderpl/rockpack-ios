@@ -124,6 +124,7 @@
         
         
         videoQueueCollectionView.backgroundColor = [UIColor clearColor];
+        videoQueueCollectionView.scrollEnabled = NO; // scroll will happen on the scrollView which wraps it
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         
@@ -140,9 +141,6 @@
         [self addSubview:scrollView];
         
         [scrollView addSubview:videoQueueCollectionView];
-        
-        
-        
         
         
         
@@ -165,41 +163,41 @@
     // == Animate
     
     
-    DebugLog(@"Left: %f %f %f %f",
-             self.videoQueueCollectionView.frame.origin.x,
-             self.videoQueueCollectionView.frame.origin.y,
-             self.videoQueueCollectionView.frame.size.width,
-             self.videoQueueCollectionView.frame.size.height);
     
-    // 1. Expand Collection View
+    // 1. Expand Collection View Frame
     
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
     videoQueueViewFrame.size.width += kVideoQueueCellWidth;
     
     self.videoQueueCollectionView.frame = videoQueueViewFrame;
     
-    // the scroll view must include the "invisible" cell where new videos are added to scroll properly
+    // 2. Expand the content size of the scroller accordingly
     
     [scrollView setContentSize:CGSizeMake(self.videoQueueCollectionView.frame.size.width + kVideoQueueCellWidth,
                                           scrollView.frame.size.height)];
     
+    // 3. If the content is bigger than the scrollView frame
 
     if(videoQueueViewFrame.size.width + kVideoQueueCellWidth > scrollView.frame.size.width)
     {
         
+        // 4. snap the offset back (which would bring the cells to the left)
         
         [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x + kVideoQueueCellWidth, 0.0)];
+        
+        // 5. snap the cells to the right (which will bring them back to where they where before)
         
         self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x + kVideoQueueCellWidth,
                                                            self.videoQueueCollectionView.center.y);
         
+        // 6. After leaving the conditional the cells are where they where but with the content offset to the left so that it can scroll
+        
     }
     
-    // 2. Load New Cell
+    
+    // 7. Load the new cell
     
     [self.videoQueueCollectionView reloadData];
-    
-    // 3. check
     
     
     
@@ -212,15 +210,9 @@
                          self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x - kVideoQueueCellWidth,
                                                                             self.videoQueueCollectionView.center.y);
                          
-                         
-                         
-                         
-                         
      } completion: ^(BOOL finished) {
 
          
-         DebugLog(@"Content Offset: %f", scrollView.contentOffset.x);
-         // self.videoQueueCollectionView.contentOffset = contentOffset;
      }];
 }
 

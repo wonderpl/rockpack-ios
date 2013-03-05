@@ -116,7 +116,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                                action: @selector(swipeGesturePerformed:)];
     
     [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
-    //[self.view addGestureRecognizer:rightSwipeRecogniser];
+    [self.view addGestureRecognizer:rightSwipeRecogniser];
     
     rightSwipeRecogniser.delegate = self;
     
@@ -125,7 +125,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                               action: @selector(swipeGesturePerformed:)];
     
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    //[self.view addGestureRecognizer: leftSwipeRecogniser];
+    [self.view addGestureRecognizer: leftSwipeRecogniser];
     
     
     leftSwipeRecogniser.delegate = self;
