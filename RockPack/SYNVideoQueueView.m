@@ -18,6 +18,8 @@
 @synthesize deleteButton, channelButton, existingButton;
 @synthesize backgroundImageView;
 
+
+
 -(id)init
 {
     CGRect stdFrame = CGRectMake(0, 573 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
@@ -102,10 +104,10 @@
         
         [self addSubview:messageView];
         
-        // Video Queue collection view
         
         
-        // == Layout
+        // == Video Queue collection view + Scroller
+        
         
         UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
         standardFlowLayout.itemSize = CGSizeMake(127.0f , 73.0f);
@@ -116,7 +118,7 @@
         
         
         // Make this of zero width initially
-        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)
+        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(430.0, 0.0, 0.0, 73)
                                                            collectionViewLayout: standardFlowLayout];
         
         
@@ -127,7 +129,20 @@
         
         [videoQueueCollectionView registerNib: videoQueueCellNib forCellWithReuseIdentifier: @"VideoQueueCell"];
         
-        [self addSubview:videoQueueCollectionView];
+        
+        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(74.0, 26.0, 568.0, 73.0)];
+        [scrollView setBackgroundColor:[UIColor clearColor]];
+        scrollView.scrollEnabled = YES;
+        scrollView.pagingEnabled = YES;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.showsVerticalScrollIndicator = NO;
+        
+        [self addSubview:scrollView];
+        
+        [scrollView addSubview:videoQueueCollectionView];
+        
+        
+        
         
         
         
@@ -150,6 +165,12 @@
     // == Animate
     
     
+    DebugLog(@"Left: %f %f %f %f",
+             self.videoQueueCollectionView.frame.origin.x,
+             self.videoQueueCollectionView.frame.origin.y,
+             self.videoQueueCollectionView.frame.size.width,
+             self.videoQueueCollectionView.frame.size.height);
+    
     // 1. Expand Collection View
     
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
@@ -157,10 +178,28 @@
     
     self.videoQueueCollectionView.frame = videoQueueViewFrame;
     
+    // the scroll view must include the "invisible" cell where new videos are added to scroll properly
+    
+    [scrollView setContentSize:CGSizeMake(self.videoQueueCollectionView.frame.size.width + kVideoQueueCellWidth,
+                                          scrollView.frame.size.height)];
+    
+
+    if(videoQueueViewFrame.size.width + kVideoQueueCellWidth > scrollView.frame.size.width)
+    {
+        
+        
+        [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x + kVideoQueueCellWidth, 0.0)];
+        
+        self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x + kVideoQueueCellWidth,
+                                                           self.videoQueueCollectionView.center.y);
+        
+    }
     
     // 2. Load New Cell
     
     [self.videoQueueCollectionView reloadData];
+    
+    // 3. check
     
     
     
@@ -173,9 +212,14 @@
                          self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x - kVideoQueueCellWidth,
                                                                             self.videoQueueCollectionView.center.y);
                          
-         
+                         
+                         
+                         
                          
      } completion: ^(BOOL finished) {
+
+         
+         DebugLog(@"Content Offset: %f", scrollView.contentOffset.x);
          // self.videoQueueCollectionView.contentOffset = contentOffset;
      }];
 }
