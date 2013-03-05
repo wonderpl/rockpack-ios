@@ -22,6 +22,8 @@
     UIView* dropZoneView;
     
     UICollectionView* videoQueueCollectionView;
+    
+    UIScrollView* scrollView;
 }
 
 

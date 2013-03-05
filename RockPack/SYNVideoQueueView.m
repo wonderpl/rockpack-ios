@@ -18,6 +18,8 @@
 @synthesize deleteButton, channelButton, existingButton;
 @synthesize backgroundImageView;
 
+
+
 -(id)init
 {
     CGRect stdFrame = CGRectMake(0, 573 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
@@ -102,10 +104,10 @@
         
         [self addSubview:messageView];
         
-        // Video Queue collection view
         
         
-        // == Layout
+        // == Video Queue collection view + Scroller
+        
         
         UICollectionViewFlowLayout *standardFlowLayout = [[UICollectionViewFlowLayout alloc] init];
         standardFlowLayout.itemSize = CGSizeMake(127.0f , 73.0f);
@@ -116,18 +118,29 @@
         
         
         // Make this of zero width initially
-        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)
+        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(430.0, 0.0, 0.0, 73)
                                                            collectionViewLayout: standardFlowLayout];
         
         
         
         videoQueueCollectionView.backgroundColor = [UIColor clearColor];
+        videoQueueCollectionView.scrollEnabled = NO; // scroll will happen on the scrollView which wraps it
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         
         [videoQueueCollectionView registerNib: videoQueueCellNib forCellWithReuseIdentifier: @"VideoQueueCell"];
         
-        [self addSubview:videoQueueCollectionView];
+        
+        scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(74.0, 26.0, 568.0, 73.0)];
+        [scrollView setBackgroundColor:[UIColor clearColor]];
+        scrollView.scrollEnabled = YES;
+        scrollView.pagingEnabled = YES;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.showsVerticalScrollIndicator = NO;
+        
+        [self addSubview:scrollView];
+        
+        [scrollView addSubview:videoQueueCollectionView];
         
         
         
@@ -150,15 +163,39 @@
     // == Animate
     
     
-    // 1. Expand Collection View
+    
+    // 1. Expand Collection View Frame
     
     CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
     videoQueueViewFrame.size.width += kVideoQueueCellWidth;
     
     self.videoQueueCollectionView.frame = videoQueueViewFrame;
     
+    // 2. Expand the content size of the scroller accordingly
     
-    // 2. Load New Cell
+    [scrollView setContentSize:CGSizeMake(self.videoQueueCollectionView.frame.size.width + kVideoQueueCellWidth,
+                                          scrollView.frame.size.height)];
+    
+    // 3. If the content is bigger than the scrollView frame
+
+    if(videoQueueViewFrame.size.width + kVideoQueueCellWidth > scrollView.frame.size.width)
+    {
+        
+        // 4. snap the offset back (which would bring the cells to the left)
+        
+        [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x + kVideoQueueCellWidth, 0.0)];
+        
+        // 5. snap the cells to the right (which will bring them back to where they where before)
+        
+        self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x + kVideoQueueCellWidth,
+                                                           self.videoQueueCollectionView.center.y);
+        
+        // 6. After leaving the conditional the cells are where they where but with the content offset to the left so that it can scroll
+        
+    }
+    
+    
+    // 7. Load the new cell
     
     [self.videoQueueCollectionView reloadData];
     
@@ -173,10 +210,9 @@
                          self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x - kVideoQueueCellWidth,
                                                                             self.videoQueueCollectionView.center.y);
                          
-         
-                         
      } completion: ^(BOOL finished) {
-         // self.videoQueueCollectionView.contentOffset = contentOffset;
+
+         
      }];
 }
 

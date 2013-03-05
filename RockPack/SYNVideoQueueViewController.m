@@ -59,11 +59,6 @@
 -(void)createChannelFromVideoQueue
 {
     
-    // save data
-    
-    
-    
-    // call tab view
     
     [self.delegate createChannelFromVideoQueue];
     
@@ -85,6 +80,9 @@
     newChannel.channelOwner = appDelegate.channelOwnerMe;
     
     newChannel.viewId = @"ChannelDetails";
+    
+    
+    // Currently cerating a unique string as an id for the channel to be fetched in the channels details controller.
     
     newChannel.uniqueId = [self getUUID];
     
