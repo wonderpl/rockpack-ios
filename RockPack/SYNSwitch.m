@@ -46,6 +46,8 @@
 {
 	self.backgroundColor = [UIColor clearColor];
     
+    self.userInteractionEnabled = YES;
+    
     self.on = FALSE;
 
     self.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"SliderBackground.png"]];
@@ -57,20 +59,16 @@
     [self addSubview: self.backgroundView];
     [self addSubview: self.thumbView];
     
-	// tap gesture for toggling the switch
-	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                            action:@selector(tapped:)];
-	tapGestureRecognizer.delegate = self;
-	[self addGestureRecognizer: tapGestureRecognizer];
     
-	// pan gesture for moving the switch knob manually
+    
 	UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                                             action:@selector(thumbDragged:)];
 	panGestureRecognizer.delegate = self;
 	[self addGestureRecognizer: panGestureRecognizer];
     
-    // == Labels
     
+    
+    // == Labels
     
     rockpackFont = [UIFont rockpackFontOfSize:14.0];
     
@@ -109,20 +107,6 @@
 }
 
 #pragma mark - Interaction
-
-- (void) tapped: (UITapGestureRecognizer *) gesture
-{
-    // Check to see if we should ignore this tap (i.e. if we are currently animating)
-	if (self.ignoreTap) return;
-	
-    // If the tap is over then toggle the switch
-	if (gesture.state == UIGestureRecognizerStateEnded)
-    {
-        // Toggle state
-		[self setOn: !self.on
-           animated: YES];
-    }
-}
 
 - (void) thumbDragged: (UIPanGestureRecognizer *) gesture
 {
