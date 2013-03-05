@@ -1,0 +1,18 @@
+
+PODS: 
+- MKNetworkKit (HEAD based on 0.87): 
+  - Reachability (~> 3.1.0)
+- Reachability (HEAD based on 3.1.0)
+- SSKeychain (0.2.1)
+
+COCOAPODS: 0.16.2
+
+DEPENDENCIES: 
+- MKNetworkKit (HEAD)
+- Reachability (HEAD)
+- SSKeychain (~> 0.2.1)
+
+SPEC CHECKSUMS: 
+  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  MKNetworkKit: 3d581af82df1a59e38efef8afef08437cef0df69
+  SSKeychain: ffa1a79eb716d9ed1ca184fb0cf218087ca28486
