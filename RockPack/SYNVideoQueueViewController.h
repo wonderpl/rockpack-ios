@@ -10,6 +10,9 @@
 #import "SYNVideoQueueDelegate.h"
 #import "VideoInstance.h"
 
+#import "Video.h"
+#import "Channel.h"
+
 @interface SYNVideoQueueViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) id <SYNVideoQueueDelegate> delegate;
@@ -22,5 +25,6 @@
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
 
 -(void) setHighlighted:(BOOL)highlighted;
+-(Channel*)getChannelFromCurrentQueue;
 
 @end

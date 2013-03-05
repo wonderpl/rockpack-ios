@@ -186,16 +186,15 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    // Edit the entity name as appropriate.
+    
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"channel.position" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
+    
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                         managedObjectContext: appDelegate.mainManagedObjectContext
                                                                           sectionNameKeyPath: nil
@@ -203,7 +202,7 @@
     fetchedResultsController.delegate = self;
     
     NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"fetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
 }

@@ -199,5 +199,10 @@
 
 
 
+-(void)clearVideoQueue
+{
+    [self.videoQueueCollectionView setFrame:CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)];
+    [self.videoQueueCollectionView reloadData];
+}
 
 @end

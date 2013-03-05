@@ -121,6 +121,10 @@
 //#define kVideoQueueWidth 475
 #define kVideoQueueOffsetX 10
 
+#define kVideoQueueShow @"kVideoQueueShow"
+#define kVideoQueueHide @"kVideoQueueHide"
+#define kVideoQueueAdd @"kVideoQueueAdd"
+
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
 

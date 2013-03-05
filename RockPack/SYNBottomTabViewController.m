@@ -23,6 +23,7 @@
 #import "SYNSearchTabViewController.h"
 #import "SYNSearchRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNVideoQueueViewController.h"
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -35,6 +36,9 @@
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
+
+
+@property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
 @property (nonatomic, strong) IBOutlet UIButton *recordButton;
 @property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
@@ -55,6 +59,7 @@
 
 @synthesize selectedIndex = _selectedIndex;
 @synthesize selectedViewController = _selectedViewController;
+@synthesize videoQueueController = videoQueueController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -125,8 +130,21 @@
 //    searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
 //    searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-
     
+    
+    // == Video Queue
+    
+    videoQueueController = [[SYNVideoQueueViewController alloc] init];
+    videoQueueController.delegate = self;
+//    
+//    CGRect lowerFrame = CGRectMake(0, 573 + 62 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
+//    videoQueueController.view.frame = lowerFrame;
+    
+    [self.view insertSubview:videoQueueController.view belowSubview:self.tabsViewContainer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueHide:) name:kVideoQueueHide object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueShow:) name:kVideoQueueShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueAdd:) name:kVideoQueueAdd object:nil];
     
     // Set Initial View Controller
     
@@ -144,9 +162,39 @@
 }
 
 
+#pragma mark - Video Queue Handlers
+
+-(void)videoQueueHide:(NSNotification*)notification
+{
+    [self.videoQueueController hideVideoQueue:YES];
+}
+
+-(void)videoQueueShow:(NSNotification*)notification
+{
+    [self.videoQueueController showVideoQueue:YES];
+}
+
+-(void)videoQueueAdd:(NSNotification*)notification
+{
+    VideoInstance* videoInstanceToAdd = (VideoInstance*)[notification.userInfo objectForKey:@"VideoInstance"];
+    [self.videoQueueController addVideoToQueue:videoInstanceToAdd];
+}
+
+
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
+}
+
+-(void)createChannelFromVideoQueue
+{
+    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    {
+        
+        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
+        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+    }
+    
 }
 
 

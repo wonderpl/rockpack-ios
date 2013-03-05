@@ -66,9 +66,7 @@ static NSEntityDescription *channelEntity = nil;
         {
             instance.viewId = viewId;
             
-//            if (instance.videoInstancesSet.count == 0)
-            {
-                NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+            NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
                 
                 // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
                 if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
@@ -90,7 +88,6 @@ static NSEntityDescription *channelEntity = nil;
                         }
                     }
                 }
-            }
         }
         else
         {
