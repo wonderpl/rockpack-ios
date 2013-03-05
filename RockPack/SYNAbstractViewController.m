@@ -417,22 +417,7 @@
 - (void) createChannel:(Channel*)channel
 {
     
-    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    newChannel.channelOwner = appDelegate.channelOwnerMe;
-    
-    newChannel.uniqueId = @"random_unique_id";
-    
-    // TODO: Make these window offsets less hard-coded
-
-    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
-    {
-        [[newChannel videoInstancesSet] addObject: videoInstance];
-    }
-
-    //[appDelegate saveContext:YES];
-    
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
+    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelCreationVC];
 }
