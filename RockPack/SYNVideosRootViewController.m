@@ -13,7 +13,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
-#import "SYNVideoDB.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"

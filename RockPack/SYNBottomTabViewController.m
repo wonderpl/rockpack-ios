@@ -17,8 +17,6 @@
 #import "SYNHomeRootViewController.h"
 #import "SYNMovableView.h"
 #import "SYNYouRootViewController.h"
-#import "SYNVideoDB.h"
-#import "SYNVideoDownloadEngine.h"
 #import "UIFont+SYNFont.h"
 #import "SYNSearchTabViewController.h"
 #import "SYNSearchRootViewController.h"
@@ -45,7 +43,6 @@
 
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
-@property (strong, nonatomic) SYNVideoDownloadEngine *downloadEngine;
 
 @property (nonatomic, strong) IBOutlet UIView* tabsViewContainer;
 

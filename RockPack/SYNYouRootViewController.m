@@ -8,10 +8,8 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
-#import "MBProgressHUD.h"
 #import "SYNAbstractChannelsDetailViewController.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNVideoDB.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
