@@ -13,6 +13,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNVideoQueueDelegate.h"
 
+#import "Channel.h"
 #import "SYNNetworkEngine.h"
 
 
@@ -20,8 +21,7 @@
 
 @interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
                                                             UICollectionViewDataSource,
-                                                            UICollectionViewDelegate,
-                                                            SYNVideoQueueDelegate>
+                                                            UICollectionViewDelegate>
 {
 @protected
     SYNAppDelegate* appDelegate;
@@ -83,6 +83,9 @@
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
 
 - (IBAction) dismissVideoViewer;
+
+- (void) createChannel:(Channel*)channel;
+
 
 -(id)initWithViewId:(NSString*)vid;
 

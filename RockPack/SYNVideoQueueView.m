@@ -121,7 +121,7 @@
         
         
         
-        videoQueueCollectionView.backgroundColor = [UIColor greenColor];
+        videoQueueCollectionView.backgroundColor = [UIColor clearColor];
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         
@@ -199,5 +199,10 @@
 
 
 
+-(void)clearVideoQueue
+{
+    [self.videoQueueCollectionView setFrame:CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)];
+    [self.videoQueueCollectionView reloadData];
+}
 
 @end
