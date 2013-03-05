@@ -11,7 +11,6 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
-#import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
@@ -415,12 +414,14 @@
 
 // Create a channel pressed
 
-- (void) createChannelFromVideoQueue
+- (void) createChannel:(Channel*)channel
 {
     
     Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     newChannel.channelOwner = appDelegate.channelOwnerMe;
+    
+    newChannel.uniqueId = @"random_unique_id";
     
     // TODO: Make these window offsets less hard-coded
 
@@ -429,11 +430,14 @@
         [[newChannel videoInstancesSet] addObject: videoInstance];
     }
 
+    //[appDelegate saveContext:YES];
     
     SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: newChannel];
     
     [self animatedPushViewController: channelCreationVC];
 }
+
+
 
 
 - (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender

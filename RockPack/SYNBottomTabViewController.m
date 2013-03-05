@@ -190,8 +190,9 @@
 {
     if([self.selectedViewController isKindOfClass:[UINavigationController class]])
     {
+        
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannelFromVideoQueue];
+        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
     }
     
 }

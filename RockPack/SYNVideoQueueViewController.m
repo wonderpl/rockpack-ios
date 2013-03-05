@@ -10,10 +10,10 @@
 #import "SYNVideoQueueView.h"
 #import "SYNVideoSelection.h"
 #import "SYNVideoQueueCell.h"
-#import "Video.h"
-#import "VideoInstance.h"
 #import "AppConstants.h"
 #import "SYNSoundPlayer.h"
+#import <CoreData/CoreData.h>
+#import "SYNAppDelegate.h"
 
 #define kQueueSelectedImage @"PanelVideoQueueHighlighted.png"
 #define kQueueDefaultImage @"PanelVideoQueue.png"
@@ -50,8 +50,23 @@
     
     [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     
+    [self.videoQueueView.channelButton addTarget:self action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    
     [self reloadData];
 	
+}
+
+-(void)createChannelFromVideoQueue
+{
+    
+    // save data
+    
+    
+    
+    // call tab view
+    
+    [self.delegate createChannelFromVideoQueue];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,6 +75,35 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+-(Channel*)getChannelFromCurrentQueue
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    newChannel.channelOwner = appDelegate.channelOwnerMe;
+    
+    newChannel.viewId = @"ChannelDetails";
+    
+    newChannel.uniqueId = [self getUUID];
+    
+    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
+    {
+        [[newChannel videoInstancesSet] addObject: videoInstance];
+    }
+    
+    return newChannel;
+
+}
+
+-(NSString *)getUUID
+{
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+    CFRelease(theUUID);
+    return (__bridge NSString *)string;
+}
 
 #pragma mark - UICollectionViewDelegate Methods
 
@@ -104,7 +148,9 @@
 
 -(void)setDelegate:(id<SYNVideoQueueDelegate>)del
 {
-    [self.videoQueueView.channelButton addTarget:self.delegate action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    delegate = del;
+    
+    
 }
 
 - (void) clearVideoQueue
@@ -183,7 +229,6 @@
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
     
     
-    
     [self showVideoQueue:YES];
     
     if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
@@ -211,9 +256,9 @@
 - (void) setVideoQueueAnimationTimer: (NSTimer*) timer
 {
 
-    
     [_videoQueueAnimationTimer invalidate];
     _videoQueueAnimationTimer = timer;
+    
 }
 
 - (void) startVideoQueueDismissalTimer
