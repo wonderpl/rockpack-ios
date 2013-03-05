@@ -86,15 +86,46 @@
         self.popularSwitch = [[SYNSwitch alloc] initWithLeftText:@"POPULAR" andRightText:@"LATEST"];
         self.popularSwitch.center = CGPointMake(850.0, 38.0);
         
-        [self addSubview:self.popularSwitch];
+        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPerformed:)];
+        [self.popularSwitch addGestureRecognizer:tapGesture];
         
+        UISwipeGestureRecognizer* leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(switchSwiped:)];
+        leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.popularSwitch addGestureRecognizer:leftSwipeGesture];
         
+        UISwipeGestureRecognizer* rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(switchSwiped:)];
+        leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.popularSwitch addGestureRecognizer:rightSwipeGesture];
         
         [self addSubview:self.mainTabsView];
         [self addSubview:dividerView];
         
+        
+        [self addSubview:self.popularSwitch];
+        
     }
     return self;
+}
+
+-(void)switchSwiped:(UISwipeGestureRecognizer*)recogniser
+{
+    if(recogniser.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        [self.popularSwitch setOn:NO];
+    }
+    else if(recogniser.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        [self.popularSwitch setOn:YES];
+    }
+}
+
+
+-(void)tapPerformed:(UITapGestureRecognizer*)recogniser
+{
+    BOOL currentState = self.popularSwitch.on;
+    [self.popularSwitch setOn:!currentState];
+    
+    
 }
 
 #pragma mark - Delegate Methods

@@ -51,6 +51,7 @@
     self.on = FALSE;
 
     self.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"SliderBackground.png"]];
+    
     self.frame = self.backgroundView.frame;
     
     
@@ -61,10 +62,10 @@
     
     
     
-	UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                                            action:@selector(thumbDragged:)];
-	panGestureRecognizer.delegate = self;
-	[self addGestureRecognizer: panGestureRecognizer];
+//	UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
+//                                                                                            action:@selector(thumbDragged:)];
+//	panGestureRecognizer.delegate = self;
+//	[self addGestureRecognizer: panGestureRecognizer];
     
     
     
@@ -153,34 +154,7 @@
     }
 }
 
-- (void) touchesBegan: (NSSet *) touches
-            withEvent: (UIEvent *) event
-{
-	if (self.ignoreTap) return;
-    
-	[super touchesBegan: touches
-              withEvent: event];
-    
-	[self sendActionsForControlEvents: UIControlEventTouchDown];
-}
 
-- (void) touchesEnded: (NSSet *) touches
-            withEvent: (UIEvent *) event
-{
-	[super touchesEnded: touches
-              withEvent: event];
-    
-	[self sendActionsForControlEvents: UIControlEventTouchUpInside];
-}
-
-- (void) touchesCancelled: (NSSet *) touches
-                withEvent: (UIEvent *) event
-{
-	[super touchesCancelled: touches
-                  withEvent: event];
-    
-	[self sendActionsForControlEvents: UIControlEventTouchUpOutside];
-}
 
 
 #pragma mark UIGestureRecognizerDelegate
