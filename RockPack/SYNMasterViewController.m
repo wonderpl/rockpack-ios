@@ -319,7 +319,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [stringJustTyped appendString:newCharacter];
     
     [appDelegate.networkEngine getAutocompleteForHint:stringJustTyped forResource:EntityTypeVideo withComplete:^(NSDictionary* dictionary) {
+        
         DebugLog(@"Retreived Dictionary: %@", dictionary);
+        
+        NSArray* dataReturned = (NSArray*)[dictionary objectForKey:stringJustTyped];
+        if(!dataReturned)
+            return;
+        
+        NSMutableArray* wordsReturned = [NSMutableArray array];
+        for (NSArray* wordArray in dataReturned) {
+            [wordsReturned addObject:[wordArray objectAtIndex:0]];
+        }
+        
+        [self.autocompleteController addWords:wordsReturned];
+        
+        [self textFieldShouldReturn:self.searchTextField];
+        
     } andError:^(NSError* error) {
         
     }];
