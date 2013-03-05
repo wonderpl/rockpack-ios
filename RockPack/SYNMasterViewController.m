@@ -13,7 +13,7 @@
 #import "SYNShareOverlayViewController.h"
 #import "SYNBottomTabViewController.h"
 #import "UIFont+SYNFont.h"
-
+#import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -24,12 +24,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 
+
+
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 
 @property (nonatomic, strong) IBOutlet UIButton* inboxButton;
 @property (nonatomic, strong) IBOutlet UIButton* notificationButton;
 
+@property (nonatomic, strong) IBOutlet SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
@@ -54,10 +57,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     self = [super initWithNibName:@"SYNMasterViewController" bundle:nil];
     if (self) {
+        
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
         self.rootViewController = root;
         
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
         self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
+        
+        
+        
     }
     return self;
 }
@@ -75,6 +84,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.autocompleteController.tableView.hidden = YES;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) ==//
     
@@ -301,6 +312,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [textView setText: @""];
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
+{
+ 
+    NSMutableString* stringJustTyped = [NSMutableString stringWithString:textField.text];
+    [stringJustTyped appendString:newCharacter];
+    
+    [appDelegate.networkEngine getAutocompleteForHint:stringJustTyped forResource:EntityTypeVideo withComplete:^(NSDictionary* dictionary) {
+        DebugLog(@"Retreived Dictionary: %@", dictionary);
+    } andError:^(NSError* error) {
+        
+    }];
+    
+    return YES;
+}
+
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -431,6 +457,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     [self showOrSwapOverlay:self.shareOverlayViewController];
+}
+
+
+#pragma mark - Table View Delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString* wordsSelected = [self.autocompleteController getWordAtIndex:indexPath.row];
 }
 
 @end

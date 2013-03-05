@@ -7,7 +7,6 @@
 //
 
 #import "SYNNetworkEngine.h"
-#import "AppConstants.h"
 #import "Channel.h"
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
@@ -228,6 +227,8 @@
 }
 
 
+
+
 #pragma mark - Search
 
 - (void) searchVideosForTerm:(NSString*)searchTerm
@@ -268,8 +269,8 @@
     NSDictionary* parameters;
     
     
-//    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
-    parameters = [NSDictionary dictionaryWithObject:searchTerm forKey:@"q"];
+    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
     
@@ -286,6 +287,45 @@
     
     
     [self enqueueOperation: networkOperation];
+}
+
+#pragma mark - Autocomplete
+
+- (void) getAutocompleteForHint:(NSString*)hint
+                    forResource:(EntityType)entityType
+                   withComplete: (MKNKFurtherProcessBlock) completionBlock
+                        andError: (MKNKErrorBlock) errorBlock
+{
+    
+    if(!hint) return;
+    
+    
+    NSDictionary* parameters;
+    
+    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:hint forKey:@"q"]];
+    
+    
+    NSString* apiForEntity;
+    if(entityType == EntityTypeChannel)
+        apiForEntity = kAPICompleteChannels;
+    else if(entityType == EntityTypeVideo)
+        apiForEntity = kAPICompleteVideos;
+    else
+        return; // do not accept any unknown type
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiForEntity params:parameters];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        completionBlock(dictionary);
+        
+        
+    } errorHandler:errorBlock];
+    
+    
+    [self enqueueOperation: networkOperation];
+    
 }
 
 @end

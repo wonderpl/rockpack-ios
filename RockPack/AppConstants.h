@@ -28,7 +28,9 @@
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos @"/ws/search/videos/"
+#define kAPICompleteVideos @"/ws/complete/videos/"
 #define kAPISearchChannels @"/ws/search/channels/"
+#define kAPICompleteChannels @"/ws/complete/channels/"
 
 //
 #define kAPICategories @"ws/categories/"
@@ -124,6 +126,14 @@
 #define kVideoQueueShow @"kVideoQueueShow"
 #define kVideoQueueHide @"kVideoQueueHide"
 #define kVideoQueueAdd @"kVideoQueueAdd"
+
+typedef enum {
+    EntityTypeChannel = 0,
+    EntityTypeVideo,
+    EntityTypeVideoInstance,
+    EntityTypeCategory
+    
+} EntityType;
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
