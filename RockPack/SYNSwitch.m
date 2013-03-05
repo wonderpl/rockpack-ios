@@ -8,6 +8,9 @@
 
 #import "SYNSwitch.h"
 #import "AppConstants.h"
+#import "UIFont+SYNFont.h"
+
+#define kSwitchTextY 16.0
 
 @interface SYNSwitch () <UIGestureRecognizerDelegate>
 
@@ -15,21 +18,28 @@
 @property (nonatomic, strong) UIImageView *thumbView;
 @property (nonatomic, assign) BOOL ignoreTap;
 
+
 @end
 
 
 @implementation SYNSwitch
 
+@synthesize textLeft, textRight;
+
 @synthesize on = _on;
 
-- (id) initWithFrame: (CGRect) frame
+
+- (id) initWithLeftText:(NSString*)lText andRightText:(NSString*)rText
 {
-	if ((self = [super initWithFrame: frame]))
-	{
-		[self setup];
-	}
-    
-	return self;
+    if(self = [super init])
+    {
+        [self setup];
+        
+        self.textLeft = lText;
+        self.textRight = rText;
+        
+    }
+    return self;
 }
 
 - (void) setup
@@ -39,6 +49,9 @@
     self.on = FALSE;
 
     self.backgroundView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"SliderBackground.png"]];
+    self.frame = self.backgroundView.frame;
+    
+    
     self.thumbView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"SliderThumb.png"]];
     
     [self addSubview: self.backgroundView];
@@ -55,10 +68,47 @@
                                                                                             action:@selector(thumbDragged:)];
 	panGestureRecognizer.delegate = self;
 	[self addGestureRecognizer: panGestureRecognizer];
+    
+    // == Labels
+    
+    
+    rockpackFont = [UIFont rockpackFontOfSize:14.0];
+    
+    leftLabel = [[UILabel alloc] init];
+    leftLabel.textAlignment = NSTextAlignmentRight;
+    leftLabel.font = rockpackFont;
+    leftLabel.userInteractionEnabled = NO;
+    leftLabel.textColor = [UIColor lightGrayColor];
+    leftLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:leftLabel];
+    
+    rightLabel = [[UILabel alloc] init];
+    rightLabel.textAlignment = NSTextAlignmentLeft;
+    rightLabel.font = rockpackFont;
+    rightLabel.userInteractionEnabled = NO;
+    rightLabel.textColor = [UIColor lightGrayColor];
+    rightLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:rightLabel];
+    
 }
 
-#pragma mark -
-#pragma mark Interaction
+-(void)setTextLeft:(NSString *)newTextLeft
+{
+    CGSize fitSize = [newTextLeft sizeWithFont:rockpackFont];
+    CGFloat pointX = self.backgroundView.frame.origin.x - 7.0 - fitSize.width;
+    leftLabel.frame = CGRectMake(pointX, kSwitchTextY, fitSize.width, fitSize.height);
+    leftLabel.text = newTextLeft;
+}
+
+-(void)setTextRight:(NSString *)newTextRight
+{
+    CGSize fitSize = [newTextRight sizeWithFont:rockpackFont];
+    CGFloat pointX = self.backgroundView.frame.origin.x + 5.0 + self.backgroundView.frame.size.width;
+    rightLabel.frame = CGRectMake(pointX, kSwitchTextY, fitSize.width, fitSize.height);
+    rightLabel.text = newTextRight;
+}
+
+#pragma mark - Interaction
 
 - (void) tapped: (UITapGestureRecognizer *) gesture
 {

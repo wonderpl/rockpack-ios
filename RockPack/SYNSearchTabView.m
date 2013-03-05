@@ -7,7 +7,7 @@
 //
 
 #import "SYNSearchTabView.h"
-
+#import "SYNSwitch.h"
 
 #define kSearchBarItemWidth 100.0
 
@@ -17,7 +17,7 @@
 
 @property (nonatomic, weak) SYNSearchItemView* currentItemView;
 
-
+@property (nonatomic, strong) SYNSwitch* popularSwitch;
 @property (nonatomic, strong) SYNSearchItemView* searchVideosItemView;
 @property (nonatomic, strong) SYNSearchItemView* searchChannelsItemView;
 
@@ -81,6 +81,12 @@
         [self.mainTabsView addSubview:self.searchChannelsItemView];
         
         
+        // == Create Switch
+        
+        self.popularSwitch = [[SYNSwitch alloc] initWithLeftText:@"POPULAR" andRightText:@"LATEST"];
+        self.popularSwitch.center = CGPointMake(850.0, 38.0);
+        
+        [self addSubview:self.popularSwitch];
         
         
         

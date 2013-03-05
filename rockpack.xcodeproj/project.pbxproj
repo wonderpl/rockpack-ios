@@ -1613,7 +1613,6 @@
 			children = (
 				BEF9E5A516DBCDEF00286113 /* Components */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
-				BE08159C16D3D7E300ADB1DC /* TopTabsComponent */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
@@ -2253,7 +2252,7 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE08159C16D3D7E300ADB1DC /* TopTabsComponent */ = {
+		BE08159C16D3D7E300ADB1DC /* Tab Bars */ = {
 			isa = PBXGroup;
 			children = (
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
@@ -2265,7 +2264,7 @@
 				0142ED9216B1C914008694DA /* Categories Tab */,
 				BE0815A616D4F3B200ADB1DC /* Search Tab */,
 			);
-			name = TopTabsComponent;
+			name = "Tab Bars";
 			sourceTree = "<group>";
 		};
 		BE0815A616D4F3B200ADB1DC /* Search Tab */ = {
@@ -2410,6 +2409,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				0162285316C2AA7F008D1587 /* KeyboardAvoidinScroll */,
 				BE0815CE16D6444200ADB1DC /* Overlays */,

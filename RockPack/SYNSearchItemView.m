@@ -35,7 +35,7 @@
         // Number Label
         
         
-        UIFont* numberFontToUse = [UIFont rockpackFontOfSize: 20.0f];
+        UIFont* numberFontToUse = [UIFont boldRockpackFontOfSize: 20.0f];
         CGSize numberLabelSize = [@"100" sizeWithFont:numberFontToUse];
     
         self.numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, numberLabelSize.height)];

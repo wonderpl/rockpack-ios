@@ -143,7 +143,6 @@
         [scrollView addSubview:videoQueueCollectionView];
         
         
-        
         // == Drop Zone
         
         dropZoneView = [[UIView alloc] initWithFrame: CGRectMake(20, 640, 127, 73)];
