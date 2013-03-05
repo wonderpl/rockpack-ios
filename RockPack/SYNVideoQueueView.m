@@ -121,7 +121,7 @@
         
         
         
-        videoQueueCollectionView.backgroundColor = [UIColor greenColor];
+        videoQueueCollectionView.backgroundColor = [UIColor clearColor];
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         
