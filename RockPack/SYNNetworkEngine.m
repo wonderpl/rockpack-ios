@@ -14,6 +14,7 @@
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
 #import "SYNAppDelegate.h"
+#import "SYNNetworkOperationJsonObjectParse.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -300,10 +301,12 @@
     if(!hint) return;
     
     
-    NSDictionary* parameters;
+    // Register the class to be used for this operation only
     
-    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:hint forKey:@"q"]];
+    [self registerOperationSubclass:[SYNNetworkOperationJsonObjectParse class]];
     
+    
+    NSDictionary* parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:hint forKey:@"q"]];
     
     NSString* apiForEntity;
     if(entityType == EntityTypeChannel)
@@ -313,8 +316,8 @@
     else
         return; // do not accept any unknown type
     
-    SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiForEntity params:parameters];
+    SYNNetworkOperationJsonObjectParse *networkOperation =
+    (SYNNetworkOperationJsonObjectParse*)[self operationWithPath:apiForEntity params:parameters];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
@@ -325,6 +328,12 @@
     
     
     [self enqueueOperation: networkOperation];
+    
+    
+    
+    // Go back to the original operation class
+    
+    [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
     
 }
 

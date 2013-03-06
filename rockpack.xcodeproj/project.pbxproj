@@ -452,6 +452,7 @@
 		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
 		BEA1E32E16CCFF70000AB59D /* SYNMainRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */; };
 		BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */; };
+		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
 		BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
@@ -1003,6 +1004,8 @@
 		BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMainRegistry.m; sourceTree = "<group>"; };
 		BEA1E32F16CE6045000AB59D /* SYNNetworkOperationJsonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObject.h; sourceTree = "<group>"; };
 		BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObject.m; sourceTree = "<group>"; };
+		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
+		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueView.h; sourceTree = "<group>"; };
 		BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueView.m; sourceTree = "<group>"; };
 		BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueDelegate.h; sourceTree = "<group>"; };
@@ -2330,6 +2333,8 @@
 			children = (
 				BEA1E32F16CE6045000AB59D /* SYNNetworkOperationJsonObject.h */,
 				BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */,
+				BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */,
+				BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */,
 			);
 			name = "Custom Network Operations";
 			sourceTree = "<group>";
@@ -2888,6 +2893,7 @@
 				0173F70B16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m in Sources */,
 				01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */,
 				BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */,
+				BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -175,4 +175,10 @@ typedef enum {
 // TestFlight support
 #define  kTestFlightAppToken @"350faab3-e77f-4954-aa44-b85dba25d029"
 
+
+// Block Definitions
+typedef void (^JSONResponseBlock)(id jsonObject);
+
+
+
 #endif

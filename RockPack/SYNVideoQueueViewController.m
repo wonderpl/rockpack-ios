@@ -14,7 +14,7 @@
 #import "SYNSoundPlayer.h"
 #import <CoreData/CoreData.h>
 #import "SYNAppDelegate.h"
-
+    
 #define kQueueSelectedImage @"PanelVideoQueueHighlighted.png"
 #define kQueueDefaultImage @"PanelVideoQueue.png"
 

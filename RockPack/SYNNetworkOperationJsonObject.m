@@ -14,9 +14,6 @@
 {
     [self addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         
-//        NSString* resposseString = [[NSString alloc] initWithData:[completedOperation responseData] encoding:NSUTF8StringEncoding];
-//        NSLog(@"Response Data: %@", resposseString);
-        
          [completedOperation responseJSONWithCompletionHandler: ^(id jsonObject) {
              
              if(!jsonObject) { // check whether an object is returned before calling the completeBlock
