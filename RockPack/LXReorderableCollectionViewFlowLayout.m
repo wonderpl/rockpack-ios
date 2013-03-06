@@ -33,13 +33,6 @@ typedef NS_ENUM(NSInteger, LXReorderableCollectionViewFlowLayoutScrollingDirecti
 
 static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirectionKey = @"LXScrollingDirection";
 
-@interface LXReorderableCollectionViewFlowLayout ()
-
-@property (nonatomic, getter = isFirstTime) BOOL firstTime;
-
-@end
-
-
 @implementation LXReorderableCollectionViewFlowLayout
 
 - (id) init
@@ -555,15 +548,9 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
     NSMutableArray *theLayoutAttributesForElementsInRect = [NSMutableArray arrayWithArray: [super layoutAttributesForElementsInRect: theRect]];
     
 #ifdef USE_DECORATION_VIEWS
-    
-    if (self.isFirstTime == FALSE)
-    {
-        self.firstTime = TRUE;
         [theLayoutAttributesForElementsInRect addObject: [self layoutAttributesForDecorationViewOfKind: @"SemiOpaqueBackground"
                                                                                            atIndexPath: [NSIndexPath indexPathForItem: 0
                                                                                                                             inSection: 0]]];
-    }
-    
 #endif
     
     for (UICollectionViewLayoutAttributes *theLayoutAttributes in theLayoutAttributesForElementsInRect)
@@ -672,70 +659,6 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
     }
     return NO;
 }
-
-- (void) prepareLayout
-{
-    [super prepareLayout];
-    
-    self.firstTime = FALSE;
-}
-//
-//- (void) prepareLayout
-//{
-//    // call super so flow layout can do all the math for cells, headers, and footers
-//    [super prepareLayout];
-//    
-//    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-//    
-//    if (self.scrollDirection == UICollectionViewScrollDirectionVertical)
-//    {
-//        // Calculate where shelves go in a vertical layout
-//        int sectionCount = [self.collectionView numberOfSections];
-//        
-//        CGFloat y = 0;
-//        CGFloat availableWidth = self.collectionViewContentSize.width - (self.sectionInset.left + self.sectionInset.right);
-//        int itemsAcross = floorf((availableWidth + self.minimumInteritemSpacing) / (self.itemSize.width + self.minimumInteritemSpacing));
-//        
-//        for (int section = 0; section < sectionCount; section++)
-//        {
-//            y += self.headerReferenceSize.height;
-//            y += self.sectionInset.top;
-//            
-//            int itemCount = [self.collectionView numberOfItemsInSection:section];
-//            int rows = ceilf(itemCount/(float)itemsAcross);
-//            for (int row = 0; row < rows; row++)
-//            {
-//                y += self.itemSize.height;
-//                dictionary[[NSIndexPath indexPathForItem:row inSection:section]] = [NSValue valueWithCGRect:CGRectMake(0, y - 32, self.collectionViewContentSize.width, 37)];
-//                
-//                if (row < rows - 1)
-//                    y += self.minimumLineSpacing;
-//            }
-//            
-//            y += self.sectionInset.bottom;
-//            y += self.footerReferenceSize.height;
-//        }
-//    }
-//    else
-//    {
-//        // Calculate where shelves go in a horizontal layout
-//        CGFloat y = self.sectionInset.top;
-//        CGFloat availableHeight = self.collectionViewContentSize.height - (self.sectionInset.top + self.sectionInset.bottom);
-//        int itemsAcross = floorf((availableHeight + self.minimumInteritemSpacing) / (self.itemSize.height + self.minimumInteritemSpacing));
-//        CGFloat interval = ((availableHeight - self.itemSize.height) / (itemsAcross <= 1? 1 : itemsAcross - 1)) - self.itemSize.height;
-//        for (int row = 0; row < itemsAcross; row++)
-//        {
-//            y += self.itemSize.height;
-//            dictionary[[NSIndexPath indexPathForItem:row inSection:0]] = [NSValue valueWithCGRect:CGRectMake(0, roundf(y - 32), self.collectionViewContentSize.width, 37)];
-//            
-//            y += interval;
-//        }
-//    }
-//    
-//    self.shelfRects = [NSDictionary dictionaryWithDictionary:dictionary];
-//}
-
-
 
 
 @end
