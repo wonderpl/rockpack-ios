@@ -364,6 +364,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [textField resignFirstResponder];
     
+    if(self.autocompletePopoverController)
+        [self.autocompletePopoverController dismissPopoverAnimated:NO];
+    
     
     return YES;
 }
@@ -484,20 +487,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     NSString* wordsSelected = [self.autocompleteController getWordAtIndex:indexPath.row];
     self.searchTextField.text = wordsSelected;
-    [self.autocompletePopoverController dismissPopoverAnimated:NO];
+    
+    [self textFieldShouldReturn:self.searchTextField];
 }
 
 
 -(void)showAutocompletePopover
 {
     
+    // 1. Add a UINavigationController to add the title at the top of the Popover.
+    
     UINavigationController* controllerForTitle = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
     
     self.autocompletePopoverController = [[UIPopoverController alloc] initWithContentViewController: controllerForTitle];
-    self.autocompletePopoverController.popoverContentSize = CGSizeMake(280, 256);
+    self.autocompletePopoverController.popoverContentSize = CGSizeMake(280, 326);
     self.autocompletePopoverController.delegate = self;
     
-    self.autocompletePopoverController.contentViewController.title = @"Suggestions";
     
     self.autocompletePopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
     

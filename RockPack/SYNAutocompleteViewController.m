@@ -84,7 +84,7 @@
         cell.textLabel.font = rockpackFont;
         cell.textLabel.textColor = textColor;
         
-        
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ArrowSearch.png"]];
         
     }
     
