@@ -491,9 +491,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)showAutocompletePopover
 {
     
-    UINavigationController* controllerForTitle = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
+    //UINavigationController* controllerForTitle = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
     
-    self.autocompletePopoverController = [[UIPopoverController alloc] initWithContentViewController: controllerForTitle];
+    self.autocompletePopoverController = [[UIPopoverController alloc] initWithContentViewController: self.autocompleteController];
     self.autocompletePopoverController.popoverContentSize = CGSizeMake(280, 256);
     self.autocompletePopoverController.delegate = self;
     
