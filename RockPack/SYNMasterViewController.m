@@ -278,6 +278,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.notificationsPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
         self.notificationsPopoverController.popoverContentSize = CGSizeMake(320, 166);
         self.notificationsPopoverController.delegate = self;
+        self.notificationsPopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
         
         [self.notificationsPopoverController presentPopoverFromRect: button.frame
                                                 inView: self.view
