@@ -50,6 +50,7 @@
 {
     [wordsArray removeAllObjects];
     [wordsArray addObjectsFromArray:words];
+    [self.tableView reloadData];
 }
 #pragma mark - Table view data source
 
@@ -63,7 +64,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if(!cell)
     {

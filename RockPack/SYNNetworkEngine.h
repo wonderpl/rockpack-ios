@@ -30,7 +30,7 @@
 
 - (void) getAutocompleteForHint:(NSString*)hint
                     forResource:(EntityType)entityType
-                   withComplete: (MKNKFurtherProcessBlock) completionBlock
+                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
 

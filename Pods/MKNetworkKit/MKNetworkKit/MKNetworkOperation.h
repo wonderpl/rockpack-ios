@@ -46,7 +46,7 @@ typedef void (^MKNKErrorBlock)(NSError* error);
 
 typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
 
-typedef void (^MKNKFurtherProcessBlock) (NSDictionary*);
+typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
 
 typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
 

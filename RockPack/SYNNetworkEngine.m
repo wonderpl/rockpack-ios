@@ -294,7 +294,7 @@
 
 - (void) getAutocompleteForHint:(NSString*)hint
                     forResource:(EntityType)entityType
-                   withComplete: (MKNKFurtherProcessBlock) completionBlock
+                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                         andError: (MKNKErrorBlock) errorBlock
 {
     
@@ -319,9 +319,9 @@
     SYNNetworkOperationJsonObjectParse *networkOperation =
     (SYNNetworkOperationJsonObjectParse*)[self operationWithPath:apiForEntity params:parameters];
     
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+    [networkOperation addJSONCompletionHandler:^(NSArray *array) {
         
-        completionBlock(dictionary);
+        completionBlock(array);
         
         
     } errorHandler:errorBlock];
