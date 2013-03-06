@@ -17,7 +17,6 @@
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNVideoQueueCell.h"
-#import "SYNVideoSelection.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"

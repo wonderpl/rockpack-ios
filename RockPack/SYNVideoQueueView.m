@@ -8,7 +8,6 @@
 
 #import "SYNVideoQueueView.h"
 #import "AppConstants.h"
-#import "SYNVideoSelection.h"
 
 #define kVideoQueueCellWidth 142.0
 
@@ -89,18 +88,10 @@
         
         messageView = [[UIImageView alloc] initWithFrame: CGRectMake(60, 47, 411, 31)];
         messageView.image = [UIImage imageNamed: @"MessageDragAndDrop.png"];
+
+        // initially there are no selected videos since the VideoQueue is loaded only once at the start.
         
-        
-        if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
-        {
-            messageView.alpha = 1.0f;
-        }
-        else
-        {
-            messageView.alpha = 0.0f;
-        }
-        
-        
+        messageView.alpha = 0.0f;
         
         [self addSubview:messageView];
         
