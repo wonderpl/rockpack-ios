@@ -261,15 +261,19 @@
     
     
     
-    for (UIButton* tabButton in self.tabsViewContainer.subviews)
+    for (UIButton* tabButton in self.tabsViewContainer.subviews) {
         tabButton.selected = NO;
+        tabButton.userInteractionEnabled = YES;
+    }
+        
 
     if(_selectedIndex < 0 || _selectedIndex > self.tabsViewContainer.subviews.count)
         return;
     
     
     UIButton* toButton = (UIButton *)self.tabsViewContainer.subviews[_selectedIndex];
-    toButton.selected = TRUE;
+    toButton.selected = YES;
+    toButton.userInteractionEnabled = NO;
     
     
     self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
