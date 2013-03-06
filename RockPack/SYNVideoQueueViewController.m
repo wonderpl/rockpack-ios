@@ -8,7 +8,6 @@
 
 #import "SYNVideoQueueViewController.h"
 #import "SYNVideoQueueView.h"
-#import "SYNVideoSelection.h"
 #import "SYNVideoQueueCell.h"
 #import "AppConstants.h"
 #import "SYNSoundPlayer.h"
@@ -22,6 +21,7 @@
 
 @property (nonatomic, readonly) SYNVideoQueueView* videoQueueView;
 @property (nonatomic) BOOL isVisible;
+@property (nonatomic) NSMutableArray* selectedVideos;
 
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 
@@ -39,6 +39,8 @@
     videoQView.videoQueueCollectionView.dataSource = self;
     videoQView.videoQueueCollectionView.delegate = self;
     self.view = videoQView;
+    
+    self.selectedVideos = [NSMutableArray array];
     
     self.isVisible = NO;
 }
@@ -86,7 +88,7 @@
     
     newChannel.uniqueId = [self getUUID];
     
-    for (VideoInstance *videoInstance in SYNVideoSelection.sharedVideoSelectionArray)
+    for (VideoInstance *videoInstance in self.selectedVideos)
     {
         [[newChannel videoInstancesSet] addObject: videoInstance];
     }
@@ -107,7 +109,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
     
-    return SYNVideoSelection.sharedVideoSelectionArray.count;
+    return self.selectedVideos.count;
 }
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath
@@ -117,7 +119,7 @@
     SYNVideoQueueCell *videoQueueCell = [cv dequeueReusableCellWithReuseIdentifier: @"VideoQueueCell"
                                                                       forIndexPath: indexPath];
     
-    VideoInstance *videoInstance = [SYNVideoSelection.sharedVideoSelectionArray objectAtIndex: indexPath.item];
+    VideoInstance *videoInstance = (VideoInstance*)self.selectedVideos[indexPath.item];
     
     // Load the image asynchronously
     videoQueueCell.VideoImageViewImage = videoInstance.video.thumbnailURL;
@@ -160,7 +162,7 @@
     self.videoQueueView.channelButton.selected = NO;
     self.videoQueueView.deleteButton.enabled = NO;
     
-    [SYNVideoSelection.sharedVideoSelectionArray removeAllObjects];
+    [self.selectedVideos removeAllObjects];
     
     [self.videoQueueView clearVideoQueue];
 }
@@ -228,7 +230,7 @@
     
     [self showVideoQueue:YES];
     
-    if (SYNVideoSelection.sharedVideoSelectionArray.count == 0)
+    if (self.selectedVideos.count == 0)
     {
         self.videoQueueView.channelButton.enabled = YES;
         self.videoQueueView.channelButton.selected = YES;
@@ -238,7 +240,7 @@
     }
     
     
-    [SYNVideoSelection.sharedVideoSelectionArray addObject: videoInstance]; 
+    [self.selectedVideos addObject: videoInstance];
     
     [self.videoQueueView addVideoToQueue:videoInstance];
     

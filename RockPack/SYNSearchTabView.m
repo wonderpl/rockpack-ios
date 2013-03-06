@@ -7,7 +7,7 @@
 //
 
 #import "SYNSearchTabView.h"
-
+#import "SYNSwitch.h"
 
 #define kSearchBarItemWidth 100.0
 
@@ -17,7 +17,7 @@
 
 @property (nonatomic, weak) SYNSearchItemView* currentItemView;
 
-
+@property (nonatomic, strong) SYNSwitch* popularSwitch;
 @property (nonatomic, strong) SYNSearchItemView* searchVideosItemView;
 @property (nonatomic, strong) SYNSearchItemView* searchChannelsItemView;
 
@@ -81,14 +81,51 @@
         [self.mainTabsView addSubview:self.searchChannelsItemView];
         
         
+        // == Create Switch
         
+        self.popularSwitch = [[SYNSwitch alloc] initWithLeftText:@"POPULAR" andRightText:@"LATEST"];
+        self.popularSwitch.center = CGPointMake(850.0, 38.0);
         
+        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPerformed:)];
+        [self.popularSwitch addGestureRecognizer:tapGesture];
+        
+        UISwipeGestureRecognizer* leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(switchSwiped:)];
+        leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.popularSwitch addGestureRecognizer:leftSwipeGesture];
+        
+        UISwipeGestureRecognizer* rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(switchSwiped:)];
+        leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.popularSwitch addGestureRecognizer:rightSwipeGesture];
         
         [self addSubview:self.mainTabsView];
         [self addSubview:dividerView];
         
+        
+        [self addSubview:self.popularSwitch];
+        
     }
     return self;
+}
+
+-(void)switchSwiped:(UISwipeGestureRecognizer*)recogniser
+{
+    if(recogniser.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        [self.popularSwitch setOn:NO];
+    }
+    else if(recogniser.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        [self.popularSwitch setOn:YES];
+    }
+}
+
+
+-(void)tapPerformed:(UITapGestureRecognizer*)recogniser
+{
+    BOOL currentState = self.popularSwitch.on;
+    [self.popularSwitch setOn:!currentState];
+    
+    
 }
 
 #pragma mark - Delegate Methods

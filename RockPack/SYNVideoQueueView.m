@@ -142,6 +142,7 @@
         
         [scrollView addSubview:videoQueueCollectionView];
         
+        leftmostOffset = CGPointZero;
         
         
         // == Drop Zone
@@ -162,28 +163,31 @@
     
     // == Animate
     
-    
+    [scrollView setContentOffset:leftmostOffset];
     
     // 1. Expand Collection View Frame
     
-    CGRect videoQueueViewFrame = self.videoQueueCollectionView.frame;
-    videoQueueViewFrame.size.width += kVideoQueueCellWidth;
+    CGRect expandeCollectionViewFrame = self.videoQueueCollectionView.frame;
+    expandeCollectionViewFrame.size.width += kVideoQueueCellWidth;
     
-    self.videoQueueCollectionView.frame = videoQueueViewFrame;
+    self.videoQueueCollectionView.frame = expandeCollectionViewFrame;
     
     // 2. Expand the content size of the scroller accordingly
+    
     
     [scrollView setContentSize:CGSizeMake(self.videoQueueCollectionView.frame.size.width + kVideoQueueCellWidth,
                                           scrollView.frame.size.height)];
     
+    
     // 3. If the content is bigger than the scrollView frame
 
-    if(videoQueueViewFrame.size.width + kVideoQueueCellWidth > scrollView.frame.size.width)
+    if(expandeCollectionViewFrame.size.width + kVideoQueueCellWidth > scrollView.frame.size.width)
     {
         
         // 4. snap the offset back (which would bring the cells to the left)
         
         [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x + kVideoQueueCellWidth, 0.0)];
+        
         
         // 5. snap the cells to the right (which will bring them back to where they where before)
         
@@ -192,7 +196,11 @@
         
         // 6. After leaving the conditional the cells are where they where but with the content offset to the left so that it can scroll
         
+        leftmostOffset = scrollView.contentOffset;
+        
     }
+    
+    
     
     
     // 7. Load the new cell

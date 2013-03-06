@@ -338,7 +338,6 @@
 		01CF11CD1695CC1600E64620 /* ButtonRefreshBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */; };
 		01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */; };
 		01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */; };
-		01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D8C6A716807A54000059D1 /* SYNVideoSelection.m */; };
 		01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */; };
 		01E2FC9F16D15BC1006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FC9E16D15BC1006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */; };
 		01E2FCB016D15C05006E6DA7 /* TabTopDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E2FCA216D15C05006E6DA7 /* TabTopDivider.png */; };
@@ -841,8 +840,6 @@
 		01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshBackground@2x.png"; path = "Assets/Images/ButtonRefreshBackground@2x.png"; sourceTree = "<group>"; };
 		01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossLargeVideoView.png; path = Assets/Images/GlossLargeVideoView.png; sourceTree = "<group>"; };
 		01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossLargeVideoView@2x.png"; path = "Assets/Images/GlossLargeVideoView@2x.png"; sourceTree = "<group>"; };
-		01D8C6A616807A54000059D1 /* SYNVideoSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoSelection.h; sourceTree = "<group>"; };
-		01D8C6A716807A54000059D1 /* SYNVideoSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoSelection.m; sourceTree = "<group>"; };
 		01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageProcessing.h"; sourceTree = "<group>"; };
 		01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ImageProcessing.m"; sourceTree = "<group>"; };
 		01E2FC9E16D15BC1006E6DA7 /* YouTubeJSAPIPlayerNoAutoplay.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = YouTubeJSAPIPlayerNoAutoplay.html; path = Assets/HTML/YouTubeJSAPIPlayerNoAutoplay.html; sourceTree = "<group>"; };
@@ -1578,7 +1575,6 @@
 			children = (
 				BEF9E5A516DBCDEF00286113 /* Components */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
-				BE08159C16D3D7E300ADB1DC /* TopTabsComponent */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
@@ -1630,8 +1626,6 @@
 				019824ED1629CC6600216900 /* TestFlight */,
 				019824E91629CBD000216900 /* Exception Handler */,
 				019824E51629CB1D00216900 /* Debug */,
-				01D8C6A616807A54000059D1 /* SYNVideoSelection.h */,
-				01D8C6A716807A54000059D1 /* SYNVideoSelection.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -2214,7 +2208,7 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE08159C16D3D7E300ADB1DC /* TopTabsComponent */ = {
+		BE08159C16D3D7E300ADB1DC /* Tab Bars */ = {
 			isa = PBXGroup;
 			children = (
 				BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */,
@@ -2226,7 +2220,7 @@
 				0142ED9216B1C914008694DA /* Categories Tab */,
 				BE0815A616D4F3B200ADB1DC /* Search Tab */,
 			);
-			name = TopTabsComponent;
+			name = "Tab Bars";
 			sourceTree = "<group>";
 		};
 		BE0815A616D4F3B200ADB1DC /* Search Tab */ = {
@@ -2301,6 +2295,13 @@
 			name = Overlays;
 			sourceTree = "<group>";
 		};
+		BE0AAD2616E6521300DA958E /* Autocomplete Label */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Autocomplete Label";
+			sourceTree = "<group>";
+		};
 		BE29A32616DD2CA900C00F92 /* User Tab */ = {
 			isa = PBXGroup;
 			children = (
@@ -2344,6 +2345,8 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE0AAD2616E6521300DA958E /* Autocomplete Label */,
+				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				0162285316C2AA7F008D1587 /* KeyboardAvoidinScroll */,
 				BE0815CE16D6444200ADB1DC /* Overlays */,
@@ -2837,7 +2840,6 @@
 				0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */,
 				0199F13B16721A4500E479C6 /* SYNHomeRootViewController.m in Sources */,
 				018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */,
-				01D8C6A816807A54000059D1 /* SYNVideoSelection.m in Sources */,
 				01946B911683335400354601 /* _ChannelOwner.m in Sources */,
 				01946B921683335400354601 /* _VideoInstance.m in Sources */,
 				01946B971683339F00354601 /* ChannelOwner.m in Sources */,

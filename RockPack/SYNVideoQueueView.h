@@ -24,6 +24,8 @@
     UICollectionView* videoQueueCollectionView;
     
     UIScrollView* scrollView;
+    
+    CGPoint leftmostOffset;
 }
 
 
