@@ -342,9 +342,27 @@
                                    placeHolderImage: nil];
 }
 
-- (IBAction) abc:(id)sender
+// The user touched the invisible button above the channel thumbnail, taking the user to the channel page
+- (IBAction) userTouchedChannelButton: (id) sender
 {
+    [self dismissVideoViewer];
     
+    // Get the video instance for the currently selected video
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    [self viewChannelDetails: videoInstance.channel];
+}
+
+
+// The user touched the invisible button above the user details, taking the user to the profile page
+- (IBAction) userTouchedProfileButton: (id) sender
+{
+//    [self.parentViewController dismissVideoViewer];
+    
+//    // Get the video instance for the currently selected video
+//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+//    
+//    [self viewProfileDetails: videoInstance.channel.channelOwner];
 }
 
 @end

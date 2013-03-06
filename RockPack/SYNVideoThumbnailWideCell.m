@@ -19,6 +19,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *longPressView;
+@property (nonatomic, strong) IBOutlet UIButton *channelButton;
+@property (nonatomic, strong) IBOutlet UIButton *profileButton;
 
 @end
 
@@ -35,6 +37,9 @@
     self.channelName.font = [UIFont rockpackFontOfSize: 15.0f];
     self.userName.font = [UIFont rockpackFontOfSize: 12.0f];
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.dateAddedLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.durationLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.highlightedBackgroundView.hidden = TRUE;
     
     self.displayMode = kDisplayModeChannel; // default is channel
@@ -101,11 +106,7 @@
     [self.longPressView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
     
     [self.longPressView addGestureRecognizer: tapOnThumbnailGestureRecognizer];
-//    
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHideRequested object:self];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShowRequested object:self];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAddVideo object:self];
-    
+
     // Add button targets
     [self.rockItButton addTarget: self.viewControllerDelegate
                           action: @selector(userTouchedVideoRockItButton:)
@@ -115,10 +116,19 @@
                          action: @selector(userTouchedVideoShareItButton:)
                forControlEvents: UIControlEventTouchUpInside];
     
-    
     [self.addItButton addTarget: self.viewControllerDelegate
                          action: @selector(userTouchedVideoAddItButton:)
                forControlEvents: UIControlEventTouchUpInside];
+    
+    // User touches channel thumbnail
+    [self.channelButton addTarget: self.viewControllerDelegate
+                           action: @selector(userTouchedChannelButton:)
+                 forControlEvents: UIControlEventTouchUpInside];
+    
+    // User touches user details
+    [self.profileButton addTarget: self.viewControllerDelegate
+                           action: @selector(userTouchedProfileButton:)
+                 forControlEvents: UIControlEventTouchUpInside];
 }
 
 
