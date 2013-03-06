@@ -15,10 +15,17 @@
 
 + (void) setDefaultEngine2: (MKNetworkEngine*) engine;
 
-- (MKNetworkOperation*) setImageFromURL: (NSURL*) url
-                       placeHolderImage: (UIImage*) image
-                            usingEngine: (MKNetworkEngine*) imageCacheEngine
-                              animation: (BOOL) yesOrNo
-                             monochrome: (BOOL) isMonochrome;
+- (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
+                                   placeHolderImage: (UIImage*) image;
+
+- (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
+                                   placeHolderImage: (UIImage*) image
+                                         monochrome: (BOOL) isMonochrome;
+
+- (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
+                                   placeHolderImage: (UIImage*) image
+                                        usingEngine: (MKNetworkEngine*) imageCacheEngine
+                                          animation: (BOOL) yesOrNo
+                                         monochrome: (BOOL) isMonochrome;
 
 @end

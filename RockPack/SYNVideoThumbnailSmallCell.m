@@ -29,7 +29,7 @@
 //                   placeHolderImage: nil];
     if (self.isColour == TRUE)
     {
-        [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+        [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                        placeHolderImage: nil
                             usingEngine: nil
                               animation: YES
@@ -37,7 +37,7 @@
     }
     else
     {
-        [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
+        [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                        placeHolderImage: nil
                             usingEngine: nil
                               animation: YES

@@ -6,8 +6,9 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNVideoQueueCell.h"
 #import "MKNetworkKit.h"
+#import "SYNVideoQueueCell.h"
+#import "UIImageView+ImageProcessing.h"
 
 @implementation SYNVideoQueueCell
 
@@ -17,8 +18,8 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                   placeHolderImage: nil];
+    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                               placeHolderImage: nil];
 }
 
 @end

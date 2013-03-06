@@ -110,6 +110,7 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
                         itemAtIndexPath: thePreviousSelectedIndexPath
                     willMoveToIndexPath: theIndexPathOfSelectedItem];
         }
+        
         [self.collectionView performBatchUpdates: ^
         {
             //[self.collectionView moveItemAtIndexPath:thePreviousSelectedIndexPath toIndexPath:theIndexPathOfSelectedItem];

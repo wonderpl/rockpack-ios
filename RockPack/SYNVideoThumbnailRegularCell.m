@@ -6,9 +6,10 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "UIFont+SYNFont.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
 #import "SYNVideoThumbnailRegularCell.h"
+#import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 
 @implementation SYNVideoThumbnailRegularCell
 
@@ -25,7 +26,7 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-    [self.imageView setImageFromURL:[NSURL URLWithString: imageURLString] placeHolderImage: nil];
+    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString] placeHolderImage: nil];
 }
 
 

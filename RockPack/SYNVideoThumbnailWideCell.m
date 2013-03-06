@@ -6,12 +6,12 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "MKNetworkKit.h"
 #import "AppConstants.h"
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNVideoThumbnailWideCell ()
@@ -63,14 +63,14 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-    [self.videoImageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                        placeHolderImage: nil];
+    [self.videoImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                    placeHolderImage: nil];
 }
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {    
-    [self.channelImageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                          placeHolderImage: nil];
+    [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                      placeHolderImage: nil];
 }
 
 

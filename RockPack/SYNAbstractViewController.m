@@ -15,17 +15,18 @@
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNChannelsDetailViewController.h"
+#import "SYNChannelsDetailsCreationViewController.h"
+#import "SYNMasterViewController.h"
 #import "SYNVideoQueueCell.h"
+#import "SYNVideoQueueViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNMasterViewController.h"
-#import "SYNVideoQueueViewController.h"
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
 
@@ -504,8 +505,8 @@
         self.draggedView.alpha = 0.7;
  
         // Load the image asynchronously
-        [self.draggedView setImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                         placeHolderImage: nil];
+        [self.draggedView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                     placeHolderImage: nil];
         
         // now add the item to the view
         [self.view addSubview: self.draggedView];

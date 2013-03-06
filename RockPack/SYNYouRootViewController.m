@@ -13,7 +13,7 @@
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
+#import "UIImageView+ImageProcessing.h"
 
 @interface SYNYouRootViewController ()
 
@@ -245,8 +245,8 @@
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;
-        [self.pinchedView setImageFromURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
-                         placeHolderImage: nil];
+        [self.pinchedView setAsynchronousImageFromURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+                                     placeHolderImage: nil];
         // now add the item to the view
         [self.view addSubview: self.pinchedView];
     }

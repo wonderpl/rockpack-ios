@@ -12,6 +12,7 @@
 #import "SYNFriendThumbnailCell.h"
 #import "SYNNetworkEngine.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNFriendThumbnailCell ()
@@ -44,8 +45,8 @@
 
 - (void) setFriendImageViewImage: (NSString*) imageURLString
 {
-    [self.friendImageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                         placeHolderImage: nil];
+    [self.friendImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                     placeHolderImage: nil];
 }
 
 

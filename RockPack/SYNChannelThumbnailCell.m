@@ -9,6 +9,7 @@
 #import "MKNetworkKit.h"
 #import "SYNChannelThumbnailCell.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 
 @interface SYNChannelThumbnailCell ()
 
@@ -30,8 +31,8 @@
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {
-    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                   placeHolderImage: nil];
+    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                               placeHolderImage: nil];
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations

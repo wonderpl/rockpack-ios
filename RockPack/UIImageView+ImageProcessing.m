@@ -37,53 +37,78 @@ const float kFreshLoadAnimationDuration2 = 0.35f;
     DefaultEngine2 = engine;
 }
 
+- (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
+                                   placeHolderImage: (UIImage*) image
+{
+    return [self setAsynchronousImageFromURL: url
+                            placeHolderImage: image
+                                 usingEngine: nil
+                                   animation: NO
+                                  monochrome: NO];
+}
 
-- (MKNetworkOperation*) setImageFromURL: (NSURL*) url
-                       placeHolderImage: (UIImage*) image
-                            usingEngine: (MKNetworkEngine*) imageCacheEngine
-                              animation: (BOOL) yesOrNo
-                             monochrome: (BOOL) isMonochrome
+- (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
+                                   placeHolderImage: (UIImage*) image
+                                         monochrome: (BOOL) isMonochrome
+{
+    return [self setAsynchronousImageFromURL: url
+                            placeHolderImage: image
+                                 usingEngine: nil
+                                   animation: NO
+                                  monochrome: isMonochrome];
+}
+
+- (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
+                                   placeHolderImage: (UIImage*) image
+                                        usingEngine: (MKNetworkEngine*) imageCacheEngine
+                                          animation: (BOOL) yesOrNo
+                                         monochrome: (BOOL) isMonochrome
 {
     
-    if(image) self.image = image;
+    if (image) self.image = image;
     [self.imageFetchOperation2 cancel];
     if(!imageCacheEngine) imageCacheEngine = DefaultEngine2;
     
-    if(imageCacheEngine) {
-        self.imageFetchOperation2 = [imageCacheEngine imageAtURL:url
-                                                           size:self.frame.size
-                                              completionHandler:^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
-                                                  if (!isInCache)
+    if(imageCacheEngine)
+    {
+        self.imageFetchOperation2 = [imageCacheEngine imageAtURL: url
+                                                            size: self.frame.size
+                                               completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
+                                     {
+                                         if (!isInCache)
+                                         {
+                                             [UIView transitionWithView: self.superview
+                                                               duration: kFromCacheAnimationDuration2
+                                                                options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
+                                              {
+                                                  if (isMonochrome)
                                                   {
-                                                      [UIView transitionWithView:self.superview
-                                                                        duration:isInCache?kFromCacheAnimationDuration2:kFreshLoadAnimationDuration2
-                                                                         options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                                                                             if (isMonochrome)
-                                                                             {
-                                                                                 self.image = [fetchedImage imageBlackAndWhite];
-                                                                             }
-                                                                             else
-                                                                             {
-                                                                                 self.image = fetchedImage;
-                                                                             }
-                                                                             
-                                                                         } completion:nil];
+                                                      self.image = [fetchedImage imageBlackAndWhite];
                                                   }
                                                   else
                                                   {
-                                                      if (isMonochrome)
-                                                      {
-                                                          self.image = [fetchedImage imageBlackAndWhite];
-                                                      }
-                                                      else
-                                                      {
-                                                          self.image = fetchedImage;
-                                                      }
+                                                      self.image = fetchedImage;
                                                   }
-                                              } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
-                                                  
-                                                  DLog(@"%@", error);
+                                              }
+                                                             completion: ^(BOOL b)
+                                              {
                                               }];
+                                         }
+                                         else
+                                         {
+                                             if (isMonochrome)
+                                             {
+                                                 self.image = [fetchedImage imageBlackAndWhite];
+                                             }
+                                             else
+                                             {
+                                                 self.image = fetchedImage;
+                                             }
+                                         }
+                                     } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+                                         
+                                         DLog(@"%@", error);
+                                     }];
     } else {
         
         DLog(@"No default engine found and imageCacheEngine parameter is null")

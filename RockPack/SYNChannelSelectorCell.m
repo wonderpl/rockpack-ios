@@ -7,7 +7,7 @@
 //
 
 #import "SYNChannelSelectorCell.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
+#import "UIImageView+ImageProcessing.h"
 
 @interface SYNChannelSelectorCell ()
 
@@ -21,8 +21,8 @@
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {
-    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                   placeHolderImage: nil];
+    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                               placeHolderImage: nil];
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations

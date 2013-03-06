@@ -11,20 +11,20 @@
 #import "ChannelOwner.h"
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
-#import "SYNNetworkEngine.h"
-#import "SYNAppDelegate.h"  
 #import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNAppDelegate.h"  
 #import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelSelectorCell.h"
+#import "SYNNetworkEngine.h"
+#import "SYNSoundPlayer.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
+#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNSoundPlayer.h"
 
 @interface SYNAbstractChannelsDetailViewController () <HPGrowingTextViewDelegate,
                                                UICollectionViewDataSource,
@@ -159,12 +159,12 @@
     self.userNameLabel.text = self.channel.channelOwner.name;
     
     // set User's avatar picture
-    [self.userAvatarImageView setImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                             placeHolderImage: nil];
+    [self.userAvatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
+                                         placeHolderImage: nil];
     
     // Set wallpaper
-    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                                   placeHolderImage: nil];
+    [self.channelWallpaperImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
+                                               placeHolderImage: nil];
 }
 
 
@@ -452,16 +452,14 @@
     // As we can't actually change the order of the results of an
     // NSFetchedResults controller
     
-    // Actually swap the video thumbnails around in the visible list
-//    id fromItem = [self.fetchedResultsController objectAtIndexPath: fromIndexPath];
-//    id fromObject = self.channel.videoInstances[fromIndexPath.item];
-    
-//    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
-//    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
-//    
-//    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
-//    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
-    
+    VideoInstance *fromObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: fromIndexPath];
+    VideoInstance *toObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: toIndexPath];
+//
+//    // Swap positions
+//    NSNumber *tempPosition = fromObject.position;
+//    fromObject.position = toObject.position;
+//    toObject.position = tempPosition;
+//
     [self saveDB];
 }
 
@@ -531,8 +529,8 @@
         
         NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverBackground%d.jpg", (indexPath.row % 13) + 1];
         
-        [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                                       placeHolderImage: nil];
+        [self.channelWallpaperImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                                   placeHolderImage: nil];
     }
 }
 

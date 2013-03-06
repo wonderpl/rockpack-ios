@@ -11,18 +11,20 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
+#import "SYNCategoryItemView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
+#import "Subcategory.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "Subcategory.h"
-#import "SYNCategoryItemView.h"
+
 
 @interface SYNVideosRootViewController () <UIGestureRecognizerDelegate,
                                            UIScrollViewDelegate,
@@ -334,8 +336,8 @@
     self.channelLabel.text = videoInstance.channel.title;
     self.userNameLabel.text = videoInstance.channel.channelOwner.name;
     
-    [self.channelImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                          placeHolderImage: nil];
+    [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                      placeHolderImage: nil];
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
 }

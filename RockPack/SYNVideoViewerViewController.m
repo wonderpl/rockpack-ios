@@ -17,6 +17,7 @@
 #import "SYNVideoViewerThumbnailLayoutAttributes.h"
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
@@ -96,9 +97,8 @@
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
-    [self.channelThumbnailImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                   placeHolderImage: nil];
-//        self.channelThumbnailImageView.image = [UIImage imageNamed: @"Default-Landscape.png"];
+    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                               placeHolderImage: nil];
 }
 
 
@@ -338,8 +338,8 @@
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: currentSelectedIndexPath];
     
-    [self.channelThumbnailImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                   placeHolderImage: nil];
+    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                               placeHolderImage: nil];
 }
 
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
