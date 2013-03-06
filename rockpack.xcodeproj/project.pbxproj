@@ -410,6 +410,12 @@
 		01F8E78016B03A7C000D44B9 /* SYNVideoViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */; };
 		01F8E78316B0554B000D44B9 /* ButtonClose.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78116B0554B000D44B9 /* ButtonClose.png */; };
 		01F8E78416B0554B000D44B9 /* ButtonClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */; };
+		01F90E1116E7508B00F1D924 /* VideoChannelStackGloss.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E0D16E7508B00F1D924 /* VideoChannelStackGloss.png */; };
+		01F90E1216E7508B00F1D924 /* VideoChannelStackGloss@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E0E16E7508B00F1D924 /* VideoChannelStackGloss@2x.png */; };
+		01F90E1316E7508B00F1D924 /* VideoChannelStack.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E0F16E7508B00F1D924 /* VideoChannelStack.png */; };
+		01F90E1416E7508B00F1D924 /* VideoChannelStack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1016E7508B00F1D924 /* VideoChannelStack@2x.png */; };
+		01F90E1716E7568F00F1D924 /* VideoDurationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1516E7568F00F1D924 /* VideoDurationBackground.png */; };
+		01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */; };
 		BE08158816D2923F00ADB1DC /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158716D2923F00ADB1DC /* TabTop.png */; };
 		BE08158A16D2926F00ADB1DC /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158916D2926F00ADB1DC /* TabTop@2x.png */; };
 		BE08158C16D292A700ADB1DC /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158B16D292A700ADB1DC /* TabTopSub.png */; };
@@ -929,6 +935,12 @@
 		01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoViewerViewController.xib; sourceTree = "<group>"; };
 		01F8E78116B0554B000D44B9 /* ButtonClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonClose.png; path = Assets/Images/ButtonClose.png; sourceTree = "<group>"; };
 		01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonClose@2x.png"; path = "Assets/Images/ButtonClose@2x.png"; sourceTree = "<group>"; };
+		01F90E0D16E7508B00F1D924 /* VideoChannelStackGloss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VideoChannelStackGloss.png; path = Assets/Images/VideoChannelStackGloss.png; sourceTree = "<group>"; };
+		01F90E0E16E7508B00F1D924 /* VideoChannelStackGloss@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "VideoChannelStackGloss@2x.png"; path = "Assets/Images/VideoChannelStackGloss@2x.png"; sourceTree = "<group>"; };
+		01F90E0F16E7508B00F1D924 /* VideoChannelStack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VideoChannelStack.png; path = Assets/Images/VideoChannelStack.png; sourceTree = "<group>"; };
+		01F90E1016E7508B00F1D924 /* VideoChannelStack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "VideoChannelStack@2x.png"; path = "Assets/Images/VideoChannelStack@2x.png"; sourceTree = "<group>"; };
+		01F90E1516E7568F00F1D924 /* VideoDurationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VideoDurationBackground.png; path = Assets/Images/VideoDurationBackground.png; sourceTree = "<group>"; };
+		01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "VideoDurationBackground@2x.png"; path = "Assets/Images/VideoDurationBackground@2x.png"; sourceTree = "<group>"; };
 		276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE08158716D2923F00ADB1DC /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
@@ -2016,6 +2028,12 @@
 		01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */ = {
 			isa = PBXGroup;
 			children = (
+				01F90E1516E7568F00F1D924 /* VideoDurationBackground.png */,
+				01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */,
+				01F90E0D16E7508B00F1D924 /* VideoChannelStackGloss.png */,
+				01F90E0E16E7508B00F1D924 /* VideoChannelStackGloss@2x.png */,
+				01F90E0F16E7508B00F1D924 /* VideoChannelStack.png */,
+				01F90E1016E7508B00F1D924 /* VideoChannelStack@2x.png */,
 				01946B4D1683209600354601 /* GlossChannelSmall.png */,
 				01946B4E1683209600354601 /* GlossChannelSmall@2x.png */,
 				01946B4F1683209600354601 /* GlossVideo.png */,
@@ -2730,6 +2748,12 @@
 				0173F6FC16E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png in Resources */,
 				0173F6FD16E028E4005B3ECA /* GlossVideoThumbnailSmall.png in Resources */,
 				0173F6FE16E028E4005B3ECA /* GlossVideoThumbnailSmall@2x.png in Resources */,
+				01F90E1116E7508B00F1D924 /* VideoChannelStackGloss.png in Resources */,
+				01F90E1216E7508B00F1D924 /* VideoChannelStackGloss@2x.png in Resources */,
+				01F90E1316E7508B00F1D924 /* VideoChannelStack.png in Resources */,
+				01F90E1416E7508B00F1D924 /* VideoChannelStack@2x.png in Resources */,
+				01F90E1716E7568F00F1D924 /* VideoDurationBackground.png in Resources */,
+				01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

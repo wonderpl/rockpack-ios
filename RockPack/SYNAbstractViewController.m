@@ -16,6 +16,7 @@
 #import "SYNAbstractViewController.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
+#import "SYNChannelsDetailViewController.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideoViewerViewController.h"
@@ -312,6 +313,7 @@
                                                                                           selectedIndexPath: (NSIndexPath *) selectedIndexPath];
     
     self.videoViewerViewController.view.alpha = 0.0f;
+    
     [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
     
     [UIView animateWithDuration: 0.5f
@@ -421,7 +423,55 @@
     [self animatedPushViewController: channelCreationVC];
 }
 
+// User touched the channel thumbnail in a video cell
+- (IBAction) userTouchedChannelButton: (UIButton *) channelButton
+{
+    // Get to cell it self (from button subview)
+    UIView *v = channelButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (indexPath)
+    {
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        [self viewChannelDetails:
+         videoInstance.channel];
+    }
+}
 
+
+- (void) viewChannelDetails: (Channel *) channel
+{
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    
+    [self animatedPushViewController: channelVC];
+}
+
+
+- (IBAction) userTouchedProfileButton: (UIButton *) profileButton
+{
+    //    rockItButton.selected = !rockItButton.selected;
+    
+    // Get to cell it self (from button subview)
+    UIView *v = profileButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    
+    // Bail if we don't have an index path
+    if (indexPath)
+    {
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        [self viewProfileDetails: videoInstance.channel.channelOwner];
+    }
+}
+
+- (void) viewProfileDetails: (ChannelOwner *) channelOwner
+{
+//    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+//    
+//    [self animatedPushViewController: channelVC];
+}
 
 
 - (IBAction) longPressThumbnail: (UIGestureRecognizer *) sender

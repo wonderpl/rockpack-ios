@@ -13,11 +13,11 @@
 #import "SYNAppDelegate.h"
 #import "SYNVideoQueueDelegate.h"
 
-#import "Channel.h"
+//#import "Channel.h"
 #import "SYNNetworkEngine.h"
 
 
-@class VideoInstance;
+@class VideoInstance, Channel, ChannelOwner;
 
 @interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
                                                             UICollectionViewDataSource,
@@ -85,6 +85,10 @@
 - (IBAction) dismissVideoViewer;
 
 - (void) createChannel:(Channel*)channel;
+
+
+- (void) viewChannelDetails: (Channel *) channel;
+- (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 
 
 -(id)initWithViewId:(NSString*)vid;
