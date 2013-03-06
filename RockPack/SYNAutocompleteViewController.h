@@ -10,6 +10,11 @@
 
 @interface SYNAutocompleteViewController : UITableViewController {
     NSMutableArray* wordsArray;
+    UIFont* rockpackFont;
+    UIColor* textColor;
+    UIColor* tableBGColor;
+    
+    
 }
 
 
