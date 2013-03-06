@@ -31,6 +31,7 @@ typedef enum {
   MKNetworkOperationStateFinished = 3
 } MKNetworkOperationState;
 
+
 typedef void (^MKNKVoidBlock)(void);
 typedef void (^MKNKIDBlock)(void);
 typedef void (^MKNKProgressBlock)(double progress);
@@ -44,6 +45,8 @@ typedef void (^MKNKResponseErrorBlock)(MKNetworkOperation* completedOperation, N
 typedef void (^MKNKErrorBlock)(NSError* error);
 
 typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
+
+typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
 
 typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
 

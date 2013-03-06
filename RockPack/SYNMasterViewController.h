@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "SYNBottomTabViewController.h"
 
-@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate>
+#import "SYNAppDelegate.h"
+
+@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UITableViewDelegate> {
+    SYNAppDelegate* appDelegate;
+}
 
 @property (nonatomic, strong) UIViewController* rootViewController;
 

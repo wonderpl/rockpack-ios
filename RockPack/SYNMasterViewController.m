@@ -13,7 +13,7 @@
 #import "SYNShareOverlayViewController.h"
 #import "SYNBottomTabViewController.h"
 #import "UIFont+SYNFont.h"
-
+#import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -24,12 +24,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 
+
+
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 
 @property (nonatomic, strong) IBOutlet UIButton* inboxButton;
 @property (nonatomic, strong) IBOutlet UIButton* notificationButton;
 
+@property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
@@ -39,14 +42,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
 @property (nonatomic, weak) UIViewController* currentOverlayController;
 
-@property (nonatomic, strong) UIPopoverController* popoverController;
+@property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
+@property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
 
 @end
 
 @implementation SYNMasterViewController
 
 @synthesize rootViewController = rootViewController;
-@synthesize popoverController = popoverController;
+@synthesize notificationsPopoverController = notificationsPopoverController;
 
 #pragma mark - Initialise
 
@@ -54,10 +58,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     self = [super initWithNibName:@"SYNMasterViewController" bundle:nil];
     if (self) {
+        
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
         self.rootViewController = root;
         
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
         self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
+        
+        self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
+        
+        self.autocompleteController.tableView.delegate = self;
+        
     }
     return self;
 }
@@ -75,6 +87,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) ==//
     
@@ -150,7 +163,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - Overlay/Popup Views
+#pragma mark - Overlays (Inbox/Popover)
 
 
 - (IBAction) userTouchedInboxButton: (UIButton*) button
@@ -261,21 +274,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         SYNActivityPopoverViewController *actionPopoverController = [[SYNActivityPopoverViewController alloc] init];
         // Need show the popover controller
-        self.popoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.popoverController.popoverContentSize = CGSizeMake(320, 166);
-        self.popoverController.delegate = self;
+        self.notificationsPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.notificationsPopoverController.popoverContentSize = CGSizeMake(320, 166);
+        self.notificationsPopoverController.delegate = self;
         
-        [self.popoverController presentPopoverFromRect: button.frame
+        [self.notificationsPopoverController presentPopoverFromRect: button.frame
                                                 inView: self.view
                               permittedArrowDirections: UIPopoverArrowDirectionUp
                                               animated: YES];
     }
-    else
-    {
-        // Need to hide the popover controller
-        [self.popoverController dismissPopoverAnimated: YES];
-    }
+    
 }
+
+
 
 
 
@@ -299,6 +310,38 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
     [textView setText: @""];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
+{
+ 
+    NSMutableString* stringJustTyped = [NSMutableString stringWithString:textField.text];
+    [stringJustTyped appendString:newCharacter];
+    
+    [appDelegate.networkEngine getAutocompleteForHint:stringJustTyped forResource:EntityTypeVideo withComplete:^(NSArray* array) {
+        
+        NSArray* suggestionsReturned = [array objectAtIndex:1];
+        
+        NSMutableArray* wordsReturned = [NSMutableArray array];
+        
+        for (NSArray* suggestion in suggestionsReturned) {
+            [wordsReturned addObject:[suggestion objectAtIndex:0]];
+        }
+        
+        
+        [self.autocompleteController addWords:wordsReturned];
+        
+        if(!self.autocompletePopoverController)
+            [self showAutocompletePopover];
+        
+        
+        
+        
+    } andError:^(NSError* error) {
+        [self.notificationsPopoverController dismissPopoverAnimated:YES];
+    }];
+    
+    return YES;
 }
 
 
@@ -431,6 +474,44 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     [self showOrSwapOverlay:self.shareOverlayViewController];
+}
+
+
+#pragma mark - Autocomplete Methods
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString* wordsSelected = [self.autocompleteController getWordAtIndex:indexPath.row];
+    self.searchTextField.text = wordsSelected;
+    [self.autocompletePopoverController dismissPopoverAnimated:NO];
+}
+
+
+-(void)showAutocompletePopover
+{
+    
+    
+    self.autocompletePopoverController = [[UIPopoverController alloc] initWithContentViewController: self.autocompleteController];
+    self.autocompletePopoverController.popoverContentSize = CGSizeMake(320, 166);
+    self.autocompletePopoverController.delegate = self;
+    
+    [self.autocompletePopoverController presentPopoverFromRect: self.searchTextField.frame
+                                                        inView: self.view
+                                      permittedArrowDirections: UIPopoverArrowDirectionUp
+                                                      animated: YES];
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if(popoverController == self.notificationsPopoverController)
+    {
+        self.notificationButton.selected = NO;
+        self.notificationsPopoverController = nil;
+    }
+    else if(popoverController == self.autocompletePopoverController)
+    {
+        self.autocompletePopoverController = nil;
+    }
 }
 
 @end
