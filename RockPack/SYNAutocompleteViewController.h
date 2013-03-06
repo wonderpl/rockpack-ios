@@ -10,6 +10,7 @@
 
 @interface SYNAutocompleteViewController : UITableViewController {
     NSMutableArray* wordsArray;
+    UIFont* rockpackFont;
 }
 
 

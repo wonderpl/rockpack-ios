@@ -7,6 +7,7 @@
 //
 
 #import "SYNAutocompleteViewController.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNAutocompleteViewController ()
 
@@ -19,6 +20,7 @@
     self = [super initWithStyle:style];
     if (self) {
         wordsArray = [[NSMutableArray alloc] init];
+        rockpackFont = [UIFont rockpackFontOfSize:18.0];
     }
     return self;
 }
@@ -69,11 +71,16 @@
     if(!cell)
     {
         cell = [[UITableViewCell alloc] init];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.font = rockpackFont;
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.contentView.backgroundColor = [UIColor darkGrayColor];
+        cell.accessoryView.backgroundColor = [UIColor clearColor];
     }
     
+    
     cell.textLabel.text = (NSString*)wordsArray[indexPath.row];
-    
-    
     
     // Configure the cell...
     
