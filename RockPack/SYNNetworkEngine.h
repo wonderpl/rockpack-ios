@@ -7,11 +7,13 @@
 //
 
 #import "MKNetworkEngine.h"
+
+#import "AppConstants.h"
 #import "SYNNetworkOperationJsonObject.h"
 
 @interface SYNNetworkEngine : MKNetworkEngine
 
--(id) initWithDefaultSettings;
+- (id) initWithDefaultSettings;
 
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
@@ -25,6 +27,11 @@
 
 - (void) searchVideosForTerm:(NSString*)searchTerm;
 - (void) searchChannelsForTerm:(NSString*)searchTerm;
+
+- (void) getAutocompleteForHint:(NSString*)hint
+                    forResource:(EntityType)entityType
+                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                       andError: (MKNKErrorBlock) errorBlock;
 
 
 @end

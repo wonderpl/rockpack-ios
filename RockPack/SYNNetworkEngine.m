@@ -7,7 +7,6 @@
 //
 
 #import "SYNNetworkEngine.h"
-#import "AppConstants.h"
 #import "Channel.h"
 #import "SYNNetworkEngine.h"
 #import "VideoInstance.h"
@@ -15,6 +14,7 @@
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
 #import "SYNAppDelegate.h"
+#import "SYNNetworkOperationJsonObjectParse.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -228,6 +228,8 @@
 }
 
 
+
+
 #pragma mark - Search
 
 - (void) searchVideosForTerm:(NSString*)searchTerm
@@ -268,8 +270,8 @@
     NSDictionary* parameters;
     
     
-//    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
-    parameters = [NSDictionary dictionaryWithObject:searchTerm forKey:@"q"];
+    parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:searchTerm forKey:@"q"]];
+    
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPISearchChannels params:parameters];
     
@@ -286,6 +288,53 @@
     
     
     [self enqueueOperation: networkOperation];
+}
+
+#pragma mark - Autocomplete
+
+- (void) getAutocompleteForHint:(NSString*)hint
+                    forResource:(EntityType)entityType
+                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                        andError: (MKNKErrorBlock) errorBlock
+{
+    
+    if(!hint) return;
+    
+    
+    // Register the class to be used for this operation only
+    
+    [self registerOperationSubclass:[SYNNetworkOperationJsonObjectParse class]];
+    
+    
+    NSDictionary* parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:hint forKey:@"q"]];
+    
+    NSString* apiForEntity;
+    if(entityType == EntityTypeChannel)
+        apiForEntity = kAPICompleteChannels;
+    else if(entityType == EntityTypeVideo)
+        apiForEntity = kAPICompleteVideos;
+    else
+        return; // do not accept any unknown type
+    
+    SYNNetworkOperationJsonObjectParse *networkOperation =
+    (SYNNetworkOperationJsonObjectParse*)[self operationWithPath:apiForEntity params:parameters];
+    
+    [networkOperation addJSONCompletionHandler:^(NSArray *array) {
+        
+        completionBlock(array);
+        
+        
+    } errorHandler:errorBlock];
+    
+    
+    [self enqueueOperation: networkOperation];
+    
+    
+    
+    // Go back to the original operation class
+    
+    [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+    
 }
 
 @end
