@@ -109,13 +109,15 @@
         
         
         // Make this of zero width initially
-        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(430.0, 0.0, 0.0, 73)
+        collectionViewStartFrame = CGRectMake(430.0, 0.0, 0.0, 73);
+        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewStartFrame
                                                            collectionViewLayout: standardFlowLayout];
         
         
         
         videoQueueCollectionView.backgroundColor = [UIColor clearColor];
         videoQueueCollectionView.scrollEnabled = NO; // scroll will happen on the scrollView which wraps it
+        //videoQueueCollectionView.backgroundColor = [UIColor greenColor];
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         
@@ -236,7 +238,7 @@
 
 -(void)clearVideoQueue
 {
-    [self.videoQueueCollectionView setFrame:CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)];
+    [self.videoQueueCollectionView setFrame:collectionViewStartFrame];
     [self.videoQueueCollectionView reloadData];
 }
 

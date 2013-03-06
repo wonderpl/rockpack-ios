@@ -26,6 +26,8 @@
     UIScrollView* scrollView;
     
     CGPoint leftmostOffset;
+    
+    CGRect collectionViewStartFrame;
 }
 
 
