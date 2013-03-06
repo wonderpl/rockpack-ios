@@ -117,6 +117,12 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNChannelHeaderView"];
     
+    [self.videoThumbnailCollectionView registerNib: headerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                               withReuseIdentifier: @"SYNChannelHeaderView"];
+    
+
+    
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
     
@@ -168,6 +174,12 @@
 
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
+    
+//    NSLog (@"xx %@", [self.videoThumbnailCollectionView recursiveDescription]);
+    
+//    UIView *dummyView = [[UIView alloc] initWithFrame: CGRectMake(100, 100, 100, 1000)];
+//    dummyView.backgroundColor = [UIColor redColor];
+//    [self.videoThumbnailCollectionView insertSubview: dummyView atIndex: 0];
 }
 
 - (void) dealloc
