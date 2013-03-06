@@ -10,9 +10,15 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 
+
+@interface SYNVideoThumbnailSmallCell ()
+
+@property (nonatomic, strong) IBOutlet UIView *mainView;
+
+@end
+
+
 @implementation SYNVideoThumbnailSmallCell
-
-
 
 - (void) awakeFromNib
 {
@@ -25,10 +31,9 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-//    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-//                   placeHolderImage: nil];
     if (self.isColour == TRUE)
     {
+        self.mainView.alpha = 1.0f;
         [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                        placeHolderImage: nil
                             usingEngine: nil
@@ -37,6 +42,7 @@
     }
     else
     {
+        self.mainView.alpha = 0.5f;
         [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                        placeHolderImage: nil
                             usingEngine: nil
