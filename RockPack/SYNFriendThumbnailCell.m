@@ -7,20 +7,11 @@
 //
 
 
-#import "MKNetworkKit.h"
 #import "SYNAppDelegate.h"
 #import "SYNFriendThumbnailCell.h"
-#import "SYNNetworkEngine.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import <QuartzCore/QuartzCore.h>
-
-@interface SYNFriendThumbnailCell ()
-
-@property (nonatomic, strong) MKNetworkOperation* friendImageLoadingOperation;
-@property (nonatomic, strong) NSString* loadingFriendImageViewURLString;
-
-@end
 
 @implementation SYNFriendThumbnailCell
 
@@ -68,7 +59,6 @@
 {
     // We need to clean up any asynchronous image uploads
     self.friendImageView.image = nil;
-    [self.friendImageLoadingOperation cancel];
     self.favouriteButton.selected = FALSE;
     self.favouriteButton.hidden = FALSE;
 }

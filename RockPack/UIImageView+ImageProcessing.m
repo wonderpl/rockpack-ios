@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "MKNetworkKit.h"
 #import "UIImageView+ImageProcessing.h"
 #import "UIImage+ImageProcessing.h"
 #import <objc/runtime.h>

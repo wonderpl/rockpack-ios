@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "MKNetworkKit.h"
 #import "SYNVideoQueueCell.h"
 #import "UIImageView+ImageProcessing.h"
 
