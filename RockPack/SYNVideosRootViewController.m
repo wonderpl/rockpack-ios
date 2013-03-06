@@ -46,15 +46,21 @@
 
 @implementation SYNVideosRootViewController
 
-#pragma mark - View lifecycle
+#pragma mark - Init
 
--(id)initWithViewId:(NSString *)vid
+- (id) initWithViewId: (NSString *) vid
 {
-    if (self = [super initWithNibName:@"SYNVideosRootViewController" bundle:nil]) {
+    if ((self = [super initWithNibName: @"SYNVideosRootViewController"
+                               bundle: nil]))
+    {
         viewId = vid;
     }
+    
     return self;
 }
+
+
+#pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {
@@ -93,9 +99,26 @@
 
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
+
+- (void) viewDidAppear: (BOOL) animated
 {
+    [super viewDidAppear: animated];
     
+    [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
+    
+    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0
+                                                     inSection: 0];
+    
+//    self.currentIndexPath = firstIndexPath;
+    
+    [self reloadCollectionViews];
+}
+
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
     if (fetchedResultsController != nil)
         return fetchedResultsController;
     
@@ -105,14 +128,14 @@
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", viewId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
- 
+    
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                                     managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                       sectionNameKeyPath: nil
-                                                                                                cacheName: nil];
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
     fetchedResultsController.delegate = self;
     
     NSError *error = nil;
@@ -123,21 +146,7 @@
 }
 
 
-
-
-
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear: animated];
-    
-    [appDelegate.networkEngine updateVideosScreenForCategory:@"all"];
-    
-    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
-    
-    self.currentIndexPath = firstIndexPath;
-    
-    [self reloadCollectionViews];
-}
+#pragma mark - Reload
 
 
 - (void) reloadCollectionViews
@@ -152,7 +161,8 @@
                                                                 selectedIndexPath: self.currentIndexPath
                                                                          autoPlay: TRUE];
         
-        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0 inSection: 0]];
+        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
+                                                           inSection: 0]];
     }
 }
 
@@ -160,8 +170,6 @@
 {
     return TRUE;
 }
-
-
 
 
 #pragma mark - Collection view support
@@ -188,6 +196,7 @@
     return items;
 }
 
+
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 1;
@@ -210,28 +219,6 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    // See if this can be handled in our abstract base class
-    BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
-                   didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
-    
-    if (!handledInSuperview)
-    {
-        // Check to see if is one that we can handle
-        if (collectionView == self.videoThumbnailCollectionView)
-        {
-            [self setLargeVideoToIndexPath: indexPath];
-        }
-        else
-        {
-            AssertOrLog(@"Trying to select unexpected collection view");
-        }
-    }
-}
-
-
 #pragma mark - User interface
 
 - (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath
@@ -240,7 +227,8 @@
     {        
         self.currentIndexPath = indexPath;
         
-        [self.videoPlaybackViewController playVideoAtIndex: indexPath];   
+        [self.videoPlaybackViewController playVideoAtIndex: indexPath];
+        [self updateLargeVideoDetailsForIndexPath: indexPath];
     }
 }
 
