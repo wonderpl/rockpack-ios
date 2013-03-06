@@ -452,8 +452,8 @@
     // As we can't actually change the order of the results of an
     // NSFetchedResults controller
     
-    VideoInstance *fromObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: fromIndexPath];
-    VideoInstance *toObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: toIndexPath];
+//    VideoInstance *fromObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: fromIndexPath];
+//    VideoInstance *toObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: toIndexPath];
 //
 //    // Swap positions
 //    NSNumber *tempPosition = fromObject.position;
