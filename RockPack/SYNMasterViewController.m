@@ -15,6 +15,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
+#import "SYNSuggestionsPopoverBackgroundView.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -490,10 +491,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)showAutocompletePopover
 {
     
+    UINavigationController* controllerForTitle = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
     
-    self.autocompletePopoverController = [[UIPopoverController alloc] initWithContentViewController: self.autocompleteController];
-    self.autocompletePopoverController.popoverContentSize = CGSizeMake(320, 166);
+    self.autocompletePopoverController = [[UIPopoverController alloc] initWithContentViewController: controllerForTitle];
+    self.autocompletePopoverController.popoverContentSize = CGSizeMake(280, 256);
     self.autocompletePopoverController.delegate = self;
+    
+    self.autocompletePopoverController.contentViewController.title = @"Suggestions";
+    
+    self.autocompletePopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
     
     [self.autocompletePopoverController presentPopoverFromRect: self.searchTextField.frame
                                                         inView: self.view

@@ -14,5 +14,7 @@
 + (UIColor *) rockpackSubtitleColor;
 + (UIColor *) rockpackBlueColor;
 + (UIColor *) rockpackLogoColor;
++ (UIColor *) rockpacLedColor;
++ (UIColor *) rockpacTurcoiseColor;
 
 @end

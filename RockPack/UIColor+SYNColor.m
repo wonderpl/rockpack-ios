@@ -33,4 +33,14 @@
     return [UIColor colorWithRed: 36.0f/255.0f green: 202.0f/255.0f blue: 229.0f/255.0f alpha: 1.0f];
 }
 
++ (UIColor *) rockpacTurcoiseColor
+{
+    return [UIColor colorWithRed: 179.0f/255.0f green: 207.0f/255.0f blue: 213.0f/255.0f alpha: 1.0f];
+}
+
++ (UIColor *) rockpacLedColor
+{
+    return [UIColor colorWithRed: 45.0f/255.0f green: 53.0f/255.0f blue: 58.0f/255.0f alpha: 1.0f];
+}
+
 @end

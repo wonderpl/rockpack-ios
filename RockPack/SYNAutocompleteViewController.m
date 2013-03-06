@@ -8,6 +8,7 @@
 
 #import "SYNAutocompleteViewController.h"
 #import "UIFont+SYNFont.h"
+#import "UIColor+SYNColor.h"
 
 @interface SYNAutocompleteViewController ()
 
@@ -21,6 +22,10 @@
     if (self) {
         wordsArray = [[NSMutableArray alloc] init];
         rockpackFont = [UIFont rockpackFontOfSize:18.0];
+        textColor = [UIColor rockpacTurcoiseColor];
+        tableBGColor = [UIColor rockpacLedColor];
+        
+        self.title = @"Suggestions";
     }
     return self;
 }
@@ -29,11 +34,9 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    self.tableView.separatorColor = [UIColor rockpacLedColor];
+    self.tableView.backgroundColor = tableBGColor;
 }
 
 - (void)didReceiveMemoryWarning
@@ -71,12 +74,18 @@
     if(!cell)
     {
         cell = [[UITableViewCell alloc] init];
+        
+        // Accesory View
+        
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        // Text
+        
         cell.textLabel.font = rockpackFont;
-        cell.textLabel.backgroundColor = [UIColor clearColor];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.contentView.backgroundColor = [UIColor darkGrayColor];
-        cell.accessoryView.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = textColor;
+        
+        
+        
     }
     
     

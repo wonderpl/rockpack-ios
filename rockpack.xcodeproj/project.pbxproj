@@ -458,6 +458,9 @@
 		BEA1E32E16CCFF70000AB59D /* SYNMainRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */; };
 		BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
+		BEF0AE0A16E788750094BFDA /* SYNSuggestionsPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0916E788750094BFDA /* SYNSuggestionsPopoverBackgroundView.m */; };
+		BEF0AE0E16E794810094BFDA /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE0D16E794810094BFDA /* arrow.png */; };
+		BEF0AE1016E795FE0094BFDA /* border.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE0F16E795FE0094BFDA /* border.png */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
 		BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
@@ -1015,6 +1018,10 @@
 		BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObject.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
+		BEF0AE0816E788750094BFDA /* SYNSuggestionsPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSuggestionsPopoverBackgroundView.h; sourceTree = "<group>"; };
+		BEF0AE0916E788750094BFDA /* SYNSuggestionsPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSuggestionsPopoverBackgroundView.m; sourceTree = "<group>"; };
+		BEF0AE0D16E794810094BFDA /* arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow.png; sourceTree = "<group>"; };
+		BEF0AE0F16E795FE0094BFDA /* border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = border.png; sourceTree = "<group>"; };
 		BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueView.h; sourceTree = "<group>"; };
 		BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueView.m; sourceTree = "<group>"; };
 		BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueDelegate.h; sourceTree = "<group>"; };
@@ -1924,6 +1931,8 @@
 			children = (
 				01A3EC3516AED804008DCE08 /* NotificationContent.png */,
 				01A3EC3616AED804008DCE08 /* NotificationContent@2x.png */,
+				BEF0AE0F16E795FE0094BFDA /* border.png */,
+				BEF0AE0D16E794810094BFDA /* arrow.png */,
 			);
 			name = Popover;
 			sourceTree = "<group>";
@@ -2306,6 +2315,8 @@
 			children = (
 				BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */,
 				BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */,
+				BEF0AE0816E788750094BFDA /* SYNSuggestionsPopoverBackgroundView.h */,
+				BEF0AE0916E788750094BFDA /* SYNSuggestionsPopoverBackgroundView.m */,
 			);
 			name = "Autocomplete Panel";
 			sourceTree = "<group>";
@@ -2764,6 +2775,8 @@
 				01F90E1416E7508B00F1D924 /* VideoChannelStack@2x.png in Resources */,
 				01F90E1716E7568F00F1D924 /* VideoDurationBackground.png in Resources */,
 				01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */,
+				BEF0AE0E16E794810094BFDA /* arrow.png in Resources */,
+				BEF0AE1016E795FE0094BFDA /* border.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2912,6 +2925,7 @@
 				01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */,
 				BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */,
 				BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */,
+				BEF0AE0A16E788750094BFDA /* SYNSuggestionsPopoverBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
