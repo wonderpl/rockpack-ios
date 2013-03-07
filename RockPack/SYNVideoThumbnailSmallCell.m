@@ -42,7 +42,7 @@
     }
     else
     {
-        self.mainView.alpha = 0.5f;
+        self.mainView.alpha = 0.6f;
         [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                        placeHolderImage: nil
                             usingEngine: nil
