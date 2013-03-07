@@ -117,7 +117,6 @@
 
 // Effective height (exlcuding shadow) of the image well
 //#define kVideoQueueEffectiveHeight 99
-#define kVideoQueueEffectiveHeight 103
 
 #define kVideoQueueWidth 490
 //#define kVideoQueueWidth 475

@@ -18,10 +18,9 @@
 @synthesize backgroundImageView;
 
 
-
 -(id)init
 {
-    CGRect stdFrame = CGRectMake(0, 573 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
+    CGRect stdFrame = CGRectMake(0, 0.0, 1024.0, 103.0);
     if (self = [self initWithFrame:stdFrame]) {
         
     }
@@ -154,7 +153,7 @@
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
     
-    // == Animate
+  
     
     [scrollView setContentOffset:leftmostOffset];
     
