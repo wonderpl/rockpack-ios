@@ -106,11 +106,7 @@
     
     [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
     
-    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0
-                                                     inSection: 0];
-    
-//    self.currentIndexPath = firstIndexPath;
-    
+
     [self reloadCollectionViews];
 }
 

@@ -17,7 +17,11 @@
 
 @property (nonatomic, strong) UIViewController* rootViewController;
 
+
 -(id)initWithRootViewController:(UIViewController*)root;
+
+-(void)addVideoOverlayWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController andIndexPath:(NSIndexPath *)indexPath;
+-(void)removeVideoOverlayController;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 

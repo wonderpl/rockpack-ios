@@ -17,6 +17,13 @@
 #define kQueueSelectedImage @"PanelVideoQueueHighlighted.png"
 #define kQueueDefaultImage @"PanelVideoQueue.png"
 
+#define kQueueViewOffset 140.0
+
+typedef enum _kQueueMoveDirection {
+    kQueueMoveDirectionDown = 0,
+    kQueueMoveDirectionUp
+} kQueueMoveDirection;
+
 @interface SYNVideoQueueViewController ()
 
 @property (nonatomic, readonly) SYNVideoQueueView* videoQueueView;
@@ -53,9 +60,38 @@
     
     [self.videoQueueView.channelButton addTarget:self action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleVideoQueueAddRequest:) name:kVideoQueueAdd object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleVideoQueueHideRequest:) name:kVideoQueueHide object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleVideoQueueShowRequest:) name:kVideoQueueShow object:nil];
+    
     [self reloadData];
 	
 }
+
+#pragma mark - Notification Handlers
+
+-(void)handleVideoQueueAddRequest:(NSNotification*)notification
+{
+    VideoInstance* videoInstanceToAdd = (VideoInstance*)[notification.userInfo objectForKey:@"VideoInstance"];
+    [self addVideoToQueue:videoInstanceToAdd];
+}
+
+
+-(void)handleVideoQueueHideRequest:(NSNotification*)notification
+{
+    [self hideVideoQueue:YES];
+}
+
+-(void)handleVideoQueueShowRequest:(NSNotification*)notification
+{
+    [self showVideoQueue:YES];
+}
+
+
+#pragma mark - Channel Handlers
 
 -(void)createChannelFromVideoQueue
 {
@@ -172,46 +208,55 @@
 }
 
 
-#pragma mark - Animation Methods
+#pragma mark - Hide/Show Animation Methods
+
+-(void)showVideoQueue
+{
+    [self showVideoQueue:YES];
+}
 
 - (void) showVideoQueue: (BOOL) animated;
 {
     if (!self.isVisible)
-        [self hideShowVideoQueue:YES animated:animated];
+        [self moveVideoQueue:kQueueMoveDirectionUp animated:animated];
     
     self.isVisible = YES;
     [self startVideoQueueDismissalTimer];  
 }
 
 
+-(void)hideVideoQueue
+{
+    [self hideVideoQueue:YES];
+}
+
 - (void) hideVideoQueue: (BOOL) animated;
 {
     if (self.isVisible)
-        [self hideShowVideoQueue:NO animated:animated];
+        [self moveVideoQueue:kQueueMoveDirectionDown animated:animated];
     
     self.isVisible = NO;
     self.videoQueueAnimationTimer = nil;
 }
 
 
--(void)hideShowVideoQueue:(BOOL)show animated:(BOOL)animated
+-(void)moveVideoQueue:(kQueueMoveDirection)direction animated:(BOOL)animated
 {
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
     
-    if(show)
-        videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-    else
-        videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
+    
+    
+    CGFloat offset = (direction == kQueueMoveDirectionUp) ? -(kQueueViewOffset) : kQueueViewOffset ;
+    CGFloat timeDuration = (direction == kQueueMoveDirectionUp) ? 0.3 : 0.2;
     
     if (animated)
     {
-        [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+        [UIView animateWithDuration: timeDuration
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^{
                              
                              
-                             self.videoQueueView.frame = videoQueueViewFrame;
+                             self.videoQueueView.center = CGPointMake(self.videoQueueView.center.x, self.videoQueueView.center.y + offset);
                          }
                          completion: ^(BOOL finished) {
                              
@@ -219,7 +264,7 @@
     }
     else
     {
-        self.videoQueueView.frame = videoQueueViewFrame;
+        self.videoQueueView.center = CGPointMake(self.videoQueueView.center.x, offset);
     }
 }
 

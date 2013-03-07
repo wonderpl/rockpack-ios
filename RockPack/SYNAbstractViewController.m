@@ -21,7 +21,6 @@
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoQueueViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
-#import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
@@ -36,7 +35,6 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 
 
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
 @end
@@ -298,6 +296,7 @@
 
 
 // Called by invisible button on video view cell
+
 - (void) displayVideoViewerFromView: (UIGestureRecognizer *) sender
 {
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
@@ -308,46 +307,12 @@
 
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) selectedIndexPath
 {
-    SYNMasterViewController *bottomTabViewController = (SYNMasterViewController*)appDelegate.viewController;
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
     
-    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: self.fetchedResultsController
-                                                                                          selectedIndexPath: (NSIndexPath *) selectedIndexPath];
-    
-    self.videoViewerViewController.view.alpha = 0.0f;
-    
-    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoViewerViewController.view.alpha = 1.0f;
-     }
-     completion: ^(BOOL finished)
-     {
-         [self.videoViewerViewController.closeButton addTarget: self
-                                                        action: @selector(dismissVideoViewer)
-                                              forControlEvents: UIControlEventTouchUpInside];
-     }];
+    [masterViewController addVideoOverlayWithFetchedResultsController:self.fetchedResultsController andIndexPath:selectedIndexPath];
 }
 
-- (IBAction) dismissVideoViewer
-{
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoViewerViewController.view.alpha = 0.0f;
-     }
-     completion: ^(BOOL finished)
-     {
-         [self.videoViewerViewController.view removeFromSuperview];
-         self.videoViewerViewController = nil;
-     }];
 
-}
 
 
 #pragma mark - Initialisation

@@ -16,6 +16,9 @@
 #import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
 #import "SYNSuggestionsPopoverBackgroundView.h"
+#import "SYNBottomTabViewController.h"
+
+#import "SYNVideoViewerViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -26,22 +29,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 
 
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
+
+
+@property (nonatomic, strong) IBOutlet UIView* overlayView;
 
 @property (nonatomic, strong) IBOutlet UIButton* inboxButton;
 @property (nonatomic, strong) IBOutlet UIButton* notificationButton;
 
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
-@property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
 
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
 @property (nonatomic, weak) UIViewController* currentOverlayController;
+
 
 @property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
 @property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
@@ -107,7 +115,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          [splashView removeFromSuperview];
      }];
     
-    self.overlayView.userInteractionEnabled = NO;
+    self.slidersView.userInteractionEnabled = NO;
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
@@ -130,7 +138,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                                action: @selector(swipeGesturePerformed:)];
     
     [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
-    //[self.view addGestureRecognizer:rightSwipeRecogniser];
+    [self.view addGestureRecognizer:rightSwipeRecogniser];
     
     rightSwipeRecogniser.delegate = self;
     
@@ -139,7 +147,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                               action: @selector(swipeGesturePerformed:)];
     
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    //[self.view addGestureRecognizer: leftSwipeRecogniser];
+    [self.view addGestureRecognizer: leftSwipeRecogniser];
     
     
     leftSwipeRecogniser.delegate = self;
@@ -166,6 +174,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Overlays (Inbox/Popover)
 
+
+- (IBAction) userTouchedNotificationButton: (UIButton*) button
+{
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        SYNActivityPopoverViewController *actionPopoverController = [[SYNActivityPopoverViewController alloc] init];
+        // Need show the popover controller
+        self.notificationsPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.notificationsPopoverController.popoverContentSize = CGSizeMake(320, 166);
+        self.notificationsPopoverController.delegate = self;
+        self.notificationsPopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
+        
+        [self.notificationsPopoverController presentPopoverFromRect: button.frame
+                                                             inView: self.view
+                                           permittedArrowDirections: UIPopoverArrowDirectionUp
+                                                           animated: YES];
+    }
+    
+}
 
 - (IBAction) userTouchedInboxButton: (UIButton*) button
 {
@@ -222,7 +251,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                    overlayViewFrame.size.width,
                                                    overlayViewFrame.size.height);
     
-    [self.overlayView addSubview:overlayViewController.view];
+    [self.slidersView addSubview:overlayViewController.view];
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f
@@ -266,26 +295,87 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
+#pragma mark - Video Overlay View
 
-- (IBAction) userTouchedNotificationButton: (UIButton*) button
+-(void)addVideoOverlayWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController andIndexPath:(NSIndexPath *)indexPath
 {
-    button.selected = !button.selected;
     
-    if (button.selected)
-    {
-        SYNActivityPopoverViewController *actionPopoverController = [[SYNActivityPopoverViewController alloc] init];
-        // Need show the popover controller
-        self.notificationsPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.notificationsPopoverController.popoverContentSize = CGSizeMake(320, 166);
-        self.notificationsPopoverController.delegate = self;
-        
-        [self.notificationsPopoverController presentPopoverFromRect: button.frame
-                                                inView: self.view
-                              permittedArrowDirections: UIPopoverArrowDirectionUp
-                                              animated: YES];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
+                                                        object:self];
     
+    SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
+    
+    
+    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
+                                                                                          selectedIndexPath: (NSIndexPath *) indexPath];
+    [self.overlayView addSubview:self.videoViewerViewController.view];
+    
+    
+    
+    
+    self.videoViewerViewController.view.alpha = 0.0f;
+    
+    
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         self.videoViewerViewController.view.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                        
+                        [self.videoViewerViewController.closeButton addTarget: self
+                                                                       action: @selector(removeVideoOverlayController)
+                                                             forControlEvents: UIControlEventTouchUpInside];
+                          
+                        self.overlayView.userInteractionEnabled = YES;
+                         
+                         // == Add video queue == //
+                         
+                         UIView* queueView = bottomTabViewController.videoQueueController.view;
+                         
+                         [queueView removeFromSuperview];
+                         
+                         queueView.center = CGPointMake(queueView.center.x, queueView.center.y + queueView.frame.size.height * 0.5);
+                         
+                         [self.overlayView addSubview:queueView];
+                         
+                     }];
 }
+
+-(void)removeVideoOverlayController
+{
+    SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
+    
+    UIView* child = self.overlayView.subviews[0];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
+                                                        object:self];
+    
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         child.alpha = 0.0f;
+                     }
+                     completion: ^(BOOL finished) {
+         
+                         self.overlayView.userInteractionEnabled = NO;
+                        
+                         self.videoViewerViewController = nil;
+                         
+                         
+                         [bottomTabViewController repositionQueueView];
+                         
+                     }];
+}
+
+
+
 
 
 

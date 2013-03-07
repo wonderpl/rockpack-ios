@@ -18,10 +18,9 @@
 @synthesize backgroundImageView;
 
 
-
 -(id)init
 {
-    CGRect stdFrame = CGRectMake(0, 573 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
+    CGRect stdFrame = CGRectMake(0, 0.0, 1024.0, 103.0);
     if (self = [self initWithFrame:stdFrame]) {
         
     }
@@ -109,13 +108,15 @@
         
         
         // Make this of zero width initially
-        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(430.0, 0.0, 0.0, 73)
+        collectionViewStartFrame = CGRectMake(430.0, 0.0, 0.0, 73);
+        videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewStartFrame
                                                            collectionViewLayout: standardFlowLayout];
         
         
         
         videoQueueCollectionView.backgroundColor = [UIColor clearColor];
         videoQueueCollectionView.scrollEnabled = NO; // scroll will happen on the scrollView which wraps it
+        //videoQueueCollectionView.backgroundColor = [UIColor greenColor];
         
         UINib *videoQueueCellNib = [UINib nibWithNibName: @"SYNVideoQueueCell" bundle: nil];
         
@@ -152,7 +153,7 @@
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
     
-    // == Animate
+  
     
     [scrollView setContentOffset:leftmostOffset];
     
@@ -236,7 +237,7 @@
 
 -(void)clearVideoQueue
 {
-    [self.videoQueueCollectionView setFrame:CGRectMake(kVideoQueueWidth + kVideoQueueOffsetX, 26, 0, 73)];
+    [self.videoQueueCollectionView setFrame:collectionViewStartFrame];
     [self.videoQueueCollectionView reloadData];
 }
 

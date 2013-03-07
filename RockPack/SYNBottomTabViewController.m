@@ -21,7 +21,6 @@
 #import "SYNSearchTabViewController.h"
 #import "SYNSearchRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNVideoQueueViewController.h"
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -36,10 +35,7 @@
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 
 
-@property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
-@property (nonatomic, strong) IBOutlet UIButton *recordButton;
-@property (nonatomic, strong) IBOutlet UIButton *writeMessageButton;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 
@@ -133,15 +129,9 @@
     
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
     videoQueueController.delegate = self;
-//    
-//    CGRect lowerFrame = CGRectMake(0, 573 + 62 + kVideoQueueEffectiveHeight, 1024, kVideoQueueEffectiveHeight);
-//    videoQueueController.view.frame = lowerFrame;
     
-    [self.view insertSubview:videoQueueController.view belowSubview:self.tabsViewContainer];
+    [self repositionQueueView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueHide:) name:kVideoQueueHide object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueShow:) name:kVideoQueueShow object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoQueueAdd:) name:kVideoQueueAdd object:nil];
     
     // Set Initial View Controller
     
@@ -159,23 +149,20 @@
 }
 
 
-#pragma mark - Video Queue Handlers
-
--(void)videoQueueHide:(NSNotification*)notification
+-(void)repositionQueueView
 {
-    [self.videoQueueController hideVideoQueue:YES];
+    //[videoQueueController.view removeFromSuperview];
+    
+    
+    videoQueueController.view.center = CGPointMake(videoQueueController.view.center.x, [[UIScreen mainScreen] bounds].size.width);
+    
+    [self.view insertSubview:videoQueueController.view belowSubview:self.tabsViewContainer];
+    
 }
 
--(void)videoQueueShow:(NSNotification*)notification
-{
-    [self.videoQueueController showVideoQueue:YES];
-}
 
--(void)videoQueueAdd:(NSNotification*)notification
-{
-    VideoInstance* videoInstanceToAdd = (VideoInstance*)[notification.userInfo objectForKey:@"VideoInstance"];
-    [self.videoQueueController addVideoToQueue:videoInstanceToAdd];
-}
+
+
 
 
 - (void) viewWillAppear:(BOOL)animated
@@ -261,15 +248,19 @@
     
     
     
-    for (UIButton* tabButton in self.tabsViewContainer.subviews)
+    for (UIButton* tabButton in self.tabsViewContainer.subviews) {
         tabButton.selected = NO;
+        tabButton.userInteractionEnabled = YES;
+    }
+        
 
     if(_selectedIndex < 0 || _selectedIndex > self.tabsViewContainer.subviews.count)
         return;
     
     
     UIButton* toButton = (UIButton *)self.tabsViewContainer.subviews[_selectedIndex];
-    toButton.selected = TRUE;
+    toButton.selected = YES;
+    toButton.userInteractionEnabled = NO;
     
     
     self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];

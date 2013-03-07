@@ -9,14 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
 #import "SYNVideoQueueDelegate.h"
+#import "SYNVideoQueueViewController.h"
 
 @interface SYNBottomTabViewController : SYNAbstractViewController <SYNVideoQueueDelegate>
 
-@property (nonatomic, strong, readonly) UIButton *messageInboxButton;
 
+@property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
 - (void) popCurrentViewController: (id) sender;
-
+- (void) repositionQueueView;
 -(void) showSearchViewControllerWithTerm:(NSString*)term;
+
 
 @end
