@@ -20,8 +20,8 @@
 
 -(id)initWithRootViewController:(UIViewController*)root;
 
--(void)addOverlay:(UIView*)view;
--(void)removeOverlay;
+-(void)addVideoOverlayWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController andIndexPath:(NSIndexPath *)indexPath;
+-(void)removeVideoOverlayController;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 

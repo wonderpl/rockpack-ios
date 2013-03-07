@@ -82,7 +82,6 @@
 
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
 
-- (IBAction) dismissVideoViewer;
 
 - (void) createChannel:(Channel*)channel;
 

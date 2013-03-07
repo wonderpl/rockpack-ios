@@ -17,6 +17,8 @@
 #import "SYNSoundPlayer.h"
 #import "SYNSuggestionsPopoverBackgroundView.h"
 
+#import "SYNVideoViewerViewController.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
@@ -26,6 +28,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 
 
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
@@ -267,17 +270,57 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }];
 }
 
--(void)addOverlay:(UIView*)view
+-(void)addVideoOverlayWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController andIndexPath:(NSIndexPath *)indexPath
 {
-    [self.overlayView addSubview:view];
-    self.overlayView.userInteractionEnabled = YES;
+    
+    
+    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
+                                                                                          selectedIndexPath: (NSIndexPath *) indexPath];
+    [self.overlayView addSubview:self.videoViewerViewController.view];
+    
+    
+    self.videoViewerViewController.view.alpha = 0.0f;
+    
+    
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         self.videoViewerViewController.view.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                        
+                          [self.videoViewerViewController.closeButton addTarget: self
+                                                                         action: @selector(removeVideoOverlayController)
+                                                               forControlEvents: UIControlEventTouchUpInside];
+                          
+                         
+                         self.overlayView.userInteractionEnabled = YES;
+                         
+                     }];
 }
 
--(void)removeOverlay
+-(void)removeVideoOverlayController
 {
     UIView* child = self.overlayView.subviews[0];
-    [child removeFromSuperview];
+    
     self.overlayView.userInteractionEnabled = NO;
+    
+    [UIView animateWithDuration: 0.25f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         child.alpha = 0.0f;
+                     }
+                     completion: ^(BOOL finished) {
+         
+                        
+                         self.videoViewerViewController = nil;
+                     }];
 }
 
 - (IBAction) userTouchedNotificationButton: (UIButton*) button

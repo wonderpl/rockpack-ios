@@ -21,7 +21,6 @@
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoQueueViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
-#import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
@@ -36,7 +35,6 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 
 
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
 @end
@@ -311,46 +309,10 @@
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
     
-    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: self.fetchedResultsController
-                                                                                          selectedIndexPath: (NSIndexPath *) selectedIndexPath];
-    
-    self.videoViewerViewController.view.alpha = 0.0f;
-    
-    [masterViewController addOverlay:self.videoViewerViewController.view];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoViewerViewController.view.alpha = 1.0f;
-     }
-     completion: ^(BOOL finished)
-     {
-         [self.videoViewerViewController.closeButton addTarget: self
-                                                        action: @selector(dismissVideoViewer)
-                                              forControlEvents: UIControlEventTouchUpInside];
-     }];
+    [masterViewController addVideoOverlayWithFetchedResultsController:self.fetchedResultsController andIndexPath:selectedIndexPath];
 }
 
-- (IBAction) dismissVideoViewer
-{
-    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
-    
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoViewerViewController.view.alpha = 0.0f;
-     }
-     completion: ^(BOOL finished)
-     {
-         [masterViewController removeOverlay];
-         self.videoViewerViewController = nil;
-     }];
 
-}
 
 
 #pragma mark - Initialisation
