@@ -17,9 +17,8 @@
     
 }
 
-
--(void)addWord:(NSString*)word;
 -(void)addWords:(NSArray*)words;
+-(void)clearWords;
 
 -(NSString*)getWordAtIndex:(NSInteger)index;
 
