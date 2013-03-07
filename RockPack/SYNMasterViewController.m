@@ -474,15 +474,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 
     
+    
     if ([self.searchTextField.text isEqualToString:@""])
         return NO;
+    
+    [self.autocompleteTimer invalidate];
+    self.autocompleteTimer = nil;
     
     [((SYNBottomTabViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
     
     [textField resignFirstResponder];
     
-    if(self.autocompletePopoverController)
+    if(self.autocompletePopoverController) {
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
+        self.autocompletePopoverController = nil;
+    }
+        
     
     
     return YES;
