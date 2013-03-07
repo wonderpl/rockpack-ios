@@ -22,6 +22,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#define kAutocompleteTime 0.2
+
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
@@ -33,6 +35,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
+
+@property (nonatomic, strong) NSTimer* autocompleteTimer;
 
 
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
@@ -51,6 +55,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, weak) UIViewController* currentOverlayController;
 
 
+
 @property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
 @property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
 
@@ -60,6 +65,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @synthesize rootViewController = rootViewController;
 @synthesize notificationsPopoverController = notificationsPopoverController;
+@synthesize autocompleteTimer;
 
 #pragma mark - Initialise
 
@@ -78,6 +84,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         
         self.autocompleteController.tableView.delegate = self;
+        
+        
         
     }
     return self;
@@ -405,57 +413,83 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
 {
- 
-    NSMutableString* stringJustTyped = [NSMutableString stringWithString:textField.text];
-    [stringJustTyped appendString:newCharacter];
+    // 1. Do not accept blank characters at the beggining of the field
     
-    [appDelegate.networkEngine getAutocompleteForHint:stringJustTyped forResource:EntityTypeVideo withComplete:^(NSArray* array) {
-        
-        NSArray* suggestionsReturned = [array objectAtIndex:1];
-        
-        NSMutableArray* wordsReturned = [NSMutableArray array];
-        
-        for (NSArray* suggestion in suggestionsReturned) {
-            [wordsReturned addObject:[suggestion objectAtIndex:0]];
-        }
-        
-        
-        [self.autocompleteController addWords:wordsReturned];
-        
-        if(!self.autocompletePopoverController)
-            [self showAutocompletePopover];
-        
-        
-        
-        
-    } andError:^(NSError* error) {
-        [self.notificationsPopoverController dismissPopoverAnimated:YES];
-    }];
+    if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
+        return NO;
     
+    if(self.autocompleteTimer) {
+        [self.autocompleteTimer invalidate];
+    }
+    
+    self.autocompleteTimer = [NSTimer scheduledTimerWithTimeInterval:kAutocompleteTime
+                                                              target:self
+                                                            selector:@selector(performAutocompleteSearch:)
+                                                            userInfo:nil
+                                                             repeats:NO];
     return YES;
 }
 
-
+-(void)performAutocompleteSearch:(NSTimeInterval*)interval
+{
+    
+    [self.autocompleteTimer invalidate];
+    
+    self.autocompleteTimer = nil;
+    
+    
+    [appDelegate.networkEngine getAutocompleteForHint:self.searchTextField.text
+                                          forResource:EntityTypeVideo
+                                         withComplete:^(NSArray* array) {
+        
+                                             NSArray* suggestionsReturned = [array objectAtIndex:1];
+        
+                                             NSMutableArray* wordsReturned = [NSMutableArray array];
+                                             
+                                             if(suggestionsReturned.count == 0) {
+                                                 [self.autocompleteController clearWords];
+                                                 
+                                                 [self.autocompletePopoverController dismissPopoverAnimated:NO];
+                                                 return;
+                                             }
+        
+                                             for (NSArray* suggestion in suggestionsReturned)
+                                                 [wordsReturned addObject:[suggestion objectAtIndex:0]];
+                                             
+                                             [self.autocompleteController addWords:wordsReturned];
+        
+                                             [self showAutocompletePopover];
+        
+        
+                                         } andError:^(NSError* error) {
+                                             
+                                             [self.notificationsPopoverController dismissPopoverAnimated:YES];
+                                         
+                                         }];
+    
+    
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
 
     
-    NSString* searchTerm = self.searchTextField.text;
     
-    // remove whitespace from beginning and end of string so as to check easily if it is blank
-    searchTerm = [searchTerm stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-    
-    if ([searchTerm isEqualToString:@""])
+    if ([self.searchTextField.text isEqualToString:@""])
         return NO;
+    
+    [self.autocompleteTimer invalidate];
+    self.autocompleteTimer = nil;
     
     [((SYNBottomTabViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
     
     [textField resignFirstResponder];
     
-    if(self.autocompletePopoverController)
+    if(self.autocompletePopoverController) {
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
+        self.autocompletePopoverController = nil;
+    }
+        
     
     
     return YES;
@@ -584,8 +618,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)showAutocompletePopover
 {
+    // 1. This only adds the popover and not the data, so if it is on, exit
+    if(self.autocompletePopoverController)
+        return;
     
-    // 1. Add a UINavigationController to add the title at the top of the Popover.
+    // 2. Add a UINavigationController to add the title at the top of the Popover.
     
     UINavigationController* controllerForTitle = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
     
@@ -600,6 +637,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                         inView: self.view
                                       permittedArrowDirections: UIPopoverArrowDirectionUp
                                                       animated: YES];
+}
+
+-(void)hideAutocompletePopover
+{
+    if(!self.autocompletePopoverController)
+        return;
+    
+    [self.autocompletePopoverController dismissPopoverAnimated:YES];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
