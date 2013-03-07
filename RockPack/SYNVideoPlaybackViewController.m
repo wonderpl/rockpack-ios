@@ -552,7 +552,7 @@
 - (void) webView: (UIWebView *) webView
          didFailLoadWithError: (NSError *) error
 {
-    DebugLog(@"YouTube webview failed to load - %@", [error description]);
+//    DebugLog(@"YouTube webview failed to load - %@", [error description]);
 }
 
 
@@ -561,7 +561,7 @@
 - (void) handleCurrentYouTubePlayerEventNamed: (NSString *) actionName
                                     eventData: (NSString *) actionData
 {
-    NSLog (@"*** Current YTPlayer: %@ : %@", actionName, actionData);
+//    DebugLog (@"*** Current YTPlayer: %@ : %@", actionName, actionData);
     
     if ([actionName isEqualToString: @"ready"])
     {
@@ -638,7 +638,7 @@
 - (void) handleNextYouTubePlayerEventNamed: (NSString *) actionName
                                     eventData: (NSString *) actionData
 {
-    NSLog (@"++++ Next YTPlayer: %@ : %@", actionName, actionData);
+//    DebugLog (@"++++ Next YTPlayer: %@ : %@", actionName, actionData);
     
     if ([actionName isEqualToString: @"ready"])
     {
@@ -651,7 +651,7 @@
         // Now handle the different state changes
         if ([actionData isEqualToString: @"unstarted"])
         {
-            NSLog (@"--- Next video ready to play");
+            DebugLog (@"--- Next video ready to play");
             self.nextVideoWebViewReadyToPlay = TRUE;
         }
         else if ([actionData isEqualToString: @"ended"])
@@ -735,7 +735,7 @@
     // then start to preload the next video
     if (bufferLevel == 1.0f && self.nextVideoWebView == nil)
     {
-        NSLog (@"*** Buffer full");
+        DebugLog (@"*** Buffer full");
         [self precacheNextVideo];
     }
 }
@@ -758,10 +758,11 @@
 {
     if (self.nextVideoWebViewReadyToPlay == FALSE)
     {
-        NSLog(@"*** Next video not ready");
+//        DebugLog(@"*** Next video not ready");
     }
+    else
     {
-        NSLog(@"*** Next video ready");
+//        DebugLog(@"*** Next video ready");
         UIWebView *oldVideoWebView = self.currentVideoWebView;
         self.currentVideoWebView = self.nextVideoWebView;
         self.nextVideoWebView = nil;

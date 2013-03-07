@@ -136,12 +136,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 {
     if (self.video.videoInstances.count == 1)
     {
-        DebugLog(@"Single reference to Video, will be deleted");
         [self.managedObjectContext deleteObject: self.video];
-    }
-    else
-    {
-        DebugLog(@"Multiple references to Video object, not deleted");
     }
 }
 

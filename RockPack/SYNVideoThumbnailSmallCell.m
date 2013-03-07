@@ -9,10 +9,19 @@
 #import "SYNVideoThumbnailSmallCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "UIImage+ImageProcessing.h"
+
+
+@interface SYNVideoThumbnailSmallCell ()
+
+@property (nonatomic, strong) IBOutlet UIView *mainView;
+@property (nonatomic, strong) IBOutlet UIImage *colourImage;
+@property (nonatomic, strong) IBOutlet UIImage *monochromeImage;
+
+@end
+
 
 @implementation SYNVideoThumbnailSmallCell
-
-
 
 - (void) awakeFromNib
 {
@@ -25,23 +34,50 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-//    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-//                   placeHolderImage: nil];
-    if (self.isColour == TRUE)
+    __weak SYNVideoThumbnailSmallCell *weakSelf = self;
+    
+    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+     completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
+     {
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+         {
+             // Do any image processing on a background thread
+             weakSelf.colourImage = fetchedImage;
+             weakSelf.monochromeImage = fetchedImage.imageBlackAndWhite;
+             
+             dispatch_async(dispatch_get_main_queue(), ^
+             {
+                 if (!isInCache)
+                 {
+                     [UIView transitionWithView: weakSelf.imageView.superview
+                                       duration: kFromCacheAnimationDuration
+                                        options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
+                      {
+                          [weakSelf displayThumbnail: weakSelf.isColour];
+                      }
+                      completion: nil];
+                 }
+                 else
+                 {
+                    [weakSelf displayThumbnail: weakSelf.isColour];
+                 }
+             });
+         });
+      }
+      errorHandler: nil];
+}
+
+- (void) displayThumbnail: (BOOL) isColour
+{
+    if (isColour)
     {
-        [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                       placeHolderImage: nil
-                            usingEngine: nil
-                              animation: YES
-                             monochrome: FALSE];
+        self.imageView.image = self.colourImage;
+        self.mainView.alpha = 1.0f;
     }
     else
     {
-        [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                       placeHolderImage: nil
-                            usingEngine: nil
-                              animation: YES
-                             monochrome: TRUE];
+        self.imageView.image = self.monochromeImage;
+        self.mainView.alpha = 0.6f;
     }
 }
 

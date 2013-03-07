@@ -169,7 +169,7 @@
         NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
                                                                   inDomains: NSUserDomainMask] lastObject];
         
-        storeURL = [storeURL URLByAppendingPathComponent: @"PPRecipes.sqlite"];
+        storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
         
         if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
         {

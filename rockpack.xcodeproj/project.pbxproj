@@ -382,7 +382,6 @@
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
 		01EA81D416B9773E0069AFF9 /* SYNChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */; };
 		01EA81D816B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EA81D716B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m */; };
-		01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */; };
 		01EC6237166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m */; };
 		01EC6238166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EC6236166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib */; };
 		01F014FE167F22E800A85774 /* MessageDragAndDrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F014FD167F22E800A85774 /* MessageDragAndDrop.png */; };
@@ -916,8 +915,6 @@
 		01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDetailViewController.m; sourceTree = "<group>"; };
 		01EA81D616B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractChannelsDetailsEditViewController.h; sourceTree = "<group>"; };
 		01EA81D716B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractChannelsDetailsEditViewController.m; sourceTree = "<group>"; };
-		01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMyRockpackChannelDetailViewController.h; sourceTree = "<group>"; };
-		01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMyRockpackChannelDetailViewController.m; sourceTree = "<group>"; };
 		01EC6234166EAAA5003154B1 /* SYNAbstractChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractChannelsDetailViewController.h; sourceTree = "<group>"; };
 		01EC6235166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractChannelsDetailViewController.m; sourceTree = "<group>"; };
 		01EC6236166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAbstractChannelsDetailViewController.xib; sourceTree = "<group>"; };
@@ -1800,8 +1797,6 @@
 			children = (
 				0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */,
 				0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */,
-				01EC6230166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.h */,
-				01EC6231166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m */,
 			);
 			name = You;
 			sourceTree = "<group>";
@@ -2883,7 +2878,6 @@
 				014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */,
 				01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */,
 				01B7CD97166E0FD6001F4AF0 /* SYNChannelHeaderView.m in Sources */,
-				01EC6232166E9E99003154B1 /* SYNMyRockpackChannelDetailViewController.m in Sources */,
 				01EC6237166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m in Sources */,
 				0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */,
 				0199F13B16721A4500E479C6 /* SYNHomeRootViewController.m in Sources */,

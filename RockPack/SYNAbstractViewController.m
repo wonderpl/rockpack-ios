@@ -393,7 +393,7 @@
 - (IBAction) userTouchedChannelButton: (UIButton *) channelButton
 {
     // Get to cell it self (from button subview)
-    UIView *v = channelButton.superview.superview;
+    UIView *v = channelButton.superview.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
@@ -420,7 +420,7 @@
     //    rockItButton.selected = !rockItButton.selected;
     
     // Get to cell it self (from button subview)
-    UIView *v = profileButton.superview.superview;
+    UIView *v = profileButton.superview.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
