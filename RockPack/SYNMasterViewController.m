@@ -349,7 +349,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          queueView.center = CGPointMake(queueView.center.x, queueView.center.y + queueView.frame.size.height * 0.5);
                          
-                         [self.overlayView addSubview:queueView];
+                         [self.view insertSubview:queueView aboveSubview:self.overlayView];
                          
                      }];
 }
@@ -359,6 +359,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
     
     UIView* child = self.overlayView.subviews[0];
+    
+    [self.videoViewerViewController.closeButton removeTarget: self
+                                                   action: @selector(removeVideoOverlayController)
+                                         forControlEvents: UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
@@ -376,6 +380,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         
                          self.videoViewerViewController = nil;
                          
+                         [child removeFromSuperview];
+                         
+                         [bottomTabViewController.videoQueueController.view removeFromSuperview];
                          
                          [bottomTabViewController repositionQueueView];
                          
