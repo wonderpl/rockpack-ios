@@ -13,17 +13,7 @@
 
 @implementation SYNIntegralCollectionViewFlowLayout
 
-//- (NSArray *) layoutAttributesForElementsInRect: (CGRect) rect
-//{
-//    NSArray *allAttrs = [super layoutAttributesForElementsInRect: rect];
-//    
-//    for (UICollectionViewLayoutAttributes *attributes in allAttrs)
-//    {
-//        attributes.frame = CGRectIntegral(attributes.frame);
-//    }
-//    
-//    return allAttrs;
-//}
+
 
 
 //  Solution #2 Inspired by...

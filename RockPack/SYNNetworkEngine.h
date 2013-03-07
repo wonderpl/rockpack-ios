@@ -8,15 +8,30 @@
 
 #import "MKNetworkEngine.h"
 
-typedef void (^JSONResponseBlock)(id jsonObject);
+#import "AppConstants.h"
+#import "SYNNetworkOperationJsonObject.h"
 
 @interface SYNNetworkEngine : MKNetworkEngine
 
--(id) initWithDefaultSettings;
+- (id) initWithDefaultSettings;
 
-- (void) updateHomeScreen;
-- (void) updateVideosScreen;
-- (void) updateChannelsScreen;
+- (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
+                              onError: (MKNKErrorBlock) errorBlock;
+
+- (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
+                              onError: (MKNKErrorBlock) errorBlock;
+
+- (void) updateVideosScreenForCategory:(NSString*)categoryId;
 - (void) updateChannel: (NSString *) resourceURL;
+- (void) updateChannelsScreenForCategory:(NSString*)category;
+
+- (void) searchVideosForTerm:(NSString*)searchTerm;
+- (void) searchChannelsForTerm:(NSString*)searchTerm;
+
+- (void) getAutocompleteForHint:(NSString*)hint
+                    forResource:(EntityType)entityType
+                   withComplete: (MKNKAutocompleteProcessBlock) completionBlock
+                       andError: (MKNKErrorBlock) errorBlock;
+
 
 @end

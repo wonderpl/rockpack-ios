@@ -8,18 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "SYNAbstractViewController.h"
+#import "SYNVideoQueueDelegate.h"
+#import "SYNVideoQueueViewController.h"
 
-@interface SYNBottomTabViewController : SYNAbstractViewController 
+@interface SYNBottomTabViewController : SYNAbstractViewController <SYNVideoQueueDelegate>
 
-@property (nonatomic, strong, readonly) UIButton *messageInboxButton;
 
-- (void) slideMessageInboxLeft: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) slideMessageInboxRight: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) slideShareMenuLeft: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) slideShareMenuRight: (UISwipeGestureRecognizer *) swipeGesture;
-- (void) toggleShareMenu;
-- (void) showBackButton;
-- (void) hideBackButton;
-- (IBAction) popCurrentViewController: (id) sender;
+@property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
+
+- (void) popCurrentViewController: (id) sender;
+- (void) repositionQueueView;
+-(void) showSearchViewControllerWithTerm:(NSString*)term;
+
 
 @end

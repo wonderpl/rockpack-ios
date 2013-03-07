@@ -5,6 +5,7 @@
 
 
 extern const struct AbstractCommonAttributes {
+	__unsafe_unretained NSString *markedForDeletion;
 	__unsafe_unretained NSString *uniqueId;
 } AbstractCommonAttributes;
 
@@ -17,6 +18,7 @@ extern const struct AbstractCommonFetchedProperties {
 
 
 
+
 @interface AbstractCommonID : NSManagedObjectID {}
 @end
 
@@ -25,6 +27,20 @@ extern const struct AbstractCommonFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (AbstractCommonID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* markedForDeletion;
+
+
+
+@property BOOL markedForDeletionValue;
+- (BOOL)markedForDeletionValue;
+- (void)setMarkedForDeletionValue:(BOOL)value_;
+
+//- (BOOL)validateMarkedForDeletion:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -48,6 +64,15 @@ extern const struct AbstractCommonFetchedProperties {
 @end
 
 @interface _AbstractCommon (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveMarkedForDeletion;
+- (void)setPrimitiveMarkedForDeletion:(NSNumber*)value;
+
+- (BOOL)primitiveMarkedForDeletionValue;
+- (void)setPrimitiveMarkedForDeletionValue:(BOOL)value_;
+
+
 
 
 - (NSString*)primitiveUniqueId;

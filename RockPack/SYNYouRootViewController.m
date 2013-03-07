@@ -8,19 +8,17 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
-#import "MBProgressHUD.h"
-#import "SYNChannelThumbnailCell.h"
 #import "SYNAbstractChannelsDetailViewController.h"
-#import "SYNMyRockpackCell.h"
-#import "SYNVideoDB.h"
+#import "SYNChannelThumbnailCell.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "UIImageView+ImageProcessing.h"
 
 @interface SYNYouRootViewController ()
 
 @property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollection;
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
@@ -30,6 +28,60 @@
 
 #pragma mark - View lifecycle
 
+-(void)loadView
+{
+    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(251.0, 302.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
+    flowLayout.minimumLineSpacing = 3.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    CGRect collectionViewFrame = CGRectMake(0.0, 84.0, 1024.0, 600.0);
+    
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
+    self.channelThumbnailCollectionView.dataSource = self;
+    self.channelThumbnailCollectionView.delegate = self;
+    
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    
+    [self.view addSubview:self.channelThumbnailCollectionView];
+}
+
+
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    NSError *error = nil;
+    
+    // Return cached version if we have already created one
+    if (fetchedResultsController != nil)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", @"Channels"]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                               managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                 sectionNameKeyPath: nil
+                                                                                          cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    ZAssert([fetchedResultsController performFetch: &error], @"YouRootViewController failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -38,7 +90,7 @@
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.channelThumbnailCollection registerNib: thumbnailCellNib
+    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                       forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
     
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
@@ -48,29 +100,14 @@
 }
 
 
-#pragma mark - Core Data Support
-
-- (NSPredicate *) channelFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Channels\""];
-}
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
 
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) view
-      numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.channelFetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
-    
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+    return sectionInfo.numberOfObjects;
 }
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
@@ -78,11 +115,10 @@
     return 1;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
@@ -111,10 +147,9 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView
-didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -125,7 +160,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
     
@@ -158,7 +193,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (!indexPath)
@@ -168,8 +203,8 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     
     [self toggleChannelRockItAtIndex: indexPath];
     
-    Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = channel.rockedByUserValue;
     cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
@@ -185,7 +220,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         
         DebugLog (@"UIGestureRecognizerStateBegan");
         // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.channelThumbnailCollection indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollection]];
+        NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.channelThumbnailCollectionView]];
         
         if (!indexPath)
         {
@@ -194,15 +229,15 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         
         self.pinchedIndexPath = indexPath;
         
-        Channel *channel = [self.channelFetchedResultsController objectAtIndexPath: indexPath];
-        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollection cellForItemAtIndexPath: indexPath];
+        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
         
         // Get the various frames we need to calculate the actual position
         CGRect imageViewFrame = channelCell.imageView.frame;
         CGRect viewFrame = channelCell.superview.frame;
         CGRect cellFrame = channelCell.frame;
         
-        CGPoint offset = self.channelThumbnailCollection.contentOffset;
+        CGPoint offset = self.channelThumbnailCollectionView.contentOffset;
         
         // Now add them together to get the real pos in the top view
         imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
@@ -210,8 +245,8 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;
-        [self.pinchedView setImageFromURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
-                         placeHolderImage: nil];
+        [self.pinchedView setAsynchronousImageFromURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+                                     placeHolderImage: nil];
         // now add the item to the view
         [self.view addSubview: self.pinchedView];
     }

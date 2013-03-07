@@ -21,10 +21,11 @@
 
 @interface SYNHomeRootViewController ()
 
-@property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
 @property (nonatomic, assign) BOOL refreshing;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -33,10 +34,8 @@
 
 #pragma mark - View lifecycle
 
-- (void) viewDidLoad
+- (void) loadView
 {
-    [super viewDidLoad];
-    
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
@@ -44,7 +43,25 @@
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
-    self.videoThumbnailCollectionView.collectionViewLayout = standardFlowLayout;
+    CGRect videoCollectionViewFrame = CGRectMake(0.0, 44.0, 1024.0, 642.0);
+    
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
+    self.videoThumbnailCollectionView.delegate = self;
+    self.videoThumbnailCollectionView.dataSource = self;
+    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    [self.view addSubview:self.videoThumbnailCollectionView];
+    
+    // We should only setup our date formatter once
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss Z";
+}
+
+
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
@@ -69,31 +86,8 @@
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNHomeSectionHeaderView"];
-}
-
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
-    
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
-    
-    [appDelegate.networkEngine updateHomeScreen];
-}
-
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    [super viewWillDisappear: animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kDataUpdated
-                                                  object: nil];
+    [self refreshVideoThumbnails];
 }
 
 
@@ -101,7 +95,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
 }
-\
+
 - (BOOL) hasVideoQueue
 {
     return TRUE;
@@ -109,70 +103,66 @@
 
 - (void) refreshVideoThumbnails
 {
-    self.refreshing = TRUE;
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+    [self startRefreshCycle];
     
-    [self.refreshControl beginRefreshing];
-    
-    self.timer = [NSTimer timerWithTimeInterval: 5.0f
-                            target: self
-                          selector: @selector(refreshVideoThumbnailsFinished)
-                          userInfo: nil
-                           repeats: NO];
-    
-    NSRunLoop * theRunLoop = [NSRunLoop currentRunLoop];
-    
-    [theRunLoop addTimer: self.timer
-                 forMode: NSDefaultRunLoopMode];
+    [appDelegate.networkEngine updateHomeScreenOnCompletion: ^
+    {
+         // TODO: Might want to put in some error reporting here
+         [self endRefreshCycle];
+     }
+     onError: ^(NSError *error)
+     {
+         [self endRefreshCycle];
+     }];
 }
 
-- (void) refreshVideoThumbnailsFinished
+- (void) startRefreshCycle
 {
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: FALSE];
+    self.refreshing = TRUE;
+    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
+    [self.refreshControl beginRefreshing];
+}
+
+- (void) endRefreshCycle
+{
     self.refreshing = FALSE;
+    [self.supplementaryViewWithRefreshButton spinRefreshButton: FALSE];
     [self.refreshControl endRefreshing];
 }
 
-#pragma mark - Core Data support
+#pragma mark - Fetched results
 
 
-// Not sure that
-- (NSPredicate *) channelFetchedResultsControllerPredicate
+- (NSFetchedResultsController *) fetchedResultsController
 {
-    // Don't show any user generated channels
-    return [NSPredicate predicateWithFormat: @"viewId != \"Home\""];
-}
-
-
-- (NSArray *) channelFetchedResultsControllerSortDescriptors
-{
-    // Sort by index
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
-
-
-// The following 2 methods are called by the abstract class' getFetchedResults controller methods
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-//    // No predicate
-//    return nil;
-        return [NSPredicate predicateWithFormat: @"viewId == \"Home\""];
-}
-
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"dateAdded"
-                                                                   ascending: NO];
-    return @[sortDescriptor];
-}
-
-- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
-{
-//    return @"daysAgo";
-    return @"dateAddedIgnoringTime";
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    
+    fetchRequest.sortDescriptors = @[
+                                     [[NSSortDescriptor alloc] initWithKey: @"dateAdded" ascending: NO]
+                                     ];
+    
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: @"dateAddedIgnoringTime"
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"videoInstanceFetchedResultsController:performFetch failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
 }
 
 
@@ -182,7 +172,7 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        return self.videoInstanceFetchedResultsController.sections.count;
+        return self.fetchedResultsController.sections.count;
     }
     else
     {
@@ -201,8 +191,8 @@
     {
         if (collectionView == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
-            return [sectionInfo numberOfObjects];
+            id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+            return sectionInfo.numberOfObjects;
         }
         else
         {
@@ -231,14 +221,6 @@
 }
 
 
-//- (void) collectionView: (UICollectionView *) collectionView
-//         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    // XXX
-//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-//    
-//    [self displayVideoViewer: videoInstance];
-//}
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
@@ -260,20 +242,20 @@
             viewForSupplementaryElementOfKind: (NSString *) kind
                                   atIndexPath: (NSIndexPath *) indexPath
 {
+    
     UICollectionReusableView *sectionSupplementaryView = nil;
     
     if (collectionView == self.videoThumbnailCollectionView)
     {
         // Work out the day
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.videoInstanceFetchedResultsController sections] objectAtIndex: indexPath.section];
+        id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex: indexPath.section];
         
         // In the 'name' attribut of the sectionInfo we have actually the keypath data (i.e in this case Date without time)
         
         // TODO: We might want to optimise this instead of creating a new date formatter each time
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+
         
-        NSDate *date = [dateFormatter dateFromString: sectionInfo.name];
+        NSDate *date = [self.dateFormatter dateFromString: sectionInfo.name];
         
         SYNHomeSectionHeaderView *headerSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                                withReuseIdentifier: @"SYNHomeSectionHeaderView"
@@ -383,7 +365,7 @@
     
     [self toggleVideoRockItAtIndex: indexPath];
     
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
     cell.rockItButton.selected = videoInstance.video.starredByUserValue;
@@ -401,31 +383,7 @@
 }
 
 
-#pragma mark - Video Queue animation
 
-- (void) slideVideoQueueUp
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-    
-    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height -= kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
-}
-
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
-    
-    // Slide video queue view downwards (and expand any other dependent visible views)
-    CGRect viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
-}
 
 
 @end

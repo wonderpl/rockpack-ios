@@ -9,13 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "SYNTabImageView.h"
 #import "SYNAbstractViewController.h"
+#import "SYNTabViewDelegate.h"
+#import "SYNCategoriesTabView.h"
+#import "SYNCategoriesTabViewController.h"
+#import "SYNTabViewController.h"
+#import "SYNTabView.h"
 
-@interface SYNAbstractTopTabViewController : SYNAbstractViewController
+@interface SYNAbstractTopTabViewController : SYNAbstractViewController <SYNTabViewDelegate> {
+    @protected BOOL tabExpanded;
+    @protected SYNTabViewController* tabViewController;
+}
 
-//@property (nonatomic, strong) SYNTabImageView *topTabView;
-@property (nonatomic, strong) UIImageView *topTabView;
-@property (nonatomic, strong) UIImageView *topTabHighlightedView;
+@property (nonatomic, strong) SYNTabViewController* tabViewController;
 
 - (void) highlightTab: (int) tabIndex;
+-(void)handleNewTabSelectionWithId:(NSString*)selectionId;
+
 
 @end

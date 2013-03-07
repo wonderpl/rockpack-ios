@@ -11,48 +11,61 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
+#import "SYNCategoryItemView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
-#import "SYNVideoDB.h"
+#import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
-#import "SYNWallpackCarouseHorizontallLayout.h"
-#import "SYNWallpackCarouselCell.h"
+#import "Subcategory.h"
 #import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+
 
 @interface SYNVideosRootViewController () <UIGestureRecognizerDelegate,
                                            UIScrollViewDelegate,
                                            UIWebViewDelegate>
 
-@property (nonatomic, assign, getter = isLargeVideoViewExpanded) BOOL largeVideoViewExpanded;
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *videoPlaceholderImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
-@property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
-@property (nonatomic, strong) NSIndexPath *currentIndexPath;
-@property (nonatomic, strong) IBOutlet UIButton *largeVideoPlayButton;
+@property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 
 @end
 
 @implementation SYNVideosRootViewController
+
+#pragma mark - Init
+
+- (id) initWithViewId: (NSString *) vid
+{
+    if ((self = [super initWithNibName: @"SYNVideosRootViewController"
+                               bundle: nil]))
+    {
+        viewId = vid;
+    }
+    
+    return self;
+}
+
 
 #pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
@@ -70,16 +83,6 @@
     self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    
-    // Set up large video view
-    self.videoWebView.backgroundColor = [UIColor blackColor];
-	self.videoWebView.opaque = NO;
-    self.videoWebView.scrollView.scrollEnabled = false;
-    self.videoWebView.scrollView.bounces = false;
-    self.videoWebView.alpha = 0.0f;
-    self.videoWebView.delegate = self;
-    self.largeVideoPlayButton.alpha = 1.0f;
-    self.largeVideoPlayButton.enabled = FALSE;
 
     // Init video thumbnail collection view
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
@@ -87,28 +90,13 @@
 
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
-}
+    
+    // New video playback view controller
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(13, 11, 494, 278)];
+    
+    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
+                               aboveSubview: self.panelImageView];
 
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
-    
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
-    
-    [appDelegate.networkEngine updateVideosScreen];
-    
-    // Set the first video
-    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
-    {
-        [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
-                                                           inSection: 0]];
-    }
 }
 
 
@@ -116,27 +104,59 @@
 {
     [super viewDidAppear: animated];
     
-    [self.videoThumbnailCollectionView reloadData];
-}
-
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    [super viewWillDisappear: animated];
+    [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
     
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kDataUpdated
-                                                  object: nil];
+
+    [self reloadCollectionViews];
 }
+
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    if (fetchedResultsController != nil)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    
+    ZAssert([fetchedResultsController performFetch: &error], @"Videos Root FetchRequest failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
+
+
+#pragma mark - Reload
 
 
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
     
+    NSArray *videoInstances = self.fetchedResultsController.fetchedObjects;
     // Set the first video
-    if (self.videoInstanceFetchedResultsController.fetchedObjects.count > 0)
-    {
+    if (videoInstances.count > 0)
+    {       
+        [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+                                                                selectedIndexPath: self.currentIndexPath
+                                                                         autoPlay: TRUE];
+        
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
                                                            inSection: 0]];
     }
@@ -148,32 +168,9 @@
 }
 
 
-#pragma mark - Core Data support
-
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate
-{
-    return [NSPredicate predicateWithFormat: @"viewId == \"Videos\""];
-}
-
-
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                   ascending: YES];
-    return @[sortDescriptor];
-}
-
-- (NSString *) videoInstanceFetchedResultsControllerSectionNameKeyPath
-{
-    //    return @"daysAgo";
-    return nil;
-}
-
-
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
+- (NSInteger) collectionView: (UICollectionView *)collectionView numberOfItemsInSection: (NSInteger) section
 {
     // See if this can be handled in our abstract base class
     int items = [super collectionView: collectionView
@@ -183,7 +180,7 @@
     {
         if (collectionView == self.videoThumbnailCollectionView)
         {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.videoInstanceFetchedResultsController sections][section];
+            id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
             items = [sectionInfo numberOfObjects];
         }
         else
@@ -194,6 +191,7 @@
     
     return items;
 }
+
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
@@ -217,28 +215,6 @@
 }
 
 
-- (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    // See if this can be handled in our abstract base class
-    BOOL handledInSuperview = [super collectionView: (UICollectionView *) collectionView
-                   didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath];
-    
-    if (!handledInSuperview)
-    {
-        // Check to see if is one that we can handle
-        if (collectionView == self.videoThumbnailCollectionView)
-        {
-            [self setLargeVideoToIndexPath: indexPath];
-        }
-        else
-        {
-            AssertOrLog(@"Trying to select unexpected collection view");
-        }
-    }
-}
-
-
 #pragma mark - User interface
 
 - (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath
@@ -247,13 +223,8 @@
     {        
         self.currentIndexPath = indexPath;
         
+        [self.videoPlaybackViewController playVideoAtIndex: indexPath];
         [self updateLargeVideoDetailsForIndexPath: indexPath];
-        
-        VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-        
-        [self loadWebViewWithJSAPIUsingYouTubeId: videoInstance.video.sourceId
-                                           width: 494
-                                          height: 278];
     }
 }
 
@@ -274,7 +245,7 @@
         self.draggedView = [[UIImageView alloc] initWithFrame: frame];
         self.draggedView.alpha = 0.7;
         
-        Video *video = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        Video *video = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
         self.draggedView.image = video.thumbnailImage;
         
         // now add the item to the view
@@ -335,33 +306,22 @@
 - (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
     [self showVideoQueue: TRUE];
-    [self startVideoQueueDismissalTimer];
     
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: self.currentIndexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
-//- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
-//{
-//    [self showVideoQueue: TRUE];
-//    [self startVideoQueueDismissalTimer];
-//    
-//    UIView *v = addItButton.superview.superview;
-//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-//    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
-//    [self animateVideoAdditionToVideoQueue: videoInstance];
-//}
 
 - (void) updateLargeVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.titleLabel.text = videoInstance.title;
     self.channelLabel.text = videoInstance.channel.title;
     self.userNameLabel.text = videoInstance.channel.channelOwner.name;
     
-    [self.channelImageView setImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                          placeHolderImage: nil];
+    [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                      placeHolderImage: nil];
     
     [self updateLargeVideoRockpackForIndexPath: indexPath];
 }
@@ -369,7 +329,7 @@
 
 - (void) updateLargeVideoRockpackForIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
     self.rockItButton.selected = videoInstance.video.starredByUserValue;
@@ -393,7 +353,7 @@
 
 - (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.videoInstanceFetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -434,208 +394,62 @@
 }
 
 
+- (IBAction) userTouchedLargeVideoChannelButton: (UIButton *) channelButton
+{    
+    // Bail if we don't have an index path
+    if (self.currentIndexPath)
+    {
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        
+        [self viewChannelDetails:
+         videoInstance.channel];
+    }
+}
+
+
 // Buttons activated from scrolling list of thumbnails
 
 #pragma mark - Video queue animation
 
-- (void) slideVideoQueueUp
+
+
+
+-(void)handleMainTap:(UITapGestureRecognizer *)recogniser
 {
-     CGRect videoQueueViewFrame = self.videoQueueView.frame;
-     videoQueueViewFrame.origin.y -= kVideoQueueEffectiveHeight;
-     self.videoQueueView.frame = videoQueueViewFrame;
-
-     CGRect viewFrame = self.largeVideoPanelView.frame;
-     viewFrame.size.height -= kVideoQueueEffectiveHeight;
-     self.largeVideoPanelView.frame = viewFrame;
-
-     viewFrame = self.videoThumbnailCollectionView.frame;
-     viewFrame.size.height -= kVideoQueueEffectiveHeight;
-     self.videoThumbnailCollectionView.frame = viewFrame;
-}
-
-
-- (void) slideVideoQueueDown
-{
-    CGRect videoQueueViewFrame = self.videoQueueView.frame;
-    videoQueueViewFrame.origin.y += kVideoQueueEffectiveHeight;
-    self.videoQueueView.frame = videoQueueViewFrame;
+    [super handleMainTap:recogniser];
     
-    // Slide video queue view downwards (and expand any other dependent visible views)
-    CGRect viewFrame = self.largeVideoPanelView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.largeVideoPanelView.frame = viewFrame;
+    if(tabExpanded || ![self showSubcategories])
+        return;
     
-    viewFrame = self.videoThumbnailCollectionView.frame;
-    viewFrame.size.height += kVideoQueueEffectiveHeight;
-    self.videoThumbnailCollectionView.frame = viewFrame;
-}
-
-
-#pragma mark - Video support
-
-- (void) loadWebViewWithIFrameUsingYouTubeId: (NSString *) videoId
-                                       width: (int) width
-                                      height: (int) height
-{
-    NSDictionary *parameterDictionary = @{@"autoplay" : @"1",
-                                          @"modestbranding" : @"1",
-                                          @"origin" : @"http://example.com\\",
-                                          @"showinfo" : @"0"};
-    
-    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
-    
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId, parameterString];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: nil];
-}
-
-
-- (void) loadWebViewWithJSAPIUsingYouTubeId: (NSString *) videoId
-                                      width: (int) width
-                                     height: (int) height
-{
-    NSError *error = nil;
-    
-    // Show placeholder, but not webview (wait until that has loaded)
-    self.videoWebView.alpha = 0.0f;
-    self.videoPlaceholderImageView.alpha = 1.0f;
-    self.largeVideoPlayButton.alpha = 1.0f;
-    
-    // Setup placeholder
-    // http://img.youtube.com/vi/<videoid>/0.jpg
-    
-    NSString *placeholderURLString = [NSString stringWithFormat: @"http://img.youtube.com/vi/%@/0.jpg", videoId];
-    
-    [self.videoPlaceholderImageView setImageFromURL: [NSURL URLWithString: placeholderURLString]
-                                   placeHolderImage: nil];
-    
-    // Now set up web view
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayerNoAutoplay"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: [NSURL URLWithString:@"http://www.youtube.com"]];
-    
-    self.videoWebView.mediaPlaybackRequiresUserAction = FALSE;
-}
-
-
-- (void) loadWebViewWithIFrameUsingVimeoId: (NSString *) videoId
-                                     width: (int) width
-                                    height: (int) height
-{
-    NSString *parameterString = @"";
-    
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, videoId, parameterString, width, height];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: nil];
-}
-
-
-- (NSString *) createParamStringFromDictionary: (NSDictionary *) params
-{
-    __block NSString *result = @"";
-    
-    [params enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop)
-     {
-         result = [result stringByAppendingFormat: @"%@=%@&", key, obj];
-     }];
-    
-    // Chop off last ampersand
-    result = [result substringToIndex: [result length] - 2];
-    return [result stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-}
-
-
-- (BOOL) webView: (UIWebView *) webView
-         shouldStartLoadWithRequest: (NSURLRequest *) request
-         navigationType: (UIWebViewNavigationType) navigationType
-{
-    // Break apart request URL
-    NSString *requestString = [[request URL] absoluteString];
-    NSArray *components = [requestString componentsSeparatedByString :@":"];
-    
-    // Check for your protocol
-    if ([components count] >= 3 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"rockpack"])
-    {
-        // Look for specific actions
-        NSString *parameter2 = (NSString *)[components objectAtIndex: 1];
-        if ([parameter2 isEqualToString: @"onStateChange"])
-        {            
-            NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
-            
-            if ([parameter3 isEqualToString: @"1"])
-            {
-                
-                [UIView animateWithDuration: 0.25f
-                                      delay: 0.0f
-                                    options: UIViewAnimationOptionCurveEaseInOut
-                                 animations: ^
-                 {
-                    [self.videoWebView stringByEvaluatingJavaScriptFromString: @"pauseVideo()"];
-//                    self.largeVideoPlayButton.alpha = 1.0f;
-                 }
-                 completion: ^(BOOL finished)
-                 {
-                     self.largeVideoPlayButton.enabled = TRUE;
-                 }];
-            }
-        }
-        
-        // Return 'NO' to prevent navigation
-        return NO;
-    }
-    
-    // Return 'YES', navigate to requested URL as normal
-    return YES;
-}
-
-- (IBAction) playLargeVideo: (id) sender
-{
-
-    
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
+    [UIView animateWithDuration: 0.4
+                          delay: 0.0
+                        options :UIViewAnimationCurveEaseInOut
                      animations: ^
-     {
-         [self.videoWebView stringByEvaluatingJavaScriptFromString: @"playVideo()"];
-         
-         // Contract thumbnail view
-         self.videoWebView.alpha = 1.0;
-         self.videoPlaceholderImageView.alpha = 0.0f;
-         self.largeVideoPlayButton.alpha = 0.0f;
-     }
-                     completion: ^(BOOL finished)
-     {
-        self.largeVideoPlayButton.enabled = FALSE;
-     }];
-
+    {
+        CGRect videoThumbnailCollectionViewFrame = self.videoThumbnailCollectionView.frame;
+        videoThumbnailCollectionViewFrame.origin.y += kCategorySecondRowHeight;
+        videoThumbnailCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+        self.videoThumbnailCollectionView.frame = videoThumbnailCollectionViewFrame;
+        
+        CGPoint currentLargeVideoCenter = self.largeVideoPanelView.center;
+        [self.largeVideoPanelView setCenter: CGPointMake(currentLargeVideoCenter.x, currentLargeVideoCenter.y + kCategorySecondRowHeight)];
+    }
+    completion: ^(BOOL result)
+    {
+        tabExpanded = YES;
+    }];
 }
 
+-(BOOL)showSubcategories
+{
+    return NO;
+}
+
+
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
+{
+    
+    [appDelegate.networkEngine updateVideosScreenForCategory:selectionId];
+}
 
 @end

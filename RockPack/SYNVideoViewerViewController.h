@@ -6,13 +6,14 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SYNAbstractViewController.h"
 
 @class VideoInstance;
 
-@interface SYNVideoViewerViewController : UIViewController
+@interface SYNVideoViewerViewController : SYNAbstractViewController
 
-- (id) initWithVideoInstance: (VideoInstance *) videoInstance;
+- (id) initWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
+                      selectedIndexPath: (NSIndexPath *) selectedIndexPath;
 
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
 

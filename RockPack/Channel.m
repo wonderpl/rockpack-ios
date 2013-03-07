@@ -21,7 +21,7 @@ static NSEntityDescription *channelEntity = nil;
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
-    NSLog (@"Creating Channel");
+    // DebugLog (@"Creating Channel");
     NSError *error = nil;
     
     // Get the unique id of this object from the dictionary that has been passed in
@@ -56,16 +56,17 @@ static NSEntityDescription *channelEntity = nil;
     if (matchingChannelEntries.count > 0)
     {
         instance = matchingChannelEntries[0];
-        NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+        // Mark this object so that it is not deleted in the post-import step
+        instance.markedForDeletionValue = FALSE;
+        
+        // NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
         
         // Check to see if we need to fill in the viewId
         if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
         {
             instance.viewId = viewId;
             
-//            if (instance.videoInstancesSet.count == 0)
-            {
-                NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+            NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
                 
                 // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
                 if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
@@ -87,7 +88,6 @@ static NSEntityDescription *channelEntity = nil;
                         }
                     }
                 }
-            }
         }
         else
         {
@@ -108,7 +108,7 @@ static NSEntityDescription *channelEntity = nil;
                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created Channel instance with id %@ and viewId &@", instance.uniqueId, instance.viewId);
+        // DebugLog(@"Created Channel instance with id %@ and viewId %@", instance.uniqueId, instance.viewId);
         
         return instance;
     }
@@ -227,12 +227,8 @@ static NSEntityDescription *channelEntity = nil;
     // Delete any channelOwners that are only associated with this channel
     if (self.channelOwner.channels.count == 1)
     {
-        DebugLog(@"Single reference to ChannelOwner, will be deleted");
+        // DebugLog(@"Single reference to ChannelOwner, will be deleted");
         [self.managedObjectContext deleteObject: self.channelOwner];
-    }
-    else
-    {
-        DebugLog(@"Multiple references to ChannelOwner object, not deleted");
     }
     
     // Delete any VideoInstances that are associated with this channel (I am assuming that as they only have a to-one relationship

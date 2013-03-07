@@ -5,11 +5,14 @@
 
 const struct VideoAttributes VideoAttributes = {
 	.categoryId = @"categoryId",
+	.dateUploaded = @"dateUploaded",
+	.duration = @"duration",
 	.source = @"source",
 	.sourceId = @"sourceId",
 	.starCount = @"starCount",
 	.starredByUser = @"starredByUser",
 	.thumbnailURL = @"thumbnailURL",
+	.viewCount = @"viewCount",
 };
 
 const struct VideoRelationships VideoRelationships = {
@@ -45,6 +48,11 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"durationValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"duration"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"starCountValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"starCount"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -52,6 +60,11 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 	}
 	if ([key isEqualToString:@"starredByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"starredByUser"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"viewCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"viewCount"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -64,6 +77,39 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 @dynamic categoryId;
 
+
+
+
+
+
+@dynamic dateUploaded;
+
+
+
+
+
+
+@dynamic duration;
+
+
+
+- (int64_t)durationValue {
+	NSNumber *result = [self duration];
+	return [result longLongValue];
+}
+
+- (void)setDurationValue:(int64_t)value_ {
+	[self setDuration:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveDurationValue {
+	NSNumber *result = [self primitiveDuration];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveDurationValue:(int64_t)value_ {
+	[self setPrimitiveDuration:[NSNumber numberWithLongLong:value_]];
+}
 
 
 
@@ -137,6 +183,32 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 @dynamic thumbnailURL;
 
+
+
+
+
+
+@dynamic viewCount;
+
+
+
+- (int64_t)viewCountValue {
+	NSNumber *result = [self viewCount];
+	return [result longLongValue];
+}
+
+- (void)setViewCountValue:(int64_t)value_ {
+	[self setViewCount:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveViewCountValue {
+	NSNumber *result = [self primitiveViewCount];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveViewCountValue:(int64_t)value_ {
+	[self setPrimitiveViewCount:[NSNumber numberWithLongLong:value_]];
+}
 
 
 

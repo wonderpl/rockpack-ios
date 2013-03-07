@@ -6,7 +6,11 @@
 //
 
 #import "LXReorderableCollectionViewFlowLayout.h"
+#import "SYNChannelCollectionBackgroundView.h"
+#import "UIView+Subviews.h"
 #import <QuartzCore/QuartzCore.h>
+
+#define USE_DECORATION_VIEWS
 
 #define LX_FRAMES_PER_SECOND 60.0
 
@@ -26,9 +30,20 @@ typedef NS_ENUM(NSInteger, LXReorderableCollectionViewFlowLayoutScrollingDirecti
     LXReorderableCollectionViewFlowLayoutScrollingDirectionRight
 };
 
+
 static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirectionKey = @"LXScrollingDirection";
 
 @implementation LXReorderableCollectionViewFlowLayout
+
+- (id) init
+{
+    if ((self = [super init]))
+    {
+        [self registerClass: [SYNChannelCollectionBackgroundView class] forDecorationViewOfKind: @"SemiOpaqueBackground"];
+    }
+        
+    return self;
+}
 
 - (void) setUpGestureRecognizersOnCollectionView
 {
@@ -95,6 +110,7 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
                         itemAtIndexPath: thePreviousSelectedIndexPath
                     willMoveToIndexPath: theIndexPathOfSelectedItem];
         }
+        
         [self.collectionView performBatchUpdates: ^
         {
             //[self.collectionView moveItemAtIndexPath:thePreviousSelectedIndexPath toIndexPath:theIndexPathOfSelectedItem];
@@ -104,11 +120,32 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
                                       completion: ^(BOOL finished)
         {
         }];
-        
+    
 
 //        [self.collectionView moveItemAtIndexPath: thePreviousSelectedIndexPath
 //                                     toIndexPath: theIndexPathOfSelectedItem];
-
+//        NSLog (@"views %@", [self.collectionView recursiveDescription]);
+        
+        // FIXME: There appears to be a bug in UICollectionView where duplicate decoration views appear
+        // when using performBatchUpdates
+        // After very extensive investigation into a number of workarounds, we now just delete any additional
+        // decoration views that are created after a batch update
+        BOOL foundDecorationView = FALSE;
+        
+        for(UIView *possibleDecorationView in [self.collectionView allSubViews])
+        {
+            if([possibleDecorationView isKindOfClass: [SYNChannelCollectionBackgroundView class]])
+            {
+                if (foundDecorationView == FALSE)
+                {
+                    foundDecorationView = TRUE;
+                }
+                else
+                {
+                    [possibleDecorationView removeFromSuperview];
+                }
+            }
+        }
     }
 }
 
@@ -501,6 +538,8 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
     
     return layoutAttributes;
 }
+
+
 #endif
 
 
@@ -510,9 +549,9 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
     NSMutableArray *theLayoutAttributesForElementsInRect = [NSMutableArray arrayWithArray: [super layoutAttributesForElementsInRect: theRect]];
     
 #ifdef USE_DECORATION_VIEWS
-    [theLayoutAttributesForElementsInRect addObject: [self layoutAttributesForDecorationViewOfKind: @"SemiOpaqueBackground"
-                                                                                       atIndexPath: [NSIndexPath indexPathForItem: 0
-                                                                                                                        inSection: 0]]];
+        [theLayoutAttributesForElementsInRect addObject: [self layoutAttributesForDecorationViewOfKind: @"SemiOpaqueBackground"
+                                                                                           atIndexPath: [NSIndexPath indexPathForItem: 0
+                                                                                                                            inSection: 0]]];
 #endif
     
     for (UICollectionViewLayoutAttributes *theLayoutAttributes in theLayoutAttributesForElementsInRect)
@@ -621,5 +660,6 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
     }
     return NO;
 }
+
 
 @end

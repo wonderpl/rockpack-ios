@@ -10,32 +10,40 @@
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
-@class VideoInstance;
+#import "SYNAppDelegate.h"
+#import "SYNVideoQueueDelegate.h"
 
-@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate,
-                                                         UICollectionViewDataSource,
-                                                         UICollectionViewDelegate>
-// Public properties
+//#import "Channel.h"
+#import "SYNNetworkEngine.h"
+
+
+@class VideoInstance, Channel, ChannelOwner;
+
+@interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
+                                                            UICollectionViewDataSource,
+                                                            UICollectionViewDelegate>
+{
+@protected
+    SYNAppDelegate* appDelegate;
+    NSString* viewId;
+    NSFetchedResultsController* fetchedResultsController;
+}
+
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-@property (nonatomic, strong) UIView *videoQueueView;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) UIImageView *draggedView;
-// Public methods
 
-// Core Data support
+@property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 
-// Generalised fetchedResultsControllers
-- (NSFetchedResultsController *) videoInstanceFetchedResultsController;
-- (NSPredicate *) videoInstanceFetchedResultsControllerPredicate;
-- (NSArray *) videoInstanceFetchedResultsControllerSortDescriptors;
 
-- (NSFetchedResultsController *) channelFetchedResultsController;
-- (NSPredicate *) channelFetchedResultsControllerPredicate;
-- (NSArray *) channelFetchedResultsControllerSortDescriptors;
+
+
+
+-(void) reloadCollectionViews;
 
 // Persist the current state of CoreData to the mySQL DB
 - (void) saveDB;
@@ -50,31 +58,38 @@
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath;
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath;
 
-- (BOOL) collectionView: (UICollectionView *) cv
-         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
+- (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
-// Is this tab videoQueue compatible (returns false by default)
+
+
+
+
+// Video Queue
+
 - (BOOL) hasVideoQueue;
-
-
-// Override if the image w
+- (BOOL) hasTabBar;
 - (BOOL) isVideoQueueVisibleOnStart;
 
-- (void) startVideoQueueDismissalTimer;
 - (void) showVideoQueue: (BOOL) animated;
 - (void) hideVideoQueue: (BOOL) animated;
 
-
-// Highlights video queue for when drag is in operation
 - (void) highlightVideoQueue: (BOOL) showHighlight;
 - (BOOL) pointInVideoQueue: (CGPoint) point;
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
-- (void) displayVideoViewer: (VideoInstance *) videoInstance;
-- (IBAction) dismissVideoViewer;
+- (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
+
+
+- (void) createChannel:(Channel*)channel;
+
+
+- (void) viewChannelDetails: (Channel *) channel;
+- (void) viewProfileDetails: (ChannelOwner *) channelOwner;
+
+
+-(id)initWithViewId:(NSString*)vid;
 
 @end

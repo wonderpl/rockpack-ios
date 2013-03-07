@@ -1,6 +1,8 @@
 #import "NSDictionary+Validation.h"
 #import "Video.h"
 #import <Foundation/Foundation.h>
+#import "NSDate-Utilities.h"
+
 
 static NSEntityDescription *videoEntity = nil;
 
@@ -18,7 +20,7 @@ static NSEntityDescription *videoEntity = nil;
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                         andViewId: (NSString *) viewId;
+                         andViewId: (NSString *) viewId
 {
     NSError *error = nil;
     
@@ -57,7 +59,7 @@ static NSEntityDescription *videoEntity = nil;
     if (matchingVideoEntries.count > 0)
     {
         instance = matchingVideoEntries[0];
-        NSLog(@"Using existing Video instance with id %@", instance.uniqueId);
+        // NSLog(@"Using existing Video instance with id %@", instance.uniqueId);
         return instance;
     }
     else
@@ -72,7 +74,7 @@ static NSEntityDescription *videoEntity = nil;
                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created Video instance with id %@", instance.uniqueId);
+        // NSLog(@"Created Video instance with id %@", instance.uniqueId);
         
         return instance;
     }
@@ -98,6 +100,18 @@ static NSEntityDescription *videoEntity = nil;
     
     self.categoryId = [dictionary objectForKey: @"category_id"
                                    withDefault: @""];
+    
+    self.viewCount = [dictionary objectForKey: @"source_view_count"
+                                   withDefault: [NSNumber numberWithInt: 0]];
+    
+    self.dateUploaded = [dictionary dateFromISO6801StringForKey:@"source_date_uploaded"
+                                                    withDefault:[NSDate date]];
+    
+    self.duration = [dictionary objectForKey: @"duration"
+                                 withDefault: [NSNumber numberWithInt: 0]];
+    
+    self.viewCount = [dictionary objectForKey: @"source_view_count"
+                                  withDefault: [NSNumber numberWithInt: 0]];
     
     self.source = [dictionary objectForKey: @"source"
                                withDefault: @""];

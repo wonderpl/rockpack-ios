@@ -7,7 +7,7 @@
 //
 
 #import "SYNChannelSelectorCell.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
+#import "UIImageView+ImageProcessing.h"
 
 @interface SYNChannelSelectorCell ()
 
@@ -16,36 +16,13 @@
 
 @implementation SYNChannelSelectorCell
 
-- (id) initWithFrame: (CGRect) frame
-{
-    if ((self = [super initWithFrame: frame]))
-    {
-        // Initialization code
-        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed: @"SYNChannelSelectorCell"
-                                                              owner: self
-                                                            options: nil];
-        
-        if ([arrayOfViews count] < 1)
-        {
-            return nil;
-        }
-        
-        if (![arrayOfViews[0] isKindOfClass: [UICollectionViewCell class]])
-        {
-            return nil;
-        }
-        
-        self = arrayOfViews[0];
-    }
-    
-    return self;
-}
+
 
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {
-    [self.imageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                   placeHolderImage: nil];
+    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                               placeHolderImage: nil];
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations

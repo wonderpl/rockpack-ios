@@ -16,17 +16,6 @@
 
 // Host for API
 
-#if 0
-
-#define kAPIHostName @"demo.rockpack.com"
-
-// Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
-#define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"test/ws/%@/subscriptions/recent_videos/"
-
-// Returns a list of 
-#define kAPIPopularChannels @"test/ws/channels/"
-
-#else
 
 //#define kAPIHostName @"dev.rockpack.com"
 #define kAPIHostName @"demo.rockpack.com"
@@ -37,10 +26,18 @@
 // Returns a list of the trending videos
 #define kAPIPopularVideos @"ws/videos/"
 
+// Search according to term, currently a wrapper around YouTube
+#define kAPISearchVideos @"/ws/search/videos/"
+#define kAPICompleteVideos @"/ws/complete/videos/"
+#define kAPISearchChannels @"/ws/search/channels/"
+#define kAPICompleteChannels @"/ws/complete/channels/"
+
+//
+#define kAPICategories @"ws/categories/"
+
 // Returns a list of
 #define kAPIPopularChannels @"ws/channels/"
 
-#endif
 
 // Timeout for API calls
 
@@ -60,14 +57,15 @@
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kDataUpdated @"kDataUpdated"
 
+// One the APIs imported some new data - we will need to be more specific at some stage.
+#define kCategoriesUpdated @"kCategoriesUpdated"
+
 // Settings
 
 #define kDownloadedVideoContentBool @"kDownloadedVideoContentBool"
 
 // Major functionality switches
 
-// Enable user interface sounds
-#define SOUND_ENABLED
 
 // Enable full screen thumbnail view 
 #define FULL_SCREEN_THUMBNAILS__
@@ -119,11 +117,22 @@
 
 // Effective height (exlcuding shadow) of the image well
 //#define kVideoQueueEffectiveHeight 99
-#define kVideoQueueEffectiveHeight 103
 
 #define kVideoQueueWidth 490
 //#define kVideoQueueWidth 475
 #define kVideoQueueOffsetX 10
+
+#define kVideoQueueShow @"kVideoQueueShow"
+#define kVideoQueueHide @"kVideoQueueHide"
+#define kVideoQueueAdd @"kVideoQueueAdd"
+
+typedef enum {
+    EntityTypeChannel = 0,
+    EntityTypeVideo,
+    EntityTypeVideoInstance,
+    EntityTypeCategory
+    
+} EntityType;
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62
@@ -140,6 +149,8 @@
 // Amount of overspill for top tab bar
 #define kTopTabOverspill 7
 
+#define kCategorySecondRowHeight 35.0f
+
 //
 // Tabs
 //
@@ -149,11 +160,24 @@
 
 #define kTopTabCount 10
 
+
+// Notifications
+#define kNoteBackButtonShow @"kNoteBackButtonShow"
+#define kNoteBackButtonHide @"kNoteBackButtonHide"
+#define kNoteTabPressed @"kNoteTabPressed"
+#define kNoteSharePanelRequested @"kNoteSharePanelRequested"
+
 //
 // Tracking
 //
 
 // TestFlight support
-#define  kTestFlightTeamToken @"7476be3185f5971ed3af8d0c6a136c80_MTQyOTYxMjAxMi0xMC0xMyAxMjoyMTozOS41MDgxNDA"
+#define  kTestFlightAppToken @"350faab3-e77f-4954-aa44-b85dba25d029"
+
+
+// Block Definitions
+typedef void (^JSONResponseBlock)(id jsonObject);
+
+
 
 #endif

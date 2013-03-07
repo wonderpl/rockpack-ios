@@ -11,19 +11,24 @@
 #import "SYNBottomTabViewController.h"
 #import "SYNNetworkEngine.h"
 #import "TestFlight.h"
+#import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import "ChannelOwner.h"
+#import "SYNMasterViewController.h"
 
 @interface SYNAppDelegate ()
 
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 
 @end
 
 @implementation SYNAppDelegate
+
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -39,6 +44,7 @@
     // Set up network engine
     [self initializeNetworkEngine];
     
+    
     // Create default user
     [self createDefaultUser];
     
@@ -51,9 +57,14 @@
 
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
+
+    SYNBottomTabViewController* bottomTabVC = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
                                                                        bundle: nil];
+    
+    SYNMasterViewController* masterViewContoller = [[SYNMasterViewController alloc] initWithRootViewController:bottomTabVC];
+    
+    self.viewController = masterViewContoller;
+    
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
@@ -110,7 +121,7 @@
 {
 	InstallUncaughtExceptionHandler();
     
-    [TestFlight takeOff: kTestFlightTeamToken];
+    [TestFlight takeOff: kTestFlightAppToken];
 }
 
 
@@ -118,8 +129,7 @@
 
 - (void) initializeCoreDataStack
 {
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack"
-                                              withExtension: @"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
     ZAssert(modelURL, @"Failed to find model URL");
     
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL: modelURL];
@@ -129,16 +139,28 @@
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
     ZAssert(persistentStoreCoordinator, @"Failed to initialize persistent store coordinator");
     
-    NSManagedObjectContext *privateManagedObjectContext = nil;
-    privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
-    privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
+    // == Main Context
     
-    NSManagedObjectContext *mainManagedObjectContext = nil;
-    mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
-    mainManagedObjectContext.parentContext = privateManagedObjectContext;
+    self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
+    self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
-    self.privateManagedObjectContext = privateManagedObjectContext;
-    self.mainManagedObjectContext = mainManagedObjectContext;
+    self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
+    
+    // == Search Context
+    
+    self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    NSPersistentStoreCoordinator *searchPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
+    NSError* error;
+    NSPersistentStore* searchStore = [searchPersistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                                                    configuration:nil
+                                                                                              URL:nil
+                                                                                          options:nil
+                                                                                            error:&error];
+    ZAssert(searchStore, @"Failed to initialize search managed context in app delegate");
+    
+    
+    self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
@@ -147,7 +169,7 @@
         NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
                                                                   inDomains: NSUserDomainMask] lastObject];
         
-        storeURL = [storeURL URLByAppendingPathComponent: @"PPRecipes.sqlite"];
+        storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
         
         if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
         {
@@ -162,8 +184,7 @@
                             format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
             }
             
-            if (![managedObjectModel isConfiguration: nil
-                          compatibleWithStoreMetadata: existingPersistentStoreMetadata])
+            if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
             {
                 if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
                                                                error: &error])
@@ -187,23 +208,26 @@
             DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
         }
     });
+    
+    // Registries
+    
+    _mainRegistry = [SYNMainRegistry registry];
+    _searchRegistry = [SYNSearchRegistry registry];
 }
 
-// This is the new and improved saveContext.
-// The mainManagedObjectContexts is saved first (if dirty), which propogates any chances to the privateManagedObjectContext, which is performed on the main
-// thread, but causes minimal UI blocking as hopefully v. quick.
-// Then the privateManagedObjectContext is saved, on a background thread, which should not cause UI blocking
+// Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
 {
     // If we don't have a valid MOC, then bail
-    if (nil == self.mainManagedObjectContext) return;
+    if (!self.mainManagedObjectContext)
+        return;
     
     if ([self.mainManagedObjectContext hasChanges])
     {
         [self.mainManagedObjectContext performBlockAndWait:^
          {
              NSError *error = nil;
-             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving MOC: %@\n%@",
+             ZAssert([self.mainManagedObjectContext save: &error], @"Error saving Main moc: %@\n%@",
                      [error localizedDescription], [error userInfo]);
          }];
     }
@@ -211,7 +235,7 @@
     void (^savePrivate) (void) = ^
     {
         NSError *error = nil;
-        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving private moc: %@\n%@",
+        ZAssert([self.privateManagedObjectContext save: &error], @"Error saving Private moc: %@\n%@",
                 [error localizedDescription], [error userInfo]);
     };
     
@@ -228,6 +252,19 @@
     }
 }
 
+-(void) saveSearchContext
+{
+    if(!self.searchManagedObjectContext)
+        return;
+    
+    if([self.searchManagedObjectContext hasChanges])
+    {
+        NSError *error = nil;
+        ZAssert([self.searchManagedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
+    }
+}
+
 
 #pragma mark - Network engine suport
 
@@ -238,6 +275,10 @@
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
+    
+    // TODO: Replace this shameful piece of hackery
+    UIImageView.defaultEngine2 = self.networkEngine;
+    
 }
 
 
@@ -273,5 +314,6 @@
         self.channelOwnerMe = channelOwnerMe;
     }
 }
+
 
 @end

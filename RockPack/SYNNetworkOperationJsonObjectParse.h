@@ -1,0 +1,13 @@
+//
+//  SYNNetworkOperationJsonObjectAutocomplete.h
+//  rockpack
+//
+//  Created by Michael Michailidis on 06/03/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//
+
+#import "SYNNetworkOperationJsonObject.h"
+
+@interface SYNNetworkOperationJsonObjectParse : SYNNetworkOperationJsonObject
+
+@end

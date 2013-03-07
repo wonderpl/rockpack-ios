@@ -11,16 +11,17 @@
 #import "ChannelOwner.h"
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
-#import "SYNNetworkEngine.h"
-#import "SYNAppDelegate.h"  
 #import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNAppDelegate.h"  
 #import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelSelectorCell.h"
+#import "SYNNetworkEngine.h"
+#import "SYNSoundPlayer.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
+#import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
@@ -48,7 +49,6 @@
 	if ((self = [super initWithNibName: @"SYNAbstractChannelsDetailViewController" bundle: nil]))
     {
 		self.channel = channel;
-        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
 	}
     
 	return self;
@@ -74,6 +74,25 @@
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.saveOrDoneButtonLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.changeCoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    
+    UIColor *color = [UIColor blackColor];
+    self.changeCoverLabel.layer.shadowColor = [color CGColor];
+    self.changeCoverLabel.layer.shadowRadius = 3.0f;
+    self.changeCoverLabel.layer.shadowOpacity = 0.25f;
+    self.changeCoverLabel.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+    self.changeCoverLabel.layer.masksToBounds = NO;
+    
+    self.selectACoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    
+    self.selectACoverLabel.layer.shadowColor = [color CGColor];
+    self.selectACoverLabel.layer.shadowRadius = 3.0f;
+    self.selectACoverLabel.layer.shadowOpacity = 0.25f;
+    self.selectACoverLabel.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+    self.selectACoverLabel.layer.masksToBounds = NO;
+    
+    //Kish & Gregory woz ere: Aligning the SELECT A COVER text to centre and spacing the Y-Axis correctly!
+    self.selectACoverLabel.textAlignment = NSTextAlignmentCenter;
+    self.selectACoverLabel.layer.position = CGPointMake( 512.0 , 88.0 );
 
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
@@ -98,14 +117,25 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNChannelHeaderView"];
     
+    [self.videoThumbnailCollectionView registerNib: headerViewNib
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                               withReuseIdentifier: @"SYNChannelHeaderView"];
+    
+
+    
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
     
     
     // Carousel collection view
     // Register our coverview style cell
-    [self.channelCoverCarouselCollectionView registerClass: [SYNChannelSelectorCell class]
-                                forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
+    
+    // Init collection view
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelSelectorCell"
+                                             bundle: nil];
+    
+    [self.channelCoverCarouselCollectionView registerNib: thumbnailCellNib
+                          forCellWithReuseIdentifier: @"SYNChannelSelectorCell"];
     
     // Set carousel collection view to use custom layout algorithm
     CCoverflowCollectionViewLayout *channelCoverCarouselHorizontalLayout = [[CCoverflowCollectionViewLayout alloc] init];
@@ -113,6 +143,9 @@
     channelCoverCarouselHorizontalLayout.cellSpacing = 40.0f;
     
     self.channelCoverCarouselCollectionView.collectionViewLayout = channelCoverCarouselHorizontalLayout;
+    
+    //Kish & Gregory woz ere: Aligning the carousel to centre and spacing the Y-Axis correctly in relation to the label
+    self.channelCoverCarouselCollectionView.frame = CGRectMake(80.0, 77.0, 864.0, 300.0);
 
     self.channelTitleTextField.textAlignment = NSTextAlignmentLeft;
     self.channelTitleTextField.textColor = [UIColor whiteColor];
@@ -126,12 +159,12 @@
     self.userNameLabel.text = self.channel.channelOwner.name;
     
     // set User's avatar picture
-    [self.userAvatarImageView setImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                             placeHolderImage: nil];
+    [self.userAvatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
+                                         placeHolderImage: nil];
     
     // Set wallpaper
-    [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                                   placeHolderImage: nil];
+    [self.channelWallpaperImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
+                                               placeHolderImage: nil];
 }
 
 
@@ -141,6 +174,12 @@
 
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
+    
+//    NSLog (@"xx %@", [self.videoThumbnailCollectionView recursiveDescription]);
+    
+//    UIView *dummyView = [[UIView alloc] initWithFrame: CGRectMake(100, 100, 100, 1000)];
+//    dummyView.backgroundColor = [UIColor redColor];
+//    [self.videoThumbnailCollectionView insertSubview: dummyView atIndex: 0];
 }
 
 - (void) dealloc
@@ -148,6 +187,37 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    
+    
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
 
 
 #pragma mark - Growable UITextView delegates
@@ -258,8 +328,8 @@
     }
     else
     {
-        NSLog (@"Number of items %d", self.videoInstancesArray.count);
-        return self.videoInstancesArray.count;
+        id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+        return sectionInfo.numberOfObjects;
     }
 }
 
@@ -277,19 +347,9 @@
     
     if (collectionView == self.channelCoverCarouselCollectionView)
     {
-#ifdef SOUND_ENABLED
-        // Play a suitable sound
-        NSString *soundPath = [[NSBundle mainBundle] pathForResource: @"Scroll"
-                                                              ofType: @"aif"];
+
+        [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundScroll];
         
-        if (self.shouldPlaySound == TRUE)
-        {
-            NSURL *soundURL = [NSURL fileURLWithPath: soundPath];
-            SystemSoundID sound;
-            AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
-            AudioServicesPlaySystemSound(sound);
-        }
-#endif
         SYNChannelSelectorCell *channelCarouselCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelSelectorCell"
                                                                                     forIndexPath: indexPath];
         
@@ -297,8 +357,6 @@
         
         NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverThumb%d@2x.jpg", (indexPath.row % 13) + 1];
         
-//        channelCarouselCell.channelImageViewImage = imageURLString;
-        SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
         
         self.imageLoadingOperation = [appDelegate.networkEngine imageAtURL: [NSURL URLWithString: imageURLString]
                                                                       size: CGSizeMake (341, 190)
@@ -338,7 +396,7 @@
         SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                            forIndexPath: indexPath];
         
-        VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         
@@ -380,8 +438,7 @@
     else
     {
         // Display the video viewer
-        VideoInstance *videoInstance = self.videoInstancesArray[indexPath.row];
-        [self displayVideoViewer: videoInstance];
+        [self displayVideoViewerWithSelectedIndexPath: indexPath];
     }
 }
 
@@ -391,16 +448,18 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    // Actually swap the video thumbnails around in the visible list
-    id fromItem = self.videoInstancesArray[fromIndexPath.item];
-    id fromObject = self.channel.videoInstances[fromIndexPath.item];
+    // TODO: Need to change the object's priority field to change order
+    // As we can't actually change the order of the results of an
+    // NSFetchedResults controller
     
-    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
-    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
-    
-    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
-    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
-    
+//    VideoInstance *fromObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: fromIndexPath];
+//    VideoInstance *toObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: toIndexPath];
+//
+//    // Swap positions
+//    NSNumber *tempPosition = fromObject.position;
+//    fromObject.position = toObject.position;
+//    toObject.position = tempPosition;
+//
     [self saveDB];
 }
 
@@ -470,8 +529,8 @@
         
         NSString *imageURLString = [NSString stringWithFormat: @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/75/ChannelCreationCoverBackground%d.jpg", (indexPath.row % 13) + 1];
         
-        [self.channelWallpaperImageView setImageFromURL: [NSURL URLWithString: imageURLString]
-                                       placeHolderImage: nil];
+        [self.channelWallpaperImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                                   placeHolderImage: nil];
     }
 }
 

@@ -54,7 +54,6 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
     
     [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
 }
@@ -72,26 +71,8 @@
 
 - (void) reloadCollectionViews
 {
-    self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
+//    self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
     [self.videoThumbnailCollectionView reloadData];
-}
-
-- (IBAction) userTouchedEditButton: (id) sender
-{
-    // Hide share button (as that is where the save / done buttons appear
-    self.shareButton.hidden = TRUE;
-    
-    // Hide save or done buttons and hide cover selection carousel
-    self.saveOrDoneButtonLabel.hidden = FALSE;
-    self.coverSelectionView.hidden = FALSE;
-    
-    // Remove text field highlightes
-    self.channelTitleHighlightImageView.hidden = FALSE;
-    self.channelDescriptionHightlightView.hidden = FALSE;
-    
-    // Disable text fields until edit button selected
-    self.channelTitleTextField.enabled = TRUE;
-    self.collectionHeaderView.channelDescriptionTextView.editable = TRUE;
 }
 
 @end

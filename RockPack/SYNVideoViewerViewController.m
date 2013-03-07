@@ -1,4 +1,4 @@
-//
+    //
 //  SYNVideoViewerViewController.m
 //  rockpack
 //
@@ -6,54 +6,69 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNVideoViewerViewController.h"
-#import "UIFont+SYNFont.h"
-#import "VideoInstance.h"
-#import "Video.h"
+
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
+#import "NSIndexPath+Arithmetic.h"
+#import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
+#import "SYNVideoViewerThumbnailLayout.h"
+#import "SYNVideoViewerThumbnailLayoutAttributes.h"
+#import "SYNVideoViewerViewController.h"
+#import "UIFont+SYNFont.h"
+#import "UIImageView+ImageProcessing.h"
+#import "Video.h"
+#import "VideoInstance.h"
 
-@interface SYNVideoViewerViewController () <UIWebViewDelegate>
+#define kThumbnailContentOffset 438
+#define kThumbnailCellWidth 147
 
+@interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
+
+
+@property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
+@property (nonatomic, strong) IBOutlet UIButton *starItButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
+@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfRocksLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
-@property (nonatomic, strong) IBOutlet UIWebView *videoWebView;
-@property (nonatomic, strong) VideoInstance *videoInstance;
-@property (nonatomic, strong) NSMutableArray *videoInstancesArray;
-@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-
+@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
+@property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
 @end
 
-@implementation SYNVideoViewerViewController
+@implementation SYNVideoViewerViewController 
 
-#pragma mark - View lifecycle
+#pragma mark - Initialisation
 
-- (id) initWithVideoInstance: (VideoInstance *) videoInstance
+- (id) initWithFetchedResultsController: (NSFetchedResultsController *) initFetchedResultsController
+                      selectedIndexPath: (NSIndexPath *) selectedIndexPath;
 {
-	
-	if ((self = [super init]))
+  	if ((self = [super init]))
     {
-		self.videoInstance = videoInstance;
-//        self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
-
+		self.fetchedResultsController = initFetchedResultsController;
+        self.currentSelectedIndexPath = selectedIndexPath;
 	}
     
 	return self;
 }
 
+
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
+    // Set custom fonts
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
     self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.followLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
@@ -61,52 +76,120 @@
     self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
-    // Setup web player
-    self.videoWebView.backgroundColor = [UIColor blackColor];
-	self.videoWebView.opaque = NO;
-    self.videoWebView.scrollView.scrollEnabled = false;
-    self.videoWebView.scrollView.bounces = false;
-    self.videoWebView.alpha = 0.0f;
-    self.videoWebView.delegate = self;
-    
-    [self loadWebViewWithJSAPIUsingYouTubeId: self.videoInstance.video.sourceId
-                                       width: 740
-                                      height: 416];
-    
-    self.channelCreatorLabel.text = self.videoInstance.channel.channelOwner.name;
-    self.channelTitleLabel.text = self.videoInstance.channel.title;
-    self.videoTitleLabel.text = self.videoInstance.title;
-    self.numberOfRocksLabel.text = self.videoInstance.video.starCount.stringValue;
-    
-    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
-    LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(258.0f , 179.0f);
-    layout.minimumInteritemSpacing = 0.0f;
-    layout.minimumLineSpacing = 0.0f;
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    
-    self.videoThumbnailCollectionView.collectionViewLayout = layout;
-    
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
                                                   bundle: nil];
     
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"];
+    
+    // Set custom flow layout to handle the chroma highlighting
+    
+    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
+    self.layout = [[SYNVideoViewerThumbnailLayout alloc] init];
+    self.layout.itemSize = CGSizeMake(147.0f , 106.0f);
+    self.layout.minimumInteritemSpacing = 0.0f;
+    self.layout.minimumLineSpacing = 0.0f;
+    self.layout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
+    self.layout.selectedItemIndexPath = self.currentSelectedIndexPath;
+    
+    self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
+    
+    // Create the video playback view controller, and insert it in the right place in the view hierarchy
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    
+    [self.view insertSubview: self.videoPlaybackViewController.view
+                aboveSubview: self.panelImageView];
+    
+    // Create a dummy view just above the video panel to allow swipes
+    UIView *swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    
+    // TODO: Remove this test code
+//    swipeView.backgroundColor = [UIColor blueColor];
+    
+    [self.view insertSubview: swipeView
+                aboveSubview: self.videoPlaybackViewController.view];
+    
+    UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                               action: @selector(userTouchedPreviousVideoButton:)];
+    
+    rightSwipeRecogniser.delegate = self;
+    [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
+    [swipeView addGestureRecognizer:rightSwipeRecogniser];
+    
+    UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                              action: @selector(userTouchedNextVideoButton:)];
+    
+    leftSwipeRecogniser.delegate = self;
+    [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer: leftSwipeRecogniser];
+    
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                               placeHolderImage: nil];
 }
 
 
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    // Set the video playlist (using the fetchedResults controller passed in)
+    [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+                                                            selectedIndexPath: self.currentSelectedIndexPath
+                                                                     autoPlay: TRUE];
+    
+    // Update all the labels corresponding to the selected videos
+    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
+    
+    // We need to scroll the current thumbnail before the view appears (with no animation)
+    [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
+                                              atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
+                                                      animated: NO];
 }
 
 
-// Don't call these here as called when going full-screen
-
 - (void) viewWillDisappear: (BOOL) animated
-{    
+{
+    // Let's make sure that we stop playing the current video
+    self.videoPlaybackViewController = nil;
+    
     [super viewWillDisappear: animated];
+}
+
+
+- (void) playVideoAtIndexPath: (NSIndexPath *) indexPath
+{
+    // We should start playing the selected video and scroll the thumbnnail so that it appears under the arrow
+    [self.videoPlaybackViewController playVideoAtIndex: indexPath];
+    [self updateVideoDetailsForIndexPath: indexPath];
+    [self scrollToCellAtIndexPath: indexPath];
+    
+    self.currentSelectedIndexPath = indexPath;
+}
+
+
+#pragma mark - Update details
+
+- (void) updateVideoDetailsForIndexPath: (NSIndexPath *) indexPath
+{
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
+    self.channelTitleLabel.text = videoInstance.channel.title;
+    self.videoTitleLabel.text = videoInstance.title;
+    self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
+    
+    self.starItButton.selected = videoInstance.video.starredByUserValue;
+}
+
+
+// The built in UICollectionView scroll to index doesn't work correctly with contentOffset set to non-zero, so roll our own here
+- (void) scrollToCellAtIndexPath: (NSIndexPath *) indexPath
+{
+    [self.videoThumbnailCollectionView scrollToItemAtIndexPath: indexPath
+                                              atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
+                                                      animated: YES];
 }
 
 
@@ -115,14 +198,18 @@
 - (NSInteger) collectionView: (UICollectionView *) view
       numberOfItemsInSection: (NSInteger) section
 {
-    NSLog (@"Number of items %d", self.videoInstancesArray.count);
-    return self.videoInstancesArray.count;
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+    
+    DebugLog (@"Items in section %d", sectionInfo.numberOfObjects);
+    
+    return sectionInfo.numberOfObjects;
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
 {
-    return 1;
+    DebugLog (@"Section %d", self.fetchedResultsController.sections.count);
+    return self.fetchedResultsController.sections.count;
 }
 
 
@@ -132,9 +219,23 @@
     SYNVideoThumbnailSmallCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"
                                                                        forIndexPath: indexPath];
     
-    VideoInstance *videoInstance = self.videoInstancesArray[indexPath.item];
-    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     cell.titleLabel.text = videoInstance.title;
+    
+  SYNVideoViewerThumbnailLayoutAttributes* attributes = (SYNVideoViewerThumbnailLayoutAttributes *)[self.layout layoutAttributesForItemAtIndexPath: indexPath];
+    
+    BOOL thumbnailIsColour = attributes.isHighlighted;
+    
+    if (thumbnailIsColour)
+    {
+        cell.colour = TRUE;
+    }
+    else
+    {
+        cell.colour = FALSE;
+    }
+    
+    cell.videoImageViewImage = videoInstance.video.thumbnailURL;
     
     return cell;
 }
@@ -143,174 +244,159 @@
 - (void) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
+    // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
+    [self playVideoAtIndexPath: indexPath];
 }
 
 
-- (void) collectionView: (UICollectionView *) cv
-                 layout: (UICollectionViewLayout *) layout
-        itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *) toIndexPath
+#pragma mark - UICollectionViewDelegateFlowLayout delegates
+
+// A better solution than the previous implementation that used referenceSizeForHeaderInSection and referenceSizeForFooterInSection
+- (UIEdgeInsets) collectionView: (UICollectionView *) collectionView
+                         layout: (UICollectionViewLayout*) collectionViewLayout
+         insetForSectionAtIndex: (NSInteger)section
 {
-    // Actually swap the video thumbnails around in the visible list
-//    id fromItem = self.videoInstancesArray[fromIndexPath.item];
-//    id fromObject = self.channel.videoInstances[fromIndexPath.item];
-//    
-//    [self.videoInstancesArray removeObjectAtIndex: fromIndexPath.item];
-//    [self.channel.videoInstancesSet removeObjectAtIndex: fromIndexPath.item];
-//    
-//    [self.videoInstancesArray insertObject: fromItem atIndex: toIndexPath.item];
-//    [self.channel.videoInstancesSet insertObject: fromObject atIndex: toIndexPath.item];
-//    
-//    [self saveDB];
+    int sectionCount = self.fetchedResultsController.sections.count;
+    
+    if (section == 0)
+    {
+        if (sectionCount > 1)
+        {
+            // Leading inset on first section
+            return UIEdgeInsetsMake (0, 438, 0, 0);
+        }
+        else
+        {
+            // We only have one section, so add both trailing and leading insets
+            return UIEdgeInsetsMake (0, 438, 0, 438 );
+        }
+    }
+    else if (section == (sectionCount - 1))
+    {
+        // Trailing inset on last section
+        return UIEdgeInsetsMake (0, 0, 0, 438);
+    }
+    else
+    {
+        // No insets on other sections
+        return UIEdgeInsetsMake (0, 0, 0, 0);
+    }
 }
 
 
-
-#pragma mark - Video view
+#pragma mark - User actions
 
 - (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
+    NSIndexPath *newIndexPath = [self.currentSelectedIndexPath previousIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     
+    [self playVideoAtIndexPath: newIndexPath];
 }
+
 
 - (IBAction) userTouchedNextVideoButton: (id) sender
 {
+    NSIndexPath *newIndexPath = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
     
+    [self playVideoAtIndexPath: newIndexPath];
 }
 
 
-- (void) loadWebViewWithIFrameUsingYouTubeId: (NSString *) videoId
-                                       width: (int) width
-                                      height: (int) height
+- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-    NSDictionary *parameterDictionary = @{@"autoplay" : @"1",
-    @"modestbranding" : @"1",
-    @"origin" : @"http://example.com\\",
-    @"showinfo" : @"0"};
+    [self showVideoQueue: TRUE];
     
-    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
-    
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId, parameterString];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: nil];
-}
-
-- (void) loadWebViewWithJSAPIUsingYouTubeId: (NSString *) videoId
-                                      width: (int) width
-                                     height: (int) height
-{
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeJSAPIPlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, width, height, videoId];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: [NSURL URLWithString:@"http://www.youtube.com"]];
-    
-    self.videoWebView.mediaPlaybackRequiresUserAction = FALSE;
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    [self animateVideoAdditionToVideoQueue: videoInstance];
 }
 
 
-- (void) loadWebViewWithIFrameUsingVimeoId: (NSString *) videoId
-                                     width: (int) width
-                                    height: (int) height
+- (BOOL) hasVideoQueue
 {
-    // api=1&player_id=player
-//    NSDictionary *parameterDictionary = @{@"api" : @"0",
-//    @"player_id" : @"player"};
-    
-    //    NSString *parameterString = [self createParamStringFromDictionary: parameterDictionary];
-    NSString *parameterString = @"";
-    
-    NSError *error = nil;
-    NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"VimeoIFramePlayer"
-                                                         ofType: @"html"];
-    
-    NSString *templateHTMLString = [NSString stringWithContentsOfFile: fullPath
-                                                             encoding: NSUTF8StringEncoding
-                                                                error: &error];
-    
-    NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, videoId, parameterString, width, height];
-    
-    [self.videoWebView loadHTMLString: iFrameHTML
-                              baseURL: nil];
+    return TRUE;
+}
+
+// Required to ensure that the video queue bar appears in the right (vertical) place
+- (BOOL) hasTabBar
+{
+    return FALSE;
 }
 
 
-- (NSString *) createParamStringFromDictionary: (NSDictionary *) params
+- (IBAction) toggleStarItButton: (UIButton *) button
 {
-    __block NSString *result = @"";
+    button.selected = !button.selected;
     
-    [params enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop)
-     {
-         result = [result stringByAppendingFormat: @"%@=%@&", key, obj];
-     }];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
-    // Chop off last ampersand
-    result = [result substringToIndex: [result length] - 2];
-    return [result stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-}
-
-
-- (BOOL) webView: (UIWebView *) webView
-         shouldStartLoadWithRequest: (NSURLRequest *) request
-         navigationType: (UIWebViewNavigationType) navigationType
-{
-    // Break apart request URL
-    NSString *requestString = [[request URL] absoluteString];
-    NSArray *components = [requestString componentsSeparatedByString :@":"];
-    
-    // Check for your protocol
-    if ([components count] >= 3 && [(NSString *)[components objectAtIndex:0] isEqualToString: @"rockpack"])
+    if (videoInstance.video.starredByUserValue == TRUE)
     {
-        // Look for specific actions
-        NSString *parameter2 = (NSString *)[components objectAtIndex: 1];
-        if ([parameter2 isEqualToString: @"onStateChange"])
-        {
-//            [self.videoWebView stringByEvaluatingJavaScriptFromString: @"helloWorld()"];
-            
-            NSString *parameter3 = (NSString *)[components objectAtIndex: 2];
-            
-            if ([parameter3 isEqualToString: @"1"])
-            {
-//                self.videoWebView.alpha = 1.0f;
-                
-                [UIView animateWithDuration: 0.25f
-                                      delay: 0.0f
-                                    options: UIViewAnimationOptionCurveEaseInOut
-                                 animations: ^
-                 {
-                     // Contract thumbnail view
-                     self.videoWebView.alpha = 1.0f;
-                 }
-                                 completion: ^(BOOL finished)
-                 {
-                 }];
-            }
-        }
+        // Currently highlighted, so decrement
+        videoInstance.video.starredByUserValue = FALSE;
+        videoInstance.video.starCountValue -= 1;
+    }
+    else
+    {
+        // Currently highlighted, so increment
+        videoInstance.video.starredByUserValue = TRUE;
+        videoInstance.video.starCountValue += 1;
+    }
+
+    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
+    
+    [self saveDB];
+}
+
+
+// We need to override the standard setter so that we can update our flow layout for highlighting (colour / monochrome)
+- (void) setCurrentSelectedIndexPath: (NSIndexPath *) currentSelectedIndexPath
+{
+    // Deselect the old thumbnail (if there is one, and it is not the same as the new one)
+    if (_currentSelectedIndexPath && (_currentSelectedIndexPath != currentSelectedIndexPath))
+    {
+        SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: _currentSelectedIndexPath];
         
-        // Return 'NO' to prevent navigation
-        return NO;
+        // This will trigger a nice face out animation to monochrome
+        oldCell.colour = FALSE;
     }
     
-    // Return 'YES', navigate to requested URL as normal
-    return YES;
+    // Now fade up the new image to full colour
+    SYNVideoThumbnailSmallCell *newCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: currentSelectedIndexPath];
+
+    newCell.colour = TRUE;
+    
+    _currentSelectedIndexPath = currentSelectedIndexPath;
+    self.layout.selectedItemIndexPath = currentSelectedIndexPath;
+    
+    
+    // Now set the channel thumbail for the new
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: currentSelectedIndexPath];
+    
+    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                               placeHolderImage: nil];
 }
 
+// The user touched the invisible button above the channel thumbnail, taking the user to the channel page
+- (IBAction) userTouchedChannelButton: (id) sender
+{
+    //[self dismissVideoViewer];
+    
+    // Get the video instance for the currently selected video
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    [self viewChannelDetails: videoInstance.channel];
+}
+
+
+// The user touched the invisible button above the user details, taking the user to the profile page
+- (IBAction) userTouchedProfileButton: (id) sender
+{
+//    [self.parentViewController dismissVideoViewer];
+    
+//    // Get the video instance for the currently selected video
+//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+//    
+//    [self viewProfileDetails: videoInstance.channel.channelOwner];
+}
 
 @end

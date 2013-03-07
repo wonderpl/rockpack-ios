@@ -8,6 +8,8 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNChannelsRootViewController : SYNAbstractTopTabViewController 
+@interface SYNChannelsRootViewController : SYNAbstractTopTabViewController
+
+@property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
 
 @end

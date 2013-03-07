@@ -38,6 +38,20 @@
     // We need to start off with the DONE button visible as user may choose not to customise anything
     self.doneButton.hidden = FALSE;
     self.saveOrDoneButtonLabel.text = NSLocalizedString(@"DONE", @"Save / Done button");
+    
+    // Need also to hide our carousel
+    
+    [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.channelCoverCarouselCollectionView.alpha = 0.0f;
+         self.selectACoverLabel.alpha = 0.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 - (void) showSaveButton
@@ -66,7 +80,8 @@
      {
          self.changeCoverButton.alpha = 1.0f;
          self.changeCoverLabel.alpha = 1.0f;
-         self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.channelCoverCarouselCollectionView.alpha = 0.0f;
+         self.selectACoverLabel.alpha = 0.0f;
      }
                      completion: ^(BOOL finished)
      {
@@ -189,6 +204,11 @@
 
 - (IBAction) userTouchedSaveButton: (id) sender
 {
+    if (self.coverSelectionView.alpha == 1.0f)
+    {
+            self.changeCoverLabel.text = @"CHANGE COVER";
+    }
+    
     [self highlightAll];
     [self showDoneButton];
     [self.channelTitleTextField resignFirstResponder];
@@ -199,23 +219,45 @@
 {
     NSLog (@"User touched done button");
     
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    
+//    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+//    
+//    [bottomTabViewController popCurrentViewController: nil];
     
-    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
+    self.editButton.hidden = FALSE;
+    self.shareButton.hidden = FALSE;
     
-    [bottomTabViewController popCurrentViewController: nil];
+    self.saveButton.hidden = TRUE;
+    
+    // We need to start off with the DONE button visible as user may choose not to customise anything
+    self.doneButton.hidden = TRUE;
+    self.saveOrDoneButtonLabel.hidden = TRUE;
+    
+    // Hide save or done buttons and hide cover selection carousel
+    self.saveOrDoneButtonLabel.hidden = TRUE;
+    self.coverSelectionView.hidden = TRUE;
+    
+    // Remove text field highlightes
+    self.channelTitleHighlightImageView.hidden = TRUE;
+    self.channelDescriptionHightlightView.hidden = TRUE;
+    
+    // Disable text fields until edit button selected
+    self.channelTitleTextField.enabled = FALSE;
 }
 
 - (IBAction) userTouchedChangeCoverButton: (id) sender
 {
     self.channelCoverCarouselCollectionView.hidden = FALSE;
     self.channelCoverCarouselCollectionView.alpha = 0.0f;
+    self.selectACoverLabel.alpha = 0.0f;
     [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
      {
          self.channelCoverCarouselCollectionView.alpha = 1.0f;
+         self.selectACoverLabel.alpha = 1.0f;
          self.channelTitleHighlightImageView.alpha = 1.0f;
          self.changeCoverButton.alpha = 0.0;
          self.changeCoverLabel.alpha = 0.0;
@@ -318,8 +360,49 @@
 	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerViewFrame;
 }
 
-
-
-
+- (IBAction) userTouchedEditButton: (UIButton *) sender
+{
+    sender.selected = !sender.selected;
+    
+    if (sender.selected)
+    {
+        // Enter edit mode
+        // Hide share button (as that is where the save / done buttons appear
+        self.shareButton.hidden = TRUE;
+        
+        // Show save or done buttons and hide cover selection carousel
+        self.saveOrDoneButtonLabel.hidden = FALSE;
+        self.doneButton.hidden = FALSE;
+        self.coverSelectionView.hidden = FALSE;
+        
+        // Add text field highlightes
+        self.channelTitleHighlightImageView.hidden = FALSE;
+        self.channelDescriptionHightlightView.hidden = FALSE;
+        
+        // Enable text fields until edit button selected
+        self.channelTitleTextField.enabled = TRUE;
+        self.collectionHeaderView.channelDescriptionTextView.editable = TRUE;
+    }
+    else
+    {
+        // Leave edit mode
+        // Show share button (as that is where the save / done buttons appear
+        self.shareButton.hidden = FALSE;
+        
+        // Hide save or done buttons and hide cover selection carousel
+        self.saveOrDoneButtonLabel.hidden = TRUE;
+        self.doneButton.hidden = TRUE;
+        self.coverSelectionView.hidden = TRUE;
+        
+        // Remove text field highlightes
+        self.channelTitleHighlightImageView.hidden = TRUE;
+        self.channelDescriptionHightlightView.hidden = TRUE;
+        
+        // Disable text fields until edit button selected
+        self.channelTitleTextField.enabled = FALSE;
+        self.collectionHeaderView.channelDescriptionTextView.editable = FALSE;
+    }
+    
+}
 
 @end

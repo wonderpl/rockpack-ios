@@ -60,7 +60,10 @@ static NSEntityDescription *videoInstanceEntity = nil;
     if (matchingVideoInstanceEntries.count > 0)
     {
         instance = matchingVideoInstanceEntries[0];
-        NSLog(@"Using existing VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
+        // NSLog(@"Using existing VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
+        
+        // Mark this object so that it is not deleted in the post-import step
+        instance.markedForDeletionValue = FALSE;
         
         return instance;
     }
@@ -73,11 +76,10 @@ static NSEntityDescription *videoInstanceEntity = nil;
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
-//                          ignoringObjectTypes: kIgnoreVideoInstanceObjects
                           ignoringObjectTypes: (ignoringObjects == kIgnoreChannelObjects) ? kIgnoreChannelObjects: kIgnoreVideoInstanceObjects
                                     andViewId: viewId];
         
-        NSLog(@"Created VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
+        // NSLog(@"Created VideoInstance instance with id %@ in view %@", instance.uniqueId, instance.viewId);
         
         return instance;
     }
@@ -134,12 +136,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 {
     if (self.video.videoInstances.count == 1)
     {
-        DebugLog(@"Single reference to Video, will be deleted");
         [self.managedObjectContext deleteObject: self.video];
-    }
-    else
-    {
-        DebugLog(@"Multiple references to Video object, not deleted");
     }
 }
 
