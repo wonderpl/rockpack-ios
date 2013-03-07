@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MKNetworkKit.h"
 
 @class MKNetworkEngine;
 @class MKNetworkOperation;
@@ -27,5 +28,9 @@
                                         usingEngine: (MKNetworkEngine*) imageCacheEngine
                                           animation: (BOOL) yesOrNo
                                          monochrome: (BOOL) isMonochrome;
+
+- (void) setAsynchronousImageFromURL: (NSURL*) url
+                   completionHandler: (MKNKImageBlock) completionHandler
+                        errorHandler: (MKNKResponseErrorBlock) errorHandler;
 
 @end

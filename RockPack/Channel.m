@@ -230,10 +230,6 @@ static NSEntityDescription *channelEntity = nil;
         // DebugLog(@"Single reference to ChannelOwner, will be deleted");
         [self.managedObjectContext deleteObject: self.channelOwner];
     }
-    else
-    {
-        DebugLog(@"Multiple references to ChannelOwner object, not deleted");
-    }
     
     // Delete any VideoInstances that are associated with this channel (I am assuming that as they only have a to-one relationship
     // with a channel, then they are only associated with that particular channel and can't exist independently

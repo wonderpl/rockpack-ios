@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "MKNetworkKit.h"
 #import "UIImageView+ImageProcessing.h"
 #import "UIImage+ImageProcessing.h"
 #import <objc/runtime.h>
@@ -117,5 +116,19 @@ const float kFreshLoadAnimationDuration2 = 0.35f;
     
     return self.imageFetchOperation2;
 }
+
+// Much more flexible version
+- (void) setAsynchronousImageFromURL: (NSURL*) url
+                   completionHandler: (MKNKImageBlock) completionHandler
+                        errorHandler: (MKNKResponseErrorBlock) errorHandler
+{
+    [self.imageFetchOperation2 cancel];
+    
+    self.imageFetchOperation2 = [DefaultEngine2 imageAtURL: url
+                                                      size: self.frame.size
+                                         completionHandler: completionHandler
+                                              errorHandler: errorHandler];
+}
+
 
 @end
