@@ -17,7 +17,11 @@
 
 @property (nonatomic, strong) UIViewController* rootViewController;
 
+
 -(id)initWithRootViewController:(UIViewController*)root;
+
+-(void)addOverlay:(UIView*)view;
+-(void)removeOverlay;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 

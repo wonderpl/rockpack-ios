@@ -298,6 +298,7 @@
 
 
 // Called by invisible button on video view cell
+
 - (void) displayVideoViewerFromView: (UIGestureRecognizer *) sender
 {
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
@@ -308,14 +309,14 @@
 
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) selectedIndexPath
 {
-    SYNMasterViewController *bottomTabViewController = (SYNMasterViewController*)appDelegate.viewController;
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: self.fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) selectedIndexPath];
     
     self.videoViewerViewController.view.alpha = 0.0f;
     
-    [bottomTabViewController.view addSubview: self.videoViewerViewController.view];
+    [masterViewController addOverlay:self.videoViewerViewController.view];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -334,6 +335,8 @@
 
 - (IBAction) dismissVideoViewer
 {
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
+    
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -343,7 +346,7 @@
      }
      completion: ^(BOOL finished)
      {
-         [self.videoViewerViewController.view removeFromSuperview];
+         [masterViewController removeOverlay];
          self.videoViewerViewController = nil;
      }];
 

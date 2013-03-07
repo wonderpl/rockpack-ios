@@ -30,12 +30,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 
+
+@property (nonatomic, strong) IBOutlet UIView* overlayView;
+
 @property (nonatomic, strong) IBOutlet UIButton* inboxButton;
 @property (nonatomic, strong) IBOutlet UIButton* notificationButton;
 
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
-@property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
 
@@ -107,7 +110,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          [splashView removeFromSuperview];
      }];
     
-    self.overlayView.userInteractionEnabled = NO;
+    self.slidersView.userInteractionEnabled = NO;
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
@@ -222,7 +225,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                    overlayViewFrame.size.width,
                                                    overlayViewFrame.size.height);
     
-    [self.overlayView addSubview:overlayViewController.view];
+    [self.slidersView addSubview:overlayViewController.view];
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f
@@ -264,8 +267,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }];
 }
 
+-(void)addOverlay:(UIView*)view
+{
+    [self.overlayView addSubview:view];
+    self.overlayView.userInteractionEnabled = YES;
+}
 
-
+-(void)removeOverlay
+{
+    UIView* child = self.overlayView.subviews[0];
+    [child removeFromSuperview];
+    self.overlayView.userInteractionEnabled = NO;
+}
 
 - (IBAction) userTouchedNotificationButton: (UIButton*) button
 {
