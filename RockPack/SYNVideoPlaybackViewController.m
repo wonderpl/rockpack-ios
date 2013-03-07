@@ -103,6 +103,8 @@
     // Set the webview delegate so that we can received events from the JavaScript
     newVideoWebView.delegate = self;
     
+    newVideoWebView.mediaPlaybackAllowsAirPlay = YES;
+    
     [self.view insertSubview: newVideoWebView
                 aboveSubview: self.currentVideoPlaceholderImageView];
 
