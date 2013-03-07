@@ -398,6 +398,19 @@
 }
 
 
+- (IBAction) userTouchedLargeVideoChannelButton: (UIButton *) channelButton
+{    
+    // Bail if we don't have an index path
+    if (self.currentIndexPath)
+    {
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        
+        [self viewChannelDetails:
+         videoInstance.channel];
+    }
+}
+
+
 // Buttons activated from scrolling list of thumbnails
 
 #pragma mark - Video queue animation
