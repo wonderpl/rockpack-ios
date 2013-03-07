@@ -103,6 +103,7 @@
     // Set the webview delegate so that we can received events from the JavaScript
     newVideoWebView.delegate = self;
     
+    // Enable airplay button on webview player
     newVideoWebView.mediaPlaybackAllowsAirPlay = YES;
     
     [self.view insertSubview: newVideoWebView
@@ -130,7 +131,7 @@
 - (UIButton *) createVideoPlayButton
 {
     UIButton *newVideoPlayButton;
-    
+      
     newVideoPlayButton = [UIButton buttonWithType: UIButtonTypeCustom];
     newVideoPlayButton.frame = self.view.bounds;
     newVideoPlayButton.backgroundColor = [UIColor clearColor];

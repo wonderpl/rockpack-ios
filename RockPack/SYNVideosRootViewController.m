@@ -407,15 +407,24 @@
     }
 }
 
+- (IBAction) userTouchedLargeVideoProfileButton: (UIButton *) channelButton
+{
+    // Bail if we don't have an index path
+    if (self.currentIndexPath)
+    {
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
+        
+        [self viewProfileDetails:
+         videoInstance.channel.channelOwner];
+    }
+}
+
 
 // Buttons activated from scrolling list of thumbnails
 
 #pragma mark - Video queue animation
 
-
-
-
--(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
 {
     [super handleMainTap:recogniser];
     
@@ -441,16 +450,16 @@
     }];
 }
 
--(BOOL)showSubcategories
+- (BOOL) showSubcategories
 {
     return NO;
 }
 
 
--(void)handleNewTabSelectionWithId:(NSString *)selectionId
+- (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
     
-    [appDelegate.networkEngine updateVideosScreenForCategory:selectionId];
+    [appDelegate.networkEngine updateVideosScreenForCategory: selectionId];
 }
 
 @end
