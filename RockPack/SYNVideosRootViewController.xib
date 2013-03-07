@@ -46,6 +46,7 @@
 						<string key="NSFrame">{{512, 92}, {512, 594}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1061543414">
 							<int key="NSColorSpace">3</int>
@@ -211,7 +212,7 @@
 								<string key="NSFrame">{{32, 306}, {458, 28}}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="961277837"/>
+								<reference key="NSNextKeyView" ref="643374601"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -310,7 +311,7 @@
 							<object class="IBUIButton" id="961277837">
 								<reference key="NSNextResponder" ref="469858340"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{33, 339}, {48, 44}}</string>
+								<string key="NSFrame">{{33, 339}, {459, 50}}</string>
 								<reference key="NSSuperview" ref="469858340"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="26139489"/>
@@ -319,7 +320,27 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">Button</string>
+								<reference key="IBUIHighlightedTitleColor" ref="34856113"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="855662509"/>
+								<reference key="IBUIFontDescription" ref="829291685"/>
+								<reference key="IBUIFont" ref="848676678"/>
+							</object>
+							<object class="IBUIButton" id="643374601">
+								<reference key="NSNextResponder" ref="469858340"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{92, 368}, {400, 21}}</string>
+								<reference key="NSSuperview" ref="469858340"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="961277837"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
 								<reference key="IBUIHighlightedTitleColor" ref="34856113"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -492,6 +513,15 @@
 					</object>
 					<int key="connectionID">152</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">userTouchedLargeVideoProfileButton:</string>
+						<reference key="source" ref="643374601"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">154</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -535,6 +565,7 @@
 							<reference ref="26139489"/>
 							<reference ref="1031843967"/>
 							<reference ref="961277837"/>
+							<reference ref="643374601"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">View - Large Video Panel</string>
@@ -609,6 +640,11 @@
 						<reference key="object" ref="961277837"/>
 						<reference key="parent" ref="469858340"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">153</int>
+						<reference key="object" ref="643374601"/>
+						<reference key="parent" ref="469858340"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -628,6 +664,7 @@
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="151.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="153.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="16.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -638,7 +675,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">152</int>
+			<int key="maxID">154</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -653,20 +690,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="animatedPopViewController">id</string>
-						<string key="dismissVideoViewer">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="animatedPopViewController">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">animatedPopViewController</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">animatedPopViewController</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">animatedPopViewController</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="dismissVideoViewer">
-							<string key="name">dismissVideoViewer</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>

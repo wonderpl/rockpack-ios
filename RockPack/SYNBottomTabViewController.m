@@ -383,4 +383,10 @@
     
 }
 
+
+-(NSString*)description
+{
+    return NSStringFromClass([self class]);
+}
+
 @end

@@ -46,11 +46,12 @@
 }
 
 #pragma mark - Add Words
-
--(void)addWord:(NSString*)word
+-(void)clearWords
 {
-    [wordsArray addObject:word];
+    [wordsArray removeAllObjects];
+    [self.tableView reloadData];
 }
+
 -(void)addWords:(NSArray*)words
 {
     [wordsArray removeAllObjects];
