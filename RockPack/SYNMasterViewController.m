@@ -22,6 +22,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#define kAutocompleteTime 0.3
+
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
@@ -33,6 +35,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
+
+@property (nonatomic, strong) NSTimer* autocompleteTimer;
 
 
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
@@ -51,6 +55,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, weak) UIViewController* currentOverlayController;
 
 
+
 @property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
 @property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
 
@@ -60,6 +65,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @synthesize rootViewController = rootViewController;
 @synthesize notificationsPopoverController = notificationsPopoverController;
+@synthesize autocompleteTimer;
 
 #pragma mark - Initialise
 
@@ -78,6 +84,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         
         self.autocompleteController.tableView.delegate = self;
+        
+        
         
     }
     return self;
@@ -405,11 +413,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
 {
- 
-    NSMutableString* stringJustTyped = [NSMutableString stringWithString:textField.text];
-    [stringJustTyped appendString:newCharacter];
     
-    [appDelegate.networkEngine getAutocompleteForHint:stringJustTyped forResource:EntityTypeVideo withComplete:^(NSArray* array) {
+    if(self.autocompleteTimer) {
+        [self.autocompleteTimer invalidate];
+    }
+    
+    self.autocompleteTimer = [NSTimer scheduledTimerWithTimeInterval:kAutocompleteTime
+                                                              target:self
+                                                            selector:@selector(performAutocompleteSearch:)
+                                                            userInfo:nil
+                                                             repeats:NO];
+    return YES;
+}
+
+-(void)performAutocompleteSearch:(NSTimeInterval*)interval
+{
+    
+    [self.autocompleteTimer invalidate];
+    
+    self.autocompleteTimer = nil;
+    
+    [appDelegate.networkEngine getAutocompleteForHint:self.searchTextField.text forResource:EntityTypeVideo withComplete:^(NSArray* array) {
         
         NSArray* suggestionsReturned = [array objectAtIndex:1];
         
@@ -432,10 +456,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.notificationsPopoverController dismissPopoverAnimated:YES];
     }];
     
-    return YES;
+    
 }
-
-
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
