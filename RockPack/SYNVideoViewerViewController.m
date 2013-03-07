@@ -281,7 +281,8 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-    [self showVideoQueue: TRUE];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
+                                                        object:self];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];

@@ -82,10 +82,8 @@
 {
     [super viewDidDisappear: animated];
     
-    if (self.hasVideoQueue)
-    {
-        [self hideVideoQueue:YES];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
+                                                        object:self];
 }
 
 
@@ -444,7 +442,8 @@
 {
     if (sender.state == UIGestureRecognizerStateBegan)
     {
-        [self showVideoQueue: TRUE];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
+                                                            object:self];
         
         // figure out which item in the table was selected
         NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
@@ -525,11 +524,6 @@
 }
 
 
-// Assume no image well by default
-- (BOOL) hasVideoQueue
-{
-    return FALSE;
-}
 
 - (BOOL) hasTabBar
 {
@@ -544,17 +538,7 @@
     return FALSE;
 }
 
-- (void) showVideoQueue: (BOOL) animated
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
-                                                        object:self];
-}
 
-- (void) hideVideoQueue: (BOOL) animated
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
-}
 
 
 
