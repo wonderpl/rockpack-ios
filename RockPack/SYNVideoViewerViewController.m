@@ -233,12 +233,22 @@
                          layout: (UICollectionViewLayout*) collectionViewLayout
          insetForSectionAtIndex: (NSInteger)section
 {
+    int sectionCount = self.fetchedResultsController.sections.count;
+    
     if (section == 0)
     {
-        // Leading inset on first section
-        return UIEdgeInsetsMake (0, 438, 0, 0);
+        if (sectionCount > 1)
+        {
+            // Leading inset on first section
+            return UIEdgeInsetsMake (0, 438, 0, 0);
+        }
+        else
+        {
+            // We only have one section, so add both trailing and leading insets
+            return UIEdgeInsetsMake (0, 438, 0, 438);
+        }
     }
-    else if (section == (self.fetchedResultsController.sections.count - 1))
+    else if (section == (sectionCount - 1))
     {
         // Trailing inset on last section
         return UIEdgeInsetsMake (0, 0, 0, 438);
