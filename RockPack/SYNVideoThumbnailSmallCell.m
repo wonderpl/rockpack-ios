@@ -23,6 +23,8 @@
 
 @implementation SYNVideoThumbnailSmallCell
 
+@synthesize colour = _colour;
+
 - (void) awakeFromNib
 {
     [super awakeFromNib];
@@ -81,13 +83,29 @@
     }
 }
 
+- (void) setColour: (BOOL) colour
+{
+    if (self.colour != colour)
+    {
+        [UIView transitionWithView: self.imageView.superview
+                          duration: kFromCacheAnimationDuration
+                           options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
+         {
+             [self displayThumbnail: colour];
+         }
+         completion: ^(BOOL b)
+         {
+             _colour = colour;
+         }];
+    }
+}
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
 - (void) prepareForReuse
 {
     // We need to clean up any asynchronous image uploads
     self.imageView.image = nil;
-    self.isColour = FALSE;
+    self.colour = FALSE;
 }
 
 @end

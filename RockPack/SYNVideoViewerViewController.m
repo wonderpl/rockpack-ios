@@ -24,7 +24,7 @@
 #define kThumbnailContentOffset 438
 #define kThumbnailCellWidth 147
 
-@interface SYNVideoViewerViewController () 
+@interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
 
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
@@ -45,7 +45,7 @@
 
 @end
 
-@implementation SYNVideoViewerViewController
+@implementation SYNVideoViewerViewController 
 
 #pragma mark - Initialisation
 
@@ -95,6 +95,35 @@
     
     self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
     
+    // Create the video playback view controller, and insert it in the right place in the view hierarchy
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    
+    [self.view insertSubview: self.videoPlaybackViewController.view
+                aboveSubview: self.panelImageView];
+    
+    // Create a dummy view just above the video panel to allow swipes
+    UIView *swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    
+    // TODO: Remove this test code
+//    swipeView.backgroundColor = [UIColor blueColor];
+    
+    [self.view insertSubview: swipeView
+                aboveSubview: self.videoPlaybackViewController.view];
+    
+    UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                               action: @selector(userTouchedPreviousVideoButton:)];
+    
+    rightSwipeRecogniser.delegate = self;
+    [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
+    [swipeView addGestureRecognizer:rightSwipeRecogniser];
+    
+    UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                              action: @selector(userTouchedNextVideoButton:)];
+    
+    leftSwipeRecogniser.delegate = self;
+    [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer: leftSwipeRecogniser];
+    
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
     [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
@@ -105,12 +134,6 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-        
-    // Create the video playback view controller, and insert it in the right place in the view hierarchy
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
-    
-    [self.view insertSubview: self.videoPlaybackViewController.view
-                aboveSubview: self.panelImageView];
     
     // Set the video playlist (using the fetchedResults controller passed in)
     [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
@@ -205,11 +228,11 @@
     
     if (thumbnailIsColour)
     {
-        cell.isColour = TRUE;
+        cell.colour = TRUE;
     }
     else
     {
-        cell.isColour = FALSE;
+        cell.colour = FALSE;
     }
     
     cell.videoImageViewImage = videoInstance.video.thumbnailURL;
@@ -245,7 +268,7 @@
         else
         {
             // We only have one section, so add both trailing and leading insets
-            return UIEdgeInsetsMake (0, 438, 0, 438);
+            return UIEdgeInsetsMake (0, 438, 0, 438 );
         }
     }
     else if (section == (sectionCount - 1))
@@ -328,24 +351,25 @@
 // We need to override the standard setter so that we can update our flow layout for highlighting (colour / monochrome)
 - (void) setCurrentSelectedIndexPath: (NSIndexPath *) currentSelectedIndexPath
 {
-    if (_currentSelectedIndexPath && currentSelectedIndexPath)
+    // Deselect the old thumbnail (if there is one, and it is not the same as the new one)
+    if (_currentSelectedIndexPath && (_currentSelectedIndexPath != currentSelectedIndexPath))
     {
-        NSArray *indexPaths = @[_currentSelectedIndexPath, currentSelectedIndexPath];
-
-        _currentSelectedIndexPath = currentSelectedIndexPath;
-        self.layout.selectedItemIndexPath = currentSelectedIndexPath;
+        SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: _currentSelectedIndexPath];
         
-        // Disable any animations
-        [UIView setAnimationsEnabled: NO];
-
-        [self.videoThumbnailCollectionView reloadItemsAtIndexPaths: indexPaths];
-    }
-    else
-    {
-        _currentSelectedIndexPath = currentSelectedIndexPath;
-        self.layout.selectedItemIndexPath = currentSelectedIndexPath;
+        // This will trigger a nice face out animation to monochrome
+        oldCell.colour = FALSE;
     }
     
+    // Now fade up the new image to full colour
+    SYNVideoThumbnailSmallCell *newCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: currentSelectedIndexPath];
+
+    newCell.colour = TRUE;
+    
+    _currentSelectedIndexPath = currentSelectedIndexPath;
+    self.layout.selectedItemIndexPath = currentSelectedIndexPath;
+    
+    
+    // Now set the channel thumbail for the new
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: currentSelectedIndexPath];
     
     [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
