@@ -55,8 +55,8 @@
 
 -(void)performSearchWithTerm:(NSString*)term
 {
-    if(self.itemToUpdate)
-        [self.itemToUpdate hideItem];
+//    if(self.itemToUpdate)
+//        [self.itemToUpdate hideItem];
     
     [appDelegate.networkEngine searchChannelsForTerm:term];
 }
