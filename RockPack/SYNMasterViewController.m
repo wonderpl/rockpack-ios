@@ -422,8 +422,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     // 1. Do not accept blank characters at the beggining of the field
     
-    if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
-        return NO;
+//    if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
+//        return NO;
+    
+//    if(self.searchTextField.text.length < 1)
+//        return YES;
     
     if(self.autocompleteTimer) {
         [self.autocompleteTimer invalidate];
@@ -454,9 +457,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                              NSMutableArray* wordsReturned = [NSMutableArray array];
                                              
                                              if(suggestionsReturned.count == 0) {
+                                                 
                                                  [self.autocompleteController clearWords];
                                                  
                                                  [self.autocompletePopoverController dismissPopoverAnimated:NO];
+                                                 
+                                                 self.autocompletePopoverController = nil;
+                                                 
                                                  return;
                                              }
         
