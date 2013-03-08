@@ -36,6 +36,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 
+
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 
 @property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
@@ -100,7 +101,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.autocompleteController.tableView.delegate = self;
         
-        
+        self.overEverythingView.userInteractionEnabled = NO;
         
     }
     return self;

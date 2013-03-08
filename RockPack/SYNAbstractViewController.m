@@ -472,8 +472,10 @@
         [self.draggedView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                      placeHolderImage: nil];
         
+        [((SYNMasterViewController*)appDelegate.viewController).overEverythingView addSubview:self.draggedView];
+        
         // now add the item to the view
-        [self.view addSubview: self.draggedView];
+        //[self.view addSubview: self.draggedView];
         
         // Highlight the image well
         [self highlightVideoQueue: TRUE];
