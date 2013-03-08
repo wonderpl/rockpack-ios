@@ -184,7 +184,6 @@
 		0173F6FC16E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F816E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png */; };
 		0173F6FD16E028E4005B3ECA /* GlossVideoThumbnailSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6F916E028E4005B3ECA /* GlossVideoThumbnailSmall.png */; };
 		0173F6FE16E028E4005B3ECA /* GlossVideoThumbnailSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0173F6FA16E028E4005B3ECA /* GlossVideoThumbnailSmall@2x.png */; };
-		0173F70116E0B755005B3ECA /* UIImage+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70016E0B755005B3ECA /* UIImage+ImageProcessing.m */; };
 		0173F70316E0B899005B3ECA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0173F70216E0B899005B3ECA /* CoreImage.framework */; };
 		0173F70816E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70716E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m */; };
 		0173F70B16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70A16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m */; };
@@ -667,8 +666,6 @@
 		0173F6F816E028E4005B3ECA /* BackgroundVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BackgroundVideoThumbnailSmall@2x.png"; path = "Assets/Images/BackgroundVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
 		0173F6F916E028E4005B3ECA /* GlossVideoThumbnailSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossVideoThumbnailSmall.png; path = Assets/Images/GlossVideoThumbnailSmall.png; sourceTree = "<group>"; };
 		0173F6FA16E028E4005B3ECA /* GlossVideoThumbnailSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossVideoThumbnailSmall@2x.png"; path = "Assets/Images/GlossVideoThumbnailSmall@2x.png"; sourceTree = "<group>"; };
-		0173F6FF16E0B755005B3ECA /* UIImage+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageProcessing.h"; sourceTree = "<group>"; };
-		0173F70016E0B755005B3ECA /* UIImage+ImageProcessing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageProcessing.m"; sourceTree = "<group>"; };
 		0173F70216E0B899005B3ECA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		0173F70616E0C56A005B3ECA /* SYNVideoViewerThumbnailLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoViewerThumbnailLayout.h; sourceTree = "<group>"; };
 		0173F70716E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoViewerThumbnailLayout.m; sourceTree = "<group>"; };
@@ -1864,8 +1861,6 @@
 				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
 				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
 				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
-				0173F6FF16E0B755005B3ECA /* UIImage+ImageProcessing.h */,
-				0173F70016E0B755005B3ECA /* UIImage+ImageProcessing.m */,
 				01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */,
 				01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */,
 			);
@@ -2946,7 +2941,6 @@
 				BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */,
 				BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */,
 				0129690B16E024DF00895469 /* NSIndexPath+Arithmetic.m in Sources */,
-				0173F70116E0B755005B3ECA /* UIImage+ImageProcessing.m in Sources */,
 				0173F70816E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m in Sources */,
 				0173F70B16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m in Sources */,
 				01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */,
