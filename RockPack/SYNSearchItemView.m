@@ -81,8 +81,27 @@
 }
 
 
--(void)setNumberOfItems:(NSInteger)noi
+-(void)setNumberOfItems:(NSInteger)noi animated:(BOOL)animated
 {
+    if(!animated) {
+        
+        self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
+        return;
+    }
+    
+    // If already hidden
+    
+    if(self.nameLabel.alpha == 0.0 && self.numberLabel.alpha == 0.0) {
+        
+        self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
+        
+        [self showItem];
+        
+        return;
+        
+    }
+    
+    // else do full fade out and fade in again.
     
     [UIView animateWithDuration:0.2 animations:^{
         
@@ -92,22 +111,28 @@
     } completion:^(BOOL complete) {
         
         self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
-        self.numberLabel.alpha = 0.0;
-        self.nameLabel.alpha = 0.0;
         
         
-        [UIView animateWithDuration:0.4 animations:^{
-            self.nameLabel.alpha = 1.0;
-            self.numberLabel.alpha = 1.0;
-        }];
-        
+        [self showItem];
         
     }];
     
-    
-    
-    
+}
 
+-(void)hideItem
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.nameLabel.alpha = 0.0;
+        self.numberLabel.alpha = 0.0;
+    }];
+}
+
+-(void)showItem
+{
+    [UIView animateWithDuration:0.4 animations:^{
+        self.nameLabel.alpha = 1.0;
+        self.numberLabel.alpha = 1.0;
+    }];
 }
 
 -(void)makeHighlightedWithImage:(BOOL)withImage

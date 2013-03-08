@@ -38,7 +38,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 
-
+@property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 
 @property (nonatomic, strong) IBOutlet UIButton* inboxButton;
@@ -49,6 +49,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
+@property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
 
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
@@ -160,6 +161,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     leftSwipeRecogniser.delegate = self;
     
+    self.clearTextButton.alpha = 0.0;
+    self.glowTextImageView.alpha = 0.0;
+    self.glowTextImageView.userInteractionEnabled = NO;
     
     // == Set Up Notifications == //
     
@@ -402,6 +406,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     self.searchTextField.text = @"";
     
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+    
+    self.clearTextButton.alpha = 0.0;
+    
     [self.searchTextField resignFirstResponder];
 }
 
@@ -422,8 +432,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     // 1. Do not accept blank characters at the beggining of the field
     
-//    if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
-//        return NO;
+    if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
+        return NO;
+    
     
 //    if(self.searchTextField.text.length < 1)
 //        return YES;
@@ -442,6 +453,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)performAutocompleteSearch:(NSTimeInterval*)interval
 {
+    
+    if(self.searchTextField.text.length == 0) {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.clearTextButton.alpha = 0.0;
+        }];
+        
+    } else {
+        [UIView animateWithDuration:0.1 animations:^{
+            self.clearTextButton.alpha = 1.0;
+        }];
+    }
+        
     
     [self.autocompleteTimer invalidate];
     
@@ -486,8 +509,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
-
-    
     
     if ([self.searchTextField.text isEqualToString:@""])
         return NO;
@@ -499,6 +520,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [textField resignFirstResponder];
     
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+    
     if(self.autocompletePopoverController) {
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
         self.autocompletePopoverController = nil;
@@ -509,7 +534,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return YES;
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 1.0;
+    }];
+}
 
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+}
 
 #pragma mark - Gesture Recogniser Delegate
 

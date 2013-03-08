@@ -64,6 +64,8 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
+    if(self.itemToUpdate)
+        [self.itemToUpdate hideItem];
     
     [appDelegate.networkEngine searchVideosForTerm:term];
     
@@ -74,10 +76,14 @@
     
 }
 
+
+
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
+
+    
     if(self.itemToUpdate)
-        [self.itemToUpdate setNumberOfItems: [controller.fetchedObjects count]];
+        [self.itemToUpdate setNumberOfItems:[controller.fetchedObjects count] animated:YES];
     
     [self reloadCollectionViews];
 }

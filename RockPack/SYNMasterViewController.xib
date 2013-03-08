@@ -93,7 +93,7 @@
 								<string key="NSFrameSize">{1024, 54}</string>
 								<reference key="NSSuperview" ref="836185708"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="582574319"/>
+								<reference key="NSNextKeyView" ref="414105243"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="210113303"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -312,6 +312,21 @@
 								<reference key="IBUIFontDescription" ref="1042214128"/>
 								<reference key="IBUIFont" ref="1071906284"/>
 							</object>
+							<object class="IBUIImageView" id="414105243">
+								<reference key="NSNextResponder" ref="836185708"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{705, 1}, {320, 43}}</string>
+								<reference key="NSSuperview" ref="836185708"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="582574319"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlowSearch.png</string>
+								</object>
+							</object>
 							<object class="IBUITextField" id="582574319">
 								<reference key="NSNextResponder" ref="836185708"/>
 								<int key="NSvFlags">292</int>
@@ -472,6 +487,22 @@
 					<int key="connectionID">91</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">clearTextButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="182419213"/>
+					</object>
+					<int key="connectionID">92</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">glowTextImageView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="414105243"/>
+					</object>
+					<int key="connectionID">94</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">userTouchedInboxButton:</string>
 						<reference key="source" ref="346722867"/>
@@ -546,6 +577,7 @@
 							<reference ref="582574319"/>
 							<reference ref="182419213"/>
 							<reference ref="1066454248"/>
+							<reference ref="414105243"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Top Bar View</string>
@@ -636,6 +668,11 @@
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Video Overlay View</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">93</int>
+						<reference key="object" ref="414105243"/>
+						<reference key="parent" ref="836185708"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -661,12 +698,13 @@
 				<real value="1" key="74.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="77.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="89.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="93.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">91</int>
+			<int key="maxID">94</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -694,7 +732,9 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backButton">UIButton</string>
+						<string key="clearTextButton">UIButton</string>
 						<string key="containerView">UIView</string>
+						<string key="glowTextImageView">UIImageView</string>
 						<string key="inboxButton">UIButton</string>
 						<string key="inboxLabel">UILabel</string>
 						<string key="notificationButton">UIButton</string>
@@ -710,9 +750,17 @@
 							<string key="name">backButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="clearTextButton">
+							<string key="name">clearTextButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="containerView">
 							<string key="name">containerView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="glowTextImageView">
+							<string key="name">glowTextImageView</string>
+							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="inboxButton">
 							<string key="name">inboxButton</string>
@@ -773,6 +821,7 @@
 			<string key="ButtonInboxDefault.png">{84, 43}</string>
 			<string key="ButtonInboxHighlighted.png">{84, 43}</string>
 			<string key="ButtonInboxSelected.png">{84, 43}</string>
+			<string key="GlowSearch.png">{320, 43}</string>
 			<string key="PanelMainTitle.png">{1024, 54}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
