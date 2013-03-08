@@ -7,7 +7,6 @@
 //
 
 #import "UIImageView+ImageProcessing.h"
-#import "UIImage+ImageProcessing.h"
 #import <objc/runtime.h>
 
 static MKNetworkEngine *DefaultEngine2;
@@ -43,8 +42,7 @@ const float kFreshLoadAnimationDuration2 = 0.35f;
     return [self setAsynchronousImageFromURL: url
                             placeHolderImage: image
                                  usingEngine: nil
-                                   animation: NO
-                                  monochrome: NO];
+                                   animation: NO];
 }
 
 - (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
@@ -54,15 +52,13 @@ const float kFreshLoadAnimationDuration2 = 0.35f;
     return [self setAsynchronousImageFromURL: url
                             placeHolderImage: image
                                  usingEngine: nil
-                                   animation: NO
-                                  monochrome: isMonochrome];
+                                   animation: NO];
 }
 
 - (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
                                    placeHolderImage: (UIImage*) image
                                         usingEngine: (MKNetworkEngine*) imageCacheEngine
                                           animation: (BOOL) yesOrNo
-                                         monochrome: (BOOL) isMonochrome
 {
     
     if (image) self.image = image;
@@ -81,37 +77,23 @@ const float kFreshLoadAnimationDuration2 = 0.35f;
                                                                duration: kFromCacheAnimationDuration2
                                                                 options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
                                               {
-                                                  if (isMonochrome)
-                                                  {
-                                                      self.image = [fetchedImage imageBlackAndWhite];
-                                                  }
-                                                  else
-                                                  {
                                                       self.image = fetchedImage;
-                                                  }
                                               }
-                                                             completion: ^(BOOL b)
-                                              {
-                                              }];
+                                              completion: nil];
                                          }
                                          else
                                          {
-                                             if (isMonochrome)
-                                             {
-                                                 self.image = [fetchedImage imageBlackAndWhite];
-                                             }
-                                             else
-                                             {
-                                                 self.image = fetchedImage;
-                                             }
+                                            self.image = fetchedImage;
                                          }
-                                     } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
-                                         
-                                         DLog(@"%@", error);
+                                     }
+                                     errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
+                                     {
+                                         DebugLog(@"%@", error);
                                      }];
-    } else {
-        
-        DLog(@"No default engine found and imageCacheEngine parameter is null")
+    }
+    else
+    {
+        DebugLog(@"No default engine found and imageCacheEngine parameter is null");
     }
     
     return self.imageFetchOperation2;
