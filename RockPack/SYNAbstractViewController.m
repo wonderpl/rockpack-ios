@@ -446,9 +446,9 @@
                                                             object:self];
         
         // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
+        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:[sender locationInView: self.videoThumbnailCollectionView]];
         
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
         if (!indexPath)
         {

@@ -79,8 +79,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.rootViewController = root;
         
+        
+        // == Set up Inbox Overlay
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
+        CGRect inboxOverlayFrame = self.inboxOverlayViewController.view.frame;
+        inboxOverlayFrame.origin.x = -(inboxOverlayFrame.size.width);
+        inboxOverlayFrame.origin.y = 45.0;
+        self.inboxOverlayViewController.view.frame = inboxOverlayFrame;
+        
+        
+        // == Set up Share Overlay
         self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
+        CGRect shareOverlayFrame = self.inboxOverlayViewController.view.frame;
+        shareOverlayFrame.origin.x = -(shareOverlayFrame.size.width);
+        shareOverlayFrame.origin.y = 45.0;
+        self.shareOverlayViewController.view.frame = shareOverlayFrame;
+        
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         
@@ -259,7 +273,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // Take out of screen
     overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                                   0.0,
+                                                   overlayViewController.view.frame.origin.y,
                                                    overlayViewFrame.size.width,
                                                    overlayViewFrame.size.height);
     
@@ -270,7 +284,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
-                         overlayViewController.view.frame =  CGRectMake(0.0, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         overlayViewController.view.frame =  CGRectMake(0.0,
+                                                                        overlayViewFrame.origin.y,
+                                                                        overlayViewFrame.size.width,
+                                                                        overlayViewFrame.size.height);
                          
                      } completion: ^(BOOL finished) {
                          if(block) block(finished);
@@ -296,7 +313,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
-                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                                                        overlayViewFrame.origin.y,
+                                                                        overlayViewFrame.size.width,
+                                                                        overlayViewFrame.size.height);
                          
                      } completion: ^(BOOL finished) {
                          [overlayViewController.view removeFromSuperview];
