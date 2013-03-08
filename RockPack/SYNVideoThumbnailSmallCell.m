@@ -17,6 +17,8 @@
 @property (nonatomic, strong) IBOutlet UIView *mainView;
 @property (nonatomic, strong) IBOutlet UIImage *colourImage;
 @property (nonatomic, strong) IBOutlet UIImage *monochromeImage;
+@property (nonatomic, strong) IBOutlet UIImageView *selectedGlossImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *defaultGlossImageView;
 
 @end
 
@@ -29,7 +31,23 @@
 {
     [super awakeFromNib];
 
+    static NSManagedObjectContext *mainManagedObjectContext = nil;
+    
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 10.0f];
+}
+
+
++ (dispatch_queue_t) sharedImageProcessingQueue
+{
+    static dispatch_once_t pred;
+    static dispatch_queue_t imageProcessingQueue;
+    
+    dispatch_once(&pred, ^
+    {
+        imageProcessingQueue = dispatch_queue_create("com.rockpack.imageprocessing", DISPATCH_QUEUE_SERIAL);
+    });
+    
+    return imageProcessingQueue;
 }
 
 #pragma mark - Asynchronous image loading support
@@ -40,18 +58,24 @@
     
     [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
      completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
-     {
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+     {         
+         dispatch_async(SYNVideoThumbnailSmallCell.sharedImageProcessingQueue, ^
          {
-             // Do any image processing on a background thread
-             weakSelf.colourImage = fetchedImage;
-             weakSelf.monochromeImage = fetchedImage.imageBlackAndWhite;
+             // Just do image processing on background thread
+             CGImageRef imageRef = [fetchedImage imageBlackAndWhite2: [UIColor whiteColor]];
              
              dispatch_async(dispatch_get_main_queue(), ^
              {
+                 // Do any image processing on a background thread
+                 weakSelf.colourImage = fetchedImage;
+                 
+                 UIImage *newImage = [UIImage imageWithCGImage: imageRef];
+                 CGImageRelease(imageRef);
+                 weakSelf.monochromeImage = newImage;
+                 
                  if (!isInCache)
                  {
-                     [UIView transitionWithView: weakSelf.imageView.superview
+                     [UIView transitionWithView: weakSelf.imageView
                                        duration: kFromCacheAnimationDuration
                                         options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
                       {
@@ -75,11 +99,15 @@
     {
         self.imageView.image = self.colourImage;
         self.mainView.alpha = 1.0f;
+        self.selectedGlossImageView.hidden = FALSE;
+        self.defaultGlossImageView.hidden = TRUE;
     }
     else
     {
         self.imageView.image = self.monochromeImage;
         self.mainView.alpha = 0.6f;
+        self.selectedGlossImageView.hidden = TRUE;
+        self.defaultGlossImageView.hidden = FALSE;
     }
 }
 
@@ -87,7 +115,7 @@
 {
     if (self.colour != colour)
     {
-        [UIView transitionWithView: self.imageView.superview
+        [UIView transitionWithView: self.imageView
                           duration: kFromCacheAnimationDuration
                            options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
          {
@@ -98,6 +126,8 @@
              _colour = colour;
          }];
     }
+    
+    _colour = colour;
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations

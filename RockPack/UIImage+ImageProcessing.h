@@ -13,4 +13,6 @@
 
 - (UIImage *) imageBlackAndWhite;
 
+- (CGImageRef) imageBlackAndWhite2: (UIColor *) whiteColour;
+
 @end
