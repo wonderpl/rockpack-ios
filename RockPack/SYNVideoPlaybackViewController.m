@@ -62,6 +62,8 @@
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
     
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
     // Use for placeholder
 //    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
 //                               aboveSubview: self.videoPlaceholderImageView];
@@ -73,9 +75,6 @@
     
     // Add button that can be used to play video (if not autoplaying)
     self.videoPlayButton = [self createVideoPlayButton];
-
-//    self.view.autoresizesSubviews = YES;
-//    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 
@@ -88,22 +87,6 @@
     [super viewDidDisappear: animated];
 }
 
-- (void) animateToFrame: (CGRect) frame
-{
-    [UIView transitionWithView: self.view
-                      duration: 10.0f
-                       options: UIViewAnimationOptionLayoutSubviews
-                    animations: ^
-     {
-         self.view.bounds = CGRectMake (0, 0, frame.size.width, frame.size.height);
-//         self.currentVideoWebView.frame = self.view.bounds;
-         //self.nextVideoWebView.frame = CGRectMake (0, 0, frame.size.width, frame.size.height);
-     }
-                    completion: ^(BOOL b)
-     {
-     }];
-}
-
 
 - (UIWebView *) createNewVideoWebView
 {
@@ -114,8 +97,6 @@
 	newVideoWebView.opaque = NO;
     newVideoWebView.alpha = 0.0f;
     newVideoWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    newVideoWebView.autoresizesSubviews = YES;
-    newVideoWebView.scalesPageToFit = YES;
     
     // Stop the user from scrolling the webview
     newVideoWebView.scrollView.scrollEnabled = false;
@@ -420,12 +401,12 @@
     
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
     
-//    [webView loadHTMLString: iFrameHTML
-//                    baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+    [webView loadHTMLString: iFrameHTML
+                    baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
     
-    [webView loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: @"http://www.synchromation.com"]]];
-    
-    webView.alpha = 1.0f;
+//    [webView loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: @"http://www.synchromation.com"]]];
+//    
+//    webView.alpha = 1.0f;
     
     // Not sure if this makes any difference
     webView.mediaPlaybackRequiresUserAction = FALSE;
@@ -584,7 +565,7 @@
     }
     else if ([actionName isEqualToString: @"playbackQuality"])
     {
-        
+        NSLog (@"!!!!!!!!!! Quality: %@", actionData);
     }
     else if ([actionName isEqualToString: @"playbackRateChange"])
     {

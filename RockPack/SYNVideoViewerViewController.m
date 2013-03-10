@@ -105,7 +105,7 @@
     
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
-    
+//    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 1024, 416)];
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.blackPanelView];
     
@@ -418,36 +418,33 @@
 {
     if (self.isVideoExpanded)
     {
-        [self.videoPlaybackViewController animateToFrame: CGRectMake(142, 71, 740, 416)];
-        
-//        [UIView transitionWithView: self.view
-//                          duration: 10.0f
-//                           options: UIViewAnimationOptionCurveEaseInOut
-//                        animations: ^
-//         {
-//             self.blackPanelView.alpha = 0.0f;
-//             
-////             self.videoPlaybackViewController.view.frame = CGRectMake(142, 71, 740, 416);
-//         }
-//                        completion: ^(BOOL b)
-//         {
-//         }];
+        [UIView transitionWithView: self.view
+                          duration: 0.5f
+                           options: UIViewAnimationOptionCurveEaseInOut
+                        animations: ^
+         {
+             self.blackPanelView.alpha = 0.0f;
+             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+             self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
+         }
+                        completion: ^(BOOL b)
+         {
+         }];
     }
     else
     {
-//            [self.videoPlaybackViewController animateToFrame: CGRectMake(0, 96, 1024, 576)];
-            [self.videoPlaybackViewController animateToFrame: CGRectMake(0, 71, 1024, 416)];
-//        [UIView transitionWithView: self.view
-//                          duration: 10.0f
-//                           options: UIViewAnimationOptionCurveEaseInOut
-//                        animations: ^
-//         {
-//             self.blackPanelView.alpha = 1.0f;
-////             self.videoPlaybackViewController.view.frame = CGRectMake(0, 96, 1024, 576);
-//         }
-//                        completion: ^(BOOL b)
-//         {
-//         }];
+        [UIView transitionWithView: self.view
+                          duration: 0.5f
+                           options: UIViewAnimationOptionCurveEaseInOut
+                        animations: ^
+         {
+             self.blackPanelView.alpha = 1.0f;
+             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
+             self.videoPlaybackViewController.view.center = CGPointMake(512, 384);
+         }
+                        completion: ^(BOOL b)
+         {
+         }];
     }
 
     self.videoExpanded = !self.videoExpanded;

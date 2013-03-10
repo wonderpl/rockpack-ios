@@ -39,6 +39,7 @@
                                        'modestbranding' : 1,
                                        'showinfo' : 0,
                                        'rel' : 0,
+                                       'suggestedQuality' : 'large'
                                        },
                                        width: '%d',
                                        height: '%d',
@@ -67,11 +68,9 @@
                 var body = document.getElementsByTagName("body")[0];
                 element.setAttribute("width", body.clientWidth);
                 element.setAttribute("height", body.clientWidth / 1.77777);
-                
-                var numberString = "Width " + body.clientWidth + " Height" + body.clientWidth / 1.77777;
-                onEvent('sizeChange', numberString);
+
             }
-            
+
             // All possible event functions
             
             // This event fires whenever a player has finished loading and is ready to begin receiving API calls.
@@ -79,7 +78,7 @@
             // such as playing the video or displaying information about the video, as soon as the player is ready.
             function onPlayerReady(event)
             {
-                onEvent('ready', null);
+                onEvent('ready', null);        
             }
             
             // This event fires whenever the player's state changes. The data property of the event object that the API
