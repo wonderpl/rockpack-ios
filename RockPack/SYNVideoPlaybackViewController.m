@@ -11,8 +11,6 @@
 
 #import "NSIndexPath+Arithmetic.h"
 #import "SYNVideoPlaybackViewController.h"
-#import "Video.h"
-#import "VideoInstance.h"
 #import <CoreData/CoreData.h>
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
@@ -34,6 +32,8 @@
 
 
 @implementation SYNVideoPlaybackViewController
+
+@synthesize currentVideoInstance;
 
 #pragma mark - Initialization
 
@@ -820,6 +820,11 @@
                      completion: ^(BOOL finished)
      {
      }];
+}
+
+-(VideoInstance*)currentVideoInstance
+{
+    return (VideoInstance*)[self.fetchedResultsController objectAtIndexPath:self.currentSelectedIndexPath];
 }
 
 @end

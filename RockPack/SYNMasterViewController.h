@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) UIViewController* rootViewController;
 
+@property (nonatomic, strong) IBOutlet UIView* overEverythingView;
 
 -(id)initWithRootViewController:(UIViewController*)root;
 

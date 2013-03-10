@@ -64,20 +64,7 @@
     
 }
 
--(void)performSearchForCurrentSearchTerm
-{
-    
-    if(!self.currentController) { // first time
-        [self.tabViewController setSelectedWithId:@"0"];
-    }
-    
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
-    
-    
-    [self.searchVideosController performSearchWithTerm:searchTerm];
-    [self.searchChannelsController performSearchWithTerm:searchTerm];
-}
+
 
 
 -(void)viewWillAppear:(BOOL)animated
@@ -98,11 +85,30 @@
     
     viewIsOnScreen = YES;
     
-    if(searchTerm)
-        [self performSearchForCurrentSearchTerm];
-        
+    
 }
 
+-(void)performSearchForCurrentSearchTerm
+{
+    
+    [self clearOldSearchData];
+    
+    if(!self.currentController)
+        [self.tabViewController setSelectedWithId:@"0"];
+    
+    
+    [self.searchVideosController performSearchWithTerm:searchTerm];
+    [self.searchChannelsController performSearchWithTerm:searchTerm];
+}
+
+-(void)clearOldSearchData
+{
+    
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
+    
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    
+}
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -110,12 +116,6 @@
     searchTerm = nil;
     
     viewIsOnScreen = NO;
-    
-    // clear the context
-    
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"VideoInstance"];
-    
     
     
     [self.currentController.view removeFromSuperview];

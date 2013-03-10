@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "Video.h"
+#import "VideoInstance.h"
+
 // Forward declaration for
 @class SYNVideoPlaybackViewController;
 @class NSFetchedResultsController;
@@ -25,6 +28,8 @@
 @interface SYNVideoPlaybackViewController : UIViewController
 
 @property (nonatomic, weak) id<SYNVideoPlaybackViewControllerDelegate> delegate;
+
+@property (nonatomic, strong) VideoInstance* currentVideoInstance;
 
 // Initialisation
 - (id) initWithFrame: (CGRect) frame;
