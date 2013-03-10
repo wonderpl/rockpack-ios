@@ -26,7 +26,7 @@
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
-
+@property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
@@ -40,6 +40,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfRocksLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
+@property (nonatomic, strong) IBOutlet UIView *blackPanelView;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
@@ -95,14 +96,21 @@
     
     self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
     
+    self.blackPanelView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
+    self.blackPanelView.backgroundColor = [UIColor blackColor];
+    self.blackPanelView.alpha = 0.0f;
+    
+    [self.view insertSubview: self.blackPanelView
+                aboveSubview: self.panelImageView];
+    
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
     
     [self.view insertSubview: self.videoPlaybackViewController.view
-                aboveSubview: self.panelImageView];
+                aboveSubview: self.blackPanelView];
     
     // Create a dummy view just above the video panel to allow swipes
-    UIView *swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    UIView *swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 390)];
     
     // TODO: Remove this test code
 //    swipeView.backgroundColor = [UIColor blueColor];
@@ -122,7 +130,13 @@
     
     leftSwipeRecogniser.delegate = self;
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer: leftSwipeRecogniser];
+    [swipeView addGestureRecognizer: leftSwipeRecogniser];
+    
+    UITapGestureRecognizer* tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                    action: @selector(userTappedVideo)];
+    
+    tapRecogniser.delegate = self;
+    [swipeView addGestureRecognizer: tapRecogniser];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
@@ -398,6 +412,48 @@
 //    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
 //    
 //    [self viewProfileDetails: videoInstance.channel.channelOwner];
+}
+
+- (void) userTappedVideo
+{
+    if (self.isVideoExpanded)
+    {
+        [self.videoPlaybackViewController animateToFrame: CGRectMake(142, 71, 740, 416)];
+        
+//        [UIView transitionWithView: self.view
+//                          duration: 10.0f
+//                           options: UIViewAnimationOptionCurveEaseInOut
+//                        animations: ^
+//         {
+//             self.blackPanelView.alpha = 0.0f;
+//             
+////             self.videoPlaybackViewController.view.frame = CGRectMake(142, 71, 740, 416);
+//         }
+//                        completion: ^(BOOL b)
+//         {
+//         }];
+    }
+    else
+    {
+//            [self.videoPlaybackViewController animateToFrame: CGRectMake(0, 96, 1024, 576)];
+            [self.videoPlaybackViewController animateToFrame: CGRectMake(0, 71, 1024, 416)];
+//        [UIView transitionWithView: self.view
+//                          duration: 10.0f
+//                           options: UIViewAnimationOptionCurveEaseInOut
+//                        animations: ^
+//         {
+//             self.blackPanelView.alpha = 1.0f;
+////             self.videoPlaybackViewController.view.frame = CGRectMake(0, 96, 1024, 576);
+//         }
+//                        completion: ^(BOOL b)
+//         {
+//         }];
+    }
+
+    self.videoExpanded = !self.videoExpanded;
+    
+
+
 }
 
 @end

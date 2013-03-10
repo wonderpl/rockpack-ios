@@ -42,6 +42,7 @@
 - (void) playVideoAtIndex: (NSIndexPath *) newIndexPath;
 - (void) loadNextVideo;
 - (void) loadPreviousVideo;
+- (void) animateToFrame: (CGRect) frame;
 
 // Player properties
 @property (nonatomic, assign, readonly) NSTimeInterval duration;

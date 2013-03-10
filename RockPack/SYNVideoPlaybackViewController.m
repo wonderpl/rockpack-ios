@@ -74,6 +74,8 @@
     // Add button that can be used to play video (if not autoplaying)
     self.videoPlayButton = [self createVideoPlayButton];
 
+//    self.view.autoresizesSubviews = YES;
+//    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 
@@ -86,6 +88,22 @@
     [super viewDidDisappear: animated];
 }
 
+- (void) animateToFrame: (CGRect) frame
+{
+    [UIView transitionWithView: self.view
+                      duration: 10.0f
+                       options: UIViewAnimationOptionLayoutSubviews
+                    animations: ^
+     {
+         self.view.bounds = CGRectMake (0, 0, frame.size.width, frame.size.height);
+//         self.currentVideoWebView.frame = self.view.bounds;
+         //self.nextVideoWebView.frame = CGRectMake (0, 0, frame.size.width, frame.size.height);
+     }
+                    completion: ^(BOOL b)
+     {
+     }];
+}
+
 
 - (UIWebView *) createNewVideoWebView
 {
@@ -95,6 +113,9 @@
     newVideoWebView.backgroundColor = self.view.backgroundColor;
 	newVideoWebView.opaque = NO;
     newVideoWebView.alpha = 0.0f;
+    newVideoWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    newVideoWebView.autoresizesSubviews = YES;
+    newVideoWebView.scalesPageToFit = YES;
     
     // Stop the user from scrolling the webview
     newVideoWebView.scrollView.scrollEnabled = false;
@@ -153,63 +174,6 @@
 
 #pragma mark - Source / Playlist management
 
-//- (NSIndexPath *) nextIndexPath: (NSIndexPath *) currentIndexPath
-//{
-//    // Get the current number of section and calculate the next one
-//    int numOfSections = self.fetchedResultsController.sections.count;
-//    int nextSection = ((currentIndexPath.section + 1) % numOfSections);
-//    
-//    // Get the info for the current section
-//    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[currentIndexPath.section];
-//    
-//    // Check to see 
-//    if ((currentIndexPath.item + 1) >= sectionInfo.numberOfObjects)
-//    {
-//        // Wrap around to the first item in the next section (which itself may have wrapped around)
-//        return [NSIndexPath indexPathForRow: 0
-//                                  inSection: nextSection];
-//    }
-//    else
-//    {
-//        // Return the next row in the section
-//        return [NSIndexPath indexPathForRow: currentIndexPath.item + 1
-//                                  inSection: currentIndexPath.section];
-//    }
-//}
-//
-//
-//- (NSIndexPath *) previousIndexPath: (NSIndexPath *) currentIndexPath
-//{
-//    // Get the current number of section and calculate the next one
-//    int numOfSections = self.fetchedResultsController.sections.count;
-//    
-//    // Calculate the previous section
-//    int previousSection = currentIndexPath.section - 1;
-//
-//    // Check to see if we need to wrap around
-//    if (previousSection < 0)
-//    {
-//        // Set to the last section
-//        previousSection = numOfSections - 1;
-//    }
-//    
-//    // Get the info for the current section
-//    id <NSFetchedResultsSectionInfo> previousSectionInfo = self.fetchedResultsController.sections[previousSection];
-//    
-//    // Check to see if we need to wrap around
-//    if ((currentIndexPath.item - 1) < 0)
-//    {
-//        // Set to the last index of the previous section
-//        return [NSIndexPath indexPathForRow: previousSectionInfo.numberOfObjects - 1
-//                                  inSection: previousSection];
-//    }
-//    else
-//    {
-//        // Set to the previous index in this section
-//        return [NSIndexPath indexPathForRow: (currentIndexPath.item - 1)
-//                                  inSection: currentIndexPath.section];
-//    }
-//}
 
 
 - (void) incrementVideoIndexPath
@@ -456,8 +420,12 @@
     
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
     
-    [webView loadHTMLString: iFrameHTML
-                    baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+//    [webView loadHTMLString: iFrameHTML
+//                    baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+    
+    [webView loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: @"http://www.synchromation.com"]]];
+    
+    webView.alpha = 1.0f;
     
     // Not sure if this makes any difference
     webView.mediaPlaybackRequiresUserAction = FALSE;
@@ -629,6 +597,10 @@
     else if ([actionName isEqualToString: @"apiChange"])
     {
         
+    }
+    else if ([actionName isEqualToString: @"sizeChange"])
+    {
+        NSLog (@"!!!!!!!!!! Size change: %@", actionData);
     }
     else
     {
