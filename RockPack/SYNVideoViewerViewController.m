@@ -43,6 +43,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *blackPanelView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
+@property (nonatomic, strong) IBOutlet UIView *chromeView;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
@@ -112,13 +113,13 @@
                 aboveSubview: self.blackPanelView];
     
     // Create a dummy view just above the video panel to allow swipes
-    self.swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 390)];
-    
-    // TODO: Remove this test code
-//    swipeView.backgroundColor = [UIColor blueColor];
-    
-    [self.view insertSubview: self.swipeView
-                aboveSubview: self.videoPlaybackViewController.view];
+//    self.swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 390)];
+//    
+//    // TODO: Remove this test code
+////    swipeView.backgroundColor = [UIColor blueColor];
+//    
+//    [self.view insertSubview: self.swipeView
+//                aboveSubview: self.videoPlaybackViewController.view];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                action: @selector(userTouchedPreviousVideoButton:)];
@@ -432,8 +433,8 @@
                         animations: ^
          {
              self.blackPanelView.alpha = 0.0f;
-             self.closeButton.alpha = 1.0f;
-             self.swipeView.frame =  CGRectMake(142, 71, 740, 390);
+             self.chromeView.alpha = 1.0f;
+             self.swipeView.frame =  CGRectMake(20, 142, 958, 149);
              self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
              self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
          }
@@ -449,10 +450,10 @@
                         animations: ^
          {
              self.blackPanelView.alpha = 1.0f;
-             self.closeButton.alpha = 0.0f;
+             self.chromeView.alpha = 0.0f;
              self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
              self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
-             self.videoPlaybackViewController.view.center = CGPointMake(512, 384);
+             self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
          }
                         completion: ^(BOOL b)
          {
