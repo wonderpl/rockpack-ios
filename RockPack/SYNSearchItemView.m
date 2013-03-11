@@ -32,8 +32,7 @@
     if (self = [super initWithFrame:frame]) {
         
         
-        // Number Label
-        
+        // == Number Label == //
         
         UIFont* numberFontToUse = [UIFont boldRockpackFontOfSize: 20.0f];
         CGSize numberLabelSize = [@"100" sizeWithFont:numberFontToUse];
@@ -49,7 +48,7 @@
         [self addSubview:self.numberLabel];
         
         
-        // Name Label
+        // == Name Label == //
         
         UIFont* nameFontToUse = [UIFont rockpackFontOfSize: 15.0f];
         CGSize nameLabelSize = [name sizeWithFont:nameFontToUse];
@@ -65,13 +64,13 @@
         [self addSubview:self.nameLabel];
         
         
-        // Glow
+        // == Glow == //
         
         self.bottomGlowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchTabHeaderGlow.png"]];
         self.bottomGlowImageView.center = CGPointMake(self.frame.size.width*0.5, self.bottomGlowImageView.center.y);
         self.bottomGlowImageView.hidden = YES;
         self.bottomGlowImageView.userInteractionEnabled = NO;
-        [self addSubview:self.bottomGlowImageView];
+        //[self addSubview:self.bottomGlowImageView];
         
         // register labels in array
         
@@ -82,15 +81,58 @@
 }
 
 
--(void)setNumberOfItems:(NSInteger)noi
+-(void)setNumberOfItems:(NSInteger)noi animated:(BOOL)animated
 {
-    self.nameLabel.alpha = 0.0f;
-    self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
+    if(!animated) {
+        
+        self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
+        return;
+    }
+    
+    // If already hidden
+    
+    if(self.nameLabel.alpha == 0.0 && self.numberLabel.alpha == 0.0) {
+        
+        self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
+        
+        [self showItem];
+        
+        return;
+        
+    }
+    
+    // else do full fade out and fade in again.
+    
     [UIView animateWithDuration:0.2 animations:^{
-        self.nameLabel.alpha = 1.0;
+        
+        self.nameLabel.alpha = 0.0;
+        self.numberLabel.alpha = 0.0;
+        
+    } completion:^(BOOL complete) {
+        
+        self.numberLabel.text = [NSString stringWithFormat:@"%i", noi];
+        
+        
+        [self showItem];
+        
     }];
     
+}
 
+-(void)hideItem
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.nameLabel.alpha = 0.0;
+        self.numberLabel.alpha = 0.0;
+    }];
+}
+
+-(void)showItem
+{
+    [UIView animateWithDuration:0.4 animations:^{
+        self.nameLabel.alpha = 1.0;
+        self.numberLabel.alpha = 1.0;
+    }];
 }
 
 -(void)makeHighlightedWithImage:(BOOL)withImage
@@ -103,17 +145,15 @@
     }
     
     
-    UIColor *color = [UIColor rockpackBlueColor];
-    
     for (UILabel* label in self.labels)
     {
         
-        label.textColor = color;
-        label.layer.shadowColor = [color CGColor];
-        label.layer.shadowRadius = 7.0f;
-        label.layer.shadowOpacity = 1.0;
-        label.layer.shadowOffset = CGSizeZero;
-        label.layer.masksToBounds = NO;
+        label.textColor = [UIColor whiteColor];
+//        label.layer.shadowColor = [color CGColor];
+//        label.layer.shadowRadius = 7.0f;
+//        label.layer.shadowOpacity = 1.0;
+//        label.layer.shadowOffset = CGSizeZero;
+//        label.layer.masksToBounds = NO;
         
     }
     
@@ -129,9 +169,6 @@
     }
     
     
-    [UIView animateWithDuration:0.3 animations:^{
-        
-    }];
     
     
     

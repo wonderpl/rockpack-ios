@@ -36,9 +36,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
 @property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 
+
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 
-
+@property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 
 @property (nonatomic, strong) IBOutlet UIButton* inboxButton;
@@ -49,6 +50,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
+@property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
 
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
@@ -78,14 +80,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.rootViewController = root;
         
+        
+        // == Set up Inbox Overlay
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
+        CGRect inboxOverlayFrame = self.inboxOverlayViewController.view.frame;
+        inboxOverlayFrame.origin.x = -(inboxOverlayFrame.size.width);
+        inboxOverlayFrame.origin.y = 45.0;
+        self.inboxOverlayViewController.view.frame = inboxOverlayFrame;
+        
+        
+        // == Set up Share Overlay
         self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
+        CGRect shareOverlayFrame = self.inboxOverlayViewController.view.frame;
+        shareOverlayFrame.origin.x = -(shareOverlayFrame.size.width);
+        shareOverlayFrame.origin.y = 45.0;
+        self.shareOverlayViewController.view.frame = shareOverlayFrame;
+        
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         
         self.autocompleteController.tableView.delegate = self;
         
-        
+        self.overEverythingView.userInteractionEnabled = NO;
         
     }
     return self;
@@ -160,6 +176,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     leftSwipeRecogniser.delegate = self;
     
+    self.clearTextButton.alpha = 0.0;
+    self.glowTextImageView.alpha = 0.0;
+    self.glowTextImageView.userInteractionEnabled = NO;
     
     // == Set Up Notifications == //
     
@@ -255,7 +274,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // Take out of screen
     overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                                   0.0,
+                                                   overlayViewController.view.frame.origin.y,
                                                    overlayViewFrame.size.width,
                                                    overlayViewFrame.size.height);
     
@@ -266,7 +285,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
-                         overlayViewController.view.frame =  CGRectMake(0.0, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         overlayViewController.view.frame =  CGRectMake(0.0,
+                                                                        overlayViewFrame.origin.y,
+                                                                        overlayViewFrame.size.width,
+                                                                        overlayViewFrame.size.height);
                          
                      } completion: ^(BOOL finished) {
                          if(block) block(finished);
@@ -292,7 +314,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
-                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                                                        overlayViewFrame.origin.y,
+                                                                        overlayViewFrame.size.width,
+                                                                        overlayViewFrame.size.height);
                          
                      } completion: ^(BOOL finished) {
                          [overlayViewController.view removeFromSuperview];
@@ -402,6 +427,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     self.searchTextField.text = @"";
     
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+    
+    self.clearTextButton.alpha = 0.0;
+    
     [self.searchTextField resignFirstResponder];
 }
 
@@ -425,6 +456,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
         return NO;
     
+    
+//    if(self.searchTextField.text.length < 1)
+//        return YES;
+    
     if(self.autocompleteTimer) {
         [self.autocompleteTimer invalidate];
     }
@@ -440,6 +475,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)performAutocompleteSearch:(NSTimeInterval*)interval
 {
     
+    if(self.searchTextField.text.length == 0) {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.clearTextButton.alpha = 0.0;
+        }];
+        
+    } else {
+        [UIView animateWithDuration:0.1 animations:^{
+            self.clearTextButton.alpha = 1.0;
+        }];
+    }
+        
+    
     [self.autocompleteTimer invalidate];
     
     self.autocompleteTimer = nil;
@@ -454,9 +501,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                              NSMutableArray* wordsReturned = [NSMutableArray array];
                                              
                                              if(suggestionsReturned.count == 0) {
+                                                 
                                                  [self.autocompleteController clearWords];
                                                  
                                                  [self.autocompletePopoverController dismissPopoverAnimated:NO];
+                                                 
+                                                 self.autocompletePopoverController = nil;
+                                                 
                                                  return;
                                              }
         
@@ -479,8 +530,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
-
-    
     
     if ([self.searchTextField.text isEqualToString:@""])
         return NO;
@@ -492,6 +541,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [textField resignFirstResponder];
     
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+    
     if(self.autocompletePopoverController) {
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
         self.autocompletePopoverController = nil;
@@ -502,7 +555,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return YES;
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 1.0;
+    }];
+}
 
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+}
 
 #pragma mark - Gesture Recogniser Delegate
 

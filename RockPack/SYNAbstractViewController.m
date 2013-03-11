@@ -446,9 +446,9 @@
                                                             object:self];
         
         // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
+        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:[sender locationInView: self.videoThumbnailCollectionView]];
         
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
         if (!indexPath)
         {
@@ -472,8 +472,10 @@
         [self.draggedView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                      placeHolderImage: nil];
         
+        [((SYNMasterViewController*)appDelegate.viewController).overEverythingView addSubview:self.draggedView];
+        
         // now add the item to the view
-        [self.view addSubview: self.draggedView];
+        //[self.view addSubview: self.draggedView];
         
         // Highlight the image well
         [self highlightVideoQueue: TRUE];

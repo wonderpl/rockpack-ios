@@ -13,11 +13,13 @@
 
 - (id)initWithTitle:(NSString*)name andFrame:(CGRect)frame;
 
--(void)setNumberOfItems:(NSInteger)noi;
+-(void)setNumberOfItems:(NSInteger)noi animated:(BOOL)animated;
 
 -(void)makeFaded;
 -(void)makeStandard;
 -(void)makeHighlightedWithImage:(BOOL)withImage;
 
+-(void)hideItem;
+-(void)showItem;
 
 @end

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "Video.h"
+#import "VideoInstance.h"
+
 // Forward declaration for
 @class SYNVideoPlaybackViewController;
 @class NSFetchedResultsController;
@@ -26,6 +29,8 @@
 
 @property (nonatomic, weak) id<SYNVideoPlaybackViewControllerDelegate> delegate;
 
+@property (nonatomic, strong) VideoInstance* currentVideoInstance;
+
 // Initialisation
 - (id) initWithFrame: (CGRect) frame;
 
@@ -42,6 +47,7 @@
 - (void) playVideoAtIndex: (NSIndexPath *) newIndexPath;
 - (void) loadNextVideo;
 - (void) loadPreviousVideo;
+- (void) animateToFrame: (CGRect) frame;
 
 // Player properties
 @property (nonatomic, assign, readonly) NSTimeInterval duration;
