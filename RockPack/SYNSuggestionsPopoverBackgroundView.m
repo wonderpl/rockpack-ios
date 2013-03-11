@@ -15,6 +15,7 @@
 @interface SYNSuggestionsPopoverBackgroundView ()
 {    
     UIImage *_topArrowImage;
+    UIImage *_rightArrowImage;
 }
 
 @end
@@ -68,6 +69,7 @@
     if (self = [super initWithFrame:frame])
     {
         _topArrowImage = [UIImage imageNamed:@"popover-black-top-arrow-image.png"];
+        _rightArrowImage = [UIImage imageNamed:@"popover-black-right-arrow-image.png"];
         
         UIImage *popoverBackgroundImage = [[UIImage imageNamed:@"popover-black-bcg-image.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(49, 46, 49, 45)];
         self.popoverBackgroundImageView = [[UIImageView alloc] initWithImage:popoverBackgroundImage];
@@ -129,6 +131,29 @@
             break; 
             
         
+        case UIPopoverArrowDirectionRight:
+            
+            popoverImageWidth = self.bounds.size.width - ARROW_HEIGHT + 2;
+            
+            arrowImageOriginX = popoverImageWidth - 2;
+            arrowImageOriginY = roundf((self.bounds.size.height - ARROW_WIDTH) / 2);
+            
+            if (arrowImageOriginY + ARROW_WIDTH > self.bounds.size.height - cornerRadius)
+            {
+                arrowImageOriginY -= cornerRadius;
+            }
+            
+            if (arrowImageOriginY < cornerRadius)
+            {
+                arrowImageOriginY += cornerRadius;
+            }
+            
+            arrowImageWidth = ARROW_HEIGHT;
+            arrowImageHeight = ARROW_WIDTH;
+            
+            self.arrowImageView.image = _rightArrowImage;
+            
+            break;
             
         default:
             

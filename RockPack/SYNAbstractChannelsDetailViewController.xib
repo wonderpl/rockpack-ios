@@ -377,7 +377,7 @@
 										<string key="NSFrame">{{407, 17}, {211, 29}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="640189211"/>
+										<reference key="NSNextKeyView" ref="365122975"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -430,10 +430,10 @@
 										<reference key="IBUIFontDescription" ref="549930349"/>
 										<reference key="IBUIFont" ref="806388323"/>
 									</object>
-									<object class="IBUIButton" id="640189211">
+									<object class="IBUIButton" id="365122975">
 										<reference key="NSNextResponder" ref="993763524"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{938, 20}, {66, 66}}</string>
+										<string key="NSFrame">{{929, 21}, {74, 74}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="960321968"/>
@@ -548,7 +548,6 @@
 						<string key="NSFrame">{{956, 73}, {48, 21}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -751,6 +750,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">cameraButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="365122975"/>
+					</object>
+					<int key="connectionID">148</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="566198242"/>
 						<reference key="destination" ref="841351856"/>
@@ -825,6 +832,15 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">131</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">userTouchedCameraButton:</string>
+						<reference key="source" ref="365122975"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">147</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -962,7 +978,7 @@
 							<reference ref="802725534"/>
 							<reference ref="245815771"/>
 							<reference ref="950684700"/>
-							<reference ref="640189211"/>
+							<reference ref="365122975"/>
 						</array>
 						<reference key="parent" ref="13768505"/>
 						<string key="objectName">View - Cover selection</string>
@@ -1021,8 +1037,9 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">146</int>
-						<reference key="object" ref="640189211"/>
+						<reference key="object" ref="365122975"/>
 						<reference key="parent" ref="993763524"/>
+						<string key="objectName">Button - Camera</string>
 					</object>
 				</array>
 			</object>
@@ -1068,7 +1085,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">146</int>
+			<int key="maxID">148</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1087,6 +1104,7 @@
 						</object>
 					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="cameraButton">UIButton</string>
 						<string key="changeCoverButton">UIButton</string>
 						<string key="changeCoverLabel">UILabel</string>
 						<string key="channelChooserView">UIView</string>
@@ -1111,6 +1129,10 @@
 						<string key="videoThumbnailCollectionView">UICollectionView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="cameraButton">
+							<string key="name">cameraButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="changeCoverButton">
 							<string key="name">changeCoverButton</string>
 							<string key="candidateClassName">UIButton</string>
@@ -1282,9 +1304,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonCamera.png">{66, 66}</string>
-			<string key="ButtonCameraHighlighted.png">{66, 66}</string>
-			<string key="ButtonCameraSelected.png">{66, 66}</string>
+			<string key="ButtonCamera.png">{65, 66}</string>
+			<string key="ButtonCameraHighlighted.png">{65, 66}</string>
+			<string key="ButtonCameraSelected.png">{65, 66}</string>
 			<string key="ButtonCover.png">{75, 70}</string>
 			<string key="ButtonCoverHighlighted.png">{75, 70}</string>
 			<string key="ButtonDone.png">{43, 44}</string>

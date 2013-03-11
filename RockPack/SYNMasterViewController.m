@@ -224,9 +224,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         button.selected = YES;
         [self showOrSwapOverlay:self.inboxOverlayViewController];
     }
-    
-    
 }
+
 
 -(void)showOrSwapOverlay: (UIViewController*) overlayViewController
 {
