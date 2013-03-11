@@ -22,9 +22,13 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
 
-@property (nonatomic, strong) IBOutlet UITextField* userNameInputTextField;
-@property (nonatomic, strong) IBOutlet UITextField* passwordInputTextField;
-
+@property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
+@property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
+@property (nonatomic, strong) IBOutlet UITextField* emailInputField;
+@property (nonatomic, strong) IBOutlet UIView* dobView;
+@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
+@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
+@property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
 
 @property (nonatomic, strong) IBOutlet UILabel* passwordForgottenLabel;
 
@@ -32,6 +36,7 @@
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -48,9 +53,10 @@
 
 @synthesize state;
 @synthesize appDelegate;
-@synthesize facebookSignInButton, signUpButton, loginButton, finalLoginButton, passwordInputTextField, registerButton, userNameInputTextField;
+@synthesize facebookSignInButton, signUpButton, loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel, activityIndicator;
 @synthesize isAnimating;
+@synthesize emailInputField, dobView;
 
 - (void)viewDidLoad
 {
@@ -83,7 +89,9 @@
     
     // controls to hide initially
     
-    NSArray* controlsToHide = @[userNameInputTextField, passwordInputTextField, finalLoginButton, areYouNewLabel, registerButton, passwordForgottenLabel, passwordForgottenButton, termsAndConditionsLabel];
+    NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton,
+                                areYouNewLabel, registerButton, passwordForgottenLabel,
+                                passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField];
     for (UIView* control in controlsToHide) {
         control.hidden = YES;
         control.alpha = 0.0;
@@ -98,14 +106,14 @@
     
     isAnimating = YES;
     
-    NSArray* loginForControls = @[facebookSignInButton, userNameInputTextField, passwordInputTextField, finalLoginButton];
+    NSArray* loginForControls = @[facebookSignInButton, userNameInputField, passwordInputField, finalLoginButton];
     float delay = 0.0;
     for (UIView* control in loginForControls) {
         control.hidden = NO;
         
-        [UIView animateWithDuration:0.3
+        [UIView animateWithDuration:0.4
                               delay:delay
-                            options:UIViewAnimationCurveEaseIn
+                            options:UIViewAnimationCurveEaseInOut
                          animations:^{
                              
                              control.alpha = 1.0;
@@ -114,7 +122,7 @@
         } completion:^(BOOL finished) {
             
         }];
-        delay += 0.03;
+        delay += 0.05;
     }
     
     // place secondary elements to the correct place for fade in animation
@@ -205,7 +213,7 @@
     
     // if both text fields have stuff then consider the return as a Login command
     
-    if(self.userNameInputTextField.text.length > 1 && self.passwordInputTextField.text.length > 1)
+    if(self.userNameInputField.text.length > 1 && self.passwordInputField.text.length > 1)
     {
         // perform login
         return YES;
@@ -213,9 +221,9 @@
     
     // if not and the user is at the top field take them to the second
     
-    if(textField == self.userNameInputTextField)
+    if(textField == self.userNameInputField)
     {
-        [self.passwordInputTextField becomeFirstResponder];
+        [self.passwordInputField becomeFirstResponder];
     }
     
     
