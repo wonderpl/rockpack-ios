@@ -307,20 +307,20 @@
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
     
-    [masterViewController addVideoOverlayWithFetchedResultsController:self.fetchedResultsController andIndexPath:selectedIndexPath];
+    [masterViewController addVideoOverlayToViewController: self
+                             withFetchedResultsController: self.fetchedResultsController
+                                             andIndexPath: selectedIndexPath];
 }
 
 
-
-
 #pragma mark - Initialisation
-
 
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
     return -1;
 }
+
 
 - (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
                                     selected: (BOOL) selected

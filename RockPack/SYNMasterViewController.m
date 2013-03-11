@@ -28,38 +28,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
 
-@property (nonatomic, strong) IBOutlet UIView* topBarView;
-
-
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-
-@property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
-@property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
-
-
-@property (nonatomic, strong) NSTimer* autocompleteTimer;
-
-@property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
-@property (nonatomic, strong) IBOutlet UIView* overlayView;
-
-@property (nonatomic, strong) IBOutlet UIButton* inboxButton;
-@property (nonatomic, strong) IBOutlet UIButton* notificationButton;
-
-@property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
-@property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
-@property (nonatomic, strong) IBOutlet UIView* slidersView;
-@property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
 @property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
-
+@property (nonatomic, strong) IBOutlet UIButton* inboxButton;
+@property (nonatomic, strong) IBOutlet UIButton* notificationButton;
+@property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
+@property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
+@property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
+@property (nonatomic, strong) IBOutlet UITextField* searchTextField;
+@property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) IBOutlet UIView* slidersView;
+@property (nonatomic, strong) IBOutlet UIView* topBarView;
+@property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
+@property (nonatomic, strong) NSTimer* autocompleteTimer;
+@property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
-@property (nonatomic, weak) UIViewController* currentOverlayController;
-
-
-
-@property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
+@property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
+@property (nonatomic, weak) UIViewController* currentOverlayViewController;
+
 
 @end
 
@@ -73,14 +62,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(id)initWithRootViewController:(UIViewController*)root
 {
-    self = [super initWithNibName:@"SYNMasterViewController" bundle:nil];
-    if (self) {
-        
+    if ((self = [super initWithNibName: @"SYNMasterViewController" bundle: nil]))
+    {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         self.rootViewController = root;
-        
-        
+
         // == Set up Inbox Overlay
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
         CGRect inboxOverlayFrame = self.inboxOverlayViewController.view.frame;
@@ -120,7 +107,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) ==//
     
@@ -223,6 +209,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+
 - (IBAction) userTouchedInboxButton: (UIButton*) button
 {
     
@@ -243,9 +230,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)showOrSwapOverlay: (UIViewController*) overlayViewController
 {
-    if(self.currentOverlayController && self.currentOverlayController != overlayViewController)
+    if(self.currentOverlayViewController && self.currentOverlayViewController != overlayViewController)
     {
-        [self hideOverlay:self.currentOverlayController withCompletionBlock:^(BOOL finished) {
+        [self hideOverlay:self.currentOverlayViewController withCompletionBlock:^(BOOL finished) {
             [self showOverlay:overlayViewController];
         }];
     }
@@ -265,7 +252,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)showOverlay: (UIViewController *) overlayViewController withCompletionBlock:(AnimationCompletionBlock)block
 {
-    self.currentOverlayController = overlayViewController;
+    self.currentOverlayViewController = overlayViewController;
     
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
@@ -321,7 +308,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                      } completion: ^(BOOL finished) {
                          [overlayViewController.view removeFromSuperview];
-                         self.currentOverlayController = nil;
+                         self.currentOverlayViewController = nil;
                          if(block) block(finished);
                      }];
 }
@@ -329,26 +316,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 #pragma mark - Video Overlay View
-
--(void)addVideoOverlayWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController andIndexPath:(NSIndexPath *)indexPath
+- (void) addVideoOverlayToViewController: (UIViewController *) originViewController
+            withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
+                            andIndexPath: (NSIndexPath *) indexPath;
 {
+    // Remember the view controller that we came from
+    self.originViewController = originViewController;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
     
     SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
     
-    
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
     [self.overlayView addSubview:self.videoViewerViewController.view];
     
-    
-    
-    
     self.videoViewerViewController.view.alpha = 0.0f;
-    
-    
+    self.videoViewerViewController.overlayParent = self;
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -357,13 +342,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          self.videoViewerViewController.view.alpha = 1.0f;
                      }
-                     completion: ^(BOOL finished) {
-                         
-                        
-                        [self.videoViewerViewController.closeButton addTarget: self
-                                                                       action: @selector(removeVideoOverlayController)
-                                                             forControlEvents: UIControlEventTouchUpInside];
-                          
+                     completion: ^(BOOL finished)
+                     {
+
                         self.overlayView.userInteractionEnabled = YES;
                          
                          // == Add video queue == //
@@ -384,10 +365,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
     
     UIView* child = self.overlayView.subviews[0];
-    
-    [self.videoViewerViewController.closeButton removeTarget: self
-                                                   action: @selector(removeVideoOverlayController)
-                                         forControlEvents: UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
@@ -576,7 +553,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         self.inboxButton.selected = YES;
-        if(!self.currentOverlayController) {
+        if(!self.currentOverlayViewController) {
             [self showOverlay:self.inboxOverlayViewController withCompletionBlock:nil];
         }
         
@@ -584,8 +561,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     else if(direction == UISwipeGestureRecognizerDirectionLeft)
     {
         self.inboxButton.selected = NO;
-        if(self.currentOverlayController) {
-            [self hideOverlay:self.currentOverlayController withCompletionBlock:nil];
+        if(self.currentOverlayViewController) {
+            [self hideOverlay:self.currentOverlayViewController withCompletionBlock:nil];
         }
     }
 }

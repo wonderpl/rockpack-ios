@@ -9,6 +9,7 @@
 #import "SYNAbstractViewController.h"
 
 @class VideoInstance;
+@class SYNMasterViewController;
 
 @interface SYNVideoViewerViewController : SYNAbstractViewController
 
@@ -16,5 +17,6 @@
                       selectedIndexPath: (NSIndexPath *) selectedIndexPath;
 
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
+@property (nonatomic, strong) SYNMasterViewController *overlayParent;
 
 @end

@@ -549,6 +549,10 @@
 			<string key="ChannelButtonBuy.png">{94, 76}</string>
 			<string key="DividerChannelGlass.png">{2, 100}</string>
 		</dictionary>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">DividerChannelGlass.png</string>
+			<string key="NS.object.0">{2, 100}</string>
+		</object>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>
