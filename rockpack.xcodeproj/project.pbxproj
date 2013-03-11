@@ -463,6 +463,8 @@
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
 		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
 		BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */; };
+		BE270BCA16EE620800CDDA6D /* DividerSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */; };
+		BE270BCB16EE620800CDDA6D /* DividerSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC916EE620800CDDA6D /* DividerSearch.png */; };
 		BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */; };
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
@@ -486,7 +488,6 @@
 		BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */; };
 		BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */; };
 		BEF0AE2716E7A4520094BFDA /* popover-black-bcg-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */; };
-		BEF0AE3116E7A7FE0094BFDA /* DividerSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE3016E7A7FE0094BFDA /* DividerSearch.png */; };
 		BEF0AE3616E7AC480094BFDA /* ArrowSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE3416E7AC480094BFDA /* ArrowSearch.png */; };
 		BEF0AE3716E7AC480094BFDA /* ArrowSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE3516E7AC480094BFDA /* ArrowSearch@2x.png */; };
 		BEF0AE3916E7AD940094BFDA /* popover-black-top-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE3816E7AD940094BFDA /* popover-black-top-arrow-image@2x.png */; };
@@ -1037,6 +1038,8 @@
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
 		BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelButtonBuy.png; sourceTree = "<group>"; };
 		BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelButtonBuy@2x.png"; sourceTree = "<group>"; };
+		BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DividerSearch@2x.png"; sourceTree = "<group>"; };
+		BE270BC916EE620800CDDA6D /* DividerSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DividerSearch.png; sourceTree = "<group>"; };
 		BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabView.h; sourceTree = "<group>"; };
 		BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabView.m; sourceTree = "<group>"; };
 		BE29A32A16DE56AB00C00F92 /* SYNSearchVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchVideosViewController.h; sourceTree = "<group>"; };
@@ -1079,7 +1082,6 @@
 		BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenericPopoverBackgroundView.m; sourceTree = "<group>"; };
 		BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover-black-bcg-image.png"; sourceTree = "<group>"; };
 		BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover-black-bcg-image@2x.png"; sourceTree = "<group>"; };
-		BEF0AE3016E7A7FE0094BFDA /* DividerSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DividerSearch.png; sourceTree = "<group>"; };
 		BEF0AE3416E7AC480094BFDA /* ArrowSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowSearch.png; sourceTree = "<group>"; };
 		BEF0AE3516E7AC480094BFDA /* ArrowSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ArrowSearch@2x.png"; sourceTree = "<group>"; };
 		BEF0AE3816E7AD940094BFDA /* popover-black-top-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover-black-top-arrow-image@2x.png"; sourceTree = "<group>"; };
@@ -2011,11 +2013,12 @@
 		01A3EC3416AED7F6008DCE08 /* Popover */ = {
 			isa = PBXGroup;
 			children = (
+				BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */,
+				BE270BC916EE620800CDDA6D /* DividerSearch.png */,
 				01A3EC3516AED804008DCE08 /* NotificationContent.png */,
 				01A3EC3616AED804008DCE08 /* NotificationContent@2x.png */,
 				BEF0AE3416E7AC480094BFDA /* ArrowSearch.png */,
 				BEF0AE3516E7AC480094BFDA /* ArrowSearch@2x.png */,
-				BEF0AE3016E7A7FE0094BFDA /* DividerSearch.png */,
 				BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */,
 				BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */,
 				BEF0AE3A16E7B03C0094BFDA /* popover-black-top-arrow-image.png */,
@@ -2892,7 +2895,6 @@
 				01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */,
 				BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */,
 				BEF0AE2716E7A4520094BFDA /* popover-black-bcg-image@2x.png in Resources */,
-				BEF0AE3116E7A7FE0094BFDA /* DividerSearch.png in Resources */,
 				BEF0AE3616E7AC480094BFDA /* ArrowSearch.png in Resources */,
 				BEF0AE3716E7AC480094BFDA /* ArrowSearch@2x.png in Resources */,
 				BEF0AE3916E7AD940094BFDA /* popover-black-top-arrow-image@2x.png in Resources */,
@@ -2923,6 +2925,8 @@
 				011A160716EE4F79008CF25E /* popover-black-left-arrow-image@2x.png in Resources */,
 				011A160816EE4F79008CF25E /* popover-black-bottom-arrow-image.png in Resources */,
 				011A160916EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png in Resources */,
+				BE270BCA16EE620800CDDA6D /* DividerSearch@2x.png in Resources */,
+				BE270BCB16EE620800CDDA6D /* DividerSearch.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
