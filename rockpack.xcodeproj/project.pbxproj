@@ -440,6 +440,8 @@
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
+		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
+		BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */; };
 		BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */; };
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
@@ -989,6 +991,8 @@
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
+		BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelButtonBuy.png; sourceTree = "<group>"; };
+		BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelButtonBuy@2x.png"; sourceTree = "<group>"; };
 		BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabView.h; sourceTree = "<group>"; };
 		BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabView.m; sourceTree = "<group>"; };
 		BE29A32A16DE56AB00C00F92 /* SYNSearchVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchVideosViewController.h; sourceTree = "<group>"; };
@@ -1452,6 +1456,8 @@
 				0142EDB216B2E9AF008694DA /* ButtonEdit@2x.png */,
 				0142EDB316B2E9AF008694DA /* ButtonEditHighlighted.png */,
 				0142EDB416B2E9AF008694DA /* ButtonEditHighlighted@2x.png */,
+				BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */,
+				BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */,
 			);
 			name = "Channel viewer";
 			sourceTree = "<group>";
@@ -2829,6 +2835,8 @@
 				019E6A8F16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png in Resources */,
 				019E6A9016E9081D00647002 /* GlossVideoThumbnailSmallPlaying@2x.png in Resources */,
 				BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */,
+				BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */,
+				BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
