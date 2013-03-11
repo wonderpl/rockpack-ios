@@ -83,7 +83,7 @@
         // Separator
         
         UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DividerSearch.png"]];
-        dividerImageView.center = CGPointMake(cell.center.x - 10.0, cell.frame.size.height - 2.0);
+        dividerImageView.center = CGPointMake(cell.center.x, cell.frame.size.height - 2.0);
         [cell.contentView addSubview:dividerImageView];
         
         cell.contentView.backgroundColor = [UIColor clearColor];
