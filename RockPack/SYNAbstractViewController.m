@@ -78,16 +78,6 @@
 
 
 
-- (void) viewDidDisappear: (BOOL) animated
-{
-    [super viewDidDisappear: animated];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
-}
-
-
-
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
@@ -127,6 +117,12 @@
     }  
 }
 
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
+                                                        object:self];
+}
 
 #pragma mark - Animation support
 

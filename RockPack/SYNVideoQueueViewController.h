@@ -16,7 +16,7 @@
 @interface SYNVideoQueueViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) id <SYNVideoQueueDelegate> delegate;
-
+@property (nonatomic) BOOL locked;
 - (void) reloadData;
 
 - (void) showVideoQueue: (BOOL) animated;

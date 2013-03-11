@@ -110,7 +110,7 @@
         // Make this of zero width initially
         collectionViewStartFrame = CGRectMake(430.0, 0.0, 0.0, 73);
         videoQueueCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewStartFrame
-                                                           collectionViewLayout: standardFlowLayout];
+                                                      collectionViewLayout: standardFlowLayout];
         
         
         
