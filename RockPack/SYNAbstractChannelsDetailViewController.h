@@ -41,6 +41,7 @@
 - (id) initWithChannel: (Channel *) channel;
 
 - (IBAction) userTouchedChangeCoverButton: (id) sender;
-
+- (void) userTouchedTakePhotoButton;
+- (void) userTouchedChooseExistingPhotoButton;
 
 @end

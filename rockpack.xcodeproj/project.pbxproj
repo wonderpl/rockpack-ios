@@ -61,6 +61,7 @@
 		011A160716EE4F79008CF25E /* popover-black-left-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A160316EE4F79008CF25E /* popover-black-left-arrow-image@2x.png */; };
 		011A160816EE4F79008CF25E /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A160416EE4F79008CF25E /* popover-black-bottom-arrow-image.png */; };
 		011A160916EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A160516EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png */; };
+		011A160E16EE53A0008CF25E /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A160D16EE53A0008CF25E /* UIImage+Resize.m */; };
 		011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */; };
 		011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC677164A95CB00F02B6D /* SYNFriendsGridLayout.m */; };
 		011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */; };
@@ -542,6 +543,8 @@
 		011A160316EE4F79008CF25E /* popover-black-left-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-left-arrow-image@2x.png"; path = "Assets/Images/popover-black-left-arrow-image@2x.png"; sourceTree = "<group>"; };
 		011A160416EE4F79008CF25E /* popover-black-bottom-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bottom-arrow-image.png"; path = "Assets/Images/popover-black-bottom-arrow-image.png"; sourceTree = "<group>"; };
 		011A160516EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bottom-arrow-image@2x.png"; path = "Assets/Images/popover-black-bottom-arrow-image@2x.png"; sourceTree = "<group>"; };
+		011A160C16EE53A0008CF25E /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		011A160D16EE53A0008CF25E /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		011CC673164A8CAA00F02B6D /* SYNFriendsUserLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsUserLayout.h; sourceTree = "<group>"; };
 		011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsUserLayout.m; sourceTree = "<group>"; };
 		011CC676164A95CB00F02B6D /* SYNFriendsGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsGridLayout.h; sourceTree = "<group>"; };
@@ -1906,26 +1909,28 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				017A9EF816E77E6600AA5B18 /* UIView+Subviews.h */,
-				017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */,
-				0129690916E024DF00895469 /* NSIndexPath+Arithmetic.h */,
-				0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */,
 				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
 				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
+				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
+				01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */,
+				01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */,
+				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
+				0129690916E024DF00895469 /* NSIndexPath+Arithmetic.h */,
+				0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */,
+				01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */,
+				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
 				019825EF162C94A300216900 /* UIColor+SYNColor.h */,
 				019825F0162C94A300216900 /* UIColor+SYNColor.m */,
 				019825F2162C94B500216900 /* UIFont+SYNFont.h */,
 				019825F3162C94B500216900 /* UIFont+SYNFont.m */,
-				01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */,
-				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
-				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
-				01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */,
-				01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */,
-				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
-				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
-				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
+				011A160C16EE53A0008CF25E /* UIImage+Resize.h */,
+				011A160D16EE53A0008CF25E /* UIImage+Resize.m */,
 				01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */,
 				01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */,
+				017A9EF816E77E6600AA5B18 /* UIView+Subviews.h */,
+				017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */,
+				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
+				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3068,6 +3073,7 @@
 				BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */,
 				BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */,
 				011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */,
+				011A160E16EE53A0008CF25E /* UIImage+Resize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

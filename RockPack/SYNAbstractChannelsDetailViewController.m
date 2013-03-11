@@ -23,6 +23,7 @@
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
+#import "UIImage+Resize.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -32,9 +33,12 @@
                                                        UICollectionViewDataSource,
                                                        UICollectionViewDelegate,
                                                        UITextFieldDelegate,
-                                                       UIPopoverControllerDelegate>
+                                                       UIPopoverControllerDelegate,
+                                                       UIImagePickerControllerDelegate,
+                                                       UINavigationControllerDelegate>
 
 @property (nonatomic, assign) BOOL keyboardShown;
+@property (nonatomic, retain) IBOutlet UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
@@ -42,6 +46,7 @@
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) MKNetworkOperation *imageLoadingOperation;
 @property (nonatomic, strong) UIPopoverController *cameraPopoverController;
+@property (nonatomic, strong) UIPopoverController *cameraMenuPopoverController;
 
 @end
 
@@ -170,6 +175,13 @@
     // Set wallpaper
     [self.channelWallpaperImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
                                                placeHolderImage: nil];
+    
+    // If neither camera or photo library is available then disable the 'Camera' button
+	if (!([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]
+		  || [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]))
+	{
+		self.cameraButton.hidden = TRUE;
+	}
 }
 
 
@@ -571,22 +583,24 @@
     if (button.selected)
     {
         SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-
+        actionPopoverController.delegate = self;
+        
         // Need show the popover controller
-        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.cameraPopoverController.popoverContentSize = CGSizeMake(206, 70);
-        self.cameraPopoverController.delegate = self;
-        self.cameraPopoverController.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
-        [self.cameraPopoverController presentPopoverFromRect: button.frame
-                                                             inView: self.coverSelectionView
-                                           permittedArrowDirections: UIPopoverArrowDirectionRight
-                                                           animated: YES];
+        self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
+        self.cameraMenuPopoverController.delegate = self;
+        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
+        
+        [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
+                                                          inView: self.coverSelectionView
+                                        permittedArrowDirections: UIPopoverArrowDirectionRight
+                                                        animated: YES];
     }
 }
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    if(popoverController == self.cameraPopoverController)
+    if(popoverController == self.cameraMenuPopoverController)
     {
         self.cameraButton.selected = NO;
         self.cameraPopoverController = nil;
@@ -596,5 +610,93 @@
         AssertOrLog(@"Unknown popup dismissed");
     }
 }
+
+- (void) userTouchedTakePhotoButton
+{
+    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
+    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
+}
+
+- (void) userTouchedChooseExistingPhotoButton
+{
+    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
+    [self showImagePicker: UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+{
+    // Set up the image picker controller and add it to the view
+    self.imagePickerController = [[UIImagePickerController alloc] init];
+    self.imagePickerController.delegate = self;
+    self.imagePickerController.allowsEditing = YES;
+    self.imagePickerController.navigationBar.barStyle = UIBarStyleBlack;
+    self.imagePickerController.navigationBar.translucent = NO;
+    self.imagePickerController.sourceType = sourceType;
+
+    if (sourceType == UIImagePickerControllerSourceTypeCamera)
+    {
+        // If we are on a device with a front facing camera, then use that instead of the camera on the back
+        
+        if ([UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+        {
+            if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
+            {
+                self.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+            }
+        }
+    }
+    else
+    {
+        // Setup the UIImagePickerController to select a photo from the libaray
+        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+
+    self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePickerController];
+    
+    [self.cameraPopoverController presentPopoverFromRect: self.cameraButton.frame
+                                                  inView: self.coverSelectionView
+                                permittedArrowDirections: UIPopoverArrowDirectionRight
+                                                animated: YES];
+}
+
+- (void) imagePickerController: (UIImagePickerController *) picker
+ didFinishPickingMediaWithInfo: (NSDictionary *) info
+{
+    // Deselect the camera button
+    self.cameraButton.selected = NO;
+    
+    // Dismiss the image selection, hide the picker and show the image view with the picked image
+    [self.cameraPopoverController dismissPopoverAnimated: YES];
+	
+	// We need to recover the image from the dictionary of attributes returned
+	CGRect cropRect;
+	[[info objectForKey: UIImagePickerControllerCropRect] getValue: &cropRect];
+	UIImage *image = (UIImage *)[info objectForKey: UIImagePickerControllerEditedImage];
+	
+	// TODO: Put correct upload dimensions here
+	CGSize newSize = CGSizeMake(kImageUploadWidth, kImageUploadHeight);
+	UIImage *resizedImage = [UIImage imageWithImage: (UIImage*) image
+									   scaledToSize: (CGSize) newSize];
+	
+    [self uploadChannelImage: resizedImage];
+}
+
+
+// User hit cancel on the image picker, so dismiss and go back
+- (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker
+{
+    // Deselect the camera button
+    self.cameraButton.selected = NO;
+    
+    // Dismiss the image selection and close the picker
+    [self.cameraPopoverController dismissPopoverAnimated: YES];
+}
+
+- (void) uploadChannelImage: (UIImage *) imageToUpload
+{
+    // TODO: Put some networking code in here
+}
+
+
 
 @end

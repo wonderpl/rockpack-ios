@@ -115,6 +115,9 @@
 // Dimensions
 //
 
+#define kImageUploadWidth 1024
+#define kImageUploadHeight 768
+
 // Effective height (exlcuding shadow) of the image well
 //#define kVideoQueueEffectiveHeight 99
 

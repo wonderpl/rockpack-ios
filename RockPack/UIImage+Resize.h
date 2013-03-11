@@ -1,5 +1,5 @@
 //
-//  SYNCameraPopoverViewController.h
+//  UIImage+Resize.h
 //  rockpack
 //
 //  Created by Nick Banks on 11/03/2013.
@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNCameraPopoverViewController : UIViewController
+@interface UIImage (Resize)
 
-@property (nonatomic, assign) id delegate;
++ (UIImage*) imageWithImage: (UIImage*) image
+			   scaledToSize: (CGSize) newSize;
 
 @end

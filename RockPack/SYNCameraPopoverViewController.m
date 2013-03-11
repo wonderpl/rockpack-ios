@@ -7,12 +7,23 @@
 //
 
 #import "SYNCameraPopoverViewController.h"
+#import "SYNAbstractChannelsDetailViewController.h"
 
 @interface SYNCameraPopoverViewController ()
 
 @end
 
 @implementation SYNCameraPopoverViewController
+
+- (IBAction) userTouchedTakePhotoButton: (id) sender
+{
+    [self.delegate userTouchedTakePhotoButton];
+}
+
+- (IBAction) userTouchedChooseExistingPhotoButton: (id) sender
+{
+    [self.delegate userTouchedChooseExistingPhotoButton];
+}
 
 
 @end
