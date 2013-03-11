@@ -16,6 +16,7 @@
 #import "UncaughtExceptionHandler.h"
 #import "ChannelOwner.h"
 #import "SYNMasterViewController.h"
+#import "SYNLoginViewController.h"
 
 @interface SYNAppDelegate ()
 
@@ -23,7 +24,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
-
+@property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @end
 
 @implementation SYNAppDelegate
@@ -65,7 +66,12 @@
     
     self.viewController = masterViewContoller;
     
-    self.window.rootViewController = self.viewController;
+    self.loginViewController = [[SYNLoginViewController alloc] init];
+    
+    // == Show == //
+    
+    self.window.rootViewController = self.loginViewController;
+    
     [self.window makeKeyAndVisible];
     
     return YES;

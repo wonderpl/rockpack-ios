@@ -7,6 +7,7 @@
 //
 
 #import "SYNLoginViewController.h"
+#import "SYNAppDelegate.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -32,17 +33,22 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 
+@property (nonatomic) BOOL isAnimating;
+
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 
+#define kOffsetForLoginForm 100.0
 
 @end
 
 @implementation SYNLoginViewController
 
 @synthesize state;
-
+@synthesize appDelegate;
 @synthesize facebookSignInButton, signUpButton, loginButton, finalLoginButton, passwordInputTextField, registerButton, userNameInputTextField;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
+@synthesize isAnimating;
 
 - (void)viewDidLoad
 {
@@ -50,7 +56,7 @@
     
     // set up controls
     
-    
+    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     self.state = kLoginScreenStateInitial;
     
@@ -83,18 +89,21 @@
 
 -(void)setUpLoginState
 {
+    
+    isAnimating = YES;
+    
     NSArray* loginForControls = @[facebookSignInButton, userNameInputTextField, passwordInputTextField, finalLoginButton];
     float delay = 0.0;
     for (UIView* control in loginForControls) {
         control.hidden = NO;
         
-        [UIView animateWithDuration:0.4
+        [UIView animateWithDuration:0.3
                               delay:delay
                             options:UIViewAnimationCurveEaseIn
                          animations:^{
                              
                              control.alpha = 1.0;
-                             control.center = CGPointMake(control.center.x, control.center.y - 100.0);
+                             control.center = CGPointMake(control.center.x, control.center.y - kOffsetForLoginForm);
                          
         } completion:^(BOOL finished) {
             
@@ -102,16 +111,36 @@
         delay += 0.03;
     }
     
+    // place secondary elements to the correct place for fade in animation
+    
+    passwordForgottenButton.hidden = NO;
+    passwordForgottenLabel.hidden = NO;
+    termsAndConditionsLabel.hidden = NO;
+    areYouNewLabel.hidden = NO;
+    registerButton.hidden = NO;
+    passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
+    passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
+    termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
+    
+    
+    // consequitive fade in animations
+    
     [UIView animateWithDuration:0.4 animations:^{
         signUpButton.alpha = 0.0;
+        memberLabel.alpha = 0.0;
+        loginButton.alpha = 0.0;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.3 animations:^{
-            passwordForgottenButton.alpha = 0.0;
-            passwordForgottenLabel.alpha = 0.0;
+        [UIView animateWithDuration:0.2 animations:^{
+            passwordForgottenButton.alpha = 1.0;
+            passwordForgottenLabel.alpha = 1.0;
             termsAndConditionsLabel.alpha = 1.0;
         } completion:^(BOOL finished) {
-            passwordForgottenLabel.hidden = YES;
-            passwordForgottenButton.hidden = YES;
+            [UIView animateWithDuration:0.2 animations:^{
+                areYouNewLabel.alpha = 1.0;
+                registerButton.alpha = 1.0;
+            } completion:^(BOOL finished) {
+                isAnimating = NO;
+            }];
         }];
     }];
     
@@ -127,6 +156,9 @@
 
 -(IBAction)goToLoginForm:(id)sender
 {
+    if(isAnimating)
+        return;
+    
     self.state = kLoginScreenStateLogin;
 }
 
