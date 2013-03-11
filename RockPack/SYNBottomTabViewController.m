@@ -64,34 +64,33 @@
     
     // == Home Tab
     
-    SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] initWithViewId:@"Home"];
+    SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] initWithViewId: @"Home"];
     UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;
     homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
     homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
-    // == Channels Tab
-    
-    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId:@"Channels"];
-    channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
-    channelsRootNavigationViewController.navigationBarHidden = TRUE;
-    channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
-    
     // == Videos Tab
     
-    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId:@"Videos"];
+    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId: @"Videos"];
     videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
     videosRootNavigationViewController.navigationBarHidden = TRUE;
     videosRootNavigationViewController.view.autoresizesSubviews = TRUE;
     videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
+    // == Channels Tab
+    
+    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: @"Channels"];
+    channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
+    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
+    channelsRootNavigationViewController.navigationBarHidden = TRUE;
+    channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // == You Tab
     
-    SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] initWithViewId:@"You"];
+    SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
     UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
     youRootRootNavigationViewController.navigationBarHidden = TRUE;
     youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
@@ -99,15 +98,15 @@
     
     // == Friends tab
     // TODO: Nest Friends Bar
-    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId:@"Friends"];
+    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
     
     
     
     // == Register Controllers
     
     self.viewControllers = @[homeRootNavigationViewController,
-                             channelsRootNavigationViewController,
                              videosRootNavigationViewController,
+                             channelsRootNavigationViewController,
                              youRootRootNavigationViewController,
                              friendsRootViewController];
     
@@ -116,14 +115,6 @@
     
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
-    
-    // For the moment no navigation controller
-//    UINavigationController *searchRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
-//    searchRootNavigationViewController.navigationBarHidden = TRUE;
-//    searchRootNavigationViewController.view.autoresizesSubviews = TRUE;
-//    searchRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
-    
-    
     
     // == Video Queue
     
@@ -137,15 +128,10 @@
     
     self.shouldAnimateViewTransitions = YES;
     
-    [self setSelectedIndex:2];
-    
+    [self setSelectedIndex: 2];
     
     self.didNotSwipeMessageInbox = TRUE;
     self.didNotSwipeShareMenu = TRUE;
-    
-    
-    
-    
 }
 
 
@@ -322,16 +308,11 @@
 }
 
 
-
-
-
-
-
 // Use the tag index of the button (100 - 103) to calculate the button index
 
 - (IBAction) tabButtonPressed: (UIButton *) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteTabPressed object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteTabPressed object:self];
     
 	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
                   animated: YES];
