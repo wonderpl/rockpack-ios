@@ -8,6 +8,7 @@
 
 #import "SYNLoginViewController.h"
 #import "SYNAppDelegate.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -29,6 +30,8 @@
 @property (nonatomic, strong) IBOutlet UITextField* ddInputField;
 @property (nonatomic, strong) IBOutlet UITextField* mmInputField;
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
+
+@property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
 
 @property (nonatomic, strong) IBOutlet UILabel* passwordForgottenLabel;
 @property (nonatomic, strong) IBOutlet UIButton* registerNewUserButton;
@@ -58,6 +61,7 @@
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel, activityIndicator;
 @synthesize isAnimating;
 @synthesize emailInputField, dobView, registerNewUserButton;
+@synthesize titleImageView;
 
 - (void)viewDidLoad
 {
@@ -70,6 +74,8 @@
     
     activityIndicator.hidesWhenStopped = YES;
     
+    [self setupFonts];
+    
     self.state = kLoginScreenStateInitial;
     
     
@@ -79,6 +85,9 @@
 
 -(void)setState:(kLoginScreenState)newState
 {
+    if(newState == state)
+        return;
+    
     if(newState == kLoginScreenStateInitial)
         [self setUpInitialState];
     else if(newState == kLoginScreenStateLogin)
@@ -112,6 +121,8 @@
     
 }
 
+
+
 -(void)setUpLoginState
 {
     
@@ -135,6 +146,10 @@
         }];
         delay += 0.05;
     }
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        titleImageView.alpha = 0.0;
+    }];
     
     // place secondary elements to the correct place for fade in animation
     
@@ -231,6 +246,19 @@
     
 }
 
+-(void)setupFonts
+{
+    emailInputField.font = [UIFont rockpackFontOfSize:14];
+    userNameInputField.font = [UIFont rockpackFontOfSize:14];
+    passwordInputField.font = [UIFont rockpackFontOfSize:14];
+    
+    memberLabel.font = [UIFont boldRockpackFontOfSize:22];
+    
+    areYouNewLabel.font = [UIFont boldRockpackFontOfSize:22];
+    passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
+    termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:16];
+}
+
 #pragma mark - Button Actions
 
 -(IBAction)doLogin:(id)sender
@@ -284,6 +312,10 @@
 -(IBAction)signUp:(id)sender
 {
     
+    
+    
+    
+
 }
 
 

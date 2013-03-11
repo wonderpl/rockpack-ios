@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    kLoginScreenStateInitial = 0,
+    kLoginScreenStateNull = 0,
+    kLoginScreenStateInitial,
     kLoginScreenStateLogin,
     kLoginScreenStateRegister,
     kLoginScreenStateFacebookLogin
