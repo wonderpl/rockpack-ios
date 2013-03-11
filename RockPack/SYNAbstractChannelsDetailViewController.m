@@ -12,12 +12,14 @@
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNCameraPopoverViewController.h"
 #import "SYNAppDelegate.h"  
 #import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNNetworkEngine.h"
 #import "SYNSoundPlayer.h"
+#import "SYNSuggestionsPopoverBackgroundView.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
@@ -27,16 +29,19 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractChannelsDetailViewController () <HPGrowingTextViewDelegate,
-                                               UICollectionViewDataSource,
-                                               UICollectionViewDelegate,
-                                               UITextFieldDelegate>
+                                                       UICollectionViewDataSource,
+                                                       UICollectionViewDelegate,
+                                                       UITextFieldDelegate,
+                                                       UIPopoverControllerDelegate>
 
 @property (nonatomic, assign) BOOL keyboardShown;
 @property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIView *channelChooserView;
 @property (nonatomic, strong) IBOutlet UIView *textPanelView;
 @property (nonatomic, strong) MKNetworkOperation *imageLoadingOperation;
+@property (nonatomic, strong) UIPopoverController *cameraPopoverController;
 
 @end
 
@@ -557,6 +562,39 @@
 - (IBAction) userTouchedShareButton: (id) sender
 {
     NSLog (@"User touched share button");
+}
+
+- (IBAction) userTouchedCameraButton: (UIButton*) button
+{
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
+
+        // Need show the popover controller
+        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.cameraPopoverController.popoverContentSize = CGSizeMake(206, 70);
+        self.cameraPopoverController.delegate = self;
+        self.cameraPopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
+        [self.cameraPopoverController presentPopoverFromRect: button.frame
+                                                             inView: self.coverSelectionView
+                                           permittedArrowDirections: UIPopoverArrowDirectionRight
+                                                           animated: YES];
+    }
+}
+
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
+{
+    if(popoverController == self.cameraPopoverController)
+    {
+        self.cameraButton.selected = NO;
+        self.cameraPopoverController = nil;
+    }
+    else
+    {
+        AssertOrLog(@"Unknown popup dismissed");
+    }
 }
 
 @end

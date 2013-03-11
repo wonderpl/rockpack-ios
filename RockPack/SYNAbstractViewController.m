@@ -78,16 +78,6 @@
 
 
 
-- (void) viewDidDisappear: (BOOL) animated
-{
-    [super viewDidDisappear: animated];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
-}
-
-
-
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
@@ -127,6 +117,12 @@
     }  
 }
 
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
+                                                        object:self];
+}
 
 #pragma mark - Animation support
 
@@ -307,20 +303,20 @@
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
     
-    [masterViewController addVideoOverlayWithFetchedResultsController:self.fetchedResultsController andIndexPath:selectedIndexPath];
+    [masterViewController addVideoOverlayToViewController: self
+                             withFetchedResultsController: self.fetchedResultsController
+                                             andIndexPath: selectedIndexPath];
 }
 
 
-
-
 #pragma mark - Initialisation
-
 
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
     return -1;
 }
+
 
 - (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
                                     selected: (BOOL) selected

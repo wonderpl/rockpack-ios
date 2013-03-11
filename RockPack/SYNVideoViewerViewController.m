@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-
+#import "SYNAbstractViewController.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
+#import "SYNMasterViewController.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
 #import "SYNVideoViewerThumbnailLayout.h"
@@ -41,6 +42,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *blackPanelView;
+@property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
@@ -110,12 +112,12 @@
                 aboveSubview: self.blackPanelView];
     
     // Create a dummy view just above the video panel to allow swipes
-    UIView *swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 390)];
+    self.swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 390)];
     
     // TODO: Remove this test code
 //    swipeView.backgroundColor = [UIColor blueColor];
     
-    [self.view insertSubview: swipeView
+    [self.view insertSubview: self.swipeView
                 aboveSubview: self.videoPlaybackViewController.view];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
@@ -123,20 +125,20 @@
     
     rightSwipeRecogniser.delegate = self;
     [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
-    [swipeView addGestureRecognizer:rightSwipeRecogniser];
+    [self.swipeView addGestureRecognizer:rightSwipeRecogniser];
     
     UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                               action: @selector(userTouchedNextVideoButton:)];
     
     leftSwipeRecogniser.delegate = self;
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [swipeView addGestureRecognizer: leftSwipeRecogniser];
+    [self.swipeView addGestureRecognizer: leftSwipeRecogniser];
     
     UITapGestureRecognizer* tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                                     action: @selector(userTappedVideo)];
     
     tapRecogniser.delegate = self;
-    [swipeView addGestureRecognizer: tapRecogniser];
+    [self.swipeView addGestureRecognizer: tapRecogniser];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
@@ -391,27 +393,33 @@
                                                placeHolderImage: nil];
 }
 
+- (IBAction) userTouchedCloseButton: (id) sender
+{
+    // Call the close method on our parent
+    [self.overlayParent removeVideoOverlayController];
+}
+
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
 - (IBAction) userTouchedChannelButton: (id) sender
 {
-    //[self dismissVideoViewer];
-    
+    [self.overlayParent removeVideoOverlayController];
+
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
-    [self viewChannelDetails: videoInstance.channel];
+    [(SYNAbstractViewController *)self.overlayParent.originViewController viewChannelDetails: videoInstance.channel];
 }
 
 
 // The user touched the invisible button above the user details, taking the user to the profile page
 - (IBAction) userTouchedProfileButton: (id) sender
 {
-//    [self.parentViewController dismissVideoViewer];
+    [self.overlayParent removeVideoOverlayController];
     
-//    // Get the video instance for the currently selected video
-//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
-//    
-//    [self viewProfileDetails: videoInstance.channel.channelOwner];
+    // Get the video instance for the currently selected video
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    [(SYNAbstractViewController *)self.overlayParent.originViewController viewProfileDetails: videoInstance.channel.channelOwner];
 }
 
 - (void) userTappedVideo
@@ -424,6 +432,8 @@
                         animations: ^
          {
              self.blackPanelView.alpha = 0.0f;
+             self.closeButton.alpha = 1.0f;
+             self.swipeView.frame =  CGRectMake(142, 71, 740, 390);
              self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
              self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
          }
@@ -439,6 +449,8 @@
                         animations: ^
          {
              self.blackPanelView.alpha = 1.0f;
+             self.closeButton.alpha = 0.0f;
+             self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
              self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
              self.videoPlaybackViewController.view.center = CGPointMake(512, 384);
          }
@@ -448,9 +460,6 @@
     }
 
     self.videoExpanded = !self.videoExpanded;
-    
-
-
 }
 
 @end
