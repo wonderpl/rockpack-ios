@@ -440,6 +440,8 @@
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
+		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
+		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */; };
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
@@ -989,6 +991,9 @@
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
+		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
+		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
+		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
 		BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabView.h; sourceTree = "<group>"; };
 		BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabView.m; sourceTree = "<group>"; };
 		BE29A32A16DE56AB00C00F92 /* SYNSearchVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchVideosViewController.h; sourceTree = "<group>"; };
@@ -2342,6 +2347,9 @@
 		BE270B7B16EDE0A500CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */,
+				BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */,
+				BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -2829,6 +2837,7 @@
 				019E6A8F16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png in Resources */,
 				019E6A9016E9081D00647002 /* GlossVideoThumbnailSmallPlaying@2x.png in Resources */,
 				BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */,
+				BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2978,6 +2987,7 @@
 				BEF0AE1B16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m in Sources */,
 				BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */,
 				BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */,
+				BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
