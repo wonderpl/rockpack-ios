@@ -1603,6 +1603,7 @@
 		019824E11629CAB600216900 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BE270B7B16EDE0A500CDDA6D /* Login */,
 				BEF9E5A516DBCDEF00286113 /* Components */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
 				01982563162ADEAD00216900 /* Abstract */,
@@ -2336,6 +2337,13 @@
 				BEF0AE1A16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m */,
 			);
 			name = "Autocomplete Panel";
+			sourceTree = "<group>";
+		};
+		BE270B7B16EDE0A500CDDA6D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		BE29A32616DD2CA900C00F92 /* User Tab */ = {
