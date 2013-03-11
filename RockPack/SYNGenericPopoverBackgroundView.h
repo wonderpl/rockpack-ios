@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <UIKit/UIPopoverBackgroundView.h>
 
-@interface SYNSuggestionsPopoverBackgroundView : UIPopoverBackgroundView
+@interface SYNGenericPopoverBackgroundView : UIPopoverBackgroundView
 {    
     CGFloat                     _arrowOffset;
     UIPopoverArrowDirection     _arrowDirection;

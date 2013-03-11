@@ -19,7 +19,7 @@
 #import "SYNChannelSelectorCell.h"
 #import "SYNNetworkEngine.h"
 #import "SYNSoundPlayer.h"
-#import "SYNSuggestionsPopoverBackgroundView.h"
+#import "SYNGenericPopoverBackgroundView.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
@@ -576,7 +576,7 @@
         self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
         self.cameraPopoverController.popoverContentSize = CGSizeMake(206, 70);
         self.cameraPopoverController.delegate = self;
-        self.cameraPopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
+        self.cameraPopoverController.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
         [self.cameraPopoverController presentPopoverFromRect: button.frame
                                                              inView: self.coverSelectionView
                                            permittedArrowDirections: UIPopoverArrowDirectionRight

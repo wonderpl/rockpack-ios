@@ -1,4 +1,4 @@
-#import "SYNSuggestionsPopoverBackgroundView.h"
+#import "SYNGenericPopoverBackgroundView.h"
 
 // Predefined arrow image width and height
 #define ARROW_WIDTH 35.0 // will stretch the image
@@ -12,9 +12,11 @@
 
 #pragma mark - Private interface
 
-@interface SYNSuggestionsPopoverBackgroundView ()
+@interface SYNGenericPopoverBackgroundView ()
 {    
     UIImage *_topArrowImage;
+    UIImage *_bottomArrowImage;
+    UIImage *_leftArrowImage;
     UIImage *_rightArrowImage;
 }
 
@@ -22,7 +24,7 @@
 
 #pragma mark - Implementation
 
-@implementation SYNSuggestionsPopoverBackgroundView
+@implementation SYNGenericPopoverBackgroundView
 
 @synthesize arrowOffset = _arrowOffset, arrowDirection = _arrowDirection, popoverBackgroundImageView = _popoverBackgroundImageView, arrowImageView = _arrowImageView;
 
@@ -69,7 +71,9 @@
     if (self = [super initWithFrame:frame])
     {
         _topArrowImage = [UIImage imageNamed:@"popover-black-top-arrow-image.png"];
+        _bottomArrowImage = [UIImage imageNamed:@"popover-black-bottom-arrow-image.png"];
         _rightArrowImage = [UIImage imageNamed:@"popover-black-right-arrow-image.png"];
+        _leftArrowImage = [UIImage imageNamed:@"popover-black-left-arrow-image.png"];
         
         UIImage *popoverBackgroundImage = [[UIImage imageNamed:@"popover-black-bcg-image.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(49, 46, 49, 45)];
         self.popoverBackgroundImageView = [[UIImageView alloc] initWithImage:popoverBackgroundImage];
@@ -128,7 +132,55 @@
             
             self.arrowImageView.image = _topArrowImage;
             
-            break; 
+            break;
+            
+            
+        case UIPopoverArrowDirectionDown:
+            
+            popoverImageHeight = self.bounds.size.height - ARROW_HEIGHT + 2;
+            
+            arrowImageOriginX = roundf((self.bounds.size.width - ARROW_WIDTH) / 2 );
+            
+            if (arrowImageOriginX + ARROW_WIDTH > self.bounds.size.width - cornerRadius)
+            {
+                arrowImageOriginX -= cornerRadius;
+            }
+            
+            if (arrowImageOriginX < cornerRadius)
+            {
+                arrowImageOriginX += cornerRadius;
+            }
+            
+            arrowImageOriginY = popoverImageHeight - 2;
+            
+            self.arrowImageView.image = _bottomArrowImage;
+            
+            break;
+            
+            
+        case UIPopoverArrowDirectionLeft:
+            
+            popoverImageOriginX = ARROW_HEIGHT - 2;
+            popoverImageWidth = self.bounds.size.width - ARROW_HEIGHT;
+            
+            arrowImageOriginY = roundf((self.bounds.size.height - ARROW_WIDTH) / 2 );
+            
+            if (arrowImageOriginY + ARROW_WIDTH > self.bounds.size.height - cornerRadius)
+            {
+                arrowImageOriginY -= cornerRadius;
+            }
+            
+            if (arrowImageOriginY < cornerRadius)
+            {
+                arrowImageOriginY += cornerRadius;
+            }
+            
+            arrowImageWidth = ARROW_HEIGHT;
+            arrowImageHeight = ARROW_WIDTH;
+            
+            self.arrowImageView.image = _leftArrowImage;
+            
+            break;
             
         
         case UIPopoverArrowDirectionRight:

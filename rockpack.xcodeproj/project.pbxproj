@@ -57,6 +57,10 @@
 		011A15FF16EE41B1008CF25E /* ButtonChooseExistingDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15FB16EE41B1008CF25E /* ButtonChooseExistingDefault@2x.png */; };
 		011A160016EE41B1008CF25E /* ButtonChooseExistingHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15FC16EE41B1008CF25E /* ButtonChooseExistingHighlighted.png */; };
 		011A160116EE41B1008CF25E /* ButtonChooseExistingHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15FD16EE41B1008CF25E /* ButtonChooseExistingHighlighted@2x.png */; };
+		011A160616EE4F79008CF25E /* popover-black-left-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A160216EE4F79008CF25E /* popover-black-left-arrow-image.png */; };
+		011A160716EE4F79008CF25E /* popover-black-left-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A160316EE4F79008CF25E /* popover-black-left-arrow-image@2x.png */; };
+		011A160816EE4F79008CF25E /* popover-black-bottom-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A160416EE4F79008CF25E /* popover-black-bottom-arrow-image.png */; };
+		011A160916EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A160516EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png */; };
 		011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */; };
 		011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC677164A95CB00F02B6D /* SYNFriendsGridLayout.m */; };
 		011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */; };
@@ -478,7 +482,7 @@
 		BEA1E32E16CCFF70000AB59D /* SYNMainRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */; };
 		BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
-		BEF0AE1B16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m */; };
+		BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */; };
 		BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */; };
 		BEF0AE2716E7A4520094BFDA /* popover-black-bcg-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */; };
 		BEF0AE3116E7A7FE0094BFDA /* DividerSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE3016E7A7FE0094BFDA /* DividerSearch.png */; };
@@ -534,6 +538,10 @@
 		011A15FB16EE41B1008CF25E /* ButtonChooseExistingDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChooseExistingDefault@2x.png"; path = "Assets/Images/ButtonChooseExistingDefault@2x.png"; sourceTree = "<group>"; };
 		011A15FC16EE41B1008CF25E /* ButtonChooseExistingHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonChooseExistingHighlighted.png; path = Assets/Images/ButtonChooseExistingHighlighted.png; sourceTree = "<group>"; };
 		011A15FD16EE41B1008CF25E /* ButtonChooseExistingHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChooseExistingHighlighted@2x.png"; path = "Assets/Images/ButtonChooseExistingHighlighted@2x.png"; sourceTree = "<group>"; };
+		011A160216EE4F79008CF25E /* popover-black-left-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-left-arrow-image.png"; path = "Assets/Images/popover-black-left-arrow-image.png"; sourceTree = "<group>"; };
+		011A160316EE4F79008CF25E /* popover-black-left-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-left-arrow-image@2x.png"; path = "Assets/Images/popover-black-left-arrow-image@2x.png"; sourceTree = "<group>"; };
+		011A160416EE4F79008CF25E /* popover-black-bottom-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bottom-arrow-image.png"; path = "Assets/Images/popover-black-bottom-arrow-image.png"; sourceTree = "<group>"; };
+		011A160516EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-bottom-arrow-image@2x.png"; path = "Assets/Images/popover-black-bottom-arrow-image@2x.png"; sourceTree = "<group>"; };
 		011CC673164A8CAA00F02B6D /* SYNFriendsUserLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsUserLayout.h; sourceTree = "<group>"; };
 		011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsUserLayout.m; sourceTree = "<group>"; };
 		011CC676164A95CB00F02B6D /* SYNFriendsGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsGridLayout.h; sourceTree = "<group>"; };
@@ -1064,8 +1072,8 @@
 		BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObject.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
-		BEF0AE1916E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSuggestionsPopoverBackgroundView.h; sourceTree = "<group>"; };
-		BEF0AE1A16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSuggestionsPopoverBackgroundView.m; sourceTree = "<group>"; };
+		BEF0AE1916E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenericPopoverBackgroundView.h; sourceTree = "<group>"; };
+		BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenericPopoverBackgroundView.m; sourceTree = "<group>"; };
 		BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover-black-bcg-image.png"; sourceTree = "<group>"; };
 		BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover-black-bcg-image@2x.png"; sourceTree = "<group>"; };
 		BEF0AE3016E7A7FE0094BFDA /* DividerSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DividerSearch.png; sourceTree = "<group>"; };
@@ -1998,8 +2006,6 @@
 		01A3EC3416AED7F6008DCE08 /* Popover */ = {
 			isa = PBXGroup;
 			children = (
-				011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */,
-				011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */,
 				01A3EC3516AED804008DCE08 /* NotificationContent.png */,
 				01A3EC3616AED804008DCE08 /* NotificationContent@2x.png */,
 				BEF0AE3416E7AC480094BFDA /* ArrowSearch.png */,
@@ -2009,6 +2015,12 @@
 				BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */,
 				BEF0AE3A16E7B03C0094BFDA /* popover-black-top-arrow-image.png */,
 				BEF0AE3816E7AD940094BFDA /* popover-black-top-arrow-image@2x.png */,
+				011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */,
+				011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */,
+				011A160216EE4F79008CF25E /* popover-black-left-arrow-image.png */,
+				011A160316EE4F79008CF25E /* popover-black-left-arrow-image@2x.png */,
+				011A160416EE4F79008CF25E /* popover-black-bottom-arrow-image.png */,
+				011A160516EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png */,
 			);
 			name = Popover;
 			sourceTree = "<group>";
@@ -2389,8 +2401,8 @@
 			children = (
 				BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */,
 				BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */,
-				BEF0AE1916E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.h */,
-				BEF0AE1A16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m */,
+				BEF0AE1916E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.h */,
+				BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */,
 			);
 			name = "Autocomplete Panel";
 			sourceTree = "<group>";
@@ -2902,6 +2914,10 @@
 				011A15FF16EE41B1008CF25E /* ButtonChooseExistingDefault@2x.png in Resources */,
 				011A160016EE41B1008CF25E /* ButtonChooseExistingHighlighted.png in Resources */,
 				011A160116EE41B1008CF25E /* ButtonChooseExistingHighlighted@2x.png in Resources */,
+				011A160616EE4F79008CF25E /* popover-black-left-arrow-image.png in Resources */,
+				011A160716EE4F79008CF25E /* popover-black-left-arrow-image@2x.png in Resources */,
+				011A160816EE4F79008CF25E /* popover-black-bottom-arrow-image.png in Resources */,
+				011A160916EE4F79008CF25E /* popover-black-bottom-arrow-image@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3048,7 +3064,7 @@
 				BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */,
 				BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */,
 				017A9EFA16E77E6600AA5B18 /* UIView+Subviews.m in Sources */,
-				BEF0AE1B16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m in Sources */,
+				BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */,
 				BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */,
 				BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */,
 				011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */,
