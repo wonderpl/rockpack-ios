@@ -29,6 +29,7 @@ typedef enum _kQueueMoveDirection {
 @property (nonatomic, readonly) SYNVideoQueueView* videoQueueView;
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic) NSMutableArray* selectedVideos;
+@property (nonatomic) BOOL showingEmptyQueue;
 
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 
@@ -39,6 +40,7 @@ typedef enum _kQueueMoveDirection {
 @dynamic videoQueueView;
 
 @synthesize delegate;
+@synthesize showingEmptyQueue;
 
 -(void)loadView
 {
@@ -48,6 +50,8 @@ typedef enum _kQueueMoveDirection {
     self.view = videoQView;
     
     self.selectedVideos = [NSMutableArray array];
+    
+    self.locked = NO;
     
     self.isVisible = NO;
 }
@@ -87,6 +91,15 @@ typedef enum _kQueueMoveDirection {
 
 -(void)handleVideoQueueShowRequest:(NSNotification*)notification
 {
+    NSDictionary* userInfo = [notification userInfo];
+    if(userInfo)
+    {
+        NSNumber* lockValueObject = [userInfo objectForKey:@"lock"];
+        BOOL lockValue = [lockValueObject boolValue];
+        if(lockValue)
+            self.locked = YES;
+    }
+    
     [self showVideoQueue:YES];
 }
 
@@ -191,11 +204,7 @@ typedef enum _kQueueMoveDirection {
 - (void) clearVideoQueue
 {
     
-    [self.videoQueueView showMessage:YES];
-    
-    self.videoQueueView.channelButton.enabled = NO;
-    self.videoQueueView.channelButton.selected = NO;
-    self.videoQueueView.deleteButton.enabled = NO;
+    self.showingEmptyQueue = YES;
     
     [self.selectedVideos removeAllObjects];
     
@@ -205,6 +214,12 @@ typedef enum _kQueueMoveDirection {
 -(void)reloadData
 {
     [self.videoQueueView.videoQueueCollectionView reloadData];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.videoQueueAnimationTimer invalidate];
+    self.videoQueueAnimationTimer = nil;
 }
 
 
@@ -217,11 +232,16 @@ typedef enum _kQueueMoveDirection {
 
 - (void) showVideoQueue: (BOOL) animated;
 {
-    if (!self.isVisible)
-        [self moveVideoQueue:kQueueMoveDirectionUp animated:animated];
+    if(self.isVisible)
+        return;
+    
+    [self moveVideoQueue:kQueueMoveDirectionUp animated:animated];
+    
+    if(self.selectedVideos.count == 0)
+        self.showingEmptyQueue = YES;
     
     self.isVisible = YES;
-    [self startVideoQueueDismissalTimer];  
+    [self startVideoQueueDismissalTimer];
 }
 
 
@@ -232,10 +252,14 @@ typedef enum _kQueueMoveDirection {
 
 - (void) hideVideoQueue: (BOOL) animated;
 {
-    if (self.isVisible)
-        [self moveVideoQueue:kQueueMoveDirectionDown animated:animated];
+    
+    if(!self.isVisible)
+        return;
+    
+    [self moveVideoQueue:kQueueMoveDirectionDown animated:animated];
     
     self.isVisible = NO;
+    self.locked = NO;
     self.videoQueueAnimationTimer = nil;
 }
 
@@ -270,18 +294,18 @@ typedef enum _kQueueMoveDirection {
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
+    
+    if(!videoInstance) {
+        DebugLog(@"Trying to add a nil video instance into the queue through: 'addVideoToQueue:'");
+        return;
+    }
+        
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
     
     [self showVideoQueue:YES];
     
-    if (self.selectedVideos.count == 0)
-    {
-        self.videoQueueView.channelButton.enabled = YES;
-        self.videoQueueView.channelButton.selected = YES;
-        self.videoQueueView.deleteButton.enabled = YES;
-        
-        [self.videoQueueView showMessage:NO];
-    }
+    if(self.showingEmptyQueue)
+        self.showingEmptyQueue = NO;
     
     
     [self.selectedVideos addObject: videoInstance];
@@ -317,7 +341,32 @@ typedef enum _kQueueMoveDirection {
 
 - (void) videoQueueTimerCallback
 {
+    if(self.locked)
+        return;
+    
     [self hideVideoQueue: TRUE];
+}
+
+-(void)setShowingEmptyQueue:(BOOL)ShowingEmptyQueueValue
+{
+    showingEmptyQueue = ShowingEmptyQueueValue;
+    if(!showingEmptyQueue) // queue is not empty
+    {
+        self.videoQueueView.channelButton.enabled = YES;
+        self.videoQueueView.channelButton.selected = YES;
+        self.videoQueueView.deleteButton.enabled = YES;
+        
+        [self.videoQueueView showMessage:NO];
+    }
+    else // queue is empty
+    {
+        self.videoQueueView.channelButton.enabled = NO;
+        self.videoQueueView.channelButton.selected = NO;
+        self.videoQueueView.deleteButton.enabled = NO;
+        
+        [self.videoQueueView showMessage:YES];
+    }
+    
 }
 
 @end

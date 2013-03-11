@@ -86,6 +86,7 @@
     
     
     self.largeVideoPanelController = [[SYNLargeVideoPanelViewController alloc] init];
+    
 }
 
 
@@ -129,6 +130,13 @@
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
+    
+    
+    // Request Video Q to show at all times
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
+                                                        object:self
+                                                      userInfo:@{@"lock" : @(YES)}];
     
     [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
     
