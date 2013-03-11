@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-
+#import "SYNAbstractViewController.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
+#import "SYNMasterViewController.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
 #import "SYNVideoViewerThumbnailLayout.h"
@@ -392,27 +393,33 @@
                                                placeHolderImage: nil];
 }
 
+- (IBAction) userTouchedCloseButton: (id) sender
+{
+    // Call the close method on our parent
+    [self.overlayParent removeVideoOverlayController];
+}
+
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
 - (IBAction) userTouchedChannelButton: (id) sender
 {
-    //[self dismissVideoViewer];
-    
+    [self.overlayParent removeVideoOverlayController];
+
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
-    [self viewChannelDetails: videoInstance.channel];
+    [(SYNAbstractViewController *)self.overlayParent.originViewController viewChannelDetails: videoInstance.channel];
 }
 
 
 // The user touched the invisible button above the user details, taking the user to the profile page
 - (IBAction) userTouchedProfileButton: (id) sender
 {
-//    [self.parentViewController dismissVideoViewer];
+    [self.overlayParent removeVideoOverlayController];
     
-//    // Get the video instance for the currently selected video
-//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
-//    
-//    [self viewProfileDetails: videoInstance.channel.channelOwner];
+    // Get the video instance for the currently selected video
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    [(SYNAbstractViewController *)self.overlayParent.originViewController viewProfileDetails: videoInstance.channel.channelOwner];
 }
 
 - (void) userTappedVideo
@@ -453,9 +460,6 @@
     }
 
     self.videoExpanded = !self.videoExpanded;
-    
-
-
 }
 
 @end
