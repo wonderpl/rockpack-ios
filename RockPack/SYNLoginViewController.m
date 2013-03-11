@@ -33,6 +33,8 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
+
 @property (nonatomic) BOOL isAnimating;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
@@ -47,7 +49,7 @@
 @synthesize state;
 @synthesize appDelegate;
 @synthesize facebookSignInButton, signUpButton, loginButton, finalLoginButton, passwordInputTextField, registerButton, userNameInputTextField;
-@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
+@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel, activityIndicator;
 @synthesize isAnimating;
 
 - (void)viewDidLoad
@@ -57,6 +59,9 @@
     // set up controls
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    
+    activityIndicator.hidesWhenStopped = YES;
     
     self.state = kLoginScreenStateInitial;
     
@@ -83,6 +88,7 @@
         control.hidden = YES;
         control.alpha = 0.0;
     }
+    
     
     
 }
@@ -121,7 +127,7 @@
     passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
     passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
     termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
-    
+    activityIndicator.center = CGPointMake(activityIndicator.center.x, activityIndicator.center.y - kOffsetForLoginForm);
     
     // consequitive fade in animations
     
