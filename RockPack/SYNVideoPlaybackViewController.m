@@ -58,11 +58,10 @@
 
     // Make sure we set the desired frame at this point
     self.view.frame = self.requestedFrame;
+    self.view.autoresizingMask = UIViewAutoresizingNone;
 
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
-    
-//    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // Use for placeholder
 //    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
@@ -93,13 +92,12 @@
 - (UIWebView *) createNewVideoWebView
 {
     UIWebView *newVideoWebView;
-    
     newVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
+
     newVideoWebView.backgroundColor = self.view.backgroundColor;
 	newVideoWebView.opaque = NO;
     newVideoWebView.alpha = 0.0f;
-    newVideoWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
+    newVideoWebView.autoresizingMask = UIViewAutoresizingNone;
     // Stop the user from scrolling the webview
     newVideoWebView.scrollView.scrollEnabled = false;
     newVideoWebView.scrollView.bounces = false;
@@ -401,7 +399,13 @@
                                                              encoding: NSUTF8StringEncoding
                                                                 error: &error];
     
+    
+    CGAffineTransform savedTransform = self.view.transform;
+    self.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
+    
+    self.view.transform = savedTransform;
     
     [webView loadHTMLString: iFrameHTML
                     baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
