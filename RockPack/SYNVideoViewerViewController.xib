@@ -404,7 +404,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{163, 507}, {714, 28}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="160978130"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -487,10 +487,24 @@
 						<reference key="IBUIFont" ref="411623500"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
+					<object class="IBUIImageView" id="707482642">
+						<reference key="NSNextResponder" ref="753127512"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrameSize">{1024, 748}</string>
+						<reference key="NSSuperview" ref="753127512"/>
+						<reference key="NSNextKeyView" ref="562869705"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">PanelVideoScreenVideoMainOverlay.png</string>
+						</object>
+					</object>
 					<object class="IBUIButton" id="226314193">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{827, 86}, {40, 42}}</string>
+						<string key="NSFrame">{{807, 66}, {80, 80}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSNextKeyView" ref="1017730326"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -510,20 +524,6 @@
 						</object>
 						<reference key="IBUIFontDescription" ref="647382764"/>
 						<reference key="IBUIFont" ref="265148596"/>
-					</object>
-					<object class="IBUIImageView" id="707482642">
-						<reference key="NSNextResponder" ref="753127512"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{1024, 748}</string>
-						<reference key="NSSuperview" ref="753127512"/>
-						<reference key="NSNextKeyView" ref="562869705"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">PanelVideoScreenVideoMainOverlay.png</string>
-						</object>
 					</object>
 				</array>
 				<string key="NSFrameSize">{1024, 748}</string>
@@ -765,12 +765,12 @@
 							<reference ref="845126298"/>
 							<reference ref="681735156"/>
 							<reference ref="1017730326"/>
-							<reference ref="226314193"/>
 							<reference ref="558394908"/>
 							<reference ref="525089393"/>
 							<reference ref="821535031"/>
 							<reference ref="562869705"/>
 							<reference ref="707482642"/>
+							<reference ref="226314193"/>
 							<reference ref="850004507"/>
 						</array>
 						<reference key="parent" ref="0"/>
