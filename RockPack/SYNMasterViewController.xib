@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3103</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -375,10 +375,7 @@
 				<reference key="NSNextKeyView" ref="142621756"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-					<object class="NSColorSpace" key="NSCustomColorSpace">
-						<int key="NSID">2</int>
-					</object>
+					<bytes key="NSWhite">MAA</bytes>
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -724,18 +721,18 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundGeneric.jpg">{16, 16}</string>
-			<string key="ButtonActivityDefault.png">{16, 16}</string>
-			<string key="ButtonActivityHighlighted.png">{16, 16}</string>
-			<string key="ButtonActivitySelected.png">{16, 16}</string>
-			<string key="ButtonBack.png">{16, 16}</string>
-			<string key="ButtonBackHighlighted.png">{16, 16}</string>
-			<string key="ButtonCancelSearch.png">{16, 16}</string>
-			<string key="ButtonInboxDefault.png">{16, 16}</string>
-			<string key="ButtonInboxHighlighted.png">{16, 16}</string>
-			<string key="ButtonInboxSelected.png">{16, 16}</string>
-			<string key="GlowSearch.png">{16, 16}</string>
-			<string key="PanelMainTitle.png">{16, 16}</string>
+			<string key="BackgroundGeneric.jpg">{1024, 768}</string>
+			<string key="ButtonActivityDefault.png">{84, 43}</string>
+			<string key="ButtonActivityHighlighted.png">{84, 43}</string>
+			<string key="ButtonActivitySelected.png">{84, 43}</string>
+			<string key="ButtonBack.png">{53, 30}</string>
+			<string key="ButtonBackHighlighted.png">{53, 30}</string>
+			<string key="ButtonCancelSearch.png">{23, 23}</string>
+			<string key="ButtonInboxDefault.png">{84, 43}</string>
+			<string key="ButtonInboxHighlighted.png">{84, 43}</string>
+			<string key="ButtonInboxSelected.png">{84, 43}</string>
+			<string key="GlowSearch.png">{320, 43}</string>
+			<string key="PanelMainTitle.png">{1024, 54}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
