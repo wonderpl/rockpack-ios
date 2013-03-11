@@ -65,9 +65,11 @@
             // This is required to resize the YTPlayer when the size of the UIWebView changes
             function sizeToFit(element)
             {
+                alert ('resize');
                 var body = document.getElementsByTagName("body")[0];
                 element.setAttribute("width", body.clientWidth);
                 element.setAttribute("height", body.clientWidth / 1.77777);
+//                alert ('New size' + body.clientWidth + (height));
 
             }
 

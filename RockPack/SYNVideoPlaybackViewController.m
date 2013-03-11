@@ -25,8 +25,8 @@
 @property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
 @property (nonatomic, strong) UIButton *videoPlayButton;
 @property (nonatomic, strong) UIImageView *currentVideoPlaceholderImageView;
-@property (nonatomic, strong) UIWebView *currentVideoWebView;
-@property (nonatomic, strong) UIWebView *nextVideoWebView;
+//@property (nonatomic, strong) UIWebView *currentVideoWebView;
+//@property (nonatomic, strong) UIWebView *nextVideoWebView;
 
 @end
 
@@ -62,7 +62,7 @@
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
     
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // Use for placeholder
 //    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
@@ -80,6 +80,8 @@
 
 - (void) viewDidDisappear:(BOOL)animated
 {
+    [self stopBufferMonitoringTimer];
+    
     [self stopVideoInWebView: self.currentVideoWebView];
     self.currentVideoWebView = nil;
     self.nextVideoWebView = nil;
@@ -669,6 +671,8 @@
 
 - (void) startBufferMonitoringTimer
 {
+    [self.bufferMonitoringTimer invalidate];
+    
     self.bufferMonitoringTimer = [NSTimer scheduledTimerWithTimeInterval: kBufferMonitoringTimerInterval
                                                                   target: self
                                                                 selector: @selector(monitorBufferLevel)
@@ -686,19 +690,28 @@
 - (void) monitorBufferLevel
 {
     float bufferLevel = [self videoLoadedFraction];
-    
+    NSLog (@"Buffer level %f", bufferLevel);
     // If we have a full buffer for the current video and are not already trying to buffer the next video
     // then start to preload the next video
-    if (bufferLevel == 1.0f && self.nextVideoWebView == nil)
+    if (bufferLevel == 1.0f)
     {
-        DebugLog (@"*** Buffer full");
-        [self precacheNextVideo];
+        if (self.nextVideoWebView == nil)
+        {
+            DebugLog (@"*** Buffer full");
+            [self precacheNextVideo];
+        }
+        else
+        {
+           [self stopBufferMonitoringTimer]; 
+        }
     }
 }
 
 
 - (void) precacheNextVideo
 {
+    [self stopBufferMonitoringTimer];
+    
     // This flag is set to true when we get the unstarted event from the next video player
     // indicating that it has buffered and ready to play
     self.nextVideoWebViewReadyToPlay = FALSE;

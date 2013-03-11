@@ -105,7 +105,7 @@
     
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
-//    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 1024, 416)];
+
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.blackPanelView];
     
