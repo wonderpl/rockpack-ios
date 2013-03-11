@@ -31,6 +31,7 @@
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
 
 @property (nonatomic, strong) IBOutlet UILabel* passwordForgottenLabel;
+@property (nonatomic, strong) IBOutlet UIButton* registerNewUserButton;
 
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
@@ -56,7 +57,7 @@
 @synthesize facebookSignInButton, signUpButton, loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel, activityIndicator;
 @synthesize isAnimating;
-@synthesize emailInputField, dobView;
+@synthesize emailInputField, dobView, registerNewUserButton;
 
 - (void)viewDidLoad
 {
@@ -82,6 +83,15 @@
         [self setUpInitialState];
     else if(newState == kLoginScreenStateLogin)
         [self setUpLoginState];
+    else if(newState == kLoginScreenStateRegister)
+        [self setupRegisterStateFromState:state];
+    
+    state = newState;
+}
+
+-(kLoginScreenState)state
+{
+    return state;
 }
 
 -(void)setUpInitialState
@@ -91,7 +101,8 @@
     
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
-                                passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField];
+                                passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
+                                registerNewUserButton];
     for (UIView* control in controlsToHide) {
         control.hidden = YES;
         control.alpha = 0.0;
@@ -161,11 +172,75 @@
     
 }
 
+-(void)setupRegisterStateFromState:(kLoginScreenState)previousState
+{
+    if(previousState == kLoginScreenStateInitial)
+    {
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseInOut
+                         animations:^{
+            
+            facebookSignInButton.alpha = 0.0;
+            
+            
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 150.0,
+                                                      facebookSignInButton.center.y);
+            emailInputField.hidden = NO;
+            emailInputField.alpha = 1.0;
+            emailInputField.center = CGPointMake(emailInputField.center.x + 100.0,
+                                                 emailInputField.center.y);
+            dobView.hidden = NO;
+            dobView.alpha = 1.0;
+            dobView.center = CGPointMake(dobView.center.x + 100.0,
+                                         dobView.center.y);
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+        
+    }
+    else if(previousState == kLoginScreenStateLogin)
+    {
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            facebookSignInButton.alpha = 0.0;
+            
+            
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 100.0,
+                                                      facebookSignInButton.center.y);
+            emailInputField.hidden = NO;
+            emailInputField.alpha = 1.0;
+            emailInputField.center = CGPointMake(userNameInputField.center.x,
+                                                 emailInputField.center.y);
+            dobView.hidden = NO;
+            dobView.alpha = 1.0;
+            dobView.center = CGPointMake(userNameInputField.center.x,
+                                         dobView.center.y);
+            
+            registerNewUserButton.hidden = NO;
+            registerNewUserButton.alpha = 1.0;
+            
+            loginButton.alpha = 0.0;
+            finalLoginButton.alpha = 0.0;
+            finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
+                                                  finalLoginButton.center.y + 50.0);
+            
+        }];
+    }
+    
+}
+
 #pragma mark - Button Actions
 
 -(IBAction)doLogin:(id)sender
 {
+    [UIView animateWithDuration:0.2 animations:^{
+        finalLoginButton.alpha = 0.0;
+    }];
+    [activityIndicator startAnimating];
     
+    // TODO : Do actual login
 }
 
 -(IBAction)goToLoginForm:(id)sender
@@ -187,9 +262,22 @@
     
 }
 
+-(IBAction)registerNewUser:(id)sender
+{
+    // Check Text Fields
+    
+    if(emailInputField.text.length < 2 ||
+       userNameInputField.text.length < 2 ||
+       passwordInputField.text.length < 2) {
+        return;
+    }
+    
+    // Do registration
+}
+
 -(IBAction)registerPressed:(id)sender
 {
-    
+    self.state = kLoginScreenStateRegister;
 }
 
 
