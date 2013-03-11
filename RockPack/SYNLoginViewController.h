@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    kLoginScreenStateInitial = 0,
+    kLoginScreenStateLogin,
+    kLoginScreenStateRegister,
+    kLoginScreenStateFacebookLogin
+} kLoginScreenState;
+
 @interface SYNLoginViewController : UIViewController
+
+@property (nonatomic) kLoginScreenState state;
 
 @end
