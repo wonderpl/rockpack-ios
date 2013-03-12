@@ -164,6 +164,11 @@
     return YES;
 }
 
+-(BOOL)registerAccessInfoFromDictionary:(NSDictionary *)dictionary
+{
+    return YES;
+}
+
 -(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary
 {
     

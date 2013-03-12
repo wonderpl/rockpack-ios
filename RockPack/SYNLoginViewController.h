@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SYNAppDelegate.h"
+
 typedef enum {
     kLoginScreenStateNull = 0,
     kLoginScreenStateInitial,

@@ -34,4 +34,7 @@
                        andError: (MKNKErrorBlock) errorBlock;
 
 
+-(void)doSimpleLoginForUsername:(NSString*)username andPassword:(NSString*)password;
+
+
 @end

@@ -7,8 +7,8 @@
 //
 
 #import "SYNLoginViewController.h"
-#import "SYNAppDelegate.h"
 #import "UIFont+SYNFont.h"
+#import "SYNNetworkEngine.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -57,11 +57,15 @@
 
 @synthesize state;
 @synthesize appDelegate;
-@synthesize facebookSignInButton, signUpButton, loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
-@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel, activityIndicator;
+@synthesize signUpButton, facebookSignInButton;
+@synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
+
+@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
+@synthesize activityIndicator;
 @synthesize isAnimating;
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
+@synthesize ddInputField, mmInputField, yyyyInputField;
 
 - (void)viewDidLoad
 {
@@ -74,7 +78,10 @@
     
     activityIndicator.hidesWhenStopped = YES;
     
-    // == Setup Fonts for labels (not input fields)
+    
+    
+    
+    // == Setup Fonts for labels (except Input Fields)
     
     memberLabel.font = [UIFont boldRockpackFontOfSize:22];
     
@@ -87,14 +94,18 @@
     // == Setup Input Fields
     
     UIFont* rockpackInputFont = [UIFont rockpackFontOfSize:20];
-    NSArray* textFieldsToSetup = @[emailInputField, userNameInputField, passwordInputField];
+    NSArray* textFieldsToSetup = @[emailInputField, userNameInputField, passwordInputField,
+                                   ddInputField, mmInputField, yyyyInputField];
     for (UITextField* tf in textFieldsToSetup)
     {
         tf.font = rockpackInputFont;
-        // this is to create the left padding for the text fields (hack)
+        // -- this is to create the left padding for the text fields (hack) -- //
         tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
         tf.leftViewMode = UITextFieldViewModeAlways;
     }
+    
+    
+    
     
     self.state = kLoginScreenStateInitial;
     
@@ -133,7 +144,7 @@
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
                                 registerNewUserButton];
     for (UIView* control in controlsToHide) {
-        control.hidden = YES;
+       
         control.alpha = 0.0;
     }
     
@@ -173,11 +184,7 @@
     
     // place secondary elements to the correct place for fade in animation
     
-    passwordForgottenButton.hidden = NO;
-    passwordForgottenLabel.hidden = NO;
-    termsAndConditionsLabel.hidden = NO;
-    areYouNewLabel.hidden = NO;
-    registerButton.hidden = NO;
+    
     passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
     passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
     termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
@@ -237,6 +244,11 @@
     }
     else if(previousState == kLoginScreenStateLogin)
     {
+        // prepare in the correct place
+        
+        emailInputField.center = CGPointMake(emailInputField.center.x, emailInputField.center.y - kOffsetForLoginForm);
+        dobView.center = CGPointMake(dobView.center.x, dobView.center.y - kOffsetForLoginForm);
+        
         [UIView animateWithDuration:0.5 animations:^{
             
             facebookSignInButton.alpha = 0.0;
@@ -244,22 +256,25 @@
             
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 100.0,
                                                       facebookSignInButton.center.y);
-            emailInputField.hidden = NO;
+            
             emailInputField.alpha = 1.0;
             emailInputField.center = CGPointMake(userNameInputField.center.x,
                                                  emailInputField.center.y);
-            dobView.hidden = NO;
+            
             dobView.alpha = 1.0;
             dobView.center = CGPointMake(userNameInputField.center.x,
                                          dobView.center.y);
             
-            registerNewUserButton.hidden = NO;
+            
             registerNewUserButton.alpha = 1.0;
             
             loginButton.alpha = 0.0;
             finalLoginButton.alpha = 0.0;
             finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
                                                   finalLoginButton.center.y + 50.0);
+            
+            passwordForgottenButton.alpha = 0.0;
+            passwordForgottenLabel.alpha = 0.0;
             
         }];
     }
@@ -272,10 +287,12 @@
 
 -(IBAction)doLogin:(id)sender
 {
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.1 animations:^{
         finalLoginButton.alpha = 0.0;
     }];
     [activityIndicator startAnimating];
+    
+    [appDelegate.networkEngine doSimpleLoginForUsername:@"test" andPassword:@"test"];
     
     // TODO : Do actual login
 }

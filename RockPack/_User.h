@@ -11,11 +11,13 @@ extern const struct UserAttributes {
 } UserAttributes;
 
 extern const struct UserRelationships {
+	__unsafe_unretained NSString *accessInfo;
 } UserRelationships;
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
 
+@class NSManagedObject;
 
 
 
@@ -64,6 +66,13 @@ extern const struct UserFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSManagedObject *accessInfo;
+
+//- (BOOL)validateAccessInfo:(id*)value_ error:(NSError**)error_;
+
+
+
+
 
 @end
 
@@ -90,6 +99,11 @@ extern const struct UserFetchedProperties {
 - (void)setPrimitiveThumbnailURL:(NSString*)value;
 
 
+
+
+
+- (NSManagedObject*)primitiveAccessInfo;
+- (void)setPrimitiveAccessInfo:(NSManagedObject*)value;
 
 
 @end

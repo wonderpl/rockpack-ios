@@ -337,4 +337,40 @@
     
 }
 
+
+#pragma mark - Login Stuff
+
+-(void)doSimpleLoginForUsername:(NSString*)username andPassword:(NSString*)password
+{
+    
+    NSDictionary* postLoginParams = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                @"password", @"grant_type",
+                                                username, @"username",
+                                                password, @"password", nil];
+    
+    //NSDictionary* parameters = [self getLocalParamWithParams:postLoginParams];
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureLogin params:postLoginParams httpMethod:@"POST"];
+    
+    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        
+        BOOL registryResultOk = [self.registry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Access Token Info returned is wrong");
+            return;
+        }
+        
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Access Info Request Failed");
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
 @end

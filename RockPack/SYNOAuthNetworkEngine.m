@@ -6,13 +6,13 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
+
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNOAuth2Credential.h"
 
 
-// OAuth username and password
-#define kOAuth2ClientId @"a637c4294064e8003139412d4a1acf"
-#define kOAuth2ClientSecret @"7d6a1956c0207ed9d0bbc22ddf9d95"
+
 
 // Hostname
 #define kHostName @"rockpack-oauth2-demo.herokuapp.com"
