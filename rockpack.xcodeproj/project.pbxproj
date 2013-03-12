@@ -499,6 +499,8 @@
 		BED4310616EF8D830051465B /* FieldYear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310216EF8D830051465B /* FieldYear@2x.png */; };
 		BED4310916EF8F7A0051465B /* ButtonRegisterBigDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */; };
 		BED4310A16EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */; };
+		BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */; };
+		BED4311016EFA8520051465B /* SYNNetworkOperationPostJson.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4310F16EFA8520051465B /* SYNNetworkOperationPostJson.m */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.m */; };
 		BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */; };
@@ -1108,6 +1110,10 @@
 		BED4310216EF8D830051465B /* FieldYear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FieldYear@2x.png"; path = "Assets/Images/FieldYear@2x.png"; sourceTree = "<group>"; };
 		BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRegisterBigDefault.png; path = Assets/Images/ButtonRegisterBigDefault.png; sourceTree = "<group>"; };
 		BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRegisterBigDefault@2x.png"; path = "Assets/Images/ButtonRegisterBigDefault@2x.png"; sourceTree = "<group>"; };
+		BED4310B16EF9A6B0051465B /* SYNUserInfoRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserInfoRegistry.h; sourceTree = "<group>"; };
+		BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserInfoRegistry.m; sourceTree = "<group>"; };
+		BED4310E16EFA8520051465B /* SYNNetworkOperationPostJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationPostJson.h; sourceTree = "<group>"; };
+		BED4310F16EFA8520051465B /* SYNNetworkOperationPostJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationPostJson.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNSuggestionsPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSuggestionsPopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2526,6 +2532,8 @@
 				BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */,
 				BE0815CB16D5487B00ADB1DC /* SYNSearchRegistry.h */,
 				BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */,
+				BED4310B16EF9A6B0051465B /* SYNUserInfoRegistry.h */,
+				BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */,
 			);
 			name = Registries;
 			sourceTree = "<group>";
@@ -2537,6 +2545,8 @@
 				BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */,
 				BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */,
 				BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */,
+				BED4310E16EFA8520051465B /* SYNNetworkOperationPostJson.h */,
+				BED4310F16EFA8520051465B /* SYNNetworkOperationPostJson.m */,
 			);
 			name = "Custom Network Operations";
 			sourceTree = "<group>";
@@ -3152,6 +3162,8 @@
 				BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */,
 				BED430FB16EF86020051465B /* _AccessInfo.m in Sources */,
 				BED430FE16EF860E0051465B /* AccessInfo.m in Sources */,
+				BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */,
+				BED4311016EFA8520051465B /* SYNNetworkOperationPostJson.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

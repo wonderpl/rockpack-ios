@@ -6,7 +6,7 @@
     </entity>
     <entity name="AccessInfo" representedClassName="AccessInfo" syncable="YES">
         <attribute name="accessToken" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="expiryTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="expiryTime" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="refreshToken" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="resourceUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenType" optional="YES" attributeType="String" syncable="YES"/>
@@ -47,9 +47,12 @@
         <attribute name="priority" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
-        <attribute name="forename" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="surname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dob" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="accessInfo" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="AccessInfo" inverseName="user" inverseEntity="AccessInfo" syncable="YES"/>
     </entity>
     <entity name="Video" representedClassName="Video" parentEntity="AbstractCommon" syncable="YES">
@@ -80,7 +83,7 @@
         <element name="ChannelOwner" positionX="-641" positionY="272" width="128" height="90"/>
         <element name="Subcategory" positionX="-515" positionY="-9" width="128" height="58"/>
         <element name="TabItem" positionX="-603" positionY="-108" width="128" height="73"/>
-        <element name="User" positionX="-126" positionY="-90" width="128" height="103"/>
+        <element name="User" positionX="-126" positionY="-90" width="128" height="148"/>
         <element name="Video" positionX="7" positionY="216" width="128" height="195"/>
         <element name="VideoInstance" positionX="-207" positionY="257" width="128" height="135"/>
     </elements>

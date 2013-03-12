@@ -165,29 +165,7 @@
     return YES;
 }
 
--(BOOL)registerAccessInfoFromDictionary:(NSDictionary *)dictionary
-{
-    
-    
-    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
-        return NO;
-    
-    
-    
-    [AccessInfo instanceFromDictionary: dictionary
-          usingManagedObjectContext: importManagedObjectContext];
-    
-    BOOL saveResult = [self saveImportContext];
-    if(!saveResult)
-        return NO;
-    
-    
-    [appDelegate saveContext: TRUE];
-    
-    
-    
-    return YES;
-}
+
 
 -(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary
 {

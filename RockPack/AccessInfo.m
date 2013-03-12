@@ -42,7 +42,7 @@
     
     self.tokenType = [dictionary objectForKey: @"token_type" withDefault: @"Bearer"];
     
-    self.userId = [dictionary objectForKey: @"user_id" withDefault: [NSNumber numberWithInt: 0]];
+    self.userId = [dictionary objectForKey: @"user_id" withDefault:@""];
     
     self.accessToken = [dictionary objectForKey:@"access_token" withDefault:@""];
     

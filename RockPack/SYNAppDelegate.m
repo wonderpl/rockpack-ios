@@ -29,7 +29,7 @@
 
 @implementation SYNAppDelegate
 
-@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry, userRegistry = _userRegistry;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -219,6 +219,7 @@
     
     _mainRegistry = [SYNMainRegistry registry];
     _searchRegistry = [SYNSearchRegistry registry];
+    _userRegistry = [SYNUserInfoRegistry registry];
 }
 
 // Save the main context first (propagating the changes to the private) and then the private

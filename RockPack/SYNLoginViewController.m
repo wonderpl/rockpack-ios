@@ -346,7 +346,16 @@
     }];
     [activityIndicator startAnimating];
     
-    [appDelegate.networkEngine doSimpleLoginForUsername:@"test" andPassword:@"test"];
+    [appDelegate.networkEngine doSimpleLoginForUsername:@"test"
+                                            forPassword:@"test"
+                                           withComplete:^(AccessInfo* accessInfo) {
+                                               
+                                               
+                                           
+                                           
+                                           } andError:^(NSError * error) {
+        
+                                           }];
     
     // TODO : Do actual login
 }
@@ -429,6 +438,11 @@
     
     return YES;
 }
+
+
+#pragma mark CoreData Access
+
+
 
 
 

@@ -11,6 +11,7 @@
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
 #import "SYNRegistry.h"
+#import "SYNUserInfoRegistry.h"
 
 // Something new!
 
@@ -37,6 +38,7 @@
 
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
+@property (readonly, nonatomic, strong) SYNUserInfoRegistry* userRegistry;
 
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;

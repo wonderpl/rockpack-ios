@@ -14,7 +14,9 @@
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
 #import "SYNAppDelegate.h"
+#import "AccessInfo.h"
 #import "SYNNetworkOperationJsonObjectParse.h"
+#import "SYNUserInfoRegistry.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -27,6 +29,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) SYNMainRegistry* registry;
 @property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
+@property (nonatomic, strong) SYNUserInfoRegistry* userInfoRegistry;
 
 @end
 
@@ -46,6 +49,8 @@
         self.registry = appDelegate.mainRegistry;
         
         self.searchRegistry = appDelegate.searchRegistry;
+        
+        self.userInfoRegistry = appDelegate.userRegistry;
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
@@ -340,7 +345,10 @@
 
 #pragma mark - Login Stuff
 
--(void)doSimpleLoginForUsername:(NSString*)username andPassword:(NSString*)password
+-(void)doSimpleLoginForUsername:(NSString*)username
+                    forPassword:(NSString*)password
+                   withComplete: (MKNKLoginCompleteBlock) completionBlock
+                       andError: (MKNKErrorBlock) errorBlock
 {
     
     NSDictionary* postLoginParams = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -359,18 +367,31 @@
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
         
-        BOOL registryResultOk = [self.registry registerAccessInfoFromDictionary:dictionary];
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
         if (!registryResultOk) {
             DebugLog(@"Access Token Info returned is wrong");
+            errorBlock([NSError errorWithDomain:@"Call completed but token dictionary could not be read." code:0 userInfo:nil]);
             return;
         }
         
+        AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+        
+        completionBlock(recentlyFetchedAccessInfo);
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Access Info Request Failed");
+        errorBlock(error);
     }];
     
     [self enqueueOperation: networkOperation];
+}
+
+-(void)registerUserWithData:(NSDictionary*)userData
+               withComplete:(MKNKUserCompleteBlock)completionBlock
+                   andError:(MKNKErrorBlock)errorBlock {
+    
+    
+    
 }
 
 @end
