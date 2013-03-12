@@ -105,7 +105,10 @@
     }
     
     
+    // == Setup Mock Credentials
     
+    userNameInputField.text = @"test";
+    passwordInputField.text = @"test";
     
     self.state = kLoginScreenStateInitial;
     
@@ -275,6 +278,12 @@
             
             passwordForgottenButton.alpha = 0.0;
             passwordForgottenLabel.alpha = 0.0;
+            
+            registerButton.alpha = 0.0;
+            areYouNewLabel.alpha = 0.0;
+            
+            loginButton.alpha = 1.0;
+            memberLabel.alpha = 1.0;
             
         }];
     }

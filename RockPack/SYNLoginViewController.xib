@@ -171,7 +171,7 @@
 					<object class="IBUIButton" id="912080308">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{286, 563}, {201, 44}}</string>
+						<string key="NSFrame">{{286, 563}, {315, 62}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="645056549"/>
@@ -180,7 +180,6 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<int key="IBUIButtonType">1</int>
 						<string key="IBUINormalTitle">Register</string>
 						<reference key="IBUIHighlightedTitleColor" ref="403201091"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
@@ -188,6 +187,10 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="593093435"/>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonRegisterBigDefault.png</string>
+						</object>
 						<reference key="IBUIFontDescription" ref="136119326"/>
 						<reference key="IBUIFont" ref="616079179"/>
 					</object>
@@ -429,9 +432,9 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">User Name</string>
-						<object class="NSColor" key="IBUITextColor" id="41752245">
+						<object class="NSColor" key="IBUITextColor" id="676755305">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
+							<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 						</object>
 						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
@@ -449,7 +452,7 @@
 					<object class="IBUITextField" id="373837760">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{128, 297}, {308, 57}}</string>
+						<string key="NSFrame">{{179, 297}, {308, 57}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="516248663"/>
@@ -461,7 +464,7 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">Email</string>
-						<reference key="IBUITextColor" ref="41752245"/>
+						<reference key="IBUITextColor" ref="676755305"/>
 						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
@@ -487,7 +490,7 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">Password</string>
-						<reference key="IBUITextColor" ref="41752245"/>
+						<reference key="IBUITextColor" ref="676755305"/>
 						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
@@ -512,7 +515,7 @@
 							<object class="IBUITextField" id="562509502">
 								<reference key="NSNextResponder" ref="419821036"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 6}, {39, 30}}</string>
+								<string key="NSFrameSize">{72, 57}</string>
 								<reference key="NSSuperview" ref="419821036"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="612201525"/>
@@ -523,13 +526,19 @@
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
-								<int key="IBUIBorderStyle">3</int>
 								<string key="IBUIPlaceholder">DD</string>
-								<reference key="IBUITextColor" ref="41752245"/>
+								<object class="NSColor" key="IBUITextColor" id="41752245">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
+								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								</object>
+								<object class="NSCustomResource" key="IBUIBackground" id="399829652">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">FieldDayMonth.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="65291771"/>
 								<reference key="IBUIFont" ref="741667057"/>
@@ -537,7 +546,7 @@
 							<object class="IBUITextField" id="612201525">
 								<reference key="NSNextResponder" ref="419821036"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{50, 6}, {39, 30}}</string>
+								<string key="NSFrame">{{84, 0}, {72, 57}}</string>
 								<reference key="NSSuperview" ref="419821036"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="531964691"/>
@@ -548,7 +557,6 @@
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
-								<int key="IBUIBorderStyle">3</int>
 								<string key="IBUIPlaceholder">MM</string>
 								<reference key="IBUITextColor" ref="41752245"/>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
@@ -556,13 +564,14 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
+								<reference key="IBUIBackground" ref="399829652"/>
 								<reference key="IBUIFontDescription" ref="65291771"/>
 								<reference key="IBUIFont" ref="741667057"/>
 							</object>
 							<object class="IBUITextField" id="531964691">
 								<reference key="NSNextResponder" ref="419821036"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{97, 6}, {104, 30}}</string>
+								<string key="NSFrame">{{170, 0}, {138, 57}}</string>
 								<reference key="NSSuperview" ref="419821036"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="7621546"/>
@@ -573,7 +582,6 @@
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
-								<int key="IBUIBorderStyle">3</int>
 								<string key="IBUIPlaceholder">YYYY</string>
 								<reference key="IBUITextColor" ref="41752245"/>
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
@@ -581,21 +589,22 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
+								<object class="NSCustomResource" key="IBUIBackground">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">FieldYear.png</string>
+								</object>
 								<reference key="IBUIFontDescription" ref="65291771"/>
 								<reference key="IBUIFont" ref="741667057"/>
 							</object>
 						</array>
-						<string key="NSFrame">{{224, 494}, {201, 41}}</string>
+						<string key="NSFrame">{{179, 493}, {308, 57}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="562509502"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="247528412">
-								<int key="NSID">2</int>
-							</object>
+							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -607,7 +616,9 @@
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
-					<reference key="NSCustomColorSpace" ref="247528412"/>
+					<object class="NSColorSpace" key="NSCustomColorSpace">
+						<int key="NSID">2</int>
+					</object>
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
@@ -1204,10 +1215,13 @@
 			<string key="ButtonLoginDefault.png">{80, 81}</string>
 			<string key="ButtonLoginHighlighted.png">{80, 81}</string>
 			<string key="ButtonRegister.png">{80, 81}</string>
+			<string key="ButtonRegisterBigDefault.png">{315, 62}</string>
 			<string key="ButtonRegisterHighlighted.png">{80, 81}</string>
 			<string key="ButtonSignupDefault.png">{123, 62}</string>
 			<string key="ButtonSignupHighlighted.png">{123, 62}</string>
+			<string key="FieldDayMonth.png">{72, 57}</string>
 			<string key="FieldLogin.png">{308, 57}</string>
+			<string key="FieldYear.png">{138, 57}</string>
 			<string key="LogoSignup.png">{248, 54}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

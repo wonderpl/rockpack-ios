@@ -17,7 +17,7 @@ extern const struct UserRelationships {
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
 
-@class NSManagedObject;
+@class AccessInfo;
 
 
 
@@ -66,7 +66,7 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSManagedObject *accessInfo;
+@property (nonatomic, strong) AccessInfo *accessInfo;
 
 //- (BOOL)validateAccessInfo:(id*)value_ error:(NSError**)error_;
 
@@ -102,8 +102,8 @@ extern const struct UserFetchedProperties {
 
 
 
-- (NSManagedObject*)primitiveAccessInfo;
-- (void)setPrimitiveAccessInfo:(NSManagedObject*)value;
+- (AccessInfo*)primitiveAccessInfo;
+- (void)setPrimitiveAccessInfo:(AccessInfo*)value;
 
 
 @end

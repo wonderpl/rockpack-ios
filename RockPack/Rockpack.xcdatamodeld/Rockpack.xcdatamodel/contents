@@ -6,8 +6,9 @@
     </entity>
     <entity name="AccessInfo" representedClassName="AccessInfo" syncable="YES">
         <attribute name="accessToken" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="expiry" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="expiryTime" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="refreshToken" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="resourceUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="accessInfo" inverseEntity="User" syncable="YES"/>
@@ -73,14 +74,14 @@
     </entity>
     <elements>
         <element name="AbstractCommon" positionX="-308" positionY="-106" width="128" height="75"/>
+        <element name="AccessInfo" positionX="52" positionY="-45" width="128" height="148"/>
         <element name="Category" positionX="-711" positionY="-9" width="128" height="58"/>
         <element name="Channel" positionX="-423" positionY="152" width="128" height="285"/>
         <element name="ChannelOwner" positionX="-641" positionY="272" width="128" height="90"/>
         <element name="Subcategory" positionX="-515" positionY="-9" width="128" height="58"/>
         <element name="TabItem" positionX="-603" positionY="-108" width="128" height="73"/>
-        <element name="User" positionX="-108" positionY="-63" width="128" height="103"/>
+        <element name="User" positionX="-126" positionY="-90" width="128" height="103"/>
         <element name="Video" positionX="7" positionY="216" width="128" height="195"/>
         <element name="VideoInstance" positionX="-207" positionY="257" width="128" height="135"/>
-        <element name="AccessInfo" positionX="52" positionY="-45" width="128" height="133"/>
     </elements>
 </model>

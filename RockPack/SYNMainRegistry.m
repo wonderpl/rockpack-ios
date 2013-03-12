@@ -12,6 +12,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "VideoInstance.h"
+#import "AccessInfo.h"
 #import <CoreData/CoreData.h>
 
 #define kChannelsViewId @"Channels"
@@ -144,7 +145,7 @@
     
     // == Check for Validity == //
     
-    if (!dictionary)
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
     // == =============== == //
@@ -166,6 +167,25 @@
 
 -(BOOL)registerAccessInfoFromDictionary:(NSDictionary *)dictionary
 {
+    
+    
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    
+    
+    [AccessInfo instanceFromDictionary: dictionary
+          usingManagedObjectContext: importManagedObjectContext];
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    
+    [appDelegate saveContext: TRUE];
+    
+    
+    
     return YES;
 }
 
