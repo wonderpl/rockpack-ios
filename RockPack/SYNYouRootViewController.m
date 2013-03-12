@@ -8,7 +8,7 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
-#import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNChannelsDetailViewController.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -151,7 +151,7 @@
 {
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelVC];
 }
