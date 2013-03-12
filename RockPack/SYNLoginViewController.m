@@ -74,7 +74,27 @@
     
     activityIndicator.hidesWhenStopped = YES;
     
-    [self setupFonts];
+    // == Setup Fonts for labels (not input fields)
+    
+    memberLabel.font = [UIFont boldRockpackFontOfSize:22];
+    
+    areYouNewLabel.font = [UIFont boldRockpackFontOfSize:22];
+    passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
+    termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:16];
+    
+    
+    
+    // == Setup Input Fields
+    
+    UIFont* rockpackInputFont = [UIFont rockpackFontOfSize:20];
+    NSArray* textFieldsToSetup = @[emailInputField, userNameInputField, passwordInputField];
+    for (UITextField* tf in textFieldsToSetup)
+    {
+        tf.font = rockpackInputFont;
+        // this is to create the left padding for the text fields (hack)
+        tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
+        tf.leftViewMode = UITextFieldViewModeAlways;
+    }
     
     self.state = kLoginScreenStateInitial;
     
@@ -246,18 +266,7 @@
     
 }
 
--(void)setupFonts
-{
-    emailInputField.font = [UIFont rockpackFontOfSize:14];
-    userNameInputField.font = [UIFont rockpackFontOfSize:14];
-    passwordInputField.font = [UIFont rockpackFontOfSize:14];
-    
-    memberLabel.font = [UIFont boldRockpackFontOfSize:22];
-    
-    areYouNewLabel.font = [UIFont boldRockpackFontOfSize:22];
-    passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
-    termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:16];
-}
+
 
 #pragma mark - Button Actions
 
