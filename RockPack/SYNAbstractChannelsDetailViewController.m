@@ -9,6 +9,7 @@
 #import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "GKImagePicker.h"
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractChannelsDetailViewController.h"
@@ -30,6 +31,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractChannelsDetailViewController () <HPGrowingTextViewDelegate,
+                                                       GKImagePickerDelegate,
                                                        UICollectionViewDataSource,
                                                        UICollectionViewDelegate,
                                                        UITextFieldDelegate,
@@ -47,6 +49,7 @@
 @property (nonatomic, strong) MKNetworkOperation *imageLoadingOperation;
 @property (nonatomic, strong) UIPopoverController *cameraPopoverController;
 @property (nonatomic, strong) UIPopoverController *cameraMenuPopoverController;
+@property (nonatomic, strong) GKImagePicker *imagePicker;
 
 @end
 
@@ -625,77 +628,99 @@
 
 - (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
 {
-    // Set up the image picker controller and add it to the view
-    self.imagePickerController = [[UIImagePickerController alloc] init];
-    self.imagePickerController.delegate = self;
-    self.imagePickerController.allowsEditing = YES;
-    self.imagePickerController.navigationBar.barStyle = UIBarStyleBlack;
-    self.imagePickerController.navigationBar.translucent = NO;
-    self.imagePickerController.sourceType = sourceType;
-
-    if (sourceType == UIImagePickerControllerSourceTypeCamera)
+    self.imagePicker = [[GKImagePicker alloc] init];
+    self.imagePicker.cropSize = CGSizeMake(256, 176);
+    self.imagePicker.delegate = self;
+    self.imagePicker.imagePickerController.sourceType = sourceType;
+    
+    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
     {
-        // If we are on a device with a front facing camera, then use that instead of the camera on the back
-        
-        if ([UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
         {
-            if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-            {
-                self.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-            }
+            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         }
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.imagePicker.imagePickerController];
+        
+                [self.cameraPopoverController presentPopoverFromRect: self.cameraButton.frame
+                                                      inView: self.coverSelectionView
+                                    permittedArrowDirections: UIPopoverArrowDirectionRight
+                                                    animated: YES];
     }
     else
     {
-        // Setup the UIImagePickerController to select a photo from the libaray
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController: self.imagePicker.imagePickerController
+                           animated: YES
+                         completion: nil];
     }
-
-    self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePickerController];
-    
-    [self.cameraPopoverController presentPopoverFromRect: self.cameraButton.frame
-                                                  inView: self.coverSelectionView
-                                permittedArrowDirections: UIPopoverArrowDirectionRight
-                                                animated: YES];
 }
 
-- (void) imagePickerController: (UIImagePickerController *) picker
- didFinishPickingMediaWithInfo: (NSDictionary *) info
+# pragma mark - GKImagePicker Delegate Methods
+
+- (void) imagePicker: (GKImagePicker *) imagePicker
+         pickedImage: (UIImage *) image
 {
-    // Deselect the camera button
-    self.cameraButton.selected = NO;
+    //    self.imgView.image = image;
     
-    // Dismiss the image selection, hide the picker and show the image view with the picked image
-    [self.cameraPopoverController dismissPopoverAnimated: YES];
-	
-	// We need to recover the image from the dictionary of attributes returned
-	CGRect cropRect;
-	[[info objectForKey: UIImagePickerControllerCropRect] getValue: &cropRect];
-	UIImage *image = (UIImage *)[info objectForKey: UIImagePickerControllerEditedImage];
-	
-	// TODO: Put correct upload dimensions here
-	CGSize newSize = CGSizeMake(kImageUploadWidth, kImageUploadHeight);
-	UIImage *resizedImage = [UIImage imageWithImage: (UIImage*) image
-									   scaledToSize: (CGSize) newSize];
-	
-    [self uploadChannelImage: resizedImage];
+    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+    [self hideImagePicker];
 }
 
-
-// User hit cancel on the image picker, so dismiss and go back
-- (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker
+- (void) hideImagePicker
 {
-    // Deselect the camera button
-    self.cameraButton.selected = NO;
-    
-    // Dismiss the image selection and close the picker
-    [self.cameraPopoverController dismissPopoverAnimated: YES];
+    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
+    {
+        
+        [self.cameraPopoverController dismissPopoverAnimated: YES];
+        
+    } else {
+        
+        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
+                                                                   completion: nil];
+    }
 }
+
+//- (void) imagePickerController: (UIImagePickerController *) picker
+// didFinishPickingMediaWithInfo: (NSDictionary *) info
+//{
+//    // Deselect the camera button
+//    self.cameraButton.selected = NO;
+//    
+//    // Dismiss the image selection, hide the picker and show the image view with the picked image
+//    [self.cameraPopoverController dismissPopoverAnimated: YES];
+//	
+//	// We need to recover the image from the dictionary of attributes returned
+//	CGRect cropRect;
+//	[[info objectForKey: UIImagePickerControllerCropRect] getValue: &cropRect];
+//	UIImage *image = (UIImage *)[info objectForKey: UIImagePickerControllerEditedImage];
+//	
+//	// TODO: Put correct upload dimensions here
+//	CGSize newSize = CGSizeMake(kImageUploadWidth, kImageUploadHeight);
+//	UIImage *resizedImage = [UIImage imageWithImage: (UIImage*) image
+//									   scaledToSize: (CGSize) newSize];
+//	
+//    [self uploadChannelImage: resizedImage];
+//}
+//
+//
+//// User hit cancel on the image picker, so dismiss and go back
+//- (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker
+//{
+//    // Deselect the camera button
+//    self.cameraButton.selected = NO;
+//    
+//    // Dismiss the image selection and close the picker
+//    [self.cameraPopoverController dismissPopoverAnimated: YES];
+//}
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
     // TODO: Put some networking code in here
 }
+
 
 
 
