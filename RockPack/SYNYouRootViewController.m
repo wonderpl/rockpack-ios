@@ -30,6 +30,8 @@
 
 -(void)loadView
 {
+//    UIImageView *headerView = [UI]
+    
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
