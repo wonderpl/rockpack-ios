@@ -76,6 +76,9 @@
 		011A163016EF5EC5008CF25E /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A162816EF5EC5008CF25E /* GKImageCropViewController.m */; };
 		011A163116EF5EC5008CF25E /* GKImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A162A16EF5EC5008CF25E /* GKImagePicker.m */; };
 		011A163216EF5EC5008CF25E /* GKResizeableCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A162C16EF5EC5008CF25E /* GKResizeableCropOverlayView.m */; };
+		011A163B16F0D697008CF25E /* PlaceholderVideoBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A163816F0D697008CF25E /* PlaceholderVideoBottom.png */; };
+		011A163C16F0D697008CF25E /* PlaceholderVideoMiddle.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A163916F0D697008CF25E /* PlaceholderVideoMiddle.png */; };
+		011A163D16F0D697008CF25E /* PlaceholderVideoTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A163A16F0D697008CF25E /* PlaceholderVideoTop.png */; };
 		011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */; };
 		011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC677164A95CB00F02B6D /* SYNFriendsGridLayout.m */; };
 		011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */; };
@@ -580,6 +583,9 @@
 		011A162A16EF5EC5008CF25E /* GKImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImagePicker.m; sourceTree = "<group>"; };
 		011A162B16EF5EC5008CF25E /* GKResizeableCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKResizeableCropOverlayView.h; sourceTree = "<group>"; };
 		011A162C16EF5EC5008CF25E /* GKResizeableCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKResizeableCropOverlayView.m; sourceTree = "<group>"; };
+		011A163816F0D697008CF25E /* PlaceholderVideoBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoBottom.png; path = Assets/Images/PlaceholderVideoBottom.png; sourceTree = "<group>"; };
+		011A163916F0D697008CF25E /* PlaceholderVideoMiddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoMiddle.png; path = Assets/Images/PlaceholderVideoMiddle.png; sourceTree = "<group>"; };
+		011A163A16F0D697008CF25E /* PlaceholderVideoTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoTop.png; path = Assets/Images/PlaceholderVideoTop.png; sourceTree = "<group>"; };
 		011CC673164A8CAA00F02B6D /* SYNFriendsUserLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsUserLayout.h; sourceTree = "<group>"; };
 		011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsUserLayout.m; sourceTree = "<group>"; };
 		011CC676164A95CB00F02B6D /* SYNFriendsGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsGridLayout.h; sourceTree = "<group>"; };
@@ -2339,6 +2345,9 @@
 		01F8E73316AFF426000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				011A163816F0D697008CF25E /* PlaceholderVideoBottom.png */,
+				011A163916F0D697008CF25E /* PlaceholderVideoMiddle.png */,
+				011A163A16F0D697008CF25E /* PlaceholderVideoTop.png */,
 				01F8E78116B0554B000D44B9 /* ButtonClose.png */,
 				01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */,
 				01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */,
@@ -3005,6 +3014,9 @@
 				011A161D16EF5E8E008CF25E /* PLCameraSheetDoneButton@2x.png in Resources */,
 				011A161E16EF5E8E008CF25E /* PLCameraSheetDoneButtonPressed.png in Resources */,
 				011A161F16EF5E8E008CF25E /* PLCameraSheetDoneButtonPressed@2x.png in Resources */,
+				011A163B16F0D697008CF25E /* PlaceholderVideoBottom.png in Resources */,
+				011A163C16F0D697008CF25E /* PlaceholderVideoMiddle.png in Resources */,
+				011A163D16F0D697008CF25E /* PlaceholderVideoTop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

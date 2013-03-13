@@ -51,7 +51,5 @@
 // Player properties
 @property (nonatomic, assign, readonly) NSTimeInterval duration;
 @property (nonatomic, assign, readonly) NSTimeInterval currentTime;
-@property (nonatomic, strong) UIWebView *currentVideoWebView;
-@property (nonatomic, strong) UIWebView *nextVideoWebView;
 
 @end

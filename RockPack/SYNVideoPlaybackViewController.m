@@ -6,27 +6,36 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#define kVideoBackgroundColour [UIColor blackColor]
-#define kBufferMonitoringTimerInterval 1.0f
-
+#import "AppConstants.h"
 #import "NSIndexPath+Arithmetic.h"
 #import "SYNVideoPlaybackViewController.h"
 #import <CoreData/CoreData.h>
+#import <MediaPlayer/MediaPlayer.h>
+#import <QuartzCore/CoreAnimation.h>
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) CGRect requestedFrame;
-@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
+@property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
+@property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
+@property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
+@property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
 @property (nonatomic, strong) UIButton *videoPlayButton;
-@property (nonatomic, strong) UIImageView *currentVideoPlaceholderImageView;
-//@property (nonatomic, strong) UIWebView *currentVideoWebView;
-//@property (nonatomic, strong) UIWebView *nextVideoWebView;
+@property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
+@property (nonatomic, strong) UIImageView *videoPlaceholderMiddleImageView;
+@property (nonatomic, strong) UIImageView *videoPlaceholderTopImageView;
+@property (nonatomic, strong) UISlider *shuttleSlider;
+@property (nonatomic, strong) UIView *shuttleBarView;
+@property (nonatomic, strong) UIView *videoPlaceholderView;
+@property (nonatomic, strong) UIWebView *currentVideoWebView;
+@property (nonatomic, strong) UIWebView *nextVideoWebView;
 
 @end
 
@@ -67,17 +76,19 @@
 //    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
 //                               aboveSubview: self.videoPlaceholderImageView];
     
-    self.currentVideoPlaceholderImageView = [self createNewVideoPlaceholderImageView];
+    [self createNewVideoPlaceholderImageViews];
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
     self.currentVideoWebView = [self createNewVideoWebView];
     
     // Add button that can be used to play video (if not autoplaying)
     self.videoPlayButton = [self createVideoPlayButton];
+
+    self.shuttleBarView = [self createShuttleBarView];
 }
 
 
-- (void) viewDidDisappear:(BOOL)animated
+- (void) viewDidDisappear: (BOOL) animated
 {
     [self stopBufferMonitoringTimer];
     
@@ -86,6 +97,65 @@
     self.nextVideoWebView = nil;
     
     [super viewDidDisappear: animated];
+}
+
+
+- (UIView *) createShuttleBarView
+{
+    UIView *shuttleBarView = [[UIView alloc] initWithFrame: CGRectMake(47, 510, 326, 25)];
+
+
+    
+    // TODO: Test: remove
+//    UIView *testView = [[UIView alloc] initWithFrame: CGRectMake(47, 510, 326, 25)];
+//    testView.backgroundColor = [UIColor redColor];
+//    [self.view addSubview: testView];
+
+    
+    // Add play/pause button
+    self.shuttleBarPlayPauseButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    
+    // Set this subview to appear slightly offset from the left-hand side
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, 35, 35);
+    
+    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed:@"ButtonShuttleBarPlay.png"]
+                                    forState: UIControlStateNormal];
+    
+    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                    forState: UIControlStateSelected];
+    
+    // Add shuttle slider
+    // Set custom slider track images
+    UIImage *shuttleSliderLeftTrack = [[UIImage imageNamed: @"ShuttleSliderLeftSide.png"]
+                                       stretchableImageWithLeftCapWidth: 10.0
+                                       topCapHeight: 0.0];
+	
+	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleSliderRightSide.png"]
+                                        stretchableImageWithLeftCapWidth: 10.0
+                                        topCapHeight: 0.0];
+    
+    [self.shuttleSlider setMinimumTrackImage: shuttleSliderLeftTrack
+                                    forState: UIControlStateNormal];
+	
+	[self.shuttleSlider setMaximumTrackImage: shuttleSliderRightTrack
+                                    forState: UIControlStateNormal];
+	
+	// Custom slider thumb image
+    [self.shuttleSlider setThumbImage: [UIImage imageNamed:@"ShuttleSliderThumb.png"]
+                        forState: UIControlStateNormal];
+    
+    // Add AirPlay button
+    // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
+    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
+    // Set this subview to appear slightly offset from the left-hand side
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, 35, 35);
+    [volumeView setShowsVolumeSlider: NO];
+    [volumeView sizeToFit];
+    [self.view addSubview: volumeView];
+    
+    [self.view addSubview: self.shuttleBarView];
+    
+    return shuttleBarView;
 }
 
 
@@ -109,24 +179,35 @@
     newVideoWebView.mediaPlaybackAllowsAirPlay = YES;
     
     [self.view insertSubview: newVideoWebView
-                aboveSubview: self.currentVideoPlaceholderImageView];
+                aboveSubview: self.videoPlaceholderView];
 
     return newVideoWebView;
 }
 
 
-- (UIImageView *) createNewVideoPlaceholderImageView
+- (void) createNewVideoPlaceholderImageViews
 {
-    UIImageView *newVideoPlaceholderImageView;
+    self.videoPlaceholderTopImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoTop"];
+    self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle"];
+    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom"];
     
-    newVideoPlaceholderImageView = [[UIImageView alloc] initWithFrame: self.view.bounds];
-    newVideoPlaceholderImageView.backgroundColor = [UIColor clearColor];
-	newVideoPlaceholderImageView.opaque = NO;
+    // Pop them in a view to keep them together
+    self.videoPlaceholderView = [[UIView alloc] initWithFrame: self.view.bounds];
     
-    // Initially, the webview will be hidden (until playback starts)
-    newVideoPlaceholderImageView.alpha = 0.0f;
+    [self.videoPlaceholderView addSubview: self.videoPlaceholderBottomImageView];
+    [self.videoPlaceholderView addSubview: self.videoPlaceholderMiddleImageView];
+    [self.videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
+}
+
+
+- (UIImageView *) createNewVideoPlaceholderImageView: (NSString *) imageName
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame: self.view.bounds];
+    imageView.contentMode = UIViewContentModeCenter;
+    imageView.backgroundColor = [UIColor clearColor];
+    imageView.image = [UIImage imageNamed: imageName];
     
-    return newVideoPlaceholderImageView;
+    return imageView;
 }
 
 
@@ -153,9 +234,96 @@
 }
 
 
+#pragma mark - Placeholder Animation
+
+- (void) spinMiddlePlaceholderImageView
+{
+    [self spinView: self.videoPlaceholderMiddleImageView
+     withAnimation: self.placeholderMiddleLayerAnimation
+          duration: kMiddlePlaceholderCycleTime
+         clockwise: TRUE];
+}
+
+
+- (void) spinBottomPlaceholderImageView
+{
+    [self spinView: self.videoPlaceholderMiddleImageView
+     withAnimation: self.placeholderMiddleLayerAnimation
+          duration: kBottomPlaceholderCycleTime
+         clockwise: TRUE];
+}
+
+
+- (void) spinView: (UIView *) placeholderView
+    withAnimation: (CABasicAnimation *) animation
+         duration: (float) cycleTime
+        clockwise: (BOOL) clockwise
+ 
+{
+	[CATransaction begin];
+    
+	[CATransaction setValue: (id) kCFBooleanTrue
+					 forKey: kCATransactionDisableActions];
+	
+	CGRect frame = [placeholderView frame];
+	placeholderView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+	placeholderView.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
+	[CATransaction commit];
+	
+	[CATransaction begin];
+    
+	[CATransaction setValue: (id)kCFBooleanFalse
+					 forKey: kCATransactionDisableActions];
+	
+    // Set duration of spin
+	[CATransaction setValue: [NSNumber numberWithFloat: cycleTime]
+                     forKey: kCATransactionAnimationDuration];
+	
+	animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
+    
+    // Alter to/from to change spin direction
+    if (clockwise)
+    {
+        animation.fromValue = [NSNumber numberWithFloat: 0.0];
+        animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
+    }
+    else
+    {
+        animation.fromValue = [NSNumber numberWithFloat: 2 * M_PI];
+        animation.toValue = [NSNumber numberWithFloat: 0.0f];
+    }
+
+	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
+	animation.delegate = self;
+    
+	[placeholderView.layer addAnimation: animation
+                                 forKey: @"rotationAnimation"];
+	
+	[CATransaction commit];
+}
+
+
+// Restarts the spin animation on the button when it ends. Again, this is
+// largely irrelevant now that the audio is loaded from a local file.
+
+- (void) animationDidStop: (CAAnimation *) animation
+                 finished: (BOOL) finished
+{
+	if (finished)
+	{
+        if (animation == self.placeholderMiddleLayerAnimation)
+        {
+            [self spinMiddlePlaceholderImageView];
+        }
+        else
+        {
+            [self spinBottomPlaceholderImageView];
+        }
+	}
+}
+
+
 #pragma mark - Source / Playlist management
-
-
 
 - (void) incrementVideoIndexPath
 {
@@ -671,6 +839,23 @@
                                   eventData: (NSString *) actionData
 {
     
+}
+
+- (void) startShuttleBarUpdateTimer
+{
+    [self.shuttleBarUpdateTimer invalidate];
+    
+    self.shuttleBarUpdateTimer = [NSTimer scheduledTimerWithTimeInterval: kShuttleBarUpdateTimerInterval
+                                                                  target: self
+                                                                selector: @selector(monitorBufferLevel)
+                                                                userInfo: nil
+                                                                 repeats: YES];
+}
+
+
+- (void) stophuttleBarUpdateTimer
+{
+    [self.shuttleBarUpdateTimer invalidate], self.shuttleBarUpdateTimer = nil;
 }
 
 - (void) startBufferMonitoringTimer

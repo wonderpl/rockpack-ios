@@ -218,35 +218,55 @@
 
 - (void) resetCoreDataStack
 {
-    NSError * error;
-    // retrieve the store URL
-    NSURL * storeURL = [[self.privateManagedObjectContext persistentStoreCoordinator] URLForPersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject]];
+//    NSError * error;
+//    // retrieve the store URL
+//    NSURL * storeURL = [[self.privateManagedObjectContext persistentStoreCoordinator] URLForPersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject]];
+//    
+//    // lock the current context
+//    [self.privateManagedObjectContext lock];
+//
+//    [self.searchManagedObjectContext reset];
+//    [self.mainManagedObjectContext reset];
+//    [self.privateManagedObjectContext reset];
+//    
+//    //delete the store from the current managedObjectContext
+//    if ([[self.privateManagedObjectContext persistentStoreCoordinator] removePersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject] error: &error])
+//    {
+//        // remove the file containing the data
+//        [[NSFileManager defaultManager] removeItemAtURL: storeURL
+//                                                  error: &error];
+//        
+//        //recreate the store like in the  appDelegate method
+//        [[self.privateManagedObjectContext persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
+//                                                                                    configuration: nil
+//                                                                                              URL: storeURL
+//                                                                                          options: nil
+//                                                                                            error: &error];
+//    }
+//
+//    [self.privateManagedObjectContext unlock];
+//    
+//    [self saveContext: TRUE];
+
     
-    // lock the current context
-    [self.privateManagedObjectContext lock];
+    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
     
-    //to drop pending changes (in all contexts)
-    [self.privateManagedObjectContext reset];
-    [self.mainManagedObjectContext reset];
-    [self.searchManagedObjectContext reset];
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"AbstractCommon"
+                                                         inManagedObjectContext: self.mainManagedObjectContext];
+    [fetchRequest setEntity: entityDescription];
     
-    //delete the store from the current managedObjectContext
-    if ([[self.privateManagedObjectContext persistentStoreCoordinator] removePersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject] error: &error])
+    NSError* error = nil;
+    NSArray * managedObjects = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                         error: &error];
+    
+    for (id managedObject in managedObjects)
     {
-        // remove the file containing the data
-        [[NSFileManager defaultManager] removeItemAtURL: storeURL
-                                                  error: &error];
-        
-        //recreate the store like in the  appDelegate method
-        [[self.privateManagedObjectContext persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
-                                                                                    configuration: nil
-                                                                                              URL: storeURL
-                                                                                          options: nil
-                                                                                            error: &error];
+        [self.mainManagedObjectContext deleteObject: managedObject];
     }
     
-    [self.privateManagedObjectContext unlock];
+    [self saveContext: TRUE];
 }
+
 
 
 // Save the main context first (propagating the changes to the private) and then the private

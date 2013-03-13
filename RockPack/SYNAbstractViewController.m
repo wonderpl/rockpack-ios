@@ -81,7 +81,6 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
     [self reloadCollectionViews];
 }
 

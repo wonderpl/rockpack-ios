@@ -21,6 +21,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 #define kThumbnailContentOffset 438
 #define kThumbnailCellWidth 147
@@ -462,5 +463,7 @@
 
     self.videoExpanded = !self.videoExpanded;
 }
+
+
 
 @end

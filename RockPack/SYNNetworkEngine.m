@@ -73,7 +73,7 @@
 - (void) localeDidChange
 {
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
-//    [appDelegate resetCoreDataStack];
+    [appDelegate resetCoreDataStack];
 }
 
 

@@ -163,6 +163,15 @@ typedef enum {
 
 #define kTopTabCount 10
 
+//
+// Video Overlay
+//
+
+#define kVideoBackgroundColour [UIColor blackColor]
+#define kBufferMonitoringTimerInterval 1.0f
+#define kShuttleBarUpdateTimerInterval 0.5f
+#define kMiddlePlaceholderCycleTime 2.0f
+#define kBottomPlaceholderCycleTime 4.0f
 
 // Notifications
 #define kNoteBackButtonShow @"kNoteBackButtonShow"
