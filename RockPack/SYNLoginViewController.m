@@ -257,6 +257,8 @@
             loginButton.alpha = 0.0;
             memberLabel.alpha = 0.0;
             
+        } completion:^(BOOL finished) {
+            isAnimating = NO;
         }];
     }
     
@@ -362,6 +364,8 @@
         registerButton.alpha = 0.0;
         areYouNewLabel.alpha = 0.0;
         
+    } completion:^(BOOL finished) {
+        
     }];
     
     
@@ -427,6 +431,9 @@
 
 -(IBAction)registerPressed:(id)sender
 {
+    if(self.isAnimating)
+        return;
+    
     self.state = kLoginScreenStateRegister;
 }
 

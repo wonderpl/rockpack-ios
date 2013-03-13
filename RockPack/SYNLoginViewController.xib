@@ -197,7 +197,7 @@
 					<object class="IBUILabel" id="645056549">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{811, 641}, {105, 45}}</string>
+						<string key="NSFrame">{{811, 644}, {105, 45}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="84093927"/>
@@ -431,7 +431,7 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">User Name</string>
-						<object class="NSColor" key="IBUITextColor" id="208272035">
+						<object class="NSColor" key="IBUITextColor" id="98655583">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 						</object>
@@ -463,7 +463,7 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">Email</string>
-						<reference key="IBUITextColor" ref="208272035"/>
+						<reference key="IBUITextColor" ref="98655583"/>
 						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
@@ -489,7 +489,7 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">Password</string>
-						<reference key="IBUITextColor" ref="208272035"/>
+						<reference key="IBUITextColor" ref="98655583"/>
 						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
@@ -535,7 +535,7 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<object class="NSCustomResource" key="IBUIBackground" id="265015414">
+								<object class="NSCustomResource" key="IBUIBackground" id="225603094">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">FieldDayMonth.png</string>
 								</object>
@@ -563,7 +563,7 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<reference key="IBUIBackground" ref="265015414"/>
+								<reference key="IBUIBackground" ref="225603094"/>
 								<reference key="IBUIFontDescription" ref="65291771"/>
 								<reference key="IBUIFont" ref="741667057"/>
 							</object>
