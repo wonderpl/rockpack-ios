@@ -28,6 +28,7 @@
 #define kAPIPopularChannels @"ws/channels/"
 #define kAPICategories @"ws/categories/"
 #define kAPISecureLogin @"https://secure.demo.rockpack.com/ws/login/"
+#define kAPISecureRegister @"https://secure.demo.rockpack.com/ws/register/"
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos @"/ws/search/videos/"

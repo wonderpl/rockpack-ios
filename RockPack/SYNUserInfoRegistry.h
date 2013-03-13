@@ -8,10 +8,12 @@
 
 #import "SYNRegistry.h"
 #import "AccessInfo.h"
+#import "User.h"
 
 @interface SYNUserInfoRegistry : SYNRegistry
 
 @property (readonly, nonatomic, strong) AccessInfo* lastReceivedAccessInfoObject;
+@property (readonly, nonatomic, strong) User* lastReceivedUserObject;
 
 -(BOOL)registerAccessInfoFromDictionary:(NSDictionary *)dictionary;
 -(AccessInfo*)retrieveStoredAccessInfo;

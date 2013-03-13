@@ -51,7 +51,8 @@ typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
 typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
 
 typedef void (^MKNKLoginCompleteBlock) (AccessInfo*);
-typedef void (^MKNKUserCompleteBlock) (AccessInfo*);
+typedef void (^MKNKUserCompleteBlock) (User*);
+typedef void (^MKNKUserErrorBlock) (NSDictionary*);
 
 typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
 

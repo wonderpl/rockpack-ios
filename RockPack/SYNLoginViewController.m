@@ -9,6 +9,7 @@
 #import "SYNLoginViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNNetworkEngine.h"
+#import "User.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -388,7 +389,7 @@
                                            withComplete:^(AccessInfo* accessInfo) {
                                                
                                                
-                                           
+                                               [self completeLoginProcess:accessInfo];
                                            
                                            } andError:^(NSError * error) {
         
@@ -420,11 +421,40 @@
 {
     // Check Text Fields
     
+    NSDictionary* mockUserData = @{@"username": @"Mike79",
+                                   @"password": @"Mike79",
+                                   @"date_of_birth":@"1979-03-01",
+                                   @"locale":@"en-US",
+                                   @"email": @"michael@rockpack.com"};
+    
+    [appDelegate.networkEngine registerUserWithData:mockUserData
+                                       withComplete:^(AccessInfo* accessinfo) {
+                                           
+                                           [self completeLoginProcess:accessinfo];
+        
+                                       } andError:^(NSDictionary* error) {
+                                           
+                                       }];
+    
+    
+    
+    return;
+    
     if(emailInputField.text.length < 2 ||
        userNameInputField.text.length < 2 ||
        passwordInputField.text.length < 2) {
         return;
+        
+        
     }
+    
+//    NSString* dateFormatted = [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text];
+//    
+//    NSDictionary* userData = @{@"username": userNameInputField.text,
+//                               @"password": passwordInputField.text,
+//                               @"date_of_birth":dateFormatted,
+//                               @"locale":@"en-US",
+//                               @"email": emailInputField.text};
     
     // Do registration
 }
@@ -441,6 +471,12 @@
 -(IBAction)signUp:(id)sender
 {
     self.state = kLoginScreenStateRegister;
+}
+
+
+-(void)completeLoginProcess:(AccessInfo*) accessInfo
+{
+    
 }
 
 

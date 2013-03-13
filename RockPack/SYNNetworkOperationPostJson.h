@@ -7,8 +7,9 @@
 //
 
 #import "MKNetworkOperation.h"
+#import "SYNNetworkOperationJsonObject.h"
 
-@interface SYNNetworkOperationPostJson : MKNetworkOperation
+@interface SYNNetworkOperationPostJson : SYNNetworkOperationJsonObject
 
 @property (nonatomic, strong) id jsonObjectToPost;
 

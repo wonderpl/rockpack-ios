@@ -19,6 +19,24 @@
 @implementation SYNUserInfoRegistry
 
 @synthesize lastReceivedAccessInfoObject;
+@synthesize lastReceivedUserObject;
+
+#pragma mark - User
+
+-(BOOL)registerUserFromDictionary:(NSDictionary *)dictionary
+{
+    
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    
+    return YES;
+    
+}
+
+
+
+#pragma mark - Access Info
 
 -(BOOL)registerAccessInfoFromDictionary:(NSDictionary *)dictionary
 {

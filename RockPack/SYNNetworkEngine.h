@@ -39,5 +39,9 @@
                    withComplete: (MKNKLoginCompleteBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
+-(void)registerUserWithData:(NSDictionary*)userData
+               withComplete:(MKNKLoginCompleteBlock)completionBlock
+                   andError:(MKNKUserErrorBlock)errorBlock;
+
 
 @end

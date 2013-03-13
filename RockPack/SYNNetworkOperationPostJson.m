@@ -15,17 +15,21 @@
 -(NSData*) bodyData {
     
     if(!self.jsonObjectToPost) {
-        
+        return nil;
+    }
+    
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.jsonObjectToPost
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+
+    if(!jsonData) {
         return nil;
     }
     
     
-    NSMutableData* body = [[NSMutableData alloc] init];
-    
-    //[body appendData:thisDataObject[@"data"]];
-    
         
-    return body;
+    return jsonData;
 }
 
 @end
