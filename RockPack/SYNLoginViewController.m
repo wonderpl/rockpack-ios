@@ -234,11 +234,11 @@
                                                       facebookSignInButton.center.y);
             
             emailInputField.alpha = 0.0;
-            emailInputField.center = CGPointMake(userNameInputField.center.x - 100.0,
+            emailInputField.center = CGPointMake(userNameInputField.center.x - 50.0,
                                                  emailInputField.center.y);
             
             dobView.alpha = 0.0;
-            dobView.center = CGPointMake(userNameInputField.center.x - 100.0,
+            dobView.center = CGPointMake(userNameInputField.center.x - 50.0,
                                          dobView.center.y);
             
             
@@ -268,28 +268,39 @@
 {
     if(previousState == kLoginScreenStateInitial)
     {
-        [UIView animateWithDuration:0.5
-                              delay:0.0
-                            options:UIViewAnimationCurveEaseInOut
-                         animations:^{
+        
+        emailInputField.alpha = 1.0;
+        emailInputField.center = CGPointMake(userNameInputField.center.x,
+                                             emailInputField.center.y);
+        
+        dobView.alpha = 1.0;
+        dobView.center = CGPointMake(userNameInputField.center.x,
+                                     dobView.center.y);
+        
+        NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, termsAndConditionsLabel];
+        float delay = 0.05;
+        for (UIView* control in loginForControls) {
+            control.hidden = NO;
             
-            facebookSignInButton.alpha = 0.0;
-            
-            
-            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 150.0,
-                                                      facebookSignInButton.center.y);
-            emailInputField.hidden = NO;
-            emailInputField.alpha = 1.0;
-            emailInputField.center = CGPointMake(emailInputField.center.x + 100.0,
-                                                 emailInputField.center.y);
-            dobView.hidden = NO;
-            dobView.alpha = 1.0;
-            dobView.center = CGPointMake(dobView.center.x + 100.0,
-                                         dobView.center.y);
-            
-        } completion:^(BOOL finished) {
-            
+            [UIView animateWithDuration:0.4
+                                  delay:delay
+                                options:UIViewAnimationCurveEaseInOut
+                             animations:^{
+                                 
+                                 control.alpha = 1.0;
+                                 control.center = CGPointMake(control.center.x, control.center.y - kOffsetForLoginForm);
+                                 
+                             } completion:^(BOOL finished) {
+                                 
+                             }];
+            delay += 0.05;
+        }
+        
+        [UIView animateWithDuration:0.4 animations:^{
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x,
+                                                      facebookSignInButton.center.y - kOffsetForLoginForm * 2);
         }];
+        
         
     }
     else if(previousState == kLoginScreenStateLogin)
@@ -299,11 +310,6 @@
         
         [UIView animateWithDuration:0.5 animations:^{
             
-            facebookSignInButton.alpha = 0.0;
-            
-            
-            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 100.0,
-                                                      facebookSignInButton.center.y);
             
             emailInputField.alpha = 1.0;
             emailInputField.center = CGPointMake(userNameInputField.center.x,
@@ -314,25 +320,45 @@
                                          dobView.center.y);
             
             
-            registerNewUserButton.alpha = 1.0;
+            // move facebook button to the right
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 100.0,
+                                                      facebookSignInButton.center.y);
             
-            loginButton.alpha = 0.0;
-            finalLoginButton.alpha = 0.0;
-            finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
-                                                  finalLoginButton.center.y + 50.0);
             
-            passwordForgottenButton.alpha = 0.0;
-            passwordForgottenLabel.alpha = 0.0;
-            
-            registerButton.alpha = 0.0;
-            areYouNewLabel.alpha = 0.0;
-            
-            loginButton.alpha = 1.0;
-            memberLabel.alpha = 1.0;
             
         }];
     }
+
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        facebookSignInButton.alpha = 0.0;
     
+        titleImageView.alpha = 0.0;
+        registerNewUserButton.alpha = 1.0;
+    
+        
+        
+        registerNewUserButton.alpha = 1.0;
+    
+        
+        loginButton.alpha = 1.0;
+        memberLabel.alpha = 1.0;
+        
+        passwordForgottenButton.alpha = 0.0;
+        passwordForgottenLabel.alpha = 0.0;
+    
+        
+        finalLoginButton.alpha = 0.0;
+        finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
+                                          finalLoginButton.center.y + 50.0);
+    
+        registerButton.alpha = 0.0;
+        areYouNewLabel.alpha = 0.0;
+        
+    }];
+    
+    
+
 }
 
 
@@ -400,11 +426,7 @@
 
 -(IBAction)signUp:(id)sender
 {
-    
-    
-    
-    
-
+    self.state = kLoginScreenStateRegister;
 }
 
 

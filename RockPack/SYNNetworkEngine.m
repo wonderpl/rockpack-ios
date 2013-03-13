@@ -392,6 +392,37 @@
     
     
     
+    //NSDictionary* parameters = [self getLocalParamWithParams:postLoginParams];
+    
+    
+//    SYNNetworkOperationJsonObject *networkOperation =
+//    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureLogin params:postLoginParams httpMethod:@"POST"];
+//    
+//    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
+//    
+//    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+//        
+//        
+//        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+//        if (!registryResultOk) {
+//            DebugLog(@"Access Token Info returned is wrong");
+//            errorBlock([NSError errorWithDomain:@"Call completed but token dictionary could not be read." code:0 userInfo:nil]);
+//            return;
+//        }
+//        
+//        AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+//        
+//        completionBlock(recentlyFetchedAccessInfo);
+//        
+//    } errorHandler:^(NSError* error) {
+//        DebugLog(@"Update Access Info Request Failed");
+//        errorBlock(error);
+//    }];
+//    
+//    [self enqueueOperation: networkOperation];
+    
+    
+    
 }
 
 @end
