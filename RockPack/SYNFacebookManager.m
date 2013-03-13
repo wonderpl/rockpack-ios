@@ -143,10 +143,11 @@ typedef enum
             // if so, then all the other publish permissions will have been set
             if ([FBSession.activeSession.permissions indexOfObject: [self.publishPermissions objectAtIndex: 0]] == NSNotFound)
             {
+                
                 // No, we don't already have extended publish permissions
-                [FBSession.activeSession reauthorizeWithPublishPermissions: self.publishPermissions
-                                                           defaultAudience: FBSessionDefaultAudienceEveryone
-                                                         completionHandler: ^(FBSession *session, NSError *error)
+                [FBSession.activeSession requestNewPublishPermissions: self.publishPermissions
+                                                      defaultAudience: FBSessionDefaultAudienceEveryone
+                                                    completionHandler: ^(FBSession *session, NSError *error)
                  {
                      // Permissission denied
                      if (error)

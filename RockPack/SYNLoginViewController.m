@@ -420,6 +420,10 @@
 {
     // Check Text Fields
     
+    [UIView animateWithDuration:0.2 animations:^{
+        registerNewUserButton.alpha = 0.0;
+    }];
+    
     NSDictionary* mockUserData = @{@"username": @"MikeM",
                                    @"password": @"MikeMM",
                                    @"date_of_birth": @"1979-03-01",
@@ -445,7 +449,8 @@
                                            
                                            DebugLog(@"Registration Error: %@", errorDictionary);
                                            
-                                           
+                                           [activityIndicator stopAnimating];
+                                           registerNewUserButton.alpha = 1.0;
                                        }];
     
     
@@ -469,6 +474,13 @@
 //                               @"email": emailInputField.text};
     
     // Do registration
+}
+
+-(void)showRegistrationError:(NSDictionary*)errorDictionary
+{
+    
+
+    
 }
 
 -(IBAction)registerPressed:(id)sender
