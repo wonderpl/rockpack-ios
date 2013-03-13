@@ -215,6 +215,40 @@
     _searchRegistry = [SYNSearchRegistry registry];
 }
 
+
+- (void) resetCoreDataStack
+{
+    NSError * error;
+    // retrieve the store URL
+    NSURL * storeURL = [[self.privateManagedObjectContext persistentStoreCoordinator] URLForPersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject]];
+    
+    // lock the current context
+    [self.privateManagedObjectContext lock];
+    
+    //to drop pending changes (in all contexts)
+    [self.privateManagedObjectContext reset];
+    [self.mainManagedObjectContext reset];
+    [self.searchManagedObjectContext reset];
+    
+    //delete the store from the current managedObjectContext
+    if ([[self.privateManagedObjectContext persistentStoreCoordinator] removePersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject] error: &error])
+    {
+        // remove the file containing the data
+        [[NSFileManager defaultManager] removeItemAtURL: storeURL
+                                                  error: &error];
+        
+        //recreate the store like in the  appDelegate method
+        [[self.privateManagedObjectContext persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
+                                                                                    configuration: nil
+                                                                                              URL: storeURL
+                                                                                          options: nil
+                                                                                            error: &error];
+    }
+    
+    [self.privateManagedObjectContext unlock];
+}
+
+
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
 {

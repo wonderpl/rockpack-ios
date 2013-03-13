@@ -49,13 +49,32 @@
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+        
+        
+        // We should register here for locale changes
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(localeDidChange)
+                                                     name: NSCurrentLocaleDidChangeNotification
+                                                   object: nil];
     }
     
     return self;
 }
 
 
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: NSCurrentLocaleDidChangeNotification
+                                                  object: nil];
+}
 
+// If the locale changes, then we need to reset the CoreData DB
+- (void) localeDidChange
+{
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+    [appDelegate resetCoreDataStack];
+}
 
 
 #pragma mark - Engine API

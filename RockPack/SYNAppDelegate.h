@@ -40,5 +40,6 @@
 
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
+- (void) resetCoreDataStack;
 
 @end
