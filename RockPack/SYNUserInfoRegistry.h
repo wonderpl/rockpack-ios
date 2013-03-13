@@ -13,9 +13,11 @@
 @interface SYNUserInfoRegistry : SYNRegistry
 
 @property (readonly, nonatomic, strong) AccessInfo* lastReceivedAccessInfoObject;
-@property (readonly, nonatomic, strong) User* lastReceivedUserObject;
+@property (readonly, nonatomic, strong) User* lastRegisteredUserObject;
 
 -(BOOL)registerAccessInfoFromDictionary:(NSDictionary *)dictionary;
 -(AccessInfo*)retrieveStoredAccessInfo;
+
+-(BOOL)registerUserFromDictionary:(NSDictionary *)dictionary;
 
 @end

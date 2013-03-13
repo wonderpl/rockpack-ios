@@ -10,6 +10,8 @@
 #import "UIFont+SYNFont.h"
 #import "SYNNetworkEngine.h"
 #import "User.h"
+#import "SYNFacebookManager.h"
+#import "SYNLoginErrorArrow.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -23,6 +25,9 @@
 @property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
+
+
+@property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
 
 @property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
 @property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
@@ -67,6 +72,7 @@
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
+@synthesize labelsToErrorArrows;
 
 - (void)viewDidLoad
 {
@@ -91,6 +97,8 @@
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:16];
     
     
+    
+    labelsToErrorArrows = [[NSMutableDictionary alloc] init];
     
     // == Setup Input Fields
     
@@ -395,7 +403,6 @@
         
                                            }];
     
-    // TODO : Do actual login
 }
 
 -(IBAction)goToLoginForm:(id)sender
@@ -408,7 +415,18 @@
 
 -(IBAction)signInWithFacebook:(id)sender
 {
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
+    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        DebugLog(@"Loged in!");
+            
+        
+    } onFailure:^(NSString* errorString) {
+        
+        DebugLog(@"Log in failed!");
+        
+    }];
     
 }
 
@@ -421,18 +439,41 @@
 {
     // Check Text Fields
     
-    NSDictionary* mockUserData = @{@"username": @"Mike79",
-                                   @"password": @"Mike79",
-                                   @"date_of_birth":@"1979-03-01",
+    [UIView animateWithDuration:0.2 animations:^{
+        registerNewUserButton.alpha = 0.0;
+    }];
+    
+    NSDictionary* mockUserData = @{@"username": @"MikeM",
+                                   @"password": @"MikeMM",
+                                   @"date_of_birth": @"1979-03-01",
                                    @"locale":@"en-US",
-                                   @"email": @"michael@rockpack.com"};
+                                   @"email": @"michael1@rockpack.com"};
+    
+    [activityIndicator startAnimating];
     
     [appDelegate.networkEngine registerUserWithData:mockUserData
                                        withComplete:^(AccessInfo* accessinfo) {
                                            
+//                                           [appDelegate.networkEngine retrieveUserFromAccessInfo:accessinfo
+//                                                                                    withComplete:^(User* user) {
+//                                               
+//                                                                                    } andError:^(NSDictionary* dict) {
+//                                               
+//                                                                                    }];
+                                           
                                            [self completeLoginProcess:accessinfo];
         
-                                       } andError:^(NSDictionary* error) {
+                                       } andError:^(NSDictionary* errorDictionary) {
+                                           
+                                           NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                                           
+                                           if(formErrors) {
+                                               
+                                               [self showRegistrationError:formErrors];
+                                           }
+                                           
+                                           [activityIndicator stopAnimating];
+                                           registerNewUserButton.alpha = 1.0;
                                            
                                        }];
     
@@ -457,6 +498,52 @@
 //                               @"email": emailInputField.text};
     
     // Do registration
+}
+
+-(void)showRegistrationError:(NSDictionary*)errorDictionary
+{
+    // form errors
+    
+    NSArray* usernameError = [errorDictionary objectForKey:@"username"];
+    //NSArray* localeError = [errorDictionary objectForKey:@"locale"];
+    NSArray* passwordError = [errorDictionary objectForKey:@"password"];
+    NSArray* emailError = [errorDictionary objectForKey:@"email"];
+    
+    if(usernameError)
+        [self placeErrorLabel:(NSString*)[usernameError objectAtIndex:0] NextToView:userNameInputField];
+    
+    // TODO: deal with locale
+    
+    if(passwordError)
+        [self placeErrorLabel:(NSString*)[passwordError objectAtIndex:0] NextToView:passwordInputField];
+    
+    if(emailError)
+        [self placeErrorLabel:(NSString*)[emailError objectAtIndex:0] NextToView:emailInputField];
+    
+    
+
+    
+}
+
+-(void)placeErrorLabel:(NSString*)errorText NextToView:(UIView*)view
+{
+    SYNLoginErrorArrow* errorArrow = [SYNLoginErrorArrow withMessage:errorText];
+    
+    CGFloat xPos = view.frame.origin.x + view.frame.size.width - 20.0;
+    CGRect errorArrowFrame = errorArrow.frame;
+    errorArrowFrame.origin.x = xPos;
+    
+    errorArrow.frame = errorArrowFrame;
+    errorArrow.center = CGPointMake(errorArrow.center.x, view.center.y);
+    
+    errorArrow.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        errorArrow.alpha = 1.0;
+    }];
+    
+    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
+    [self.view addSubview:errorArrow];
 }
 
 -(IBAction)registerPressed:(id)sender
@@ -490,9 +577,26 @@
 
 #pragma mark - TextField Delegate Methods
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [textField setText: @""];
+    SYNLoginErrorArrow* possibleErrorArrow =
+    (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(textField)]];
+    if(possibleErrorArrow)
+    {
+        [UIView animateWithDuration:0.2 animations:^{
+            possibleErrorArrow.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [possibleErrorArrow removeFromSuperview];
+        }];
+    }
+    return YES;
+}
+
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
     [textView setText: @""];
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

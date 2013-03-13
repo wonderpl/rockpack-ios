@@ -18,7 +18,7 @@
 #import "SYNMasterViewController.h"
 #import "SYNLoginViewController.h"
 
-#define kShowLoginPhase NO
+#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 
@@ -51,6 +51,7 @@
     
     // Create default user
     [self createDefaultUser];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginCompleted:)
