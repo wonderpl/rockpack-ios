@@ -78,7 +78,7 @@
 // If the locale changes, then we need to reset the CoreData DB
 - (void) localeDidChange
 {
-    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+    //SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
 //    [appDelegate resetCoreDataStack];
 }
 
