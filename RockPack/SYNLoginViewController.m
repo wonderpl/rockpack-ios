@@ -298,7 +298,14 @@
         
         [UIView animateWithDuration:0.4 animations:^{
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x,
-                                                      facebookSignInButton.center.y - kOffsetForLoginForm * 2);
+                                                      facebookSignInButton.center.y - 150.0);
+            signUpButton.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - kOffsetForLoginForm);
+            passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
+            passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 100.0,
+                                                      facebookSignInButton.center.y + 50.0);
         }];
         
         
