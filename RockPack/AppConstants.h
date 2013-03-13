@@ -133,6 +133,9 @@
 #define kVideoQueueHide @"kVideoQueueHide"
 #define kVideoQueueAdd @"kVideoQueueAdd"
 
+
+#define kLoginCompleted @"kLoginCompleted"
+
 typedef enum {
     EntityTypeChannel = 0,
     EntityTypeVideo,

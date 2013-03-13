@@ -476,6 +476,14 @@
 
 -(void)completeLoginProcess:(AccessInfo*) accessInfo
 {
+    [activityIndicator stopAnimating];
+    
+    [UIView animateWithDuration:0.4 animations:^{
+        self.view.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginCompleted object:self];
+    }];
+    
     
 }
 

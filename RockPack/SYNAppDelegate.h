@@ -11,6 +11,7 @@
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
 #import "SYNRegistry.h"
+#import "AccessInfo.h"
 #import "SYNUserInfoRegistry.h"
 
 // Something new!
@@ -29,6 +30,8 @@
 
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
+
+@property (readonly, nonatomic, strong) AccessInfo* currentAccessInfo;
 
 // Root view controller
 @property (strong, nonatomic) UIViewController *viewController;

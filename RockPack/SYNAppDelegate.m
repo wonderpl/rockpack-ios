@@ -18,6 +18,8 @@
 #import "SYNMasterViewController.h"
 #import "SYNLoginViewController.h"
 
+#define kShowLoginPhase NO
+
 @interface SYNAppDelegate ()
 
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
@@ -30,6 +32,7 @@
 @implementation SYNAppDelegate
 
 @synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry, userRegistry = _userRegistry;
+@synthesize currentAccessInfo = _currentAccessInfo;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -48,6 +51,11 @@
     
     // Create default user
     [self createDefaultUser];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginCompleted:)
+                                                 name:kLoginCompleted
+                                               object:nil];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -68,15 +76,28 @@
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
-    // == Show == //
+    if(kShowLoginPhase)
+        self.window.rootViewController = self.loginViewController;
+    else
+        self.window.rootViewController = self.viewController;
     
-    self.window.rootViewController = self.loginViewController;
     
     [self.window makeKeyAndVisible];
     
     return YES;
 }
 
+-(void)loginCompleted:(NSNotification*)notification
+{
+    
+    AccessInfo* accessInfo = (AccessInfo*)[[notification userInfo] objectForKey:@"AccessInfo"];
+    _currentAccessInfo = accessInfo;
+    
+    self.window.rootViewController = self.viewController;
+    
+    self.loginViewController = nil;
+    
+}
 
 #pragma mark - App state transitions
 
