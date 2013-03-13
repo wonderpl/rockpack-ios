@@ -26,7 +26,8 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
 
-@property (nonatomic, strong) NSMutableArray* errorLabels;
+
+@property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
 
 @property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
 @property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
@@ -71,7 +72,7 @@
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
-@synthesize errorLabels;
+@synthesize labelsToErrorArrows;
 
 - (void)viewDidLoad
 {
@@ -96,7 +97,9 @@
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:16];
     
     
-    errorLabels = [[NSMutableArray alloc] init];
+    
+    labelsToErrorArrows = [[NSMutableDictionary alloc] init];
+    
     // == Setup Input Fields
     
     UIFont* rockpackInputFont = [UIFont rockpackFontOfSize:20];
@@ -539,7 +542,7 @@
         errorArrow.alpha = 1.0;
     }];
     
-    [errorLabels addObject:errorArrow];
+    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
     [self.view addSubview:errorArrow];
 }
 
@@ -574,9 +577,26 @@
 
 #pragma mark - TextField Delegate Methods
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [textField setText: @""];
+    SYNLoginErrorArrow* possibleErrorArrow =
+    (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(textField)]];
+    if(possibleErrorArrow)
+    {
+        [UIView animateWithDuration:0.2 animations:^{
+            possibleErrorArrow.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [possibleErrorArrow removeFromSuperview];
+        }];
+    }
+    return YES;
+}
+
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
     [textView setText: @""];
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
