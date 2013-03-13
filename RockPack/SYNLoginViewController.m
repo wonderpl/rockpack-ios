@@ -395,7 +395,6 @@
         
                                            }];
     
-    // TODO : Do actual login
 }
 
 -(IBAction)goToLoginForm:(id)sender
@@ -421,18 +420,31 @@
 {
     // Check Text Fields
     
-    NSDictionary* mockUserData = @{@"username": @"Mike79",
-                                   @"password": @"Mike79",
-                                   @"date_of_birth":@"1979-03-01",
+    NSDictionary* mockUserData = @{@"username": @"MikeM",
+                                   @"password": @"MikeMM",
+                                   @"date_of_birth": @"1979-03-01",
                                    @"locale":@"en-US",
-                                   @"email": @"michael@rockpack.com"};
+                                   @"email": @"michael1@rockpack.com"};
+    
+    [activityIndicator startAnimating];
     
     [appDelegate.networkEngine registerUserWithData:mockUserData
                                        withComplete:^(AccessInfo* accessinfo) {
                                            
+//                                           [appDelegate.networkEngine retrieveUserFromAccessInfo:accessinfo
+//                                                                                    withComplete:^(User* user) {
+//                                               
+//                                                                                    } andError:^(NSDictionary* dict) {
+//                                               
+//                                                                                    }];
+                                           
                                            [self completeLoginProcess:accessinfo];
         
-                                       } andError:^(NSDictionary* error) {
+                                       } andError:^(NSDictionary* errorDictionary) {
+                                           
+                                           
+                                           DebugLog(@"Registration Error: %@", errorDictionary);
+                                           
                                            
                                        }];
     

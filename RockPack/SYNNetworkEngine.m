@@ -17,7 +17,6 @@
 #import "AccessInfo.h"
 #import "SYNNetworkOperationJsonObjectParse.h"
 #import "SYNUserInfoRegistry.h"
-#import "SYNNetworkOperationPostJson.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -411,24 +410,21 @@
                    andError:(MKNKUserErrorBlock)errorBlock {
     
     
-    [self registerOperationSubclass:[SYNNetworkOperationPostJson class]];
     
-    // == Prepare Operation
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureRegister params:userData httpMethod:@"POST"];
     
-    SYNNetworkOperationPostJson *networkOperation =
-    (SYNNetworkOperationPostJson*)[self operationWithURLString:kAPISecureRegister params:nil httpMethod:@"POST"];
-    
+    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
     [networkOperation addHeaders:@{@"Content-Type": @"application/json"}];
-    networkOperation.jsonObjectToPost = userData;
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
-    // ====================
+    
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
         NSString* possibleError = [dictionary objectForKey:@"error"];
         if(possibleError)
         {
-            DebugLog(@"User Registration failed due to: %@", [dictionary objectForKey:@"form_errors"]);
             errorBlock(dictionary);
             return;
         }
@@ -454,7 +450,55 @@
     [self enqueueOperation: networkOperation];
     
     
-    [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+    
+}
+
+
+-(void)retrieveUserFromAccessInfo:(AccessInfo*)accessInfo
+               withComplete:(MKNKUserCompleteBlock)completionBlock
+                   andError:(MKNKUserErrorBlock)errorBlock {
+    
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:accessInfo.resourceUrl];
+    
+    
+    [networkOperation addHeaders:@{@"Authorization": [NSString stringWithFormat:@"Bearer %@", accessInfo.accessToken]}];
+    
+    
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError)
+        {
+            
+            errorBlock([dictionary objectForKey:@"form_errors"]);
+            return;
+        }
+        
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Access Token Info returned is wrong");
+            errorBlock([NSError errorWithDomain:@"Call completed but token dictionary could not be read." code:0 userInfo:nil]);
+            return;
+        }
+        
+        User* recentylRegisteredUser = self.userInfoRegistry.lastRegisteredUserObject;
+        
+        completionBlock(recentylRegisteredUser);
+        
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Access Info Request Failed");
+        NSDictionary* customErrorDictionary = @{@"network_error": error};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+    
+    
     
 }
 

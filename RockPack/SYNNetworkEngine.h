@@ -43,5 +43,9 @@
                withComplete:(MKNKLoginCompleteBlock)completionBlock
                    andError:(MKNKUserErrorBlock)errorBlock;
 
+-(void)retrieveUserFromAccessInfo:(AccessInfo*)accessInfo
+                     withComplete:(MKNKUserCompleteBlock)completionBlock
+                         andError:(MKNKUserErrorBlock)errorBlock;
+
 
 @end

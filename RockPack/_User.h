@@ -5,9 +5,13 @@
 
 
 extern const struct UserAttributes {
-	__unsafe_unretained NSString *forename;
-	__unsafe_unretained NSString *surname;
+	__unsafe_unretained NSString *dateOfBirth;
+	__unsafe_unretained NSString *emailAddress;
+	__unsafe_unretained NSString *firstName;
+	__unsafe_unretained NSString *lastName;
 	__unsafe_unretained NSString *thumbnailURL;
+	__unsafe_unretained NSString *userName;
+	__unsafe_unretained NSString *userid;
 } UserAttributes;
 
 extern const struct UserRelationships {
@@ -18,6 +22,10 @@ extern const struct UserFetchedProperties {
 } UserFetchedProperties;
 
 @class AccessInfo;
+
+
+
+
 
 
 
@@ -36,21 +44,41 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* forename;
+@property (nonatomic, strong) NSDate* dateOfBirth;
 
 
 
-//- (BOOL)validateForename:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateDateOfBirth:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSString* surname;
+@property (nonatomic, strong) NSString* emailAddress;
 
 
 
-//- (BOOL)validateSurname:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateEmailAddress:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* firstName;
+
+
+
+//- (BOOL)validateFirstName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* lastName;
+
+
+
+//- (BOOL)validateLastName:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -61,6 +89,26 @@ extern const struct UserFetchedProperties {
 
 
 //- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* userName;
+
+
+
+//- (BOOL)validateUserName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* userid;
+
+
+
+//- (BOOL)validateUserid:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -83,20 +131,44 @@ extern const struct UserFetchedProperties {
 @interface _User (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveForename;
-- (void)setPrimitiveForename:(NSString*)value;
+- (NSDate*)primitiveDateOfBirth;
+- (void)setPrimitiveDateOfBirth:(NSDate*)value;
 
 
 
 
-- (NSString*)primitiveSurname;
-- (void)setPrimitiveSurname:(NSString*)value;
+- (NSString*)primitiveEmailAddress;
+- (void)setPrimitiveEmailAddress:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveFirstName;
+- (void)setPrimitiveFirstName:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveLastName;
+- (void)setPrimitiveLastName:(NSString*)value;
 
 
 
 
 - (NSString*)primitiveThumbnailURL;
 - (void)setPrimitiveThumbnailURL:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveUserName;
+- (void)setPrimitiveUserName:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveUserid;
+- (void)setPrimitiveUserid:(NSString*)value;
 
 
 

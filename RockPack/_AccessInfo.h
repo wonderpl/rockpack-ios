@@ -52,9 +52,13 @@ extern const struct AccessInfoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* expiryTime;
+@property (nonatomic, strong) NSNumber* expiryTime;
 
 
+
+@property int64_t expiryTimeValue;
+- (int64_t)expiryTimeValue;
+- (void)setExpiryTimeValue:(int64_t)value_;
 
 //- (BOOL)validateExpiryTime:(id*)value_ error:(NSError**)error_;
 
@@ -125,8 +129,11 @@ extern const struct AccessInfoFetchedProperties {
 
 
 
-- (NSString*)primitiveExpiryTime;
-- (void)setPrimitiveExpiryTime:(NSString*)value;
+- (NSNumber*)primitiveExpiryTime;
+- (void)setPrimitiveExpiryTime:(NSNumber*)value;
+
+- (int64_t)primitiveExpiryTimeValue;
+- (void)setPrimitiveExpiryTimeValue:(int64_t)value_;
 
 
 

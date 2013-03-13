@@ -473,12 +473,10 @@
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
-		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
-		BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */; };
-		BE270BCA16EE620800CDDA6D /* DividerSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */; };
-		BE270BCB16EE620800CDDA6D /* DividerSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC916EE620800CDDA6D /* DividerSearch.png */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
+		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
+		BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */; };
 		BE270BB816EE493800CDDA6D /* ButtonFacebookDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BA816EE493800CDDA6D /* ButtonFacebookDefault.png */; };
 		BE270BB916EE493800CDDA6D /* ButtonFacebookDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BA916EE493800CDDA6D /* ButtonFacebookDefault@2x.png */; };
 		BE270BBA16EE493800CDDA6D /* ButtonFacebookHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BAA16EE493800CDDA6D /* ButtonFacebookHighlighted.png */; };
@@ -495,6 +493,8 @@
 		BE270BC516EE493800CDDA6D /* GlossBackgroundSignup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BB516EE493800CDDA6D /* GlossBackgroundSignup@2x.png */; };
 		BE270BC616EE493800CDDA6D /* LogoSignup.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BB616EE493800CDDA6D /* LogoSignup.png */; };
 		BE270BC716EE493800CDDA6D /* LogoSignup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */; };
+		BE270BCA16EE620800CDDA6D /* DividerSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */; };
+		BE270BCB16EE620800CDDA6D /* DividerSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC916EE620800CDDA6D /* DividerSearch.png */; };
 		BE270BD016EF386300CDDA6D /* DividerLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BCC16EF386300CDDA6D /* DividerLogin.png */; };
 		BE270BD116EF386300CDDA6D /* DividerLogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BCD16EF386300CDDA6D /* DividerLogin@2x.png */; };
 		BE270BD216EF386300CDDA6D /* FieldLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BCE16EF386300CDDA6D /* FieldLogin.png */; };
@@ -539,7 +539,6 @@
 		BED4310916EF8F7A0051465B /* ButtonRegisterBigDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */; };
 		BED4310A16EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */; };
 		BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */; };
-		BED4311016EFA8520051465B /* SYNNetworkOperationPostJson.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4310F16EFA8520051465B /* SYNNetworkOperationPostJson.m */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */; };
 		BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */; };
@@ -1110,13 +1109,11 @@
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
-		BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelButtonBuy.png; sourceTree = "<group>"; };
-		BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelButtonBuy@2x.png"; sourceTree = "<group>"; };
-		BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DividerSearch@2x.png"; sourceTree = "<group>"; };
-		BE270BC916EE620800CDDA6D /* DividerSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DividerSearch.png; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
+		BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelButtonBuy.png; sourceTree = "<group>"; };
+		BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelButtonBuy@2x.png"; sourceTree = "<group>"; };
 		BE270BA816EE493800CDDA6D /* ButtonFacebookDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFacebookDefault.png; path = Assets/Images/ButtonFacebookDefault.png; sourceTree = "<group>"; };
 		BE270BA916EE493800CDDA6D /* ButtonFacebookDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFacebookDefault@2x.png"; path = "Assets/Images/ButtonFacebookDefault@2x.png"; sourceTree = "<group>"; };
 		BE270BAA16EE493800CDDA6D /* ButtonFacebookHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFacebookHighlighted.png; path = Assets/Images/ButtonFacebookHighlighted.png; sourceTree = "<group>"; };
@@ -1133,6 +1130,8 @@
 		BE270BB516EE493800CDDA6D /* GlossBackgroundSignup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossBackgroundSignup@2x.png"; path = "Assets/Images/GlossBackgroundSignup@2x.png"; sourceTree = "<group>"; };
 		BE270BB616EE493800CDDA6D /* LogoSignup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LogoSignup.png; path = Assets/Images/LogoSignup.png; sourceTree = "<group>"; };
 		BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LogoSignup@2x.png"; path = "Assets/Images/LogoSignup@2x.png"; sourceTree = "<group>"; };
+		BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DividerSearch@2x.png"; sourceTree = "<group>"; };
+		BE270BC916EE620800CDDA6D /* DividerSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DividerSearch.png; sourceTree = "<group>"; };
 		BE270BCC16EF386300CDDA6D /* DividerLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DividerLogin.png; path = Assets/Images/DividerLogin.png; sourceTree = "<group>"; };
 		BE270BCD16EF386300CDDA6D /* DividerLogin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DividerLogin@2x.png"; path = "Assets/Images/DividerLogin@2x.png"; sourceTree = "<group>"; };
 		BE270BCE16EF386300CDDA6D /* FieldLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FieldLogin.png; path = Assets/Images/FieldLogin.png; sourceTree = "<group>"; };
@@ -1197,8 +1196,6 @@
 		BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRegisterBigDefault@2x.png"; path = "Assets/Images/ButtonRegisterBigDefault@2x.png"; sourceTree = "<group>"; };
 		BED4310B16EF9A6B0051465B /* SYNUserInfoRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserInfoRegistry.h; sourceTree = "<group>"; };
 		BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserInfoRegistry.m; sourceTree = "<group>"; };
-		BED4310E16EFA8520051465B /* SYNNetworkOperationPostJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationPostJson.h; sourceTree = "<group>"; };
-		BED4310F16EFA8520051465B /* SYNNetworkOperationPostJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationPostJson.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenericPopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2691,8 +2688,6 @@
 				BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */,
 				BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */,
 				BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */,
-				BED4310E16EFA8520051465B /* SYNNetworkOperationPostJson.h */,
-				BED4310F16EFA8520051465B /* SYNNetworkOperationPostJson.m */,
 			);
 			name = "Custom Network Operations";
 			sourceTree = "<group>";
@@ -3347,7 +3342,6 @@
 				BED430FB16EF86020051465B /* _AccessInfo.m in Sources */,
 				BED430FE16EF860E0051465B /* AccessInfo.m in Sources */,
 				BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */,
-				BED4311016EFA8520051465B /* SYNNetworkOperationPostJson.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

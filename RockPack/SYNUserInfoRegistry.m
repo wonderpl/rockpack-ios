@@ -19,7 +19,7 @@
 @implementation SYNUserInfoRegistry
 
 @synthesize lastReceivedAccessInfoObject;
-@synthesize lastReceivedUserObject;
+@synthesize lastRegisteredUserObject;
 
 #pragma mark - User
 
@@ -28,6 +28,17 @@
     
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
+    
+    lastRegisteredUserObject = [User instanceFromDictionary:dictionary usingManagedObjectContext:importManagedObjectContext];
+    if(!lastRegisteredUserObject)
+        return NO;
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    
+    [appDelegate saveContext: TRUE];
     
     
     return YES;
@@ -47,8 +58,9 @@
     
     
     
-    lastReceivedAccessInfoObject = [AccessInfo instanceFromDictionary: dictionary
-                                            usingManagedObjectContext: importManagedObjectContext];
+    lastReceivedAccessInfoObject = [AccessInfo instanceFromDictionary: dictionary usingManagedObjectContext: importManagedObjectContext];
+    if(!lastReceivedAccessInfoObject)
+        return NO;
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)

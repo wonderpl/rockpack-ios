@@ -18,7 +18,7 @@
 #import "SYNMasterViewController.h"
 #import "SYNLoginViewController.h"
 
-#define kShowLoginPhase NO
+#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 
