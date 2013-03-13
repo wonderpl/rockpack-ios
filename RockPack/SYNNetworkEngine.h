@@ -34,4 +34,14 @@
                        andError: (MKNKErrorBlock) errorBlock;
 
 
+-(void)doSimpleLoginForUsername:(NSString*)username
+                    forPassword:(NSString*)password
+                   withComplete: (MKNKLoginCompleteBlock) completionBlock
+                       andError: (MKNKErrorBlock) errorBlock;
+
+-(void)registerUserWithData:(NSDictionary*)userData
+               withComplete:(MKNKLoginCompleteBlock)completionBlock
+                   andError:(MKNKUserErrorBlock)errorBlock;
+
+
 @end

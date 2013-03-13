@@ -24,6 +24,8 @@
 //  THE SOFTWARE.
 
 @class MKNetworkOperation;
+@class AccessInfo;
+@class User;
 
 typedef enum {
   MKNetworkOperationStateReady = 1,
@@ -47,6 +49,10 @@ typedef void (^MKNKErrorBlock)(NSError* error);
 typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
 
 typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
+
+typedef void (^MKNKLoginCompleteBlock) (AccessInfo*);
+typedef void (^MKNKUserCompleteBlock) (User*);
+typedef void (^MKNKUserErrorBlock) (NSDictionary*);
 
 typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
 

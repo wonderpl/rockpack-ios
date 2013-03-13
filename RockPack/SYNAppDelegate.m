@@ -16,6 +16,9 @@
 #import "UncaughtExceptionHandler.h"
 #import "ChannelOwner.h"
 #import "SYNMasterViewController.h"
+#import "SYNLoginViewController.h"
+
+#define kShowLoginPhase NO
 
 @interface SYNAppDelegate ()
 
@@ -23,12 +26,13 @@
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
-
+@property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @end
 
 @implementation SYNAppDelegate
 
-@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry, userRegistry = _userRegistry;
+@synthesize currentAccessInfo = _currentAccessInfo;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -48,6 +52,11 @@
     // Create default user
     [self createDefaultUser];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginCompleted:)
+                                                 name:kLoginCompleted
+                                               object:nil];
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
 	// Create a dictionary of defaults to add and register them (if they have not already been set)
@@ -65,12 +74,30 @@
     
     self.viewController = masterViewContoller;
     
-    self.window.rootViewController = self.viewController;
+    self.loginViewController = [[SYNLoginViewController alloc] init];
+    
+    if(kShowLoginPhase)
+        self.window.rootViewController = self.loginViewController;
+    else
+        self.window.rootViewController = self.viewController;
+    
+    
     [self.window makeKeyAndVisible];
     
     return YES;
 }
 
+-(void)loginCompleted:(NSNotification*)notification
+{
+    
+    AccessInfo* accessInfo = (AccessInfo*)[[notification userInfo] objectForKey:@"AccessInfo"];
+    _currentAccessInfo = accessInfo;
+    
+    self.window.rootViewController = self.viewController;
+    
+    self.loginViewController = nil;
+    
+}
 
 #pragma mark - App state transitions
 
@@ -213,6 +240,7 @@
     
     _mainRegistry = [SYNMainRegistry registry];
     _searchRegistry = [SYNSearchRegistry registry];
+    _userRegistry = [SYNUserInfoRegistry registry];
 }
 
 
