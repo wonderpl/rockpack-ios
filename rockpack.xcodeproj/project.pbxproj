@@ -76,6 +76,9 @@
 		011A163016EF5EC5008CF25E /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A162816EF5EC5008CF25E /* GKImageCropViewController.m */; };
 		011A163116EF5EC5008CF25E /* GKImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A162A16EF5EC5008CF25E /* GKImagePicker.m */; };
 		011A163216EF5EC5008CF25E /* GKResizeableCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A162C16EF5EC5008CF25E /* GKResizeableCropOverlayView.m */; };
+		011A164116F10014008CF25E /* PlaceholderVideoBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A163E16F10014008CF25E /* PlaceholderVideoBottom.png */; };
+		011A164216F10014008CF25E /* PlaceholderVideoMiddle.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A163F16F10014008CF25E /* PlaceholderVideoMiddle.png */; };
+		011A164316F10014008CF25E /* PlaceholderVideoTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A164016F10014008CF25E /* PlaceholderVideoTop.png */; };
 		011CC675164A8CAA00F02B6D /* SYNFriendsUserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */; };
 		011CC678164A95CB00F02B6D /* SYNFriendsGridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC677164A95CB00F02B6D /* SYNFriendsGridLayout.m */; };
 		011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */; };
@@ -473,12 +476,10 @@
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
-		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
-		BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */; };
-		BE270BCA16EE620800CDDA6D /* DividerSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */; };
-		BE270BCB16EE620800CDDA6D /* DividerSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC916EE620800CDDA6D /* DividerSearch.png */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
+		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
+		BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */; };
 		BE270BB816EE493800CDDA6D /* ButtonFacebookDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BA816EE493800CDDA6D /* ButtonFacebookDefault.png */; };
 		BE270BB916EE493800CDDA6D /* ButtonFacebookDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BA916EE493800CDDA6D /* ButtonFacebookDefault@2x.png */; };
 		BE270BBA16EE493800CDDA6D /* ButtonFacebookHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BAA16EE493800CDDA6D /* ButtonFacebookHighlighted.png */; };
@@ -495,6 +496,8 @@
 		BE270BC516EE493800CDDA6D /* GlossBackgroundSignup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BB516EE493800CDDA6D /* GlossBackgroundSignup@2x.png */; };
 		BE270BC616EE493800CDDA6D /* LogoSignup.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BB616EE493800CDDA6D /* LogoSignup.png */; };
 		BE270BC716EE493800CDDA6D /* LogoSignup@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */; };
+		BE270BCA16EE620800CDDA6D /* DividerSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */; };
+		BE270BCB16EE620800CDDA6D /* DividerSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BC916EE620800CDDA6D /* DividerSearch.png */; };
 		BE270BD016EF386300CDDA6D /* DividerLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BCC16EF386300CDDA6D /* DividerLogin.png */; };
 		BE270BD116EF386300CDDA6D /* DividerLogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BCD16EF386300CDDA6D /* DividerLogin@2x.png */; };
 		BE270BD216EF386300CDDA6D /* FieldLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BCE16EF386300CDDA6D /* FieldLogin.png */; };
@@ -622,6 +625,9 @@
 		011A162A16EF5EC5008CF25E /* GKImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImagePicker.m; sourceTree = "<group>"; };
 		011A162B16EF5EC5008CF25E /* GKResizeableCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKResizeableCropOverlayView.h; sourceTree = "<group>"; };
 		011A162C16EF5EC5008CF25E /* GKResizeableCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKResizeableCropOverlayView.m; sourceTree = "<group>"; };
+		011A163E16F10014008CF25E /* PlaceholderVideoBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoBottom.png; path = Assets/Images/PlaceholderVideoBottom.png; sourceTree = "<group>"; };
+		011A163F16F10014008CF25E /* PlaceholderVideoMiddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoMiddle.png; path = Assets/Images/PlaceholderVideoMiddle.png; sourceTree = "<group>"; };
+		011A164016F10014008CF25E /* PlaceholderVideoTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderVideoTop.png; path = Assets/Images/PlaceholderVideoTop.png; sourceTree = "<group>"; };
 		011CC673164A8CAA00F02B6D /* SYNFriendsUserLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsUserLayout.h; sourceTree = "<group>"; };
 		011CC674164A8CAA00F02B6D /* SYNFriendsUserLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFriendsUserLayout.m; sourceTree = "<group>"; };
 		011CC676164A95CB00F02B6D /* SYNFriendsGridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFriendsGridLayout.h; sourceTree = "<group>"; };
@@ -1110,13 +1116,11 @@
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
-		BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelButtonBuy.png; sourceTree = "<group>"; };
-		BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelButtonBuy@2x.png"; sourceTree = "<group>"; };
-		BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DividerSearch@2x.png"; sourceTree = "<group>"; };
-		BE270BC916EE620800CDDA6D /* DividerSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DividerSearch.png; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
+		BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelButtonBuy.png; sourceTree = "<group>"; };
+		BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelButtonBuy@2x.png"; sourceTree = "<group>"; };
 		BE270BA816EE493800CDDA6D /* ButtonFacebookDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFacebookDefault.png; path = Assets/Images/ButtonFacebookDefault.png; sourceTree = "<group>"; };
 		BE270BA916EE493800CDDA6D /* ButtonFacebookDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFacebookDefault@2x.png"; path = "Assets/Images/ButtonFacebookDefault@2x.png"; sourceTree = "<group>"; };
 		BE270BAA16EE493800CDDA6D /* ButtonFacebookHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFacebookHighlighted.png; path = Assets/Images/ButtonFacebookHighlighted.png; sourceTree = "<group>"; };
@@ -1133,6 +1137,8 @@
 		BE270BB516EE493800CDDA6D /* GlossBackgroundSignup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossBackgroundSignup@2x.png"; path = "Assets/Images/GlossBackgroundSignup@2x.png"; sourceTree = "<group>"; };
 		BE270BB616EE493800CDDA6D /* LogoSignup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LogoSignup.png; path = Assets/Images/LogoSignup.png; sourceTree = "<group>"; };
 		BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LogoSignup@2x.png"; path = "Assets/Images/LogoSignup@2x.png"; sourceTree = "<group>"; };
+		BE270BC816EE620800CDDA6D /* DividerSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DividerSearch@2x.png"; sourceTree = "<group>"; };
+		BE270BC916EE620800CDDA6D /* DividerSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DividerSearch.png; sourceTree = "<group>"; };
 		BE270BCC16EF386300CDDA6D /* DividerLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DividerLogin.png; path = Assets/Images/DividerLogin.png; sourceTree = "<group>"; };
 		BE270BCD16EF386300CDDA6D /* DividerLogin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DividerLogin@2x.png"; path = "Assets/Images/DividerLogin@2x.png"; sourceTree = "<group>"; };
 		BE270BCE16EF386300CDDA6D /* FieldLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FieldLogin.png; path = Assets/Images/FieldLogin.png; sourceTree = "<group>"; };
@@ -2431,6 +2437,9 @@
 		01F8E73316AFF426000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
+				011A163E16F10014008CF25E /* PlaceholderVideoBottom.png */,
+				011A163F16F10014008CF25E /* PlaceholderVideoMiddle.png */,
+				011A164016F10014008CF25E /* PlaceholderVideoTop.png */,
 				01F8E78116B0554B000D44B9 /* ButtonClose.png */,
 				01F8E78216B0554B000D44B9 /* ButtonClose@2x.png */,
 				01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */,
@@ -3186,6 +3195,9 @@
 				BED4310616EF8D830051465B /* FieldYear@2x.png in Resources */,
 				BED4310916EF8F7A0051465B /* ButtonRegisterBigDefault.png in Resources */,
 				BED4310A16EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png in Resources */,
+				011A164116F10014008CF25E /* PlaceholderVideoBottom.png in Resources */,
+				011A164216F10014008CF25E /* PlaceholderVideoMiddle.png in Resources */,
+				011A164316F10014008CF25E /* PlaceholderVideoTop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
