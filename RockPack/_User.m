@@ -10,6 +10,7 @@ const struct UserAttributes UserAttributes = {
 };
 
 const struct UserRelationships UserRelationships = {
+	.accessInfo = @"accessInfo",
 };
 
 const struct UserFetchedProperties UserFetchedProperties = {
@@ -68,6 +69,10 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
+
+@dynamic accessInfo;
+
+	
 
 
 

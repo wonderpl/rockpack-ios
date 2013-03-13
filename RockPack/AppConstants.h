@@ -23,8 +23,12 @@
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
-// Returns a list of the trending videos
+// Main RestFul API
 #define kAPIPopularVideos @"ws/videos/"
+#define kAPIPopularChannels @"ws/channels/"
+#define kAPICategories @"ws/categories/"
+#define kAPISecureLogin @"https://secure.demo.rockpack.com/ws/login/"
+#define kAPISecureRegister @"https://secure.demo.rockpack.com/ws/register/"
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos @"/ws/search/videos/"
@@ -32,11 +36,10 @@
 #define kAPISearchChannels @"/ws/search/channels/"
 #define kAPICompleteChannels @"/ws/complete/channels/"
 
-//
-#define kAPICategories @"ws/categories/"
 
-// Returns a list of
-#define kAPIPopularChannels @"ws/channels/"
+
+
+
 
 
 // Timeout for API calls
@@ -66,6 +69,10 @@
 
 // Major functionality switches
 
+// OAuth Username and Password
+
+#define kOAuth2ClientId @"c8fe5f6rock873dpack19Q"
+#define kOAuth2ClientSecret @"7d6a1956c0207ed9d0bbc22ddf9d95"
 
 // Enable full screen thumbnail view 
 #define FULL_SCREEN_THUMBNAILS__
@@ -128,6 +135,9 @@
 #define kVideoQueueShow @"kVideoQueueShow"
 #define kVideoQueueHide @"kVideoQueueHide"
 #define kVideoQueueAdd @"kVideoQueueAdd"
+
+
+#define kLoginCompleted @"kLoginCompleted"
 
 typedef enum {
     EntityTypeChannel = 0,

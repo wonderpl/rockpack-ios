@@ -12,6 +12,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "VideoInstance.h"
+#import "AccessInfo.h"
 #import <CoreData/CoreData.h>
 
 #define kChannelsViewId @"Channels"
@@ -144,7 +145,7 @@
     
     // == Check for Validity == //
     
-    if (!dictionary)
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
     // == =============== == //
@@ -163,6 +164,8 @@
     
     return YES;
 }
+
+
 
 -(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary
 {
