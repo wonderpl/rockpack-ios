@@ -10,6 +10,8 @@
 #import "UIFont+SYNFont.h"
 #import "SYNNetworkEngine.h"
 #import "User.h"
+#import "SYNFacebookManager.h"
+#import "SYNLoginErrorArrow.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -23,6 +25,8 @@
 @property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
+
+@property (nonatomic, strong) NSMutableArray* errorLabels;
 
 @property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
 @property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
@@ -67,6 +71,7 @@
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
+@synthesize errorLabels;
 
 - (void)viewDidLoad
 {
@@ -91,7 +96,7 @@
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:16];
     
     
-    
+    errorLabels = [[NSMutableArray alloc] init];
     // == Setup Input Fields
     
     UIFont* rockpackInputFont = [UIFont rockpackFontOfSize:20];
@@ -407,7 +412,18 @@
 
 -(IBAction)signInWithFacebook:(id)sender
 {
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
+    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        DebugLog(@"Loged in!");
+            
+        
+    } onFailure:^(NSString* errorString) {
+        
+        DebugLog(@"Log in failed!");
+        
+    }];
     
 }
 
@@ -446,11 +462,16 @@
         
                                        } andError:^(NSDictionary* errorDictionary) {
                                            
+                                           NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
                                            
-                                           DebugLog(@"Registration Error: %@", errorDictionary);
+                                           if(formErrors) {
+                                               
+                                               [self showRegistrationError:formErrors];
+                                           }
                                            
                                            [activityIndicator stopAnimating];
                                            registerNewUserButton.alpha = 1.0;
+                                           
                                        }];
     
     
@@ -478,9 +499,48 @@
 
 -(void)showRegistrationError:(NSDictionary*)errorDictionary
 {
+    // form errors
+    
+    NSArray* usernameError = [errorDictionary objectForKey:@"username"];
+    //NSArray* localeError = [errorDictionary objectForKey:@"locale"];
+    NSArray* passwordError = [errorDictionary objectForKey:@"password"];
+    NSArray* emailError = [errorDictionary objectForKey:@"email"];
+    
+    if(usernameError)
+        [self placeErrorLabel:(NSString*)[usernameError objectAtIndex:0] NextToView:userNameInputField];
+    
+    // TODO: deal with locale
+    
+    if(passwordError)
+        [self placeErrorLabel:(NSString*)[passwordError objectAtIndex:0] NextToView:passwordInputField];
+    
+    if(emailError)
+        [self placeErrorLabel:(NSString*)[emailError objectAtIndex:0] NextToView:emailInputField];
+    
     
 
     
+}
+
+-(void)placeErrorLabel:(NSString*)errorText NextToView:(UIView*)view
+{
+    SYNLoginErrorArrow* errorArrow = [SYNLoginErrorArrow withMessage:errorText];
+    
+    CGFloat xPos = view.frame.origin.x + view.frame.size.width - 20.0;
+    CGRect errorArrowFrame = errorArrow.frame;
+    errorArrowFrame.origin.x = xPos;
+    
+    errorArrow.frame = errorArrowFrame;
+    errorArrow.center = CGPointMake(errorArrow.center.x, view.center.y);
+    
+    errorArrow.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        errorArrow.alpha = 1.0;
+    }];
+    
+    [errorLabels addObject:errorArrow];
+    [self.view addSubview:errorArrow];
 }
 
 -(IBAction)registerPressed:(id)sender

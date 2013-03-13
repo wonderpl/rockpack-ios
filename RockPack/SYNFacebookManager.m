@@ -67,37 +67,31 @@ typedef enum
               onFailure: (FacebookLoginFailureBlock) failureBlock
 {
     [self openSessionWithPermissionType: kFacebookPermissionTypeRead
-                              onSuccess: ^
-     {
+                              onSuccess: ^{
+                                  
          [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
                                                                  NSDictionary < FBGraphUser > *userInfo,
-                                                                 NSError *error)
-          {
-              if (error)
-              {
+                                                                 NSError *error) {
+              if (error) {
+                  
                   // Graph query failed, so parse NSError userInfo to get description
                   NSString *errorMessage = [self parsedErrorMessage: error];
-                  dispatch_async(dispatch_get_main_queue(), ^
-                                 {
+                  dispatch_async(dispatch_get_main_queue(), ^{
                                      failureBlock(errorMessage);
                                  });
-              }
-              else
-              {
-                  // Do this on the main thread, as there may be UI stuff involved
-                  dispatch_async(dispatch_get_main_queue(), ^
-                                 {
+              } else {
+                  
+                  
+                  dispatch_async(dispatch_get_main_queue(), ^{
                                      successBlock(userInfo);
                                  });
               }
           }];
-     }
-     
-                              onFailure: ^(NSString *errorMessage)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-                        {
-                            // Do this on the main thread, as there may be UI stuff involved
+                                  
+     } onFailure: ^(NSString *errorMessage) {
+         
+         dispatch_async(dispatch_get_main_queue(), ^{
+                           
                             failureBlock(errorMessage);
                         });
      }];

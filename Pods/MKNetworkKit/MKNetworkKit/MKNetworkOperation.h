@@ -46,6 +46,8 @@ typedef void (^MKNKImageBlock) (NSImage* fetchedImage, NSURL* url, BOOL isInCach
 typedef void (^MKNKResponseErrorBlock)(MKNetworkOperation* completedOperation, NSError* error);
 typedef void (^MKNKErrorBlock)(NSError* error);
 
+typedef void (^MKNKApiErrorBlock)(NSError*, NSDictionary*);
+
 typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
 
 typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);

@@ -48,7 +48,7 @@
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>FacebookAppId</key>
+	<key>FacebookAppID</key>
 	<string>131721883664256</string>
 	<key>CFBundleURLTypes</key>
 	<array>

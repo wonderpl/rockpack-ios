@@ -423,16 +423,14 @@
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
         NSString* possibleError = [dictionary objectForKey:@"error"];
-        if(possibleError)
-        {
+        if(possibleError) {
             errorBlock(dictionary);
             return;
         }
         
         BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
         if (!registryResultOk) {
-            DebugLog(@"Access Token Info returned is wrong");
-            errorBlock([NSError errorWithDomain:@"Call completed but token dictionary could not be read." code:0 userInfo:nil]);
+            errorBlock(@{@"parsing_error": @"registerAccessInfoFromDictionary: did not complete correctly"});
             return;
         }
         
@@ -441,9 +439,8 @@
         completionBlock(recentlyFetchedAccessInfo);
         
         
-    } errorHandler:^(NSError* error) {
-        DebugLog(@"Update Access Info Request Failed");
-        NSDictionary* customErrorDictionary = @{@"network_error": error};
+    } apiErrorHandler:^(NSError* error , NSDictionary* dict) {
+        NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]};
         errorBlock(customErrorDictionary);
     }];
     
@@ -490,7 +487,7 @@
         completionBlock(recentylRegisteredUser);
         
         
-    } errorHandler:^(NSError* error) {
+    } apiErrorHandler:^(NSError* error , NSDictionary* dict) {
         DebugLog(@"Update Access Info Request Failed");
         NSDictionary* customErrorDictionary = @{@"network_error": error};
         errorBlock(customErrorDictionary);

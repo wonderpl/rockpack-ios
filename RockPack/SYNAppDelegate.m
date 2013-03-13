@@ -52,6 +52,7 @@
     // Create default user
     [self createDefaultUser];
     
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginCompleted:)
                                                  name:kLoginCompleted

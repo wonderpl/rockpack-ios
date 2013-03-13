@@ -539,6 +539,9 @@
 		BED4310916EF8F7A0051465B /* ButtonRegisterBigDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */; };
 		BED4310A16EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */; };
 		BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */; };
+		BED4311316F0EB990051465B /* LoginError.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4311116F0EB990051465B /* LoginError.png */; };
+		BED4311416F0EB990051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4311216F0EB990051465B /* LoginError@2x.png */; };
+		BED4311716F0EBBB0051465B /* SYNLoginErrorArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */; };
 		BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */; };
@@ -1196,6 +1199,10 @@
 		BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRegisterBigDefault@2x.png"; path = "Assets/Images/ButtonRegisterBigDefault@2x.png"; sourceTree = "<group>"; };
 		BED4310B16EF9A6B0051465B /* SYNUserInfoRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserInfoRegistry.h; sourceTree = "<group>"; };
 		BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserInfoRegistry.m; sourceTree = "<group>"; };
+		BED4311116F0EB990051465B /* LoginError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoginError.png; sourceTree = "<group>"; };
+		BED4311216F0EB990051465B /* LoginError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LoginError@2x.png"; sourceTree = "<group>"; };
+		BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginErrorArrow.h; sourceTree = "<group>"; };
+		BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginErrorArrow.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenericPopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2580,6 +2587,8 @@
 				BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */,
 				BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */,
 				BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */,
+				BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */,
+				BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -2587,6 +2596,8 @@
 		BE270B8516EE485200CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				BED4311116F0EB990051465B /* LoginError.png */,
+				BED4311216F0EB990051465B /* LoginError@2x.png */,
 				BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */,
 				BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */,
 				BED430FF16EF8D830051465B /* FieldDayMonth.png */,
@@ -3181,6 +3192,8 @@
 				BED4310616EF8D830051465B /* FieldYear@2x.png in Resources */,
 				BED4310916EF8F7A0051465B /* ButtonRegisterBigDefault.png in Resources */,
 				BED4310A16EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png in Resources */,
+				BED4311316F0EB990051465B /* LoginError.png in Resources */,
+				BED4311416F0EB990051465B /* LoginError@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3342,6 +3355,7 @@
 				BED430FB16EF86020051465B /* _AccessInfo.m in Sources */,
 				BED430FE16EF860E0051465B /* AccessInfo.m in Sources */,
 				BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */,
+				BED4311716F0EBBB0051465B /* SYNLoginErrorArrow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
