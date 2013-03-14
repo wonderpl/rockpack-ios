@@ -196,8 +196,7 @@ typedef enum
                                            allowLoginUI: YES
                                       completionHandler: ^(FBSession *session,
                                                            FBSessionState status,
-                                                           NSError *error)
-         {
+                                                           NSError *error) {
              NSString *errorMessage = nil;
              
              // Check to see if the user cancelled the log in

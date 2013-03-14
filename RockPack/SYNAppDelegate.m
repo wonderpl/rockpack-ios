@@ -17,6 +17,7 @@
 #import "ChannelOwner.h"
 #import "SYNMasterViewController.h"
 #import "SYNLoginViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 #define kShowLoginPhase YES
 
@@ -398,5 +399,19 @@
     }
 }
 
+
+#pragma mark - Social Integration Delegate
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    
+    return YES;
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [[FBSession activeSession] handleOpenURL:url];
+    return YES;
+}
 
 @end

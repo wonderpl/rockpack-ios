@@ -405,6 +405,49 @@
     [self enqueueOperation: networkOperation];
 }
 
+-(void)doFacebookLoginWithAccessToken:(NSString*)facebookAccessToken
+                         withComplete: (MKNKLoginCompleteBlock) completionBlock
+                             andError: (MKNKUserErrorBlock) errorBlock {
+    
+    NSDictionary* postLoginParams = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"facebook", @"external_system",
+                                     facebookAccessToken, @"external_token",
+                                     nil];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureExternalLogin params:postLoginParams httpMethod:@"POST"];
+    
+    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError) {
+            errorBlock(dictionary);
+            return;
+        }
+        
+        
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Access Token Info returned is wrong");
+            errorBlock(@{@"parsing_error": @"registerAccessInfoFromDictionary: did not complete correctly"});
+            return;
+        }
+        
+        AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+        
+        completionBlock(recentlyFetchedAccessInfo);
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Access Info Request Failed");
+        NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
 -(void)registerUserWithData:(NSDictionary*)userData
                withComplete:(MKNKLoginCompleteBlock)completionBlock
                    andError:(MKNKUserErrorBlock)errorBlock {

@@ -39,6 +39,10 @@
                    withComplete: (MKNKLoginCompleteBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
+-(void)doFacebookLoginWithAccessToken:(NSString*)facebookAccessToken
+                         withComplete: (MKNKLoginCompleteBlock) completionBlock
+                             andError: (MKNKUserErrorBlock) errorBlock;
+
 -(void)registerUserWithData:(NSDictionary*)userData
                withComplete:(MKNKLoginCompleteBlock)completionBlock
                    andError:(MKNKUserErrorBlock)errorBlock;

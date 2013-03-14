@@ -1486,18 +1486,6 @@
 			name = Buttons;
 			sourceTree = "<group>";
 		};
-		012ECA5C165B9D1A00A60980 /* Custom Engines */ = {
-			isa = PBXGroup;
-			children = (
-				01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */,
-				01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */,
-				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
-				019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */,
-				BEA1E33216CE605A000AB59D /* Custom Network Operations */,
-			);
-			name = "Custom Engines";
-			sourceTree = "<group>";
-		};
 		01363E8A162EFEAD00FFAA09 /* Large Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -1717,7 +1705,11 @@
 		01677DDA1655491100B1B1D8 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				012ECA5C165B9D1A00A60980 /* Custom Engines */,
+				01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */,
+				01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */,
+				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
+				019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */,
+				BEA1E33216CE605A000AB59D /* Custom Network Operations */,
 			);
 			name = Networking;
 			sourceTree = "<group>";

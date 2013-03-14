@@ -13,6 +13,7 @@
 #import "SYNFacebookManager.h"
 #import "SYNLoginErrorArrow.h"
 #import "RegexKitLite.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -32,6 +33,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
 
 @property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
+
+@property (nonatomic, strong) IBOutlet UILabel* facebookLogingInLabel;
 
 
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
@@ -74,7 +77,7 @@
 @synthesize appDelegate;
 @synthesize signUpButton, facebookSignInButton;
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
-@synthesize joingRockpackLabel;
+@synthesize joingRockpackLabel, facebookLogingInLabel;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsView;
 @synthesize activityIndicator, dividerImageView;
 @synthesize isAnimating;
@@ -108,6 +111,7 @@
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
     
     joingRockpackLabel.font = [UIFont boldRockpackFontOfSize:23];
+    facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];;
     
     labelsToErrorArrows = [[NSMutableDictionary alloc] init];
     
@@ -167,7 +171,7 @@
     // controls to hide initially
     
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton,
-                                areYouNewLabel, registerButton, passwordForgottenLabel,
+                                areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
                                 passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
                                 registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel];
     for (UIView* control in controlsToHide) {
@@ -543,8 +547,43 @@
     
     [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
         
-        DebugLog(@"Loged in!");
+        DebugLog(@"Loged in from facebook!");
+        
+        //[self completeLoginProcess:];
+        
+        facebookSignInButton.enabled = NO;
+        signUpButton.alpha = 0.0;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            facebookLogingInLabel.alpha = 1.0;
+        }];
+        activityIndicator.frame = CGRectMake(627.0, 295.0,
+                                             activityIndicator.frame.size.width,
+                                             activityIndicator.frame.size.height);
+        [activityIndicator startAnimating];
+        
+        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+        
+        [appDelegate.networkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
+                                                     withComplete:^(AccessInfo* accessInfo) {
+                                                         
+                                                         [activityIndicator stopAnimating];
+                                                         [self completeLoginProcess:accessInfo];
             
+                                                     } andError:^(NSDictionary* errorDictionary) {
+                                                         
+                                                         facebookLogingInLabel.alpha = 0.0;
+            
+                                                         [activityIndicator stopAnimating];
+                                                         NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+            
+                                                         if(formErrors) {
+                
+                                                             // TODO: show facebook login error
+                                                         }
+            
+                                                     }];
+        
         
     } onFailure:^(NSString* errorString) {
         
