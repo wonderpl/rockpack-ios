@@ -526,13 +526,6 @@
     [appDelegate.networkEngine registerUserWithData:mockUserData
                                        withComplete:^(AccessInfo* accessinfo) {
                                            
-//                                           [appDelegate.networkEngine retrieveUserFromAccessInfo:accessinfo
-//                                                                                    withComplete:^(User* user) {
-//                                               
-//                                                                                    } andError:^(NSDictionary* dict) {
-//                                               
-//                                                                                    }];
-                                           
                                            [self completeLoginProcess:accessinfo];
         
                                        } andError:^(NSDictionary* errorDictionary) {
