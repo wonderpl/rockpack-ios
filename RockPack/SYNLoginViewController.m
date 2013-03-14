@@ -13,6 +13,7 @@
 #import "SYNFacebookManager.h"
 #import "SYNLoginErrorArrow.h"
 #import "RegexKitLite.h"
+#import "SYNAppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
@@ -87,6 +88,7 @@
 @synthesize ddInputField, mmInputField, yyyyInputField;
 @synthesize labelsToErrorArrows;
 @synthesize faceImageButton;
+@synthesize facebookState;
 
 - (void)viewDidLoad
 {
@@ -98,7 +100,6 @@
     
     
     activityIndicator.hidesWhenStopped = YES;
-    
     
     
     
@@ -158,7 +159,7 @@
     else if(newState == kLoginScreenStateLogin)
         [self setUpLoginStateFromPreviousState:state];
     else if(newState == kLoginScreenStateRegister)
-        [self setupRegisterStateFromState:state];
+        [self setUpRegisterStateFromState:state];
     
     state = newState;
 }
@@ -167,6 +168,8 @@
 {
     return state;
 }
+
+
 
 -(void)setUpInitialState
 {
@@ -177,6 +180,7 @@
                                 areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
                                 passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
                                 registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel];
+    
     for (UIView* control in controlsToHide) {
        
         control.alpha = 0.0;
@@ -185,6 +189,16 @@
     
     faceImageButton.center = CGPointMake(faceImageButton.center.x,
                                          faceImageButton.center.y - kOffsetForLoginForm);
+    
+    facebookSignInButton.enabled = YES;
+    facebookSignInButton.alpha = 1.0;
+    signUpButton.enabled = YES;
+    signUpButton.alpha = 1.0;
+    
+    facebookState = kFacebookStateNull;
+    [activityIndicator stopAnimating];
+    
+    
     
 }
 
@@ -326,7 +340,7 @@
     
 }
 
--(void)setupRegisterStateFromState:(kLoginScreenState)previousState
+-(void)setUpRegisterStateFromState:(kLoginScreenState)previousState
 {
     secondaryFacebookMessage.alpha = 0.0;
     isAnimating = YES;
@@ -572,8 +586,10 @@
 -(IBAction)signInWithFacebook:(id)sender
 {
     [self clearAllErrorArrows];
+    facebookState = kFacebookStateLogging;
     facebookSignInButton.enabled = NO;
     [UIView animateWithDuration:0.2 animations:^{
+        facebookLogingInLabel.alpha = 1.0;
         signUpButton.alpha = 0.0;
         signUpButton.center = CGPointMake(signUpButton.center.x + 30.0, signUpButton.center.y);
     } completion:^(BOOL finished) {
@@ -601,24 +617,21 @@
     [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
         
         
-        
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            facebookLogingInLabel.alpha = 1.0;
-        }];
-        
-        
+        facebookState = kFacebookStateRegistering;
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
         [appDelegate.networkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
                                                      withComplete:^(AccessInfo* accessInfo) {
                                                          
+                                                         DebugLog(@"Loggin in User with id: %@", accessInfo.userId);
+                                                         facebookState = kFacebookStateNull;
                                                          [activityIndicator stopAnimating];
                                                          [self completeLoginProcess:accessInfo];
             
                                                      } andError:^(NSDictionary* errorDictionary) {
                                                          
+                                                         facebookState = kFacebookStateNull;
                                                          facebookLogingInLabel.alpha = 0.0;
                                                          
                                                          signUpButton.alpha = 1.0;
@@ -647,6 +660,7 @@
         
     } onFailure:^(NSString* errorString) {
         
+        facebookState = kFacebookStateNull;
         DebugLog(@"Log in failed!");
         
     }];

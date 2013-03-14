@@ -119,6 +119,10 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     // We need to save out database here (not in background)
+    
+    if(self.loginViewController.facebookState == kFacebookStateLogging) {
+        self.loginViewController.state = kLoginScreenStateInitial;
+    }
     [self saveContext: kSaveSynchronously];
 }
 

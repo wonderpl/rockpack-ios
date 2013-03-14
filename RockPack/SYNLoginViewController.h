@@ -8,18 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SYNAppDelegate.h"
 
 typedef enum {
     kLoginScreenStateNull = 0,
     kLoginScreenStateInitial,
     kLoginScreenStateLogin,
     kLoginScreenStateRegister,
-    kLoginScreenStateFacebookLogin
 } kLoginScreenState;
+
+typedef enum {
+    kFacebookStateNull = 0,
+    kFacebookStateLogging,
+    kFacebookStateRegistering,
+} kFacebookState;
 
 @interface SYNLoginViewController : UIViewController
 
 @property (nonatomic) kLoginScreenState state;
+@property (nonatomic) kFacebookState facebookState;
 
 @end
