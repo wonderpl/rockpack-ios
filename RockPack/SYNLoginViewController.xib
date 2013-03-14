@@ -45,7 +45,7 @@
 						<string key="NSFrameSize">{1024, 724}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="449886397"/>
+						<reference key="NSNextKeyView" ref="295502211"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -385,7 +385,7 @@
 						<reference key="IBUIFont" ref="57339327"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
-					<object class="IBUILabel" id="449886397">
+					<object class="IBUILabel" id="295502211">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{274, 14}, {308, 51}}</string>
@@ -503,7 +503,6 @@
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">User Name</string>
 						<reference key="IBUITextColor" ref="98655583"/>
-						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
@@ -532,7 +531,6 @@
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">Email</string>
 						<reference key="IBUITextColor" ref="98655583"/>
-						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
@@ -558,7 +556,6 @@
 						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">Password</string>
 						<reference key="IBUITextColor" ref="98655583"/>
-						<bool key="IBUIClearsOnBeginEditing">YES</bool>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
@@ -908,7 +905,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">joingRockpackLabel</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="449886397"/>
+						<reference key="destination" ref="295502211"/>
 					</object>
 					<int key="connectionID">76</int>
 				</object>
@@ -991,6 +988,30 @@
 					<int key="connectionID">61</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="562509502"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">77</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="612201525"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">78</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="531964691"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">79</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">registerNewUser:</string>
 						<reference key="source" ref="912080308"/>
@@ -1052,7 +1073,7 @@
 							<reference ref="84093927"/>
 							<reference ref="645056549"/>
 							<reference ref="652141513"/>
-							<reference ref="449886397"/>
+							<reference ref="295502211"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1214,7 +1235,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">75</int>
-						<reference key="object" ref="449886397"/>
+						<reference key="object" ref="295502211"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">JOIN ROCKPACK</string>
 					</object>
@@ -1262,7 +1283,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">76</int>
+			<int key="maxID">79</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

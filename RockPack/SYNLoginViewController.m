@@ -492,10 +492,12 @@
 -(IBAction)doLogin:(id)sender
 {
     
+    
+    [self clearAllErrorArrows];
+    
     if(![self loginFormIsValid])
         return;
     
-    [self clearAllErrorArrows];
     
     [userNameInputField resignFirstResponder];
     [passwordInputField resignFirstResponder];
@@ -559,14 +561,14 @@
     // email
     
     if(emailInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter a valid email" NextToView:emailInputField];
+        [self placeErrorLabel:@"Please enter an email address" NextToView:emailInputField];
         [emailInputField becomeFirstResponder];
         return NO;
     }
     
     // regular expression through RegexKitLite.h (not arc compatible)
     if(![emailInputField.text isMatchedByRegex:@"\\b([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})\\b"]) {
-        [self placeErrorLabel:@"Please enter a valid email" NextToView:emailInputField];
+        [self placeErrorLabel:@"Email Address Not Valid" NextToView:emailInputField];
         [emailInputField becomeFirstResponder];
         return NO;
     }
@@ -583,8 +585,21 @@
         [passwordInputField becomeFirstResponder];
         return NO;
     }
-        
     
+    if(ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4) {
+        [self placeErrorLabel:@"Date Invalid" NextToView:dobView];
+        [ddInputField becomeFirstResponder];
+        return NO;
+    }
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
+    for (UITextField* dobField in dobTextFields) {
+        if(![numberFormatter numberFromString:dobField.text]) {
+            [self placeErrorLabel:@"Only enter numbers" NextToView:dobView];
+            [dobField becomeFirstResponder];
+            return NO;
+        }
+    }
     return YES;
 }
 
@@ -602,10 +617,12 @@
 {
     // Check Text Fields
     
+    
+    [self clearAllErrorArrows];
+    
     if(![self registrationFormIsValid])
         return;
     
-    [self clearAllErrorArrows];
     
     [UIView animateWithDuration:0.2 animations:^{
         registerNewUserButton.alpha = 0.0;
@@ -613,7 +630,7 @@
     
     NSDictionary* userData = @{@"username": userNameInputField.text,
                                @"password": passwordInputField.text,
-                               @"date_of_birth": @"1979-03-01",
+                               @"date_of_birth": [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text],
                                @"locale":@"en-US",
                                @"email": emailInputField.text};
     
@@ -722,15 +739,23 @@
 
 #pragma mark - TextField Delegate Methods
 
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    [textField setText: @""];
-    
-    return YES;
-}
+
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
 {
+    
+    NSUInteger oldLength = textField.text.length;
+    NSUInteger replacementLength = newCharacter.length;
+    NSUInteger rangeLength = range.length;
+    
+    NSUInteger newLength = (oldLength + replacementLength) - rangeLength;
+    
+    
+    if((textField == ddInputField || textField == mmInputField) && newLength > 2)
+        return NO;
+    if(textField == yyyyInputField && newLength > 4)
+        return NO;
+    
     NSValue* key = [NSValue valueWithPointer:(__bridge const void *)(textField)];
     SYNLoginErrorArrow* possibleErrorArrow =
     (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:key];
@@ -746,11 +771,7 @@
     return YES;
 }
 
-- (void) textViewDidBeginEditing: (UITextView *) textView
-{
-    [textView setText: @""];
-    
-}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
