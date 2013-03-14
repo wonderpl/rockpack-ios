@@ -51,6 +51,7 @@
         }];
         
     } errorHandler: ^(MKNetworkOperation *errorOp, NSError* error) {
+        
         if(error.code == 400) { // api error, has Json Data
             
             [errorOp responseJSONWithCompletionHandler: ^(id jsonObject) {

@@ -47,7 +47,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 
-
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
 @property (nonatomic) BOOL isAnimating;
