@@ -494,7 +494,7 @@
     
     
     if(passwordInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
+        [self placeErrorLabel:@"Please enter a password" NextToView:passwordInputField];
         [passwordInputField becomeFirstResponder];
         return NO;
     }
@@ -516,6 +516,7 @@
     [userNameInputField resignFirstResponder];
     [passwordInputField resignFirstResponder];
     
+    finalLoginButton.enabled = NO;
     
     [UIView animateWithDuration:0.1 animations:^{
         finalLoginButton.alpha = 0.0;
@@ -529,7 +530,22 @@
                                                
                                                [self completeLoginProcess:accessInfo];
                                            
-                                           } andError:^(NSError * error) {
+                                           } andError:^(NSDictionary* errorDictionary) {
+                                               
+                                               NSDictionary* errors = [errorDictionary objectForKey:@"error"];
+                                               
+                                               if(errors) {
+                                                   
+                                                   
+                                               }
+                                               
+                                               [activityIndicator stopAnimating];
+                                               
+                                               [UIView animateWithDuration:0.2 animations:^{
+                                                   finalLoginButton.alpha = 1.0;
+                                               }];
+                                               
+                                               
         
                                            }];
     
@@ -655,6 +671,12 @@
     
     if(userNameInputField.text.length < 1) {
         [self placeErrorLabel:@"Please enter a user name" NextToView:userNameInputField];
+        [userNameInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z_]+[0-9]*$"]) {
+        [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
         [userNameInputField becomeFirstResponder];
         return NO;
     }

@@ -367,7 +367,7 @@
 -(void)doSimpleLoginForUsername:(NSString*)username
                     forPassword:(NSString*)password
                    withComplete: (MKNKLoginCompleteBlock) completionBlock
-                       andError: (MKNKErrorBlock) errorBlock
+                       andError: (MKNKUserErrorBlock) errorBlock
 {
     
     NSDictionary* postLoginParams = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -385,6 +385,12 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError) {
+            errorBlock(dictionary);
+            return;
+        }
+        
         
         BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
         if (!registryResultOk) {
@@ -399,7 +405,7 @@
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Access Info Request Failed");
-        errorBlock(error);
+        errorBlock(@{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]});
     }];
     
     [self enqueueOperation: networkOperation];
