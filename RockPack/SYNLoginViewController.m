@@ -12,6 +12,7 @@
 #import "User.h"
 #import "SYNFacebookManager.h"
 #import "SYNLoginErrorArrow.h"
+#import "RegexKitLite.h"
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -107,6 +108,14 @@
     joingRockpackLabel.font = [UIFont boldRockpackFontOfSize:23];
     
     labelsToErrorArrows = [[NSMutableDictionary alloc] init];
+    
+    ddInputField.keyboardType = UIKeyboardTypeNumberPad;
+    mmInputField.keyboardType = UIKeyboardTypeNumberPad;
+    yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
+    
+    passwordInputField.secureTextEntry = YES;
+    
+    emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
     
     // == Setup Input Fields
     
@@ -550,6 +559,13 @@
     // email
     
     if(emailInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a valid email" NextToView:emailInputField];
+        [emailInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    // regular expression through RegexKitLite.h (not arc compatible)
+    if(![emailInputField.text isMatchedByRegex:@"\\b([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})\\b"]) {
         [self placeErrorLabel:@"Please enter a valid email" NextToView:emailInputField];
         [emailInputField becomeFirstResponder];
         return NO;
