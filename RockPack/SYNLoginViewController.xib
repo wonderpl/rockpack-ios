@@ -45,7 +45,7 @@
 						<string key="NSFrameSize">{1024, 724}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="720852655"/>
+						<reference key="NSNextKeyView" ref="449886397"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -366,7 +366,7 @@
 					<object class="IBUILabel" id="865153711">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{802, 289}, {75, 51}}</string>
+						<string key="NSFrame">{{802, 290}, {75, 51}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="611489549"/>
@@ -377,6 +377,28 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<string key="IBUIText">NEW?</string>
+						<reference key="IBUITextColor" ref="992861969"/>
+						<nil key="IBUIHighlightedColor"/>
+						<int key="IBUIBaselineAdjustment">0</int>
+						<int key="IBUITextAlignment">1</int>
+						<reference key="IBUIFontDescription" ref="687119791"/>
+						<reference key="IBUIFont" ref="57339327"/>
+						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+					</object>
+					<object class="IBUILabel" id="449886397">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{274, 14}, {308, 51}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="720852655"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">7</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<string key="IBUIText">JOIN ROCKPACK</string>
 						<reference key="IBUITextColor" ref="992861969"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
@@ -883,6 +905,14 @@
 					<int key="connectionID">73</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">joingRockpackLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="449886397"/>
+					</object>
+					<int key="connectionID">76</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">signInWithFacebook:</string>
 						<reference key="source" ref="516248663"/>
@@ -1022,6 +1052,7 @@
 							<reference ref="84093927"/>
 							<reference ref="645056549"/>
 							<reference ref="652141513"/>
+							<reference ref="449886397"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1181,6 +1212,12 @@
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Photo Image</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">75</int>
+						<reference key="object" ref="449886397"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">JOIN ROCKPACK</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1218,13 +1255,14 @@
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="72.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="75.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">74</int>
+			<int key="maxID">76</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1241,6 +1279,7 @@
 						<string key="faceImageButton">UIButton</string>
 						<string key="facebookSignInButton">UIButton</string>
 						<string key="finalLoginButton">UIButton</string>
+						<string key="joingRockpackLabel">UILabel</string>
 						<string key="loginButton">UIButton</string>
 						<string key="memberLabel">UILabel</string>
 						<string key="mmInputField">UITextField</string>
@@ -1291,6 +1330,10 @@
 						<object class="IBToOneOutletInfo" key="finalLoginButton">
 							<string key="name">finalLoginButton</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="joingRockpackLabel">
+							<string key="name">joingRockpackLabel</string>
+							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="loginButton">
 							<string key="name">loginButton</string>

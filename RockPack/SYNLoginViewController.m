@@ -24,6 +24,8 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
+@property (nonatomic, strong) IBOutlet UILabel* joingRockpackLabel;
+
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
 
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
@@ -69,7 +71,7 @@
 @synthesize appDelegate;
 @synthesize signUpButton, facebookSignInButton;
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
-
+@synthesize joingRockpackLabel;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsView;
 @synthesize activityIndicator, dividerImageView;
 @synthesize isAnimating;
@@ -102,7 +104,7 @@
     
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
     
-    
+    joingRockpackLabel.font = [UIFont boldRockpackFontOfSize:23];
     
     labelsToErrorArrows = [[NSMutableDictionary alloc] init];
     
@@ -156,7 +158,7 @@
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
                                 passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
-                                registerNewUserButton, dividerImageView, faceImageButton];
+                                registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel];
     for (UIView* control in controlsToHide) {
        
         control.alpha = 0.0;
@@ -291,6 +293,8 @@
             loginButton.alpha = 0.0;
             memberLabel.alpha = 0.0;
             
+            joingRockpackLabel.alpha = 0.0;
+            
             termsAndConditionsView.alpha = 1.0;
             
             
@@ -374,6 +378,8 @@
                 memberLabel.alpha = 1.0;
                 loginButton.alpha = 1.0;
                 faceImageButton.alpha = 1.0;
+                
+                joingRockpackLabel.alpha = 1.0;
             }];
         }];
     }
@@ -411,6 +417,7 @@
             
             
             
+            joingRockpackLabel.alpha = 1.0;
         }];
     }
 
@@ -420,7 +427,7 @@
     
         titleImageView.alpha = 0.0;
         registerNewUserButton.alpha = 1.0;
-    
+        
         dividerImageView.alpha = 0.0;
         
         registerNewUserButton.alpha = 1.0;
@@ -451,16 +458,47 @@
 
 
 #pragma mark - Button Actions
+-(BOOL)loginFormIsValid
+{
+    // email
+    
+    
+    if(userNameInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a user name" NextToView:userNameInputField];
+        [userNameInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    
+    if(passwordInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
+        [passwordInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    
+    return YES;
+}
 
 -(IBAction)doLogin:(id)sender
 {
+    
+    if(![self loginFormIsValid])
+        return;
+    
+    [self clearAllErrorArrows];
+    
+    [userNameInputField resignFirstResponder];
+    [passwordInputField resignFirstResponder];
+    
+    
     [UIView animateWithDuration:0.1 animations:^{
         finalLoginButton.alpha = 0.0;
     }];
     [activityIndicator startAnimating];
     
-    [appDelegate.networkEngine doSimpleLoginForUsername:@"test"
-                                            forPassword:@"test"
+    [appDelegate.networkEngine doSimpleLoginForUsername:userNameInputField.text
+                                            forPassword:passwordInputField.text
                                            withComplete:^(AccessInfo* accessInfo) {
                                                
                                                
@@ -476,6 +514,7 @@
 {
     
 }
+
 
 -(IBAction)goToLoginForm:(id)sender
 {
@@ -506,24 +545,66 @@
 {
     
 }
+-(BOOL)registrationFormIsValid
+{
+    // email
+    
+    if(emailInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a valid email" NextToView:emailInputField];
+        [emailInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    if(userNameInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a user name" NextToView:userNameInputField];
+        [userNameInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    
+    if(passwordInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
+        [passwordInputField becomeFirstResponder];
+        return NO;
+    }
+        
+    
+    return YES;
+}
 
+-(void)clearAllErrorArrows
+{
+    [labelsToErrorArrows enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop){
+        
+        SYNLoginErrorArrow* arrow = (SYNLoginErrorArrow*)value;
+        [arrow removeFromSuperview];
+    }];
+    
+    [labelsToErrorArrows removeAllObjects];
+}
 -(IBAction)registerNewUser:(id)sender
 {
     // Check Text Fields
+    
+    if(![self registrationFormIsValid])
+        return;
+    
+    [self clearAllErrorArrows];
     
     [UIView animateWithDuration:0.2 animations:^{
         registerNewUserButton.alpha = 0.0;
     }];
     
-    NSDictionary* mockUserData = @{@"username": @"MikeM",
-                                   @"password": @"MikeMM",
-                                   @"date_of_birth": @"1979-03-01",
-                                   @"locale":@"en-US",
-                                   @"email": @"michael1@rockpack.com"};
+    NSDictionary* userData = @{@"username": userNameInputField.text,
+                               @"password": passwordInputField.text,
+                               @"date_of_birth": @"1979-03-01",
+                               @"locale":@"en-US",
+                               @"email": emailInputField.text};
     
     [activityIndicator startAnimating];
     
-    [appDelegate.networkEngine registerUserWithData:mockUserData
+    [appDelegate.networkEngine registerUserWithData:userData
+     
                                        withComplete:^(AccessInfo* accessinfo) {
                                            
                                            [self completeLoginProcess:accessinfo];
@@ -546,23 +627,9 @@
     
     return;
     
-    if(emailInputField.text.length < 2 ||
-       userNameInputField.text.length < 2 ||
-       passwordInputField.text.length < 2) {
-        return;
-        
-        
-    }
     
-//    NSString* dateFormatted = [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text];
-//    
-//    NSDictionary* userData = @{@"username": userNameInputField.text,
-//                               @"password": passwordInputField.text,
-//                               @"date_of_birth":dateFormatted,
-//                               @"locale":@"en-US",
-//                               @"email": emailInputField.text};
     
-    // Do registration
+
 }
 
 -(void)showRegistrationError:(NSDictionary*)errorDictionary
@@ -584,9 +651,6 @@
     
     if(emailError)
         [self placeErrorLabel:(NSString*)[emailError objectAtIndex:0] NextToView:emailInputField];
-    
-    
-
     
 }
 
