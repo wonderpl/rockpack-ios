@@ -228,7 +228,6 @@
         passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
         passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
         termsAndConditionsView.center = CGPointMake(termsAndConditionsView.center.x, termsAndConditionsView.center.y - kOffsetForLoginForm);
-        activityIndicator.center = CGPointMake(activityIndicator.center.x, activityIndicator.center.y - kOffsetForLoginForm);
         
         // consequitive fade in animations
         
@@ -391,6 +390,7 @@
             memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
             memberLabel.frame = CGRectIntegral(memberLabel.frame);
             
+            
             faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
                                                  faceImageButton.center.y);
             
@@ -494,7 +494,7 @@
     
     
     if(passwordInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
+        [self placeErrorLabel:@"Please enter a password" NextToView:passwordInputField];
         [passwordInputField becomeFirstResponder];
         return NO;
     }
@@ -512,14 +512,15 @@
     if(![self loginFormIsValid])
         return;
     
+    [self resignAllFirstResponders];
     
-    [userNameInputField resignFirstResponder];
-    [passwordInputField resignFirstResponder];
-    
+    finalLoginButton.enabled = NO;
     
     [UIView animateWithDuration:0.1 animations:^{
         finalLoginButton.alpha = 0.0;
     }];
+    
+    activityIndicator.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y);
     [activityIndicator startAnimating];
     
     [appDelegate.networkEngine doSimpleLoginForUsername:userNameInputField.text
@@ -529,7 +530,26 @@
                                                
                                                [self completeLoginProcess:accessInfo];
                                            
-                                           } andError:^(NSError * error) {
+                                           } andError:^(NSDictionary* errorDictionary) {
+                                               
+                                               NSDictionary* errors = [errorDictionary objectForKey:@"error"];
+                                               
+                                               if(errors) {
+                                                   
+                                                   [self placeErrorLabel:@"Username could be incorrect" NextToView:userNameInputField];
+                                                   [self placeErrorLabel:@"Password could be incorrect" NextToView:passwordInputField];
+                                               }
+                                               
+                                               finalLoginButton.enabled = YES;
+                                               [activityIndicator stopAnimating];
+                                               
+                                               [UIView animateWithDuration:0.3 animations:^{
+                                                   finalLoginButton.alpha = 1.0;
+                                               } completion:^(BOOL finished) {
+                                                   [userNameInputField becomeFirstResponder];
+                                               }];
+                                               
+                                               
         
                                            }];
     
@@ -551,6 +571,7 @@
 
 -(IBAction)signInWithFacebook:(id)sender
 {
+    [self clearAllErrorArrows];
     facebookSignInButton.enabled = NO;
     [UIView animateWithDuration:0.2 animations:^{
         signUpButton.alpha = 0.0;
@@ -659,9 +680,21 @@
         return NO;
     }
     
+    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z_]+[0-9]*$"]) {
+        [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
+        [userNameInputField becomeFirstResponder];
+        return NO;
+    }
+    
     
     if(passwordInputField.text.length < 1) {
         [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
+        [passwordInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    if(![passwordInputField.text isMatchedByRegex:@"^[a-zA-Z_]+[0-9]*$"]) {
+        [self placeErrorLabel:@"Password has invalid characters" NextToView:passwordInputField];
         [passwordInputField becomeFirstResponder];
         return NO;
     }
@@ -693,16 +726,26 @@
     
     [labelsToErrorArrows removeAllObjects];
 }
+
+-(void)resignAllFirstResponders
+{
+    NSArray* allTextFields = @[emailInputField, userNameInputField, passwordForgottenButton, ddInputField, mmInputField, yyyyInputField];
+    for (UITextField* textField in allTextFields) {
+        [textField resignFirstResponder];
+    }
+}
 -(IBAction)registerNewUser:(id)sender
 {
     // Check Text Fields
     
+    registerNewUserButton.enabled = NO;
     
     [self clearAllErrorArrows];
     
     if(![self registrationFormIsValid])
         return;
     
+    [self resignAllFirstResponders];
     
     [UIView animateWithDuration:0.2 animations:^{
         registerNewUserButton.alpha = 0.0;
@@ -714,6 +757,7 @@
                                @"locale":@"en-US",
                                @"email": emailInputField.text};
     
+    activityIndicator.center = CGPointMake(registerNewUserButton.center.x, registerNewUserButton.center.y);
     [activityIndicator startAnimating];
     
     [appDelegate.networkEngine registerUserWithData:userData
@@ -721,6 +765,7 @@
                                        withComplete:^(AccessInfo* accessinfo) {
                                            
                                            [self completeLoginProcess:accessinfo];
+                                           registerNewUserButton.enabled = YES;
         
                                        } andError:^(NSDictionary* errorDictionary) {
                                            
@@ -730,6 +775,8 @@
                                                
                                                [self showRegistrationError:formErrors];
                                            }
+                                           
+                                           registerNewUserButton.enabled = YES;
                                            
                                            [activityIndicator stopAnimating];
                                            registerNewUserButton.alpha = 1.0;
