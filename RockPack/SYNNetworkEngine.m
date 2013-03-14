@@ -439,7 +439,7 @@
         completionBlock(recentlyFetchedAccessInfo);
         
         
-    } apiErrorHandler:^(NSError* error , NSDictionary* dict) {
+    } errorHandler:^(NSError* error) {
         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]};
         errorBlock(customErrorDictionary);
     }];
@@ -487,7 +487,7 @@
         completionBlock(recentylRegisteredUser);
         
         
-    } apiErrorHandler:^(NSError* error , NSDictionary* dict) {
+    } errorHandler:^(NSError* error) {
         DebugLog(@"Update Access Info Request Failed");
         NSDictionary* customErrorDictionary = @{@"network_error": error};
         errorBlock(customErrorDictionary);

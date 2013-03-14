@@ -13,6 +13,5 @@
 @interface SYNNetworkOperationJsonObject : MKNetworkOperation
 
 -(void)addJSONCompletionHandler:(JSONResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock;
--(void)addJSONCompletionHandler:(JSONResponseBlock)responseBlock apiErrorHandler:(MKNKApiErrorBlock)apiErrorBlock;
 
 @end
