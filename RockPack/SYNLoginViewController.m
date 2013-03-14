@@ -554,15 +554,27 @@
     facebookSignInButton.enabled = NO;
     [UIView animateWithDuration:0.2 animations:^{
         signUpButton.alpha = 0.0;
-        signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(signUpButton.center.x + 30.0, signUpButton.center.y);
     } completion:^(BOOL finished) {
         [activityIndicator startAnimating];
     }];
     
+    userNameInputField.enabled = NO;
+    [userNameInputField resignFirstResponder];
+    passwordForgottenButton.enabled = NO;
+    [passwordForgottenButton resignFirstResponder];
+    finalLoginButton.enabled = NO;
+    loginButton.enabled = NO;
+    passwordForgottenButton.enabled = NO;
     
-    activityIndicator.frame = CGRectMake(612.0, 295.0,
-                                         activityIndicator.frame.size.width,
-                                         activityIndicator.frame.size.height);
+    activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
+                                           facebookSignInButton.center.y);
+    
+    CGRect labelFrame = facebookLogingInLabel.frame;
+    labelFrame.origin.x = facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 40.0;
+    labelFrame.origin.y = facebookSignInButton.frame.origin.y + 8.0;
+    facebookLogingInLabel.frame = labelFrame;
+    
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
     [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
@@ -594,6 +606,13 @@
                                                          [activityIndicator stopAnimating];
                                                          
                                                          NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                                                         
+                                                         userNameInputField.enabled = YES;
+                                                         passwordForgottenButton.enabled = YES;
+                                                         finalLoginButton.enabled = YES;
+                                                         loginButton.enabled = YES;
+                                                         
+                                                         passwordForgottenButton.enabled = YES;
             
                                                          if(formErrors) {
                                                              
