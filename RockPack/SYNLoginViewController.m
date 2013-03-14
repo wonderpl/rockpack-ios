@@ -536,7 +536,7 @@
 -(IBAction)goToLoginForm:(id)sender
 {
     if(isAnimating)
-        return;
+        return;git
     
     self.state = kLoginScreenStateLogin;
 }
