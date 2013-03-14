@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
 
+@property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
+
 
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
 
@@ -75,6 +77,7 @@
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
 @synthesize labelsToErrorArrows;
+@synthesize faceImageButton;
 
 - (void)viewDidLoad
 {
@@ -153,13 +156,15 @@
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
                                 passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
-                                registerNewUserButton, dividerImageView];
+                                registerNewUserButton, dividerImageView, faceImageButton];
     for (UIView* control in controlsToHide) {
        
         control.alpha = 0.0;
     }
     
     
+    faceImageButton.center = CGPointMake(faceImageButton.center.x,
+                                         faceImageButton.center.y - kOffsetForLoginForm);
     
 }
 
@@ -226,17 +231,22 @@
                     isAnimating = NO;
                     
                     
-                    emailInputField.center = CGPointMake(emailInputField.center.x, emailInputField.center.y - kOffsetForLoginForm);
-                    dobView.center = CGPointMake(dobView.center.x, dobView.center.y - kOffsetForLoginForm);
+                    emailInputField.center = CGPointMake(emailInputField.center.x,
+                                                         emailInputField.center.y - kOffsetForLoginForm);
+                    dobView.center = CGPointMake(dobView.center.x,
+                                                 dobView.center.y - kOffsetForLoginForm);
                     
-                    memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+                    memberLabel.center = CGPointMake(loginButton.center.x + 5.0,
+                                                     loginButton.frame.origin.y - 17.0);
                     
                     
                     memberLabel.frame = CGRectIntegral(memberLabel.frame);
                     
-                    registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x, registerNewUserButton.center.y - kOffsetForLoginForm);
+                    registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x,
+                                                               registerNewUserButton.center.y - kOffsetForLoginForm);
                     
                     [userNameInputField becomeFirstResponder];
+                    
                 }];
             }];
         }];
@@ -267,6 +277,10 @@
             finalLoginButton.alpha = 1.0;
             finalLoginButton.center = CGPointMake(finalLoginButton.center.x - 50.0,
                                                   finalLoginButton.center.y);
+            
+            faceImageButton.alpha = 0.0;
+            faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0,
+                                                 faceImageButton.center.y);
             
             passwordForgottenButton.alpha = 1.0;
             passwordForgottenLabel.alpha = 1.0;
@@ -353,9 +367,13 @@
             memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
             memberLabel.frame = CGRectIntegral(memberLabel.frame);
             
+            faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
+                                                 faceImageButton.center.y);
+            
             [UIView animateWithDuration:0.3 animations:^{
                 memberLabel.alpha = 1.0;
                 loginButton.alpha = 1.0;
+                faceImageButton.alpha = 1.0;
             }];
         }];
     }
@@ -380,6 +398,9 @@
             dobView.center = CGPointMake(userNameInputField.center.x,
                                          dobView.center.y);
             
+            faceImageButton.alpha = 1.0;
+            faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
+                                                 faceImageButton.center.y);
             
             loginButton.alpha = 1.0;
             memberLabel.alpha = 1.0;
@@ -448,6 +469,11 @@
                                            } andError:^(NSError * error) {
         
                                            }];
+    
+}
+
+-(IBAction)faceButtonImagePressed:(id)sender
+{
     
 }
 
@@ -626,14 +652,22 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [textField setText: @""];
+    
+    return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
+{
+    NSValue* key = [NSValue valueWithPointer:(__bridge const void *)(textField)];
     SYNLoginErrorArrow* possibleErrorArrow =
-    (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:[NSValue valueWithPointer:(__bridge const void *)(textField)]];
+    (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:key];
     if(possibleErrorArrow)
     {
         [UIView animateWithDuration:0.2 animations:^{
             possibleErrorArrow.alpha = 0.0;
         } completion:^(BOOL finished) {
             [possibleErrorArrow removeFromSuperview];
+            [labelsToErrorArrows removeObjectForKey:key];
         }];
     }
     return YES;
