@@ -56,7 +56,7 @@
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 
-#define kOffsetForLoginForm 230.0
+#define kOffsetForLoginForm 240.0
 #define kOffsetForRegisterForm 100.0
 
 @end
@@ -92,9 +92,11 @@
     
     // == Setup Fonts for labels (except Input Fields)
     
-    memberLabel.font = [UIFont boldRockpackFontOfSize:22];
+    UIFont* rockpackBigLabelFont = [UIFont boldRockpackFontOfSize:24];
     
-    areYouNewLabel.font = [UIFont boldRockpackFontOfSize:22];
+    memberLabel.font = rockpackBigLabelFont;
+    areYouNewLabel.font = rockpackBigLabelFont;
+    
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
     
     
@@ -227,6 +229,13 @@
                     emailInputField.center = CGPointMake(emailInputField.center.x, emailInputField.center.y - kOffsetForLoginForm);
                     dobView.center = CGPointMake(dobView.center.x, dobView.center.y - kOffsetForLoginForm);
                     
+                    memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+                    
+                    
+                    memberLabel.frame = CGRectIntegral(memberLabel.frame);
+                    
+                    registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x, registerNewUserButton.center.y - kOffsetForLoginForm);
+                    
                     [userNameInputField becomeFirstResponder];
                 }];
             }];
@@ -251,12 +260,13 @@
             dobView.center = CGPointMake(userNameInputField.center.x - 50.0,
                                          dobView.center.y);
             
+            dividerImageView.alpha = 1.0;
             
             registerNewUserButton.alpha = 0.0;
             
             finalLoginButton.alpha = 1.0;
-            finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
-                                                  finalLoginButton.center.y - 50.0);
+            finalLoginButton.center = CGPointMake(finalLoginButton.center.x - 50.0,
+                                                  finalLoginButton.center.y);
             
             passwordForgottenButton.alpha = 1.0;
             passwordForgottenLabel.alpha = 1.0;
@@ -267,8 +277,13 @@
             loginButton.alpha = 0.0;
             memberLabel.alpha = 0.0;
             
+            termsAndConditionsView.alpha = 1.0;
+            
+            
+            
         } completion:^(BOOL finished) {
             isAnimating = NO;
+            [userNameInputField becomeFirstResponder];
         }];
     }
     
@@ -289,7 +304,7 @@
         dobView.center = CGPointMake(userNameInputField.center.x,
                                      dobView.center.y);
         
-        NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, termsAndConditionsView];
+        NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, registerNewUserButton];
         float delay = 0.05;
         for (UIView* control in loginForControls) {
             control.hidden = NO;
@@ -309,23 +324,50 @@
         }
         
         [UIView animateWithDuration:0.4 animations:^{
+            
+            memberLabel.alpha = 0.0;
+            loginButton.alpha = 0.0;
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x,
-                                                      facebookSignInButton.center.y - 150.0);
+                                                      facebookSignInButton.center.y - kOffsetForLoginForm);
             signUpButton.alpha = 0.0;
+            
+            
+            
+            
+            
         } completion:^(BOOL finished) {
+            
             finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - kOffsetForLoginForm);
             passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
             passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm,
-                                                      facebookSignInButton.center.y + 50.0);
+                                                      facebookSignInButton.center.y);
+            
+            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - kOffsetForLoginForm);
+            termsAndConditionsView.center = CGPointMake(termsAndConditionsView.center.x, termsAndConditionsView.center.y - kOffsetForLoginForm);
+            
+            [emailInputField becomeFirstResponder];
+            
+            loginButton.center = CGPointMake(registerButton.center.x, registerButton.center.y);
+            
+            memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+            memberLabel.frame = CGRectIntegral(memberLabel.frame);
+            
+            [UIView animateWithDuration:0.3 animations:^{
+                memberLabel.alpha = 1.0;
+                loginButton.alpha = 1.0;
+            }];
         }];
-        
-        
     }
+    
+    
     else if(previousState == kLoginScreenStateLogin)
     {
         // prepare in the correct place
         
+        loginButton.center = CGPointMake(registerButton.center.x, registerButton.center.y);
+        memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+        memberLabel.frame = CGRectIntegral(memberLabel.frame);
         
         [UIView animateWithDuration:0.5 animations:^{
             
@@ -338,6 +380,9 @@
             dobView.center = CGPointMake(userNameInputField.center.x,
                                          dobView.center.y);
             
+            
+            loginButton.alpha = 1.0;
+            memberLabel.alpha = 1.0;
             
             // move facebook button to the right
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm,
@@ -355,27 +400,27 @@
         titleImageView.alpha = 0.0;
         registerNewUserButton.alpha = 1.0;
     
-        
+        dividerImageView.alpha = 0.0;
         
         registerNewUserButton.alpha = 1.0;
-    
         
-        loginButton.alpha = 1.0;
-        memberLabel.alpha = 1.0;
+        
+        termsAndConditionsView.alpha = 0.0;
+    
         
         passwordForgottenButton.alpha = 0.0;
         passwordForgottenLabel.alpha = 0.0;
     
         
         finalLoginButton.alpha = 0.0;
-        finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
-                                          finalLoginButton.center.y + kOffsetForRegisterForm);
+        finalLoginButton.center = CGPointMake(finalLoginButton.center.x + 50.0,
+                                          finalLoginButton.center.y);
     
         registerButton.alpha = 0.0;
         areYouNewLabel.alpha = 0.0;
         
     } completion:^(BOOL finished) {
-        
+        [emailInputField becomeFirstResponder];
     }];
     
     
