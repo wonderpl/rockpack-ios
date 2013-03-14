@@ -589,7 +589,8 @@
                                                          facebookLogingInLabel.alpha = 0.0;
                                                          
                                                          signUpButton.alpha = 1.0;
-            
+                                                         
+                                                         signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
                                                          [activityIndicator stopAnimating];
                                                          
                                                          NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
@@ -597,7 +598,6 @@
                                                          if(formErrors) {
                                                              
                                                              facebookSignInButton.enabled = YES;
-                
                                                              secondaryFacebookMessage.text = @"Could not log in through facebook";
                                                              secondaryFacebookMessage.alpha = 1.0;
                                                          }

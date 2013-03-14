@@ -430,7 +430,7 @@
         
         BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
         if (!registryResultOk) {
-            DebugLog(@"Access Token Info returned is wrong");
+            DebugLog(@"Access Token Info Could Not Be Registered in CoreData");
             errorBlock(@{@"parsing_error": @"registerAccessInfoFromDictionary: did not complete correctly"});
             return;
         }
@@ -440,7 +440,7 @@
         completionBlock(recentlyFetchedAccessInfo);
         
     } errorHandler:^(NSError* error) {
-        DebugLog(@"Update Access Info Request Failed");
+        DebugLog(@"Register Facebook Token with Server Failed");
         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]};
         errorBlock(customErrorDictionary);
     }];
