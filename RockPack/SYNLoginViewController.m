@@ -34,6 +34,7 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
 
+@property (nonatomic, strong) IBOutlet UILabel* secondaryFacebookMessage;
 @property (nonatomic, strong) IBOutlet UILabel* facebookLogingInLabel;
 
 
@@ -79,7 +80,7 @@
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
 @synthesize joingRockpackLabel, facebookLogingInLabel;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsView;
-@synthesize activityIndicator, dividerImageView;
+@synthesize activityIndicator, dividerImageView, secondaryFacebookMessage;
 @synthesize isAnimating;
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
@@ -109,7 +110,7 @@
     areYouNewLabel.font = rockpackBigLabelFont;
     
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
-    
+    secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
     joingRockpackLabel.font = [UIFont boldRockpackFontOfSize:23];
     facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];;
     
@@ -120,6 +121,8 @@
     yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
     
     passwordInputField.secureTextEntry = YES;
+    
+    
     
     emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
     
@@ -170,7 +173,7 @@
     
     // controls to hide initially
     
-    NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton,
+    NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
                                 passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
                                 registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel];
@@ -189,7 +192,7 @@
 
 -(void)setUpLoginStateFromPreviousState:(kLoginScreenState)previousState
 {
-    
+    secondaryFacebookMessage.alpha = 0.0;
     isAnimating = YES;
     
     if(previousState == kLoginScreenStateInitial)
@@ -326,6 +329,8 @@
 
 -(void)setupRegisterStateFromState:(kLoginScreenState)previousState
 {
+    secondaryFacebookMessage.alpha = 0.0;
+    isAnimating = YES;
     if(previousState == kLoginScreenStateInitial)
     {
         
@@ -388,6 +393,8 @@
             
             faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
                                                  faceImageButton.center.y);
+            
+            isAnimating = NO;
             
             [UIView animateWithDuration:0.3 animations:^{
                 memberLabel.alpha = 1.0;
@@ -464,6 +471,7 @@
         
     } completion:^(BOOL finished) {
         [emailInputField becomeFirstResponder];
+        isAnimating = NO;
     }];
     
     
@@ -536,31 +544,37 @@
 -(IBAction)goToLoginForm:(id)sender
 {
     if(isAnimating)
-        return;git
+        return;
     
     self.state = kLoginScreenStateLogin;
 }
 
 -(IBAction)signInWithFacebook:(id)sender
 {
+    facebookSignInButton.enabled = NO;
+    [UIView animateWithDuration:0.2 animations:^{
+        signUpButton.alpha = 0.0;
+        signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
+    } completion:^(BOOL finished) {
+        [activityIndicator startAnimating];
+    }];
+    
+    
+    activityIndicator.frame = CGRectMake(612.0, 295.0,
+                                         activityIndicator.frame.size.width,
+                                         activityIndicator.frame.size.height);
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
     [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
         
-        DebugLog(@"Loged in from facebook!");
         
-        //[self completeLoginProcess:];
         
-        facebookSignInButton.enabled = NO;
-        signUpButton.alpha = 0.0;
         
         [UIView animateWithDuration:0.2 animations:^{
             facebookLogingInLabel.alpha = 1.0;
         }];
-        activityIndicator.frame = CGRectMake(627.0, 295.0,
-                                             activityIndicator.frame.size.width,
-                                             activityIndicator.frame.size.height);
-        [activityIndicator startAnimating];
+        
+        
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
@@ -573,13 +587,19 @@
                                                      } andError:^(NSDictionary* errorDictionary) {
                                                          
                                                          facebookLogingInLabel.alpha = 0.0;
+                                                         
+                                                         signUpButton.alpha = 1.0;
             
                                                          [activityIndicator stopAnimating];
+                                                         
                                                          NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
             
                                                          if(formErrors) {
+                                                             
+                                                             facebookSignInButton.enabled = YES;
                 
-                                                             // TODO: show facebook login error
+                                                             secondaryFacebookMessage.text = @"Could not log in through facebook";
+                                                             secondaryFacebookMessage.alpha = 1.0;
                                                          }
             
                                                      }];
