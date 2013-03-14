@@ -542,9 +542,11 @@
 		BED4310916EF8F7A0051465B /* ButtonRegisterBigDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */; };
 		BED4310A16EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */; };
 		BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */; };
-		BED4311316F0EB990051465B /* LoginError.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4311116F0EB990051465B /* LoginError.png */; };
-		BED4311416F0EB990051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4311216F0EB990051465B /* LoginError@2x.png */; };
 		BED4311716F0EBBB0051465B /* SYNLoginErrorArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */; };
+		BED4311A16F1F0CF0051465B /* FieldPhoto.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4311816F1F0CF0051465B /* FieldPhoto.png */; };
+		BED4311B16F1F0CF0051465B /* FieldPhoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4311916F1F0CF0051465B /* FieldPhoto@2x.png */; };
+		BED4312216F1F12E0051465B /* LoginError.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312016F1F12D0051465B /* LoginError.png */; };
+		BED4312316F1F12E0051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312116F1F12D0051465B /* LoginError@2x.png */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */; };
 		BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */; };
@@ -1205,10 +1207,12 @@
 		BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRegisterBigDefault@2x.png"; path = "Assets/Images/ButtonRegisterBigDefault@2x.png"; sourceTree = "<group>"; };
 		BED4310B16EF9A6B0051465B /* SYNUserInfoRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserInfoRegistry.h; sourceTree = "<group>"; };
 		BED4310C16EF9A6B0051465B /* SYNUserInfoRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserInfoRegistry.m; sourceTree = "<group>"; };
-		BED4311116F0EB990051465B /* LoginError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoginError.png; sourceTree = "<group>"; };
-		BED4311216F0EB990051465B /* LoginError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LoginError@2x.png"; sourceTree = "<group>"; };
 		BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginErrorArrow.h; sourceTree = "<group>"; };
 		BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginErrorArrow.m; sourceTree = "<group>"; };
+		BED4311816F1F0CF0051465B /* FieldPhoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FieldPhoto.png; path = Assets/Images/FieldPhoto.png; sourceTree = "<group>"; };
+		BED4311916F1F0CF0051465B /* FieldPhoto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FieldPhoto@2x.png"; path = "Assets/Images/FieldPhoto@2x.png"; sourceTree = "<group>"; };
+		BED4312016F1F12D0051465B /* LoginError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginError.png; path = Assets/Images/LoginError.png; sourceTree = "<group>"; };
+		BED4312116F1F12D0051465B /* LoginError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginError@2x.png"; path = "Assets/Images/LoginError@2x.png"; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenericPopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2605,10 +2609,12 @@
 		BE270B8516EE485200CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				BED4311116F0EB990051465B /* LoginError.png */,
-				BED4311216F0EB990051465B /* LoginError@2x.png */,
+				BED4311816F1F0CF0051465B /* FieldPhoto.png */,
+				BED4311916F1F0CF0051465B /* FieldPhoto@2x.png */,
 				BED4310716EF8F7A0051465B /* ButtonRegisterBigDefault.png */,
 				BED4310816EF8F7A0051465B /* ButtonRegisterBigDefault@2x.png */,
+				BED4312016F1F12D0051465B /* LoginError.png */,
+				BED4312116F1F12D0051465B /* LoginError@2x.png */,
 				BED430FF16EF8D830051465B /* FieldDayMonth.png */,
 				BED4310016EF8D830051465B /* FieldDayMonth@2x.png */,
 				BED4310116EF8D830051465B /* FieldYear.png */,
@@ -3204,8 +3210,10 @@
 				011A164116F10014008CF25E /* PlaceholderVideoBottom.png in Resources */,
 				011A164216F10014008CF25E /* PlaceholderVideoMiddle.png in Resources */,
 				011A164316F10014008CF25E /* PlaceholderVideoTop.png in Resources */,
-				BED4311316F0EB990051465B /* LoginError.png in Resources */,
-				BED4311416F0EB990051465B /* LoginError@2x.png in Resources */,
+				BED4311A16F1F0CF0051465B /* FieldPhoto.png in Resources */,
+				BED4311B16F1F0CF0051465B /* FieldPhoto@2x.png in Resources */,
+				BED4312216F1F12E0051465B /* LoginError.png in Resources */,
+				BED4312316F1F12E0051465B /* LoginError@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
