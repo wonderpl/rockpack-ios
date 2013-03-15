@@ -44,7 +44,7 @@
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
 
 // Channel management
-#define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
+#define kAPICreateNewChannel        @"https://secure.demo.rockpack.com//ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 
 // Channel privacy

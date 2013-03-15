@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -548,6 +548,7 @@
 						<string key="NSFrame">{{956, 73}, {48, 21}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -595,14 +596,6 @@
 						<reference key="destination" ref="65885460"/>
 					</object>
 					<int key="connectionID">37</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">userNameLabel</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="152927656"/>
-					</object>
-					<int key="connectionID">40</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -755,6 +748,14 @@
 						<reference key="destination" ref="365122975"/>
 					</object>
 					<int key="connectionID">148</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">displayNameLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="152927656"/>
+					</object>
+					<int key="connectionID">149</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -914,7 +915,7 @@
 						<int key="objectID">12</int>
 						<reference key="object" ref="152927656"/>
 						<reference key="parent" ref="317724372"/>
-						<string key="objectName">Label - Channel author</string>
+						<string key="objectName">Label - Display name</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">123</int>
@@ -1085,7 +1086,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">148</int>
+			<int key="maxID">149</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1114,9 +1115,11 @@
 						<string key="channelTitleTextField">SYNTextField</string>
 						<string key="channelWallpaperImageView">UIImageView</string>
 						<string key="coverSelectionView">UIView</string>
+						<string key="displayNameLabel">UILabel</string>
 						<string key="doneButton">UIButton</string>
 						<string key="editButton">UIButton</string>
 						<string key="headerBarView">UIView</string>
+						<string key="imagePickerController">UIImagePickerController</string>
 						<string key="panelCoverSelectionView">UIView</string>
 						<string key="saveButton">UIButton</string>
 						<string key="saveOrDoneButtonLabel">UILabel</string>
@@ -1125,7 +1128,6 @@
 						<string key="slideView">UIView</string>
 						<string key="textPanelView">UIView</string>
 						<string key="userAvatarImageView">UIImageView</string>
-						<string key="userNameLabel">UILabel</string>
 						<string key="videoThumbnailCollectionView">UICollectionView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -1169,6 +1171,10 @@
 							<string key="name">coverSelectionView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="displayNameLabel">
+							<string key="name">displayNameLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="doneButton">
 							<string key="name">doneButton</string>
 							<string key="candidateClassName">UIButton</string>
@@ -1180,6 +1186,10 @@
 						<object class="IBToOneOutletInfo" key="headerBarView">
 							<string key="name">headerBarView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="imagePickerController">
+							<string key="name">imagePickerController</string>
+							<string key="candidateClassName">UIImagePickerController</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="panelCoverSelectionView">
 							<string key="name">panelCoverSelectionView</string>
@@ -1212,10 +1222,6 @@
 						<object class="IBToOneOutletInfo" key="userAvatarImageView">
 							<string key="name">userAvatarImageView</string>
 							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="userNameLabel">
-							<string key="name">userNameLabel</string>
-							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="videoThumbnailCollectionView">
 							<string key="name">videoThumbnailCollectionView</string>

@@ -61,4 +61,10 @@
                             data: (NSDictionary*) userData
                     withComplete: (MKNKVoidBlock) completionBlock
                         andError: (MKNKUserErrorBlock) errorBlock;
+
+- (void) updateVideosForChannelWithUserId: (NSString *) userId
+                                channelId: (NSString *) channelId
+                             videoIdArray: (NSArray *) videoIdArray
+                             withComplete: (MKNKVoidBlock) completionBlock
+                                 andError: (MKNKUserErrorBlock) errorBlock;
 @end

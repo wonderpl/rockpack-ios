@@ -564,8 +564,8 @@
 
 - (void) createChannelWithUserId: (NSString *) userId
                             data: (NSDictionary*) userData
-                  withComplete: (MKNKVoidBlock) completionBlock
-                      andError: (MKNKUserErrorBlock) errorBlock
+                    withComplete: (MKNKVoidBlock) completionBlock
+                        andError: (MKNKUserErrorBlock) errorBlock
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
@@ -574,9 +574,10 @@
                                                               params: userData
                                                           httpMethod: @"POST"];
     
-    [networkOperation setUsername: kOAuth2ClientId
-                         password: @""
-                        basicAuth: YES];
+    AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+    
+    [networkOperation setAuthorizationHeaderValue: recentlyFetchedAccessInfo.accessToken
+                                      forAuthType: @"Bearer"];
     
     [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
@@ -616,7 +617,7 @@
                                                 @"CHANNELID" : channelId};
     
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString: [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
                                                           params: userData
                                                       httpMethod: @"PUT"];
     
@@ -650,18 +651,22 @@
 
 }
 
+// /ws/USERID/channels/CHANNELID/videos/    /* PUT */
 
-- (void) updateChannelWithArrayOfVideoIds: (NSArray*) videoIdArray
-                  withComplete: (MKNKVoidBlock) completionBlock
-                      andError: (MKNKUserErrorBlock) errorBlock
+
+- (void) updateVideosForChannelWithUserId: (NSString *) userId
+                                channelId: (NSString *) channelId
+                             videoIdArray: (NSArray *) videoIdArray
+                             withComplete: (MKNKVoidBlock) completionBlock
+                                 andError: (MKNKUserErrorBlock) errorBlock
 {
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
-                                                @"CHANNELID" : uniqueId};
+                                                @"CHANNELID" : channelId};
 
     SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithURLString: [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
-                                                          params: userData
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+                                                          params: nil
                                                       httpMethod: @"PUT"];
     
     [networkOperation setUsername: kOAuth2ClientId
