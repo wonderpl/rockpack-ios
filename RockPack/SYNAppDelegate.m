@@ -34,6 +34,7 @@
 
 @synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry, userRegistry = _userRegistry;
 @synthesize currentAccessInfo = _currentAccessInfo;
+@synthesize currentUser = _currentUser;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions

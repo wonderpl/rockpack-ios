@@ -5,6 +5,7 @@
 
 
 extern const struct UserAttributes {
+	__unsafe_unretained NSString *current;
 	__unsafe_unretained NSString *dateOfBirth;
 	__unsafe_unretained NSString *emailAddress;
 	__unsafe_unretained NSString *firstName;
@@ -31,6 +32,7 @@ extern const struct UserFetchedProperties {
 
 
 
+
 @interface UserID : NSManagedObjectID {}
 @end
 
@@ -39,6 +41,20 @@ extern const struct UserFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (UserID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* current;
+
+
+
+@property BOOL currentValue;
+- (BOOL)currentValue;
+- (void)setCurrentValue:(BOOL)value_;
+
+//- (BOOL)validateCurrent:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -129,6 +145,15 @@ extern const struct UserFetchedProperties {
 @end
 
 @interface _User (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveCurrent;
+- (void)setPrimitiveCurrent:(NSNumber*)value;
+
+- (BOOL)primitiveCurrentValue;
+- (void)setPrimitiveCurrentValue:(BOOL)value_;
+
+
 
 
 - (NSDate*)primitiveDateOfBirth;

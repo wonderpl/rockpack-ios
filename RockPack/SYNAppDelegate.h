@@ -13,6 +13,7 @@
 #import "SYNRegistry.h"
 #import "AccessInfo.h"
 #import "SYNUserInfoRegistry.h"
+#import "User.h"
 
 // Something new!
 
@@ -31,6 +32,7 @@
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
 
+@property (readonly, nonatomic, strong) User* currentUser;
 @property (readonly, nonatomic, strong) AccessInfo* currentAccessInfo;
 
 

@@ -207,6 +207,7 @@
 -(void)setUpLoginStateFromPreviousState:(kLoginScreenState)previousState
 {
     secondaryFacebookMessage.alpha = 0.0;
+    [self clearAllErrorArrows];
     isAnimating = YES;
     
     if(previousState == kLoginScreenStateInitial)
@@ -343,6 +344,7 @@
 -(void)setUpRegisterStateFromState:(kLoginScreenState)previousState
 {
     secondaryFacebookMessage.alpha = 0.0;
+    [self clearAllErrorArrows];
     isAnimating = YES;
     if(previousState == kLoginScreenStateInitial)
     {

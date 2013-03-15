@@ -45,6 +45,30 @@
     
 }
 
+-(User*)retrieveCurrentUser
+{
+    NSError* error = nil;
+    
+    NSEntityDescription* accessInfoEntity = [NSEntityDescription entityForName: @"User"
+                                                        inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+    [userFetchRequest setEntity: accessInfoEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"current == YES"];
+    [userFetchRequest setPredicate: predicate];
+    
+    NSArray *matchingUserEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: userFetchRequest
+                                                                                          error: &error];
+    if(error)
+        return nil;
+    
+    if(!matchingUserEntries.count > 0)
+        return nil;
+    
+    return (User*)(matchingUserEntries[0]);
+}
 
 
 #pragma mark - Access Info
@@ -85,13 +109,15 @@
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     [channelFetchRequest setEntity: accessInfoEntity];
 
-    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+    NSArray *matchingAccessInfoEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                           error: &error];
-    
-    if(error || !(matchingChannelEntries.count > 0))
+    if(error)
         return nil;
     
-    return matchingChannelEntries[0];
+    if(!matchingAccessInfoEntries.count > 0)
+        return nil;
+    
+    return (AccessInfo*)(matchingAccessInfoEntries[0]);
         
 }
 
