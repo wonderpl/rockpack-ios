@@ -61,6 +61,9 @@
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
+@property (nonatomic) CGRect facebookButtonInitialFrame;
+@property (nonatomic) CGRect signUpButtonInitialFrame;
+
 @property (nonatomic) BOOL isAnimating;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
@@ -87,8 +90,7 @@
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
 @synthesize labelsToErrorArrows;
-@synthesize faceImageButton;
-@synthesize facebookState;
+@synthesize faceImageButton, facebookButtonInitialFrame, signUpButtonInitialFrame;
 
 - (void)viewDidLoad
 {
@@ -123,7 +125,8 @@
     
     passwordInputField.secureTextEntry = YES;
     
-    
+    facebookButtonInitialFrame = facebookSignInButton.frame;
+    signUpButtonInitialFrame = signUpButton.frame;
     
     emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
     
@@ -187,15 +190,17 @@
     }
     
     
-    faceImageButton.center = CGPointMake(faceImageButton.center.x,
-                                         faceImageButton.center.y - kOffsetForLoginForm);
     
     facebookSignInButton.enabled = YES;
+    facebookSignInButton.frame = facebookButtonInitialFrame;
     facebookSignInButton.alpha = 1.0;
+    
+    _facebookLoginIsInProcess = NO;
+    
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
+    signUpButton.frame = signUpButtonInitialFrame;
     
-    facebookState = kFacebookStateNull;
     [activityIndicator stopAnimating];
     
     
@@ -278,6 +283,10 @@
                     
                     registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x,
                                                                registerNewUserButton.center.y - kOffsetForLoginForm);
+                    
+                    
+                    faceImageButton.center = CGPointMake(faceImageButton.center.x,
+                                                         faceImageButton.center.y - kOffsetForLoginForm);
                     
                     [userNameInputField becomeFirstResponder];
                     
@@ -407,8 +416,10 @@
             memberLabel.frame = CGRectIntegral(memberLabel.frame);
             
             
+            
+            
             faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
-                                                 faceImageButton.center.y);
+                                                 faceImageButton.center.y - kOffsetForLoginForm);
             
             isAnimating = NO;
             
@@ -525,10 +536,12 @@
     
     [self clearAllErrorArrows];
     
+    
+    [self resignAllFirstResponders];
+    
     if(![self loginFormIsValid])
         return;
     
-    [self resignAllFirstResponders];
     
     finalLoginButton.enabled = NO;
     
@@ -585,15 +598,12 @@
     self.state = kLoginScreenStateLogin;
 }
 
--(IBAction)signInWithFacebook:(id)sender
+-(void)doFacebookLoginAnimation
 {
-    [self clearAllErrorArrows];
-    facebookState = kFacebookStateLogging;
-    facebookSignInButton.enabled = NO;
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         facebookLogingInLabel.alpha = 1.0;
         signUpButton.alpha = 0.0;
-        signUpButton.center = CGPointMake(signUpButton.center.x + 30.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(signUpButton.center.x + 10.0, signUpButton.center.y);
     } completion:^(BOOL finished) {
         [activityIndicator startAnimating];
     }];
@@ -613,13 +623,37 @@
     labelFrame.origin.x = facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 40.0;
     labelFrame.origin.y = facebookSignInButton.frame.origin.y + 8.0;
     facebookLogingInLabel.frame = labelFrame;
+}
+
+-(IBAction)signInWithFacebook:(id)sender
+{
+    
+    _facebookLoginIsInProcess = NO;
+    
+    [self clearAllErrorArrows];
+    facebookSignInButton.enabled = NO;
+    
+    FBSession* facebookSession = [FBSession activeSession];
+    
+    if(facebookSession.state == FBSessionStateCreatedTokenLoaded) {
+        _facebookLoginIsInProcess = YES;
+        [self doFacebookLoginAnimation];
+    }
+    
+    
     
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
     [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
         
+        if(!_facebookLoginIsInProcess) {
+            
+            [self doFacebookLoginAnimation];
+        }
         
-        facebookState = kFacebookStateRegistering;
+        
+        
+        
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
@@ -627,13 +661,11 @@
                                                      withComplete:^(AccessInfo* accessInfo) {
                                                          
                                                          DebugLog(@"Loggin in User with id: %@", accessInfo.userId);
-                                                         facebookState = kFacebookStateNull;
                                                          [activityIndicator stopAnimating];
                                                          [self completeLoginProcess:accessInfo];
             
                                                      } andError:^(NSDictionary* errorDictionary) {
                                                          
-                                                         facebookState = kFacebookStateNull;
                                                          facebookLogingInLabel.alpha = 0.0;
                                                          
                                                          signUpButton.alpha = 1.0;
@@ -662,7 +694,9 @@
         
     } onFailure:^(NSString* errorString) {
         
-        facebookState = kFacebookStateNull;
+        
+        _facebookLoginIsInProcess = NO;
+        
         DebugLog(@"Log in failed!");
         
     }];

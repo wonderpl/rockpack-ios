@@ -102,7 +102,7 @@
     
 }
 
-#pragma mark - App state transitions
+#pragma mark - App Delegate Methods
 
 - (void) applicationWillResignActive: (UIApplication *) application
 {
@@ -121,9 +121,7 @@
     
     // We need to save out database here (not in background)
     
-    if(self.loginViewController.facebookState == kFacebookStateLogging) {
-        self.loginViewController.state = kLoginScreenStateInitial;
-    }
+    
     [self saveContext: kSaveSynchronously];
 }
 
@@ -131,6 +129,12 @@
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    if(self.loginViewController.state == kLoginScreenStateInitial) {
+        [self.loginViewController setUpInitialState];
+    }
+    
+    //accessTokenData.accessToken;
 }
 
 

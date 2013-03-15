@@ -13,18 +13,16 @@ typedef enum {
     kLoginScreenStateNull = 0,
     kLoginScreenStateInitial,
     kLoginScreenStateLogin,
-    kLoginScreenStateRegister,
+    kLoginScreenStateRegister
 } kLoginScreenState;
 
-typedef enum {
-    kFacebookStateNull = 0,
-    kFacebookStateLogging,
-    kFacebookStateRegistering,
-} kFacebookState;
+
 
 @interface SYNLoginViewController : UIViewController
 
 @property (nonatomic) kLoginScreenState state;
-@property (nonatomic) kFacebookState facebookState;
+@property (nonatomic) BOOL facebookLoginIsInProcess;
+
+-(void)setUpInitialState;
 
 @end
