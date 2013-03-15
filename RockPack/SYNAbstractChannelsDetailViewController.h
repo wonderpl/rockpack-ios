@@ -30,7 +30,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *changeCoverLabel;
 @property (nonatomic, strong) IBOutlet UILabel *selectACoverLabel;
 @property (nonatomic, strong) IBOutlet UILabel *saveOrDoneButtonLabel;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, strong) IBOutlet UIView *headerBarView;
 @property (nonatomic, strong) IBOutlet UIView *coverSelectionView;
 @property (nonatomic, strong) IBOutlet UIView *panelCoverSelectionView;

@@ -96,9 +96,8 @@ static NSEntityDescription *channelOwnerEntity = nil;
     
     self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
                                      withDefault: @"http://"];
-
     
-    self.name = [dictionary upperCaseStringForKey: @"name"
+    self.displayName = [dictionary upperCaseStringForKey: @"username"
                                       withDefault: @""];
 }
 
@@ -107,7 +106,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"ChannelOwner(%@) name: %@, thumbnailURL: %@", self.uniqueId, self.name, self.thumbnailURL];
+    return [NSString stringWithFormat: @"uniqueId(%@), userName: %@, thumbnailURL: %@", self.uniqueId, self.displayName, self.thumbnailURL];
 }
 
 

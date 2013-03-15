@@ -355,6 +355,7 @@
 		01A79B9E16F32C3400B05084 /* ButtonShuttleBarPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A79B8F16F32C3400B05084 /* ButtonShuttleBarPlay.png */; };
 		01A79B9F16F32C3400B05084 /* ButtonShuttleBarPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A79B9016F32C3400B05084 /* ButtonShuttleBarPlay@2x.png */; };
 		01A79BA216F32C6900B05084 /* NSString+Timecode.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A79BA116F32C6900B05084 /* NSString+Timecode.m */; };
+		01A79BA516F34BBF00B05084 /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A79BA416F34BBF00B05084 /* NSString+Utils.m */; };
 		01A9BE1D16763E800098EA0C /* ButtonShareHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A9BE1B16763E800098EA0C /* ButtonShareHighlighted.png */; };
 		01A9BE1E16763E800098EA0C /* ButtonShareHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A9BE1C16763E800098EA0C /* ButtonShareHighlighted@2x.png */; };
 		01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */; };
@@ -970,6 +971,8 @@
 		01A79B9016F32C3400B05084 /* ButtonShuttleBarPlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShuttleBarPlay@2x.png"; path = "Assets/Images/ButtonShuttleBarPlay@2x.png"; sourceTree = "<group>"; };
 		01A79BA016F32C6900B05084 /* NSString+Timecode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Timecode.h"; sourceTree = "<group>"; };
 		01A79BA116F32C6900B05084 /* NSString+Timecode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Timecode.m"; sourceTree = "<group>"; };
+		01A79BA316F34BBF00B05084 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
+		01A79BA416F34BBF00B05084 /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
 		01A9BE1B16763E800098EA0C /* ButtonShareHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShareHighlighted.png; path = Assets/Images/ButtonShareHighlighted.png; sourceTree = "<group>"; };
 		01A9BE1C16763E800098EA0C /* ButtonShareHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShareHighlighted@2x.png"; path = "Assets/Images/ButtonShareHighlighted@2x.png"; sourceTree = "<group>"; };
 		01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailRegularCell.h; sourceTree = "<group>"; };
@@ -2114,8 +2117,6 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				01A79BA016F32C6900B05084 /* NSString+Timecode.h */,
-				01A79BA116F32C6900B05084 /* NSString+Timecode.m */,
 				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
 				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
 				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
@@ -2124,6 +2125,10 @@
 				01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */,
 				0129690916E024DF00895469 /* NSIndexPath+Arithmetic.h */,
 				0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */,
+				01A79BA016F32C6900B05084 /* NSString+Timecode.h */,
+				01A79BA116F32C6900B05084 /* NSString+Timecode.m */,
+				01A79BA316F34BBF00B05084 /* NSString+Utils.h */,
+				01A79BA416F34BBF00B05084 /* NSString+Utils.m */,
 				01B34C8E16A85622002AD8FB /* UICollectionViewCell+AsyncImage.h */,
 				01B34C8F16A85622002AD8FB /* UICollectionViewCell+AsyncImage.m */,
 				019825EF162C94A300216900 /* UIColor+SYNColor.h */,
@@ -3448,6 +3453,7 @@
 				BED4311716F0EBBB0051465B /* SYNLoginErrorArrow.m in Sources */,
 				BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */,
 				01A79BA216F32C6900B05084 /* NSString+Timecode.m in Sources */,
+				01A79BA516F34BBF00B05084 /* NSString+Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

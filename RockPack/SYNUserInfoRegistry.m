@@ -29,7 +29,8 @@
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    lastRegisteredUserObject = [User instanceFromDictionary:dictionary usingManagedObjectContext:importManagedObjectContext];
+    lastRegisteredUserObject = [User instanceFromDictionary: dictionary
+                                  usingManagedObjectContext: importManagedObjectContext];
     if(!lastRegisteredUserObject)
         return NO;
     

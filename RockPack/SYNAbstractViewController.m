@@ -350,7 +350,7 @@
         videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
-        videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
+        videoThumbnailCell.displayName.text = videoInstance.channel.channelOwner.displayName;
         videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         
         [self updateVideoCellRockItButtonAndCount: videoThumbnailCell

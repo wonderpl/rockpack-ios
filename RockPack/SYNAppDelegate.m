@@ -395,7 +395,7 @@
     {
         ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
         
-        channelOwnerMe.name = @"PAUL CACKETT";
+        channelOwnerMe.displayName = @"PAUL CACKETT";
         channelOwnerMe.uniqueId = @"666";
         channelOwnerMe.thumbnailURL = @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png";
         

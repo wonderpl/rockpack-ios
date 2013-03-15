@@ -32,7 +32,7 @@
 
 // Video Info Labels
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
 
 - (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController selectedIndexPath: (NSIndexPath *) selectedIndexPath autoPlay: (BOOL) autoPlay;

@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -152,7 +152,6 @@
 						<string key="NSFrame">{{359, 405}, {44, 44}}</string>
 						<reference key="NSSuperview" ref="952530978"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -349,14 +348,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">userNameLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="652512587"/>
-					</object>
-					<int key="connectionID">50</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">titleLabel</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="240837992"/>
@@ -394,6 +385,14 @@
 						<reference key="destination" ref="830133507"/>
 					</object>
 					<int key="connectionID">56</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">displayNameLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="652512587"/>
+					</object>
+					<int key="connectionID">59</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -476,7 +475,7 @@
 						<reference key="object" ref="652512587"/>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="952530978"/>
-						<string key="objectName">Use Name UILabel</string>
+						<string key="objectName">Label - Display name</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
@@ -542,13 +541,37 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">58</int>
+			<int key="maxID">59</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNLargeVideoPanelViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addToVideoQueueFromLargeVideo:">UIButton</string>
+						<string key="toggleLargeVideoPanelStarItButton:">UIButton</string>
+						<string key="userTouchedLargeVideoChannelButton:">UIButton</string>
+						<string key="userTouchedVideoShareItButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addToVideoQueueFromLargeVideo:">
+							<string key="name">addToVideoQueueFromLargeVideo:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="toggleLargeVideoPanelStarItButton:">
+							<string key="name">toggleLargeVideoPanelStarItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedLargeVideoChannelButton:">
+							<string key="name">userTouchedLargeVideoChannelButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedVideoShareItButton:">
+							<string key="name">userTouchedVideoShareItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addItButton">UIButton</string>
 						<string key="addItLabel">UILabel</string>
@@ -556,13 +579,13 @@
 						<string key="channelImageButton">UIButton</string>
 						<string key="channelImageView">UIImageView</string>
 						<string key="channelLabel">UILabel</string>
+						<string key="displayNameLabel">UILabel</string>
 						<string key="rockItButton">UIButton</string>
 						<string key="rockItLabel">UILabel</string>
 						<string key="rockItNumberLabel">UILabel</string>
 						<string key="shareItButton">UIButton</string>
 						<string key="shareItLabel">UILabel</string>
 						<string key="titleLabel">UILabel</string>
-						<string key="userNameLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="addItButton">
@@ -589,6 +612,10 @@
 							<string key="name">channelLabel</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="displayNameLabel">
+							<string key="name">displayNameLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="rockItButton">
 							<string key="name">rockItButton</string>
 							<string key="candidateClassName">UIButton</string>
@@ -611,10 +638,6 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="titleLabel">
 							<string key="name">titleLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="userNameLabel">
-							<string key="name">userNameLabel</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
 					</dictionary>

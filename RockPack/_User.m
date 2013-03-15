@@ -6,11 +6,7 @@
 const struct UserAttributes UserAttributes = {
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
-	.firstName = @"firstName",
-	.lastName = @"lastName",
-	.thumbnailURL = @"thumbnailURL",
-	.userName = @"userName",
-	.userid = @"userid",
+	.username = @"username",
 };
 
 const struct UserRelationships UserRelationships = {
@@ -67,35 +63,7 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
-@dynamic firstName;
-
-
-
-
-
-
-@dynamic lastName;
-
-
-
-
-
-
-@dynamic thumbnailURL;
-
-
-
-
-
-
-@dynamic userName;
-
-
-
-
-
-
-@dynamic userid;
+@dynamic username;
 
 
 

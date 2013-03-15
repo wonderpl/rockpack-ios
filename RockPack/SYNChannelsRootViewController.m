@@ -149,7 +149,7 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
-    channelThumbnailCell.userNameLabel.text = channel.channelOwner.name;
+    channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
     channelThumbnailCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
     channelThumbnailCell.rockItButton.selected = channel.rockedByUserValue;
     

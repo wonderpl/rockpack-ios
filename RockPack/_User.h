@@ -2,16 +2,12 @@
 // Make changes to User.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "ChannelOwner.h"
 
 extern const struct UserAttributes {
 	__unsafe_unretained NSString *dateOfBirth;
 	__unsafe_unretained NSString *emailAddress;
-	__unsafe_unretained NSString *firstName;
-	__unsafe_unretained NSString *lastName;
-	__unsafe_unretained NSString *thumbnailURL;
-	__unsafe_unretained NSString *userName;
-	__unsafe_unretained NSString *userid;
+	__unsafe_unretained NSString *username;
 } UserAttributes;
 
 extern const struct UserRelationships {
@@ -27,14 +23,10 @@ extern const struct UserFetchedProperties {
 
 
 
-
-
-
-
 @interface UserID : NSManagedObjectID {}
 @end
 
-@interface _User : NSManagedObject {}
+@interface _User : ChannelOwner {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -64,51 +56,11 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* firstName;
+@property (nonatomic, strong) NSString* username;
 
 
 
-//- (BOOL)validateFirstName:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* lastName;
-
-
-
-//- (BOOL)validateLastName:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* thumbnailURL;
-
-
-
-//- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* userName;
-
-
-
-//- (BOOL)validateUserName:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* userid;
-
-
-
-//- (BOOL)validateUserid:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateUsername:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -143,32 +95,8 @@ extern const struct UserFetchedProperties {
 
 
 
-- (NSString*)primitiveFirstName;
-- (void)setPrimitiveFirstName:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveLastName;
-- (void)setPrimitiveLastName:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveThumbnailURL;
-- (void)setPrimitiveThumbnailURL:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveUserName;
-- (void)setPrimitiveUserName:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveUserid;
-- (void)setPrimitiveUserid:(NSString*)value;
+- (NSString*)primitiveUsername;
+- (void)setPrimitiveUsername:(NSString*)value;
 
 
 

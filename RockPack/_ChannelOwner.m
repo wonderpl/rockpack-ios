@@ -4,7 +4,7 @@
 #import "_ChannelOwner.h"
 
 const struct ChannelOwnerAttributes ChannelOwnerAttributes = {
-	.name = @"name",
+	.displayName = @"displayName",
 	.thumbnailURL = @"thumbnailURL",
 };
 
@@ -48,7 +48,7 @@ const struct ChannelOwnerFetchedProperties ChannelOwnerFetchedProperties = {
 
 
 
-@dynamic name;
+@dynamic displayName;
 
 
 

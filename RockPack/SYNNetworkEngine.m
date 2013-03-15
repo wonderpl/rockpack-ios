@@ -6,17 +6,17 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNNetworkEngine.h"
-#import "Channel.h"
-#import "SYNNetworkEngine.h"
-#import "VideoInstance.h"
-#import "Category.h"
-#import "SYNMainRegistry.h"
-#import "SYNSearchRegistry.h"
-#import "SYNAppDelegate.h"
 #import "AccessInfo.h"
+#import "Category.h"
+#import "Channel.h"
+#import "NSString+Utils.h"
+#import "SYNAppDelegate.h"
+#import "SYNMainRegistry.h"
+#import "SYNNetworkEngine.h"
 #import "SYNNetworkOperationJsonObjectParse.h"
+#import "SYNSearchRegistry.h"
 #import "SYNUserInfoRegistry.h"
+#import "VideoInstance.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -545,6 +545,152 @@
     [self enqueueOperation: networkOperation];
     
     
+    
+}
+
+//POST /ws/USERID/channels/ HTTP/1.1
+//Content-Type: application/json
+//Authorization: Bearer TOKEN
+//
+//{
+//    "title": "channel title",
+//    "description": "channel description",
+//    "category": 1,
+//    "cover": "COVERARTID",
+//    "public": true
+//}
+
+// /ws/USERID/channels/ /* POST */
+
+- (void) createChannelWithUserId: (NSString *) userId
+                            data: (NSDictionary*) userData
+                  withComplete: (MKNKVoidBlock) completionBlock
+                      andError: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString: [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+                                                              params: userData
+                                                          httpMethod: @"POST"];
+    
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+    {
+        NSString* possibleError = [dictionary objectForKey: @"error"];
+        
+        if(possibleError)
+        {
+            errorBlock(dictionary);
+            return;
+        }
+        
+        completionBlock();
+    }
+    errorHandler: ^(NSError* error)
+    {
+        NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+
+}
+
+
+// /ws/USERID/channels/CHANNELID/  /* PUT */
+- (void) updateChannelWithUserId: (NSString *) userId
+                       channelId: (NSString *) channelId
+                            data: (NSDictionary*) userData
+                    withComplete: (MKNKVoidBlock) completionBlock
+                        andError: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString: [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+                                                          params: userData
+                                                      httpMethod: @"PUT"];
+    
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+     {
+         NSString* possibleError = [dictionary objectForKey: @"error"];
+         
+         if(possibleError)
+         {
+             errorBlock(dictionary);
+             return;
+         }
+         
+         completionBlock();
+     }
+                                  errorHandler: ^(NSError* error)
+     {
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
+    [self enqueueOperation: networkOperation];
+
+}
+
+
+- (void) updateChannelWithArrayOfVideoIds: (NSArray*) videoIdArray
+                  withComplete: (MKNKVoidBlock) completionBlock
+                      andError: (MKNKUserErrorBlock) errorBlock
+{
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : uniqueId};
+
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString: [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+                                                          params: userData
+                                                      httpMethod: @"PUT"];
+    
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+     {
+         NSString* possibleError = [dictionary objectForKey: @"error"];
+         
+         if (possibleError)
+         {
+             errorBlock(dictionary);
+             return;
+         }
+         
+         completionBlock();
+     }
+     errorHandler: ^(NSError* error)
+     {
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
+    [self enqueueOperation: networkOperation];
     
 }
 

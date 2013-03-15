@@ -8,4 +8,10 @@
                       ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                                 andViewId: (NSString *) viewId;
 
+- (void) setAttributesFromDictionary: (NSDictionary *) dictionary
+                              withId: (NSString *) uniqueId
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+                           andViewId: (NSString *) viewId;
+
 @end

@@ -50,7 +50,7 @@
     // Set the labels to use the custom font
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.channelLabel.font = [UIFont rockpackFontOfSize: 14.0f];
-    self.userNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.displayNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];

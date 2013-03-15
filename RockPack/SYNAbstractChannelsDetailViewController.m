@@ -84,7 +84,7 @@
     
     // Set all the labels to use the custom font
     self.channelTitleTextField.font = [UIFont boldRockpackFontOfSize: 29.0f];
-    self.userNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.displayNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.saveOrDoneButtonLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.changeCoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
     
@@ -169,7 +169,7 @@
     
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = self.channel.title;
-    self.userNameLabel.text = self.channel.channelOwner.name;
+    self.displayNameLabel.text = self.channel.channelOwner.displayName;
     
     // set User's avatar picture
     [self.userAvatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]

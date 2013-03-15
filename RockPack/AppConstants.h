@@ -24,18 +24,54 @@
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
 // Main RestFul API
-#define kAPIPopularVideos @"ws/videos/"
-#define kAPIPopularChannels @"ws/channels/"
-#define kAPICategories @"ws/categories/"
-#define kAPISecureLogin @"https://secure.demo.rockpack.com/ws/login/"
-#define kAPISecureExternalLogin @"https://secure.demo.rockpack.com/ws/login/external/"
-#define kAPISecureRegister @"https://secure.demo.rockpack.com/ws/register/"
+
+// Login
+#define kAPISecureLogin             @"https://secure.demo.rockpack.com/ws/login/"
+#define kAPISecureExternalLogin     @"https://secure.demo.rockpack.com/ws/login/external/"
+#define kAPISecureRegister          @"https://secure.demo.rockpack.com/ws/register/"
 
 // Search according to term, currently a wrapper around YouTube
-#define kAPISearchVideos @"/ws/search/videos/"
-#define kAPICompleteVideos @"/ws/complete/videos/"
-#define kAPISearchChannels @"/ws/search/channels/"
-#define kAPICompleteChannels @"/ws/complete/channels/"
+#define kAPISearchVideos            @"/ws/search/videos/"
+#define kAPICompleteVideos          @"/ws/complete/videos/"
+#define kAPISearchChannels          @"/ws/search/channels/"
+#define kAPICompleteChannels        @"/ws/complete/channels/"
+
+// User details
+#define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
+#define kAPIChangeUserName          @"/ws/USERID/username/"                     /* PUT */
+
+// Channel details
+#define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
+
+// Channel management
+#define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
+#define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
+
+// Channel privacy
+#define kAPIUpdateChannelPrivacy    @"/ws/USERID/channel/CHANNELID/public/"     /* PUT */
+
+// User activity
+#define kAPIRecordUserActivity      @"/ws/USERID/activity/"                     /* POST */
+#define kAPIGetUserActivity         @"/ws/USERID/activity/"                     /* GET */
+
+// Cover art
+#define kAPIGetCoverArt             @"/ws/USERID/cover_art/"                    /* GET */
+#define kAPIUploadCoverArt          @"/ws/USERID/cover_art/"                    /* POST */
+#define kAPIDeleteCoverArt          @"/ws/USERID/cover_art/COVERID"             /* DELETE */
+
+// User subscriptions
+#define kAPIGetUserSubscriptions    @"/ws/USERID/subscriptions/"                /* GET */ 
+#define kAPICreateUserSubscription  @"/ws/USERID/subscriptions/"                /* POST */
+#define kAPIDeleteUserSubscription  @"/ws/USERID/subscriptions/SUBSCRIPTION/"   /* DELETE */  
+
+// Videos for channel
+#define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
+#define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */
+
+// Something
+#define kAPIPopularVideos           @"ws/videos/"
+#define kAPIPopularChannels         @"ws/channels/"
+#define kAPICategories              @"ws/categories/"
 
 
 // Timeout for API calls

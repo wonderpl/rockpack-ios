@@ -37,7 +37,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 
 @property (nonatomic, strong) SYNLargeVideoPanelViewController* largeVideoPanelController;
 
@@ -120,7 +120,7 @@
     
     self.channelImageView = self.largeVideoPanelController.channelImageView;
     
-    self.userNameLabel = self.largeVideoPanelController.userNameLabel;
+    self.displayNameLabel = self.largeVideoPanelController.displayNameLabel;
     self.channelLabel = self.largeVideoPanelController.channelLabel;
     self.titleLabel = self.largeVideoPanelController.titleLabel;
     self.panelImageView = self.largeVideoPanelController.backgroundImageView;
@@ -357,7 +357,7 @@
     
     self.titleLabel.text = videoInstance.title;
     self.channelLabel.text = videoInstance.channel.title;
-    self.userNameLabel.text = videoInstance.channel.channelOwner.name;
+    self.displayNameLabel.text = videoInstance.channel.channelOwner.displayName;
     
     [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
                                       placeHolderImage: nil];

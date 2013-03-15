@@ -12,12 +12,13 @@
 
 #pragma mark - Object factory
 
-+ (User*)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
++ (User*) instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
     NSError *error = nil;
     
-    NSString *userid = [dictionary objectForKey: @"userid"]; // there must be a username
-    if(!userid)
+    NSString *uniqueId = [dictionary objectForKey: @"userid"]; 
+    
+    if(!uniqueId)
         return nil;
     
     NSEntityDescription* userEntity = [NSEntityDescription entityForName:@"User" inManagedObjectContext: managedObjectContext];
@@ -25,18 +26,16 @@
     NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
     [userFetchRequest setEntity:userEntity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userid == '%@'", userid];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == '%@'", uniqueId];
     [userFetchRequest setPredicate: predicate];
     
     NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: userFetchRequest
                                                                                    error: &error];
-    
     User *instance;
     
     if (matchingCategoryInstanceEntries.count > 0)
     {
         instance = matchingCategoryInstanceEntries[0];
-        
         
         return instance;
     }
@@ -46,8 +45,10 @@
         
         
         [instance setAttributesFromDictionary: dictionary
-                    usingManagedObjectContext: managedObjectContext];
-        
+                                       withId: uniqueId
+                    usingManagedObjectContext: managedObjectContext
+                          ignoringObjectTypes: kIgnoreNothing
+                                    andViewId: @"Users"];
         
         return instance;
     }
@@ -55,23 +56,32 @@
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
+                              withId: (NSString *) uniqueId
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+                           andViewId: (NSString *) viewId
+{
+    // As we are a subclass of ChannelOwner, set its attributes as well
+    [super setAttributesFromDictionary: dictionary
+                                withId: uniqueId
+             usingManagedObjectContext: managedObjectContext
+                   ignoringObjectTypes: ignoringObjects
+                             andViewId: viewId];
+
+    self.emailAddress = [dictionary objectForKey: @"email_address"
+                                     withDefault: @"Uninitialized Id"];
     
-    self.userid = [dictionary objectForKey:@"userid"];
-    self.firstName = [dictionary objectForKey:@"first_name" withDefault:@""];
-    self.lastName = [dictionary objectForKey:@"last_name" withDefault:@""];
-    
-    self.userName = [dictionary objectForKey:@"name"];
-    self.thumbnailURL = [dictionary objectForKey:@"avatar_thumbnail_url" withDefault:@""];
-    
+    self.dateOfBirth = [dictionary dateFromISO6801StringForKey: @"birthday"
+                                                   withDefault: [NSDate date]];
 }
 
 
 - (NSString *) description
 {
-    NSMutableString* descriptioString = [[NSMutableString alloc] init];
+    // As we are a subclass of ChannelOwner, describe its attributes as well
+    NSString *descriptionString = [super description];
     
-    return descriptioString;
+    return [descriptionString stringByAppendingString: [NSString stringWithFormat: @"dateOfBirth(%@), emailAddress: %@, ", self.dateOfBirth, self.emailAddress]];
 }
 
 @end

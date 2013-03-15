@@ -184,7 +184,7 @@
 - (void) updateVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
+    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
