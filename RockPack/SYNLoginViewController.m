@@ -732,7 +732,7 @@
     }
     
     // == Username must be 
-    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z]+[a-zA-Z0-9\\._]*$"]) {
+    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"]) {
         [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
         [userNameInputField becomeFirstResponder];
         return NO;
@@ -976,9 +976,11 @@
     if(textField == yyyyInputField && newLength > 4)
         return NO;
     
+    
+    
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     if(textField == ddInputField || textField == mmInputField || textField == yyyyInputField)
-        if(![numberFormatter numberFromString:newCharacter])
+        if(![numberFormatter numberFromString:newCharacter] && newCharacter.length != 0) // is backspace, length is 0
             return NO;
         
     
