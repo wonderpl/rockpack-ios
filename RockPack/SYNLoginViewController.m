@@ -189,7 +189,9 @@
         control.alpha = 0.0;
     }
     
-    
+    dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
+    emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
+    faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
     
     facebookSignInButton.enabled = YES;
     facebookSignInButton.frame = facebookButtonInitialFrame;
@@ -740,7 +742,7 @@
     
     
     if(passwordInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
+        [self placeErrorLabel:@"Please enter a password" NextToView:passwordInputField];
         [passwordInputField becomeFirstResponder];
         return NO;
     }
