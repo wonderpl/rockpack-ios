@@ -37,11 +37,19 @@
 -(void)doSimpleLoginForUsername:(NSString*)username
                     forPassword:(NSString*)password
                    withComplete: (MKNKLoginCompleteBlock) completionBlock
-                       andError: (MKNKErrorBlock) errorBlock;
+                       andError: (MKNKUserErrorBlock) errorBlock;
+
+-(void)doFacebookLoginWithAccessToken:(NSString*)facebookAccessToken
+                         withComplete: (MKNKLoginCompleteBlock) completionBlock
+                             andError: (MKNKUserErrorBlock) errorBlock;
 
 -(void)registerUserWithData:(NSDictionary*)userData
                withComplete:(MKNKLoginCompleteBlock)completionBlock
                    andError:(MKNKUserErrorBlock)errorBlock;
+
+-(void)retrieveUserFromAccessInfo:(AccessInfo*)accessInfo
+                     withComplete:(MKNKUserCompleteBlock)completionBlock
+                         andError:(MKNKUserErrorBlock)errorBlock;
 
 
 @end

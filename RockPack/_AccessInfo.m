@@ -45,6 +45,11 @@ const struct AccessInfoFetchedProperties AccessInfoFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"expiryTimeValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"expiryTime"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -61,6 +66,25 @@ const struct AccessInfoFetchedProperties AccessInfoFetchedProperties = {
 
 @dynamic expiryTime;
 
+
+
+- (int64_t)expiryTimeValue {
+	NSNumber *result = [self expiryTime];
+	return [result longLongValue];
+}
+
+- (void)setExpiryTimeValue:(int64_t)value_ {
+	[self setExpiryTime:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveExpiryTimeValue {
+	NSNumber *result = [self primitiveExpiryTime];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveExpiryTimeValue:(int64_t)value_ {
+	[self setPrimitiveExpiryTime:[NSNumber numberWithLongLong:value_]];
+}
 
 
 

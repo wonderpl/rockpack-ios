@@ -16,19 +16,19 @@
 {
     NSError *error = nil;
     
-    NSString *uniqueId = [dictionary objectForKey: @"id" withDefault: @"Uninitialized Id"];
+    NSString *userid = [dictionary objectForKey: @"userid"]; // there must be a username
+    if(!userid)
+        return nil;
     
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName:@"User" inManagedObjectContext: managedObjectContext];
+    NSEntityDescription* userEntity = [NSEntityDescription entityForName:@"User" inManagedObjectContext: managedObjectContext];
     
-    // Now we need to see if this object already exists, and if so return it and if not create it
-    NSFetchRequest *categoryFetchRequest = [[NSFetchRequest alloc] init];
-    [categoryFetchRequest setEntity:categoryEntity];
+    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+    [userFetchRequest setEntity:userEntity];
     
-    // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-    [categoryFetchRequest setPredicate: predicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"userid == '%@'", userid];
+    [userFetchRequest setPredicate: predicate];
     
-    NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: categoryFetchRequest
+    NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: userFetchRequest
                                                                                    error: &error];
     
     User *instance;
@@ -57,10 +57,12 @@
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
     
+    self.userid = [dictionary objectForKey:@"userid"];
+    self.firstName = [dictionary objectForKey:@"first_name" withDefault:@""];
+    self.lastName = [dictionary objectForKey:@"last_name" withDefault:@""];
     
-    
-    
-    
+    self.userName = [dictionary objectForKey:@"name"];
+    self.thumbnailURL = [dictionary objectForKey:@"avatar_thumbnail_url" withDefault:@""];
     
 }
 

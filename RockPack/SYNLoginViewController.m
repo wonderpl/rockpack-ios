@@ -10,6 +10,11 @@
 #import "UIFont+SYNFont.h"
 #import "SYNNetworkEngine.h"
 #import "User.h"
+#import "SYNFacebookManager.h"
+#import "SYNLoginErrorArrow.h"
+#import "RegexKitLite.h"
+#import "SYNAppDelegate.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
 
@@ -22,7 +27,19 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
+@property (nonatomic, strong) IBOutlet UILabel* joingRockpackLabel;
+
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
+
+@property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
+
+@property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
+
+@property (nonatomic, strong) IBOutlet UILabel* secondaryFacebookMessage;
+@property (nonatomic, strong) IBOutlet UILabel* facebookLogingInLabel;
+
+
+@property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
 
 @property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
 @property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
@@ -40,8 +57,7 @@
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 
-@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
-
+@property (nonatomic, strong) IBOutlet UIView* termsAndConditionsView;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -50,9 +66,12 @@
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 
-#define kOffsetForLoginForm 100.0
 
 @end
+
+
+#define kOffsetForLoginForm 240.0
+#define kOffsetForRegisterForm 100.0
 
 @implementation SYNLoginViewController
 
@@ -60,13 +79,16 @@
 @synthesize appDelegate;
 @synthesize signUpButton, facebookSignInButton;
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
-
-@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
-@synthesize activityIndicator;
+@synthesize joingRockpackLabel, facebookLogingInLabel;
+@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsView;
+@synthesize activityIndicator, dividerImageView, secondaryFacebookMessage;
 @synthesize isAnimating;
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
+@synthesize labelsToErrorArrows;
+@synthesize faceImageButton;
+@synthesize facebookState;
 
 - (void)viewDidLoad
 {
@@ -81,16 +103,29 @@
     
     
     
-    
     // == Setup Fonts for labels (except Input Fields)
     
-    memberLabel.font = [UIFont boldRockpackFontOfSize:22];
+    UIFont* rockpackBigLabelFont = [UIFont boldRockpackFontOfSize:24];
     
-    areYouNewLabel.font = [UIFont boldRockpackFontOfSize:22];
+    memberLabel.font = rockpackBigLabelFont;
+    areYouNewLabel.font = rockpackBigLabelFont;
+    
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
-    termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:16];
+    secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
+    joingRockpackLabel.font = [UIFont boldRockpackFontOfSize:23];
+    facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];;
+    
+    labelsToErrorArrows = [[NSMutableDictionary alloc] init];
+    
+    ddInputField.keyboardType = UIKeyboardTypeNumberPad;
+    mmInputField.keyboardType = UIKeyboardTypeNumberPad;
+    yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
+    
+    passwordInputField.secureTextEntry = YES;
     
     
+    
+    emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
     
     // == Setup Input Fields
     
@@ -106,10 +141,6 @@
     }
     
     
-    // == Setup Mock Credentials
-    
-    userNameInputField.text = @"test";
-    passwordInputField.text = @"test";
     
     self.state = kLoginScreenStateInitial;
     
@@ -128,7 +159,7 @@
     else if(newState == kLoginScreenStateLogin)
         [self setUpLoginStateFromPreviousState:state];
     else if(newState == kLoginScreenStateRegister)
-        [self setupRegisterStateFromState:state];
+        [self setUpRegisterStateFromState:state];
     
     state = newState;
 }
@@ -138,19 +169,34 @@
     return state;
 }
 
+
+
 -(void)setUpInitialState
 {
     
     // controls to hide initially
     
-    NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton,
-                                areYouNewLabel, registerButton, passwordForgottenLabel,
-                                passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
-                                registerNewUserButton];
+    NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
+                                areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
+                                passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
+                                registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel];
+    
     for (UIView* control in controlsToHide) {
        
         control.alpha = 0.0;
     }
+    
+    
+    faceImageButton.center = CGPointMake(faceImageButton.center.x,
+                                         faceImageButton.center.y - kOffsetForLoginForm);
+    
+    facebookSignInButton.enabled = YES;
+    facebookSignInButton.alpha = 1.0;
+    signUpButton.enabled = YES;
+    signUpButton.alpha = 1.0;
+    
+    facebookState = kFacebookStateNull;
+    [activityIndicator stopAnimating];
     
     
     
@@ -160,7 +206,7 @@
 
 -(void)setUpLoginStateFromPreviousState:(kLoginScreenState)previousState
 {
-    
+    secondaryFacebookMessage.alpha = 0.0;
     isAnimating = YES;
     
     if(previousState == kLoginScreenStateInitial)
@@ -195,8 +241,7 @@
         
         passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
         passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
-        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
-        activityIndicator.center = CGPointMake(activityIndicator.center.x, activityIndicator.center.y - kOffsetForLoginForm);
+        termsAndConditionsView.center = CGPointMake(termsAndConditionsView.center.x, termsAndConditionsView.center.y - kOffsetForLoginForm);
         
         // consequitive fade in animations
         
@@ -205,10 +250,12 @@
             memberLabel.alpha = 0.0;
             loginButton.alpha = 0.0;
         } completion:^(BOOL finished) {
+            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - kOffsetForLoginForm);
             [UIView animateWithDuration:0.2 animations:^{
                 passwordForgottenButton.alpha = 1.0;
                 passwordForgottenLabel.alpha = 1.0;
-                termsAndConditionsLabel.alpha = 1.0;
+                termsAndConditionsView.alpha = 1.0;
+                dividerImageView.alpha = 1.0;
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.2 animations:^{
                     areYouNewLabel.alpha = 1.0;
@@ -217,8 +264,22 @@
                     isAnimating = NO;
                     
                     
-                    emailInputField.center = CGPointMake(emailInputField.center.x, emailInputField.center.y - kOffsetForLoginForm);
-                    dobView.center = CGPointMake(dobView.center.x, dobView.center.y - kOffsetForLoginForm);
+                    emailInputField.center = CGPointMake(emailInputField.center.x,
+                                                         emailInputField.center.y - kOffsetForLoginForm);
+                    dobView.center = CGPointMake(dobView.center.x,
+                                                 dobView.center.y - kOffsetForLoginForm);
+                    
+                    memberLabel.center = CGPointMake(loginButton.center.x + 5.0,
+                                                     loginButton.frame.origin.y - 17.0);
+                    
+                    
+                    memberLabel.frame = CGRectIntegral(memberLabel.frame);
+                    
+                    registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x,
+                                                               registerNewUserButton.center.y - kOffsetForLoginForm);
+                    
+                    [userNameInputField becomeFirstResponder];
+                    
                 }];
             }];
         }];
@@ -231,7 +292,7 @@
         [UIView animateWithDuration:0.5 animations:^{
             
             facebookSignInButton.alpha = 1.0;
-            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x - 100.0,
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x - kOffsetForRegisterForm,
                                                       facebookSignInButton.center.y);
             
             emailInputField.alpha = 0.0;
@@ -242,12 +303,17 @@
             dobView.center = CGPointMake(userNameInputField.center.x - 50.0,
                                          dobView.center.y);
             
+            dividerImageView.alpha = 1.0;
             
             registerNewUserButton.alpha = 0.0;
             
             finalLoginButton.alpha = 1.0;
-            finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
-                                                  finalLoginButton.center.y - 50.0);
+            finalLoginButton.center = CGPointMake(finalLoginButton.center.x - 50.0,
+                                                  finalLoginButton.center.y);
+            
+            faceImageButton.alpha = 0.0;
+            faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0,
+                                                 faceImageButton.center.y);
             
             passwordForgottenButton.alpha = 1.0;
             passwordForgottenLabel.alpha = 1.0;
@@ -258,8 +324,15 @@
             loginButton.alpha = 0.0;
             memberLabel.alpha = 0.0;
             
+            joingRockpackLabel.alpha = 0.0;
+            
+            termsAndConditionsView.alpha = 1.0;
+            
+            
+            
         } completion:^(BOOL finished) {
             isAnimating = NO;
+            [userNameInputField becomeFirstResponder];
         }];
     }
     
@@ -267,8 +340,10 @@
     
 }
 
--(void)setupRegisterStateFromState:(kLoginScreenState)previousState
+-(void)setUpRegisterStateFromState:(kLoginScreenState)previousState
 {
+    secondaryFacebookMessage.alpha = 0.0;
+    isAnimating = YES;
     if(previousState == kLoginScreenStateInitial)
     {
         
@@ -280,7 +355,7 @@
         dobView.center = CGPointMake(userNameInputField.center.x,
                                      dobView.center.y);
         
-        NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, termsAndConditionsLabel];
+        NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, registerNewUserButton];
         float delay = 0.05;
         for (UIView* control in loginForControls) {
             control.hidden = NO;
@@ -300,23 +375,59 @@
         }
         
         [UIView animateWithDuration:0.4 animations:^{
+            
+            memberLabel.alpha = 0.0;
+            loginButton.alpha = 0.0;
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x,
-                                                      facebookSignInButton.center.y - 150.0);
+                                                      facebookSignInButton.center.y - kOffsetForLoginForm);
             signUpButton.alpha = 0.0;
+            
+            
+            
+            
+            
         } completion:^(BOOL finished) {
+            
             finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - kOffsetForLoginForm);
             passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
             passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
-            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 100.0,
-                                                      facebookSignInButton.center.y + 50.0);
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm,
+                                                      facebookSignInButton.center.y);
+            
+            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - kOffsetForLoginForm);
+            termsAndConditionsView.center = CGPointMake(termsAndConditionsView.center.x, termsAndConditionsView.center.y - kOffsetForLoginForm);
+            
+            [emailInputField becomeFirstResponder];
+            
+            loginButton.center = CGPointMake(registerButton.center.x, registerButton.center.y);
+            
+            memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+            memberLabel.frame = CGRectIntegral(memberLabel.frame);
+            
+            
+            faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
+                                                 faceImageButton.center.y);
+            
+            isAnimating = NO;
+            
+            [UIView animateWithDuration:0.3 animations:^{
+                memberLabel.alpha = 1.0;
+                loginButton.alpha = 1.0;
+                faceImageButton.alpha = 1.0;
+                
+                joingRockpackLabel.alpha = 1.0;
+            }];
         }];
-        
-        
     }
+    
+    
     else if(previousState == kLoginScreenStateLogin)
     {
         // prepare in the correct place
         
+        loginButton.center = CGPointMake(registerButton.center.x, registerButton.center.y);
+        memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+        memberLabel.frame = CGRectIntegral(memberLabel.frame);
         
         [UIView animateWithDuration:0.5 animations:^{
             
@@ -329,13 +440,20 @@
             dobView.center = CGPointMake(userNameInputField.center.x,
                                          dobView.center.y);
             
+            faceImageButton.alpha = 1.0;
+            faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
+                                                 faceImageButton.center.y);
+            
+            loginButton.alpha = 1.0;
+            memberLabel.alpha = 1.0;
             
             // move facebook button to the right
-            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + 100.0,
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm,
                                                       facebookSignInButton.center.y);
             
             
             
+            joingRockpackLabel.alpha = 1.0;
         }];
     }
 
@@ -345,28 +463,29 @@
     
         titleImageView.alpha = 0.0;
         registerNewUserButton.alpha = 1.0;
-    
         
+        dividerImageView.alpha = 0.0;
         
         registerNewUserButton.alpha = 1.0;
-    
         
-        loginButton.alpha = 1.0;
-        memberLabel.alpha = 1.0;
+        
+        termsAndConditionsView.alpha = 0.0;
+    
         
         passwordForgottenButton.alpha = 0.0;
         passwordForgottenLabel.alpha = 0.0;
     
         
         finalLoginButton.alpha = 0.0;
-        finalLoginButton.center = CGPointMake(finalLoginButton.center.x,
-                                          finalLoginButton.center.y + 50.0);
+        finalLoginButton.center = CGPointMake(finalLoginButton.center.x + 50.0,
+                                          finalLoginButton.center.y);
     
         registerButton.alpha = 0.0;
         areYouNewLabel.alpha = 0.0;
         
     } completion:^(BOOL finished) {
-        
+        [emailInputField becomeFirstResponder];
+        isAnimating = NO;
     }];
     
     
@@ -376,27 +495,85 @@
 
 
 #pragma mark - Button Actions
+-(BOOL)loginFormIsValid
+{
+    // email
+    
+    
+    if(userNameInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a user name" NextToView:userNameInputField];
+        [userNameInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    
+    if(passwordInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a password" NextToView:passwordInputField];
+        [passwordInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    
+    return YES;
+}
 
 -(IBAction)doLogin:(id)sender
 {
+    
+    
+    [self clearAllErrorArrows];
+    
+    if(![self loginFormIsValid])
+        return;
+    
+    [self resignAllFirstResponders];
+    
+    finalLoginButton.enabled = NO;
+    
     [UIView animateWithDuration:0.1 animations:^{
         finalLoginButton.alpha = 0.0;
     }];
+    
+    activityIndicator.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y);
     [activityIndicator startAnimating];
     
-    [appDelegate.networkEngine doSimpleLoginForUsername:@"test"
-                                            forPassword:@"test"
+    [appDelegate.networkEngine doSimpleLoginForUsername:userNameInputField.text
+                                            forPassword:passwordInputField.text
                                            withComplete:^(AccessInfo* accessInfo) {
                                                
                                                
                                                [self completeLoginProcess:accessInfo];
                                            
-                                           } andError:^(NSError * error) {
+                                           } andError:^(NSDictionary* errorDictionary) {
+                                               
+                                               NSDictionary* errors = [errorDictionary objectForKey:@"error"];
+                                               
+                                               if(errors) {
+                                                   
+                                                   [self placeErrorLabel:@"Username could be incorrect" NextToView:userNameInputField];
+                                                   [self placeErrorLabel:@"Password could be incorrect" NextToView:passwordInputField];
+                                               }
+                                               
+                                               finalLoginButton.enabled = YES;
+                                               [activityIndicator stopAnimating];
+                                               
+                                               [UIView animateWithDuration:0.3 animations:^{
+                                                   finalLoginButton.alpha = 1.0;
+                                               } completion:^(BOOL finished) {
+                                                   [userNameInputField becomeFirstResponder];
+                                               }];
+                                               
+                                               
         
                                            }];
     
-    // TODO : Do actual login
 }
+
+-(IBAction)faceButtonImagePressed:(id)sender
+{
+    
+}
+
 
 -(IBAction)goToLoginForm:(id)sender
 {
@@ -408,7 +585,85 @@
 
 -(IBAction)signInWithFacebook:(id)sender
 {
+    [self clearAllErrorArrows];
+    facebookState = kFacebookStateLogging;
+    facebookSignInButton.enabled = NO;
+    [UIView animateWithDuration:0.2 animations:^{
+        facebookLogingInLabel.alpha = 1.0;
+        signUpButton.alpha = 0.0;
+        signUpButton.center = CGPointMake(signUpButton.center.x + 30.0, signUpButton.center.y);
+    } completion:^(BOOL finished) {
+        [activityIndicator startAnimating];
+    }];
     
+    userNameInputField.enabled = NO;
+    [userNameInputField resignFirstResponder];
+    passwordForgottenButton.enabled = NO;
+    [passwordForgottenButton resignFirstResponder];
+    finalLoginButton.enabled = NO;
+    loginButton.enabled = NO;
+    passwordForgottenButton.enabled = NO;
+    
+    activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
+                                           facebookSignInButton.center.y);
+    
+    CGRect labelFrame = facebookLogingInLabel.frame;
+    labelFrame.origin.x = facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 40.0;
+    labelFrame.origin.y = facebookSignInButton.frame.origin.y + 8.0;
+    facebookLogingInLabel.frame = labelFrame;
+    
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
+    
+    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        
+        facebookState = kFacebookStateRegistering;
+        
+        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+        
+        [appDelegate.networkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
+                                                     withComplete:^(AccessInfo* accessInfo) {
+                                                         
+                                                         DebugLog(@"Loggin in User with id: %@", accessInfo.userId);
+                                                         facebookState = kFacebookStateNull;
+                                                         [activityIndicator stopAnimating];
+                                                         [self completeLoginProcess:accessInfo];
+            
+                                                     } andError:^(NSDictionary* errorDictionary) {
+                                                         
+                                                         facebookState = kFacebookStateNull;
+                                                         facebookLogingInLabel.alpha = 0.0;
+                                                         
+                                                         signUpButton.alpha = 1.0;
+                                                         
+                                                         signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
+                                                         [activityIndicator stopAnimating];
+                                                         
+                                                         NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                                                         
+                                                         userNameInputField.enabled = YES;
+                                                         passwordForgottenButton.enabled = YES;
+                                                         finalLoginButton.enabled = YES;
+                                                         loginButton.enabled = YES;
+                                                         
+                                                         passwordForgottenButton.enabled = YES;
+            
+                                                         if(formErrors) {
+                                                             
+                                                             facebookSignInButton.enabled = YES;
+                                                             secondaryFacebookMessage.text = @"Could not log in through facebook";
+                                                             secondaryFacebookMessage.alpha = 1.0;
+                                                         }
+            
+                                                     }];
+        
+        
+    } onFailure:^(NSString* errorString) {
+        
+        facebookState = kFacebookStateNull;
+        DebugLog(@"Log in failed!");
+        
+    }];
     
 }
 
@@ -416,23 +671,129 @@
 {
     
 }
+-(BOOL)registrationFormIsValid
+{
+    // email
+    
+    if(emailInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter an email address" NextToView:emailInputField];
+        [emailInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    // regular expression through RegexKitLite.h (not arc compatible)
+    if(![emailInputField.text isMatchedByRegex:@"\\b([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})\\b"]) {
+        [self placeErrorLabel:@"Email Address Not Valid" NextToView:emailInputField];
+        [emailInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    if(userNameInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a user name" NextToView:userNameInputField];
+        [userNameInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z_]+[0-9]*$"]) {
+        [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
+        [userNameInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    
+    if(passwordInputField.text.length < 1) {
+        [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
+        [passwordInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    if(![passwordInputField.text isMatchedByRegex:@"^[a-zA-Z_]+[0-9]*$"]) {
+        [self placeErrorLabel:@"Password has invalid characters" NextToView:passwordInputField];
+        [passwordInputField becomeFirstResponder];
+        return NO;
+    }
+    
+    if(ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4) {
+        [self placeErrorLabel:@"Date Invalid" NextToView:dobView];
+        [ddInputField becomeFirstResponder];
+        return NO;
+    }
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
+    for (UITextField* dobField in dobTextFields) {
+        if(![numberFormatter numberFromString:dobField.text]) {
+            [self placeErrorLabel:@"Only enter numbers" NextToView:dobView];
+            [dobField becomeFirstResponder];
+            return NO;
+        }
+    }
+    return YES;
+}
 
+-(void)clearAllErrorArrows
+{
+    [labelsToErrorArrows enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop){
+        
+        SYNLoginErrorArrow* arrow = (SYNLoginErrorArrow*)value;
+        [arrow removeFromSuperview];
+    }];
+    
+    [labelsToErrorArrows removeAllObjects];
+}
+
+-(void)resignAllFirstResponders
+{
+    NSArray* allTextFields = @[emailInputField, userNameInputField, passwordForgottenButton, ddInputField, mmInputField, yyyyInputField];
+    for (UITextField* textField in allTextFields) {
+        [textField resignFirstResponder];
+    }
+}
 -(IBAction)registerNewUser:(id)sender
 {
     // Check Text Fields
     
-    NSDictionary* mockUserData = @{@"username": @"Mike79",
-                                   @"password": @"Mike79",
-                                   @"date_of_birth":@"1979-03-01",
-                                   @"locale":@"en-US",
-                                   @"email": @"michael@rockpack.com"};
+    registerNewUserButton.enabled = NO;
     
-    [appDelegate.networkEngine registerUserWithData:mockUserData
+    [self clearAllErrorArrows];
+    
+    if(![self registrationFormIsValid])
+        return;
+    
+    [self resignAllFirstResponders];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        registerNewUserButton.alpha = 0.0;
+    }];
+    
+    NSDictionary* userData = @{@"username": userNameInputField.text,
+                               @"password": passwordInputField.text,
+                               @"date_of_birth": [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text],
+                               @"locale":@"en-US",
+                               @"email": emailInputField.text};
+    
+    activityIndicator.center = CGPointMake(registerNewUserButton.center.x, registerNewUserButton.center.y);
+    [activityIndicator startAnimating];
+    
+    [appDelegate.networkEngine registerUserWithData:userData
+     
                                        withComplete:^(AccessInfo* accessinfo) {
                                            
                                            [self completeLoginProcess:accessinfo];
+                                           registerNewUserButton.enabled = YES;
         
-                                       } andError:^(NSDictionary* error) {
+                                       } andError:^(NSDictionary* errorDictionary) {
+                                           
+                                           NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                                           
+                                           if(formErrors) {
+                                               
+                                               [self showRegistrationError:formErrors];
+                                           }
+                                           
+                                           registerNewUserButton.enabled = YES;
+                                           
+                                           [activityIndicator stopAnimating];
+                                           registerNewUserButton.alpha = 1.0;
                                            
                                        }];
     
@@ -440,23 +801,52 @@
     
     return;
     
-    if(emailInputField.text.length < 2 ||
-       userNameInputField.text.length < 2 ||
-       passwordInputField.text.length < 2) {
-        return;
-        
-        
-    }
     
-//    NSString* dateFormatted = [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text];
-//    
-//    NSDictionary* userData = @{@"username": userNameInputField.text,
-//                               @"password": passwordInputField.text,
-//                               @"date_of_birth":dateFormatted,
-//                               @"locale":@"en-US",
-//                               @"email": emailInputField.text};
     
-    // Do registration
+
+}
+
+-(void)showRegistrationError:(NSDictionary*)errorDictionary
+{
+    // form errors
+    
+    NSArray* usernameError = [errorDictionary objectForKey:@"username"];
+    //NSArray* localeError = [errorDictionary objectForKey:@"locale"];
+    NSArray* passwordError = [errorDictionary objectForKey:@"password"];
+    NSArray* emailError = [errorDictionary objectForKey:@"email"];
+    
+    if(usernameError)
+        [self placeErrorLabel:(NSString*)[usernameError objectAtIndex:0] NextToView:userNameInputField];
+    
+    // TODO: deal with locale
+    
+    if(passwordError)
+        [self placeErrorLabel:(NSString*)[passwordError objectAtIndex:0] NextToView:passwordInputField];
+    
+    if(emailError)
+        [self placeErrorLabel:(NSString*)[emailError objectAtIndex:0] NextToView:emailInputField];
+    
+}
+
+-(void)placeErrorLabel:(NSString*)errorText NextToView:(UIView*)view
+{
+    SYNLoginErrorArrow* errorArrow = [SYNLoginErrorArrow withMessage:errorText];
+    
+    CGFloat xPos = view.frame.origin.x + view.frame.size.width - 20.0;
+    CGRect errorArrowFrame = errorArrow.frame;
+    errorArrowFrame.origin.x = xPos;
+    
+    errorArrow.frame = errorArrowFrame;
+    errorArrow.center = CGPointMake(errorArrow.center.x, view.center.y);
+    
+    errorArrow.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        errorArrow.alpha = 1.0;
+    }];
+    
+    [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
+    [self.view addSubview:errorArrow];
 }
 
 -(IBAction)registerPressed:(id)sender
@@ -490,10 +880,39 @@
 
 #pragma mark - TextField Delegate Methods
 
-- (void) textViewDidBeginEditing: (UITextView *) textView
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
 {
-    [textView setText: @""];
+    
+    NSUInteger oldLength = textField.text.length;
+    NSUInteger replacementLength = newCharacter.length;
+    NSUInteger rangeLength = range.length;
+    
+    NSUInteger newLength = (oldLength + replacementLength) - rangeLength;
+    
+    
+    if((textField == ddInputField || textField == mmInputField) && newLength > 2)
+        return NO;
+    if(textField == yyyyInputField && newLength > 4)
+        return NO;
+    
+    NSValue* key = [NSValue valueWithPointer:(__bridge const void *)(textField)];
+    SYNLoginErrorArrow* possibleErrorArrow =
+    (SYNLoginErrorArrow*)[labelsToErrorArrows objectForKey:key];
+    if(possibleErrorArrow)
+    {
+        [UIView animateWithDuration:0.2 animations:^{
+            possibleErrorArrow.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [possibleErrorArrow removeFromSuperview];
+            [labelsToErrorArrows removeObjectForKey:key];
+        }];
+    }
+    return YES;
 }
+
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     

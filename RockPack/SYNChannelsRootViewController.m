@@ -42,7 +42,7 @@
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(0.0, 84.0, 1024.0, 600.0);
+    CGRect collectionViewFrame = CGRectMake(0.0, 86.0, 1024.0, 600.0);
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;

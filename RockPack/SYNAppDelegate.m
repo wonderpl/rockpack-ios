@@ -17,8 +17,9 @@
 #import "ChannelOwner.h"
 #import "SYNMasterViewController.h"
 #import "SYNLoginViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
-#define kShowLoginPhase NO
+#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 
@@ -51,6 +52,7 @@
     
     // Create default user
     [self createDefaultUser];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginCompleted:)
@@ -117,6 +119,10 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     // We need to save out database here (not in background)
+    
+    if(self.loginViewController.facebookState == kFacebookStateLogging) {
+        self.loginViewController.state = kLoginScreenStateInitial;
+    }
     [self saveContext: kSaveSynchronously];
 }
 
@@ -397,5 +403,19 @@
     }
 }
 
+
+#pragma mark - Social Integration Delegate
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    
+    return YES;
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [[FBSession activeSession] handleOpenURL:url];
+    return YES;
+}
 
 @end
