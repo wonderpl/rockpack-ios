@@ -673,7 +673,7 @@
 }
 -(BOOL)registrationFormIsValid
 {
-    // email
+    
     
     if(emailInputField.text.length < 1) {
         [self placeErrorLabel:@"Please enter an email address" NextToView:emailInputField];
@@ -681,8 +681,9 @@
         return NO;
     }
     
-    // regular expression through RegexKitLite.h (not arc compatible)
-    if(![emailInputField.text isMatchedByRegex:@"\\b([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})\\b"]) {
+    // == Regular expression through RegexKitLite.h (not arc compatible) == //
+    
+    if(![emailInputField.text isMatchedByRegex:@"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"]) {
         [self placeErrorLabel:@"Email Address Not Valid" NextToView:emailInputField];
         [emailInputField becomeFirstResponder];
         return NO;
@@ -694,7 +695,8 @@
         return NO;
     }
     
-    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z_]+[0-9]*$"]) {
+    // == Username must be 
+    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z]+[a-zA-Z0-9\\._]*$"]) {
         [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
         [userNameInputField becomeFirstResponder];
         return NO;
@@ -707,7 +709,7 @@
         return NO;
     }
     
-    if(![passwordInputField.text isMatchedByRegex:@"^[a-zA-Z_]+[0-9]*$"]) {
+    if(![passwordInputField.text isMatchedByRegex:@"^[a-zA-Z]+[a-zA-Z0-9]*$"]) {
         [self placeErrorLabel:@"Password has invalid characters" NextToView:passwordInputField];
         [passwordInputField becomeFirstResponder];
         return NO;
@@ -718,6 +720,9 @@
         [ddInputField becomeFirstResponder];
         return NO;
     }
+    
+    // == Check wether the fields contain numbers == //
+    
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
     for (UITextField* dobField in dobTextFields) {
@@ -727,6 +732,11 @@
             return NO;
         }
     }
+    
+    
+    
+    
+    
     return YES;
 }
 
@@ -752,7 +762,6 @@
 {
     // Check Text Fields
     
-    registerNewUserButton.enabled = NO;
     
     [self clearAllErrorArrows];
     
@@ -760,6 +769,8 @@
         return;
     
     [self resignAllFirstResponders];
+    
+    
     
     [UIView animateWithDuration:0.2 animations:^{
         registerNewUserButton.alpha = 0.0;
@@ -896,6 +907,12 @@
         return NO;
     if(textField == yyyyInputField && newLength > 4)
         return NO;
+    
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    if(textField == ddInputField || textField == mmInputField || textField == yyyyInputField)
+        if(![numberFormatter numberFromString:newCharacter])
+            return NO;
+        
     
     NSValue* key = [NSValue valueWithPointer:(__bridge const void *)(textField)];
     SYNLoginErrorArrow* possibleErrorArrow =
