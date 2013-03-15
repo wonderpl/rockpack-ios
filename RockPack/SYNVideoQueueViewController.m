@@ -205,10 +205,13 @@ typedef enum _kQueueMoveDirection {
 {
     [self.selectedVideos removeLastObject];
     
-    if(self.selectedVideos.count == 0)
-        self.showingEmptyQueue = YES;
+    if(self.selectedVideos.count == 0) {
+        [self clearVideoQueue];
+    } else {
+        
+        [self.videoQueueView showRemovedLastVideo];
+    }
     
-    [self.videoQueueView showRemovedLastVideo];
 }
 
 - (void) clearVideoQueue
