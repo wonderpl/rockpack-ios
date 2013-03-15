@@ -32,6 +32,8 @@
         messageLabel.backgroundColor = [UIColor clearColor];
         messageLabel.textAlignment = NSTextAlignmentLeft;
         
+        
+        
         [self addSubview:messageLabel];
         
         

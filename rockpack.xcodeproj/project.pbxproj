@@ -534,6 +534,7 @@
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
 		BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */; };
+		BE2BBAC016F386CA0069AD56 /* SYNLoginFormTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2BBABF16F386CA0069AD56 /* SYNLoginFormTextField.m */; };
 		BE7C129F16EA4F020015789B /* GlowSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C129D16EA4F020015789B /* GlowSearch.png */; };
 		BE7C12A016EA4F020015789B /* GlowSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C129E16EA4F020015789B /* GlowSearch@2x.png */; };
 		BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */; };
@@ -1201,6 +1202,8 @@
 		BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchRootViewController.m; sourceTree = "<group>"; };
 		BE29A33016DE8CAE00C00F92 /* SYNSearchChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchChannelsViewController.h; sourceTree = "<group>"; };
 		BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchChannelsViewController.m; sourceTree = "<group>"; };
+		BE2BBABE16F386CA0069AD56 /* SYNLoginFormTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginFormTextField.h; sourceTree = "<group>"; };
+		BE2BBABF16F386CA0069AD56 /* SYNLoginFormTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginFormTextField.m; sourceTree = "<group>"; };
 		BE7C129D16EA4F020015789B /* GlowSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GlowSearch.png; sourceTree = "<group>"; };
 		BE7C129E16EA4F020015789B /* GlowSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GlowSearch@2x.png"; sourceTree = "<group>"; };
 		BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLargeVideoPanelViewController.h; sourceTree = "<group>"; };
@@ -2648,6 +2651,8 @@
 				BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */,
 				BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */,
 				BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */,
+				BE2BBABE16F386CA0069AD56 /* SYNLoginFormTextField.h */,
+				BE2BBABF16F386CA0069AD56 /* SYNLoginFormTextField.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -3448,6 +3453,7 @@
 				BED4311716F0EBBB0051465B /* SYNLoginErrorArrow.m in Sources */,
 				BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */,
 				01A79BA216F32C6900B05084 /* NSString+Timecode.m in Sources */,
+				BE2BBAC016F386CA0069AD56 /* SYNLoginFormTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

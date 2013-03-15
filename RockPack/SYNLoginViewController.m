@@ -894,12 +894,39 @@
     
     errorArrow.alpha = 0.0;
     
-    [UIView animateWithDuration:0.3 animations:^{
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(errorArrowTapped:)];
+    [errorArrow addGestureRecognizer:tapGesture];
+    
+    [UIView animateWithDuration:0.2 animations:^{
         errorArrow.alpha = 1.0;
     }];
     
     [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
     [self.view addSubview:errorArrow];
+}
+
+-(void)errorArrowTapped:(UITapGestureRecognizer*)recogniser
+{
+    
+    SYNLoginErrorArrow* arrowTapped = (SYNLoginErrorArrow*)recogniser.view;
+    
+    [labelsToErrorArrows enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop){
+        
+        SYNLoginErrorArrow* arrow = (SYNLoginErrorArrow*)value;
+        if(arrow == arrowTapped) {
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                arrow.alpha = 0.0;
+            } completion:^(BOOL finished) {
+                [labelsToErrorArrows removeObjectForKey:key];
+                [arrow removeFromSuperview];
+            }];
+            
+            
+            return;
+        }
+        
+    }];
 }
 
 -(IBAction)registerPressed:(id)sender
@@ -924,10 +951,9 @@
     [UIView animateWithDuration:0.4 animations:^{
         self.view.alpha = 0.0;
     } completion:^(BOOL finished) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginCompleted object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginCompleted
+                                                            object:self];
     }];
-    
-    
 }
 
 
@@ -998,7 +1024,7 @@
 }
 
 
-#pragma mark CoreData Access
+#pragma mark - CoreData Access
 
 
 
