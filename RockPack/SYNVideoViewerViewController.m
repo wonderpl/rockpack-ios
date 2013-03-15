@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractViewController.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
+#import "SYNAbstractViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
@@ -34,8 +34,8 @@
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *starItButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followLabel;
@@ -43,8 +43,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *blackPanelView;
-@property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) IBOutlet UIView *chromeView;
+@property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
@@ -108,19 +108,10 @@
                 aboveSubview: self.panelImageView];
     
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 739, 416)];
 
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.blackPanelView];
-    
-    // Create a dummy view just above the video panel to allow swipes
-//    self.swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 390)];
-//    
-//    // TODO: Remove this test code
-////    swipeView.backgroundColor = [UIColor blueColor];
-//    
-//    [self.view insertSubview: self.swipeView
-//                aboveSubview: self.videoPlaybackViewController.view];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                action: @selector(userTouchedPreviousVideoButton:)];
@@ -435,9 +426,10 @@
          {
              self.blackPanelView.alpha = 0.0f;
              self.chromeView.alpha = 1.0f;
-             self.swipeView.frame =  CGRectMake(20, 142, 958, 149);
+             self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
              self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
              self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
+             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
          }
                         completion: ^(BOOL b)
          {
@@ -455,6 +447,7 @@
              self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
              self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
              self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+             self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
          }
                         completion: ^(BOOL b)
          {

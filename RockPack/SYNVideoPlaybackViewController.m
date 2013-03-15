@@ -8,7 +8,9 @@
 
 #import "AppConstants.h"
 #import "NSIndexPath+Arithmetic.h"
+#import "NSString+Timecode.h"
 #import "SYNVideoPlaybackViewController.h"
+#import "UIFont+SYNFont.h"
 #import <CoreData/CoreData.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/CoreAnimation.h>
@@ -31,8 +33,10 @@
 @property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderMiddleImageView;
 @property (nonatomic, strong) UIImageView *videoPlaceholderTopImageView;
+@property (nonatomic, strong) UILabel *currentTimeLabel;
+@property (nonatomic, strong) UILabel *durationLabel;
+@property (nonatomic, strong) UIProgressView *bufferingProgressView;
 @property (nonatomic, strong) UISlider *shuttleSlider;
-@property (nonatomic, strong) UIView *shuttleBarView;
 @property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
 @property (nonatomic, strong) UIWebView *nextVideoWebView;
@@ -67,24 +71,24 @@
 
     // Make sure we set the desired frame at this point
     self.view.frame = self.requestedFrame;
-    self.view.autoresizingMask = UIViewAutoresizingNone;
+    self.view.clipsToBounds = YES;
 
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
     
     // Use for placeholder
-//    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
+//    [self.view insertSubview: self.videoPlaybackViewController.view
 //                               aboveSubview: self.videoPlaceholderImageView];
     
     [self createNewVideoPlaceholderImageViews];
+    
+    self.shuttleBarView = [self createShuttleBarView];
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
     self.currentVideoWebView = [self createNewVideoWebView];
     
     // Add button that can be used to play video (if not autoplaying)
     self.videoPlayButton = [self createVideoPlayButton];
-
-    self.shuttleBarView = [self createShuttleBarView];
 }
 
 
@@ -102,38 +106,76 @@
 
 - (UIView *) createShuttleBarView
 {
-    UIView *shuttleBarView = [[UIView alloc] initWithFrame: CGRectMake(47, 510, 326, 25)];
-
-
+    // Create out shuttle bar view at the bottom of our video view
+    CGRect shuttleBarFrame = self.view.frame;
+    shuttleBarFrame.size.height = kShuttleBarHeight;
+    shuttleBarFrame.origin.x = 0.0f;
+    shuttleBarFrame.origin.y = self.view.frame.size.height - kShuttleBarHeight;
+    UIView *shuttleBarView = [[UIView alloc] initWithFrame: shuttleBarFrame];
     
-    // TODO: Test: remove
-//    UIView *testView = [[UIView alloc] initWithFrame: CGRectMake(47, 510, 326, 25)];
-//    testView.backgroundColor = [UIColor redColor];
-//    [self.view addSubview: testView];
-
+    // Add transparent background view
+    UIView *shuttleBarBackgroundView = [[UIView alloc] initWithFrame: shuttleBarView.bounds];
+    shuttleBarBackgroundView.alpha = 0.5f;
+    shuttleBarBackgroundView.backgroundColor = [UIColor blackColor];
+    [shuttleBarView addSubview: shuttleBarBackgroundView];
     
     // Add play/pause button
     self.shuttleBarPlayPauseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     
     // Set this subview to appear slightly offset from the left-hand side
-    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, 35, 35);
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, kShuttleBarButtonWidth, kShuttleBarHeight);
     
-    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed:@"ButtonShuttleBarPlay.png"]
+    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPlay.png"]
                                     forState: UIControlStateNormal];
     
     [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
                                     forState: UIControlStateSelected];
     
+    self.shuttleBarPlayPauseButton.backgroundColor = [UIColor clearColor];
+    [shuttleBarView addSubview: self.shuttleBarPlayPauseButton];
+    
+    // Add time labels
+    self.currentTimeLabel = [self createTimeLabelAtXPosition: kShuttleBarButtonWidth
+                                               textAlignment: NSTextAlignmentRight];
+    
+    self.currentTimeLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
+    
+    [shuttleBarView addSubview: self.currentTimeLabel];
+    
+    self.durationLabel = [self createTimeLabelAtXPosition: self.view.frame.size.width - kShuttleBarTimeLabelWidth - kShuttleBarButtonWidth
+                                            textAlignment: NSTextAlignmentLeft];
+    
+    self.durationLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
+    
+    [shuttleBarView addSubview: self.durationLabel];
+    
     // Add shuttle slider
     // Set custom slider track images
-    UIImage *shuttleSliderLeftTrack = [[UIImage imageNamed: @"ShuttleSliderLeftSide.png"]
-                                       stretchableImageWithLeftCapWidth: 10.0
-                                       topCapHeight: 0.0];
-	
-	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleSliderRightSide.png"]
-                                        stretchableImageWithLeftCapWidth: 10.0
-                                        topCapHeight: 0.0];
+    CGFloat sliderOffset = kShuttleBarButtonWidth + kShuttleBarTimeLabelWidth + kShuttleBarSliderOffset;
     
+    UIImage *sliderBackgroundImage = [UIImage imageNamed: @"ShuttleBarPlayerBar.png"];
+    
+    UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 2 - (2 * sliderOffset), 10)];
+    
+    sliderBackgroundImageView.image = [sliderBackgroundImage resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+    [shuttleBarView addSubview: sliderBackgroundImageView];
+    
+    // Add the progress bar over the background, but underneath the slider
+    self.bufferingProgressView = [[UIProgressView alloc] initWithFrame: CGRectMake(sliderOffset+1, 17, shuttleBarFrame.size.width - (2 * sliderOffset), 10)];
+    UIImage *progressImage = [[UIImage imageNamed: @"ShuttleBarBufferBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+    // Note: this image needs to be exactly the same size at the left hand-track bar, or the bar will only display as a line
+	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleBarRemainingBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+
+    self.bufferingProgressView.progressImage = progressImage;
+    self.bufferingProgressView.trackImage = shuttleSliderRightTrack;
+    self.bufferingProgressView.progress = 0.0f;
+    [shuttleBarView addSubview: self.bufferingProgressView];
+    
+    self.shuttleSlider = [[UISlider alloc] initWithFrame: CGRectMake(sliderOffset, 9, shuttleBarFrame.size.width - (2 * sliderOffset), 25)];
+    
+    UIImage *shuttleSliderLeftTrack = [[UIImage imageNamed: @"ShuttleBarProgressBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+
+       
     [self.shuttleSlider setMinimumTrackImage: shuttleSliderLeftTrack
                                     forState: UIControlStateNormal];
 	
@@ -141,21 +183,45 @@
                                     forState: UIControlStateNormal];
 	
 	// Custom slider thumb image
-    [self.shuttleSlider setThumbImage: [UIImage imageNamed:@"ShuttleSliderThumb.png"]
-                        forState: UIControlStateNormal];
+    [self.shuttleSlider setThumbImage: [UIImage imageNamed: @"ShuttleBarSliderThumb.png"]
+                             forState: UIControlStateNormal];
+        
+    self.shuttleSlider.value = 0.0f;
+    
+    [shuttleBarView addSubview: self.shuttleSlider];
     
     // Add AirPlay button
     // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
     MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    // Set this subview to appear slightly offset from the left-hand side
-    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, 35, 35);
+    volumeView.frame = CGRectMake(self.view.frame.size.width - kShuttleBarButtonWidth + 18, 12, 25, kShuttleBarHeight);
     [volumeView setShowsVolumeSlider: NO];
     [volumeView sizeToFit];
-    [self.view addSubview: volumeView];
+    volumeView.backgroundColor = [UIColor clearColor];
+    [shuttleBarView addSubview: volumeView];
     
-    [self.view addSubview: self.shuttleBarView];
+    [self.view addSubview: shuttleBarView];
     
     return shuttleBarView;
+}
+
+
+- (UILabel *) createTimeLabelAtXPosition: (CGFloat) xPosition
+                           textAlignment: (NSTextAlignment) textAlignment
+{
+    CGRect timeLabelFrame = self.view.frame;
+    timeLabelFrame.size.height = kShuttleBarHeight - 4;
+    timeLabelFrame.size.width = kShuttleBarTimeLabelWidth;
+    timeLabelFrame.origin.x = xPosition;
+    timeLabelFrame.origin.y = 4;
+
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame: timeLabelFrame];
+//    timeLabel.text = @"0:00";
+    timeLabel.textColor = [UIColor whiteColor];
+    timeLabel.textAlignment = textAlignment;
+    timeLabel.font = [UIFont boldRockpackFontOfSize: 12.0f];
+    timeLabel.backgroundColor = [UIColor clearColor];
+    
+    return timeLabel;
 }
 
 
@@ -179,7 +245,7 @@
     newVideoWebView.mediaPlaybackAllowsAirPlay = YES;
     
     [self.view insertSubview: newVideoWebView
-                aboveSubview: self.videoPlaceholderView];
+                belowSubview: self.shuttleBarView];
 
     return newVideoWebView;
 }
