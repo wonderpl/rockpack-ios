@@ -735,7 +735,15 @@
         }
     }
     
-    
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate* potentialDate = [dateFormatter dateFromString:[self dateStringFromCurrentInput]];
+    // not a real date
+    if(!potentialDate) {
+        [self placeErrorLabel:@"The Date is not Valid" NextToView:dobView];
+        return NO;
+    }
+        
     
     
     
@@ -760,6 +768,10 @@
         [textField resignFirstResponder];
     }
 }
+-(NSString*)dateStringFromCurrentInput
+{
+    return [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text];
+}
 -(IBAction)registerNewUser:(id)sender
 {
     // Check Text Fields
@@ -780,7 +792,7 @@
     
     NSDictionary* userData = @{@"username": userNameInputField.text,
                                @"password": passwordInputField.text,
-                               @"date_of_birth": [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text],
+                               @"date_of_birth": [self dateStringFromCurrentInput],
                                @"locale":@"en-US",
                                @"email": emailInputField.text};
     
