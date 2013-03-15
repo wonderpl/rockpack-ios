@@ -745,12 +745,6 @@
         return NO;
     }
     
-    if(![passwordInputField.text isMatchedByRegex:@"^[a-zA-Z]+[a-zA-Z0-9]*$"]) {
-        [self placeErrorLabel:@"Password has invalid characters" NextToView:passwordInputField];
-        [passwordInputField becomeFirstResponder];
-        return NO;
-    }
-    
     if(ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4) {
         [self placeErrorLabel:@"Date Invalid" NextToView:dobView];
         [ddInputField becomeFirstResponder];

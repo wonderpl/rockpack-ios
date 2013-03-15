@@ -233,6 +233,49 @@
         }];
 }
 
+-(void)showRemovedLastVideo
+{
+    CGRect contractedCollectionViewFrame = self.videoQueueCollectionView.frame;
+    contractedCollectionViewFrame.size.width -= kVideoQueueCellWidth;
+    
+    self.videoQueueCollectionView.frame = contractedCollectionViewFrame;
+    
+    [self.videoQueueCollectionView reloadData];
+    
+    
+//    if(contractedCollectionViewFrame.size.width + kVideoQueueCellWidth < scrollView.frame.size.width)
+//    {
+//        
+//        // 4. snap the offset back (which would bring the cells to the left)
+//        
+//        [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x - kVideoQueueCellWidth, 0.0)];
+//        
+//        
+//        // 5. snap the cells to the right (which will bring them back to where they where before)
+//        
+//        self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x - kVideoQueueCellWidth,
+//                                                           self.videoQueueCollectionView.center.y);
+//        
+//        // 6. After leaving the conditional the cells are where they where but with the content offset to the left so that it can scroll
+//        
+//        leftmostOffset = scrollView.contentOffset;
+//        
+//    }
+    
+    [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
+                          delay: 0.5f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         
+                         self.videoQueueCollectionView.center = CGPointMake(self.videoQueueCollectionView.center.x + kVideoQueueCellWidth,
+                                                                            self.videoQueueCollectionView.center.y);
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         
+                     }];
+}
 
 
 -(void)clearVideoQueue
