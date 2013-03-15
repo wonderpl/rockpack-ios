@@ -722,7 +722,6 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="BackgroundGeneric.jpg">{1024, 768}</string>
-
 			<string key="ButtonActivityDefault.png">{84, 43}</string>
 			<string key="ButtonActivityHighlighted.png">{84, 43}</string>
 			<string key="ButtonActivitySelected.png">{84, 43}</string>

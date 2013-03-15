@@ -24,11 +24,14 @@
 
 @end
 
-// Interfeace
+
 @interface SYNVideoPlaybackViewController : UIViewController
 
 @property (nonatomic, weak) id<SYNVideoPlaybackViewControllerDelegate> delegate;
 
+@property (nonatomic, assign, readonly) NSTimeInterval currentTime;
+@property (nonatomic, assign, readonly) NSTimeInterval duration;
+@property (nonatomic, strong) UIView *shuttleBarView;
 @property (nonatomic, strong) VideoInstance* currentVideoInstance;
 
 // Initialisation
@@ -42,14 +45,11 @@
                                selectedIndexPath: (NSIndexPath *) selectedIndexPath
                                         autoPlay: (BOOL) autoPlay;
 
-
 // Player control
 - (void) playVideoAtIndex: (NSIndexPath *) newIndexPath;
 - (void) loadNextVideo;
 - (void) loadPreviousVideo;
 
-// Player properties
-@property (nonatomic, assign, readonly) NSTimeInterval duration;
-@property (nonatomic, assign, readonly) NSTimeInterval currentTime;
+
 
 @end

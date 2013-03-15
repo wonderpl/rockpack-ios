@@ -37,11 +37,6 @@
 #define kAPICompleteChannels @"/ws/complete/channels/"
 
 
-
-
-
-
-
 // Timeout for API calls
 
 #define kAPIDefaultTimout 30
@@ -182,6 +177,11 @@ typedef enum {
 #define kShuttleBarUpdateTimerInterval 0.5f
 #define kMiddlePlaceholderCycleTime 2.0f
 #define kBottomPlaceholderCycleTime 4.0f
+#define kShuttleBarHeight 44.0f
+#define kShuttleBarTimeLabelWidth 40.0f
+#define kShuttleBarTimeLabelOffset 100.0f
+#define kShuttleBarButtonWidth 77.0f
+#define kShuttleBarSliderOffset 10.0f
 
 // Notifications
 #define kNoteBackButtonShow @"kNoteBackButtonShow"

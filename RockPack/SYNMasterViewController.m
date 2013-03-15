@@ -142,26 +142,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.inboxLabel.font = boldFont;
     self.notificationsLabel.font = boldFont;
     
-    // == Set up Recognisers == //
-    
-    UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                               action: @selector(swipeGesturePerformed:)];
-    
-    [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer:rightSwipeRecogniser];
-    
-    rightSwipeRecogniser.delegate = self;
-    
-    
-    UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                              action: @selector(swipeGesturePerformed:)];
-    
-    [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer: leftSwipeRecogniser];
-    
-    
-    leftSwipeRecogniser.delegate = self;
-    
     self.clearTextButton.alpha = 0.0;
     self.glowTextImageView.alpha = 0.0;
     self.glowTextImageView.userInteractionEnabled = NO;
@@ -541,42 +521,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [UIView animateWithDuration:0.1 animations:^{
         self.glowTextImageView.alpha = 0.0;
     }];
-}
-
-#pragma mark - Gesture Recogniser Delegate
-
--(void)swipeGesturePerformed:(UIGestureRecognizer*)recogniser
-{
-    UISwipeGestureRecognizerDirection direction = ((UISwipeGestureRecognizer*)recogniser).direction;
-    if(direction == UISwipeGestureRecognizerDirectionRight)
-    {
-        
-        self.inboxButton.selected = YES;
-        if(!self.currentOverlayViewController) {
-            [self showOverlay:self.inboxOverlayViewController withCompletionBlock:nil];
-        }
-        
-    }
-    else if(direction == UISwipeGestureRecognizerDirectionLeft)
-    {
-        self.inboxButton.selected = NO;
-        if(self.currentOverlayViewController) {
-            [self hideOverlay:self.currentOverlayViewController withCompletionBlock:nil];
-        }
-    }
-}
-
-- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch: (UITouch *) touch
-{
-    // TODO: Look into the exact conditions where the user can swipe
-    return YES;
-}
-
-
-- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
-{
-    // TODO: Look into the exact conditions where the user can swipe
-    return YES;
 }
 
 
