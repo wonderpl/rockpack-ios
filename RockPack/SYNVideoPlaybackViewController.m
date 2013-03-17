@@ -189,6 +189,10 @@
                              forState: UIControlStateNormal];
         
     self.shuttleSlider.value = 0.0f;
+
+    [self.shuttleSlider addTarget: self
+                           action: @selector(updateTimeFromSlider:)
+                 forControlEvents: UIControlEventValueChanged];
     
     [shuttleBarView addSubview: self.shuttleSlider];
     
@@ -536,6 +540,13 @@
 - (NSTimeInterval) currentTime
 {
     return [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getCurrentTime();"] doubleValue];
+}
+
+// Get the playhead time of the current video
+- (void) setCurrentTime: (NSTimeInterval) newTime
+{
+    NSString *callString = [NSString stringWithFormat: @"player.seekTo(%f);", newTime];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: callString];
 }
 
 
@@ -989,6 +1000,11 @@
     
     // and slider
     self.shuttleSlider.value = currentTime / self.currentDuration;
+}
+
+- (void) updateTimeFromSlider: (UISlider *) slider
+{
+    [self setCurrentTime: slider.value * self.currentDuration];
 }
 
 
