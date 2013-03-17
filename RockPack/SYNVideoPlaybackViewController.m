@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, assign) CGRect requestedFrame;
+@property (nonatomic, assign) NSTimeInterval currentDuration;
 @property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
@@ -95,6 +96,7 @@
 - (void) viewDidDisappear: (BOOL) animated
 {
     [self stopBufferMonitoringTimer];
+    [self stopShuttleBarUpdateTimer];
     
     [self stopVideoInWebView: self.currentVideoWebView];
     self.currentVideoWebView = nil;
@@ -775,6 +777,7 @@
         }
         else if ([actionData isEqualToString: @"ended"])
         {
+            [self stopShuttleBarUpdateTimer];
             [self stopBufferMonitoringTimer];
             [self stopVideoInWebView: self.currentVideoWebView];
             [self swapVideoWebViews];
@@ -784,9 +787,20 @@
             [self fadeOutPlayButton];
             [self fadeUpVideoPlayerInWebView: self.currentVideoWebView];
             [self startBufferMonitoringTimer];
+            
+            // Now cache the duration of this video for use in the progress updates
+            self.currentDuration = self.duration;
+            
+            if (self.currentDuration > 0.0f)
+            {
+                // Only start if we have a valid duration
+                [self startShuttleBarUpdateTimer];
+                self.durationLabel.text = [NSString timecodeStringFromSeconds: self.currentDuration];
+            }
         }
         else if ([actionData isEqualToString: @"paused"])
         {
+            [self stopShuttleBarUpdateTimer];
             [self stopBufferMonitoringTimer];
             [self fadeUpPlayButton];
         }
@@ -911,15 +925,18 @@
 {
     [self.shuttleBarUpdateTimer invalidate];
     
-    self.shuttleBarUpdateTimer = [NSTimer scheduledTimerWithTimeInterval: kShuttleBarUpdateTimerInterval
-                                                                  target: self
-                                                                selector: @selector(monitorBufferLevel)
-                                                                userInfo: nil
-                                                                 repeats: YES];
+    // Schedule the timer on a different runloop so that we continue to get updates even when scrolling collection views etc.
+    self.shuttleBarUpdateTimer = [NSTimer timerWithTimeInterval: kShuttleBarUpdateTimerInterval
+                                                       target: self
+                                                     selector: @selector(updateShuttleBarProgress)
+                                                     userInfo: nil
+                                                      repeats: YES];
+    
+    [[NSRunLoop mainRunLoop] addTimer: self.shuttleBarUpdateTimer forMode: NSRunLoopCommonModes];
 }
 
 
-- (void) stophuttleBarUpdateTimer
+- (void) stopShuttleBarUpdateTimer
 {
     [self.shuttleBarUpdateTimer invalidate], self.shuttleBarUpdateTimer = nil;
 }
@@ -960,6 +977,18 @@
            [self stopBufferMonitoringTimer]; 
         }
     }
+}
+
+
+- (void) updateShuttleBarProgress
+{
+    NSTimeInterval currentTime = self.currentTime;
+    
+    // Update current time label
+    self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: currentTime];
+    
+    // and slider
+    self.shuttleSlider.value = currentTime / self.currentDuration;
 }
 
 
@@ -1071,7 +1100,7 @@
      }];
 }
 
--(VideoInstance*)currentVideoInstance
+- (VideoInstance*) currentVideoInstance
 {
     return (VideoInstance*)[self.fetchedResultsController objectAtIndexPath:self.currentSelectedIndexPath];
 }
