@@ -129,6 +129,12 @@
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
     [self.swipeView addGestureRecognizer: leftSwipeRecogniser];
     
+    UITapGestureRecognizer* tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                    action: @selector(userTappedVideo)];
+    
+    tapRecogniser.delegate = self;
+    [self.swipeView addGestureRecognizer: tapRecogniser];
+    
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
     [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
