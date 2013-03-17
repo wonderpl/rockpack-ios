@@ -12,6 +12,7 @@
 #import "NSIndexPath+Arithmetic.h"
 #import "SYNAbstractViewController.h"
 #import "SYNMasterViewController.h"
+#import "SYNPassthroughView.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
 #import "SYNVideoViewerThumbnailLayout.h"
@@ -43,7 +44,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *blackPanelView;
-@property (nonatomic, strong) IBOutlet UIView *chromeView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
@@ -103,6 +104,7 @@
     self.blackPanelView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
     self.blackPanelView.backgroundColor = [UIColor blackColor];
     self.blackPanelView.alpha = 0.0f;
+
     
     [self.view insertSubview: self.blackPanelView
                 aboveSubview: self.panelImageView];
@@ -126,12 +128,6 @@
     leftSwipeRecogniser.delegate = self;
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
     [self.swipeView addGestureRecognizer: leftSwipeRecogniser];
-    
-    UITapGestureRecognizer* tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                    action: @selector(userTappedVideo)];
-    
-    tapRecogniser.delegate = self;
-    [self.swipeView addGestureRecognizer: tapRecogniser];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     

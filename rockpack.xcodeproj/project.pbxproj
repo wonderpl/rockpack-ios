@@ -420,7 +420,6 @@
 		01E428161666671D009B941F /* Interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280E1666671D009B941F /* Interpolator.cpp */; };
 		01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4281916666F09009B941F /* SYNChannelSelectorCell.m */; };
 		01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */; };
-		01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */; };
 		01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */; };
 		01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E5670416B5E2F400B8B218 /* HPTextViewInternal.m */; };
 		01E5670E16B5EF7C00B8B218 /* MessageEntryInputField.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E5670C16B5EF7C00B8B218 /* MessageEntryInputField.png */; };
@@ -1060,8 +1059,6 @@
 		01E4281816666F09009B941F /* SYNChannelSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelSelectorCell.h; sourceTree = "<group>"; };
 		01E4281916666F09009B941F /* SYNChannelSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelSelectorCell.m; sourceTree = "<group>"; };
 		01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelSelectorCell.xib; sourceTree = "<group>"; };
-		01E566CE16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
-		01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingScrollView.m; sourceTree = "<group>"; };
 		01E5670116B5E2F400B8B218 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		01E5670316B5E2F400B8B218 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -1727,15 +1724,6 @@
 				015CB00E16AD933300FEB8E7 /* SYNFriendThumbnailCell.xib */,
 			);
 			name = "Friend cells";
-			sourceTree = "<group>";
-		};
-		0162285316C2AA7F008D1587 /* KeyboardAvoidinScroll */ = {
-			isa = PBXGroup;
-			children = (
-				01E566CE16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.h */,
-				01E566CF16B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m */,
-			);
-			name = KeyboardAvoidinScroll;
 			sourceTree = "<group>";
 		};
 		01677DDA1655491100B1B1D8 /* Networking */ = {
@@ -2785,7 +2773,6 @@
 				BE0AAD2616E6521300DA958E /* Autocomplete Panel */,
 				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
-				0162285316C2AA7F008D1587 /* KeyboardAvoidinScroll */,
 				BE0815CE16D6444200ADB1DC /* Overlays */,
 				BEF9E5B516DD242A00286113 /* VideoPlayback */,
 				BEF9E5B416DD23F000286113 /* VideoQueue */,
@@ -3390,7 +3377,6 @@
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
 				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
 				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
-				01E566D016B55DCF00B8B218 /* TPKeyboardAvoidingScrollView.m in Sources */,
 				01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */,
 				01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */,
 				0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */,
