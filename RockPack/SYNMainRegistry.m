@@ -12,7 +12,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "VideoInstance.h"
-#import "AccessInfo.h"
 #import <CoreData/CoreData.h>
 
 #define kChannelsViewId @"Channels"

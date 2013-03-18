@@ -19,6 +19,7 @@
 
 //#define kAPIHostName @"dev.rockpack.com"
 #define kAPIHostName @"demo.rockpack.com"
+#define kAPISecureHostName @"secure.demo.rockpack.com"
 
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
@@ -26,9 +27,9 @@
 // Main RestFul API
 
 // Login
-#define kAPISecureLogin             @"https://secure.demo.rockpack.com/ws/login/"
-#define kAPISecureExternalLogin     @"https://secure.demo.rockpack.com/ws/login/external/"
-#define kAPISecureRegister          @"https://secure.demo.rockpack.com/ws/register/"
+#define kAPISecureLogin             @"/ws/login/"
+#define kAPISecureExternalLogin     @"/ws/login/external/"
+#define kAPISecureRegister          @"/ws/register/"
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos            @"/ws/search/videos/"
@@ -44,7 +45,7 @@
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
 
 // Channel management
-#define kAPICreateNewChannel        @"https://secure.demo.rockpack.com//ws/USERID/channels/"                     /* POST */
+#define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 
 // Channel privacy

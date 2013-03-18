@@ -14,7 +14,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelHeaderView.h"
-#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNTextField.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 
@@ -264,10 +264,6 @@
     //        "public": true
     //    }
     
-    // @"pKjfvsAqRT2QNx1CH1L-yA"
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *userId = delegate.userRegistry.lastReceivedAccessInfoObject.userId;
-    
     // Do we create a new channel, or just update an existing one
     if (self.channel.channelOwner == nil)
     {
@@ -278,15 +274,14 @@
                                    @"cover": @"",
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
-        [appDelegate.networkEngine createChannelWithUserId: userId
-                                                      data: userData
-                                              withComplete: ^(void )
+        [appDelegate.oAuthNetworkEngine createChannelWithData: userData
+          completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel
              //             [self uploadVideosForChannel];
          }
-                                                  andError: ^(NSDictionary* errorDictionary)
+         errorHandler: ^(NSDictionary* errorDictionary)
          {
              DebugLog(@"Channel creation failed");
              NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
@@ -308,21 +303,20 @@
                                    @"cover": @"",
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
-        [appDelegate.networkEngine updateChannelWithUserId: userId
-                                                 channelId: self.channel.uniqueId
-                                                      data: userData
-                                              withComplete: ^(void )
+        [appDelegate.oAuthNetworkEngine updateChannelWithChannelId: self.channel.uniqueId
+                                                              data: userData
+         completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel
              //             [self uploadVideosForChannel];
          }
-                                                  andError: ^(NSDictionary* errorDictionary)
+         errorHandler: ^(NSDictionary* errorDictionary)
          {
              DebugLog(@"Channel creation failed");
-             NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
+             NSDictionary* formErrors = errorDictionary[@"form_errors"];
              
-             if(formErrors)
+             if (formErrors)
              {
                  // TODO: Show errors in channel creation
                  //           [self showRegistrationError:formErrors];

@@ -9,11 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SYNRegistry.h"
 
-@interface SYNMainRegistry : SYNRegistry {
-
-}
-
-
+@interface SYNMainRegistry : SYNRegistry
 
 -(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary;
 -(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId;

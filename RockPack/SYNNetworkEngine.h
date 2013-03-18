@@ -6,14 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "MKNetworkEngine.h"
+
 
 #import "AppConstants.h"
+#import "SYNAbstractNetworkEngine.h"
 #import "SYNNetworkOperationJsonObject.h"
 
-@interface SYNNetworkEngine : MKNetworkEngine
-
-- (id) initWithDefaultSettings;
+@interface SYNNetworkEngine : SYNAbstractNetworkEngine
 
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
@@ -21,50 +20,16 @@
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
 
-- (void) updateVideosScreenForCategory:(NSString*)categoryId;
+- (void) updateVideosScreenForCategory: (NSString*) categoryId;
 - (void) updateChannel: (NSString *) resourceURL;
-- (void) updateChannelsScreenForCategory:(NSString*)category;
+- (void) updateChannelsScreenForCategory: (NSString*) category;
 
-- (void) searchVideosForTerm:(NSString*)searchTerm;
-- (void) searchChannelsForTerm:(NSString*)searchTerm;
+- (void) searchVideosForTerm: (NSString*) searchTerm;
+- (void) searchChannelsForTerm: (NSString*) searchTerm;
 
-- (void) getAutocompleteForHint:(NSString*)hint
-                    forResource:(EntityType)entityType
+- (void) getAutocompleteForHint: (NSString*)hint
+                    forResource: (EntityType)entityType
                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
-
--(void)doSimpleLoginForUsername:(NSString*)username
-                    forPassword:(NSString*)password
-                   withComplete: (MKNKLoginCompleteBlock) completionBlock
-                       andError: (MKNKUserErrorBlock) errorBlock;
-
--(void)doFacebookLoginWithAccessToken:(NSString*)facebookAccessToken
-                         withComplete: (MKNKLoginCompleteBlock) completionBlock
-                             andError: (MKNKUserErrorBlock) errorBlock;
-
--(void)registerUserWithData:(NSDictionary*)userData
-               withComplete:(MKNKLoginCompleteBlock)completionBlock
-                   andError:(MKNKUserErrorBlock)errorBlock;
-
--(void)retrieveUserFromAccessInfo:(AccessInfo*)accessInfo
-                     withComplete:(MKNKUserCompleteBlock)completionBlock
-                         andError:(MKNKUserErrorBlock)errorBlock;
-
-- (void) createChannelWithUserId: (NSString *) userId
-                            data: (NSDictionary*) userData
-                    withComplete: (MKNKVoidBlock) completionBlock
-                        andError: (MKNKUserErrorBlock) errorBlock;
-
-- (void) updateChannelWithUserId: (NSString *) userId
-                       channelId: (NSString *) channelId
-                            data: (NSDictionary*) userData
-                    withComplete: (MKNKVoidBlock) completionBlock
-                        andError: (MKNKUserErrorBlock) errorBlock;
-
-- (void) updateVideosForChannelWithUserId: (NSString *) userId
-                                channelId: (NSString *) channelId
-                             videoIdArray: (NSArray *) videoIdArray
-                             withComplete: (MKNKVoidBlock) completionBlock
-                                 andError: (MKNKUserErrorBlock) errorBlock;
 @end

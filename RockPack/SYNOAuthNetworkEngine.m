@@ -7,16 +7,11 @@
 //
 
 #import "AppConstants.h"
-
-#import "SYNOAuthNetworkEngine.h"
+#import "NSString+Utils.h"
+#import "SYNAppDelegate.h"
+#import "SYNNetworkOperationJsonObject.h"
 #import "SYNOAuth2Credential.h"
-
-
-
-
-// Hostname
-#define kHostName @"rockpack-oauth2-demo.herokuapp.com"
-
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNOAuthNetworkEngine ()
 
@@ -30,6 +25,13 @@
 @end
 
 @implementation SYNOAuthNetworkEngine
+
+#pragma mark - OAuth2 Housekeeping functions
+
+- (NSString *) hostName
+{
+    return kAPISecureHostName;
+}
 
 - (BOOL) isAuthenticated
 {
@@ -50,23 +52,7 @@
 	// If we're not authenticated, and this is not part of the OAuth process,
 	if (!self.isAuthenticated)
     {
-		DebugLog(@"enqueueSignedOperation - Not authenticated");
-		[self authenticateWithCompletionBlock: ^(NSError *error)
-        {
-			if (error)
-            {
-				// Auth failed, so call the MKNetworkOperation object's error blocks (if any) with our own custom NSError
-				DebugLog(@"Auth error: %@", error);
-                [request operationFailedWithError: [NSError errorWithDomain: NSURLErrorDomain
-                                                                       code: NSURLErrorUserAuthenticationRequired
-                                                                   userInfo: nil]];
-			}
-			else
-            {
-				// Auth succeeded, call this method again recursively
-				[self enqueueSignedOperation: request];
-			}
-		}];
+		AssertOrLog(@"enqueueSignedOperation - Not authenticated");
 	}
 	else
     {
@@ -83,95 +69,262 @@
 }
 
 
-- (void) authenticateWithCompletionBlock: (SYNOAuth2CompletionBlock) completionBlock
+#pragma mark - Sign-up & Sign-in (inc. Facebook)
+
+// This code block is common to all of the signup/signin methods
+- (void) addCommonOAuthPropertiesToUnsignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                                          completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                                               errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-	// Store the Completion Block to call after authentication
-	self.oAuthCompletionBlock = completionBlock;
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
     
-    NSDictionary *headerFields = @{@"grant_type" : @"password",
-                                   @"client_id" : kOAuth2ClientId,
-                                   @"username" : @"ios",
-                                   @"password" : @"password"};
-    
-    MKNetworkOperation *op = [self operationWithPath: @"oauth2/token"
-                                              params: headerFields
-                                          httpMethod: @"GET"];
-    
-    // Set Basic Authentication username and password
-    [op setUsername: kOAuth2ClientId
-           password: kOAuth2ClientSecret
-          basicAuth: YES];
-    
-    [op addCompletionHandler: ^(MKNetworkOperation *completedOperation)
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
      {
-         NSDictionary *response = [completedOperation responseJSON];
+         NSString* possibleError = responseDictionary[@"error"];
          
-         self.oAuth2Credential = [SYNOAuth2Credential credentialWithAccessToken: response[@"access_token"]
-                                                                   refreshToken: response[@"refresh_token"]
-                                                                      tokenType: response[@"token_type"]
-                                                                      expiresIn: response[@"expires_in"]];
+         if(possibleError)
+         {
+             errorBlock(responseDictionary);
+             return;
+         }
+         
+         self.oAuth2Credential = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
+                                                                      expiresIn: responseDictionary[@"expires_in"]
+                                                                   refreshToken: responseDictionary[@"refresh_token"]
+                                                                    resourceURL: responseDictionary[@"resource_url"]
+                                                                      tokenType: responseDictionary[@"token_type"]
+                                                                         userId: responseDictionary[@"user_id"]];
+         
+         if (self.oAuth2Credential == nil)
+         {
+             DebugLog(@"Invalid credential returned");
+             errorBlock(@{@"parsing_error": @"credentialWithAccessToken: did not complete correctly"});
+             return;
+         }
+         
          // We were successful, so save the credentials to the keychain
          [self.oAuth2Credential saveToKeychainForService: kOAuth2ClientId
                                                  account: kOAuth2ClientId];
          
-         // Then, call our completion block (indicating that there were no errors)
-         self.oAuthCompletionBlock(nil);
+         completionBlock(self.oAuth2Credential);
+         
      }
-     errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
+                                  errorHandler: ^(NSError* error)
      {
-         // Something went wrong, so return the error to the completion block
-         self.oAuthCompletionBlock(error);
+         DebugLog(@"Register Facebook Token with Server Failed");
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
      }];
+
+}
+
+// Get authentication token, by passing facebook access token to the API, and getting the authentication token in return
+- (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
+                      completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                           errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary* postLoginParams = @{@"external_system" : @"facebook",
+                                      @"external_token" : facebookAccessToken};
     
-    // Queue the authentication operation
-    [self enqueueOperation: op];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureExternalLogin
+                                                                                                        params: postLoginParams
+                                                                                                    httpMethod: @"POST"
+                                                                                                           ssl: TRUE];
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
 }
 
 
-- (void) refreshAuthenticationWithCompletionBlock: (SYNOAuth2RefreshCompletionBlock) completionBlock
+// Get authentication token by using exisiting username and password
+- (void) doSimpleLoginForUsername: (NSString*) username
+                      forPassword: (NSString*) password
+                completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-	// Store the Completion Block to call after authentication
-	self.oAuthRefreshCompletionBlock = completionBlock;
+    NSDictionary* postLoginParams = @{@"grant_type" : @"password",
+                                      @"username" : username,
+                                      @"password" : password};
     
-    NSDictionary *headerFields = @{@"grant_type" : @"refresh_token",
-                                   @"client_id" : kOAuth2ClientId,
-                                   @"client_password" : kOAuth2ClientSecret,
-                                   @"refresh_token" : self.oAuth2Credential.refreshToken};
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureLogin
+                                                                                                        params: postLoginParams
+                                                                                                    httpMethod: @"POST"
+                                                                                                           ssl: TRUE];
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
     
-    MKNetworkOperation *op = [self operationWithPath: @"oauth2/token"
-                                              params: headerFields
-                                          httpMethod: @"GET"];
+    [self enqueueOperation: networkOperation];
+}
+
+
+// Get authentication token by registering details with server
+- (void) registerUserWithData: (NSDictionary*) userData
+            completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPISecureRegister
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
-    // Set Basic Authentication username and password
-    [op setUsername: kOAuth2ClientId
-           password: kOAuth2ClientSecret
-          basicAuth: YES];
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
     
-    [op addCompletionHandler: ^(MKNetworkOperation *completedOperation)
+    [self enqueueOperation: networkOperation];
+}
+
+#pragma mark - Common functionality
+
+// This code block is common to all of the signup/signin methods
+- (void) addCommonOAuthPropertiesToSignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                             errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
      {
-         NSDictionary *response = [completedOperation responseJSON];
+         NSString* possibleError = responseDictionary[@"error"];
          
-         // Create a new credential from the returned data
-         self.oAuth2Credential = [SYNOAuth2Credential credentialWithAccessToken: response[@"access_token"]
-                                                                   refreshToken: response[@"refresh_token"]
-                                                                      tokenType: response[@"token_type"]
-                                                                      expiresIn: response[@"expires_in"]];
+         if (possibleError)
+         {
+             errorBlock(responseDictionary);
+             return;
+         }
          
-         // Save the updated credentials to the keychain
-         [self.oAuth2Credential saveToKeychainForService: kOAuth2ClientId
-                                                 account: kOAuth2ClientId];
+         completionBlock(responseDictionary);
          
-         // Then, call our completion block (indicating that there were no errors)
-         self.oAuthCompletionBlock(nil);
      }
-                errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
+     errorHandler: ^(NSError* error)
      {
-         // Something went wrong, so return the error to the completion block
-         self.oAuthCompletionBlock(error);
+         DebugLog(@"API Call failed");
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
      }];
     
-    // Queue the authentication operation
-    [self enqueueOperation: op];
+}
+
+
+#pragma mark - Channel creation
+
+- (void) createChannelWithData: (NSDictionary*) userData
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
+                  errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
+    
+    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+// /ws/USERID/channels/CHANNELID/  /* PUT */
+- (void) updateChannelWithChannelId: (NSString *) channelId
+                               data: (NSDictionary*) userData
+                  completionHandler: (MKNKUserSuccessBlock) completionBlock
+                       errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+//                                                @"CHANNELID" : channelId};
+//
+//    SYNNetworkOperationJsonObject *networkOperation =
+//    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+//                                                          params: userData
+//                                                      httpMethod: @"PUT"];
+//
+//    [networkOperation setUsername: kOAuth2ClientId
+//                         password: @""
+//                        basicAuth: YES];
+//
+//    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+//
+//
+//    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+//     {
+//         NSString* possibleError = [dictionary objectForKey: @"error"];
+//
+//         if(possibleError)
+//         {
+//             errorBlock(dictionary);
+//             return;
+//         }
+//
+//         completionBlock();
+//     }
+//                                  errorHandler: ^(NSError* error)
+//     {
+//         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+//         errorBlock(customErrorDictionary);
+//     }];
+//
+//    [self enqueueOperation: networkOperation];
+//
+}
+//
+// /ws/USERID/channels/CHANNELID/videos/    /* PUT */
+
+
+- (void) updateVideosForChannelWithChannelId: (NSString *) channelId
+                                videoIdArray: (NSArray *) videoIdArray
+                           completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+//
+//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+//                                                @"CHANNELID" : channelId};
+//
+//    SYNNetworkOperationJsonObject *networkOperation =
+//    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+//                                                          params: nil
+//                                                      httpMethod: @"PUT"];
+//
+//    [networkOperation setUsername: kOAuth2ClientId
+//                         password: @""
+//                        basicAuth: YES];
+//
+//    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+//
+//
+//    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+//     {
+//         NSString* possibleError = [dictionary objectForKey: @"error"];
+//
+//         if (possibleError)
+//         {
+//             errorBlock(dictionary);
+//             return;
+//         }
+//
+//         completionBlock();
+//     }
+//     errorHandler: ^(NSError* error)
+//     {
+//         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+//         errorBlock(customErrorDictionary);
+//     }];
+//
+//    [self enqueueOperation: networkOperation];
+//
 }
 
 @end

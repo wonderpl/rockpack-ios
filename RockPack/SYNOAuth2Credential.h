@@ -21,16 +21,22 @@
 @interface SYNOAuth2Credential : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, readonly, copy) NSString *accessToken;
-@property (nonatomic, readonly, copy) NSString *refreshToken;
-@property (nonatomic, readonly, copy) NSString *tokenType;
 @property (nonatomic, readonly, copy) NSDate *expirationDate;
+@property (nonatomic, readonly, copy) NSString *refreshToken;
+@property (nonatomic, readonly, copy) NSString *resourceURL;
+@property (nonatomic, readonly, copy) NSString *tokenType;
+@property (nonatomic, readonly, copy) NSString *userId;
+
+
 
 // Class methods
 
 + (id) credentialWithAccessToken: (NSString *) accessToken
+                       expiresIn: (NSString *) expiresIn
                     refreshToken: (NSString *) refreshToken
+                     resourceURL: (NSString *) resourceURL
                        tokenType: (NSString *) tokenType
-                       expiresIn: (NSString *) expiresIn;
+                          userId: (NSString *) userId;
 
 // Keychain
 

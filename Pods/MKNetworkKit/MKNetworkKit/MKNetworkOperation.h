@@ -24,15 +24,12 @@
 //  THE SOFTWARE.
 
 @class MKNetworkOperation;
-@class AccessInfo;
-@class User;
 
 typedef enum {
   MKNetworkOperationStateReady = 1,
   MKNetworkOperationStateExecuting = 2,
   MKNetworkOperationStateFinished = 3
 } MKNetworkOperationState;
-
 
 typedef void (^MKNKVoidBlock)(void);
 typedef void (^MKNKIDBlock)(void);
@@ -46,14 +43,7 @@ typedef void (^MKNKImageBlock) (NSImage* fetchedImage, NSURL* url, BOOL isInCach
 typedef void (^MKNKResponseErrorBlock)(MKNetworkOperation* completedOperation, NSError* error);
 typedef void (^MKNKErrorBlock)(NSError* error);
 
-
 typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
-
-typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
-
-typedef void (^MKNKLoginCompleteBlock) (AccessInfo*);
-typedef void (^MKNKUserCompleteBlock) (User*);
-typedef void (^MKNKUserErrorBlock) (NSDictionary*);
 
 typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
 
