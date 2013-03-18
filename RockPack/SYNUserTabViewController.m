@@ -9,6 +9,7 @@
 #import "SYNUserTabViewController.h"
 #import "SYNUserTabView.h"
 #import "SYNSearchItemView.h"
+#import "SYNSearchTabView.h"
 
 @interface SYNUserTabViewController ()
 
@@ -25,7 +26,7 @@
     
     self.view = userTabView;
     
-    self.view.frame = CGRectMake(0.0, 0.0,
+    self.view.frame = CGRectMake(0.0, 44.0,
                                  self.view.frame.size.width,
                                  self.view.frame.size.height);
     

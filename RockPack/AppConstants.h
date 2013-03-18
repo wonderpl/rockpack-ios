@@ -205,6 +205,7 @@ typedef enum {
 
 #define kTopTabCount 10
 
+#define kSearchBarItemWidth 100.0
 //
 // Video Overlay
 //

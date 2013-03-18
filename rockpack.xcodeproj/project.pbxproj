@@ -467,6 +467,20 @@
 		01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A69616F754BC00245314 /* SYNUserTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69516F754BC00245314 /* SYNUserTabViewController.m */; };
+		BE03A6C216F7697900245314 /* AvatarKish.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B416F7697900245314 /* AvatarKish.png */; };
+		BE03A6C316F7697900245314 /* AvatarKish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B516F7697900245314 /* AvatarKish@2x.png */; };
+		BE03A6C416F7697900245314 /* BarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B616F7697900245314 /* BarProfile.png */; };
+		BE03A6C516F7697900245314 /* BarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B716F7697900245314 /* BarProfile@2x.png */; };
+		BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B816F7697900245314 /* ButtonFlagDefault.png */; };
+		BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */; };
+		BE03A6C816F7697900245314 /* ButtonFlagHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BA16F7697900245314 /* ButtonFlagHighlighted.png */; };
+		BE03A6C916F7697900245314 /* ButtonFlagHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BB16F7697900245314 /* ButtonFlagHighlighted@2x.png */; };
+		BE03A6CA16F7697900245314 /* ButtonSettingsDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BC16F7697900245314 /* ButtonSettingsDefault.png */; };
+		BE03A6CB16F7697900245314 /* ButtonSettingsDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BD16F7697900245314 /* ButtonSettingsDefault@2x.png */; };
+		BE03A6CC16F7697900245314 /* ButtonSettingsHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BE16F7697900245314 /* ButtonSettingsHighlighted.png */; };
+		BE03A6CD16F7697900245314 /* ButtonSettingsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */; };
+		BE03A6CE16F7697900245314 /* GlossAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6C016F7697900245314 /* GlossAvatar.png */; };
+		BE03A6CF16F7697900245314 /* GlossAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6C116F7697900245314 /* GlossAvatar@2x.png */; };
 		BE08158816D2923F00ADB1DC /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158716D2923F00ADB1DC /* TabTop.png */; };
 		BE08158A16D2926F00ADB1DC /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158916D2926F00ADB1DC /* TabTop@2x.png */; };
 		BE08158C16D292A700ADB1DC /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158B16D292A700ADB1DC /* TabTopSub.png */; };
@@ -1121,6 +1135,20 @@
 		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE03A69416F754BC00245314 /* SYNUserTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabViewController.h; sourceTree = "<group>"; };
 		BE03A69516F754BC00245314 /* SYNUserTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabViewController.m; sourceTree = "<group>"; };
+		BE03A6B416F7697900245314 /* AvatarKish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AvatarKish.png; path = Assets/Images/AvatarKish.png; sourceTree = "<group>"; };
+		BE03A6B516F7697900245314 /* AvatarKish@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarKish@2x.png"; path = "Assets/Images/AvatarKish@2x.png"; sourceTree = "<group>"; };
+		BE03A6B616F7697900245314 /* BarProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BarProfile.png; path = Assets/Images/BarProfile.png; sourceTree = "<group>"; };
+		BE03A6B716F7697900245314 /* BarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BarProfile@2x.png"; path = "Assets/Images/BarProfile@2x.png"; sourceTree = "<group>"; };
+		BE03A6B816F7697900245314 /* ButtonFlagDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFlagDefault.png; path = Assets/Images/ButtonFlagDefault.png; sourceTree = "<group>"; };
+		BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFlagDefault@2x.png"; path = "Assets/Images/ButtonFlagDefault@2x.png"; sourceTree = "<group>"; };
+		BE03A6BA16F7697900245314 /* ButtonFlagHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFlagHighlighted.png; path = Assets/Images/ButtonFlagHighlighted.png; sourceTree = "<group>"; };
+		BE03A6BB16F7697900245314 /* ButtonFlagHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFlagHighlighted@2x.png"; path = "Assets/Images/ButtonFlagHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE03A6BC16F7697900245314 /* ButtonSettingsDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSettingsDefault.png; path = Assets/Images/ButtonSettingsDefault.png; sourceTree = "<group>"; };
+		BE03A6BD16F7697900245314 /* ButtonSettingsDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSettingsDefault@2x.png"; path = "Assets/Images/ButtonSettingsDefault@2x.png"; sourceTree = "<group>"; };
+		BE03A6BE16F7697900245314 /* ButtonSettingsHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSettingsHighlighted.png; path = Assets/Images/ButtonSettingsHighlighted.png; sourceTree = "<group>"; };
+		BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSettingsHighlighted@2x.png"; path = "Assets/Images/ButtonSettingsHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE03A6C016F7697900245314 /* GlossAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossAvatar.png; path = Assets/Images/GlossAvatar.png; sourceTree = "<group>"; };
+		BE03A6C116F7697900245314 /* GlossAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossAvatar@2x.png"; path = "Assets/Images/GlossAvatar@2x.png"; sourceTree = "<group>"; };
 		BE08158716D2923F00ADB1DC /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		BE08158916D2926F00ADB1DC /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 		BE08158B16D292A700ADB1DC /* TabTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSub.png; sourceTree = "<group>"; };
@@ -1819,6 +1847,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BE03A69716F7691B00245314 /* Profile */,
 				011A160F16EF5E4F008CF25E /* Image Picker */,
 				BE270B8516EE485200CDDA6D /* Login */,
 				BE7C129C16EA4EF60015789B /* Search */,
@@ -2535,6 +2564,27 @@
 				BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */,
 			);
 			name = "Account Settings";
+			sourceTree = "<group>";
+		};
+		BE03A69716F7691B00245314 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				BE03A6B416F7697900245314 /* AvatarKish.png */,
+				BE03A6B516F7697900245314 /* AvatarKish@2x.png */,
+				BE03A6B616F7697900245314 /* BarProfile.png */,
+				BE03A6B716F7697900245314 /* BarProfile@2x.png */,
+				BE03A6B816F7697900245314 /* ButtonFlagDefault.png */,
+				BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */,
+				BE03A6BA16F7697900245314 /* ButtonFlagHighlighted.png */,
+				BE03A6BB16F7697900245314 /* ButtonFlagHighlighted@2x.png */,
+				BE03A6BC16F7697900245314 /* ButtonSettingsDefault.png */,
+				BE03A6BD16F7697900245314 /* ButtonSettingsDefault@2x.png */,
+				BE03A6BE16F7697900245314 /* ButtonSettingsHighlighted.png */,
+				BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */,
+				BE03A6C016F7697900245314 /* GlossAvatar.png */,
+				BE03A6C116F7697900245314 /* GlossAvatar@2x.png */,
+			);
+			name = Profile;
 			sourceTree = "<group>";
 		};
 		BE08158F16D3C46800ADB1DC /* Search */ = {
@@ -3294,6 +3344,20 @@
 				01A79B9D16F32C3400B05084 /* ButtonShuttleBarPause@2x.png in Resources */,
 				01A79B9E16F32C3400B05084 /* ButtonShuttleBarPlay.png in Resources */,
 				01A79B9F16F32C3400B05084 /* ButtonShuttleBarPlay@2x.png in Resources */,
+				BE03A6C216F7697900245314 /* AvatarKish.png in Resources */,
+				BE03A6C316F7697900245314 /* AvatarKish@2x.png in Resources */,
+				BE03A6C416F7697900245314 /* BarProfile.png in Resources */,
+				BE03A6C516F7697900245314 /* BarProfile@2x.png in Resources */,
+				BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */,
+				BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */,
+				BE03A6C816F7697900245314 /* ButtonFlagHighlighted.png in Resources */,
+				BE03A6C916F7697900245314 /* ButtonFlagHighlighted@2x.png in Resources */,
+				BE03A6CA16F7697900245314 /* ButtonSettingsDefault.png in Resources */,
+				BE03A6CB16F7697900245314 /* ButtonSettingsDefault@2x.png in Resources */,
+				BE03A6CC16F7697900245314 /* ButtonSettingsHighlighted.png in Resources */,
+				BE03A6CD16F7697900245314 /* ButtonSettingsHighlighted@2x.png in Resources */,
+				BE03A6CE16F7697900245314 /* GlossAvatar.png in Resources */,
+				BE03A6CF16F7697900245314 /* GlossAvatar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

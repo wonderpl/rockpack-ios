@@ -8,8 +8,7 @@
 
 #import "SYNSearchTabView.h"
 #import "SYNSwitch.h"
-
-#define kSearchBarItemWidth 100.0
+#import "AppConstants.h"
 
 @interface SYNSearchTabView ()
 

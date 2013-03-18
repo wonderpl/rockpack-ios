@@ -8,14 +8,18 @@
 
 #import "SYNUserTabView.h"
 #import "SYNSearchItemView.h"
+#import "AppConstants.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNUserTabView ()
 
 
 @property (nonatomic, strong) UIView* mainTabsView;
+@property (nonatomic, strong) UIView* overlayView;
 @property (nonatomic, strong) SYNSearchItemView* channelsItemView;
 @property (nonatomic, strong) SYNSearchItemView* followingItemView;
 @property (nonatomic, strong) SYNSearchItemView* followersItemView;
+@property (nonatomic, strong) UILabel* usernameLabel;
 
 @property (nonatomic, strong) UIImageView* profileImageView;
 @property (nonatomic, strong) UILabel* profileNameLabel;
@@ -32,7 +36,7 @@
         
         // == Main Holder Views == //
         
-        UIImage* mainTabsBGImage = [UIImage imageNamed:@"SearchTabPanelHeader.png"];
+        UIImage* mainTabsBGImage = [UIImage imageNamed:@"BarProfile.png"]; // 140 height
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height - 7.0);
         
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
@@ -40,15 +44,26 @@
         
         self.frame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height);
         
-        //CGFloat midBar = self.frame.size.width * 0.5;
-        
+        self.overlayView = [[UIView alloc] initWithFrame:mainFrame];
+        self.overlayView.backgroundColor = [UIColor clearColor];
         
         UIView* dividerView = [[UIView alloc] initWithFrame:self.frame];
         dividerView.userInteractionEnabled = NO;
         
         
         
-        CGRect itemFrame = CGRectMake(0.0, 0.0, 0.0, 0.0);
+        CGRect itemFrame = CGRectMake(0.0, 0.0, kSearchBarItemWidth, 80.0);
+        
+        // == Username == //
+        
+        UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:22.0];
+        self.usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(160.0, 0.0, 300.0, 80.0)];
+        self.usernameLabel.font = rockpackBoldFont;
+        self.usernameLabel.textAlignment = NSTextAlignmentLeft;
+        self.usernameLabel.backgroundColor = [UIColor clearColor];
+        self.usernameLabel.text = @"Kish Patel";
+        self.usernameLabel.textColor = [UIColor whiteColor];
+        [self.overlayView addSubview:self.usernameLabel];
         
         
         // == Channels Tab == //
@@ -57,7 +72,6 @@
         
         [self.channelsItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
-        [self.mainTabsView addSubview:self.channelsItemView];
         
         
         // == Following Tab == //
@@ -66,7 +80,6 @@
         
         [self.followingItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
-        [self.mainTabsView addSubview:self.followingItemView];
         
         
         // == Followers Tab == //
@@ -75,49 +88,89 @@
         
         [self.followersItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
-        [self.mainTabsView addSubview:self.followersItemView];
+        
+        
+        // == Account Settings == //
+        
+        
+        UIButton* cogImageButton  = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage* cogImage = [UIImage imageNamed:@"ButtonSettingsDefault.png"];
+        cogImageButton.frame = CGRectMake(0.0, 0.0, cogImage.size.width, cogImage.size.height);
+        [cogImageButton setImage:cogImage forState:UIControlStateNormal];
+        [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
+        cogImageButton.center = CGPointMake(170.0, 90.0);
+        [self.overlayView addSubview:cogImageButton];
+        
+        
+        NSString* accountSettingsString = @"ACCOUNT SETTINGS";
+        UIFont* rockpackFont = [UIFont rockpackFontOfSize:16];
+        CGSize acRect = [accountSettingsString sizeWithFont:rockpackFont];
+        UILabel* accountSettingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, acRect.width, acRect.height)];
+        accountSettingsLabel.center = CGPointMake(cogImageButton.center.x + 105.0, cogImageButton.center.y + 5.0);
+        
+        accountSettingsLabel.font = rockpackFont;
+        accountSettingsLabel.textAlignment = NSTextAlignmentLeft;
+        accountSettingsLabel.backgroundColor = [UIColor clearColor];
+        accountSettingsLabel.text = accountSettingsString;
+        accountSettingsLabel.textColor = [UIColor whiteColor];
+        [self.overlayView addSubview:accountSettingsLabel];
+        
         
         
         // == Place Correclty == //
         
         NSArray* tabsToPlace = @[self.channelsItemView, self.followersItemView, self.followingItemView];
         
-        CGFloat currentX = 300.0;
-        CGFloat hOffset = itemFrame.size.width * 0.5;
+        CGFloat currentX = (self.frame.size.width * 0.5) - (itemFrame.size.width * 1.5);
+        CGFloat halfOffset = itemFrame.size.width * 0.5;
+      
         for (SYNSearchItemView* itemTab in tabsToPlace)
         {
             UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchTabDividerHeader.png"]];
             
-            dividerImageView.center = CGPointMake(currentX, self.center.y);
+            CGFloat itemY = self.frame.size.height - itemTab.frame.size.height * 0.5;
+            dividerImageView.center = CGPointMake(currentX, itemY);
             
             [dividerView addSubview:dividerImageView];
             
-            itemTab.center = CGPointMake(currentX + hOffset, self.center.y);
-            currentX += hOffset * 2;
+            
+            itemTab.center = CGPointMake(currentX + halfOffset, itemY);
+            
+            [self.mainTabsView addSubview:itemTab];
+            
+            currentX += halfOffset * 2;
             
         }
+        
+        // == Profile Pic and Name == //
+        
+        self.profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 133.0, 133.0)];
+        self.profileImageView.image = [UIImage imageNamed:@"AvatarKish.png"];
+        [self.overlayView addSubview:self.profileImageView];
+        
+        
         
         
         [self addSubview:self.mainTabsView];
         [self addSubview:dividerView];
+        [self addSubview:self.overlayView];
         
         
-        // == Profile Pic and Name == //
         
-        self.profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, self.frame.size.height)];
-        [self addSubview:self.profileImageView];
         
-        self.profileNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, self.frame.size.height)];
-        [self addSubview:self.profileNameLabel];
+        
         
     }
+    
+    
     return self;
 }
 
 
 -(void)setUser:(User*)user
 {
-    // TODO: Load image and display it
+    
+    self.usernameLabel.text = user.username;
 }
 
 
