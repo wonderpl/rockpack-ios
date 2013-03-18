@@ -189,7 +189,6 @@
                                              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
-    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
      {
@@ -220,66 +219,56 @@
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
-    
-    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: userData
-                                                                                                   httpMethod: @"POST"
-                                                                                                          ssl: TRUE];
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
-    
-    [self enqueueSignedOperation: networkOperation];
+    // TODO: Remove this
+    [self updateVideosForChannelWithChannelId: @"abc"
+                                 videoIdArray: @[@"aaa", @"bbb", @"ccc"]
+                            completionHandler: nil
+                                 errorHandler: nil];
+    // end of TODO
+//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
+//    
+//    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+//    
+//    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+//                                                                                                       params: userData
+//                                                                                                   httpMethod: @"POST"
+//                                                                                                          ssl: TRUE];
+//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+//    
+//    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+//                                         completionHandler: completionBlock
+//                                              errorHandler: errorBlock];
+//    
+//    [self enqueueSignedOperation: networkOperation];
 }
 
 
 // /ws/USERID/channels/CHANNELID/  /* PUT */
+
 - (void) updateChannelWithChannelId: (NSString *) channelId
                                data: (NSDictionary*) userData
                   completionHandler: (MKNKUserSuccessBlock) completionBlock
                        errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
-//                                                @"CHANNELID" : channelId};
-//
-//    SYNNetworkOperationJsonObject *networkOperation =
-//    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
-//                                                          params: userData
-//                                                      httpMethod: @"PUT"];
-//
-//    [networkOperation setUsername: kOAuth2ClientId
-//                         password: @""
-//                        basicAuth: YES];
-//
-//    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
-//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-//
-//
-//    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
-//     {
-//         NSString* possibleError = [dictionary objectForKey: @"error"];
-//
-//         if(possibleError)
-//         {
-//             errorBlock(dictionary);
-//             return;
-//         }
-//
-//         completionBlock();
-//     }
-//                                  errorHandler: ^(NSError* error)
-//     {
-//         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
-//         errorBlock(customErrorDictionary);
-//     }];
-//
-//    [self enqueueOperation: networkOperation];
-//
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId,
+                                                @"CHANNELID" : channelId};
+
+    NSString *apiString = [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"PUT"
+                                                                                                          ssl: TRUE];
+
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+
+    [self enqueueSignedOperation: networkOperation];
+
 }
-//
+
+
 // /ws/USERID/channels/CHANNELID/videos/    /* PUT */
 
 
@@ -288,43 +277,36 @@
                            completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-//
-//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
-//                                                @"CHANNELID" : channelId};
-//
-//    SYNNetworkOperationJsonObject *networkOperation =
-//    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
-//                                                          params: nil
-//                                                      httpMethod: @"PUT"];
-//
-//    [networkOperation setUsername: kOAuth2ClientId
-//                         password: @""
-//                        basicAuth: YES];
-//
-//    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
-//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-//
-//
-//    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
-//     {
-//         NSString* possibleError = [dictionary objectForKey: @"error"];
-//
-//         if (possibleError)
-//         {
-//             errorBlock(dictionary);
-//             return;
-//         }
-//
-//         completionBlock();
-//     }
-//     errorHandler: ^(NSError* error)
-//     {
-//         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
-//         errorBlock(customErrorDictionary);
-//     }];
-//
-//    [self enqueueOperation: networkOperation];
-//
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSString *apiString = [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"PUT"
+                                                                                                          ssl: TRUE];
+
+    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary* postDataDict)
+     {
+         NSError *error = nil;
+         
+         NSData *jsonData = [NSJSONSerialization dataWithJSONObject: videoIdArray
+                                                            options: 0
+                                                              error: &error];
+         
+         NSString *jsonString = [[NSString alloc] initWithData: jsonData
+                                                      encoding: NSUTF8StringEncoding];
+         
+         return jsonString;
+     }
+     forType: @"application/json"];
+    
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
 }
 
 @end
