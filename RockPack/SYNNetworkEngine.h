@@ -46,24 +46,4 @@
                withComplete:(MKNKLoginCompleteBlock)completionBlock
                    andError:(MKNKUserErrorBlock)errorBlock;
 
--(void)retrieveUserFromAccessInfo:(AccessInfo*)accessInfo
-                     withComplete:(MKNKUserCompleteBlock)completionBlock
-                         andError:(MKNKUserErrorBlock)errorBlock;
-
-- (void) createChannelWithUserId: (NSString *) userId
-                            data: (NSDictionary*) userData
-                    withComplete: (MKNKVoidBlock) completionBlock
-                        andError: (MKNKUserErrorBlock) errorBlock;
-
-- (void) updateChannelWithUserId: (NSString *) userId
-                       channelId: (NSString *) channelId
-                            data: (NSDictionary*) userData
-                    withComplete: (MKNKVoidBlock) completionBlock
-                        andError: (MKNKUserErrorBlock) errorBlock;
-
-- (void) updateVideosForChannelWithUserId: (NSString *) userId
-                                channelId: (NSString *) channelId
-                             videoIdArray: (NSArray *) videoIdArray
-                             withComplete: (MKNKVoidBlock) completionBlock
-                                 andError: (MKNKUserErrorBlock) errorBlock;
 @end

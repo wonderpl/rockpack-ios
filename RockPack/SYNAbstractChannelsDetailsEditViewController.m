@@ -264,10 +264,6 @@
     //        "public": true
     //    }
     
-    // @"pKjfvsAqRT2QNx1CH1L-yA"
-    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *userId = delegate.userRegistry.lastReceivedAccessInfoObject.userId;
-    
     // Do we create a new channel, or just update an existing one
     if (self.channel.channelOwner == nil)
     {
@@ -278,8 +274,7 @@
                                    @"cover": @"",
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
-        [appDelegate.oAuthNetworkEngine createChannelWithUserId: userId
-                                                           data: userData
+        [appDelegate.oAuthNetworkEngine createChannelWithData: userData
                                                    withComplete: ^(void )
          {
              DebugLog(@"Channel creation successful");
@@ -308,10 +303,9 @@
                                    @"cover": @"",
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
-        [appDelegate.networkEngine updateChannelWithUserId: userId
-                                                 channelId: self.channel.uniqueId
-                                                      data: userData
-                                              withComplete: ^(void )
+        [appDelegate.oAuthNetworkEngine updateChannelWithChannelId: self.channel.uniqueId
+                                                              data: userData
+                                                      withComplete: ^(void )
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel

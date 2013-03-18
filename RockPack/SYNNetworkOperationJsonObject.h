@@ -8,6 +8,13 @@
 
 #import "MKNetworkOperation.h"
 
+@class SYNOAuth2Credential, User;
+
+typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
+typedef void (^MKNKLoginCompleteBlock) (SYNOAuth2Credential *);
+typedef void (^MKNKUserCompleteBlock) (User*);
+typedef void (^MKNKUserErrorBlock) (NSDictionary*);
+
 #import "AppConstants.h"
 
 @interface SYNNetworkOperationJsonObject : MKNetworkOperation

@@ -9,14 +9,12 @@
 #import "MKNetworkEngine.h"
 #import "SYNMainRegistry.h"
 #import "SYNSearchRegistry.h"
-#import "SYNUserInfoRegistry.h"
 
 @interface SYNAbstractNetworkEngine : MKNetworkEngine
 
 @property (nonatomic, strong) NSString *localeString;
 @property (nonatomic, strong) SYNMainRegistry* registry;
 @property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
-@property (nonatomic, strong) SYNUserInfoRegistry* userInfoRegistry;
 
 - (id) initWithDefaultSettings;
 

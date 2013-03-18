@@ -21,13 +21,10 @@
         // Set our local string (i.e. en_GB, en_US or fr_FR)
         self.localeString = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
         
+        // Cache registries
         SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
-        
         self.registry = appDelegate.mainRegistry;
-        
         self.searchRegistry = appDelegate.searchRegistry;
-        
-        self.userInfoRegistry = appDelegate.userRegistry;
         
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass: [SYNNetworkOperationJsonObject class]];

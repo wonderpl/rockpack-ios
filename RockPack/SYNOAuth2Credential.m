@@ -16,6 +16,8 @@
 @property (nonatomic, copy) NSString *refreshToken;
 @property (nonatomic, copy) NSString *tokenType;
 @property (nonatomic, copy) NSDate *expirationDate;
+@property (nonatomic, copy) NSString *resourceURL;
+@property (nonatomic, copy) NSString *userId;
 
 @end
 
@@ -24,14 +26,18 @@
 #pragma mark - Class Methods
 
 + (id) credentialWithAccessToken: (NSString *) accessToken
-                   refreshToken: (NSString *) refreshToken
-                      tokenType: (NSString *) tokenType
-                      expiresIn: (NSString *) expiresIn
+                       expiresIn: (NSString *) expiresIn
+                    refreshToken: (NSString *) refreshToken
+                     resourceURL: (NSString *) resourceURL
+                       tokenType: (NSString *) tokenType
+                          userId: (NSString *) userId
 {
     return [[self alloc] initWithAccessToken: accessToken
+                                   expiresIn: expiresIn
                                 refreshToken: refreshToken
+                                 resourceURL: resourceURL
                                    tokenType: tokenType
-                                   expiresIn: expiresIn];
+                                      userId: userId];
 }
 
 + (id) credentialFromKeychainForService: (NSString *) service
@@ -47,15 +53,19 @@
 #pragma mark - Initialization
 
 - (id) initWithAccessToken: (NSString *) accessToken
-              refreshToken: (NSString *) refreshToken
-                 tokenType: (NSString *) tokenType
-                 expiresIn: (NSString *) expiresIn
+                  expiresIn: (NSString *) expiresIn
+               refreshToken: (NSString *) refreshToken
+                resourceURL: (NSString *) resourceURL
+                  tokenType: (NSString *) tokenType
+                     userId: (NSString *) userId
 {
     if ((self = [super init]))
     {
         self.accessToken = accessToken;
         self.refreshToken = refreshToken;
         self.tokenType = tokenType;
+        self.resourceURL = resourceURL;
+        self.userId = userId;
 
         // We need to do a bit of wizzardry on the expiration date, as we don't actually get sent the data
         // so we must calculate it (as we don't want to do this every time the 'hasExpired' method is called
@@ -77,9 +87,11 @@
 
 
 - (id) initWithAccessToken: (NSString *) accessToken
-              refreshToken: (NSString *) refreshToken
-                 tokenType: (NSString *) tokenType
             expirationDate: (NSDate *) expirationDate
+              refreshToken: (NSString *) refreshToken
+               resourceURL: (NSString *) resourceURL
+                 tokenType: (NSString *) tokenType
+                    userId: (NSString *) userId
 {
     if ((self = [super init]))
     {
@@ -122,7 +134,7 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"<%@ accessToken:\"%@\" refreshToken:\"%@\" tokenType:\"%@\" expirationDate:\"%@\">", [self class], self.accessToken, self.refreshToken, self.tokenType, self.expirationDate];
+    return [NSString stringWithFormat: @"<%@ accessToken:\"%@\" refreshToken:\"%@\" tokenType:\"%@\" expirationDate:\"%@\" resourceURL:\"%@\" userId:\"%@\">", [self class], self.accessToken, self.refreshToken, self.tokenType, self.expirationDate, self.resourceURL, self.userId];
 }
 
 
@@ -136,6 +148,8 @@
         self.refreshToken = [decoder decodeObjectForKey: @"refreshToken"];
         self.tokenType = [decoder decodeObjectForKey: @"tokenType"];
         self.expirationDate = [decoder decodeObjectForKey: @"expirationDate"];
+        self.resourceURL = [decoder decodeObjectForKey: @"resourceURL"];
+        self.userId = [decoder decodeObjectForKey: @"userId"];
     }
     
     return self;
@@ -155,6 +169,12 @@
     
     [encoder encodeObject: self.expirationDate
                    forKey: @"expirationDate"];
+    
+    [encoder encodeObject: self.resourceURL
+                   forKey: @"resourceURL"];
+    
+    [encoder encodeObject: self.userId
+                   forKey: @"userId"];
 }
 
 
@@ -163,12 +183,11 @@
 - (id) copyWithZone: (NSZone *) zone
 {
     SYNOAuth2Credential *credential = [[SYNOAuth2Credential allocWithZone: zone] initWithAccessToken: self.accessToken
+                                                                                      expirationDate: self.expirationDate
                                                                                         refreshToken: self.refreshToken
+                                                                                         resourceURL: self.resourceURL
                                                                                            tokenType: self.tokenType
-                                                                                      expirationDate: self.expirationDate];
-    // Copy the one that the init function doesn't initialise
-    credential.expirationDate = self.expirationDate;
-    
+                                                                                              userId: self.userId];
     return credential;
 }
 

@@ -6,14 +6,16 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNLoginViewController.h"
-#import "UIFont+SYNFont.h"
-#import "SYNNetworkEngine.h"
-#import "User.h"
-#import "SYNFacebookManager.h"
-#import "SYNLoginErrorArrow.h"
 #import "RegexKitLite.h"
 #import "SYNAppDelegate.h"
+#import "SYNFacebookManager.h"
+#import "SYNLoginErrorArrow.h"
+#import "SYNLoginViewController.h"
+#import "SYNNetworkEngine.h"
+#import "SYNOAuth2Credential.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "UIFont+SYNFont.h"
+#import "User.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
@@ -532,57 +534,57 @@
     return YES;
 }
 
--(IBAction)doLogin:(id)sender
+- (IBAction) doLogin: (id) sender
 {
-    
-    
     [self clearAllErrorArrows];
-    
     
     [self resignAllFirstResponders];
     
     if(![self loginFormIsValid])
         return;
     
-    
     finalLoginButton.enabled = NO;
     
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration: 0.1 animations:^
+    {
         finalLoginButton.alpha = 0.0;
     }];
     
     activityIndicator.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y);
     [activityIndicator startAnimating];
     
-    [appDelegate.networkEngine doSimpleLoginForUsername:userNameInputField.text
-                                            forPassword:passwordInputField.text
-                                           withComplete:^(AccessInfo* accessInfo) {
-                                               
-                                               
-                                               [self completeLoginProcess:accessInfo];
+    [appDelegate.networkEngine doSimpleLoginForUsername: userNameInputField.text
+                                            forPassword: passwordInputField.text
+                                           withComplete: ^(SYNOAuth2Credential* credential)
+    {
+        [self completeLoginProcess: credential];
                                            
-                                           } andError:^(NSDictionary* errorDictionary) {
-                                               
-                                               NSDictionary* errors = [errorDictionary objectForKey:@"error"];
-                                               
-                                               if(errors) {
-                                                   
-                                                   [self placeErrorLabel:@"Username could be incorrect" NextToView:userNameInputField];
-                                                   [self placeErrorLabel:@"Password could be incorrect" NextToView:passwordInputField];
-                                               }
-                                               
-                                               finalLoginButton.enabled = YES;
-                                               [activityIndicator stopAnimating];
-                                               
-                                               [UIView animateWithDuration:0.3 animations:^{
-                                                   finalLoginButton.alpha = 1.0;
-                                               } completion:^(BOOL finished) {
-                                                   [userNameInputField becomeFirstResponder];
-                                               }];
-                                               
-                                               
-        
-                                           }];
+    }
+    andError:^(NSDictionary* errorDictionary)
+    {
+       NSDictionary* errors = errorDictionary [@"error"];
+       
+       if (errors)
+       {
+           [self placeErrorLabel: @"Username could be incorrect"
+                      NextToView: userNameInputField];
+           
+           [self placeErrorLabel: @"Password could be incorrect"
+                      NextToView: passwordInputField];
+       }
+       
+       finalLoginButton.enabled = YES;
+       [activityIndicator stopAnimating];
+       
+       [UIView animateWithDuration:0.3 animations:^
+        {
+           finalLoginButton.alpha = 1.0;
+        }
+        completion:^(BOOL finished)
+        {
+           [userNameInputField becomeFirstResponder];
+       }];
+   }];
     
 }
 
@@ -659,12 +661,12 @@
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
-        [appDelegate.networkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
-                                                     withComplete:^(AccessInfo* accessInfo) {
+        [appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
+                                                     withComplete:^(SYNOAuth2Credential* credential) {
                                                          
-                                                         DebugLog(@"Loggin in User with id: %@", accessInfo.userId);
+                                                         DebugLog(@"Loggin in User with id: %@", credential.accessToken);
                                                          [activityIndicator stopAnimating];
-                                                         [self completeLoginProcess:accessInfo];
+                                                         [self completeLoginProcess:credential];
             
                                                      } andError:^(NSDictionary* errorDictionary) {
                                                          
@@ -831,9 +833,9 @@
     
     [appDelegate.networkEngine registerUserWithData:userData
      
-                                       withComplete:^(AccessInfo* accessinfo) {
+                                       withComplete:^(SYNOAuth2Credential* credential) {
                                            
-                                           [self completeLoginProcess:accessinfo];
+                                           [self completeLoginProcess: credential];
                                            registerNewUserButton.enabled = YES;
         
                                        } andError:^(NSDictionary* errorDictionary) {
@@ -946,15 +948,19 @@
 }
 
 
--(void)completeLoginProcess:(AccessInfo*) accessInfo
+- (void) completeLoginProcess: (SYNOAuth2Credential *) credential
 {
     [activityIndicator stopAnimating];
     
-    [UIView animateWithDuration:0.4 animations:^{
+    [UIView animateWithDuration: 0.4
+                     animations: ^
+    {
         self.view.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginCompleted
-                                                            object:self];
+    }
+    completion: ^(BOOL finished)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kLoginCompleted
+                                                            object: self];
     }];
 }
 

@@ -35,8 +35,7 @@
 
 @implementation SYNAppDelegate
 
-@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry, userRegistry = _userRegistry;
-@synthesize currentAccessInfo = _currentAccessInfo;
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
 @synthesize currentUser = _currentUser;
 
 - (BOOL) application:(UIApplication *) application
@@ -95,14 +94,9 @@
 
 -(void)loginCompleted:(NSNotification*)notification
 {
-    
-    AccessInfo* accessInfo = (AccessInfo*)[[notification userInfo] objectForKey:@"AccessInfo"];
-    _currentAccessInfo = accessInfo;
-    
     self.window.rootViewController = self.viewController;
     
     self.loginViewController = nil;
-    
 }
 
 #pragma mark - App Delegate Methods
@@ -254,7 +248,6 @@
     
     _mainRegistry = [SYNMainRegistry registry];
     _searchRegistry = [SYNSearchRegistry registry];
-    _userRegistry = [SYNUserInfoRegistry registry];
 }
 
 

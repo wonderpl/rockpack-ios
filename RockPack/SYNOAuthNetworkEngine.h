@@ -16,9 +16,22 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
 
-- (void) createChannelWithUserId: (NSString *) userId
-                            data: (NSDictionary*) userData
-                    withComplete: (MKNKVoidBlock) completionBlock
-                        andError: (MKNKUserErrorBlock) errorBlock;
+- (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
+                           withComplete: (MKNKLoginCompleteBlock) completionBlock
+                               andError: (MKNKUserErrorBlock) errorBlock;
+
+- (void) createChannelWithData: (NSDictionary*) userData
+                  withComplete: (MKNKVoidBlock) completionBlock
+                      andError: (MKNKUserErrorBlock) errorBlock;
+
+- (void) updateChannelWithChannelId: (NSString *) channelId
+                               data: (NSDictionary*) userData
+                       withComplete: (MKNKVoidBlock) completionBlock
+                           andError: (MKNKUserErrorBlock) errorBlock;
+
+- (void) updateVideosForChannelWithChannelId: (NSString *) channelId
+                             videoIdArray: (NSArray *) videoIdArray
+                             withComplete: (MKNKVoidBlock) completionBlock
+                                 andError: (MKNKUserErrorBlock) errorBlock;
 
 @end
