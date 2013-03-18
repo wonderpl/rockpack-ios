@@ -225,6 +225,7 @@ typedef enum {
 #define kNoteBackButtonHide @"kNoteBackButtonHide"
 #define kNoteTabPressed @"kNoteTabPressed"
 #define kNoteSharePanelRequested @"kNoteSharePanelRequested"
+#define kNoteRockItButtonPressed @"kNoteRockItButtonPressed"
 
 //
 // Tracking
