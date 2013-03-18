@@ -54,6 +54,8 @@
                                bundle: nil]))
     {
         viewId = vid;
+        
+        
     }
     
     return self;
@@ -106,7 +108,7 @@
     
     [self.view addSubview:self.largeVideoPanelView];
     
-    self.rockItButton = self.largeVideoPanelController.rockItButton;
+    self.rockItButton = self.largeVideoPanelController.rockItButtonLarge;
     
     // add it button
     
@@ -137,6 +139,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
                                                         object:self
                                                       userInfo:@{@"lock" : @(YES)}];
+    
+    
     
     [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
     
@@ -390,10 +394,6 @@
 }
 
 
-- (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
-{
-    
-}
 
 
 - (void) updateOtherOnscreenVideoAssetsForIndexPath: (NSIndexPath *) indexPath
@@ -406,8 +406,10 @@
 
 
 
-- (IBAction) toggleLargeVideoPanelStarItButton: (UIButton *) button
+- (void) toggleLargeVideoPanelStarItButton: (UIButton *) button
 {
+    // called for a press to the large video panel's star button
+    
     button.selected = !button.selected;
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
@@ -426,7 +428,6 @@
     }
     
     
-    //[self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     [self.videoThumbnailCollectionView reloadData];
     
     [self saveDB];

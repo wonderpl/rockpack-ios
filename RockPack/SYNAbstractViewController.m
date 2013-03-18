@@ -227,7 +227,8 @@
 
 - (IBAction) userTouchedVideoRockItButton: (UIButton *) rockItButton
 {
-//    rockItButton.selected = !rockItButton.selected;
+
+    
     
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;

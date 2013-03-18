@@ -29,6 +29,7 @@
 
 @implementation SYNLargeVideoPanelViewController
 
+
 @synthesize videoInstance;
 
 
@@ -44,8 +45,9 @@
 
 - (void)viewDidLoad
 {
+    
+    
     [super viewDidLoad];
-	
     
     // Set the labels to use the custom font
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
@@ -72,6 +74,7 @@
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
     
+    
     if (videoInstance.video.starredByUserValue == TRUE)
     {
         // Currently highlighted, so decrement
@@ -85,7 +88,6 @@
         videoInstance.video.starCountValue += 1;
     }
     
-    // TODO: Save DB ?
     
 }
 
@@ -109,30 +111,10 @@
     
 }
 
-- (IBAction) toggleLargeVideoPanelStarItButton: (UIButton *) button
+- (IBAction) userTouchedVideoRockItButton: (UIButton *) button
 {
-    button.selected = !button.selected;
-    
-    
-    if (videoInstance.video.starredByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        videoInstance.video.starredByUserValue = FALSE;
-        videoInstance.video.starCountValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        videoInstance.video.starredByUserValue = TRUE;
-        videoInstance.video.starCountValue += 1;
-    }
-    
-    
-    //[self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
-    
-    //[self.videoThumbnailCollectionView reloadData];
-    
-    // TODO: Save DB
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteRockItButtonPressed
+                                                        object: self];
 }
 
 

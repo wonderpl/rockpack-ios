@@ -74,6 +74,9 @@
 #define kAPIPopularChannels         @"ws/channels/"
 #define kAPICategories              @"ws/categories/"
 
+#define kAccountSettingsPressed     @"kAccountSettingsPressed"
+
+
 
 // Timeout for API calls
 
@@ -206,6 +209,7 @@ typedef enum {
 
 #define kTopTabCount 10
 
+#define kSearchBarItemWidth 100.0
 //
 // Video Overlay
 //
@@ -226,6 +230,7 @@ typedef enum {
 #define kNoteBackButtonHide @"kNoteBackButtonHide"
 #define kNoteTabPressed @"kNoteTabPressed"
 #define kNoteSharePanelRequested @"kNoteSharePanelRequested"
+#define kNoteRockItButtonPressed @"kNoteRockItButtonPressed"
 
 //
 // Tracking

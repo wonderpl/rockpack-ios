@@ -17,8 +17,8 @@
 #import "SYNSoundPlayer.h"
 #import "SYNGenericPopoverBackgroundView.h"
 #import "SYNBottomTabViewController.h"
-
 #import "SYNVideoViewerViewController.h"
+#import "SYNAccountSettingsMainTableViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -628,6 +628,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                       permittedArrowDirections: UIPopoverArrowDirectionUp
                                                       animated: YES];
 }
+
+
 
 -(void)hideAutocompletePopover
 {
