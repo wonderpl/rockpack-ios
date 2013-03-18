@@ -19,7 +19,7 @@
 #import "SYNLoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-#define kShowLoginPhase YES
+#define kShowLoginPhase NO
 
 @interface SYNAppDelegate ()
 

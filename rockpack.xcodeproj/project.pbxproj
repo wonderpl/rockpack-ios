@@ -465,6 +465,7 @@
 		01F90E1416E7508B00F1D924 /* VideoChannelStack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1016E7508B00F1D924 /* VideoChannelStack@2x.png */; };
 		01F90E1716E7568F00F1D924 /* VideoDurationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1516E7568F00F1D924 /* VideoDurationBackground.png */; };
 		01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */; };
+		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE08158816D2923F00ADB1DC /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158716D2923F00ADB1DC /* TabTop.png */; };
 		BE08158A16D2926F00ADB1DC /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158916D2926F00ADB1DC /* TabTop@2x.png */; };
 		BE08158C16D292A700ADB1DC /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158B16D292A700ADB1DC /* TabTopSub.png */; };
@@ -1115,6 +1116,8 @@
 		01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "VideoDurationBackground@2x.png"; path = "Assets/Images/VideoDurationBackground@2x.png"; sourceTree = "<group>"; };
 		276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
+		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE08158716D2923F00ADB1DC /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		BE08158916D2926F00ADB1DC /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 		BE08158B16D292A700ADB1DC /* TabTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSub.png; sourceTree = "<group>"; };
@@ -2522,6 +2525,15 @@
 			name = "Video viewer";
 			sourceTree = "<group>";
 		};
+		BE03A69016F7457900245314 /* Account Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */,
+				BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */,
+			);
+			name = "Account Settings";
+			sourceTree = "<group>";
+		};
 		BE08158F16D3C46800ADB1DC /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -2769,6 +2781,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE03A69016F7457900245314 /* Account Settings */,
 				BE7C12A116EA68DE0015789B /* Large Video Player */,
 				BE0AAD2616E6521300DA958E /* Autocomplete Panel */,
 				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
@@ -3440,6 +3453,7 @@
 				BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */,
 				01A79BA216F32C6900B05084 /* NSString+Timecode.m in Sources */,
 				01A79BA516F34BBF00B05084 /* NSString+Utils.m in Sources */,
+				BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

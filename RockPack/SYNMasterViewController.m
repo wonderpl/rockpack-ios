@@ -17,8 +17,8 @@
 #import "SYNSoundPlayer.h"
 #import "SYNGenericPopoverBackgroundView.h"
 #import "SYNBottomTabViewController.h"
-
 #import "SYNVideoViewerViewController.h"
+#import "SYNAccountSettingsMainTableViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -40,6 +40,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
+@property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
@@ -627,6 +628,31 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                         inView: self.view
                                       permittedArrowDirections: UIPopoverArrowDirectionUp
                                                       animated: YES];
+}
+
+-(void)showAccountSettingsPopover
+{
+    if(self.accountSettingsPopover)
+        return;
+    
+    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
+    
+    // place initial options table
+    SYNAccountSettingsMainTableViewController* mainTableVC = [[SYNAccountSettingsMainTableViewController alloc] init];
+    [navigationController pushViewController:mainTableVC animated:NO];
+    
+    self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+    self.accountSettingsPopover.popoverContentSize = CGSizeMake(280, 326);
+    self.accountSettingsPopover.delegate = self;
+    
+    
+    // self.accountSettingsPopover.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
+    
+    [self.accountSettingsPopover presentPopoverFromRect: self.searchTextField.frame
+                                                 inView: self.view
+                               permittedArrowDirections: UIPopoverArrowDirectionUp
+                                               animated: YES];
 }
 
 -(void)hideAutocompletePopover
