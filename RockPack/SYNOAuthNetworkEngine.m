@@ -7,16 +7,11 @@
 //
 
 #import "AppConstants.h"
-
-#import "SYNOAuthNetworkEngine.h"
+#import "NSString+Utils.h"
+#import "SYNAppDelegate.h"
+#import "SYNNetworkOperationJsonObject.h"
 #import "SYNOAuth2Credential.h"
-
-
-
-
-// Hostname
-#define kHostName @"rockpack-oauth2-demo.herokuapp.com"
-
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNOAuthNetworkEngine ()
 
@@ -31,6 +26,11 @@
 
 @implementation SYNOAuthNetworkEngine
 
+- (NSString *) hostName
+{
+    return kAPISecureHostName;
+}
+
 - (BOOL) isAuthenticated
 {
     if (self.oAuth2Credential == nil)
@@ -42,6 +42,50 @@
     // Check to see if wa have a credential and an access token
 	return (self.oAuth2Credential.accessToken != nil);
 }
+
+-(void)doFacebookLoginWithAccessToken:(NSString*)facebookAccessToken
+                         withComplete: (MKNKLoginCompleteBlock) completionBlock
+                             andError: (MKNKUserErrorBlock) errorBlock {
+    
+    NSDictionary* postLoginParams = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"facebook", @"external_system",
+                                     facebookAccessToken, @"external_token",
+                                     nil];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureExternalLogin params:postLoginParams httpMethod:@"POST"];
+    
+    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError) {
+            errorBlock(dictionary);
+            return;
+        }
+        
+        
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Access Token Info Could Not Be Registered in CoreData");
+            errorBlock(@{@"parsing_error": @"registerAccessInfoFromDictionary: did not complete correctly"});
+            return;
+        }
+        
+        AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+        
+        completionBlock(recentlyFetchedAccessInfo);
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Register Facebook Token with Server Failed");
+        NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
 
 
 // Enqueues the operation if already authenticated, and if not, tries to authentican and then re-queue if successful
@@ -173,5 +217,45 @@
     // Queue the authentication operation
     [self enqueueOperation: op];
 }
+
+
+- (void) createChannelWithUserId: (NSString *) userId
+                            data: (NSDictionary*) userData
+                    withComplete: (MKNKVoidBlock) completionBlock
+                        andError: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: apiString
+                                                                                                            params: userData
+                                                                                                        httpMethod: @"POST"];
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+     {
+         NSString* possibleError = [dictionary objectForKey: @"error"];
+         
+         if(possibleError)
+         {
+             errorBlock(dictionary);
+             return;
+         }
+         
+         completionBlock();
+     }
+     errorHandler: ^(NSError* error)
+     {
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+}
+
 
 @end

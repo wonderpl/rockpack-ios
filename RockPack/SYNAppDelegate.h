@@ -17,7 +17,7 @@
 
 // Something new!
 
-@class SYNBottomTabViewController, ChannelOwner, SYNNetworkEngine;
+@class SYNBottomTabViewController, ChannelOwner, SYNNetworkEngine, SYNOAuthNetworkEngine;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -31,6 +31,7 @@
 
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
+@property (readonly, nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 
 @property (readonly, nonatomic, strong) User* currentUser;
 @property (readonly, nonatomic, strong) AccessInfo* currentAccessInfo;

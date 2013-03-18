@@ -23,63 +23,15 @@
 
 @interface SYNNetworkEngine ()
 
-@property (nonatomic, strong) NSString *localeString;
-@property (nonatomic, strong) NSEntityDescription *videoInstanceEntity;
-@property (nonatomic, strong) NSEntityDescription *channelEntity;
-@property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
-@property (nonatomic, strong) SYNMainRegistry* registry;
-@property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
-@property (nonatomic, strong) SYNUserInfoRegistry* userInfoRegistry;
-
 @end
 
 @implementation SYNNetworkEngine
 
-- (id) initWithDefaultSettings
+- (NSString *) hostName
 {
-    
-    if ((self = [super initWithHostName: kAPIHostName
-                     customHeaderFields: @{@"x-client-identifier" : @"Rockpack iPad client"}]))
-    {
-        // Set our local string (i.e. en_GB, en_US or fr_FR)
-        self.localeString = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
-        
-        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
-        
-        self.registry = appDelegate.mainRegistry;
-        
-        self.searchRegistry = appDelegate.searchRegistry;
-        
-        self.userInfoRegistry = appDelegate.userRegistry;
-        
-        // This engine is about requesting JSON objects and uses the appropriate operation type
-        [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
-        
-        
-        // We should register here for locale changes
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(localeDidChange)
-                                                     name: NSCurrentLocaleDidChangeNotification
-                                                   object: nil];
-    }
-    
-    return self;
+    return kAPIHostName;
 }
 
-
-- (void) dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSCurrentLocaleDidChangeNotification
-                                                  object: nil];
-}
-
-// If the locale changes, then we need to reset the CoreData DB
-- (void) localeDidChange
-{
-    //SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
-//    [appDelegate resetCoreDataStack];
-}
 
 
 #pragma mark - Engine API

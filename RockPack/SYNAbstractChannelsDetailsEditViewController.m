@@ -14,7 +14,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelHeaderView.h"
-#import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNTextField.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 
@@ -278,9 +278,9 @@
                                    @"cover": @"",
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
-        [appDelegate.networkEngine createChannelWithUserId: userId
-                                                      data: userData
-                                              withComplete: ^(void )
+        [appDelegate.oAuthNetworkEngine createChannelWithUserId: userId
+                                                           data: userData
+                                                   withComplete: ^(void )
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel

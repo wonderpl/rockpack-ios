@@ -7,16 +7,17 @@
 //
 
 #import "AppConstants.h"
+#import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
+#import "SYNLoginViewController.h"
+#import "SYNMasterViewController.h"
 #import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "TestFlight.h"
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
-#import "ChannelOwner.h"
-#import "SYNMasterViewController.h"
-#import "SYNLoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define kShowLoginPhase YES
@@ -24,10 +25,12 @@
 @interface SYNAppDelegate ()
 
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
-@property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
-@property (nonatomic, strong) SYNNetworkEngine *networkEngine;
+@property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
+@property (nonatomic, strong) SYNNetworkEngine *networkEngine;
+@property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
+
 @end
 
 @implementation SYNAppDelegate
@@ -48,7 +51,7 @@
     [self initializeCoreDataStack];
     
     // Set up network engine
-    [self initializeNetworkEngine];
+    [self initializeNetworkEngines];
     
     
     // Create default user
@@ -361,10 +364,13 @@
 
 #pragma mark - Network engine suport
 
-- (void) initializeNetworkEngine
+- (void) initializeNetworkEngines
 {
     self.networkEngine = [[SYNNetworkEngine alloc] initWithDefaultSettings];
     [self.networkEngine useCache];
+    
+    self.oAuthNetworkEngine = [[SYNOAuthNetworkEngine alloc] initWithDefaultSettings];
+    [self.oAuthNetworkEngine useCache];
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;

@@ -6,14 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "MKNetworkEngine.h"
+
 
 #import "AppConstants.h"
+#import "SYNAbstractNetworkEngine.h"
 #import "SYNNetworkOperationJsonObject.h"
 
-@interface SYNNetworkEngine : MKNetworkEngine
-
-- (id) initWithDefaultSettings;
+@interface SYNNetworkEngine : SYNAbstractNetworkEngine
 
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;

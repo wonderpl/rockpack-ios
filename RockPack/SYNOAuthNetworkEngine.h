@@ -7,12 +7,18 @@
 //
 
 #import "MKNetworkEngine.h"
+#import "SYNAbstractNetworkEngine.h"
 
 typedef void (^SYNOAuth2CompletionBlock)(NSError *error);
 typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
-@interface SYNOAuthNetworkEngine : MKNetworkEngine
+@interface SYNOAuthNetworkEngine : SYNAbstractNetworkEngine
 
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
+
+- (void) createChannelWithUserId: (NSString *) userId
+                            data: (NSDictionary*) userData
+                    withComplete: (MKNKVoidBlock) completionBlock
+                        andError: (MKNKUserErrorBlock) errorBlock;
 
 @end
