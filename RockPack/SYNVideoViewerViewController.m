@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "NSIndexPath+Arithmetic.h"
+#import "SYNAbstractViewController.h"
+#import "SYNMasterViewController.h"
+#import "SYNPassthroughView.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoThumbnailSmallCell.h"
 #import "SYNVideoViewerThumbnailLayout.h"
@@ -20,26 +22,30 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 #define kThumbnailContentOffset 438
 #define kThumbnailCellWidth 147
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
-
+@property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *starItButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfRocksLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
+@property (nonatomic, strong) IBOutlet UIView *blackPanelView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
+@property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
@@ -95,34 +101,39 @@
     
     self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
     
-    // Create the video playback view controller, and insert it in the right place in the view hierarchy
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
+    self.blackPanelView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
+    self.blackPanelView.backgroundColor = [UIColor blackColor];
+    self.blackPanelView.alpha = 0.0f;
+
     
-    [self.view insertSubview: self.videoPlaybackViewController.view
+    [self.view insertSubview: self.blackPanelView
                 aboveSubview: self.panelImageView];
     
-    // Create a dummy view just above the video panel to allow swipes
-    UIView *swipeView = [[UIView alloc] initWithFrame: CGRectMake(142, 71, 740, 416)];
-    
-    // TODO: Remove this test code
-//    swipeView.backgroundColor = [UIColor blueColor];
-    
-    [self.view insertSubview: swipeView
-                aboveSubview: self.videoPlaybackViewController.view];
+    // Create the video playback view controller, and insert it in the right place in the view hierarchy
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 739, 416)];
+
+    [self.view insertSubview: self.videoPlaybackViewController.view
+                aboveSubview: self.blackPanelView];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                action: @selector(userTouchedPreviousVideoButton:)];
     
     rightSwipeRecogniser.delegate = self;
     [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
-    [swipeView addGestureRecognizer:rightSwipeRecogniser];
+    [self.swipeView addGestureRecognizer:rightSwipeRecogniser];
     
     UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                               action: @selector(userTouchedNextVideoButton:)];
     
     leftSwipeRecogniser.delegate = self;
     [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer: leftSwipeRecogniser];
+    [self.swipeView addGestureRecognizer: leftSwipeRecogniser];
+    
+    UITapGestureRecognizer* tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                    action: @selector(userTappedVideo)];
+    
+    tapRecogniser.delegate = self;
+    [self.swipeView addGestureRecognizer: tapRecogniser];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
@@ -175,7 +186,7 @@
 - (void) updateVideoDetailsForIndexPath: (NSIndexPath *) indexPath
 {
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.name;
+    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
@@ -377,27 +388,77 @@
                                                placeHolderImage: nil];
 }
 
+- (IBAction) userTouchedCloseButton: (id) sender
+{
+    // Call the close method on our parent
+    [self.overlayParent removeVideoOverlayController];
+}
+
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
 - (IBAction) userTouchedChannelButton: (id) sender
 {
-    //[self dismissVideoViewer];
-    
+    [self.overlayParent removeVideoOverlayController];
+
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     
-    [self viewChannelDetails: videoInstance.channel];
+    [(SYNAbstractViewController *)self.overlayParent.originViewController viewChannelDetails: videoInstance.channel];
 }
 
 
 // The user touched the invisible button above the user details, taking the user to the profile page
 - (IBAction) userTouchedProfileButton: (id) sender
 {
-//    [self.parentViewController dismissVideoViewer];
+    [self.overlayParent removeVideoOverlayController];
     
-//    // Get the video instance for the currently selected video
-//    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
-//    
-//    [self viewProfileDetails: videoInstance.channel.channelOwner];
+    // Get the video instance for the currently selected video
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    
+    [(SYNAbstractViewController *)self.overlayParent.originViewController viewProfileDetails: videoInstance.channel.channelOwner];
 }
+
+- (void) userTappedVideo
+{
+    if (self.isVideoExpanded)
+    {
+        [UIView transitionWithView: self.view
+                          duration: 0.5f
+                           options: UIViewAnimationOptionCurveEaseInOut
+                        animations: ^
+         {
+             self.blackPanelView.alpha = 0.0f;
+             self.chromeView.alpha = 1.0f;
+             self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
+             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+             self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
+             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+         }
+                        completion: ^(BOOL b)
+         {
+         }];
+    }
+    else
+    {
+        [UIView transitionWithView: self.view
+                          duration: 0.5f
+                           options: UIViewAnimationOptionCurveEaseInOut
+                        animations: ^
+         {
+             self.blackPanelView.alpha = 1.0f;
+             self.chromeView.alpha = 0.0f;
+             self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
+             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
+             self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+             self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+         }
+                        completion: ^(BOOL b)
+         {
+         }];
+    }
+
+    self.videoExpanded = !self.videoExpanded;
+}
+
+
 
 @end

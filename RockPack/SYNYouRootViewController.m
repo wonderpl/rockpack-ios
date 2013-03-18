@@ -8,7 +8,7 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
-#import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNChannelsDetailViewController.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -30,6 +30,8 @@
 
 -(void)loadView
 {
+//    UIImageView *headerView = [UI]
+    
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
@@ -127,7 +129,7 @@
     
     channelThumbnailCell.titleLabel.text = channel.title;
     
-    channelThumbnailCell.userNameLabel.text = channel.channelOwner.name;
+    channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
     
     channelThumbnailCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
     
@@ -151,7 +153,7 @@
 {
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNAbstractChannelsDetailViewController *channelVC = [[SYNAbstractChannelsDetailViewController alloc] initWithChannel: channel];
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelVC];
 }

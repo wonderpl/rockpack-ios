@@ -80,6 +80,18 @@
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
+        // Separator
+        
+        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DividerSearch.png"]];
+        dividerImageView.center = CGPointMake(cell.center.x - 20.0, cell.frame.size.height - 2.0);
+        [cell.contentView addSubview:dividerImageView];
+        
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        
+        cell.backgroundColor = [UIColor clearColor];
+        
+        cell.textLabel.backgroundColor = [UIColor greenColor];
+        
         // Text
         
         cell.textLabel.font = rockpackFont;

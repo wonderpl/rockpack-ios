@@ -8,13 +8,15 @@
 
 #import "SYNAbstractTopTabViewController.h"
 
+#import "SYNLargeVideoPanelViewController.h"
+
 @interface SYNVideosRootViewController : SYNAbstractTopTabViewController 
 
 
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 
-@property (nonatomic, strong) IBOutlet UIView *largeVideoPanelView;
+@property (nonatomic, strong) UIView *largeVideoPanelView;
 
 - (void) setLargeVideoToIndexPath: (NSIndexPath *) indexPath ;
 

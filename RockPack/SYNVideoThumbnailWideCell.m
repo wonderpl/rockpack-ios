@@ -35,7 +35,7 @@
     
     self.videoTitle.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.channelName.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.userName.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.displayName.font = [UIFont rockpackFontOfSize: 12.0f];
     self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.dateAddedLabel.font = [UIFont rockpackFontOfSize: 12.0f];

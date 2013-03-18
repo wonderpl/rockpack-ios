@@ -6,15 +6,17 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNNetworkEngine.h"
-#import "Channel.h"
-#import "SYNNetworkEngine.h"
-#import "VideoInstance.h"
+#import "AccessInfo.h"
 #import "Category.h"
-#import "SYNMainRegistry.h"
-#import "SYNSearchRegistry.h"
+#import "Channel.h"
+#import "NSString+Utils.h"
 #import "SYNAppDelegate.h"
+#import "SYNMainRegistry.h"
+#import "SYNNetworkEngine.h"
 #import "SYNNetworkOperationJsonObjectParse.h"
+#import "SYNSearchRegistry.h"
+#import "SYNUserInfoRegistry.h"
+#import "VideoInstance.h"
 
 #define kJSONParseError 110
 #define kNetworkError   112
@@ -27,6 +29,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *importManagedObjectContext;
 @property (nonatomic, strong) SYNMainRegistry* registry;
 @property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
+@property (nonatomic, strong) SYNUserInfoRegistry* userInfoRegistry;
 
 @end
 
@@ -47,15 +50,36 @@
         
         self.searchRegistry = appDelegate.searchRegistry;
         
+        self.userInfoRegistry = appDelegate.userRegistry;
+        
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+        
+        
+        // We should register here for locale changes
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(localeDidChange)
+                                                     name: NSCurrentLocaleDidChangeNotification
+                                                   object: nil];
     }
     
     return self;
 }
 
 
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: NSCurrentLocaleDidChangeNotification
+                                                  object: nil];
+}
 
+// If the locale changes, then we need to reset the CoreData DB
+- (void) localeDidChange
+{
+    //SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+//    [appDelegate resetCoreDataStack];
+}
 
 
 #pragma mark - Engine API
@@ -334,6 +358,344 @@
     // Go back to the original operation class
     
     [self registerOperationSubclass:[SYNNetworkOperationJsonObject class]];
+    
+}
+
+
+#pragma mark - Login Stuff
+
+-(void)doSimpleLoginForUsername:(NSString*)username
+                    forPassword:(NSString*)password
+                   withComplete: (MKNKLoginCompleteBlock) completionBlock
+                       andError: (MKNKUserErrorBlock) errorBlock
+{
+    
+    NSDictionary* postLoginParams = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                @"password", @"grant_type",
+                                                username, @"username",
+                                                password, @"password", nil];
+    
+    //NSDictionary* parameters = [self getLocalParamWithParams:postLoginParams];
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureLogin params:postLoginParams httpMethod:@"POST"];
+    
+    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError) {
+            errorBlock(dictionary);
+            return;
+        }
+        
+        
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Access Token Info returned is wrong");
+            errorBlock([NSError errorWithDomain:@"Call completed but token dictionary could not be read." code:0 userInfo:nil]);
+            return;
+        }
+        
+        AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+        
+        completionBlock(recentlyFetchedAccessInfo);
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Access Info Request Failed");
+        errorBlock(@{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]});
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+-(void)doFacebookLoginWithAccessToken:(NSString*)facebookAccessToken
+                         withComplete: (MKNKLoginCompleteBlock) completionBlock
+                             andError: (MKNKUserErrorBlock) errorBlock {
+    
+    NSDictionary* postLoginParams = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"facebook", @"external_system",
+                                     facebookAccessToken, @"external_token",
+                                     nil];
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureExternalLogin params:postLoginParams httpMethod:@"POST"];
+    
+    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError) {
+            errorBlock(dictionary);
+            return;
+        }
+        
+        
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Access Token Info Could Not Be Registered in CoreData");
+            errorBlock(@{@"parsing_error": @"registerAccessInfoFromDictionary: did not complete correctly"});
+            return;
+        }
+        
+        AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+        
+        completionBlock(recentlyFetchedAccessInfo);
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Register Facebook Token with Server Failed");
+        NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+-(void)registerUserWithData:(NSDictionary*)userData
+               withComplete:(MKNKLoginCompleteBlock)completionBlock
+                   andError:(MKNKUserErrorBlock)errorBlock {
+    
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:kAPISecureRegister params:userData httpMethod:@"POST"];
+    
+    [networkOperation setUsername:kOAuth2ClientId password:@"" basicAuth:YES];
+    [networkOperation addHeaders:@{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError) {
+            errorBlock(dictionary);
+            return;
+        }
+        
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            errorBlock(@{@"parsing_error": @"registerAccessInfoFromDictionary: did not complete correctly"});
+            return;
+        }
+        
+        AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+        
+        completionBlock(recentlyFetchedAccessInfo);
+        
+        
+    } errorHandler:^(NSError* error) {
+        NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat:@"%@, Server responded with %i", error.domain, error.code]};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+    
+    
+    
+}
+
+
+-(void)retrieveUserFromAccessInfo:(AccessInfo*)accessInfo
+               withComplete:(MKNKUserCompleteBlock)completionBlock
+                   andError:(MKNKUserErrorBlock)errorBlock {
+    
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:accessInfo.resourceUrl];
+    
+    
+    [networkOperation addHeaders:@{@"Authorization": [NSString stringWithFormat:@"Bearer %@", accessInfo.accessToken]}];
+    
+    
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = [dictionary objectForKey:@"error"];
+        if(possibleError)
+        {
+            
+            errorBlock([dictionary objectForKey:@"form_errors"]);
+            return;
+        }
+        
+        BOOL registryResultOk = [self.userInfoRegistry registerAccessInfoFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Access Token Info returned is wrong");
+            errorBlock([NSError errorWithDomain:@"Call completed but token dictionary could not be read." code:0 userInfo:nil]);
+            return;
+        }
+        
+        User* recentylRegisteredUser = self.userInfoRegistry.lastRegisteredUserObject;
+        
+        completionBlock(recentylRegisteredUser);
+        
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Access Info Request Failed");
+        NSDictionary* customErrorDictionary = @{@"network_error": error};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+    
+    
+    
+}
+
+//POST /ws/USERID/channels/ HTTP/1.1
+//Content-Type: application/json
+//Authorization: Bearer TOKEN
+//
+//{
+//    "title": "channel title",
+//    "description": "channel description",
+//    "category": 1,
+//    "cover": "COVERARTID",
+//    "public": true
+//}
+
+// /ws/USERID/channels/ /* POST */
+
+- (void) createChannelWithUserId: (NSString *) userId
+                            data: (NSDictionary*) userData
+                    withComplete: (MKNKVoidBlock) completionBlock
+                        andError: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString: [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+                                                              params: userData
+                                                          httpMethod: @"POST"];
+    
+    AccessInfo* recentlyFetchedAccessInfo = self.userInfoRegistry.lastReceivedAccessInfoObject;
+    
+    [networkOperation setAuthorizationHeaderValue: recentlyFetchedAccessInfo.accessToken
+                                      forAuthType: @"Bearer"];
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+    {
+        NSString* possibleError = [dictionary objectForKey: @"error"];
+        
+        if(possibleError)
+        {
+            errorBlock(dictionary);
+            return;
+        }
+        
+        completionBlock();
+    }
+    errorHandler: ^(NSError* error)
+    {
+        NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+        errorBlock(customErrorDictionary);
+    }];
+    
+    [self enqueueOperation: networkOperation];
+
+}
+
+
+// /ws/USERID/channels/CHANNELID/  /* PUT */
+- (void) updateChannelWithUserId: (NSString *) userId
+                       channelId: (NSString *) channelId
+                            data: (NSDictionary*) userData
+                    withComplete: (MKNKVoidBlock) completionBlock
+                        andError: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+                                                          params: userData
+                                                      httpMethod: @"PUT"];
+    
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+     {
+         NSString* possibleError = [dictionary objectForKey: @"error"];
+         
+         if(possibleError)
+         {
+             errorBlock(dictionary);
+             return;
+         }
+         
+         completionBlock();
+     }
+                                  errorHandler: ^(NSError* error)
+     {
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
+    [self enqueueOperation: networkOperation];
+
+}
+
+// /ws/USERID/channels/CHANNELID/videos/    /* PUT */
+
+
+- (void) updateVideosForChannelWithUserId: (NSString *) userId
+                                channelId: (NSString *) channelId
+                             videoIdArray: (NSArray *) videoIdArray
+                             withComplete: (MKNKVoidBlock) completionBlock
+                                 andError: (MKNKUserErrorBlock) errorBlock
+{
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+                                                          params: nil
+                                                      httpMethod: @"PUT"];
+    
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+     {
+         NSString* possibleError = [dictionary objectForKey: @"error"];
+         
+         if (possibleError)
+         {
+             errorBlock(dictionary);
+             return;
+         }
+         
+         completionBlock();
+     }
+     errorHandler: ^(NSError* error)
+     {
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
+    [self enqueueOperation: networkOperation];
     
 }
 

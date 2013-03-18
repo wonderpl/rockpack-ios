@@ -78,20 +78,9 @@
 
 
 
-- (void) viewDidDisappear: (BOOL) animated
-{
-    [super viewDidDisappear: animated];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
-}
-
-
-
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
     [self reloadCollectionViews];
 }
 
@@ -127,6 +116,12 @@
     }  
 }
 
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
+                                                        object:self];
+}
 
 #pragma mark - Animation support
 
@@ -232,7 +227,8 @@
 
 - (IBAction) userTouchedVideoRockItButton: (UIButton *) rockItButton
 {
-//    rockItButton.selected = !rockItButton.selected;
+
+    
     
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
@@ -307,20 +303,20 @@
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
     
-    [masterViewController addVideoOverlayWithFetchedResultsController:self.fetchedResultsController andIndexPath:selectedIndexPath];
+    [masterViewController addVideoOverlayToViewController: self
+                             withFetchedResultsController: self.fetchedResultsController
+                                             andIndexPath: selectedIndexPath];
 }
 
 
-
-
 #pragma mark - Initialisation
-
 
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
     return -1;
 }
+
 
 - (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
                                     selected: (BOOL) selected
@@ -355,7 +351,7 @@
         videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
-        videoThumbnailCell.userName.text = videoInstance.channel.channelOwner.name;
+        videoThumbnailCell.displayName.text = videoInstance.channel.channelOwner.displayName;
         videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         
         [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
@@ -446,9 +442,9 @@
                                                             object:self];
         
         // figure out which item in the table was selected
-        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
+        NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint:[sender locationInView: self.videoThumbnailCollectionView]];
         
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
         if (!indexPath)
         {
@@ -472,8 +468,10 @@
         [self.draggedView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                      placeHolderImage: nil];
         
+        [((SYNMasterViewController*)appDelegate.viewController).overEverythingView addSubview:self.draggedView];
+        
         // now add the item to the view
-        [self.view addSubview: self.draggedView];
+        //[self.view addSubview: self.draggedView];
         
         // Highlight the image well
         [self highlightVideoQueue: TRUE];

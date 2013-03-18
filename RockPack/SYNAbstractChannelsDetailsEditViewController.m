@@ -7,14 +7,16 @@
 //
 
 #import "AppConstants.h"
+#import "Channel.h"
+#import "ChannelOwner.h"
 #import "HPGrowingTextView.h"
+#import "SYNAbstractChannelsDetailsEditViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
-#import "SYNAbstractChannelsDetailsEditViewController.h"
-#import "UIImageView+MKNetworkKitAdditions.h"
 #import "SYNChannelHeaderView.h"
+#import "SYNNetworkEngine.h"
 #import "SYNTextField.h"
-#import "Channel.h"
+#import "UIImageView+MKNetworkKitAdditions.h"
 
 @interface SYNAbstractChannelsDetailsEditViewController ()
 
@@ -85,6 +87,7 @@
      }
                      completion: ^(BOOL finished)
      {
+         
      }];
 
 }
@@ -213,6 +216,12 @@
     [self showDoneButton];
     [self.channelTitleTextField resignFirstResponder];
     [self.collectionHeaderView.channelDescriptionTextView resignFirstResponder];
+
+}
+
+- (void) updateVideosForChannel: (NSString *) channelId
+{
+    
 }
 
 - (IBAction) userTouchedDoneButton: (id) sender
@@ -244,6 +253,82 @@
     
     // Disable text fields until edit button selected
     self.channelTitleTextField.enabled = FALSE;
+    
+    
+    // TODO: Fix coverart id and public
+    //    {
+    //        "title": "channel title",
+    //        "description": "channel description",
+    //        "category": 1,
+    //        "cover": "COVERARTID",
+    //        "public": true
+    //    }
+    
+    // @"pKjfvsAqRT2QNx1CH1L-yA"
+    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *userId = delegate.userRegistry.lastReceivedAccessInfoObject.userId;
+    
+    // Do we create a new channel, or just update an existing one
+    if (self.channel.channelOwner == nil)
+    {
+        // Create a new channel
+        NSDictionary* userData = @{@"title": self.channelTitleTextField.text,
+                                   @"description": self.collectionHeaderView.channelDescriptionTextView.text,
+                                   @"category": [NSNumber numberWithInt: 0],
+                                   @"cover": @"",
+                                   @"public": [NSNumber numberWithBool: TRUE]};
+        
+        [appDelegate.networkEngine createChannelWithUserId: userId
+                                                      data: userData
+                                              withComplete: ^(void )
+         {
+             DebugLog(@"Channel creation successful");
+             // If we successfuly created a channel, then upload the videos for that channel
+             //             [self uploadVideosForChannel];
+         }
+                                                  andError: ^(NSDictionary* errorDictionary)
+         {
+             DebugLog(@"Channel creation failed");
+             NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
+             
+             if(formErrors)
+             {
+                 // TODO: Show errors in channel creation
+                 //           [self showRegistrationError:formErrors];
+             }
+         }];
+    }
+    else
+    {
+        // Update an existing channel
+        // Create a new channel
+        NSDictionary* userData = @{@"title": self.channelTitleTextField.text,
+                                   @"description": self.collectionHeaderView.channelDescriptionTextView.text,
+                                   @"category": [NSNumber numberWithInt: 0],
+                                   @"cover": @"",
+                                   @"public": [NSNumber numberWithBool: TRUE]};
+        
+        [appDelegate.networkEngine updateChannelWithUserId: userId
+                                                 channelId: self.channel.uniqueId
+                                                      data: userData
+                                              withComplete: ^(void )
+         {
+             DebugLog(@"Channel creation successful");
+             // If we successfuly created a channel, then upload the videos for that channel
+             //             [self uploadVideosForChannel];
+         }
+                                                  andError: ^(NSDictionary* errorDictionary)
+         {
+             DebugLog(@"Channel creation failed");
+             NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
+             
+             if(formErrors)
+             {
+                 // TODO: Show errors in channel creation
+                 //           [self showRegistrationError:formErrors];
+             }
+         }];
+    }
 }
 
 - (IBAction) userTouchedChangeCoverButton: (id) sender

@@ -64,7 +64,11 @@
         
         // == Create Search Tab == //
         
-        self.searchVideosItemView = [[SYNSearchItemView alloc] initWithTitle:@"VIDEOS" andFrame:CGRectMake(midBar - kSearchBarItemWidth + 1.0, 0.0, kSearchBarItemWidth - 1.0, self.frame.size.height)];
+        self.searchVideosItemView = [[SYNSearchItemView alloc] initWithTitle:@"VIDEOS"
+                                                                    andFrame:CGRectMake(midBar - kSearchBarItemWidth + 1.0,
+                                                                                        0.0,
+                                                                                        kSearchBarItemWidth - 1.0,
+                                                                                        self.frame.size.height)];
         
         [self.searchVideosItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
@@ -73,7 +77,8 @@
         
         // == Create Channels Tab == //
         
-        self.searchChannelsItemView = [[SYNSearchItemView alloc] initWithTitle:@"CHANNELS" andFrame:CGRectMake(midBar + 1.0, 0.0, kSearchBarItemWidth - 1.0, self.frame.size.height)];
+        self.searchChannelsItemView = [[SYNSearchItemView alloc] initWithTitle:@"CHANNELS"
+                                                                      andFrame:CGRectMake(midBar + 1.0, 0.0, kSearchBarItemWidth - 1.0, self.frame.size.height)];
         
         [self.searchChannelsItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         

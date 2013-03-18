@@ -4,12 +4,14 @@
 #import "_User.h"
 
 const struct UserAttributes UserAttributes = {
-	.forename = @"forename",
-	.surname = @"surname",
-	.thumbnailURL = @"thumbnailURL",
+	.current = @"current",
+	.dateOfBirth = @"dateOfBirth",
+	.emailAddress = @"emailAddress",
+	.username = @"username",
 };
 
 const struct UserRelationships UserRelationships = {
+	.accessInfo = @"accessInfo",
 };
 
 const struct UserFetchedProperties UserFetchedProperties = {
@@ -41,6 +43,11 @@ const struct UserFetchedProperties UserFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"currentValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"current"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -48,26 +55,56 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
-@dynamic forename;
+@dynamic current;
+
+
+
+- (BOOL)currentValue {
+	NSNumber *result = [self current];
+	return [result boolValue];
+}
+
+- (void)setCurrentValue:(BOOL)value_ {
+	[self setCurrent:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveCurrentValue {
+	NSNumber *result = [self primitiveCurrent];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveCurrentValue:(BOOL)value_ {
+	[self setPrimitiveCurrent:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic dateOfBirth;
 
 
 
 
 
 
-@dynamic surname;
+@dynamic emailAddress;
 
 
 
 
 
 
-@dynamic thumbnailURL;
+@dynamic username;
 
 
 
 
 
+
+@dynamic accessInfo;
+
+	
 
 
 

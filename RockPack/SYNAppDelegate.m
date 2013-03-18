@@ -16,6 +16,10 @@
 #import "UncaughtExceptionHandler.h"
 #import "ChannelOwner.h"
 #import "SYNMasterViewController.h"
+#import "SYNLoginViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
+
+#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 
@@ -23,12 +27,14 @@
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
-
+@property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @end
 
 @implementation SYNAppDelegate
 
-@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry, userRegistry = _userRegistry;
+@synthesize currentAccessInfo = _currentAccessInfo;
+@synthesize currentUser = _currentUser;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -48,6 +54,12 @@
     // Create default user
     [self createDefaultUser];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginCompleted:)
+                                                 name:kLoginCompleted
+                                               object:nil];
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
 	// Create a dictionary of defaults to add and register them (if they have not already been set)
@@ -65,14 +77,32 @@
     
     self.viewController = masterViewContoller;
     
-    self.window.rootViewController = self.viewController;
+    self.loginViewController = [[SYNLoginViewController alloc] init];
+    
+    if(kShowLoginPhase)
+        self.window.rootViewController = self.loginViewController;
+    else
+        self.window.rootViewController = self.viewController;
+    
+    
     [self.window makeKeyAndVisible];
     
     return YES;
 }
 
+-(void)loginCompleted:(NSNotification*)notification
+{
+    
+    AccessInfo* accessInfo = (AccessInfo*)[[notification userInfo] objectForKey:@"AccessInfo"];
+    _currentAccessInfo = accessInfo;
+    
+    self.window.rootViewController = self.viewController;
+    
+    self.loginViewController = nil;
+    
+}
 
-#pragma mark - App state transitions
+#pragma mark - App Delegate Methods
 
 - (void) applicationWillResignActive: (UIApplication *) application
 {
@@ -90,6 +120,8 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     // We need to save out database here (not in background)
+    
+    
     [self saveContext: kSaveSynchronously];
 }
 
@@ -97,6 +129,12 @@
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    if(self.loginViewController.state == kLoginScreenStateInitial) {
+        [self.loginViewController setUpInitialState];
+    }
+    
+    //accessTokenData.accessToken;
 }
 
 
@@ -213,7 +251,62 @@
     
     _mainRegistry = [SYNMainRegistry registry];
     _searchRegistry = [SYNSearchRegistry registry];
+    _userRegistry = [SYNUserInfoRegistry registry];
 }
+
+
+- (void) resetCoreDataStack
+{
+//    NSError * error;
+//    // retrieve the store URL
+//    NSURL * storeURL = [[self.privateManagedObjectContext persistentStoreCoordinator] URLForPersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject]];
+//    
+//    // lock the current context
+//    [self.privateManagedObjectContext lock];
+//
+//    [self.searchManagedObjectContext reset];
+//    [self.mainManagedObjectContext reset];
+//    [self.privateManagedObjectContext reset];
+//    
+//    //delete the store from the current managedObjectContext
+//    if ([[self.privateManagedObjectContext persistentStoreCoordinator] removePersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject] error: &error])
+//    {
+//        // remove the file containing the data
+//        [[NSFileManager defaultManager] removeItemAtURL: storeURL
+//                                                  error: &error];
+//        
+//        //recreate the store like in the  appDelegate method
+//        [[self.privateManagedObjectContext persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
+//                                                                                    configuration: nil
+//                                                                                              URL: storeURL
+//                                                                                          options: nil
+//                                                                                            error: &error];
+//    }
+//
+//    [self.privateManagedObjectContext unlock];
+//    
+//    [self saveContext: TRUE];
+
+    
+    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"AbstractCommon"
+                                                         inManagedObjectContext: self.mainManagedObjectContext];
+    [fetchRequest setEntity: entityDescription];
+    
+    NSError* error = nil;
+    NSArray * managedObjects = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                         error: &error];
+    
+    for (id managedObject in managedObjects)
+    {
+        [self.mainManagedObjectContext deleteObject: managedObject];
+    }
+    
+    [self saveContext: TRUE];
+}
+
+
 
 // Save the main context first (propagating the changes to the private) and then the private
 - (void) saveContext: (BOOL) wait
@@ -307,7 +400,7 @@
     {
         ChannelOwner *channelOwnerMe = [ChannelOwner insertInManagedObjectContext: self.mainManagedObjectContext];
         
-        channelOwnerMe.name = @"PAUL CACKETT";
+        channelOwnerMe.displayName = @"PAUL CACKETT";
         channelOwnerMe.uniqueId = @"666";
         channelOwnerMe.thumbnailURL = @"http://demo.dev.rockpack.com.s3.amazonaws.com/images/Paul.png";
         
@@ -315,5 +408,19 @@
     }
 }
 
+
+#pragma mark - Social Integration Delegate
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    
+    return YES;
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [[FBSession activeSession] handleOpenURL:url];
+    return YES;
+}
 
 @end

@@ -6,27 +6,40 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#define kVideoBackgroundColour [UIColor blackColor]
-#define kBufferMonitoringTimerInterval 1.0f
-
+#import "AppConstants.h"
 #import "NSIndexPath+Arithmetic.h"
+#import "NSString+Timecode.h"
 #import "SYNVideoPlaybackViewController.h"
-#import "Video.h"
-#import "VideoInstance.h"
+#import "UIFont+SYNFont.h"
 #import <CoreData/CoreData.h>
+#import <MediaPlayer/MediaPlayer.h>
+#import <QuartzCore/CoreAnimation.h>
 
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
+@property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) CGRect requestedFrame;
-@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
+@property (nonatomic, assign) NSTimeInterval currentDuration;
 @property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
+@property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
+@property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
+@property (nonatomic, strong) NSTimer *shuttleBarUpdateTimer;
+@property (nonatomic, strong) UIButton *shuttleBarPlayPauseButton;
 @property (nonatomic, strong) UIButton *videoPlayButton;
-@property (nonatomic, strong) UIImageView *currentVideoPlaceholderImageView;
+@property (nonatomic, strong) UIImageView *videoPlaceholderBottomImageView;
+@property (nonatomic, strong) UIImageView *videoPlaceholderMiddleImageView;
+@property (nonatomic, strong) UIImageView *videoPlaceholderTopImageView;
+@property (nonatomic, strong) UILabel *currentTimeLabel;
+@property (nonatomic, strong) UILabel *durationLabel;
+@property (nonatomic, strong) UIProgressView *bufferingProgressView;
+@property (nonatomic, strong) UISlider *shuttleSlider;
+@property (nonatomic, strong) UIView *videoPlaceholderView;
 @property (nonatomic, strong) UIWebView *currentVideoWebView;
 @property (nonatomic, strong) UIWebView *nextVideoWebView;
 
@@ -34,6 +47,8 @@
 
 
 @implementation SYNVideoPlaybackViewController
+
+@synthesize currentVideoInstance;
 
 #pragma mark - Initialization
 
@@ -58,27 +73,32 @@
 
     // Make sure we set the desired frame at this point
     self.view.frame = self.requestedFrame;
+    self.view.clipsToBounds = YES;
 
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
     
     // Use for placeholder
-//    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
+//    [self.view insertSubview: self.videoPlaybackViewController.view
 //                               aboveSubview: self.videoPlaceholderImageView];
     
-    self.currentVideoPlaceholderImageView = [self createNewVideoPlaceholderImageView];
+    [self createNewVideoPlaceholderImageViews];
+    
+    self.shuttleBarView = [self createShuttleBarView];
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
     self.currentVideoWebView = [self createNewVideoWebView];
     
     // Add button that can be used to play video (if not autoplaying)
-    self.videoPlayButton = [self createVideoPlayButton];
-
+//    self.videoPlayButton = [self createVideoPlayButton];
 }
 
 
-- (void) viewDidDisappear:(BOOL)animated
+- (void) viewDidDisappear: (BOOL) animated
 {
+    [self stopBufferMonitoringTimer];
+    [self stopShuttleBarUpdateTimer];
+    
     [self stopVideoInWebView: self.currentVideoWebView];
     self.currentVideoWebView = nil;
     self.nextVideoWebView = nil;
@@ -87,15 +107,141 @@
 }
 
 
+- (UIView *) createShuttleBarView
+{
+    // Create out shuttle bar view at the bottom of our video view
+    CGRect shuttleBarFrame = self.view.frame;
+    shuttleBarFrame.size.height = kShuttleBarHeight;
+    shuttleBarFrame.origin.x = 0.0f;
+    shuttleBarFrame.origin.y = self.view.frame.size.height - kShuttleBarHeight;
+    UIView *shuttleBarView = [[UIView alloc] initWithFrame: shuttleBarFrame];
+    
+    // Add transparent background view
+    UIView *shuttleBarBackgroundView = [[UIView alloc] initWithFrame: shuttleBarView.bounds];
+    shuttleBarBackgroundView.alpha = 0.5f;
+    shuttleBarBackgroundView.backgroundColor = [UIColor blackColor];
+    [shuttleBarView addSubview: shuttleBarBackgroundView];
+    
+    // Add play/pause button
+    self.shuttleBarPlayPauseButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    
+    // Set this subview to appear slightly offset from the left-hand side
+    self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, kShuttleBarButtonWidth, kShuttleBarHeight);
+    
+    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                    forState: UIControlStateNormal];
+    
+    [self.shuttleBarPlayPauseButton addTarget: self
+                                       action: @selector(togglePlayPause)
+                             forControlEvents: UIControlEventTouchUpInside];
+    
+    self.shuttleBarPlayPauseButton.backgroundColor = [UIColor clearColor];
+    [shuttleBarView addSubview: self.shuttleBarPlayPauseButton];
+    
+    // Add time labels
+    self.currentTimeLabel = [self createTimeLabelAtXPosition: kShuttleBarButtonWidth
+                                               textAlignment: NSTextAlignmentRight];
+    
+    self.currentTimeLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
+    
+    [shuttleBarView addSubview: self.currentTimeLabel];
+    
+    self.durationLabel = [self createTimeLabelAtXPosition: self.view.frame.size.width - kShuttleBarTimeLabelWidth - kShuttleBarButtonWidth
+                                            textAlignment: NSTextAlignmentLeft];
+    
+    self.durationLabel.text =  [NSString timecodeStringFromSeconds: 0.0f];
+    
+    [shuttleBarView addSubview: self.durationLabel];
+    
+    // Add shuttle slider
+    // Set custom slider track images
+    CGFloat sliderOffset = kShuttleBarButtonWidth + kShuttleBarTimeLabelWidth + kShuttleBarSliderOffset;
+    
+    UIImage *sliderBackgroundImage = [UIImage imageNamed: @"ShuttleBarPlayerBar.png"];
+    
+    UIImageView *sliderBackgroundImageView = [[UIImageView alloc] initWithFrame: CGRectMake(sliderOffset+2, 17, shuttleBarFrame.size.width - 2 - (2 * sliderOffset), 10)];
+    
+    sliderBackgroundImageView.image = [sliderBackgroundImage resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+    [shuttleBarView addSubview: sliderBackgroundImageView];
+    
+    // Add the progress bar over the background, but underneath the slider
+    self.bufferingProgressView = [[UIProgressView alloc] initWithFrame: CGRectMake(sliderOffset+1, 17, shuttleBarFrame.size.width - (2 * sliderOffset), 10)];
+    UIImage *progressImage = [[UIImage imageNamed: @"ShuttleBarBufferBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+    // Note: this image needs to be exactly the same size at the left hand-track bar, or the bar will only display as a line
+	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleBarRemainingBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+
+    self.bufferingProgressView.progressImage = progressImage;
+    self.bufferingProgressView.trackImage = shuttleSliderRightTrack;
+    self.bufferingProgressView.progress = 0.0f;
+    [shuttleBarView addSubview: self.bufferingProgressView];
+    
+    self.shuttleSlider = [[UISlider alloc] initWithFrame: CGRectMake(sliderOffset, 9, shuttleBarFrame.size.width - (2 * sliderOffset), 25)];
+    
+    UIImage *shuttleSliderLeftTrack = [[UIImage imageNamed: @"ShuttleBarProgressBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+
+       
+    [self.shuttleSlider setMinimumTrackImage: shuttleSliderLeftTrack
+                                    forState: UIControlStateNormal];
+	
+	[self.shuttleSlider setMaximumTrackImage: shuttleSliderRightTrack
+                                    forState: UIControlStateNormal];
+	
+	// Custom slider thumb image
+    [self.shuttleSlider setThumbImage: [UIImage imageNamed: @"ShuttleBarSliderThumb.png"]
+                             forState: UIControlStateNormal];
+        
+    self.shuttleSlider.value = 0.0f;
+
+    [self.shuttleSlider addTarget: self
+                           action: @selector(updateTimeFromSlider:)
+                 forControlEvents: UIControlEventValueChanged];
+    
+    [shuttleBarView addSubview: self.shuttleSlider];
+    
+    // Add AirPlay button
+    // This is a crafty (apple approved) hack, where we set the showVolumeSlider parameter to NO, so only the AirPlay symbol gets shown
+    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
+    volumeView.frame = CGRectMake(self.view.frame.size.width - kShuttleBarButtonWidth + 18, 12, 25, kShuttleBarHeight);
+    [volumeView setShowsVolumeSlider: NO];
+    [volumeView sizeToFit];
+    volumeView.backgroundColor = [UIColor clearColor];
+    [shuttleBarView addSubview: volumeView];
+    
+    [self.view addSubview: shuttleBarView];
+    
+    return shuttleBarView;
+}
+
+
+- (UILabel *) createTimeLabelAtXPosition: (CGFloat) xPosition
+                           textAlignment: (NSTextAlignment) textAlignment
+{
+    CGRect timeLabelFrame = self.view.frame;
+    timeLabelFrame.size.height = kShuttleBarHeight - 4;
+    timeLabelFrame.size.width = kShuttleBarTimeLabelWidth;
+    timeLabelFrame.origin.x = xPosition;
+    timeLabelFrame.origin.y = 4;
+
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame: timeLabelFrame];
+//    timeLabel.text = @"0:00";
+    timeLabel.textColor = [UIColor whiteColor];
+    timeLabel.textAlignment = textAlignment;
+    timeLabel.font = [UIFont boldRockpackFontOfSize: 12.0f];
+    timeLabel.backgroundColor = [UIColor clearColor];
+    
+    return timeLabel;
+}
+
+
 - (UIWebView *) createNewVideoWebView
 {
     UIWebView *newVideoWebView;
-    
     newVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
+
     newVideoWebView.backgroundColor = self.view.backgroundColor;
 	newVideoWebView.opaque = NO;
     newVideoWebView.alpha = 0.0f;
-    
+    newVideoWebView.autoresizingMask = UIViewAutoresizingNone;
     // Stop the user from scrolling the webview
     newVideoWebView.scrollView.scrollEnabled = false;
     newVideoWebView.scrollView.bounces = false;
@@ -107,24 +253,35 @@
     newVideoWebView.mediaPlaybackAllowsAirPlay = YES;
     
     [self.view insertSubview: newVideoWebView
-                aboveSubview: self.currentVideoPlaceholderImageView];
+                belowSubview: self.shuttleBarView];
 
     return newVideoWebView;
 }
 
 
-- (UIImageView *) createNewVideoPlaceholderImageView
+- (void) createNewVideoPlaceholderImageViews
 {
-    UIImageView *newVideoPlaceholderImageView;
+    self.videoPlaceholderTopImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoTop"];
+    self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle"];
+    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom"];
     
-    newVideoPlaceholderImageView = [[UIImageView alloc] initWithFrame: self.view.bounds];
-    newVideoPlaceholderImageView.backgroundColor = [UIColor clearColor];
-	newVideoPlaceholderImageView.opaque = NO;
+    // Pop them in a view to keep them together
+    self.videoPlaceholderView = [[UIView alloc] initWithFrame: self.view.bounds];
     
-    // Initially, the webview will be hidden (until playback starts)
-    newVideoPlaceholderImageView.alpha = 0.0f;
+    [self.videoPlaceholderView addSubview: self.videoPlaceholderBottomImageView];
+    [self.videoPlaceholderView addSubview: self.videoPlaceholderMiddleImageView];
+    [self.videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
+}
+
+
+- (UIImageView *) createNewVideoPlaceholderImageView: (NSString *) imageName
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame: self.view.bounds];
+    imageView.contentMode = UIViewContentModeCenter;
+    imageView.backgroundColor = [UIColor clearColor];
+    imageView.image = [UIImage imageNamed: imageName];
     
-    return newVideoPlaceholderImageView;
+    return imageView;
 }
 
 
@@ -139,9 +296,9 @@
     [newVideoPlayButton setImage: [UIImage imageNamed: @"ButtonLargeVideoPanelPlay.png"]
                         forState: UIControlStateNormal];
     
-    [newVideoPlayButton addTarget: self
-                           action: @selector(userTouchedPlay:)
-                 forControlEvents: UIControlEventTouchUpInside];
+//    [newVideoPlayButton addTarget: self
+//                           action: @selector(userTouchedPlay:)
+//                 forControlEvents: UIControlEventTouchUpInside];
     
     newVideoPlayButton.alpha = 1.0f;
 
@@ -151,66 +308,96 @@
 }
 
 
+#pragma mark - Placeholder Animation
+
+- (void) spinMiddlePlaceholderImageView
+{
+    [self spinView: self.videoPlaceholderMiddleImageView
+     withAnimation: self.placeholderMiddleLayerAnimation
+          duration: kMiddlePlaceholderCycleTime
+         clockwise: TRUE];
+}
+
+
+- (void) spinBottomPlaceholderImageView
+{
+    [self spinView: self.videoPlaceholderMiddleImageView
+     withAnimation: self.placeholderMiddleLayerAnimation
+          duration: kBottomPlaceholderCycleTime
+         clockwise: TRUE];
+}
+
+
+- (void) spinView: (UIView *) placeholderView
+    withAnimation: (CABasicAnimation *) animation
+         duration: (float) cycleTime
+        clockwise: (BOOL) clockwise
+ 
+{
+	[CATransaction begin];
+    
+	[CATransaction setValue: (id) kCFBooleanTrue
+					 forKey: kCATransactionDisableActions];
+	
+	CGRect frame = [placeholderView frame];
+	placeholderView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+	placeholderView.layer.position = CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height);
+	[CATransaction commit];
+	
+	[CATransaction begin];
+    
+	[CATransaction setValue: (id)kCFBooleanFalse
+					 forKey: kCATransactionDisableActions];
+	
+    // Set duration of spin
+	[CATransaction setValue: [NSNumber numberWithFloat: cycleTime]
+                     forKey: kCATransactionAnimationDuration];
+	
+	animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
+    
+    // Alter to/from to change spin direction
+    if (clockwise)
+    {
+        animation.fromValue = [NSNumber numberWithFloat: 0.0];
+        animation.toValue = [NSNumber numberWithFloat: 2 * M_PI];
+    }
+    else
+    {
+        animation.fromValue = [NSNumber numberWithFloat: 2 * M_PI];
+        animation.toValue = [NSNumber numberWithFloat: 0.0f];
+    }
+
+	animation.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
+	animation.delegate = self;
+    
+	[placeholderView.layer addAnimation: animation
+                                 forKey: @"rotationAnimation"];
+	
+	[CATransaction commit];
+}
+
+
+// Restarts the spin animation on the button when it ends. Again, this is
+// largely irrelevant now that the audio is loaded from a local file.
+
+- (void) animationDidStop: (CAAnimation *) animation
+                 finished: (BOOL) finished
+{
+	if (finished)
+	{
+        if (animation == self.placeholderMiddleLayerAnimation)
+        {
+            [self spinMiddlePlaceholderImageView];
+        }
+        else
+        {
+            [self spinBottomPlaceholderImageView];
+        }
+	}
+}
+
+
 #pragma mark - Source / Playlist management
-
-//- (NSIndexPath *) nextIndexPath: (NSIndexPath *) currentIndexPath
-//{
-//    // Get the current number of section and calculate the next one
-//    int numOfSections = self.fetchedResultsController.sections.count;
-//    int nextSection = ((currentIndexPath.section + 1) % numOfSections);
-//    
-//    // Get the info for the current section
-//    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[currentIndexPath.section];
-//    
-//    // Check to see 
-//    if ((currentIndexPath.item + 1) >= sectionInfo.numberOfObjects)
-//    {
-//        // Wrap around to the first item in the next section (which itself may have wrapped around)
-//        return [NSIndexPath indexPathForRow: 0
-//                                  inSection: nextSection];
-//    }
-//    else
-//    {
-//        // Return the next row in the section
-//        return [NSIndexPath indexPathForRow: currentIndexPath.item + 1
-//                                  inSection: currentIndexPath.section];
-//    }
-//}
-//
-//
-//- (NSIndexPath *) previousIndexPath: (NSIndexPath *) currentIndexPath
-//{
-//    // Get the current number of section and calculate the next one
-//    int numOfSections = self.fetchedResultsController.sections.count;
-//    
-//    // Calculate the previous section
-//    int previousSection = currentIndexPath.section - 1;
-//
-//    // Check to see if we need to wrap around
-//    if (previousSection < 0)
-//    {
-//        // Set to the last section
-//        previousSection = numOfSections - 1;
-//    }
-//    
-//    // Get the info for the current section
-//    id <NSFetchedResultsSectionInfo> previousSectionInfo = self.fetchedResultsController.sections[previousSection];
-//    
-//    // Check to see if we need to wrap around
-//    if ((currentIndexPath.item - 1) < 0)
-//    {
-//        // Set to the last index of the previous section
-//        return [NSIndexPath indexPathForRow: previousSectionInfo.numberOfObjects - 1
-//                                  inSection: previousSection];
-//    }
-//    else
-//    {
-//        // Set to the previous index in this section
-//        return [NSIndexPath indexPathForRow: (currentIndexPath.item - 1)
-//                                  inSection: currentIndexPath.section];
-//    }
-//}
-
 
 - (void) incrementVideoIndexPath
 {
@@ -294,6 +481,11 @@
 - (void) playVideoInWebView: (UIWebView *) webView
 {
     [webView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
+    
+    if (self.currentVideoWebView == webView)
+    {
+        self.playFlag = TRUE;
+    }
 }
 
 
@@ -305,6 +497,7 @@
         if (!self.isPlaying)
         {
             [self playVideoInWebView: self.currentVideoWebView];
+            self.playFlag = TRUE;
         }
     }
     else
@@ -314,18 +507,29 @@
         self.currentSelectedIndexPath = newIndexPath;
         [self loadCurrentVideoWebView];
     }
+    
 }
 
 
 - (void) pauseVideoInWebView: (UIWebView *) webView
 {
     [webView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
+    
+    if (self.currentVideoWebView == webView)
+    {
+        self.playFlag = FALSE;
+    }
 }
 
 
 - (void) stopVideoInWebView: (UIWebView *) webView
 {
     [webView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
+    
+    if (self.currentVideoWebView == webView)
+    {
+        self.playFlag = FALSE;
+    }
 }
 
 
@@ -357,6 +561,13 @@
     return [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getCurrentTime();"] doubleValue];
 }
 
+// Get the playhead time of the current video
+- (void) setCurrentTime: (NSTimeInterval) newTime
+{
+    NSString *callString = [NSString stringWithFormat: @"player.seekTo(%f);", newTime];
+    [self.currentVideoWebView stringByEvaluatingJavaScriptFromString: callString];
+}
+
 
 // Get a number between 0 and 1 that indicated how much of the video has been buffered
 // Can use this to display a video loading progress indicator
@@ -369,8 +580,10 @@
 // Index of currently playing video (if using a playlist)
 - (BOOL) isPlaying
 {
-    return ([[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue] == 1)
-            ? TRUE : FALSE;
+    int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
+    
+    NSLog (@"playstate: %d" , playingValue);
+    return (playingValue == 1) ? TRUE : FALSE;
 }
 
 
@@ -454,10 +667,20 @@
                                                              encoding: NSUTF8StringEncoding
                                                                 error: &error];
     
+    
+    CGAffineTransform savedTransform = self.view.transform;
+    self.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    
     NSString *iFrameHTML = [NSString stringWithFormat: templateHTMLString, (int) self.view.frame.size.width, (int) self.view.frame.size.height, sourceId];
+    
+    self.view.transform = savedTransform;
     
     [webView loadHTMLString: iFrameHTML
                     baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
+    
+//    [webView loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: @"http://www.synchromation.com"]]];
+//    
+//    webView.alpha = 1.0f;
     
     // Not sure if this makes any difference
     webView.mediaPlaybackRequiresUserAction = FALSE;
@@ -586,6 +809,7 @@
         }
         else if ([actionData isEqualToString: @"ended"])
         {
+            [self stopShuttleBarUpdateTimer];
             [self stopBufferMonitoringTimer];
             [self stopVideoInWebView: self.currentVideoWebView];
             [self swapVideoWebViews];
@@ -595,9 +819,20 @@
             [self fadeOutPlayButton];
             [self fadeUpVideoPlayerInWebView: self.currentVideoWebView];
             [self startBufferMonitoringTimer];
+            
+            // Now cache the duration of this video for use in the progress updates
+            self.currentDuration = self.duration;
+            
+            if (self.currentDuration > 0.0f)
+            {
+                // Only start if we have a valid duration
+                [self startShuttleBarUpdateTimer];
+                self.durationLabel.text = [NSString timecodeStringFromSeconds: self.currentDuration];
+            }
         }
         else if ([actionData isEqualToString: @"paused"])
         {
+            [self stopShuttleBarUpdateTimer];
             [self stopBufferMonitoringTimer];
             [self fadeUpPlayButton];
         }
@@ -616,7 +851,7 @@
     }
     else if ([actionName isEqualToString: @"playbackQuality"])
     {
-        
+        NSLog (@"!!!!!!!!!! Quality: %@", actionData);
     }
     else if ([actionName isEqualToString: @"playbackRateChange"])
     {
@@ -629,6 +864,10 @@
     else if ([actionName isEqualToString: @"apiChange"])
     {
         
+    }
+    else if ([actionName isEqualToString: @"sizeChange"])
+    {
+        NSLog (@"!!!!!!!!!! Size change: %@", actionData);
     }
     else
     {
@@ -714,8 +953,30 @@
     
 }
 
+- (void) startShuttleBarUpdateTimer
+{
+    [self.shuttleBarUpdateTimer invalidate];
+    
+    // Schedule the timer on a different runloop so that we continue to get updates even when scrolling collection views etc.
+    self.shuttleBarUpdateTimer = [NSTimer timerWithTimeInterval: kShuttleBarUpdateTimerInterval
+                                                       target: self
+                                                     selector: @selector(updateShuttleBarProgress)
+                                                     userInfo: nil
+                                                      repeats: YES];
+    
+    [[NSRunLoop mainRunLoop] addTimer: self.shuttleBarUpdateTimer forMode: NSRunLoopCommonModes];
+}
+
+
+- (void) stopShuttleBarUpdateTimer
+{
+    [self.shuttleBarUpdateTimer invalidate], self.shuttleBarUpdateTimer = nil;
+}
+
 - (void) startBufferMonitoringTimer
 {
+    [self.bufferMonitoringTimer invalidate];
+    
     self.bufferMonitoringTimer = [NSTimer scheduledTimerWithTimeInterval: kBufferMonitoringTimerInterval
                                                                   target: self
                                                                 selector: @selector(monitorBufferLevel)
@@ -733,19 +994,66 @@
 - (void) monitorBufferLevel
 {
     float bufferLevel = [self videoLoadedFraction];
-    
+    NSLog (@"Buffer level %f", bufferLevel);
     // If we have a full buffer for the current video and are not already trying to buffer the next video
     // then start to preload the next video
-    if (bufferLevel == 1.0f && self.nextVideoWebView == nil)
+    if (bufferLevel == 1.0f)
     {
-        DebugLog (@"*** Buffer full");
-        [self precacheNextVideo];
+        if (self.nextVideoWebView == nil)
+        {
+            DebugLog (@"*** Buffer full");
+            [self precacheNextVideo];
+        }
+        else
+        {
+           [self stopBufferMonitoringTimer]; 
+        }
     }
+}
+
+
+- (void) updateShuttleBarProgress
+{
+    NSTimeInterval currentTime = self.currentTime;
+    
+    // Update current time label
+    self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: currentTime];
+    
+    // and slider
+    self.shuttleSlider.value = currentTime / self.currentDuration;
+}
+
+- (void) updateTimeFromSlider: (UISlider *) slider
+{
+    [self setCurrentTime: slider.value * self.currentDuration];
+}
+
+- (void) togglePlayPause
+{
+    if (self.playFlag == TRUE)
+    {
+
+        [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPlay.png"]
+                                        forState: UIControlStateNormal];
+        
+        [self pauseVideoInWebView: self.currentVideoWebView];
+
+    }
+    else
+    {
+        [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                        forState: UIControlStateNormal];
+        
+        [self playVideoInWebView: self.currentVideoWebView];
+    }
+
 }
 
 
 - (void) precacheNextVideo
 {
+    [self stopBufferMonitoringTimer];
+    
     // This flag is set to true when we get the unstarted event from the next video player
     // indicating that it has buffered and ready to play
     self.nextVideoWebViewReadyToPlay = FALSE;
@@ -848,6 +1156,11 @@
                      completion: ^(BOOL finished)
      {
      }];
+}
+
+- (VideoInstance*) currentVideoInstance
+{
+    return (VideoInstance*)[self.fetchedResultsController objectAtIndexPath:self.currentSelectedIndexPath];
 }
 
 @end

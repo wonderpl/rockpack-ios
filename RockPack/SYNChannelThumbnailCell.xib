@@ -34,7 +34,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUICollectionViewCell" id="887741211">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="915651722">
@@ -265,7 +265,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{251, 302}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="915651722"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="255104461"/>
@@ -321,11 +320,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">userNameLabel</string>
+						<string key="label">displayNameLabel</string>
 						<reference key="source" ref="887741211"/>
 						<reference key="destination" ref="508641349"/>
 					</object>
-					<int key="connectionID">64</int>
+					<int key="connectionID">66</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -374,7 +373,7 @@
 						<reference key="object" ref="508641349"/>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="887741211"/>
-						<string key="objectName">Label - Username</string>
+						<string key="objectName">Label - Display name</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">7</int>
@@ -438,7 +437,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">65</int>
+			<int key="maxID">66</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

@@ -15,7 +15,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
-#import "SYNSuggestionsPopoverBackgroundView.h"
+#import "SYNGenericPopoverBackgroundView.h"
 #import "SYNBottomTabViewController.h"
 
 #import "SYNVideoViewerViewController.h"
@@ -28,36 +28,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
 
-@property (nonatomic, strong) IBOutlet UIView* topBarView;
-
-
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-
-@property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
-@property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
-
-@property (nonatomic, strong) NSTimer* autocompleteTimer;
-
-
-@property (nonatomic, strong) IBOutlet UIView* overlayView;
-
+@property (nonatomic, strong) IBOutlet UIButton* backButton;
+@property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
 @property (nonatomic, strong) IBOutlet UIButton* inboxButton;
 @property (nonatomic, strong) IBOutlet UIButton* notificationButton;
-
-@property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
-@property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
-@property (nonatomic, strong) IBOutlet UIView* slidersView;
+@property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
+@property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
+@property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
-@property (nonatomic, strong) IBOutlet UIButton* backButton;
-
+@property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) IBOutlet UIView* slidersView;
+@property (nonatomic, strong) IBOutlet UIView* topBarView;
+@property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
+@property (nonatomic, strong) NSTimer* autocompleteTimer;
+@property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
-@property (nonatomic, weak) UIViewController* currentOverlayController;
-
-
-
-@property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
+@property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
+@property (nonatomic, weak) UIViewController* currentOverlayViewController;
+
 
 @end
 
@@ -71,21 +62,33 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(id)initWithRootViewController:(UIViewController*)root
 {
-    self = [super initWithNibName:@"SYNMasterViewController" bundle:nil];
-    if (self) {
-        
+    if ((self = [super initWithNibName: @"SYNMasterViewController" bundle: nil]))
+    {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         self.rootViewController = root;
-        
+
+        // == Set up Inbox Overlay
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
+        CGRect inboxOverlayFrame = self.inboxOverlayViewController.view.frame;
+        inboxOverlayFrame.origin.x = -(inboxOverlayFrame.size.width);
+        inboxOverlayFrame.origin.y = 45.0;
+        self.inboxOverlayViewController.view.frame = inboxOverlayFrame;
+        
+        
+        // == Set up Share Overlay
         self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
+        CGRect shareOverlayFrame = self.inboxOverlayViewController.view.frame;
+        shareOverlayFrame.origin.x = -(shareOverlayFrame.size.width);
+        shareOverlayFrame.origin.y = 45.0;
+        self.shareOverlayViewController.view.frame = shareOverlayFrame;
+        
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         
         self.autocompleteController.tableView.delegate = self;
         
-        
+        self.overEverythingView.userInteractionEnabled = NO;
         
     }
     return self;
@@ -104,7 +107,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) ==//
     
@@ -140,26 +142,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.inboxLabel.font = boldFont;
     self.notificationsLabel.font = boldFont;
     
-    // == Set up Recognisers == //
-    
-    UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                               action: @selector(swipeGesturePerformed:)];
-    
-    [rightSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer:rightSwipeRecogniser];
-    
-    rightSwipeRecogniser.delegate = self;
-    
-    
-    UISwipeGestureRecognizer* leftSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                              action: @selector(swipeGesturePerformed:)];
-    
-    [leftSwipeRecogniser setDirection: UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer: leftSwipeRecogniser];
-    
-    
-    leftSwipeRecogniser.delegate = self;
-    
+    self.clearTextButton.alpha = 0.0;
+    self.glowTextImageView.alpha = 0.0;
+    self.glowTextImageView.userInteractionEnabled = NO;
     
     // == Set Up Notifications == //
     
@@ -194,7 +179,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.notificationsPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
         self.notificationsPopoverController.popoverContentSize = CGSizeMake(320, 166);
         self.notificationsPopoverController.delegate = self;
-        self.notificationsPopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
+        self.notificationsPopoverController.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
         
         [self.notificationsPopoverController presentPopoverFromRect: button.frame
                                                              inView: self.view
@@ -203,6 +188,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     
 }
+
 
 - (IBAction) userTouchedInboxButton: (UIButton*) button
 {
@@ -218,15 +204,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         button.selected = YES;
         [self showOrSwapOverlay:self.inboxOverlayViewController];
     }
-    
-    
 }
+
 
 -(void)showOrSwapOverlay: (UIViewController*) overlayViewController
 {
-    if(self.currentOverlayController && self.currentOverlayController != overlayViewController)
+    if(self.currentOverlayViewController && self.currentOverlayViewController != overlayViewController)
     {
-        [self hideOverlay:self.currentOverlayController withCompletionBlock:^(BOOL finished) {
+        [self hideOverlay:self.currentOverlayViewController withCompletionBlock:^(BOOL finished) {
             [self showOverlay:overlayViewController];
         }];
     }
@@ -246,7 +231,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)showOverlay: (UIViewController *) overlayViewController withCompletionBlock:(AnimationCompletionBlock)block
 {
-    self.currentOverlayController = overlayViewController;
+    self.currentOverlayViewController = overlayViewController;
     
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
@@ -255,7 +240,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // Take out of screen
     overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                                   0.0,
+                                                   overlayViewController.view.frame.origin.y,
                                                    overlayViewFrame.size.width,
                                                    overlayViewFrame.size.height);
     
@@ -266,7 +251,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
-                         overlayViewController.view.frame =  CGRectMake(0.0, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         overlayViewController.view.frame =  CGRectMake(0.0,
+                                                                        overlayViewFrame.origin.y,
+                                                                        overlayViewFrame.size.width,
+                                                                        overlayViewFrame.size.height);
                          
                      } completion: ^(BOOL finished) {
                          if(block) block(finished);
@@ -292,11 +280,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
-                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width, 0.0, overlayViewFrame.size.width, overlayViewFrame.size.height);
+                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                                                        overlayViewFrame.origin.y,
+                                                                        overlayViewFrame.size.width,
+                                                                        overlayViewFrame.size.height);
                          
                      } completion: ^(BOOL finished) {
                          [overlayViewController.view removeFromSuperview];
-                         self.currentOverlayController = nil;
+                         self.currentOverlayViewController = nil;
                          if(block) block(finished);
                      }];
 }
@@ -304,26 +295,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 #pragma mark - Video Overlay View
-
--(void)addVideoOverlayWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController andIndexPath:(NSIndexPath *)indexPath
+- (void) addVideoOverlayToViewController: (UIViewController *) originViewController
+            withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
+                            andIndexPath: (NSIndexPath *) indexPath;
 {
+    // Remember the view controller that we came from
+    self.originViewController = originViewController;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
     
     SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
     
-    
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
     [self.overlayView addSubview:self.videoViewerViewController.view];
     
-    
-    
-    
     self.videoViewerViewController.view.alpha = 0.0f;
-    
-    
+    self.videoViewerViewController.overlayParent = self;
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -332,13 +321,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          self.videoViewerViewController.view.alpha = 1.0f;
                      }
-                     completion: ^(BOOL finished) {
-                         
-                        
-                        [self.videoViewerViewController.closeButton addTarget: self
-                                                                       action: @selector(removeVideoOverlayController)
-                                                             forControlEvents: UIControlEventTouchUpInside];
-                          
+                     completion: ^(BOOL finished)
+                     {
+
                         self.overlayView.userInteractionEnabled = YES;
                          
                          // == Add video queue == //
@@ -359,10 +344,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
     
     UIView* child = self.overlayView.subviews[0];
-    
-    [self.videoViewerViewController.closeButton removeTarget: self
-                                                   action: @selector(removeVideoOverlayController)
-                                         forControlEvents: UIControlEventTouchUpInside];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
@@ -402,6 +383,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     self.searchTextField.text = @"";
     
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+    
+    self.clearTextButton.alpha = 0.0;
+    
     [self.searchTextField resignFirstResponder];
 }
 
@@ -425,6 +412,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
         return NO;
     
+    
+//    if(self.searchTextField.text.length < 1)
+//        return YES;
+    
     if(self.autocompleteTimer) {
         [self.autocompleteTimer invalidate];
     }
@@ -440,6 +431,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)performAutocompleteSearch:(NSTimeInterval*)interval
 {
     
+    if(self.searchTextField.text.length == 0) {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.clearTextButton.alpha = 0.0;
+        }];
+        
+    } else {
+        [UIView animateWithDuration:0.1 animations:^{
+            self.clearTextButton.alpha = 1.0;
+        }];
+    }
+        
+    
     [self.autocompleteTimer invalidate];
     
     self.autocompleteTimer = nil;
@@ -454,9 +457,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                              NSMutableArray* wordsReturned = [NSMutableArray array];
                                              
                                              if(suggestionsReturned.count == 0) {
+                                                 
                                                  [self.autocompleteController clearWords];
                                                  
                                                  [self.autocompletePopoverController dismissPopoverAnimated:NO];
+                                                 
+                                                 self.autocompletePopoverController = nil;
+                                                 
                                                  return;
                                              }
         
@@ -479,8 +486,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
-
-    
     
     if ([self.searchTextField.text isEqualToString:@""])
         return NO;
@@ -492,6 +497,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [textField resignFirstResponder];
     
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
+    
     if(self.autocompletePopoverController) {
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
         self.autocompletePopoverController = nil;
@@ -502,42 +511,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return YES;
 }
 
-
-
-#pragma mark - Gesture Recogniser Delegate
-
--(void)swipeGesturePerformed:(UIGestureRecognizer*)recogniser
-{
-    UISwipeGestureRecognizerDirection direction = ((UISwipeGestureRecognizer*)recogniser).direction;
-    if(direction == UISwipeGestureRecognizerDirectionRight)
-    {
-        
-        self.inboxButton.selected = YES;
-        if(!self.currentOverlayController) {
-            [self showOverlay:self.inboxOverlayViewController withCompletionBlock:nil];
-        }
-        
-    }
-    else if(direction == UISwipeGestureRecognizerDirectionLeft)
-    {
-        self.inboxButton.selected = NO;
-        if(self.currentOverlayController) {
-            [self hideOverlay:self.currentOverlayController withCompletionBlock:nil];
-        }
-    }
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 1.0;
+    }];
 }
 
-- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch: (UITouch *) touch
-{
-    // TODO: Look into the exact conditions where the user can swipe
-    return YES;
-}
-
-
-- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
-{
-    // TODO: Look into the exact conditions where the user can swipe
-    return YES;
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    [UIView animateWithDuration:0.1 animations:^{
+        self.glowTextImageView.alpha = 0.0;
+    }];
 }
 
 
@@ -638,7 +621,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.autocompletePopoverController.delegate = self;
     
     
-    self.autocompletePopoverController.popoverBackgroundViewClass = [SYNSuggestionsPopoverBackgroundView class];
+    self.autocompletePopoverController.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
     
     [self.autocompletePopoverController presentPopoverFromRect: self.searchTextField.frame
                                                         inView: self.view

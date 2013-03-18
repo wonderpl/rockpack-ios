@@ -2,19 +2,23 @@
 // Make changes to User.h instead.
 
 #import <CoreData/CoreData.h>
-
+#import "ChannelOwner.h"
 
 extern const struct UserAttributes {
-	__unsafe_unretained NSString *forename;
-	__unsafe_unretained NSString *surname;
-	__unsafe_unretained NSString *thumbnailURL;
+	__unsafe_unretained NSString *current;
+	__unsafe_unretained NSString *dateOfBirth;
+	__unsafe_unretained NSString *emailAddress;
+	__unsafe_unretained NSString *username;
 } UserAttributes;
 
 extern const struct UserRelationships {
+	__unsafe_unretained NSString *accessInfo;
 } UserRelationships;
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
+
+@class AccessInfo;
 
 
 
@@ -24,7 +28,7 @@ extern const struct UserFetchedProperties {
 @interface UserID : NSManagedObjectID {}
 @end
 
-@interface _User : NSManagedObject {}
+@interface _User : ChannelOwner {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
@@ -34,32 +38,53 @@ extern const struct UserFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* forename;
+@property (nonatomic, strong) NSNumber* current;
 
 
 
-//- (BOOL)validateForename:(id*)value_ error:(NSError**)error_;
+@property BOOL currentValue;
+- (BOOL)currentValue;
+- (void)setCurrentValue:(BOOL)value_;
 
-
-
-
-
-@property (nonatomic, strong) NSString* surname;
-
-
-
-//- (BOOL)validateSurname:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateCurrent:(id*)value_ error:(NSError**)error_;
 
 
 
 
 
-@property (nonatomic, strong) NSString* thumbnailURL;
+@property (nonatomic, strong) NSDate* dateOfBirth;
 
 
 
-//- (BOOL)validateThumbnailURL:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateDateOfBirth:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
+@property (nonatomic, strong) NSString* emailAddress;
+
+
+
+//- (BOOL)validateEmailAddress:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* username;
+
+
+
+//- (BOOL)validateUsername:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) AccessInfo *accessInfo;
+
+//- (BOOL)validateAccessInfo:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -74,22 +99,36 @@ extern const struct UserFetchedProperties {
 @interface _User (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveForename;
-- (void)setPrimitiveForename:(NSString*)value;
+- (NSNumber*)primitiveCurrent;
+- (void)setPrimitiveCurrent:(NSNumber*)value;
+
+- (BOOL)primitiveCurrentValue;
+- (void)setPrimitiveCurrentValue:(BOOL)value_;
 
 
 
 
-- (NSString*)primitiveSurname;
-- (void)setPrimitiveSurname:(NSString*)value;
+- (NSDate*)primitiveDateOfBirth;
+- (void)setPrimitiveDateOfBirth:(NSDate*)value;
 
 
 
 
-- (NSString*)primitiveThumbnailURL;
-- (void)setPrimitiveThumbnailURL:(NSString*)value;
+- (NSString*)primitiveEmailAddress;
+- (void)setPrimitiveEmailAddress:(NSString*)value;
 
 
+
+
+- (NSString*)primitiveUsername;
+- (void)setPrimitiveUsername:(NSString*)value;
+
+
+
+
+
+- (AccessInfo*)primitiveAccessInfo;
+- (void)setPrimitiveAccessInfo:(AccessInfo*)value;
 
 
 @end

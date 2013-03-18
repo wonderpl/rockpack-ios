@@ -28,7 +28,26 @@
          }];
         
      } errorHandler: ^(MKNetworkOperation *errorOp, NSError* error) {
-         errorBlock(error);
+         
+         if(error.code == 400) { // api error, response has Json Data
+             
+             [errorOp responseJSONWithCompletionHandler: ^(id jsonObject) {
+                 
+                 if(!jsonObject) {
+                     errorBlock(error);
+                     return;
+                 }
+                 
+                 responseBlock(jsonObject);
+             }];
+         } else {
+             errorBlock(error);
+         }
      }];
 }
+
+
+
+
+
 @end

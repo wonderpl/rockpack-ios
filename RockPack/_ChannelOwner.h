@@ -5,7 +5,7 @@
 #import "AbstractCommon.h"
 
 extern const struct ChannelOwnerAttributes {
-	__unsafe_unretained NSString *name;
+	__unsafe_unretained NSString *displayName;
 	__unsafe_unretained NSString *thumbnailURL;
 } ChannelOwnerAttributes;
 
@@ -34,11 +34,11 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* name;
+@property (nonatomic, strong) NSString* displayName;
 
 
 
-//- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateDisplayName:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -76,8 +76,8 @@ extern const struct ChannelOwnerFetchedProperties {
 @interface _ChannelOwner (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveName;
-- (void)setPrimitiveName:(NSString*)value;
+- (NSString*)primitiveDisplayName;
+- (void)setPrimitiveDisplayName:(NSString*)value;
 
 
 

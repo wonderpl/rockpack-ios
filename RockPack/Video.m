@@ -146,7 +146,7 @@ static NSEntityDescription *videoEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"Video(%@) categoryId: %@, source: %@, sourceId: %@, starCount: %@, starredByUser: %@, thumbnailURL: %@", self.uniqueId, self.categoryId, self.source, self.sourceId, self.starCount, self.starredByUser, self.thumbnailURL];
+    return [NSString stringWithFormat: @"uniqueId(%@), categoryId: %@, source: %@, sourceId: %@, starCount: %@, starredByUser: %@, thumbnailURL: %@", self.uniqueId, self.categoryId, self.source, self.sourceId, self.starCount, self.starredByUser, self.thumbnailURL];
 }
 
 @end

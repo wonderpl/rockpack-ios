@@ -4,10 +4,15 @@
         <style type="text/css">
             body
             {
+                background: black;
+            }
+            
+            body, div
+            {
+                width: 100%;
+                height: 100%;
                 margin: 0;
                 padding: 0;
-                border: 0;
-                background: transparent;
             }
             </style>
     </head>
@@ -24,22 +29,17 @@
             var done = false;
             var player;
             
-            function helloWorld()
-            {
-                //                alert("Hello World");
-                //                player.playVideo();
-            }
-            
             function onYouTubeIframeAPIReady()
             {
                 player = new YT.Player('player',
                                        {
                                        playerVars:
                                        {
-                                       'controls': 1,
-                                       'modestbranding': 1,
-                                       'showinfo': 0,
+                                       'controls' : 0,
+                                       'modestbranding' : 1,
+                                       'showinfo' : 0,
                                        'rel' : 0,
+                                       'suggestedQuality' : 'large'
                                        },
                                        width: '%d',
                                        height: '%d',
@@ -54,8 +54,25 @@
                                        'onApiChange': onPlayerApiChange
                                        }
                                        });
+                
+                // Add in a resize event listener
+                window.addEventListener("resize", function(e)
+                                        {
+                                            sizeToFit(document.getElementById("player"));
+                                        });
             }
             
+            // This is required to resize the YTPlayer when the size of the UIWebView changes
+            function sizeToFit(element)
+            {
+                alert ('resize');
+                var body = document.getElementsByTagName("body")[0];
+                element.setAttribute("width", body.clientWidth);
+                element.setAttribute("height", body.clientWidth / 1.77777);
+//                alert ('New size' + body.clientWidth + (height));
+
+            }
+
             // All possible event functions
             
             // This event fires whenever a player has finished loading and is ready to begin receiving API calls.
@@ -63,7 +80,7 @@
             // such as playing the video or displaying information about the video, as soon as the player is ready.
             function onPlayerReady(event)
             {
-                onEvent('ready', null);
+                onEvent('ready', null);        
             }
             
             // This event fires whenever the player's state changes. The data property of the event object that the API
@@ -87,7 +104,6 @@
                 onEvent('playbackRateChange', event.data);
             }
             
-            
             // This event fires if an error occurs in the player. The API will pass an event object to the event listener function.
             // That object's data property will specify an integer that identifies the type of error that occurred
             function onPlayerError(event)
@@ -95,14 +111,12 @@
                 onEvent('error', playerErrorToString(event.data));
             }
             
-            
             // This event is fired to indicate that the player has loaded (or unloaded) a module with exposed API methods
             // At the moment this is unlikely to be called as the only module that currently exists is for closed-captioning
             function onPlayerApiChange(event)
             {
                 onEvent('apiChange', event.data);
             }
-            
             
             // Report the event back to the UIWebViewer (by using the URL change trick)
             function onEvent(eventName, eventData)

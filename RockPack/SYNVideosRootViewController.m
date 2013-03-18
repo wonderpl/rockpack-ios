@@ -14,7 +14,6 @@
 #import "SYNCategoryItemView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
-#import "SYNVideoPlaybackViewController.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
@@ -31,7 +30,6 @@
                                            UIWebViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton *rockItButton;
-@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
@@ -39,8 +37,10 @@
 @property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
+@property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
+
+@property (nonatomic, strong) SYNLargeVideoPanelViewController* largeVideoPanelController;
+
 
 @end
 
@@ -54,6 +54,8 @@
                                bundle: nil]))
     {
         viewId = vid;
+        
+        
     }
     
     return self;
@@ -62,11 +64,8 @@
 
 #pragma mark - View lifecycle
 
-- (void) viewDidLoad
+-(void)loadView
 {
-    [super viewDidLoad];
-    
-    
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
@@ -74,35 +73,74 @@
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 2, 0, 2);
     
-    self.videoThumbnailCollectionView.collectionViewLayout = standardFlowLayout;
-
-    // Set the labels to use the custom font
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.channelLabel.font = [UIFont rockpackFontOfSize: 14.0f];
-    self.userNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-
-    // Init video thumbnail collection view
-    UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailWideCell"
-                                                  bundle: nil];
-
-    [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
+    
+    CGRect videoCollectionViewFrame = CGRectMake(512.0, 92.0, 512.0, 594.0);
+    
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
+    self.videoThumbnailCollectionView.delegate = self;
+    self.videoThumbnailCollectionView.dataSource = self;
+    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    [self.videoThumbnailCollectionView registerNib: [UINib nibWithNibName: @"SYNVideoThumbnailWideCell" bundle: nil]
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"];
     
-    // New video playback view controller
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(13, 11, 494, 278)];
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    [self.view addSubview:self.videoThumbnailCollectionView];
     
-    [self.largeVideoPanelView insertSubview: self.videoPlaybackViewController.view
-                               aboveSubview: self.panelImageView];
-
+    
+    self.largeVideoPanelController = [[SYNLargeVideoPanelViewController alloc] init];
+    
 }
 
+
+-(void)setLargeVideoPanelController:(SYNLargeVideoPanelViewController *)largeVideoPanelController
+{
+    if(!largeVideoPanelController)
+        return;
+    
+    
+    _largeVideoPanelController = largeVideoPanelController;
+    
+    self.largeVideoPanelView = self.largeVideoPanelController.view;
+    
+    CGRect vFrame = self.largeVideoPanelView.frame;
+    vFrame.origin.y = 88.0;
+    self.largeVideoPanelView.frame = vFrame;
+    
+    [self.view addSubview:self.largeVideoPanelView];
+    
+    self.rockItButton = self.largeVideoPanelController.rockItButtonLarge;
+    
+    // add it button
+    
+    [self.rockItButton addTarget:self
+                          action:@selector(toggleLargeVideoPanelStarItButton:)
+                forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.largeVideoPanelController.channelImageButton addTarget:self
+                                                          action:@selector(toggleLargeVideoPanelStarItButton:)
+                                                forControlEvents:UIControlEventTouchUpInside];
+    
+    self.channelImageView = self.largeVideoPanelController.channelImageView;
+    
+    self.displayNameLabel = self.largeVideoPanelController.displayNameLabel;
+    self.channelLabel = self.largeVideoPanelController.channelLabel;
+    self.titleLabel = self.largeVideoPanelController.titleLabel;
+    self.panelImageView = self.largeVideoPanelController.backgroundImageView;
+    
+}
 
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
+    
+    
+    // Request Video Q to show at all times
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
+                                                        object:self
+                                                      userInfo:@{@"lock" : @(YES)}];
+    
+    
     
     [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
     
@@ -153,9 +191,11 @@
     // Set the first video
     if (videoInstances.count > 0)
     {       
-        [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
+        [self.largeVideoPanelController setPlaylistWithFetchedResultsController: self.fetchedResultsController
                                                                 selectedIndexPath: self.currentIndexPath
                                                                          autoPlay: TRUE];
+        
+        
         
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
                                                            inSection: 0]];
@@ -223,7 +263,7 @@
     {        
         self.currentIndexPath = indexPath;
         
-        [self.videoPlaybackViewController playVideoAtIndex: indexPath];
+        [self.largeVideoPanelController playVideoAtIndex: indexPath];
         [self updateLargeVideoDetailsForIndexPath: indexPath];
     }
 }
@@ -274,8 +314,8 @@
             
         {
             // Hide the dragged thumbnail and add new image to image well
-            [self.draggedView removeFromSuperview];
-            [self addToVideoQueueFromLargeVideo: nil];
+//            [self.draggedView removeFromSuperview];
+//            [self addToVideoQueueFromLargeVideo: nil];
         }
         else
         {
@@ -303,13 +343,15 @@
     [self setLargeVideoToIndexPath: indexPath];
 }
 
+
+// TODO: Remove
 - (IBAction) addToVideoQueueFromLargeVideo: (id) sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
-                                                        object:self];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
-    [self animateVideoAdditionToVideoQueue: videoInstance];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
+                                                        object:self
+                                                      userInfo:@{@"VideoInstance" : videoInstance}];
 }
 
 
@@ -319,7 +361,7 @@
     
     self.titleLabel.text = videoInstance.title;
     self.channelLabel.text = videoInstance.channel.title;
-    self.userNameLabel.text = videoInstance.channel.channelOwner.name;
+    self.displayNameLabel.text = videoInstance.channel.channelOwner.displayName;
     
     [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
                                       placeHolderImage: nil];
@@ -352,9 +394,25 @@
 }
 
 
-- (void) toggleRockItAtIndex: (NSIndexPath *) indexPath
+
+
+- (void) updateOtherOnscreenVideoAssetsForIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    if ([indexPath isEqual: self.currentIndexPath])
+    {
+        [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
+    }
+}
+
+
+
+- (void) toggleLargeVideoPanelStarItButton: (UIButton *) button
+{
+    // called for a press to the large video panel's star button
+    
+    button.selected = !button.selected;
+    
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
     
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -369,26 +427,7 @@
         videoInstance.video.starCountValue += 1;
     }
     
-    [self saveDB];
-}
-
-
-- (void) updateOtherOnscreenVideoAssetsForIndexPath: (NSIndexPath *) indexPath
-{
-    if ([indexPath isEqual: self.currentIndexPath])
-    {
-        [self updateLargeVideoRockpackForIndexPath: self.currentIndexPath];
-    }
-}
-
-
-
-- (IBAction) toggleLargeVideoPanelStarItButton: (UIButton *) button
-{
-    button.selected = !button.selected;
     
-    [self toggleRockItAtIndex: self.currentIndexPath];
-    [self updateLargeVideoDetailsForIndexPath: self.currentIndexPath];
     [self.videoThumbnailCollectionView reloadData];
     
     [self saveDB];
@@ -402,29 +441,14 @@
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
         
-        [self viewChannelDetails:
-         videoInstance.channel];
-    }
-}
-
-- (IBAction) userTouchedLargeVideoProfileButton: (UIButton *) channelButton
-{
-    // Bail if we don't have an index path
-    if (self.currentIndexPath)
-    {
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
-        
-        [self viewProfileDetails:
-         videoInstance.channel.channelOwner];
+        [self viewChannelDetails:videoInstance.channel];
     }
 }
 
 
-// Buttons activated from scrolling list of thumbnails
 
-#pragma mark - Video queue animation
 
-- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
+-(void)handleMainTap:(UITapGestureRecognizer *)recogniser
 {
     [super handleMainTap:recogniser];
     
@@ -450,16 +474,16 @@
     }];
 }
 
-- (BOOL) showSubcategories
+-(BOOL)showSubcategories
 {
     return NO;
 }
 
 
-- (void) handleNewTabSelectionWithId: (NSString *) selectionId
+-(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {
     
-    [appDelegate.networkEngine updateVideosScreenForCategory: selectionId];
+    [appDelegate.networkEngine updateVideosScreenForCategory:selectionId];
 }
 
 @end

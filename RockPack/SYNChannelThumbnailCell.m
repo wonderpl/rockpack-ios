@@ -23,7 +23,7 @@
     [super awakeFromNib];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
-    self.userNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.displayNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
 }
 

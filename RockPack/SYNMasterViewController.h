@@ -11,18 +11,26 @@
 
 #import "SYNAppDelegate.h"
 
-@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UITableViewDelegate> {
+@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
+                                                       UITextFieldDelegate,
+                                                       UIGestureRecognizerDelegate,
+                                                       UITableViewDelegate>
+{
     SYNAppDelegate* appDelegate;
 }
 
-@property (nonatomic, strong) UIViewController* rootViewController;
-
-
--(id)initWithRootViewController:(UIViewController*)root;
-
--(void)addVideoOverlayWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController andIndexPath:(NSIndexPath *)indexPath;
--(void)removeVideoOverlayController;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
+@property (nonatomic, strong) IBOutlet UIView* overEverythingView;
+@property (nonatomic, strong) UIViewController* originViewController;
+@property (nonatomic, strong) UIViewController* rootViewController;
+
+- (id) initWithRootViewController: (UIViewController*) root;
+
+- (void) addVideoOverlayToViewController: (UIViewController *) originViewController
+            withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
+                            andIndexPath: (NSIndexPath *) indexPath;
+
+- (void) removeVideoOverlayController;
 
 @end

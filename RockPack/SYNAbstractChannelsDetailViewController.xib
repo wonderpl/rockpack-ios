@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -46,6 +46,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 44}, {1024, 642}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
+						<reference key="NSNextKeyView" ref="173731743"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">2</int>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -322,7 +323,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{414, 184}, {197, 29}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
-										<reference key="NSNextKeyView" ref="173731743"/>
+										<reference key="NSNextKeyView" ref="915393374"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -361,7 +362,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{407, 17}, {211, 29}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
-										<reference key="NSNextKeyView" ref="960321968"/>
+										<reference key="NSNextKeyView" ref="365122975"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -409,6 +410,39 @@
 										<object class="NSCustomResource" key="IBUINormalImage">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">ButtonCover.png</string>
+										</object>
+										<reference key="IBUIFontDescription" ref="549930349"/>
+										<reference key="IBUIFont" ref="806388323"/>
+									</object>
+									<object class="IBUIButton" id="365122975">
+										<reference key="NSNextResponder" ref="993763524"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{929, 21}, {74, 74}}</string>
+										<reference key="NSSuperview" ref="993763524"/>
+										<reference key="NSNextKeyView" ref="960321968"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<string key="IBUINormalTitle">Button</string>
+										<reference key="IBUIHighlightedTitleColor" ref="804446849"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="346029630"/>
+										<object class="NSCustomResource" key="IBUIHighlightedImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonCameraHighlighted.png</string>
+										</object>
+										<object class="NSCustomResource" key="IBUISelectedImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonCameraSelected.png</string>
+										</object>
+										<object class="NSCustomResource" key="IBUINormalImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">ButtonCamera.png</string>
 										</object>
 										<reference key="IBUIFontDescription" ref="549930349"/>
 										<reference key="IBUIFont" ref="806388323"/>
@@ -492,7 +526,7 @@
 						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{956, 73}, {48, 21}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
-						<reference key="NSNextKeyView" ref="915393374"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -539,14 +573,6 @@
 						<reference key="destination" ref="65885460"/>
 					</object>
 					<int key="connectionID">37</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">userNameLabel</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="152927656"/>
-					</object>
-					<int key="connectionID">40</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -694,6 +720,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">cameraButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="365122975"/>
+					</object>
+					<int key="connectionID">148</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">displayNameLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="152927656"/>
+					</object>
+					<int key="connectionID">149</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="566198242"/>
 						<reference key="destination" ref="841351856"/>
@@ -769,6 +811,15 @@
 					</object>
 					<int key="connectionID">131</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">userTouchedCameraButton:</string>
+						<reference key="source" ref="365122975"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">147</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -841,7 +892,7 @@
 						<int key="objectID">12</int>
 						<reference key="object" ref="152927656"/>
 						<reference key="parent" ref="317724372"/>
-						<string key="objectName">Label - Channel author</string>
+						<string key="objectName">Label - Display name</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">123</int>
@@ -905,6 +956,7 @@
 							<reference ref="802725534"/>
 							<reference ref="245815771"/>
 							<reference ref="950684700"/>
+							<reference ref="365122975"/>
 						</array>
 						<reference key="parent" ref="13768505"/>
 						<string key="objectName">View - Cover selection</string>
@@ -961,6 +1013,12 @@
 						<reference key="object" ref="950684700"/>
 						<reference key="parent" ref="993763524"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">146</int>
+						<reference key="object" ref="365122975"/>
+						<reference key="parent" ref="993763524"/>
+						<string key="objectName">Button - Camera</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -987,6 +1045,8 @@
 				<string key="137.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="139.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="144.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="146.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="2" key="146.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1003,7 +1063,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">145</int>
+			<int key="maxID">149</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
@@ -1011,20 +1071,23 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonCover.png">{75, 70}</string>
-			<string key="ButtonCoverHighlighted.png">{75, 70}</string>
-			<string key="ButtonDone.png">{43, 44}</string>
-			<string key="ButtonDoneHighlighted.png">{43, 44}</string>
-			<string key="ButtonEdit.png">{43, 44}</string>
-			<string key="ButtonEditHighlighted.png">{43, 44}</string>
-			<string key="ButtonSave.png">{43, 44}</string>
-			<string key="ButtonSaveHighlighted.png">{43, 44}</string>
-			<string key="ButtonShareHeader.png">{43, 44}</string>
-			<string key="ButtonShareHeaderHighlighted.png">{43, 44}</string>
-			<string key="GlossAvatarChannel.png">{72, 72}</string>
-			<string key="HighlightChannelName.png">{405, 84}</string>
-			<string key="PanelCoverSelection.png">{1024, 278}</string>
-			<string key="PanelHeaderChannel.png">{1024, 73}</string>
+			<string key="ButtonCamera.png">{16, 16}</string>
+			<string key="ButtonCameraHighlighted.png">{16, 16}</string>
+			<string key="ButtonCameraSelected.png">{16, 16}</string>
+			<string key="ButtonCover.png">{16, 16}</string>
+			<string key="ButtonCoverHighlighted.png">{16, 16}</string>
+			<string key="ButtonDone.png">{16, 16}</string>
+			<string key="ButtonDoneHighlighted.png">{16, 16}</string>
+			<string key="ButtonEdit.png">{16, 16}</string>
+			<string key="ButtonEditHighlighted.png">{16, 16}</string>
+			<string key="ButtonSave.png">{16, 16}</string>
+			<string key="ButtonSaveHighlighted.png">{16, 16}</string>
+			<string key="ButtonShareHeader.png">{16, 16}</string>
+			<string key="ButtonShareHeaderHighlighted.png">{16, 16}</string>
+			<string key="GlossAvatarChannel.png">{16, 16}</string>
+			<string key="HighlightChannelName.png">{16, 16}</string>
+			<string key="PanelCoverSelection.png">{16, 16}</string>
+			<string key="PanelHeaderChannel.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
