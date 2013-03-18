@@ -98,6 +98,7 @@
         cogImageButton.frame = CGRectMake(0.0, 0.0, cogImage.size.width, cogImage.size.height);
         [cogImageButton setImage:cogImage forState:UIControlStateNormal];
         [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
+        [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
         cogImageButton.center = CGPointMake(170.0, 90.0);
         [self.overlayView addSubview:cogImageButton];
         
@@ -106,7 +107,7 @@
         UIFont* rockpackFont = [UIFont rockpackFontOfSize:16];
         CGSize acRect = [accountSettingsString sizeWithFont:rockpackFont];
         UILabel* accountSettingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, acRect.width, acRect.height)];
-        accountSettingsLabel.center = CGPointMake(cogImageButton.center.x + 105.0, cogImageButton.center.y + 5.0);
+        accountSettingsLabel.center = CGPointMake(cogImageButton.center.x + 100.0, cogImageButton.center.y + 5.0);
         
         accountSettingsLabel.font = rockpackFont;
         accountSettingsLabel.textAlignment = NSTextAlignmentLeft;
@@ -166,6 +167,11 @@
     return self;
 }
 
+-(void)pressedCogButton:(UIButton*)button
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
+                                                        object:self];
+}
 
 -(void)setUser:(User*)user
 {

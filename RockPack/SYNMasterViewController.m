@@ -40,7 +40,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
-@property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
@@ -630,36 +629,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                       animated: YES];
 }
 
--(void)showAccountSettingsPopover
-{
-    if(self.accountSettingsPopover)
-        return;
-    
-    
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
-    
-    // place initial options table
-    SYNAccountSettingsMainTableViewController* mainTableVC = [[SYNAccountSettingsMainTableViewController alloc] init];
-    [navigationController pushViewController:mainTableVC animated:NO];
-    
-    self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-    self.accountSettingsPopover.popoverContentSize = CGSizeMake(280, 326);
-    self.accountSettingsPopover.delegate = self;
-    
-    
-    // self.accountSettingsPopover.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
-    
-    CGRect rect = CGRectMake(self.view.frame.size.height*0.5,
-                             self.view.frame.size.height*0.5, 1, 1);
-    
-    
-    [self.accountSettingsPopover presentPopoverFromRect: rect
-                                                 inView: self.view
-                               permittedArrowDirections: 0
-                                               animated: YES];
-    
-    
-}
+
 
 -(void)hideAutocompletePopover
 {

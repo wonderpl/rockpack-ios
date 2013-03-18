@@ -73,6 +73,9 @@
 #define kAPIPopularChannels         @"ws/channels/"
 #define kAPICategories              @"ws/categories/"
 
+#define kAccountSettingsPressed     @"kAccountSettingsPressed"
+
+
 
 // Timeout for API calls
 

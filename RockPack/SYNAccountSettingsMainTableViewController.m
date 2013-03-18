@@ -18,9 +18,9 @@
 
 @synthesize dataItems2ndSection;
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)init
 {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         
         dataItems2ndSection = @[@"Share Settings",
@@ -28,6 +28,8 @@
                                 @"Change Password",
                                 @"About",
                                 @"Logout"];
+        
+        
         
     }
     return self;
@@ -37,8 +39,9 @@
 {
     [super viewDidLoad];
     
-    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
 
+    self.tableView.scrollEnabled = NO;
     
 }
 
@@ -52,8 +55,8 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return 0;
+    
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -71,7 +74,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    if(!cell) {
+    if(cell == nil) {
         cell = [[UITableViewCell alloc] init];
         
         if(indexPath.section == 1) {

@@ -9,6 +9,6 @@
 #import "SYNAbstractViewController.h"
 #import "SYNAbstractTopTabViewController.h"
 
-@interface SYNYouRootViewController : SYNAbstractTopTabViewController
+@interface SYNYouRootViewController : SYNAbstractTopTabViewController <UIPopoverControllerDelegate>
 
 @end
