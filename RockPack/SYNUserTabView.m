@@ -71,11 +71,11 @@
         
         // == Followers Tab == //
         
-        self.followingItemView = [[SYNSearchItemView alloc] initWithTitle:@"FOLLOWERS" andFrame:itemFrame];
+        self.followersItemView = [[SYNSearchItemView alloc] initWithTitle:@"FOLLOWERS" andFrame:itemFrame];
         
-        [self.followingItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+        [self.followersItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
-        [self.mainTabsView addSubview:self.followingItemView];
+        [self.mainTabsView addSubview:self.followersItemView];
         
         
         // == Place Correclty == //

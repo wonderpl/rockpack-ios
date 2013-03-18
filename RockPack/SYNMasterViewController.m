@@ -649,10 +649,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // self.accountSettingsPopover.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
     
-    [self.accountSettingsPopover presentPopoverFromRect: self.searchTextField.frame
+    CGRect rect = CGRectMake(self.view.frame.size.height*0.5,
+                             self.view.frame.size.height*0.5, 1, 1);
+    
+    
+    [self.accountSettingsPopover presentPopoverFromRect: rect
                                                  inView: self.view
-                               permittedArrowDirections: UIPopoverArrowDirectionUp
+                               permittedArrowDirections: 0
                                                animated: YES];
+    
+    
 }
 
 -(void)hideAutocompletePopover
