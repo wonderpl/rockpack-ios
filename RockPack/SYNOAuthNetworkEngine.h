@@ -30,17 +30,17 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) createChannelWithData: (NSDictionary*) userData
-             completionHandler: (MKNKVoidBlock) completionBlock
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) updateChannelWithChannelId: (NSString *) channelId
                                data: (NSDictionary*) userData
-                  completionHandler: (MKNKVoidBlock) completionBlock
+                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                        errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) updateVideosForChannelWithChannelId: (NSString *) channelId
                                 videoIdArray: (NSArray *) videoIdArray
-                           completionHandler: (MKNKVoidBlock) completionBlock
+                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 

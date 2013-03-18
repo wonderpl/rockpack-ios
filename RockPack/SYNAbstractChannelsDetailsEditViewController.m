@@ -275,7 +275,7 @@
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
         [appDelegate.oAuthNetworkEngine createChannelWithData: userData
-          completionHandler: ^(void )
+          completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel
@@ -305,7 +305,7 @@
         
         [appDelegate.oAuthNetworkEngine updateChannelWithChannelId: self.channel.uniqueId
                                                               data: userData
-         completionHandler: ^(void )
+         completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel

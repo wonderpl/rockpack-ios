@@ -27,9 +27,9 @@
 // Main RestFul API
 
 // Login
-#define kAPISecureLogin             @"https://secure.demo.rockpack.com/ws/login/"
-#define kAPISecureExternalLogin     @"https://secure.demo.rockpack.com/ws/login/external/"
-#define kAPISecureRegister          @"https://secure.demo.rockpack.com/ws/register/"
+#define kAPISecureLogin             @"/ws/login/"
+#define kAPISecureExternalLogin     @"/ws/login/external/"
+#define kAPISecureRegister          @"/ws/register/"
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos            @"/ws/search/videos/"

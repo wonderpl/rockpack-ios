@@ -26,6 +26,8 @@
 
 @implementation SYNOAuthNetworkEngine
 
+#pragma mark - OAuth2 Housekeeping functions
+
 - (NSString *) hostName
 {
     return kAPISecureHostName;
@@ -43,10 +45,36 @@
 	return (self.oAuth2Credential.accessToken != nil);
 }
 
+
+// Enqueues the operation if already authenticated, and if not, tries to authentican and then re-queue if successful
+- (void) enqueueSignedOperation: (MKNetworkOperation *) request
+{
+	// If we're not authenticated, and this is not part of the OAuth process,
+	if (!self.isAuthenticated)
+    {
+		AssertOrLog(@"enqueueSignedOperation - Not authenticated");
+	}
+	else
+    {
+		DLog(@"enqueueSignedOperation - Authenticated");
+        
+        [request setUsername: kOAuth2ClientId
+                    password: kOAuth2ClientSecret];
+        
+        [request setAuthorizationHeaderValue: self.oAuth2Credential.accessToken
+                                 forAuthType: @"Bearer"];
+        
+		[self enqueueOperation: request];
+	}
+}
+
+
+#pragma mark - Sign-up & Sign-in (inc. Facebook)
+
 // This code block is common to all of the signup/signin methods
-- (void) addCommonOAuthPropertiesToNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
-                                  completionHandler: (MKNKLoginCompleteBlock) completionBlock
-                                       errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) addCommonOAuthPropertiesToUnsignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                                          completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                                               errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     [networkOperation setUsername: kOAuth2ClientId
                          password: @""
@@ -100,12 +128,13 @@
     NSDictionary* postLoginParams = @{@"external_system" : @"facebook",
                                       @"external_token" : facebookAccessToken};
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithURLString: kAPISecureExternalLogin
-                                                                                                             params: postLoginParams
-                                                                                                         httpMethod: @"POST"];
-    [self addCommonOAuthPropertiesToNetworkOperation: networkOperation
-                                   completionHandler: completionBlock
-                                        errorHandler: errorBlock];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureExternalLogin
+                                                                                                        params: postLoginParams
+                                                                                                    httpMethod: @"POST"
+                                                                                                           ssl: TRUE];
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
     
     [self enqueueOperation: networkOperation];
 }
@@ -121,12 +150,13 @@
                                       @"username" : username,
                                       @"password" : password};
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithURLString: kAPISecureLogin
-                                                                                                             params: postLoginParams
-                                                                                                         httpMethod: @"POST"];
-    [self addCommonOAuthPropertiesToNetworkOperation: networkOperation
-                                   completionHandler: completionBlock
-                                        errorHandler: errorBlock];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureLogin
+                                                                                                        params: postLoginParams
+                                                                                                    httpMethod: @"POST"
+                                                                                                           ssl: TRUE];
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
     
     [self enqueueOperation: networkOperation];
 }
@@ -137,45 +167,57 @@
             completionHandler: (MKNKLoginCompleteBlock) completionBlock
                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: kAPISecureRegister
-                                                                                                            params: userData
-                                                                                                        httpMethod: @"POST"];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPISecureRegister
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
     [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
-    [self addCommonOAuthPropertiesToNetworkOperation: networkOperation
-                                   completionHandler: completionBlock
-                                        errorHandler: errorBlock];
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
     
     [self enqueueOperation: networkOperation];
 }
 
+#pragma mark - Common functionality
 
-// Enqueues the operation if already authenticated, and if not, tries to authentican and then re-queue if successful
-- (void) enqueueSignedOperation: (MKNetworkOperation *) request
+// This code block is common to all of the signup/signin methods
+- (void) addCommonOAuthPropertiesToSignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-	// If we're not authenticated, and this is not part of the OAuth process,
-	if (!self.isAuthenticated)
-    {
-		AssertOrLog(@"enqueueSignedOperation - Not authenticated");
-	}
-	else
-    {
-		DLog(@"enqueueSignedOperation - Authenticated");
-        
-        [request setUsername: kOAuth2ClientId
-                    password: kOAuth2ClientSecret];
-        
-        [request setAuthorizationHeaderValue: self.oAuth2Credential.accessToken
-                                 forAuthType: @"Bearer"];
-        
-		[self enqueueOperation: request];
-	}
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
+     {
+         NSString* possibleError = responseDictionary[@"error"];
+         
+         if (possibleError)
+         {
+             errorBlock(responseDictionary);
+             return;
+         }
+         
+         completionBlock(responseDictionary);
+         
+     }
+     errorHandler: ^(NSError* error)
+     {
+         DebugLog(@"API Call failed");
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
 }
 
 
+#pragma mark - Channel creation
+
 - (void) createChannelWithData: (NSDictionary*) userData
-             completionHandler: (MKNKVoidBlock) completionBlock
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
@@ -186,36 +228,18 @@
                                                                                                        params: userData
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
-    
-    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
-    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-    
-    
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
-     {
-         NSString* possibleError = [dictionary objectForKey: @"error"];
-         
-         if(possibleError)
-         {
-             errorBlock(dictionary);
-             return;
-         }
-         
-         completionBlock();
-     }
-     errorHandler: ^(NSError* error)
-     {
-         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
-         errorBlock(customErrorDictionary);
-     }];
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
 
+
 // /ws/USERID/channels/CHANNELID/  /* PUT */
 - (void) updateChannelWithChannelId: (NSString *) channelId
                                data: (NSDictionary*) userData
-                  completionHandler: (MKNKVoidBlock) completionBlock
+                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                        errorHandler: (MKNKUserErrorBlock) errorBlock
 {
 //    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
@@ -261,7 +285,7 @@
 
 - (void) updateVideosForChannelWithChannelId: (NSString *) channelId
                                 videoIdArray: (NSArray *) videoIdArray
-                           completionHandler: (MKNKVoidBlock) completionBlock
+                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock
 {
 //

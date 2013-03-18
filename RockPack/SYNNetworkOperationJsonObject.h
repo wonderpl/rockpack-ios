@@ -14,6 +14,7 @@ typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
 typedef void (^MKNKLoginCompleteBlock) (SYNOAuth2Credential *);
 typedef void (^MKNKUserCompleteBlock) (User*);
 typedef void (^MKNKUserErrorBlock) (NSDictionary*);
+typedef void (^MKNKUserSuccessBlock) (NSDictionary*);
 
 #import "AppConstants.h"
 
