@@ -61,6 +61,9 @@
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
+@property (nonatomic) CGRect facebookButtonInitialFrame;
+@property (nonatomic) CGRect signUpButtonInitialFrame;
+
 @property (nonatomic) BOOL isAnimating;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
@@ -87,8 +90,7 @@
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
 @synthesize labelsToErrorArrows;
-@synthesize faceImageButton;
-@synthesize facebookState;
+@synthesize faceImageButton, facebookButtonInitialFrame, signUpButtonInitialFrame;
 
 - (void)viewDidLoad
 {
@@ -123,7 +125,8 @@
     
     passwordInputField.secureTextEntry = YES;
     
-    
+    facebookButtonInitialFrame = facebookSignInButton.frame;
+    signUpButtonInitialFrame = signUpButton.frame;
     
     emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
     
@@ -186,16 +189,20 @@
         control.alpha = 0.0;
     }
     
-    
-    faceImageButton.center = CGPointMake(faceImageButton.center.x,
-                                         faceImageButton.center.y - kOffsetForLoginForm);
+    dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
+    emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
+    faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
     
     facebookSignInButton.enabled = YES;
+    facebookSignInButton.frame = facebookButtonInitialFrame;
     facebookSignInButton.alpha = 1.0;
+    
+    _facebookLoginIsInProcess = NO;
+    
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
+    signUpButton.frame = signUpButtonInitialFrame;
     
-    facebookState = kFacebookStateNull;
     [activityIndicator stopAnimating];
     
     
@@ -207,6 +214,7 @@
 -(void)setUpLoginStateFromPreviousState:(kLoginScreenState)previousState
 {
     secondaryFacebookMessage.alpha = 0.0;
+    [self clearAllErrorArrows];
     isAnimating = YES;
     
     if(previousState == kLoginScreenStateInitial)
@@ -278,6 +286,10 @@
                     registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x,
                                                                registerNewUserButton.center.y - kOffsetForLoginForm);
                     
+                    
+                    faceImageButton.center = CGPointMake(faceImageButton.center.x,
+                                                         faceImageButton.center.y - kOffsetForLoginForm);
+                    
                     [userNameInputField becomeFirstResponder];
                     
                 }];
@@ -343,6 +355,7 @@
 -(void)setUpRegisterStateFromState:(kLoginScreenState)previousState
 {
     secondaryFacebookMessage.alpha = 0.0;
+    [self clearAllErrorArrows];
     isAnimating = YES;
     if(previousState == kLoginScreenStateInitial)
     {
@@ -405,8 +418,10 @@
             memberLabel.frame = CGRectIntegral(memberLabel.frame);
             
             
+            
+            
             faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
-                                                 faceImageButton.center.y);
+                                                 faceImageButton.center.y - kOffsetForLoginForm);
             
             isAnimating = NO;
             
@@ -523,10 +538,12 @@
     
     [self clearAllErrorArrows];
     
+    
+    [self resignAllFirstResponders];
+    
     if(![self loginFormIsValid])
         return;
     
-    [self resignAllFirstResponders];
     
     finalLoginButton.enabled = NO;
     
@@ -583,15 +600,12 @@
     self.state = kLoginScreenStateLogin;
 }
 
--(IBAction)signInWithFacebook:(id)sender
+-(void)doFacebookLoginAnimation
 {
-    [self clearAllErrorArrows];
-    facebookState = kFacebookStateLogging;
-    facebookSignInButton.enabled = NO;
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         facebookLogingInLabel.alpha = 1.0;
         signUpButton.alpha = 0.0;
-        signUpButton.center = CGPointMake(signUpButton.center.x + 30.0, signUpButton.center.y);
+        signUpButton.center = CGPointMake(signUpButton.center.x + 10.0, signUpButton.center.y);
     } completion:^(BOOL finished) {
         [activityIndicator startAnimating];
     }];
@@ -611,13 +625,37 @@
     labelFrame.origin.x = facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 40.0;
     labelFrame.origin.y = facebookSignInButton.frame.origin.y + 8.0;
     facebookLogingInLabel.frame = labelFrame;
+}
+
+-(IBAction)signInWithFacebook:(id)sender
+{
+    
+    _facebookLoginIsInProcess = NO;
+    
+    [self clearAllErrorArrows];
+    facebookSignInButton.enabled = NO;
+    
+    FBSession* facebookSession = [FBSession activeSession];
+    
+    if(facebookSession.state == FBSessionStateCreatedTokenLoaded) {
+        _facebookLoginIsInProcess = YES;
+        [self doFacebookLoginAnimation];
+    }
+    
+    
     
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
     [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
         
+        if(!_facebookLoginIsInProcess) {
+            
+            [self doFacebookLoginAnimation];
+        }
         
-        facebookState = kFacebookStateRegistering;
+        
+        
+        
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
@@ -625,13 +663,11 @@
                                                      withComplete:^(AccessInfo* accessInfo) {
                                                          
                                                          DebugLog(@"Loggin in User with id: %@", accessInfo.userId);
-                                                         facebookState = kFacebookStateNull;
                                                          [activityIndicator stopAnimating];
                                                          [self completeLoginProcess:accessInfo];
             
                                                      } andError:^(NSDictionary* errorDictionary) {
                                                          
-                                                         facebookState = kFacebookStateNull;
                                                          facebookLogingInLabel.alpha = 0.0;
                                                          
                                                          signUpButton.alpha = 1.0;
@@ -660,7 +696,9 @@
         
     } onFailure:^(NSString* errorString) {
         
-        facebookState = kFacebookStateNull;
+        
+        _facebookLoginIsInProcess = NO;
+        
         DebugLog(@"Log in failed!");
         
     }];
@@ -696,7 +734,7 @@
     }
     
     // == Username must be 
-    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z]+[a-zA-Z0-9\\._]*$"]) {
+    if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"]) {
         [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
         [userNameInputField becomeFirstResponder];
         return NO;
@@ -704,13 +742,7 @@
     
     
     if(passwordInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter a password"NextToView:passwordInputField];
-        [passwordInputField becomeFirstResponder];
-        return NO;
-    }
-    
-    if(![passwordInputField.text isMatchedByRegex:@"^[a-zA-Z]+[a-zA-Z0-9]*$"]) {
-        [self placeErrorLabel:@"Password has invalid characters" NextToView:passwordInputField];
+        [self placeErrorLabel:@"Please enter a password" NextToView:passwordInputField];
         [passwordInputField becomeFirstResponder];
         return NO;
     }
@@ -733,7 +765,15 @@
         }
     }
     
-    
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate* potentialDate = [dateFormatter dateFromString:[self dateStringFromCurrentInput]];
+    // not a real date
+    if(!potentialDate) {
+        [self placeErrorLabel:@"The Date is not Valid" NextToView:dobView];
+        return NO;
+    }
+        
     
     
     
@@ -758,6 +798,10 @@
         [textField resignFirstResponder];
     }
 }
+-(NSString*)dateStringFromCurrentInput
+{
+    return [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text];
+}
 -(IBAction)registerNewUser:(id)sender
 {
     // Check Text Fields
@@ -778,7 +822,7 @@
     
     NSDictionary* userData = @{@"username": userNameInputField.text,
                                @"password": passwordInputField.text,
-                               @"date_of_birth": [NSString stringWithFormat:@"%@-%@-%@", yyyyInputField.text, mmInputField.text, ddInputField.text],
+                               @"date_of_birth": [self dateStringFromCurrentInput],
                                @"locale":@"en-US",
                                @"email": emailInputField.text};
     
@@ -852,12 +896,39 @@
     
     errorArrow.alpha = 0.0;
     
-    [UIView animateWithDuration:0.3 animations:^{
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(errorArrowTapped:)];
+    [errorArrow addGestureRecognizer:tapGesture];
+    
+    [UIView animateWithDuration:0.2 animations:^{
         errorArrow.alpha = 1.0;
     }];
     
     [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
     [self.view addSubview:errorArrow];
+}
+
+-(void)errorArrowTapped:(UITapGestureRecognizer*)recogniser
+{
+    
+    SYNLoginErrorArrow* arrowTapped = (SYNLoginErrorArrow*)recogniser.view;
+    
+    [labelsToErrorArrows enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop){
+        
+        SYNLoginErrorArrow* arrow = (SYNLoginErrorArrow*)value;
+        if(arrow == arrowTapped) {
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                arrow.alpha = 0.0;
+            } completion:^(BOOL finished) {
+                [labelsToErrorArrows removeObjectForKey:key];
+                [arrow removeFromSuperview];
+            }];
+            
+            
+            return;
+        }
+        
+    }];
 }
 
 -(IBAction)registerPressed:(id)sender
@@ -882,10 +953,9 @@
     [UIView animateWithDuration:0.4 animations:^{
         self.view.alpha = 0.0;
     } completion:^(BOOL finished) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginCompleted object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginCompleted
+                                                            object:self];
     }];
-    
-    
 }
 
 
@@ -908,9 +978,11 @@
     if(textField == yyyyInputField && newLength > 4)
         return NO;
     
+    
+    
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     if(textField == ddInputField || textField == mmInputField || textField == yyyyInputField)
-        if(![numberFormatter numberFromString:newCharacter])
+        if(![numberFormatter numberFromString:newCharacter] && newCharacter.length != 0) // is backspace, length is 0
             return NO;
         
     
@@ -956,7 +1028,7 @@
 }
 
 
-#pragma mark CoreData Access
+#pragma mark - CoreData Access
 
 
 

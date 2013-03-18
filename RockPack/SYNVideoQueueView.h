@@ -40,6 +40,7 @@
 @property (nonatomic, strong) UIImageView* backgroundImageView;
 
 - (void) showMessage:(BOOL)show;
+-(void)showRemovedLastVideo;
 
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
 

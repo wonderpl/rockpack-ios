@@ -60,7 +60,7 @@ typedef enum _kQueueMoveDirection {
 {
     [super viewDidLoad];
     
-    [self.videoQueueView.deleteButton addTarget:self action: @selector(clearVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    [self.videoQueueView.deleteButton addTarget:self action: @selector(deleteLastVideoAdded) forControlEvents: UIControlEventTouchUpInside];
     
     [self.videoQueueView.channelButton addTarget:self action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
     
@@ -198,6 +198,19 @@ typedef enum _kQueueMoveDirection {
 {
     delegate = del;
     
+    
+}
+
+-(void)deleteLastVideoAdded
+{
+    [self.selectedVideos removeLastObject];
+    
+    if(self.selectedVideos.count == 0) {
+        [self clearVideoQueue];
+    } else {
+        
+        [self.videoQueueView showRemovedLastVideo];
+    }
     
 }
 
