@@ -481,6 +481,8 @@
 		BE03A6CD16F7697900245314 /* ButtonSettingsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */; };
 		BE03A6CE16F7697900245314 /* GlossAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6C016F7697900245314 /* GlossAvatar.png */; };
 		BE03A6CF16F7697900245314 /* GlossAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6C116F7697900245314 /* GlossAvatar@2x.png */; };
+		BE03A6D616F784B000245314 /* SYNAccountSettingsGender.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */; };
+		BE03A6D916F787CB00245314 /* SYNAccountSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */; };
 		BE08158816D2923F00ADB1DC /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158716D2923F00ADB1DC /* TabTop.png */; };
 		BE08158A16D2926F00ADB1DC /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158916D2926F00ADB1DC /* TabTop@2x.png */; };
 		BE08158C16D292A700ADB1DC /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158B16D292A700ADB1DC /* TabTopSub.png */; };
@@ -1149,6 +1151,10 @@
 		BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSettingsHighlighted@2x.png"; path = "Assets/Images/ButtonSettingsHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE03A6C016F7697900245314 /* GlossAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossAvatar.png; path = Assets/Images/GlossAvatar.png; sourceTree = "<group>"; };
 		BE03A6C116F7697900245314 /* GlossAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossAvatar@2x.png"; path = "Assets/Images/GlossAvatar@2x.png"; sourceTree = "<group>"; };
+		BE03A6D416F784B000245314 /* SYNAccountSettingsGender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsGender.h; sourceTree = "<group>"; };
+		BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsGender.m; sourceTree = "<group>"; };
+		BE03A6D716F787CA00245314 /* SYNAccountSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingTableViewCell.h; sourceTree = "<group>"; };
+		BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingTableViewCell.m; sourceTree = "<group>"; };
 		BE08158716D2923F00ADB1DC /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		BE08158916D2926F00ADB1DC /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 		BE08158B16D292A700ADB1DC /* TabTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSub.png; sourceTree = "<group>"; };
@@ -2560,8 +2566,11 @@
 		BE03A69016F7457900245314 /* Account Settings */ = {
 			isa = PBXGroup;
 			children = (
+				BE03A6D016F7840800245314 /* Secondary Tables */,
 				BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */,
 				BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */,
+				BE03A6D716F787CA00245314 /* SYNAccountSettingTableViewCell.h */,
+				BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */,
 			);
 			name = "Account Settings";
 			sourceTree = "<group>";
@@ -2585,6 +2594,15 @@
 				BE03A6C116F7697900245314 /* GlossAvatar@2x.png */,
 			);
 			name = Profile;
+			sourceTree = "<group>";
+		};
+		BE03A6D016F7840800245314 /* Secondary Tables */ = {
+			isa = PBXGroup;
+			children = (
+				BE03A6D416F784B000245314 /* SYNAccountSettingsGender.h */,
+				BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */,
+			);
+			name = "Secondary Tables";
 			sourceTree = "<group>";
 		};
 		BE08158F16D3C46800ADB1DC /* Search */ = {
@@ -3524,6 +3542,8 @@
 				01A79BA516F34BBF00B05084 /* NSString+Utils.m in Sources */,
 				BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */,
 				BE03A69616F754BC00245314 /* SYNUserTabViewController.m in Sources */,
+				BE03A6D616F784B000245314 /* SYNAccountSettingsGender.m in Sources */,
+				BE03A6D916F787CB00245314 /* SYNAccountSettingTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

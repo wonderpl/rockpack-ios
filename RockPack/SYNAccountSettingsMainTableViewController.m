@@ -7,6 +7,9 @@
 //
 
 #import "SYNAccountSettingsMainTableViewController.h"
+#import "UIFont+SYNFont.h"
+#import "SYNAccountSettingTableViewCell.h"
+#import "SYNAccountSettingsGender.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -39,7 +42,6 @@
 {
     [super viewDidLoad];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
 
     self.tableView.scrollEnabled = NO;
     
@@ -61,7 +63,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section == 1) { // first section
+    if(section == 0) { // first section
         return 6;
     } else { // second section
         return dataItems2ndSection.count;
@@ -72,61 +74,79 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell;
+   
     
-    if(cell == nil) {
-        cell = [[UITableViewCell alloc] init];
+    if(indexPath.section == 0) {
         
-        if(indexPath.section == 1) {
-            
-            
-            switch (indexPath.row) {
-                case 1:
-                    cell.textLabel.text = @"Alexandra Longname-Smith";
-                    break;
-                    
-                case 2:
-                    cell.textLabel.text = @"alex_1989";
-                    break;
-                    
-                case 3:
-                    cell.textLabel.text = @"alex_longname@gmail.com";
-                    break;
-                    
-                case 4:
-                    cell.textLabel.text = @"078897898";
-                    break;
-                    
-                case 5:
-                    cell.textLabel.text = @"Female";
-                    break;
-                    
-                case 6:
-                    cell.textLabel.text = @"14 Jan 1989";
-                    break;
-                    
-            }
-            
-            
-            
-        } else {
-            
-            cell.textLabel.text = (NSString*)dataItems2ndSection[indexPath.row];
-            
+        cell = [[SYNAccountSettingTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        
+        switch (indexPath.row) {
+                
+            case 0:
+                cell.textLabel.text = @"Alexandra Longname-Smith";
+                cell.detailTextLabel.text = @"Full Name - Public";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+                
+            case 1:
+                cell.textLabel.text = @"alex_1989";
+                cell.detailTextLabel.text = @"Username - Public";
+                break;
+                
+            case 2:
+                cell.textLabel.text = @"alex_longname@gmail.com";
+                cell.detailTextLabel.text = @"Email - Private";
+                break;
+                
+            case 3:
+                cell.textLabel.text = @"078897898";
+                cell.detailTextLabel.text = @"Phone - Private";
+                break;
+                
+            case 4:
+                cell.textLabel.text = @"Female";
+                cell.detailTextLabel.text = @"Gender - Private";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+                
+            case 5:
+                cell.textLabel.text = @"14 Jan 1989";
+                cell.detailTextLabel.text = @"D.O.B Private";
+                break;
+                
         }
+        
+        cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
+        cell.detailTextLabel.font = [UIFont rockpackFontOfSize:13.0];
+        
+        
+    } else {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        
+        cell.textLabel.text = (NSString*)dataItems2ndSection[indexPath.row];
+        
+        cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
+        
+        if(indexPath.row != 4) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        
     }
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
+
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return NO;
 }
-*/
+
 
 /*
 // Override to support editing the table view.
@@ -162,13 +182,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    if(indexPath.section == 0)
+    {
+        switch (indexPath.row) {
+            case 4:
+                [self.navigationController pushViewController:[[SYNAccountSettingsGender alloc] init] animated:YES];
+                break;
+                
+            default:
+                break;
+                
+        }
+    }
 }
 
 @end
