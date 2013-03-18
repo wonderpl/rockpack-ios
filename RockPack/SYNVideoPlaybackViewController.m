@@ -18,6 +18,7 @@
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
+@property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
 @property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
@@ -89,7 +90,7 @@
     self.currentVideoWebView = [self createNewVideoWebView];
     
     // Add button that can be used to play video (if not autoplaying)
-    self.videoPlayButton = [self createVideoPlayButton];
+//    self.videoPlayButton = [self createVideoPlayButton];
 }
 
 
@@ -127,11 +128,12 @@
     // Set this subview to appear slightly offset from the left-hand side
     self.shuttleBarPlayPauseButton.frame = CGRectMake(0, 0, kShuttleBarButtonWidth, kShuttleBarHeight);
     
-    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPlay.png"]
+    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
                                     forState: UIControlStateNormal];
     
-    [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
-                                    forState: UIControlStateSelected];
+    [self.shuttleBarPlayPauseButton addTarget: self
+                                       action: @selector(togglePlayPause)
+                             forControlEvents: UIControlEventTouchUpInside];
     
     self.shuttleBarPlayPauseButton.backgroundColor = [UIColor clearColor];
     [shuttleBarView addSubview: self.shuttleBarPlayPauseButton];
@@ -294,9 +296,9 @@
     [newVideoPlayButton setImage: [UIImage imageNamed: @"ButtonLargeVideoPanelPlay.png"]
                         forState: UIControlStateNormal];
     
-    [newVideoPlayButton addTarget: self
-                           action: @selector(userTouchedPlay:)
-                 forControlEvents: UIControlEventTouchUpInside];
+//    [newVideoPlayButton addTarget: self
+//                           action: @selector(userTouchedPlay:)
+//                 forControlEvents: UIControlEventTouchUpInside];
     
     newVideoPlayButton.alpha = 1.0f;
 
@@ -479,6 +481,11 @@
 - (void) playVideoInWebView: (UIWebView *) webView
 {
     [webView stringByEvaluatingJavaScriptFromString: @"player.playVideo();"];
+    
+    if (self.currentVideoWebView == webView)
+    {
+        self.playFlag = TRUE;
+    }
 }
 
 
@@ -490,6 +497,7 @@
         if (!self.isPlaying)
         {
             [self playVideoInWebView: self.currentVideoWebView];
+            self.playFlag = TRUE;
         }
     }
     else
@@ -499,18 +507,29 @@
         self.currentSelectedIndexPath = newIndexPath;
         [self loadCurrentVideoWebView];
     }
+    
 }
 
 
 - (void) pauseVideoInWebView: (UIWebView *) webView
 {
     [webView stringByEvaluatingJavaScriptFromString: @"player.pauseVideo();"];
+    
+    if (self.currentVideoWebView == webView)
+    {
+        self.playFlag = FALSE;
+    }
 }
 
 
 - (void) stopVideoInWebView: (UIWebView *) webView
 {
     [webView stringByEvaluatingJavaScriptFromString: @"player.stopVideo();"];
+    
+    if (self.currentVideoWebView == webView)
+    {
+        self.playFlag = FALSE;
+    }
 }
 
 
@@ -561,8 +580,10 @@
 // Index of currently playing video (if using a playlist)
 - (BOOL) isPlaying
 {
-    return ([[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue] == 1)
-            ? TRUE : FALSE;
+    int playingValue = [[self.currentVideoWebView stringByEvaluatingJavaScriptFromString: @"player.getPlayerState();"] intValue];
+    
+    NSLog (@"playstate: %d" , playingValue);
+    return (playingValue == 1) ? TRUE : FALSE;
 }
 
 
@@ -1005,6 +1026,27 @@
 - (void) updateTimeFromSlider: (UISlider *) slider
 {
     [self setCurrentTime: slider.value * self.currentDuration];
+}
+
+- (void) togglePlayPause
+{
+    if (self.playFlag == TRUE)
+    {
+
+        [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPlay.png"]
+                                        forState: UIControlStateNormal];
+        
+        [self pauseVideoInWebView: self.currentVideoWebView];
+
+    }
+    else
+    {
+        [self.shuttleBarPlayPauseButton setImage: [UIImage imageNamed: @"ButtonShuttleBarPause.png"]
+                                        forState: UIControlStateNormal];
+        
+        [self playVideoInWebView: self.currentVideoWebView];
+    }
+
 }
 
 
