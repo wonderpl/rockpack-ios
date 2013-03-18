@@ -553,38 +553,37 @@
     activityIndicator.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y);
     [activityIndicator startAnimating];
     
-    [appDelegate.networkEngine doSimpleLoginForUsername: userNameInputField.text
-                                            forPassword: passwordInputField.text
-                                           withComplete: ^(SYNOAuth2Credential* credential)
-    {
+    [appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: userNameInputField.text
+     forPassword: passwordInputField.text
+     completionHandler: ^(SYNOAuth2Credential* credential)
+     {
         [self completeLoginProcess: credential];
-                                           
-    }
-    andError:^(NSDictionary* errorDictionary)
-    {
-       NSDictionary* errors = errorDictionary [@"error"];
-       
-       if (errors)
-       {
-           [self placeErrorLabel: @"Username could be incorrect"
-                      NextToView: userNameInputField];
-           
-           [self placeErrorLabel: @"Password could be incorrect"
-                      NextToView: passwordInputField];
-       }
-       
-       finalLoginButton.enabled = YES;
-       [activityIndicator stopAnimating];
-       
-       [UIView animateWithDuration:0.3 animations:^
-        {
-           finalLoginButton.alpha = 1.0;
-        }
-        completion:^(BOOL finished)
-        {
-           [userNameInputField becomeFirstResponder];
-       }];
-   }];
+     }
+     errorHandler: ^(NSDictionary* errorDictionary)
+     {
+         NSDictionary* errors = errorDictionary [@"error"];
+         
+         if (errors)
+         {
+             [self placeErrorLabel: @"Username could be incorrect"
+                        NextToView: userNameInputField];
+             
+             [self placeErrorLabel: @"Password could be incorrect"
+                        NextToView: passwordInputField];
+         }
+         
+         finalLoginButton.enabled = YES;
+         [activityIndicator stopAnimating];
+         
+         [UIView animateWithDuration:0.3 animations:^
+          {
+              finalLoginButton.alpha = 1.0;
+          }
+                          completion:^(BOOL finished)
+          {
+              [userNameInputField becomeFirstResponder];
+          }];
+     }];
     
 }
 
@@ -662,47 +661,43 @@
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
         [appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
-                                                     withComplete:^(SYNOAuth2Credential* credential) {
-                                                         
-                                                         DebugLog(@"Loggin in User with id: %@", credential.accessToken);
-                                                         [activityIndicator stopAnimating];
-                                                         [self completeLoginProcess:credential];
-            
-                                                     } andError:^(NSDictionary* errorDictionary) {
-                                                         
-                                                         facebookLogingInLabel.alpha = 0.0;
-                                                         
-                                                         signUpButton.alpha = 1.0;
-                                                         
-                                                         signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
-                                                         [activityIndicator stopAnimating];
-                                                         
-                                                         NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
-                                                         
-                                                         userNameInputField.enabled = YES;
-                                                         passwordForgottenButton.enabled = YES;
-                                                         finalLoginButton.enabled = YES;
-                                                         loginButton.enabled = YES;
-                                                         
-                                                         passwordForgottenButton.enabled = YES;
-            
-                                                         if(formErrors) {
-                                                             
-                                                             facebookSignInButton.enabled = YES;
-                                                             secondaryFacebookMessage.text = @"Could not log in through facebook";
-                                                             secondaryFacebookMessage.alpha = 1.0;
-                                                         }
-            
-                                                     }];
-        
-        
-    } onFailure:^(NSString* errorString) {
-        
-        
+         completionHandler: ^(SYNOAuth2Credential* credential)
+         {
+             DebugLog(@"Loggin in User with id: %@", credential.accessToken);
+             [activityIndicator stopAnimating];
+             [self completeLoginProcess:credential];
+         }
+         errorHandler: ^(NSDictionary* errorDictionary)
+         {
+             facebookLogingInLabel.alpha = 0.0;
+             
+             signUpButton.alpha = 1.0;
+             
+             signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
+             [activityIndicator stopAnimating];
+             
+             NSDictionary* formErrors = errorDictionary [@"form_errors"];
+             
+             userNameInputField.enabled = YES;
+             passwordForgottenButton.enabled = YES;
+             finalLoginButton.enabled = YES;
+             loginButton.enabled = YES;
+             
+             passwordForgottenButton.enabled = YES;
+             
+             if (formErrors)
+             {
+                 facebookSignInButton.enabled = YES;
+                 secondaryFacebookMessage.text = @"Could not log in through facebook";
+                 secondaryFacebookMessage.alpha = 1.0;
+             }
+         }];
+    }
+    onFailure: ^(NSString* errorString)
+    {
         _facebookLoginIsInProcess = NO;
         
-        DebugLog(@"Log in failed!");
-        
+        DebugLog(@"Log in failed!"); 
     }];
     
 }
@@ -831,36 +826,29 @@
     activityIndicator.center = CGPointMake(registerNewUserButton.center.x, registerNewUserButton.center.y);
     [activityIndicator startAnimating];
     
-    [appDelegate.networkEngine registerUserWithData:userData
-     
-                                       withComplete:^(SYNOAuth2Credential* credential) {
-                                           
-                                           [self completeLoginProcess: credential];
-                                           registerNewUserButton.enabled = YES;
-        
-                                       } andError:^(NSDictionary* errorDictionary) {
-                                           
-                                           NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
-                                           
-                                           if(formErrors) {
-                                               
-                                               [self showRegistrationError:formErrors];
-                                           }
-                                           
-                                           registerNewUserButton.enabled = YES;
-                                           
-                                           [activityIndicator stopAnimating];
-                                           registerNewUserButton.alpha = 1.0;
-                                           
-                                       }];
-    
-    
-    
-    return;
-    
-    
-    
+    [appDelegate.oAuthNetworkEngine registerUserWithData:userData
+     completionHandler: ^(SYNOAuth2Credential* credential)
+     {
+         [self completeLoginProcess: credential];
+         registerNewUserButton.enabled = YES;
+     }
+     errorHandler: ^(NSDictionary* errorDictionary)
+     {
+         NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+         
+         if (formErrors)
+         {
+             [self showRegistrationError:formErrors];
+         }
+         
+         registerNewUserButton.enabled = YES;
+         
+         [activityIndicator stopAnimating];
+         registerNewUserButton.alpha = 1.0;
+         
+     }];
 
+    return;
 }
 
 -(void)showRegistrationError:(NSDictionary*)errorDictionary

@@ -16,22 +16,33 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
 
+- (void) registerUserWithData: (NSDictionary*) userData
+            completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) doSimpleLoginForUsername: (NSString*) username
+                      forPassword: (NSString*) password
+                completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 - (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
-                           withComplete: (MKNKLoginCompleteBlock) completionBlock
-                               andError: (MKNKUserErrorBlock) errorBlock;
+                      completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                           errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) createChannelWithData: (NSDictionary*) userData
-                  withComplete: (MKNKVoidBlock) completionBlock
-                      andError: (MKNKUserErrorBlock) errorBlock;
+             completionHandler: (MKNKVoidBlock) completionBlock
+                  errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) updateChannelWithChannelId: (NSString *) channelId
                                data: (NSDictionary*) userData
-                       withComplete: (MKNKVoidBlock) completionBlock
-                           andError: (MKNKUserErrorBlock) errorBlock;
+                  completionHandler: (MKNKVoidBlock) completionBlock
+                       errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) updateVideosForChannelWithChannelId: (NSString *) channelId
-                             videoIdArray: (NSArray *) videoIdArray
-                             withComplete: (MKNKVoidBlock) completionBlock
-                                 andError: (MKNKUserErrorBlock) errorBlock;
+                                videoIdArray: (NSArray *) videoIdArray
+                           completionHandler: (MKNKVoidBlock) completionBlock
+                                errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+
 
 @end

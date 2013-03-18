@@ -275,13 +275,13 @@
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
         [appDelegate.oAuthNetworkEngine createChannelWithData: userData
-                                                   withComplete: ^(void )
+          completionHandler: ^(void )
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel
              //             [self uploadVideosForChannel];
          }
-                                                  andError: ^(NSDictionary* errorDictionary)
+         errorHandler: ^(NSDictionary* errorDictionary)
          {
              DebugLog(@"Channel creation failed");
              NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
@@ -305,18 +305,18 @@
         
         [appDelegate.oAuthNetworkEngine updateChannelWithChannelId: self.channel.uniqueId
                                                               data: userData
-                                                      withComplete: ^(void )
+         completionHandler: ^(void )
          {
              DebugLog(@"Channel creation successful");
              // If we successfuly created a channel, then upload the videos for that channel
              //             [self uploadVideosForChannel];
          }
-                                                  andError: ^(NSDictionary* errorDictionary)
+         errorHandler: ^(NSDictionary* errorDictionary)
          {
              DebugLog(@"Channel creation failed");
-             NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
+             NSDictionary* formErrors = errorDictionary[@"form_errors"];
              
-             if(formErrors)
+             if (formErrors)
              {
                  // TODO: Show errors in channel creation
                  //           [self showRegistrationError:formErrors];
