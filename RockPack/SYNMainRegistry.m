@@ -83,6 +83,30 @@
     return YES;
 }
 
+-(User*)registerUserInstanceFromDictionary:(NSDictionary *)dictionary
+{
+
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+        return nil;
+    
+    User* user = [User instanceFromDictionary:dictionary
+                    usingManagedObjectContext:importManagedObjectContext];
+    
+    ChannelOwner* co = [ChannelOwner instanceFromDictionary:dictionary usingManagedObjectContext:importManagedObjectContext ignoringObjectTypes:nil andViewId:@"User"];
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return nil;
+    
+    
+    [appDelegate saveContext: TRUE];
+    
+    
+    
+    return user;
+    
+}
 
 -(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId
 {
@@ -99,7 +123,7 @@
         return NO;
     
     
-    // == =============== == //
+    // == ================ == //
     
     
     

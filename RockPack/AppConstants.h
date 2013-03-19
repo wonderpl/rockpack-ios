@@ -38,7 +38,7 @@
 #define kAPICompleteChannels        @"/ws/complete/channels/"
 
 // User details
-#define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
+#define kAPIGetUserDetails          @"/ws/%@/"                              /* GET */
 #define kAPIChangeUserName          @"/ws/USERID/username/"                     /* PUT */
 
 // Avatar
@@ -64,9 +64,9 @@
 #define kAPIDeleteCoverArt          @"/ws/USERID/cover_art/COVERID"             /* DELETE */
 
 // User subscriptions
-#define kAPIGetUserSubscriptions    @"/ws/USERID/subscriptions/"                /* GET */ 
+#define kAPIGetUserSubscriptions    @"/ws/USERID/subscriptions/"                /* GET */
 #define kAPICreateUserSubscription  @"/ws/USERID/subscriptions/"                /* POST */
-#define kAPIDeleteUserSubscription  @"/ws/USERID/subscriptions/SUBSCRIPTION/"   /* DELETE */  
+#define kAPIDeleteUserSubscription  @"/ws/USERID/subscriptions/SUBSCRIPTION/"   /* DELETE */
 
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
@@ -79,7 +79,11 @@
 
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 
+<<<<<<< HEAD
 
+=======
+#define kAccountSettingRect         CGSizeMake(380, 576)
+>>>>>>> master
 
 // Timeout for API calls
 
@@ -113,7 +117,7 @@
 #define kOAuth2ClientId @"c8fe5f6rock873dpack19Q"
 #define kOAuth2ClientSecret @"7d6a1956c0207ed9d0bbc22ddf9d95"
 
-// Enable full screen thumbnail view 
+// Enable full screen thumbnail view
 #define FULL_SCREEN_THUMBNAILS__
 
 //

@@ -110,6 +110,7 @@
          
          completionBlock(self.oAuth2Credential);
          
+<<<<<<< HEAD
      }
                                   errorHandler: ^(NSError* error)
      {
@@ -121,6 +122,17 @@
 }
 
 
+=======
+        } errorHandler: ^(NSError* error) {
+         
+            DebugLog(@"Register Facebook Token with Server Failed");
+            NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+            errorBlock(customErrorDictionary);
+        }];
+
+}
+
+>>>>>>> master
 // Get authentication token, by passing facebook access token to the API, and getting the authentication token in return
 - (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
@@ -136,8 +148,45 @@
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
+<<<<<<< HEAD
     
     [self enqueueOperation: networkOperation];
+=======
+    
+    [self enqueueOperation: networkOperation];
+}
+
+-(void)fetchUserDataFromCredentials:(SYNOAuth2Credential*)credentials
+                  completionHandler:(MKNKUserCompleteBlock) completionBlock
+                       errorHandler:(MKNKUserErrorBlock) errorBlock {
+    
+    NSString* userPath = [NSString stringWithFormat:kAPIGetUserDetails, credentials.userId];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: userPath
+                                                                                                        params: nil
+                                                                                                    httpMethod: @"GET"
+                                                                                                           ssl: TRUE];
+    
+    [networkOperation addJSONCompletionHandler:^(id object) {
+        
+        User* user = [self.registry registerUserInstanceFromDictionary:object];
+        
+        if(user) {
+            completionBlock(user);
+        } else {
+            errorBlock(@{@"registration_error" : @"user could returned nil from registry"});
+        }
+        
+        DebugLog(@"Got: %@", object);
+        
+    } errorHandler:^(NSError* error) {
+        
+        errorBlock(@{@"network_error" : @"Could not complete the fetch call"});
+        
+    }];
+    
+    [self enqueueSignedOperation:networkOperation];
+    
+>>>>>>> master
 }
 
 
@@ -150,6 +199,47 @@
     NSDictionary* postLoginParams = @{@"grant_type" : @"password",
                                       @"username" : username,
                                       @"password" : password};
+<<<<<<< HEAD
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureLogin
+                                                                                                        params: postLoginParams
+                                                                                                    httpMethod: @"POST"
+                                                                                                           ssl: TRUE];
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
+// Get authentication token by registering details with server
+- (void) registerUserWithData: (NSDictionary*) userData
+            completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPISecureRegister
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+#pragma mark - Common functionality
+
+// This code block is common to all of the signup/signin methods
+- (void) addCommonOAuthPropertiesToSignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                             errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+=======
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPISecureLogin
                                                                                                         params: postLoginParams
@@ -189,6 +279,10 @@
                                         completionHandler: (MKNKUserSuccessBlock) completionBlock
                                              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+>>>>>>> master
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
      {
          NSString* possibleError = responseDictionary[@"error"];
@@ -205,10 +299,131 @@
      errorHandler: ^(NSError* error)
      {
          DebugLog(@"API Call failed");
+<<<<<<< HEAD
          NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
          errorBlock(customErrorDictionary);
      }];
     
+=======
+         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
+}
+
+
+#pragma mark - Channel creation
+
+- (void) createChannelWithData: (NSDictionary*) userData
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
+                  errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
+    
+    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+// /ws/USERID/channels/CHANNELID/  /* PUT */
+- (void) updateChannelWithChannelId: (NSString *) channelId
+                               data: (NSDictionary*) userData
+                  completionHandler: (MKNKUserSuccessBlock) completionBlock
+                       errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+//                                                @"CHANNELID" : channelId};
+//
+//    SYNNetworkOperationJsonObject *networkOperation =
+//    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+//                                                          params: userData
+//                                                      httpMethod: @"PUT"];
+//
+//    [networkOperation setUsername: kOAuth2ClientId
+//                         password: @""
+//                        basicAuth: YES];
+//
+//    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+//
+//
+//    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+//     {
+//         NSString* possibleError = [dictionary objectForKey: @"error"];
+//
+//         if(possibleError)
+//         {
+//             errorBlock(dictionary);
+//             return;
+//         }
+//
+//         completionBlock();
+//     }
+//                                  errorHandler: ^(NSError* error)
+//     {
+//         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+//         errorBlock(customErrorDictionary);
+//     }];
+//
+//    [self enqueueOperation: networkOperation];
+//
+}
+//
+// /ws/USERID/channels/CHANNELID/videos/    /* PUT */
+
+
+- (void) updateVideosForChannelWithChannelId: (NSString *) channelId
+                                videoIdArray: (NSArray *) videoIdArray
+                           completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+//
+//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+//                                                @"CHANNELID" : channelId};
+//
+//    SYNNetworkOperationJsonObject *networkOperation =
+//    (SYNNetworkOperationJsonObject*)[self operationWithPath: [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary]
+//                                                          params: nil
+//                                                      httpMethod: @"PUT"];
+//
+//    [networkOperation setUsername: kOAuth2ClientId
+//                         password: @""
+//                        basicAuth: YES];
+//
+//    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+//
+//
+//    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+//     {
+//         NSString* possibleError = [dictionary objectForKey: @"error"];
+//
+//         if (possibleError)
+//         {
+//             errorBlock(dictionary);
+//             return;
+//         }
+//
+//         completionBlock();
+//     }
+//     errorHandler: ^(NSError* error)
+//     {
+//         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+//         errorBlock(customErrorDictionary);
+//     }];
+//
+//    [self enqueueOperation: networkOperation];
+//
+>>>>>>> master
 }
 
 #pragma mark - User management

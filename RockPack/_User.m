@@ -7,6 +7,8 @@ const struct UserAttributes UserAttributes = {
 	.current = @"current",
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
+	.firstName = @"firstName",
+	.lastName = @"lastName",
 	.username = @"username",
 };
 
@@ -88,6 +90,20 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 @dynamic emailAddress;
+
+
+
+
+
+
+@dynamic firstName;
+
+
+
+
+
+
+@dynamic lastName;
 
 
 

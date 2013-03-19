@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SYNRegistry.h"
+#import "User.h"
 
 @interface SYNMainRegistry : SYNRegistry
 
@@ -15,5 +16,6 @@
 -(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId;
 -(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary;
 -(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary;
+-(User*)registerUserInstanceFromDictionary:(NSDictionary*)dictionary;
 
 @end
