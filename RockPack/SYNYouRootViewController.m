@@ -122,9 +122,7 @@
     
     
     self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-
-    self.accountSettingsPopover.popoverContentSize = kAccountSettingRect;
-
+    self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
     self.accountSettingsPopover.delegate = self;
     
     // self.accountSettingsPopover.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];

@@ -827,7 +827,6 @@
     [activityIndicator startAnimating];
     
     [appDelegate.oAuthNetworkEngine registerUserWithData:userData
-<<<<<<< HEAD
      completionHandler: ^(SYNOAuth2Credential* credential)
      {
          [self completeLoginProcess: credential];
@@ -848,41 +847,6 @@
          registerNewUserButton.alpha = 1.0;
          
      }];
-=======
-                                       completionHandler: ^(SYNOAuth2Credential* credential) {
-                                           
-                                           [appDelegate.oAuthNetworkEngine fetchUserDataFromCredentials:credential completionHandler:^(User* user) {
-                                               
-                                               
-                                               
-                                               [self completeLoginProcess: credential];
-                                               
-                                               registerNewUserButton.enabled = YES;
-                                               
-                                               
-                                           } errorHandler:^(NSDictionary* erroDictionary) {
-                                               
-                                               registerNewUserButton.enabled = YES;
-                                           }];
-                                           
-                                           
-                                           
-                                       } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                
-                                           NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
-         
-                                           if (formErrors)
-                                           {
-                                               [self showRegistrationError:formErrors];
-                                           }
-         
-                                           registerNewUserButton.enabled = YES;
-         
-                                           [activityIndicator stopAnimating];
-                                           registerNewUserButton.alpha = 1.0;
-         
-                                       }];
->>>>>>> master
 
     return;
 }
@@ -931,8 +895,6 @@
     
     [labelsToErrorArrows setObject:errorArrow forKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
     [self.view addSubview:errorArrow];
-    
-    
 }
 
 -(void)errorArrowTapped:(UITapGestureRecognizer*)recogniser

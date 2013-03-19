@@ -45,10 +45,6 @@ typedef void (^MKNKErrorBlock)(NSError* error);
 
 typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
 
 typedef enum {

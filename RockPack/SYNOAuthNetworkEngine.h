@@ -29,7 +29,6 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-<<<<<<< HEAD
 // User information
 
 - (void) userInformationForUserId: (NSString *) userId
@@ -43,8 +42,6 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
 // Channel creation
 
-=======
->>>>>>> master
 - (void) createChannelWithData: (NSDictionary*) userData
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock;
@@ -59,13 +56,6 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                            completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-<<<<<<< HEAD
-=======
--(void)fetchUserDataFromCredentials:(SYNOAuth2Credential*)credentials
-                  completionHandler:(MKNKUserCompleteBlock) completionBlock
-                       errorHandler:(MKNKUserErrorBlock) errorBlock;
-
->>>>>>> master
 
 
 @end
