@@ -17,7 +17,8 @@
          [completedOperation responseJSONWithOptions: NSJSONReadingAllowFragments
                                    completionHandler: ^(id jsonObject)
         {
-             if(!jsonObject)
+            // We need to check to see if the response is signalled as blank
+             if(!jsonObject && (completedOperation.HTTPStatusCode != 204))
              {
                  // check whether an object is returned before calling the completeBlock
                  NSLog(@"The JSON Object could not be parsed!");

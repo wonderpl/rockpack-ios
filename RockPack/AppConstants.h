@@ -41,6 +41,9 @@
 #define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
 #define kAPIChangeUserName          @"/ws/USERID/username/"                     /* PUT */
 
+// Avatar
+#define kAPIUpdateAvatar           @"/ws/USERID/avatar/"                       /* PUT */
+
 // Channel details
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
 
