@@ -9,7 +9,13 @@
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNAccountSettingTableViewCell.h"
+<<<<<<< HEAD
 #import "SYNAccountSettingsGender.h"
+=======
+
+#import "SYNAccountSettingsGender.h"
+#import "AppConstants.h"
+>>>>>>> master
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -38,11 +44,26 @@
     return self;
 }
 
+<<<<<<< HEAD
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
 
+=======
+- (void)viewWillAppear:(BOOL)animated {
+    
+    CGSize size = kAccountSettingRect;
+    self.contentSizeForViewInPopover = size;
+    
+    [super viewWillAppear:animated];
+    
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+>>>>>>> master
     self.tableView.scrollEnabled = NO;
     
 }
@@ -50,7 +71,11 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+<<<<<<< HEAD
     // Dispose of any resources that can be recreated.
+=======
+    
+>>>>>>> master
 }
 
 #pragma mark - Table view data source
@@ -86,33 +111,57 @@
             case 0:
                 cell.textLabel.text = @"Alexandra Longname-Smith";
                 cell.detailTextLabel.text = @"Full Name - Public";
+<<<<<<< HEAD
+=======
+                cell.imageView.image = [UIImage imageNamed:@"IconFullname.png"];
+>>>>>>> master
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 1:
                 cell.textLabel.text = @"alex_1989";
                 cell.detailTextLabel.text = @"Username - Public";
+<<<<<<< HEAD
+=======
+                cell.imageView.image = [UIImage imageNamed:@"IconUsername.png"];
+>>>>>>> master
                 break;
                 
             case 2:
                 cell.textLabel.text = @"alex_longname@gmail.com";
                 cell.detailTextLabel.text = @"Email - Private";
+<<<<<<< HEAD
+=======
+                cell.imageView.image = [UIImage imageNamed:@"IconEmail.png"];
+>>>>>>> master
                 break;
                 
             case 3:
                 cell.textLabel.text = @"078897898";
                 cell.detailTextLabel.text = @"Phone - Private";
+<<<<<<< HEAD
+=======
+                cell.imageView.image = [UIImage imageNamed:@"IconLocation.png"];
+>>>>>>> master
                 break;
                 
             case 4:
                 cell.textLabel.text = @"Female";
                 cell.detailTextLabel.text = @"Gender - Private";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+<<<<<<< HEAD
+=======
+                cell.imageView.image = [UIImage imageNamed:@"IconGender.png"];
+>>>>>>> master
                 break;
                 
             case 5:
                 cell.textLabel.text = @"14 Jan 1989";
                 cell.detailTextLabel.text = @"D.O.B Private";
+<<<<<<< HEAD
+=======
+                cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
+>>>>>>> master
                 break;
                 
         }

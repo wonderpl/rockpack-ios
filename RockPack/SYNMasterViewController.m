@@ -67,7 +67,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         self.rootViewController = root;
-
+        
         // == Set up Inbox Overlay
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
         CGRect inboxOverlayFrame = self.inboxOverlayViewController.view.frame;
@@ -121,9 +121,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          splashView.alpha = 0.0f;
                      }
                      completion: ^(BOOL finished) {
-         splashView.alpha = 0.0f;
-         [splashView removeFromSuperview];
-     }];
+                         splashView.alpha = 0.0f;
+                         [splashView removeFromSuperview];
+                     }];
     
     self.slidersView.userInteractionEnabled = NO;
     
@@ -322,21 +322,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.videoViewerViewController.view.alpha = 1.0f;
                      }
                      completion: ^(BOOL finished)
-                     {
-
-                        self.overlayView.userInteractionEnabled = YES;
-                         
-                         // == Add video queue == //
-                         
-                         UIView* queueView = bottomTabViewController.videoQueueController.view;
-                         
-                         [queueView removeFromSuperview];
-                         
-                         queueView.center = CGPointMake(queueView.center.x, queueView.center.y + queueView.frame.size.height * 0.5);
-                         
-                         [self.view insertSubview:queueView aboveSubview:self.overlayView];
-                         
-                     }];
+     {
+         
+         self.overlayView.userInteractionEnabled = YES;
+         
+         // == Add video queue == //
+         
+         UIView* queueView = bottomTabViewController.videoQueueController.view;
+         
+         [queueView removeFromSuperview];
+         
+         queueView.center = CGPointMake(queueView.center.x, queueView.center.y + queueView.frame.size.height * 0.5);
+         
+         [self.view insertSubview:queueView aboveSubview:self.overlayView];
+         
+     }];
 }
 
 -(void)removeVideoOverlayController
@@ -356,9 +356,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          child.alpha = 0.0f;
                      }
                      completion: ^(BOOL finished) {
-         
+                         
                          self.overlayView.userInteractionEnabled = NO;
-                        
+                         
                          self.videoViewerViewController = nil;
                          
                          [child removeFromSuperview];
@@ -413,8 +413,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return NO;
     
     
-//    if(self.searchTextField.text.length < 1)
-//        return YES;
+    //    if(self.searchTextField.text.length < 1)
+    //        return YES;
     
     if(self.autocompleteTimer) {
         [self.autocompleteTimer invalidate];
@@ -441,7 +441,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.clearTextButton.alpha = 1.0;
         }];
     }
-        
+    
     
     [self.autocompleteTimer invalidate];
     
@@ -451,9 +451,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [appDelegate.networkEngine getAutocompleteForHint:self.searchTextField.text
                                           forResource:EntityTypeVideo
                                          withComplete:^(NSArray* array) {
-        
+                                             
                                              NSArray* suggestionsReturned = [array objectAtIndex:1];
-        
+                                             
                                              NSMutableArray* wordsReturned = [NSMutableArray array];
                                              
                                              if(suggestionsReturned.count == 0) {
@@ -466,19 +466,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                  
                                                  return;
                                              }
-        
+                                             
                                              for (NSArray* suggestion in suggestionsReturned)
                                                  [wordsReturned addObject:[suggestion objectAtIndex:0]];
                                              
                                              [self.autocompleteController addWords:wordsReturned];
-        
+                                             
                                              [self showAutocompletePopover];
-        
-        
+                                             
+                                             
                                          } andError:^(NSError* error) {
                                              
                                              [self.notificationsPopoverController dismissPopoverAnimated:YES];
-                                         
+                                             
                                          }];
     
     
@@ -505,7 +505,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
         self.autocompletePopoverController = nil;
     }
-        
+    
     
     
     return YES;
@@ -569,16 +569,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
-                    {
-                         
-                         self.topButtonsContainer.center = targetPoint;
-                         self.backButton.alpha = targetAlpha;
-                         
-                     } completion: ^(BOOL finished) {
-                         
-                         
-                         
-                     }];
+     {
+         
+         self.topButtonsContainer.center = targetPoint;
+         self.backButton.alpha = targetAlpha;
+         
+     } completion: ^(BOOL finished) {
+         
+         
+         
+     }];
     
 }
 

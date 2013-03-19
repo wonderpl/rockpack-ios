@@ -20,7 +20,7 @@
 #import "UncaughtExceptionHandler.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-#define kShowLoginPhase YES
+#define kShowLoginPhase NO
 
 @interface SYNAppDelegate ()
 
@@ -57,6 +57,8 @@
     [self createDefaultUser];
     
     
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginCompleted:)
                                                  name:kLoginCompleted
@@ -81,10 +83,22 @@
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
-    if(kShowLoginPhase)
-        self.window.rootViewController = self.loginViewController;
+    
+    [self getCurrentUser];
+    
+    if(_currentUser)
+    {
+        DebugLog(@"Found User: %@", _currentUser);
+    }
     else
-        self.window.rootViewController = self.viewController;
+    {
+        if(kShowLoginPhase)
+            self.window.rootViewController = self.loginViewController;
+        else
+            self.window.rootViewController = self.viewController;
+    }
+    
+    
     
     
     [self.window makeKeyAndVisible];
@@ -372,7 +386,41 @@
     UIImageView.defaultEngine2 = self.networkEngine;
     
 }
-
+-(void)getCurrentUser
+{
+    NSError* error = nil;
+    
+    NSEntityDescription* userEntity = [NSEntityDescription entityForName:@"User"
+                                                      inManagedObjectContext:self.mainManagedObjectContext];
+    
+    
+    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+    [userFetchRequest setEntity:userEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"current == YES"];
+    [userFetchRequest setPredicate: predicate];
+    
+    NSArray *matchingCategoryInstanceEntries = [self.mainManagedObjectContext executeFetchRequest: userFetchRequest
+                                                                                            error: &error];
+    
+    User *user = nil;
+    
+    if (matchingCategoryInstanceEntries.count > 1)
+    {
+        // TODO: More than one user logged in
+        DebugLog(@"WARNING: More than one user logged in at the same time");
+    }
+    else if(matchingCategoryInstanceEntries.count > 0)
+    {
+        user = (User*)matchingCategoryInstanceEntries[0];
+    }
+    else
+    {
+        user = nil;
+    }
+    
+    _currentUser = user;
+}
 
 - (void) createDefaultUser
 {
@@ -405,6 +453,8 @@
         
         self.channelOwnerMe = channelOwnerMe;
     }
+    
+    //[self saveContext:YES];
 }
 
 

@@ -15,10 +15,18 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+<<<<<<< HEAD
+=======
+        self.textLabel.backgroundColor = [UIColor clearColor];
+>>>>>>> master
     }
     return self;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -28,6 +36,10 @@
 
 - (void) layoutSubviews {
     [super layoutSubviews];
+<<<<<<< HEAD
+=======
+    
+>>>>>>> master
     CGRect tableCellFrame = self.textLabel.frame;
     tableCellFrame.origin.y = 5.0;
     self.textLabel.frame = tableCellFrame;
