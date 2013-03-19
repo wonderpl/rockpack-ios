@@ -19,7 +19,7 @@
 #import "SYNLoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-#define kShowLoginPhase YES
+#define kShowLoginPhase NO
 
 @interface SYNAppDelegate ()
 
@@ -28,6 +28,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
+
 @end
 
 @implementation SYNAppDelegate
@@ -43,6 +44,8 @@
     [self performSelector: @selector(installUncaughtExceptionHandler)
                withObject: nil
                afterDelay: 0];
+    
+    
     
     // Se up core data
     [self initializeCoreDataStack];

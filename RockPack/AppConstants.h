@@ -36,6 +36,12 @@
 #define kAPISearchChannels          @"/ws/search/channels/"
 #define kAPICompleteChannels        @"/ws/complete/channels/"
 
+
+#define kAccountSettingsPressed     @"kAccountSettingsPressed"
+
+#define kSearchBarItemWidth 100.0
+#define kAccountSettingRect         CGSizeMake(380, 576)
+
 // User details
 #define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
 #define kAPIChangeUserName          @"/ws/USERID/username/"                     /* PUT */
