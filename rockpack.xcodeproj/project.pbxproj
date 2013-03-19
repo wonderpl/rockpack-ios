@@ -1835,11 +1835,11 @@
 		019824DD1629CA3700216900 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				019824DF1629CA6000216900 /* Property List */,
 				01363EA6162F5C2F00FFAA09 /* Audio */,
 				019824FB1629D19600216900 /* Fonts */,
 				01F8E76216B0312E000D44B9 /* HTML */,
 				019824DE1629CA5900216900 /* Images */,
-				019824DF1629CA6000216900 /* Property List */,
 				019824E01629CA9400216900 /* Strings */,
 			);
 			name = Resources;
