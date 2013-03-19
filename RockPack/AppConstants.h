@@ -19,6 +19,7 @@
 
 //#define kAPIHostName @"dev.rockpack.com"
 #define kAPIHostName @"demo.rockpack.com"
+#define kAPISecureHostName @"secure.demo.rockpack.com"
 
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
@@ -26,9 +27,9 @@
 // Main RestFul API
 
 // Login
-#define kAPISecureLogin             @"https://secure.demo.rockpack.com/ws/login/"
-#define kAPISecureExternalLogin     @"https://secure.demo.rockpack.com/ws/login/external/"
-#define kAPISecureRegister          @"https://secure.demo.rockpack.com/ws/register/"
+#define kAPISecureLogin             @"/ws/login/"
+#define kAPISecureExternalLogin     @"/ws/login/external/"
+#define kAPISecureRegister          @"/ws/register/"
 
 // Search according to term, currently a wrapper around YouTube
 #define kAPISearchVideos            @"/ws/search/videos/"
@@ -36,21 +37,15 @@
 #define kAPISearchChannels          @"/ws/search/channels/"
 #define kAPICompleteChannels        @"/ws/complete/channels/"
 
-
-#define kAccountSettingsPressed     @"kAccountSettingsPressed"
-
-#define kSearchBarItemWidth 100.0
-#define kAccountSettingRect         CGSizeMake(380, 576)
-
 // User details
-#define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
+#define kAPIGetUserDetails          @"/ws/%@/"                              /* GET */
 #define kAPIChangeUserName          @"/ws/USERID/username/"                     /* PUT */
 
 // Channel details
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
 
 // Channel management
-#define kAPICreateNewChannel        @"https://secure.demo.rockpack.com//ws/USERID/channels/"                     /* POST */
+#define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 
 // Channel privacy
@@ -66,9 +61,9 @@
 #define kAPIDeleteCoverArt          @"/ws/USERID/cover_art/COVERID"             /* DELETE */
 
 // User subscriptions
-#define kAPIGetUserSubscriptions    @"/ws/USERID/subscriptions/"                /* GET */ 
+#define kAPIGetUserSubscriptions    @"/ws/USERID/subscriptions/"                /* GET */
 #define kAPICreateUserSubscription  @"/ws/USERID/subscriptions/"                /* POST */
-#define kAPIDeleteUserSubscription  @"/ws/USERID/subscriptions/SUBSCRIPTION/"   /* DELETE */  
+#define kAPIDeleteUserSubscription  @"/ws/USERID/subscriptions/SUBSCRIPTION/"   /* DELETE */
 
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
@@ -79,6 +74,9 @@
 #define kAPIPopularChannels         @"ws/channels/"
 #define kAPICategories              @"ws/categories/"
 
+#define kAccountSettingsPressed     @"kAccountSettingsPressed"
+
+#define kAccountSettingRect         CGSizeMake(380, 576)
 
 // Timeout for API calls
 
@@ -112,7 +110,7 @@
 #define kOAuth2ClientId @"c8fe5f6rock873dpack19Q"
 #define kOAuth2ClientSecret @"7d6a1956c0207ed9d0bbc22ddf9d95"
 
-// Enable full screen thumbnail view 
+// Enable full screen thumbnail view
 #define FULL_SCREEN_THUMBNAILS__
 
 //
@@ -211,6 +209,7 @@ typedef enum {
 
 #define kTopTabCount 10
 
+#define kSearchBarItemWidth 100.0
 //
 // Video Overlay
 //

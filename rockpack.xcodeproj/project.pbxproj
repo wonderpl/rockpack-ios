@@ -28,7 +28,6 @@
 		010DEFD91629BDC40080F26B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD81629BDC40080F26B /* CoreGraphics.framework */; };
 		010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFDD1629BDC40080F26B /* InfoPlist.strings */; };
 		010DEFE11629BDC40080F26B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE01629BDC40080F26B /* main.m */; };
-		010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE41629BDC40080F26B /* SYNAppDelegate.m */; };
 		0111B80E16BA9DE6007DD78C /* ButtonRockHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111B80216BA9DE6007DD78C /* ButtonRockHeader.png */; };
 		0111B80F16BA9DE6007DD78C /* ButtonRockHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111B80316BA9DE6007DD78C /* ButtonRockHeader@2x.png */; };
 		0111B81016BA9DE6007DD78C /* ButtonRockHeaderHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111B80416BA9DE6007DD78C /* ButtonRockHeaderHighlighted.png */; };
@@ -285,8 +284,6 @@
 		019825F4162C94B500216900 /* UIFont+SYNFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 019825F3162C94B500216900 /* UIFont+SYNFont.m */; };
 		0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */; };
 		0199F13B16721A4500E479C6 /* SYNHomeRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0199F13916721A4500E479C6 /* SYNHomeRootViewController.m */; };
-		019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */; };
-		019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */; };
 		019E6A8F16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E6A8D16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png */; };
 		019E6A9016E9081D00647002 /* GlossVideoThumbnailSmallPlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 019E6A8E16E9081D00647002 /* GlossVideoThumbnailSmallPlaying@2x.png */; };
 		019E81FF1654043A00744A03 /* Mail Sent.aif in Resources */ = {isa = PBXBuildFile; fileRef = 019E81F91654043A00744A03 /* Mail Sent.aif */; };
@@ -379,7 +376,6 @@
 		01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */; };
 		01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */; };
 		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
-		01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */; };
 		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
 		01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */; };
 		01CF11C91695CC1600E64620 /* ButtonRefreshDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */; };
@@ -429,8 +425,6 @@
 		01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */; };
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
 		01EA81D416B9773E0069AFF9 /* SYNChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */; };
-		01EA81D816B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EA81D716B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m */; };
-		01EC6237166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m */; };
 		01EC6238166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01EC6236166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib */; };
 		01F014FE167F22E800A85774 /* MessageDragAndDrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F014FD167F22E800A85774 /* MessageDragAndDrop.png */; };
 		01F6D5B516AEADCE003F016D /* ButtonStarFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F6D5B116AEADCE003F016D /* ButtonStarFriends.png */; };
@@ -496,6 +490,15 @@
 		BE03A73716F8AF0700245314 /* GlossAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71D16F8AF0700245314 /* GlossAvatar@2x.png */; };
 		BE03A73A16F8AFC000245314 /* SYNYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A73916F8AFC000245314 /* SYNYouRootViewController.m */; };
 		BE03A74016F8B28E00245314 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A73F16F8B28E00245314 /* SYNBottomTabViewController.m */; };
+		BE03A74316F8B57A00245314 /* SYNOAuthNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A74216F8B57A00245314 /* SYNOAuthNetworkEngine.m */; };
+		BE03A74616F8B58600245314 /* SYNAbstractNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A74516F8B58600245314 /* SYNAbstractNetworkEngine.m */; };
+		BE03A74C16F8B5A500245314 /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A74B16F8B5A500245314 /* SYNLoginViewController.m */; };
+		BE03A74F16F8B5DD00245314 /* SYNMainRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A74E16F8B5DD00245314 /* SYNMainRegistry.m */; };
+		BE03A75216F8B64300245314 /* SYNNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A75116F8B64300245314 /* SYNNetworkEngine.m */; };
+		BE03A75516F8B68000245314 /* SYNAbstractChannelsDetailsEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A75416F8B68000245314 /* SYNAbstractChannelsDetailsEditViewController.m */; };
+		BE03A75816F8B68D00245314 /* SYNAbstractChannelsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A75716F8B68D00245314 /* SYNAbstractChannelsDetailViewController.m */; };
+		BE03A75B16F8B74A00245314 /* SYNOAuth2Credential.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A75A16F8B74A00245314 /* SYNOAuth2Credential.m */; };
+		BE03A75E16F8B77800245314 /* SYNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A75D16F8B77800245314 /* SYNAppDelegate.m */; };
 		BE08158816D2923F00ADB1DC /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158716D2923F00ADB1DC /* TabTop.png */; };
 		BE08158A16D2926F00ADB1DC /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158916D2926F00ADB1DC /* TabTop@2x.png */; };
 		BE08158C16D292A700ADB1DC /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158B16D292A700ADB1DC /* TabTopSub.png */; };
@@ -523,7 +526,6 @@
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
-		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
 		BE270B8416EE200C00CDDA6D /* ChannelButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */; };
@@ -577,7 +579,6 @@
 		BEA043E716CAA8E1005406E7 /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Category.m */; };
 		BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* Subcategory.m */; };
 		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
-		BEA1E32E16CCFF70000AB59D /* SYNMainRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */; };
 		BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */; };
 		BED430FB16EF86020051465B /* _AccessInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BED430FA16EF86020051465B /* _AccessInfo.m */; };
 		BED430FE16EF860E0051465B /* AccessInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BED430FD16EF860E0051465B /* AccessInfo.m */; };
@@ -619,8 +620,6 @@
 		010DEFDE1629BDC40080F26B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		010DEFE01629BDC40080F26B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		010DEFE21629BDC40080F26B /* rockpack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rockpack-Prefix.pch"; sourceTree = "<group>"; };
-		010DEFE31629BDC40080F26B /* SYNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
-		010DEFE41629BDC40080F26B /* SYNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
 		0111B80216BA9DE6007DD78C /* ButtonRockHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRockHeader.png; path = Assets/Images/ButtonRockHeader.png; sourceTree = "<group>"; };
 		0111B80316BA9DE6007DD78C /* ButtonRockHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRockHeader@2x.png"; path = "Assets/Images/ButtonRockHeader@2x.png"; sourceTree = "<group>"; };
 		0111B80416BA9DE6007DD78C /* ButtonRockHeaderHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRockHeaderHighlighted.png; path = Assets/Images/ButtonRockHeaderHighlighted.png; sourceTree = "<group>"; };
@@ -924,10 +923,6 @@
 		0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCollectionBackgroundView.m; sourceTree = "<group>"; };
 		0199F13816721A4500E479C6 /* SYNHomeRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHomeRootViewController.h; sourceTree = "<group>"; };
 		0199F13916721A4500E479C6 /* SYNHomeRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHomeRootViewController.m; sourceTree = "<group>"; };
-		019E6A5F165FD99A002B312A /* SYNOAuth2Credential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOAuth2Credential.h; sourceTree = "<group>"; };
-		019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOAuth2Credential.m; sourceTree = "<group>"; };
-		019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOAuthNetworkEngine.h; sourceTree = "<group>"; };
-		019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOAuthNetworkEngine.m; sourceTree = "<group>"; };
 		019E6A8D16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossVideoThumbnailSmallPlaying.png; path = Assets/Images/GlossVideoThumbnailSmallPlaying.png; sourceTree = "<group>"; };
 		019E6A8E16E9081D00647002 /* GlossVideoThumbnailSmallPlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossVideoThumbnailSmallPlaying@2x.png"; path = "Assets/Images/GlossVideoThumbnailSmallPlaying@2x.png"; sourceTree = "<group>"; };
 		019E81F91654043A00744A03 /* Mail Sent.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Mail Sent.aif"; path = "Assets/Audio/Mail Sent.aif"; sourceTree = "<group>"; };
@@ -1032,8 +1027,6 @@
 		01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _AbstractCommon.m; sourceTree = "<group>"; };
 		01C6FD12169E11B000E01AA3 /* AbstractCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractCommon.h; sourceTree = "<group>"; };
 		01C6FD13169E11B000E01AA3 /* AbstractCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractCommon.m; sourceTree = "<group>"; };
-		01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkEngine.h; sourceTree = "<group>"; };
-		01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkEngine.m; sourceTree = "<group>"; };
 		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
 		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
 		01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshDefault.png; path = Assets/Images/ButtonRefreshDefault.png; sourceTree = "<group>"; };
@@ -1102,10 +1095,6 @@
 		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
 		01EA81D216B9773E0069AFF9 /* SYNChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsDetailViewController.h; sourceTree = "<group>"; };
 		01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsDetailViewController.m; sourceTree = "<group>"; };
-		01EA81D616B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractChannelsDetailsEditViewController.h; sourceTree = "<group>"; };
-		01EA81D716B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractChannelsDetailsEditViewController.m; sourceTree = "<group>"; };
-		01EC6234166EAAA5003154B1 /* SYNAbstractChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractChannelsDetailViewController.h; sourceTree = "<group>"; };
-		01EC6235166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractChannelsDetailViewController.m; sourceTree = "<group>"; };
 		01EC6236166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAbstractChannelsDetailViewController.xib; sourceTree = "<group>"; };
 		01F014FD167F22E800A85774 /* MessageDragAndDrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MessageDragAndDrop.png; path = Assets/Images/MessageDragAndDrop.png; sourceTree = "<group>"; };
 		01F6D5B116AEADCE003F016D /* ButtonStarFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonStarFriends.png; path = Assets/Images/ButtonStarFriends.png; sourceTree = "<group>"; };
@@ -1181,6 +1170,24 @@
 		BE03A73916F8AFC000245314 /* SYNYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouRootViewController.m; sourceTree = "<group>"; };
 		BE03A73E16F8B28E00245314 /* SYNBottomTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBottomTabViewController.h; sourceTree = "<group>"; };
 		BE03A73F16F8B28E00245314 /* SYNBottomTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBottomTabViewController.m; sourceTree = "<group>"; };
+		BE03A74116F8B57A00245314 /* SYNOAuthNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOAuthNetworkEngine.h; sourceTree = "<group>"; };
+		BE03A74216F8B57A00245314 /* SYNOAuthNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOAuthNetworkEngine.m; sourceTree = "<group>"; };
+		BE03A74416F8B58600245314 /* SYNAbstractNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractNetworkEngine.h; sourceTree = "<group>"; };
+		BE03A74516F8B58600245314 /* SYNAbstractNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractNetworkEngine.m; sourceTree = "<group>"; };
+		BE03A74A16F8B5A500245314 /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
+		BE03A74B16F8B5A500245314 /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
+		BE03A74D16F8B5DD00245314 /* SYNMainRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMainRegistry.h; sourceTree = "<group>"; };
+		BE03A74E16F8B5DD00245314 /* SYNMainRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMainRegistry.m; sourceTree = "<group>"; };
+		BE03A75016F8B64300245314 /* SYNNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkEngine.h; sourceTree = "<group>"; };
+		BE03A75116F8B64300245314 /* SYNNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkEngine.m; sourceTree = "<group>"; };
+		BE03A75316F8B68000245314 /* SYNAbstractChannelsDetailsEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractChannelsDetailsEditViewController.h; sourceTree = "<group>"; };
+		BE03A75416F8B68000245314 /* SYNAbstractChannelsDetailsEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractChannelsDetailsEditViewController.m; sourceTree = "<group>"; };
+		BE03A75616F8B68D00245314 /* SYNAbstractChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractChannelsDetailViewController.h; sourceTree = "<group>"; };
+		BE03A75716F8B68D00245314 /* SYNAbstractChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractChannelsDetailViewController.m; sourceTree = "<group>"; };
+		BE03A75916F8B74A00245314 /* SYNOAuth2Credential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOAuth2Credential.h; sourceTree = "<group>"; };
+		BE03A75A16F8B74A00245314 /* SYNOAuth2Credential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOAuth2Credential.m; sourceTree = "<group>"; };
+		BE03A75C16F8B77800245314 /* SYNAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
+		BE03A75D16F8B77800245314 /* SYNAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
 		BE08158716D2923F00ADB1DC /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		BE08158916D2926F00ADB1DC /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 		BE08158B16D292A700ADB1DC /* TabTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSub.png; sourceTree = "<group>"; };
@@ -1220,8 +1227,6 @@
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
-		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
-		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
 		BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChannelButtonBuy.png; sourceTree = "<group>"; };
 		BE270B8216EE200C00CDDA6D /* ChannelButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChannelButtonBuy@2x.png"; sourceTree = "<group>"; };
@@ -1289,8 +1294,6 @@
 		BEA043E916CABF1F005406E7 /* SYNCategoryItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoryItemView.h; sourceTree = "<group>"; };
 		BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoryItemView.m; sourceTree = "<group>"; };
 		BEA043EC16CAC684005406E7 /* SYNTabViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNTabViewDelegate.h; sourceTree = "<group>"; };
-		BEA1E32C16CCFF70000AB59D /* SYNMainRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNMainRegistry.h; sourceTree = "<group>"; };
-		BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNMainRegistry.m; sourceTree = "<group>"; };
 		BEA1E32F16CE6045000AB59D /* SYNNetworkOperationJsonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObject.h; sourceTree = "<group>"; };
 		BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObject.m; sourceTree = "<group>"; };
 		BED430F916EF86020051465B /* _AccessInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _AccessInfo.h; sourceTree = "<group>"; };
@@ -1793,10 +1796,12 @@
 		01677DDA1655491100B1B1D8 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				01C74BAB169F239800B1CA02 /* SYNNetworkEngine.h */,
-				01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */,
-				019E6A62165FD9AC002B312A /* SYNOAuthNetworkEngine.h */,
-				019E6A63165FD9AC002B312A /* SYNOAuthNetworkEngine.m */,
+				BE03A74416F8B58600245314 /* SYNAbstractNetworkEngine.h */,
+				BE03A74516F8B58600245314 /* SYNAbstractNetworkEngine.m */,
+				BE03A75016F8B64300245314 /* SYNNetworkEngine.h */,
+				BE03A75116F8B64300245314 /* SYNNetworkEngine.m */,
+				BE03A74116F8B57A00245314 /* SYNOAuthNetworkEngine.h */,
+				BE03A74216F8B57A00245314 /* SYNOAuthNetworkEngine.m */,
 				BEA1E33216CE605A000AB59D /* Custom Network Operations */,
 			);
 			name = Networking;
@@ -1945,8 +1950,8 @@
 		019824E21629CAC000216900 /* App Delegate */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFE31629BDC40080F26B /* SYNAppDelegate.h */,
-				010DEFE41629BDC40080F26B /* SYNAppDelegate.m */,
+				BE03A75C16F8B77800245314 /* SYNAppDelegate.h */,
+				BE03A75D16F8B77800245314 /* SYNAppDelegate.m */,
 			);
 			name = "App Delegate";
 			sourceTree = "<group>";
@@ -2156,11 +2161,11 @@
 			children = (
 				01E427D71664CDA5009B941F /* SYNAbstractViewController.h */,
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
-				01EC6234166EAAA5003154B1 /* SYNAbstractChannelsDetailViewController.h */,
-				01EC6235166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m */,
+				BE03A75616F8B68D00245314 /* SYNAbstractChannelsDetailViewController.h */,
+				BE03A75716F8B68D00245314 /* SYNAbstractChannelsDetailViewController.m */,
 				01EC6236166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.xib */,
-				01EA81D616B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.h */,
-				01EA81D716B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m */,
+				BE03A75316F8B68000245314 /* SYNAbstractChannelsDetailsEditViewController.h */,
+				BE03A75416F8B68000245314 /* SYNAbstractChannelsDetailsEditViewController.m */,
 				01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */,
 				01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */,
 			);
@@ -2254,8 +2259,8 @@
 		019E6A5E165FD958002B312A /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
-				019E6A5F165FD99A002B312A /* SYNOAuth2Credential.h */,
-				019E6A60165FD99A002B312A /* SYNOAuth2Credential.m */,
+				BE03A75916F8B74A00245314 /* SYNOAuth2Credential.h */,
+				BE03A75A16F8B74A00245314 /* SYNOAuth2Credential.m */,
 			);
 			name = OAuth2;
 			sourceTree = "<group>";
@@ -2755,8 +2760,8 @@
 		BE270B7B16EDE0A500CDDA6D /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */,
-				BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */,
+				BE03A74A16F8B5A500245314 /* SYNLoginViewController.h */,
+				BE03A74B16F8B5A500245314 /* SYNLoginViewController.m */,
 				BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */,
 				BED4311516F0EBBB0051465B /* SYNLoginErrorArrow.h */,
 				BED4311616F0EBBB0051465B /* SYNLoginErrorArrow.m */,
@@ -2857,8 +2862,8 @@
 			children = (
 				BE0815C816D5478A00ADB1DC /* SYNRegistry.h */,
 				BE0815C916D5478A00ADB1DC /* SYNRegistry.m */,
-				BEA1E32C16CCFF70000AB59D /* SYNMainRegistry.h */,
-				BEA1E32D16CCFF70000AB59D /* SYNMainRegistry.m */,
+				BE03A74D16F8B5DD00245314 /* SYNMainRegistry.h */,
+				BE03A74E16F8B5DD00245314 /* SYNMainRegistry.m */,
 				BE0815CB16D5487B00ADB1DC /* SYNSearchRegistry.h */,
 				BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */,
 				BED4310B16EF9A6B0051465B /* SYNUserInfoRegistry.h */,
@@ -3467,7 +3472,6 @@
 				BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */,
 				BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */,
 				010DEFE11629BDC40080F26B /* main.m in Sources */,
-				010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */,
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
@@ -3485,8 +3489,6 @@
 				011CC6A9164D19D800F02B6D /* SYNPassthroughView.m in Sources */,
 				01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */,
 				012ECA40165AF1E400A60980 /* SYNSwitch.m in Sources */,
-				019E6A61165FD99A002B312A /* SYNOAuth2Credential.m in Sources */,
-				019E6A64165FD9AC002B312A /* SYNOAuthNetworkEngine.m in Sources */,
 				01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */,
 				01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */,
 				01E427E21664DF21009B941F /* Video.m in Sources */,
@@ -3503,7 +3505,6 @@
 				014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */,
 				01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */,
 				01B7CD97166E0FD6001F4AF0 /* SYNChannelHeaderView.m in Sources */,
-				01EC6237166EAAA6003154B1 /* SYNAbstractChannelsDetailViewController.m in Sources */,
 				0199F131166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m in Sources */,
 				0199F13B16721A4500E479C6 /* SYNHomeRootViewController.m in Sources */,
 				018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */,
@@ -3515,7 +3516,6 @@
 				01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */,
 				01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */,
 				01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */,
-				01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */,
 				01B34C9016A85623002AD8FB /* UICollectionViewCell+AsyncImage.m in Sources */,
 				015CB00816AD76B100FEB8E7 /* SYNFriendsRootViewController.m in Sources */,
 				015CB00D16AD932000FEB8E7 /* SYNFriendThumbnailCell.m in Sources */,
@@ -3527,7 +3527,6 @@
 				01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */,
 				0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */,
 				01EA81D416B9773E0069AFF9 /* SYNChannelsDetailViewController.m in Sources */,
-				01EA81D816B9780E0069AFF9 /* SYNAbstractChannelsDetailsEditViewController.m in Sources */,
 				015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */,
 				01B3DCE516C5597900ED54D3 /* SYNChannelsDetailsCreationViewController.m in Sources */,
 				012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */,
@@ -3538,7 +3537,6 @@
 				BEA043E816CAA8E1005406E7 /* Subcategory.m in Sources */,
 				BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */,
 				012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */,
-				BEA1E32E16CCFF70000AB59D /* SYNMainRegistry.m in Sources */,
 				BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */,
 				BE08159F16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.m in Sources */,
 				BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */,
@@ -3577,7 +3575,6 @@
 				011A163016EF5EC5008CF25E /* GKImageCropViewController.m in Sources */,
 				011A163116EF5EC5008CF25E /* GKImagePicker.m in Sources */,
 				011A163216EF5EC5008CF25E /* GKResizeableCropOverlayView.m in Sources */,
-				BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */,
 				BED430FB16EF86020051465B /* _AccessInfo.m in Sources */,
 				BED430FE16EF860E0051465B /* AccessInfo.m in Sources */,
 				BED4310D16EF9A6B0051465B /* SYNUserInfoRegistry.m in Sources */,
@@ -3592,6 +3589,15 @@
 				BE03A70216F8AED700245314 /* SYNUserTabView.m in Sources */,
 				BE03A73A16F8AFC000245314 /* SYNYouRootViewController.m in Sources */,
 				BE03A74016F8B28E00245314 /* SYNBottomTabViewController.m in Sources */,
+				BE03A74316F8B57A00245314 /* SYNOAuthNetworkEngine.m in Sources */,
+				BE03A74616F8B58600245314 /* SYNAbstractNetworkEngine.m in Sources */,
+				BE03A74C16F8B5A500245314 /* SYNLoginViewController.m in Sources */,
+				BE03A74F16F8B5DD00245314 /* SYNMainRegistry.m in Sources */,
+				BE03A75216F8B64300245314 /* SYNNetworkEngine.m in Sources */,
+				BE03A75516F8B68000245314 /* SYNAbstractChannelsDetailsEditViewController.m in Sources */,
+				BE03A75816F8B68D00245314 /* SYNAbstractChannelsDetailViewController.m in Sources */,
+				BE03A75B16F8B74A00245314 /* SYNOAuth2Credential.m in Sources */,
+				BE03A75E16F8B77800245314 /* SYNAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

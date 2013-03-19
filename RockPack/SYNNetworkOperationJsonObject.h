@@ -10,6 +10,14 @@
 
 #import "AppConstants.h"
 
+@class SYNOAuth2Credential, User;
+
+typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
+typedef void (^MKNKLoginCompleteBlock) (SYNOAuth2Credential *);
+typedef void (^MKNKUserCompleteBlock) (User*);
+typedef void (^MKNKUserErrorBlock) (NSDictionary*);
+typedef void (^MKNKUserSuccessBlock) (NSDictionary*);
+
 @interface SYNNetworkOperationJsonObject : MKNetworkOperation
 
 -(void)addJSONCompletionHandler:(JSONResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock;

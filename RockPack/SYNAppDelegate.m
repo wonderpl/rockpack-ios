@@ -456,7 +456,7 @@
         self.channelOwnerMe = channelOwnerMe;
     }
     
-    [self saveContext:YES];
+    //[self saveContext:YES];
 }
 
 
