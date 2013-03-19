@@ -20,7 +20,7 @@
 #import "UncaughtExceptionHandler.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-#define kShowLoginPhase NO
+#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 

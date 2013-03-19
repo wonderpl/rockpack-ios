@@ -120,6 +120,7 @@
 
 }
 
+
 // Get authentication token, by passing facebook access token to the API, and getting the authentication token in return
 - (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
@@ -188,8 +189,6 @@
                                         completionHandler: (MKNKUserSuccessBlock) completionBlock
                                              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
-    
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
      {
          NSString* possibleError = responseDictionary[@"error"];
@@ -206,11 +205,61 @@
      errorHandler: ^(NSError* error)
      {
          DebugLog(@"API Call failed");
-         NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
          errorBlock(customErrorDictionary);
      }];
     
 }
+
+#pragma mark - User management
+
+- (void) userInformationForUserId: (NSString *) userId
+                 completionHandler: (MKNKUserSuccessBlock) completionBlock
+                      errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];    
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+- (void) changeUsernameForUserId: (NSString *) userId
+                        password: (NSString *) password
+                completionHandler: (MKNKUserSuccessBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIChangeUserName stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"PUT"
+                                                                                                          ssl: TRUE];
+    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
+     {
+         // Wrap it in quotes to make it valid JSON
+         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", password];
+         return JSONFormattedPassword;
+     }
+                                               forType: @"application/json"];
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 
 
 #pragma mark - Channel creation
@@ -219,27 +268,22 @@
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    // TODO: Remove this
-    [self updateVideosForChannelWithChannelId: @"abc"
-                                 videoIdArray: @[@"aaa", @"bbb", @"ccc"]
-                            completionHandler: nil
-                                 errorHandler: nil];
-    // end of TODO
-//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
-//    
-//    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-//    
-//    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-//                                                                                                       params: userData
-//                                                                                                   httpMethod: @"POST"
-//                                                                                                          ssl: TRUE];
-//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-//    
-//    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
-//                                         completionHandler: completionBlock
-//                                              errorHandler: errorBlock];
-//    
-//    [self enqueueSignedOperation: networkOperation];
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
+    
+    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+   [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
 }
 
 
@@ -259,7 +303,9 @@
                                                                                                        params: userData
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: TRUE];
-
+    
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    
     [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
@@ -271,6 +317,10 @@
 
 // /ws/USERID/channels/CHANNELID/videos/    /* PUT */
 
+//    [self updateVideosForChannelWithChannelId: @"abc"
+//                                 videoIdArray: @[@"aaa", @"bbb", @"ccc"]
+//                            completionHandler: nil
+//                                 errorHandler: nil];
 
 - (void) updateVideosForChannelWithChannelId: (NSString *) channelId
                                 videoIdArray: (NSArray *) videoIdArray
@@ -286,8 +336,7 @@
                                                                                                        params: nil
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: TRUE];
-
-    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary* postDataDict)
+    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {
          NSError *error = nil;
          
@@ -308,5 +357,26 @@
     
     [self enqueueSignedOperation: networkOperation];
 }
+
+// Test code template
+
+//[self userInformationForUserId: self.oAuth2Credential.userId
+//             completionHandler: ^(NSDictionary* errorDictionary)
+// {
+//     DebugLog(@"User data %@", errorDictionary);
+//     // If we successfuly created a channel, then upload the videos for that channel
+//     //             [self uploadVideosForChannel];
+// }
+//                  errorHandler: ^(NSDictionary* errorDictionary)
+// {
+//     DebugLog(@"Channel creation failed");
+//     NSDictionary* formErrors = errorDictionary[@"form_errors"];
+//     
+//     if (formErrors)
+//     {
+//         // TODO: Show errors in channel creation
+//         //           [self showRegistrationError:formErrors];
+//     }
+// }];
 
 @end
