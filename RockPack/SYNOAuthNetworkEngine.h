@@ -7,12 +7,46 @@
 //
 
 #import "MKNetworkEngine.h"
+#import "SYNAbstractNetworkEngine.h"
 
 typedef void (^SYNOAuth2CompletionBlock)(NSError *error);
 typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
-@interface SYNOAuthNetworkEngine : MKNetworkEngine
+@interface SYNOAuthNetworkEngine : SYNAbstractNetworkEngine
 
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request;
+
+- (void) registerUserWithData: (NSDictionary*) userData
+            completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) doSimpleLoginForUsername: (NSString*) username
+                      forPassword: (NSString*) password
+                completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) doFacebookLoginWithAccessToken: (NSString*) facebookAccessToken
+                      completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                           errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) createChannelWithData: (NSDictionary*) userData
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
+                  errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) updateChannelWithChannelId: (NSString *) channelId
+                               data: (NSDictionary*) userData
+                  completionHandler: (MKNKUserSuccessBlock) completionBlock
+                       errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) updateVideosForChannelWithChannelId: (NSString *) channelId
+                                videoIdArray: (NSArray *) videoIdArray
+                           completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+-(void)fetchUserDataFromCredentials:(SYNOAuth2Credential*)credentials
+                  completionHandler:(MKNKUserCompleteBlock) completionBlock
+                       errorHandler:(MKNKUserErrorBlock) errorBlock;
+
+
 
 @end

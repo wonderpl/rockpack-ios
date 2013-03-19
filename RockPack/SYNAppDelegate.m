@@ -7,16 +7,17 @@
 //
 
 #import "AppConstants.h"
+#import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
+#import "SYNLoginViewController.h"
+#import "SYNMasterViewController.h"
 #import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "TestFlight.h"
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
-#import "ChannelOwner.h"
-#import "SYNMasterViewController.h"
-#import "SYNLoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 #define kShowLoginPhase NO
@@ -24,17 +25,17 @@
 @interface SYNAppDelegate ()
 
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
-@property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
-@property (nonatomic, strong) SYNNetworkEngine *networkEngine;
+@property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
+@property (nonatomic, strong) SYNNetworkEngine *networkEngine;
+@property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 
 @end
 
 @implementation SYNAppDelegate
 
-@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry, userRegistry = _userRegistry;
-@synthesize currentAccessInfo = _currentAccessInfo;
+@synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
 @synthesize currentUser = _currentUser;
 
 - (BOOL) application:(UIApplication *) application
@@ -45,17 +46,19 @@
                withObject: nil
                afterDelay: 0];
     
-    
-    
     // Se up core data
     [self initializeCoreDataStack];
     
     // Set up network engine
-    [self initializeNetworkEngine];
+    [self initializeNetworkEngines];
+    
+    
     
     
     // Create default user
     [self createDefaultUser];
+    
+    
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -82,10 +85,22 @@
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
-    if(kShowLoginPhase)
-        self.window.rootViewController = self.loginViewController;
+    
+    [self getCurrentUser];
+    
+    if(_currentUser)
+    {
+        DebugLog(@"Found User: %@", _currentUser);
+    }
     else
-        self.window.rootViewController = self.viewController;
+    {
+        if(kShowLoginPhase)
+            self.window.rootViewController = self.loginViewController;
+        else
+            self.window.rootViewController = self.viewController;
+    }
+    
+    
     
     
     [self.window makeKeyAndVisible];
@@ -95,14 +110,9 @@
 
 -(void)loginCompleted:(NSNotification*)notification
 {
-    
-    AccessInfo* accessInfo = (AccessInfo*)[[notification userInfo] objectForKey:@"AccessInfo"];
-    _currentAccessInfo = accessInfo;
-    
     self.window.rootViewController = self.viewController;
     
     self.loginViewController = nil;
-    
 }
 
 #pragma mark - App Delegate Methods
@@ -254,7 +264,6 @@
     
     _mainRegistry = [SYNMainRegistry registry];
     _searchRegistry = [SYNSearchRegistry registry];
-    _userRegistry = [SYNUserInfoRegistry registry];
 }
 
 
@@ -364,10 +373,13 @@
 
 #pragma mark - Network engine suport
 
-- (void) initializeNetworkEngine
+- (void) initializeNetworkEngines
 {
     self.networkEngine = [[SYNNetworkEngine alloc] initWithDefaultSettings];
     [self.networkEngine useCache];
+    
+    self.oAuthNetworkEngine = [[SYNOAuthNetworkEngine alloc] initWithDefaultSettings];
+    [self.oAuthNetworkEngine useCache];
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
     UIImageView.defaultEngine = self.networkEngine;
@@ -376,7 +388,41 @@
     UIImageView.defaultEngine2 = self.networkEngine;
     
 }
-
+-(void)getCurrentUser
+{
+    NSError* error = nil;
+    
+    NSEntityDescription* userEntity = [NSEntityDescription entityForName:@"User"
+                                                      inManagedObjectContext:self.mainManagedObjectContext];
+    
+    
+    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+    [userFetchRequest setEntity:userEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"current == YES"];
+    [userFetchRequest setPredicate: predicate];
+    
+    NSArray *matchingCategoryInstanceEntries = [self.mainManagedObjectContext executeFetchRequest: userFetchRequest
+                                                                                            error: &error];
+    
+    User *user = nil;
+    
+    if (matchingCategoryInstanceEntries.count > 1)
+    {
+        // TODO: More than one user logged in
+        DebugLog(@"WARNING: More than one user logged in at the same time");
+    }
+    else if(matchingCategoryInstanceEntries.count > 0)
+    {
+        user = (User*)matchingCategoryInstanceEntries[0];
+    }
+    else
+    {
+        user = nil;
+    }
+    
+    _currentUser = user;
+}
 
 - (void) createDefaultUser
 {
@@ -409,6 +455,8 @@
         
         self.channelOwnerMe = channelOwnerMe;
     }
+    
+    [self saveContext:YES];
 }
 
 
