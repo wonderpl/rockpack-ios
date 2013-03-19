@@ -13,7 +13,6 @@
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
-#import "SYNAccountSettingsMainTableViewController.h"
 #import "UIImageView+ImageProcessing.h"
 
 @interface SYNYouRootViewController ()
@@ -22,8 +21,6 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
-
-@property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
 
 @end
 
@@ -44,7 +41,7 @@
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(0.0, 170.0, 1024.0, 600.0);
+    CGRect collectionViewFrame = CGRectMake(0.0, 84.0, 1024.0, 600.0);
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;
@@ -102,42 +99,10 @@
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsPressed:) name:kAccountSettingsPressed object:nil];
-}
-
--(void)accountSettingsPressed:(NSNotification*)notification
-{
-    [self showAccountSettingsPopover];
 }
 
 
--(void)showAccountSettingsPopover
-{
-    if(self.accountSettingsPopover)
-        return;
-    
-    SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:mainTable];
-    
-    
-    self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-    self.accountSettingsPopover.popoverContentSize = kAccountSettingRect;
-    self.accountSettingsPopover.delegate = self;
-    
-    // self.accountSettingsPopover.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
-    
-    CGRect rect = CGRectMake(self.view.frame.size.width*0.5,
-                             self.view.frame.size.height*0.5 + 30.0, 1, 1);
-    
-    
-    [self.accountSettingsPopover presentPopoverFromRect: rect
-                                                 inView: self.view
-                               permittedArrowDirections: 0
-                                               animated: YES];
-    
-    
-}
+
 
 #pragma mark - Collection view support
 
@@ -318,25 +283,6 @@
         DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
-}
-
-
--(void)hideAutocompletePopover
-{
-    if(!self.accountSettingsPopover)
-        return;
-    
-    [self.accountSettingsPopover dismissPopoverAnimated:YES];
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    if(popoverController == self.accountSettingsPopover)
-    {
-        
-        self.accountSettingsPopover = nil;
-    }
-    
 }
 
 @end

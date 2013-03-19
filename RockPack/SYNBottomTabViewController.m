@@ -21,8 +21,6 @@
 #import "SYNSearchTabViewController.h"
 #import "SYNSearchRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNUserTabView.h"
-#import "SYNUserTabViewController.h"
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -93,14 +91,12 @@
     // == You Tab
     
     SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
-    youRootViewController.tabViewController = [[SYNUserTabViewController alloc] init];
     UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
     youRootRootNavigationViewController.navigationBarHidden = TRUE;
     youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
     youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // == Friends tab
-    
     // TODO: Nest Friends Bar
     SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
     

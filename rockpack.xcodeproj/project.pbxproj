@@ -102,6 +102,7 @@
 		01363F7A1631A01000FFAA09 /* SYNVideoQueueCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363F791631A01000FFAA09 /* SYNVideoQueueCell.m */; };
 		01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */; };
 		0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0140F1F916B6D12D0094B069 /* SYNTextField.m */; };
+		0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */; };
 		0142ED9016B1B85C008694DA /* HeaderYou.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8E16B1B85C008694DA /* HeaderYou.png */; };
 		0142ED9116B1B85C008694DA /* HeaderYou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED8F16B1B85C008694DA /* HeaderYou@2x.png */; };
 		0142EDA016B1D8FE008694DA /* ButtonVideoWellExisting.png in Resources */ = {isa = PBXBuildFile; fileRef = 0142ED9416B1D8FE008694DA /* ButtonVideoWellExisting.png */; };
@@ -277,6 +278,7 @@
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
 		019824F21629CE1600216900 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824F11629CE1600216900 /* libz.dylib */; };
+		0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNBottomTabViewController.m */; };
 		0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */; };
 		01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */; };
 		01982576162AFB9700216900 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01982575162AFB9600216900 /* QuartzCore.framework */; };
@@ -463,39 +465,6 @@
 		01F90E1416E7508B00F1D924 /* VideoChannelStack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1016E7508B00F1D924 /* VideoChannelStack@2x.png */; };
 		01F90E1716E7568F00F1D924 /* VideoDurationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1516E7568F00F1D924 /* VideoDurationBackground.png */; };
 		01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */; };
-		BE03A6F716F8AD9E00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6F416F8AD9E00245314 /* SYNAccountSettingsMainTableViewController.m */; };
-		BE03A6F816F8AD9E00245314 /* SYNAccountSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6F616F8AD9E00245314 /* SYNAccountSettingTableViewCell.m */; };
-		BE03A6FC16F8ADB500245314 /* SYNAccountSettingsGender.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6FB16F8ADB500245314 /* SYNAccountSettingsGender.m */; };
-		BE03A70116F8AED700245314 /* SYNUserTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6FE16F8AED700245314 /* SYNUserTabViewController.m */; };
-		BE03A70216F8AED700245314 /* SYNUserTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A70016F8AED700245314 /* SYNUserTabView.m */; };
-		BE03A71E16F8AF0700245314 /* IconBirthday.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70416F8AF0700245314 /* IconBirthday.png */; };
-		BE03A71F16F8AF0700245314 /* IconBirthday@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70516F8AF0700245314 /* IconBirthday@2x.png */; };
-		BE03A72016F8AF0700245314 /* IconEmail.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70616F8AF0700245314 /* IconEmail.png */; };
-		BE03A72116F8AF0700245314 /* IconEmail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70716F8AF0700245314 /* IconEmail@2x.png */; };
-		BE03A72216F8AF0700245314 /* IconFullname.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70816F8AF0700245314 /* IconFullname.png */; };
-		BE03A72316F8AF0700245314 /* IconFullname@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70916F8AF0700245314 /* IconFullname@2x.png */; };
-		BE03A72416F8AF0700245314 /* IconGender.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70A16F8AF0700245314 /* IconGender.png */; };
-		BE03A72516F8AF0700245314 /* IconGender@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70B16F8AF0700245314 /* IconGender@2x.png */; };
-		BE03A72616F8AF0700245314 /* IconLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70C16F8AF0700245314 /* IconLocation.png */; };
-		BE03A72716F8AF0700245314 /* IconLocation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70D16F8AF0700245314 /* IconLocation@2x.png */; };
-		BE03A72816F8AF0700245314 /* IconUsername.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70E16F8AF0700245314 /* IconUsername.png */; };
-		BE03A72916F8AF0700245314 /* IconUsername@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A70F16F8AF0700245314 /* IconUsername@2x.png */; };
-		BE03A72A16F8AF0700245314 /* AvatarKish.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71016F8AF0700245314 /* AvatarKish.png */; };
-		BE03A72B16F8AF0700245314 /* AvatarKish@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71116F8AF0700245314 /* AvatarKish@2x.png */; };
-		BE03A72C16F8AF0700245314 /* BarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71216F8AF0700245314 /* BarProfile.png */; };
-		BE03A72D16F8AF0700245314 /* BarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71316F8AF0700245314 /* BarProfile@2x.png */; };
-		BE03A72E16F8AF0700245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71416F8AF0700245314 /* ButtonFlagDefault.png */; };
-		BE03A72F16F8AF0700245314 /* ButtonFlagDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71516F8AF0700245314 /* ButtonFlagDefault@2x.png */; };
-		BE03A73016F8AF0700245314 /* ButtonFlagHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71616F8AF0700245314 /* ButtonFlagHighlighted.png */; };
-		BE03A73116F8AF0700245314 /* ButtonFlagHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71716F8AF0700245314 /* ButtonFlagHighlighted@2x.png */; };
-		BE03A73216F8AF0700245314 /* ButtonSettingsDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71816F8AF0700245314 /* ButtonSettingsDefault.png */; };
-		BE03A73316F8AF0700245314 /* ButtonSettingsDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71916F8AF0700245314 /* ButtonSettingsDefault@2x.png */; };
-		BE03A73416F8AF0700245314 /* ButtonSettingsHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71A16F8AF0700245314 /* ButtonSettingsHighlighted.png */; };
-		BE03A73516F8AF0700245314 /* ButtonSettingsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71B16F8AF0700245314 /* ButtonSettingsHighlighted@2x.png */; };
-		BE03A73616F8AF0700245314 /* GlossAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71C16F8AF0700245314 /* GlossAvatar.png */; };
-		BE03A73716F8AF0700245314 /* GlossAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A71D16F8AF0700245314 /* GlossAvatar@2x.png */; };
-		BE03A73A16F8AFC000245314 /* SYNYouRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A73916F8AFC000245314 /* SYNYouRootViewController.m */; };
-		BE03A74016F8B28E00245314 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A73F16F8B28E00245314 /* SYNBottomTabViewController.m */; };
 		BE08158816D2923F00ADB1DC /* TabTop.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158716D2923F00ADB1DC /* TabTop.png */; };
 		BE08158A16D2926F00ADB1DC /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158916D2926F00ADB1DC /* TabTop@2x.png */; };
 		BE08158C16D292A700ADB1DC /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = BE08158B16D292A700ADB1DC /* TabTopSub.png */; };
@@ -561,6 +530,7 @@
 		BE270BE916EF3A7400CDDA6D /* ButtonForgotDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BE516EF3A7400CDDA6D /* ButtonForgotDefault@2x.png */; };
 		BE270BEA16EF3A7400CDDA6D /* ButtonForgotHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BE616EF3A7400CDDA6D /* ButtonForgotHighlighted.png */; };
 		BE270BEB16EF3A7400CDDA6D /* ButtonForgotHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BE716EF3A7400CDDA6D /* ButtonForgotHighlighted@2x.png */; };
+		BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */; };
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
 		BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */; };
@@ -716,6 +686,8 @@
 		01363F7B1631A03500FFAA09 /* SYNVideoQueueCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoQueueCell.xib; sourceTree = "<group>"; };
 		0140F1F816B6D12D0094B069 /* SYNTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTextField.h; sourceTree = "<group>"; };
 		0140F1F916B6D12D0094B069 /* SYNTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTextField.m; sourceTree = "<group>"; };
+		0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouRootViewController.h; sourceTree = "<group>"; };
+		0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouRootViewController.m; sourceTree = "<group>"; };
 		0142ED8E16B1B85C008694DA /* HeaderYou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeaderYou.png; path = Assets/Images/HeaderYou.png; sourceTree = "<group>"; };
 		0142ED8F16B1B85C008694DA /* HeaderYou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeaderYou@2x.png"; path = "Assets/Images/HeaderYou@2x.png"; sourceTree = "<group>"; };
 		0142ED9416B1D8FE008694DA /* ButtonVideoWellExisting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoWellExisting.png; path = Assets/Images/ButtonVideoWellExisting.png; sourceTree = "<group>"; };
@@ -909,6 +881,8 @@
 		019824EE1629CC7600216900 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = RockPack/libTestFlight.a; sourceTree = "<group>"; };
 		019824EF1629CC7600216900 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		019824F11629CE1600216900 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		0198250A1629DCF100216900 /* SYNBottomTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBottomTabViewController.h; sourceTree = "<group>"; };
+		0198250B1629DCF100216900 /* SYNBottomTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBottomTabViewController.m; sourceTree = "<group>"; };
 		0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNBottomTabViewController.xib; sourceTree = "<group>"; };
 		01982526162A02F700216900 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
 		01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractTopTabViewController.h; sourceTree = "<group>"; };
@@ -1141,46 +1115,6 @@
 		01F90E1616E7568F00F1D924 /* VideoDurationBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "VideoDurationBackground@2x.png"; path = "Assets/Images/VideoDurationBackground@2x.png"; sourceTree = "<group>"; };
 		276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE03A6F316F8AD9E00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
-		BE03A6F416F8AD9E00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
-		BE03A6F516F8AD9E00245314 /* SYNAccountSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingTableViewCell.h; sourceTree = "<group>"; };
-		BE03A6F616F8AD9E00245314 /* SYNAccountSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingTableViewCell.m; sourceTree = "<group>"; };
-		BE03A6FA16F8ADB500245314 /* SYNAccountSettingsGender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsGender.h; sourceTree = "<group>"; };
-		BE03A6FB16F8ADB500245314 /* SYNAccountSettingsGender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsGender.m; sourceTree = "<group>"; };
-		BE03A6FD16F8AED700245314 /* SYNUserTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabViewController.h; sourceTree = "<group>"; };
-		BE03A6FE16F8AED700245314 /* SYNUserTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabViewController.m; sourceTree = "<group>"; };
-		BE03A6FF16F8AED700245314 /* SYNUserTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabView.h; sourceTree = "<group>"; };
-		BE03A70016F8AED700245314 /* SYNUserTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabView.m; sourceTree = "<group>"; };
-		BE03A70416F8AF0700245314 /* IconBirthday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconBirthday.png; sourceTree = "<group>"; };
-		BE03A70516F8AF0700245314 /* IconBirthday@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconBirthday@2x.png"; sourceTree = "<group>"; };
-		BE03A70616F8AF0700245314 /* IconEmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconEmail.png; sourceTree = "<group>"; };
-		BE03A70716F8AF0700245314 /* IconEmail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconEmail@2x.png"; sourceTree = "<group>"; };
-		BE03A70816F8AF0700245314 /* IconFullname.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconFullname.png; sourceTree = "<group>"; };
-		BE03A70916F8AF0700245314 /* IconFullname@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconFullname@2x.png"; sourceTree = "<group>"; };
-		BE03A70A16F8AF0700245314 /* IconGender.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconGender.png; sourceTree = "<group>"; };
-		BE03A70B16F8AF0700245314 /* IconGender@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconGender@2x.png"; sourceTree = "<group>"; };
-		BE03A70C16F8AF0700245314 /* IconLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconLocation.png; sourceTree = "<group>"; };
-		BE03A70D16F8AF0700245314 /* IconLocation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconLocation@2x.png"; sourceTree = "<group>"; };
-		BE03A70E16F8AF0700245314 /* IconUsername.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconUsername.png; sourceTree = "<group>"; };
-		BE03A70F16F8AF0700245314 /* IconUsername@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconUsername@2x.png"; sourceTree = "<group>"; };
-		BE03A71016F8AF0700245314 /* AvatarKish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarKish.png; sourceTree = "<group>"; };
-		BE03A71116F8AF0700245314 /* AvatarKish@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AvatarKish@2x.png"; sourceTree = "<group>"; };
-		BE03A71216F8AF0700245314 /* BarProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BarProfile.png; sourceTree = "<group>"; };
-		BE03A71316F8AF0700245314 /* BarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BarProfile@2x.png"; sourceTree = "<group>"; };
-		BE03A71416F8AF0700245314 /* ButtonFlagDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonFlagDefault.png; sourceTree = "<group>"; };
-		BE03A71516F8AF0700245314 /* ButtonFlagDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonFlagDefault@2x.png"; sourceTree = "<group>"; };
-		BE03A71616F8AF0700245314 /* ButtonFlagHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonFlagHighlighted.png; sourceTree = "<group>"; };
-		BE03A71716F8AF0700245314 /* ButtonFlagHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonFlagHighlighted@2x.png"; sourceTree = "<group>"; };
-		BE03A71816F8AF0700245314 /* ButtonSettingsDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonSettingsDefault.png; sourceTree = "<group>"; };
-		BE03A71916F8AF0700245314 /* ButtonSettingsDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsDefault@2x.png"; sourceTree = "<group>"; };
-		BE03A71A16F8AF0700245314 /* ButtonSettingsHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonSettingsHighlighted.png; sourceTree = "<group>"; };
-		BE03A71B16F8AF0700245314 /* ButtonSettingsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsHighlighted@2x.png"; sourceTree = "<group>"; };
-		BE03A71C16F8AF0700245314 /* GlossAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GlossAvatar.png; sourceTree = "<group>"; };
-		BE03A71D16F8AF0700245314 /* GlossAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GlossAvatar@2x.png"; sourceTree = "<group>"; };
-		BE03A73816F8AFC000245314 /* SYNYouRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouRootViewController.h; sourceTree = "<group>"; };
-		BE03A73916F8AFC000245314 /* SYNYouRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouRootViewController.m; sourceTree = "<group>"; };
-		BE03A73E16F8B28E00245314 /* SYNBottomTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBottomTabViewController.h; sourceTree = "<group>"; };
-		BE03A73F16F8B28E00245314 /* SYNBottomTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBottomTabViewController.m; sourceTree = "<group>"; };
 		BE08158716D2923F00ADB1DC /* TabTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTop.png; sourceTree = "<group>"; };
 		BE08158916D2926F00ADB1DC /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabTop@2x.png"; sourceTree = "<group>"; };
 		BE08158B16D292A700ADB1DC /* TabTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabTopSub.png; sourceTree = "<group>"; };
@@ -1259,6 +1193,8 @@
 		BE270BE516EF3A7400CDDA6D /* ButtonForgotDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonForgotDefault@2x.png"; path = "Assets/Images/ButtonForgotDefault@2x.png"; sourceTree = "<group>"; };
 		BE270BE616EF3A7400CDDA6D /* ButtonForgotHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonForgotHighlighted.png; path = Assets/Images/ButtonForgotHighlighted.png; sourceTree = "<group>"; };
 		BE270BE716EF3A7400CDDA6D /* ButtonForgotHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonForgotHighlighted@2x.png"; path = "Assets/Images/ButtonForgotHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserTabView.h; sourceTree = "<group>"; };
+		BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserTabView.m; sourceTree = "<group>"; };
 		BE29A32A16DE56AB00C00F92 /* SYNSearchVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchVideosViewController.h; sourceTree = "<group>"; };
 		BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchVideosViewController.m; sourceTree = "<group>"; };
 		BE29A32D16DE8C8600C00F92 /* SYNSearchRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRootViewController.h; sourceTree = "<group>"; };
@@ -1877,7 +1813,6 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				BE03A70316F8AEFB00245314 /* Profile */,
 				011A160F16EF5E4F008CF25E /* Image Picker */,
 				BE270B8516EE485200CDDA6D /* Login */,
 				BE7C129C16EA4EF60015789B /* Search */,
@@ -2125,8 +2060,8 @@
 		01982560162ADE3300216900 /* You */ = {
 			isa = PBXGroup;
 			children = (
-				BE03A73816F8AFC000245314 /* SYNYouRootViewController.h */,
-				BE03A73916F8AFC000245314 /* SYNYouRootViewController.m */,
+				0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */,
+				0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */,
 			);
 			name = You;
 			sourceTree = "<group>";
@@ -2144,8 +2079,8 @@
 		01982562162ADE5200216900 /* Tab bar */ = {
 			isa = PBXGroup;
 			children = (
-				BE03A73E16F8B28E00245314 /* SYNBottomTabViewController.h */,
-				BE03A73F16F8B28E00245314 /* SYNBottomTabViewController.m */,
+				0198250A1629DCF100216900 /* SYNBottomTabViewController.h */,
+				0198250B1629DCF100216900 /* SYNBottomTabViewController.m */,
 				0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */,
 			);
 			name = "Tab bar";
@@ -2587,60 +2522,6 @@
 			name = "Video viewer";
 			sourceTree = "<group>";
 		};
-		BE03A6F216F8AD8A00245314 /* Account Settings */ = {
-			isa = PBXGroup;
-			children = (
-				BE03A6F916F8ADA600245314 /* Secondary Tables */,
-				BE03A6F316F8AD9E00245314 /* SYNAccountSettingsMainTableViewController.h */,
-				BE03A6F416F8AD9E00245314 /* SYNAccountSettingsMainTableViewController.m */,
-				BE03A6F516F8AD9E00245314 /* SYNAccountSettingTableViewCell.h */,
-				BE03A6F616F8AD9E00245314 /* SYNAccountSettingTableViewCell.m */,
-			);
-			name = "Account Settings";
-			sourceTree = "<group>";
-		};
-		BE03A6F916F8ADA600245314 /* Secondary Tables */ = {
-			isa = PBXGroup;
-			children = (
-				BE03A6FA16F8ADB500245314 /* SYNAccountSettingsGender.h */,
-				BE03A6FB16F8ADB500245314 /* SYNAccountSettingsGender.m */,
-			);
-			name = "Secondary Tables";
-			sourceTree = "<group>";
-		};
-		BE03A70316F8AEFB00245314 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				BE03A70416F8AF0700245314 /* IconBirthday.png */,
-				BE03A70516F8AF0700245314 /* IconBirthday@2x.png */,
-				BE03A70616F8AF0700245314 /* IconEmail.png */,
-				BE03A70716F8AF0700245314 /* IconEmail@2x.png */,
-				BE03A70816F8AF0700245314 /* IconFullname.png */,
-				BE03A70916F8AF0700245314 /* IconFullname@2x.png */,
-				BE03A70A16F8AF0700245314 /* IconGender.png */,
-				BE03A70B16F8AF0700245314 /* IconGender@2x.png */,
-				BE03A70C16F8AF0700245314 /* IconLocation.png */,
-				BE03A70D16F8AF0700245314 /* IconLocation@2x.png */,
-				BE03A70E16F8AF0700245314 /* IconUsername.png */,
-				BE03A70F16F8AF0700245314 /* IconUsername@2x.png */,
-				BE03A71016F8AF0700245314 /* AvatarKish.png */,
-				BE03A71116F8AF0700245314 /* AvatarKish@2x.png */,
-				BE03A71216F8AF0700245314 /* BarProfile.png */,
-				BE03A71316F8AF0700245314 /* BarProfile@2x.png */,
-				BE03A71416F8AF0700245314 /* ButtonFlagDefault.png */,
-				BE03A71516F8AF0700245314 /* ButtonFlagDefault@2x.png */,
-				BE03A71616F8AF0700245314 /* ButtonFlagHighlighted.png */,
-				BE03A71716F8AF0700245314 /* ButtonFlagHighlighted@2x.png */,
-				BE03A71816F8AF0700245314 /* ButtonSettingsDefault.png */,
-				BE03A71916F8AF0700245314 /* ButtonSettingsDefault@2x.png */,
-				BE03A71A16F8AF0700245314 /* ButtonSettingsHighlighted.png */,
-				BE03A71B16F8AF0700245314 /* ButtonSettingsHighlighted@2x.png */,
-				BE03A71C16F8AF0700245314 /* GlossAvatar.png */,
-				BE03A71D16F8AF0700245314 /* GlossAvatar@2x.png */,
-			);
-			name = Profile;
-			sourceTree = "<group>";
-		};
 		BE08158F16D3C46800ADB1DC /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -2816,10 +2697,8 @@
 		BE29A32616DD2CA900C00F92 /* User Tab */ = {
 			isa = PBXGroup;
 			children = (
-				BE03A6FD16F8AED700245314 /* SYNUserTabViewController.h */,
-				BE03A6FE16F8AED700245314 /* SYNUserTabViewController.m */,
-				BE03A6FF16F8AED700245314 /* SYNUserTabView.h */,
-				BE03A70016F8AED700245314 /* SYNUserTabView.m */,
+				BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */,
+				BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */,
 			);
 			name = "User Tab";
 			sourceTree = "<group>";
@@ -2890,7 +2769,6 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				BE03A6F216F8AD8A00245314 /* Account Settings */,
 				BE7C12A116EA68DE0015789B /* Large Video Player */,
 				BE0AAD2616E6521300DA958E /* Autocomplete Panel */,
 				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
@@ -3398,32 +3276,6 @@
 				01A79B9D16F32C3400B05084 /* ButtonShuttleBarPause@2x.png in Resources */,
 				01A79B9E16F32C3400B05084 /* ButtonShuttleBarPlay.png in Resources */,
 				01A79B9F16F32C3400B05084 /* ButtonShuttleBarPlay@2x.png in Resources */,
-				BE03A71E16F8AF0700245314 /* IconBirthday.png in Resources */,
-				BE03A71F16F8AF0700245314 /* IconBirthday@2x.png in Resources */,
-				BE03A72016F8AF0700245314 /* IconEmail.png in Resources */,
-				BE03A72116F8AF0700245314 /* IconEmail@2x.png in Resources */,
-				BE03A72216F8AF0700245314 /* IconFullname.png in Resources */,
-				BE03A72316F8AF0700245314 /* IconFullname@2x.png in Resources */,
-				BE03A72416F8AF0700245314 /* IconGender.png in Resources */,
-				BE03A72516F8AF0700245314 /* IconGender@2x.png in Resources */,
-				BE03A72616F8AF0700245314 /* IconLocation.png in Resources */,
-				BE03A72716F8AF0700245314 /* IconLocation@2x.png in Resources */,
-				BE03A72816F8AF0700245314 /* IconUsername.png in Resources */,
-				BE03A72916F8AF0700245314 /* IconUsername@2x.png in Resources */,
-				BE03A72A16F8AF0700245314 /* AvatarKish.png in Resources */,
-				BE03A72B16F8AF0700245314 /* AvatarKish@2x.png in Resources */,
-				BE03A72C16F8AF0700245314 /* BarProfile.png in Resources */,
-				BE03A72D16F8AF0700245314 /* BarProfile@2x.png in Resources */,
-				BE03A72E16F8AF0700245314 /* ButtonFlagDefault.png in Resources */,
-				BE03A72F16F8AF0700245314 /* ButtonFlagDefault@2x.png in Resources */,
-				BE03A73016F8AF0700245314 /* ButtonFlagHighlighted.png in Resources */,
-				BE03A73116F8AF0700245314 /* ButtonFlagHighlighted@2x.png in Resources */,
-				BE03A73216F8AF0700245314 /* ButtonSettingsDefault.png in Resources */,
-				BE03A73316F8AF0700245314 /* ButtonSettingsDefault@2x.png in Resources */,
-				BE03A73416F8AF0700245314 /* ButtonSettingsHighlighted.png in Resources */,
-				BE03A73516F8AF0700245314 /* ButtonSettingsHighlighted@2x.png in Resources */,
-				BE03A73616F8AF0700245314 /* GlossAvatar.png in Resources */,
-				BE03A73716F8AF0700245314 /* GlossAvatar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3470,6 +3322,7 @@
 				010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */,
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
+				0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
@@ -3523,6 +3376,7 @@
 				015CB01916AE03B200FEB8E7 /* _User.m in Sources */,
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
 				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
+				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
 				01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */,
 				01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */,
 				0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */,
@@ -3555,6 +3409,7 @@
 				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
+				BE29A32916DD2CD300C00F92 /* SYNUserTabView.m in Sources */,
 				0194FD2316DE6FE90058A7C2 /* SYNVideoThumbnailSmallCell.m in Sources */,
 				BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */,
 				BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */,
@@ -3585,13 +3440,6 @@
 				BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */,
 				01A79BA216F32C6900B05084 /* NSString+Timecode.m in Sources */,
 				01A79BA516F34BBF00B05084 /* NSString+Utils.m in Sources */,
-				BE03A6F716F8AD9E00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */,
-				BE03A6F816F8AD9E00245314 /* SYNAccountSettingTableViewCell.m in Sources */,
-				BE03A6FC16F8ADB500245314 /* SYNAccountSettingsGender.m in Sources */,
-				BE03A70116F8AED700245314 /* SYNUserTabViewController.m in Sources */,
-				BE03A70216F8AED700245314 /* SYNUserTabView.m in Sources */,
-				BE03A73A16F8AFC000245314 /* SYNYouRootViewController.m in Sources */,
-				BE03A74016F8B28E00245314 /* SYNBottomTabViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
