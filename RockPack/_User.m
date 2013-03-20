@@ -8,6 +8,7 @@ const struct UserAttributes UserAttributes = {
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
 	.firstName = @"firstName",
+	.gender = @"gender",
 	.lastName = @"lastName",
 	.username = @"username",
 };
@@ -46,6 +47,11 @@ const struct UserFetchedProperties UserFetchedProperties = {
 	
 	if ([key isEqualToString:@"currentValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"current"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"genderValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"gender"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -98,6 +104,32 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 @dynamic firstName;
 
+
+
+
+
+
+@dynamic gender;
+
+
+
+- (BOOL)genderValue {
+	NSNumber *result = [self gender];
+	return [result boolValue];
+}
+
+- (void)setGenderValue:(BOOL)value_ {
+	[self setGender:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveGenderValue {
+	NSNumber *result = [self primitiveGender];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveGenderValue:(BOOL)value_ {
+	[self setPrimitiveGender:[NSNumber numberWithBool:value_]];
+}
 
 
 

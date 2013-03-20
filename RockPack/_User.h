@@ -9,6 +9,7 @@ extern const struct UserAttributes {
 	__unsafe_unretained NSString *dateOfBirth;
 	__unsafe_unretained NSString *emailAddress;
 	__unsafe_unretained NSString *firstName;
+	__unsafe_unretained NSString *gender;
 	__unsafe_unretained NSString *lastName;
 	__unsafe_unretained NSString *username;
 } UserAttributes;
@@ -18,6 +19,7 @@ extern const struct UserRelationships {
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
+
 
 
 
@@ -84,6 +86,20 @@ extern const struct UserFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* gender;
+
+
+
+@property BOOL genderValue;
+- (BOOL)genderValue;
+- (void)setGenderValue:(BOOL)value_;
+
+//- (BOOL)validateGender:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* lastName;
 
 
@@ -137,6 +153,15 @@ extern const struct UserFetchedProperties {
 
 - (NSString*)primitiveFirstName;
 - (void)setPrimitiveFirstName:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveGender;
+- (void)setPrimitiveGender:(NSNumber*)value;
+
+- (BOOL)primitiveGenderValue;
+- (void)setPrimitiveGenderValue:(BOOL)value_;
 
 
 

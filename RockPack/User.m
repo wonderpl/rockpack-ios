@@ -1,5 +1,6 @@
 #import "User.h"
 #import "NSDictionary+Validation.h"
+#import "AppConstants.h"
 
 @interface User ()
 
@@ -59,8 +60,8 @@
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId
-{
+                           andViewId: (NSString *) viewId {
+    
     // As we are a subclass of ChannelOwner, set its attributes as well
     [super setAttributesFromDictionary: dictionary
                                 withId: uniqueId
@@ -68,8 +69,21 @@
                    ignoringObjectTypes: ignoringObjects
                              andViewId: viewId];
 
-    self.emailAddress = [dictionary objectForKey: @"email_address"
-                                     withDefault: @"Uninitialized Id"];
+    self.emailAddress = [dictionary objectForKey: @"email_address"];
+    if(self.emailAddress || [self.emailAddress isEqualToString:@""])
+        self.emailAddress = @"(Email Address)";
+    
+    self.firstName = [dictionary objectForKey: @"first_name"];
+    if(self.firstName || [self.firstName isEqualToString:@""])
+        self.firstName = @"(First Name)";
+
+    
+    self.lastName = [dictionary objectForKey: @"last_name"];
+    if(self.lastName || [self.firstName isEqualToString:@""])
+        self.lastName = @"(Last Name)";
+    
+    
+    self.gender = @(GenderMale);
     
     self.dateOfBirth = [dictionary dateFromISO6801StringForKey: @"birthday"
                                                    withDefault: [NSDate date]];
@@ -78,10 +92,9 @@
 
 - (NSString *) description
 {
-    // As we are a subclass of ChannelOwner, describe its attributes as well
-    NSString *descriptionString = [super description];
-    
-    return [descriptionString stringByAppendingString: [NSString stringWithFormat: @"dateOfBirth(%@), emailAddress: %@, ", self.dateOfBirth, self.emailAddress]];
+    return [NSString stringWithFormat:
+            @"username:%@, firstName:%@, lastName:%@, emailAddress:%@",
+            self.username, self.firstName, self.lastName, self.emailAddress];
 }
 
 @end

@@ -90,9 +90,7 @@
     
     if(kShowLoginPhase) {
         self.window.rootViewController = self.loginViewController;
-        if(self.currentUser) {
-            [self.loginViewController showAutologin];
-        }
+        
     }
         
     else {
@@ -102,6 +100,18 @@
     
     
     [self.window makeKeyAndVisible];
+    
+    
+    if(self.currentUser) {
+        DebugLog(@"Found User: %@", _currentUser);
+        if(self.currentOAuth2Credentials) {
+            // TODO: Check for validity of the token against the server
+            [self.loginViewController showAutologinWithCredentials:self.currentOAuth2Credentials];
+        }
+        
+    } else {
+        DebugLog(@"No User found");
+    }
     
     return YES;
 }
@@ -420,7 +430,7 @@
 
 -(User*)currentUser
 {
-    if(_currentUser)
+    if(!_currentUser)
     {
         NSError *error = nil;
         NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
