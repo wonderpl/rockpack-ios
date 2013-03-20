@@ -40,6 +40,13 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                completionHandler: (MKNKUserSuccessBlock) completionBlock
                     errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+// Avatars
+
+- (void) updateAvatarForUserId: (NSString *) userId
+                         image: (UIImage *) image
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
+                  errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 // Channel creation
 
 - (void) createChannelWithData: (NSDictionary*) userData
