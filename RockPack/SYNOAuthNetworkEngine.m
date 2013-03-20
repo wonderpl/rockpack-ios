@@ -12,6 +12,8 @@
 #import "SYNNetworkOperationJsonObject.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "Video.h"
+#import "VideoInstance.h"
 
 @interface SYNOAuthNetworkEngine ()
 
@@ -453,7 +455,7 @@
 
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
-                            videoIdArray: (NSArray *) videoIdArray
+                            videoInstanceSet: (NSOrderedSet *) videoInstanceSet
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -469,6 +471,12 @@
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {
          NSError *error = nil;
+         NSMutableArray *videoIdArray = [[NSMutableArray alloc] initWithCapacity: videoInstanceSet.count];
+         
+         for (VideoInstance *videoInstance in videoInstanceSet)
+         {
+             [videoIdArray addObject: videoInstance.video.uniqueId];
+         }
          
          NSData *jsonData = [NSJSONSerialization dataWithJSONObject: videoIdArray
                                                             options: 0
