@@ -288,7 +288,7 @@
                  
                  // Now upload the list of videos for the channel
                  [appDelegate.oAuthNetworkEngine updateVideosForChannelWithChannelId: newChannelId
-                                                                        videoIdArray: videoIdArray
+                                                                        videoIdArray: nil
                   completionHandler: ^(NSDictionary *responseDictionary)
                   {
                       DebugLog(@"Channel video array update successful");
