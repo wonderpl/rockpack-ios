@@ -14,6 +14,7 @@
 #import "AppConstants.h"
 #import "User.h"
 #import "SYNAccountSettingsTextInputController.h"
+#import "SYNAccountSettingsFullNameInput.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -108,18 +109,32 @@
         switch (indexPath.row) {
                 
             case 0:
-                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", user.firstName, user.lastName];
+                
+                if([user.firstName isEqualToString:@"(First Name)"] || [user.lastName isEqualToString:@"(Last Name)"]) {
+                    cell.textLabel.text = @"Full Name";
+                } else {
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", user.firstName, user.lastName];
+                }
                 cell.detailTextLabel.text = @"Full Name - Public";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 1:
-                cell.textLabel.text = user.username;
+                if([user.username isEqualToString:@"(Username)"]) {
+                    cell.textLabel.text = @"Username";
+                } else {
+                    cell.textLabel.text = user.username;
+                }
                 cell.detailTextLabel.text = @"Username - Public";
                 break;
                 
             case 2:
-                cell.textLabel.text = user.emailAddress;
+                if([user.emailAddress isEqualToString:@"(Email Address)"]) {
+                    cell.textLabel.text = @"Email Address";
+                } else {
+                    cell.textLabel.text = user.emailAddress;
+                }
+                
                 cell.detailTextLabel.text = @"Email - Private";
                 break;
                 
@@ -211,7 +226,7 @@
         switch (indexPath.row) {
                 
             case 0:
-                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsFullNameInput alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
                 break;
                 
             case 1:

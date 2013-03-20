@@ -4,12 +4,15 @@
 #import "_User.h"
 
 const struct UserAttributes UserAttributes = {
+	.activityUrl = @"activityUrl",
+	.coverartUrl = @"coverartUrl",
 	.current = @"current",
 	.dateOfBirth = @"dateOfBirth",
 	.emailAddress = @"emailAddress",
 	.firstName = @"firstName",
 	.gender = @"gender",
 	.lastName = @"lastName",
+	.subscriptionsUrl = @"subscriptionsUrl",
 	.username = @"username",
 };
 
@@ -58,6 +61,20 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic activityUrl;
+
+
+
+
+
+
+@dynamic coverartUrl;
+
+
 
 
 
@@ -136,6 +153,13 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 @dynamic lastName;
+
+
+
+
+
+
+@dynamic subscriptionsUrl;
 
 
 

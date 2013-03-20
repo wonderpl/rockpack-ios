@@ -7,13 +7,11 @@
 //
 
 #import "SYNAccountSettingsTextInputController.h"
-#import "SYNAppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNAccountSettingsTextInputController ()
 
-@property (nonatomic, strong) UITextField* inputField;
-@property (nonatomic, strong) UIButton* saveButton;
-@property (nonatomic, strong) SYNAppDelegate* appDelegate;
+
 
 @end
 
@@ -25,6 +23,7 @@
 -(id)initWithUserFieldType:(UserFieldType)userFieldType
 {
     if(self = [super init]) {
+        
         currentFieldType = userFieldType;
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -40,11 +39,12 @@
     
     self.view.backgroundColor = [UIColor clearColor];
 	
-    inputField = [[UITextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, 80.0)];
+    inputField = [[UITextField alloc] initWithFrame:CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 30.0)];
     inputField.backgroundColor = [UIColor whiteColor];
+    inputField.layer.cornerRadius = 5.0f;
     [self.view addSubview:inputField];
     
-    CGRect buttonRect = CGRectMake(0.0, 100.0, 300.0, 50.0);
+    CGRect buttonRect = CGRectMake(10.0, 100.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
     saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     saveButton.frame = buttonRect;
     [saveButton setTitle:@"Save" forState:UIControlStateNormal];
