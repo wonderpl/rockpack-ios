@@ -30,9 +30,14 @@
 {
     [super viewDidLoad];
     
+    self.inputField.rightViewMode = UITextFieldViewModeAlways;
+    self.inputField.rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+    
     CGRect tableViewFrame = CGRectMake(10.0, 50.0, self.contentSizeForViewInPopover.width - 10.0, 120.0);
     self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.opaque = NO;
+    self.tableView.backgroundView = nil;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];

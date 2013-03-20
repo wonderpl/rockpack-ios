@@ -516,6 +516,18 @@
 		BE21EE8016FA0CFB0067223B /* AccountSettingsView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE7E16FA0CFB0067223B /* AccountSettingsView@2x.png */; };
 		BE21EE8316FA108E0067223B /* SYNAccountSettingsPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */; };
 		BE21EE8716FA202F0067223B /* SYNAccountSettingsFullNameInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE8616FA202F0067223B /* SYNAccountSettingsFullNameInput.m */; };
+		BE21EE9516FA28680067223B /* IconBirthday.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8916FA28680067223B /* IconBirthday.png */; };
+		BE21EE9616FA28680067223B /* IconBirthday@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8A16FA28680067223B /* IconBirthday@2x.png */; };
+		BE21EE9716FA28680067223B /* IconEmail.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8B16FA28680067223B /* IconEmail.png */; };
+		BE21EE9816FA28680067223B /* IconEmail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8C16FA28680067223B /* IconEmail@2x.png */; };
+		BE21EE9916FA28680067223B /* IconFullname.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8D16FA28680067223B /* IconFullname.png */; };
+		BE21EE9A16FA28680067223B /* IconFullname@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8E16FA28680067223B /* IconFullname@2x.png */; };
+		BE21EE9B16FA28680067223B /* IconGender.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8F16FA28680067223B /* IconGender.png */; };
+		BE21EE9C16FA28680067223B /* IconGender@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE9016FA28680067223B /* IconGender@2x.png */; };
+		BE21EE9D16FA28680067223B /* IconLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE9116FA28680067223B /* IconLocation.png */; };
+		BE21EE9E16FA28680067223B /* IconLocation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE9216FA28680067223B /* IconLocation@2x.png */; };
+		BE21EE9F16FA28680067223B /* IconUsername.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE9316FA28680067223B /* IconUsername.png */; };
+		BE21EEA016FA28680067223B /* IconUsername@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE9416FA28680067223B /* IconUsername@2x.png */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
@@ -1207,6 +1219,18 @@
 		BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsPopoverBackgroundView.m; sourceTree = "<group>"; };
 		BE21EE8516FA202F0067223B /* SYNAccountSettingsFullNameInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsFullNameInput.h; sourceTree = "<group>"; };
 		BE21EE8616FA202F0067223B /* SYNAccountSettingsFullNameInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsFullNameInput.m; sourceTree = "<group>"; };
+		BE21EE8916FA28680067223B /* IconBirthday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconBirthday.png; path = Assets/Images/IconBirthday.png; sourceTree = "<group>"; };
+		BE21EE8A16FA28680067223B /* IconBirthday@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconBirthday@2x.png"; path = "Assets/Images/IconBirthday@2x.png"; sourceTree = "<group>"; };
+		BE21EE8B16FA28680067223B /* IconEmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconEmail.png; path = Assets/Images/IconEmail.png; sourceTree = "<group>"; };
+		BE21EE8C16FA28680067223B /* IconEmail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconEmail@2x.png"; path = "Assets/Images/IconEmail@2x.png"; sourceTree = "<group>"; };
+		BE21EE8D16FA28680067223B /* IconFullname.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconFullname.png; path = Assets/Images/IconFullname.png; sourceTree = "<group>"; };
+		BE21EE8E16FA28680067223B /* IconFullname@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconFullname@2x.png"; path = "Assets/Images/IconFullname@2x.png"; sourceTree = "<group>"; };
+		BE21EE8F16FA28680067223B /* IconGender.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconGender.png; path = Assets/Images/IconGender.png; sourceTree = "<group>"; };
+		BE21EE9016FA28680067223B /* IconGender@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconGender@2x.png"; path = "Assets/Images/IconGender@2x.png"; sourceTree = "<group>"; };
+		BE21EE9116FA28680067223B /* IconLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconLocation.png; path = Assets/Images/IconLocation.png; sourceTree = "<group>"; };
+		BE21EE9216FA28680067223B /* IconLocation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconLocation@2x.png"; path = "Assets/Images/IconLocation@2x.png"; sourceTree = "<group>"; };
+		BE21EE9316FA28680067223B /* IconUsername.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconUsername.png; path = Assets/Images/IconUsername.png; sourceTree = "<group>"; };
+		BE21EE9416FA28680067223B /* IconUsername@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconUsername@2x.png"; path = "Assets/Images/IconUsername@2x.png"; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
@@ -1862,6 +1886,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BE21EE8816FA27EF0067223B /* Account Settings */,
 				BE03A69716F7691B00245314 /* Profile */,
 				011A160F16EF5E4F008CF25E /* Image Picker */,
 				BE270B8516EE485200CDDA6D /* Login */,
@@ -2585,8 +2610,6 @@
 		BE03A69716F7691B00245314 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				BE21EE7D16FA0CFA0067223B /* AccountSettingsView.png */,
-				BE21EE7E16FA0CFB0067223B /* AccountSettingsView@2x.png */,
 				BE03A6B416F7697900245314 /* AvatarKish.png */,
 				BE03A6B516F7697900245314 /* AvatarKish@2x.png */,
 				BE03A6B616F7697900245314 /* BarProfile.png */,
@@ -2735,6 +2758,27 @@
 				BE21EE8616FA202F0067223B /* SYNAccountSettingsFullNameInput.m */,
 			);
 			name = "Specific Fields";
+			sourceTree = "<group>";
+		};
+		BE21EE8816FA27EF0067223B /* Account Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BE21EE8916FA28680067223B /* IconBirthday.png */,
+				BE21EE8A16FA28680067223B /* IconBirthday@2x.png */,
+				BE21EE8B16FA28680067223B /* IconEmail.png */,
+				BE21EE8C16FA28680067223B /* IconEmail@2x.png */,
+				BE21EE8D16FA28680067223B /* IconFullname.png */,
+				BE21EE8E16FA28680067223B /* IconFullname@2x.png */,
+				BE21EE8F16FA28680067223B /* IconGender.png */,
+				BE21EE9016FA28680067223B /* IconGender@2x.png */,
+				BE21EE9116FA28680067223B /* IconLocation.png */,
+				BE21EE9216FA28680067223B /* IconLocation@2x.png */,
+				BE21EE9316FA28680067223B /* IconUsername.png */,
+				BE21EE9416FA28680067223B /* IconUsername@2x.png */,
+				BE21EE7D16FA0CFA0067223B /* AccountSettingsView.png */,
+				BE21EE7E16FA0CFB0067223B /* AccountSettingsView@2x.png */,
+			);
+			name = "Account Settings";
 			sourceTree = "<group>";
 		};
 		BE270B7B16EDE0A500CDDA6D /* Login */ = {
@@ -3397,6 +3441,18 @@
 				BE03A6CF16F7697900245314 /* GlossAvatar@2x.png in Resources */,
 				BE21EE7F16FA0CFB0067223B /* AccountSettingsView.png in Resources */,
 				BE21EE8016FA0CFB0067223B /* AccountSettingsView@2x.png in Resources */,
+				BE21EE9516FA28680067223B /* IconBirthday.png in Resources */,
+				BE21EE9616FA28680067223B /* IconBirthday@2x.png in Resources */,
+				BE21EE9716FA28680067223B /* IconEmail.png in Resources */,
+				BE21EE9816FA28680067223B /* IconEmail@2x.png in Resources */,
+				BE21EE9916FA28680067223B /* IconFullname.png in Resources */,
+				BE21EE9A16FA28680067223B /* IconFullname@2x.png in Resources */,
+				BE21EE9B16FA28680067223B /* IconGender.png in Resources */,
+				BE21EE9C16FA28680067223B /* IconGender@2x.png in Resources */,
+				BE21EE9D16FA28680067223B /* IconLocation.png in Resources */,
+				BE21EE9E16FA28680067223B /* IconLocation@2x.png in Resources */,
+				BE21EE9F16FA28680067223B /* IconUsername.png in Resources */,
+				BE21EEA016FA28680067223B /* IconUsername@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
