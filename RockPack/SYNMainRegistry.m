@@ -26,9 +26,6 @@
 
 @implementation SYNMainRegistry
 
-
-
-
 #pragma mark - Update Data Methods
 
 -(BOOL)registerUserFromDictionary:(NSDictionary*)dictionary
