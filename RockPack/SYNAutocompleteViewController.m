@@ -18,8 +18,11 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
+    
     self = [super initWithStyle:style];
+    
     if (self) {
+        
         wordsArray = [[NSMutableArray alloc] init];
         rockpackFont = [UIFont rockpackFontOfSize:18.0];
         textColor = [UIColor rockpacTurcoiseColor];

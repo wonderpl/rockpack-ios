@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SYNAppDelegate.h"
+
 typedef enum {
     
     UserFieldTypeFirstName = 0,
@@ -19,5 +21,11 @@ typedef enum {
 @interface SYNAccountSettingsTextInputController : UIViewController {
     UserFieldType currentFieldType;
 }
+
+@property (nonatomic, strong) UITextField* inputField;
+@property (nonatomic, strong) UIButton* saveButton;
+@property (nonatomic, strong) SYNAppDelegate* appDelegate;
+
+
 -(id)initWithUserFieldType:(UserFieldType)userFieldType;
 @end

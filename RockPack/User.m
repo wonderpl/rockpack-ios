@@ -68,6 +68,10 @@
              usingManagedObjectContext: managedObjectContext
                    ignoringObjectTypes: ignoringObjects
                              andViewId: viewId];
+    
+    self.username = [dictionary objectForKey: @"username"];
+    if(self.username || [self.username isEqualToString:@""])
+        self.username = @"(Username)";
 
     self.emailAddress = [dictionary objectForKey: @"email_address"];
     if(self.emailAddress || [self.emailAddress isEqualToString:@""])
@@ -82,6 +86,21 @@
     if(self.lastName || [self.firstName isEqualToString:@""])
         self.lastName = @"(Last Name)";
     
+    NSDictionary* activity_url_dict = [dictionary objectForKey: @"activity"];
+    NSDictionary* coverart_url_dict = [dictionary objectForKey: @"cover_art"];
+    NSDictionary* subscriptions_url_dict = [dictionary objectForKey: @"subscriptions"];
+    
+    if(activity_url_dict) {
+        self.activityUrl = [activity_url_dict objectForKey:@"resource_url"];
+    }
+    
+    if(coverart_url_dict) {
+        self.coverartUrl = [coverart_url_dict objectForKey:@"resource_url"];
+    }
+    
+    if(subscriptions_url_dict) {
+        self.subscriptionsUrl = [coverart_url_dict objectForKey:@"resource_url"];
+    }
     
     self.gender = @(GenderMale);
     
