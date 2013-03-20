@@ -512,6 +512,9 @@
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
 		BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */; };
+		BE21EE7F16FA0CFB0067223B /* AccountSettingsView.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE7D16FA0CFA0067223B /* AccountSettingsView.png */; };
+		BE21EE8016FA0CFB0067223B /* AccountSettingsView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE7E16FA0CFB0067223B /* AccountSettingsView@2x.png */; };
+		BE21EE8316FA108E0067223B /* SYNAccountSettingsPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
@@ -582,7 +585,7 @@
 		BED4312316F1F12E0051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312116F1F12D0051465B /* LoginError@2x.png */; };
 		BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4312A16F20CD70051465B /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
-		BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */; };
+		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
 		BEF0AE2616E7A4520094BFDA /* popover-black-bcg-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */; };
 		BEF0AE2716E7A4520094BFDA /* popover-black-bcg-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */; };
 		BEF0AE3616E7AC480094BFDA /* ArrowSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF0AE3416E7AC480094BFDA /* ArrowSearch.png */; };
@@ -1197,6 +1200,10 @@
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
 		BE21EE7A16F9FF520067223B /* SYNAccountSettingsTextInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsTextInputController.h; sourceTree = "<group>"; };
 		BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsTextInputController.m; sourceTree = "<group>"; };
+		BE21EE7D16FA0CFA0067223B /* AccountSettingsView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountSettingsView.png; sourceTree = "<group>"; };
+		BE21EE7E16FA0CFB0067223B /* AccountSettingsView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AccountSettingsView@2x.png"; sourceTree = "<group>"; };
+		BE21EE8116FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsPopoverBackgroundView.h; sourceTree = "<group>"; };
+		BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsPopoverBackgroundView.m; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
@@ -1288,8 +1295,8 @@
 		BED4312A16F20CD70051465B /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
-		BEF0AE1916E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenericPopoverBackgroundView.h; sourceTree = "<group>"; };
-		BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenericPopoverBackgroundView.m; sourceTree = "<group>"; };
+		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
+		BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompletePopoverBackgroundView.m; sourceTree = "<group>"; };
 		BEF0AE2216E7A4520094BFDA /* popover-black-bcg-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover-black-bcg-image.png"; sourceTree = "<group>"; };
 		BEF0AE2316E7A4520094BFDA /* popover-black-bcg-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover-black-bcg-image@2x.png"; sourceTree = "<group>"; };
 		BEF0AE3416E7AC480094BFDA /* ArrowSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ArrowSearch.png; sourceTree = "<group>"; };
@@ -2566,6 +2573,8 @@
 				BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */,
 				BE03A6D716F787CA00245314 /* SYNAccountSettingTableViewCell.h */,
 				BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */,
+				BE21EE8116FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.h */,
+				BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */,
 			);
 			name = "Account Settings";
 			sourceTree = "<group>";
@@ -2573,6 +2582,8 @@
 		BE03A69716F7691B00245314 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				BE21EE7D16FA0CFA0067223B /* AccountSettingsView.png */,
+				BE21EE7E16FA0CFB0067223B /* AccountSettingsView@2x.png */,
 				BE03A6B416F7697900245314 /* AvatarKish.png */,
 				BE03A6B516F7697900245314 /* AvatarKish@2x.png */,
 				BE03A6B616F7697900245314 /* BarProfile.png */,
@@ -2707,8 +2718,8 @@
 			children = (
 				BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */,
 				BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */,
-				BEF0AE1916E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.h */,
-				BEF0AE1A16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m */,
+				BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */,
+				BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */,
 			);
 			name = "Autocomplete Panel";
 			sourceTree = "<group>";
@@ -3371,6 +3382,8 @@
 				BE03A6CD16F7697900245314 /* ButtonSettingsHighlighted@2x.png in Resources */,
 				BE03A6CE16F7697900245314 /* GlossAvatar.png in Resources */,
 				BE03A6CF16F7697900245314 /* GlossAvatar@2x.png in Resources */,
+				BE21EE7F16FA0CFB0067223B /* AccountSettingsView.png in Resources */,
+				BE21EE8016FA0CFB0067223B /* AccountSettingsView@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3516,7 +3529,7 @@
 				BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */,
 				BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */,
 				017A9EFA16E77E6600AA5B18 /* UIView+Subviews.m in Sources */,
-				BEF0AE1B16E79A4F0094BFDA /* SYNGenericPopoverBackgroundView.m in Sources */,
+				BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */,
 				BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */,
 				BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */,
 				011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */,
@@ -3538,6 +3551,7 @@
 				BE03A6D916F787CB00245314 /* SYNAccountSettingTableViewCell.m in Sources */,
 				014D514F16F738C500B82B00 /* SYNAbstractNetworkEngine.m in Sources */,
 				BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */,
+				BE21EE8316FA108E0067223B /* SYNAccountSettingsPopoverBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

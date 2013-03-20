@@ -1,4 +1,4 @@
-#import "SYNGenericPopoverBackgroundView.h"
+#import "SYNAutocompletePopoverBackgroundView.h"
 
 // Predefined arrow image width and height
 #define ARROW_WIDTH 35.0 // will stretch the image
@@ -12,7 +12,7 @@
 
 #pragma mark - Private interface
 
-@interface SYNGenericPopoverBackgroundView ()
+@interface SYNAutocompletePopoverBackgroundView ()
 {    
     UIImage *_topArrowImage;
     UIImage *_bottomArrowImage;
@@ -24,9 +24,13 @@
 
 #pragma mark - Implementation
 
-@implementation SYNGenericPopoverBackgroundView
+@implementation SYNAutocompletePopoverBackgroundView
 
-@synthesize arrowOffset = _arrowOffset, arrowDirection = _arrowDirection, popoverBackgroundImageView = _popoverBackgroundImageView, arrowImageView = _arrowImageView;
+@synthesize arrowOffset = _arrowOffset;
+@synthesize arrowDirection = _arrowDirection;
+@synthesize popoverBackgroundImageView = _popoverBackgroundImageView;
+@synthesize arrowImageView = _arrowImageView;
+
 
 #pragma mark - Overriden class methods
 
