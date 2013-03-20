@@ -52,15 +52,17 @@
     
     NSError *error = nil;
     NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
-                                                  inManagedObjectContext: importManagedObjectContext];
+                                                  inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
     
     
     NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+    
     [userFetchRequest setEntity: userEntity];
     
     
-    NSArray *userEntries = [importManagedObjectContext executeFetchRequest:userFetchRequest
-                                                                        error:&error];
+    NSArray *userEntries = [appDelegate.mainManagedObjectContext executeFetchRequest:userFetchRequest
+                                                                               error:&error];
     
     if(userEntries.count > 0)
     {

@@ -36,7 +36,7 @@
 @implementation SYNAppDelegate
 
 @synthesize mainRegistry = _mainRegistry, searchRegistry = _searchRegistry;
-@synthesize currentUser = _currentUser;
+@synthesize currentUser = _currentUser, currentOAuth2Credentials = _currentOAuth2Credentials;
 
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
@@ -49,16 +49,20 @@
     // Se up core data
     [self initializeCoreDataStack];
     
-    // Set up network engine
-    [self initializeNetworkEngines];
     
     
     // Create default user
     [self createDefaultUser];
     
-    // Get User
-    [self fetchCurrentUser];
     
+    
+    
+    // == Get User and Check Token == //
+    
+    
+    
+    // Set up network engine
+    [self initializeNetworkEngines];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginCompleted:)
@@ -84,10 +88,17 @@
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
-    if(kShowLoginPhase)
+    if(kShowLoginPhase) {
         self.window.rootViewController = self.loginViewController;
-    else
+        if(self.currentUser) {
+            [self.loginViewController showAutologin];
+        }
+    }
+        
+    else {
         self.window.rootViewController = self.viewController;
+    }
+        
     
     
     [self.window makeKeyAndVisible];
@@ -200,54 +211,48 @@
     
     self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
     
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-//    {
-//        NSError *error = nil;
-    
-        NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
-                                                                  inDomains: NSUserDomainMask] lastObject];
-        
-        storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
-        
-        if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
-        {
-            NSDictionary *existingPersistentStoreMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType: NSSQLiteStoreType
-                                                                                                                       URL: storeURL
-                                                                                                                     error: &error];
-            
-            if (!existingPersistentStoreMetadata)
-            {
-                // Something *really* bad has happened to the persistent store
-                [NSException raise: NSInternalInconsistencyException
-                            format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
-            }
-            
-            if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
-            {
-                if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
-                                                               error: &error])
-                {
-                    DebugLog(@"Existing database - incompatible schema detected, so deleted");
-                }
-                else
-                {
-                    DebugLog(@"*** Could not delete persistent store, %@", error);
-                }
-            } // else the existing persistent store is compatible with the current model - nice!
-        } // else no database file yet
 
-        NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
-                                                                            configuration: nil
-                                                                                      URL: storeURL
-                                                                                  options: nil
-                                                                                    error: &error];
-        if (store == nil)
-        {
-            DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
-        }
-//    });
+    NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
+                                                              inDomains: NSUserDomainMask] lastObject];
     
-    // Registries
+    storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath: [storeURL path]])
+    {
+        NSDictionary *existingPersistentStoreMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType: NSSQLiteStoreType
+                                                                                                                   URL: storeURL
+                                                                                                                 error: &error];
+        
+        if (!existingPersistentStoreMetadata)
+        {
+            // Something *really* bad has happened to the persistent store
+            [NSException raise: NSInternalInconsistencyException
+                        format: @"Failed to read metadata for persistent store %@: %@", storeURL, error];
+        }
+        
+        if (![managedObjectModel isConfiguration: nil compatibleWithStoreMetadata: existingPersistentStoreMetadata])
+        {
+            if ([[NSFileManager defaultManager] removeItemAtURL: storeURL
+                                                          error: &error])
+            {
+                DebugLog(@"Existing database - incompatible schema detected, so deleted");
+            }
+            else
+            {
+                DebugLog(@"*** Could not delete persistent store, %@", error);
+            }
+        } // else the existing persistent store is compatible with the current model - nice!
+    } // else no database file yet
+    
+    NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
+                                                                        configuration: nil
+                                                                                  URL: storeURL
+                                                                              options: nil
+                                                                                error: &error];
+    if (store == nil)
+    {
+        DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
+    }
     
     _mainRegistry = [SYNMainRegistry registry];
     _searchRegistry = [SYNSearchRegistry registry];
@@ -366,6 +371,7 @@
     [self.networkEngine useCache];
     
     self.oAuthNetworkEngine = [[SYNOAuthNetworkEngine alloc] initWithDefaultSettings];
+    
     [self.oAuthNetworkEngine useCache];
     
     // Use this engine as the default for the asynchronous image loading category on UIImageView
@@ -410,29 +416,51 @@
     }
 }
 
+#pragma mark - User and Credentials
 
--(void)fetchCurrentUser
+-(User*)currentUser
 {
-    NSError *error = nil;
-    NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
-                                                  inManagedObjectContext: self.mainManagedObjectContext];
-    
-    
-    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
-    [userFetchRequest setEntity: userEntity];
-    
-    
-    NSArray *userEntries = [self.mainManagedObjectContext executeFetchRequest:userFetchRequest
-                                                                        error:&error];
-    
-    if(userEntries.count > 0)
+    if(_currentUser)
     {
-        _currentUser = (User*)userEntries[0];
+        NSError *error = nil;
+        NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
+                                                      inManagedObjectContext: self.mainManagedObjectContext];
+        
+        
+        NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+        [userFetchRequest setEntity: userEntity];
+        
+        
+        NSArray *userEntries = [self.mainManagedObjectContext executeFetchRequest:userFetchRequest
+                                                                            error:&error];
+        
+        if(userEntries.count > 0)
+        {
+            _currentUser = (User*)userEntries[0];
+        }
+        else
+        {
+            DebugLog(@"No Current User Found in AppDelegate...");
+            _currentUser = nil;
+        }
     }
-    else
+    
+    return _currentUser;
+}
+
+-(SYNOAuth2Credential*)currentOAuth2Credentials
+{
+    if(!self.currentUser)
+        return nil;
+    
+    if(!_currentOAuth2Credentials)
     {
-        DebugLog(@"No User found");
+        
+        _currentOAuth2Credentials = [SYNOAuth2Credential credentialFromKeychainForService: kOAuth2Service
+                                                                                  account: self.currentUser.uniqueId];
     }
+    
+    return _currentOAuth2Credentials;
 }
 
 #pragma mark - Social Integration Delegate

@@ -23,6 +23,8 @@ typedef enum {
 @property (nonatomic) kLoginScreenState state;
 @property (nonatomic) BOOL facebookLoginIsInProcess;
 
+-(void)showAutologin;
+
 -(void)setUpInitialState;
 
 @end
