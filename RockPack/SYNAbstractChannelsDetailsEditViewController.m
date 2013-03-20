@@ -291,7 +291,7 @@
                  // Now upload the list of videos for the channel
                  [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                                        channelId: newChannelId
-                                                                    videoIdArray: self.channel.videoInstancesSet.array
+                                                                videoInstanceSet: self.channel.videoInstancesSet
                   completionHandler: ^(NSDictionary *responseDictionary)
                   {
                       DebugLog(@"Channel video array update successful");
@@ -335,12 +335,12 @@
              // Now upload the list of videos for the channel
              [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                                    channelId: self.channel.uniqueId
-                                                                videoIdArray: self.channel.videoInstancesSet.array
-                                                           completionHandler: ^(NSDictionary *responseDictionary)
+                                                            videoInstanceSet: self.channel.videoInstancesSet
+              completionHandler: ^(NSDictionary *responseDictionary)
               {
                   DebugLog(@"Channel video array update successful");
               }
-                                                                errorHandler: ^(NSDictionary* errorDictionary)
+              errorHandler: ^(NSDictionary* errorDictionary)
               {
                   DebugLog(@"Channel video array update failed");
               }];

@@ -12,6 +12,7 @@
 #import "SYNNetworkOperationJsonObject.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "Video.h"
 #import "VideoInstance.h"
 
 @interface SYNOAuthNetworkEngine ()
@@ -474,7 +475,7 @@
          
          for (VideoInstance *videoInstance in videoInstanceSet)
          {
-             [videoIdArray addObject: videoInstance.uniqueId];
+             [videoIdArray addObject: videoInstance.video.uniqueId];
          }
          
          NSData *jsonData = [NSJSONSerialization dataWithJSONObject: videoIdArray
