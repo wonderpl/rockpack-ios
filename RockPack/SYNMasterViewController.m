@@ -15,7 +15,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
-#import "SYNGenericPopoverBackgroundView.h"
+#import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
@@ -179,7 +179,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.notificationsPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
         self.notificationsPopoverController.popoverContentSize = CGSizeMake(320, 166);
         self.notificationsPopoverController.delegate = self;
-        self.notificationsPopoverController.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
+        self.notificationsPopoverController.popoverBackgroundViewClass = [SYNAutocompletePopoverBackgroundView class];
         
         [self.notificationsPopoverController presentPopoverFromRect: button.frame
                                                              inView: self.view
@@ -621,7 +621,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.autocompletePopoverController.delegate = self;
     
     
-    self.autocompletePopoverController.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
+    self.autocompletePopoverController.popoverBackgroundViewClass = [SYNAutocompletePopoverBackgroundView class];
     
     [self.autocompletePopoverController presentPopoverFromRect: self.searchTextField.frame
                                                         inView: self.view

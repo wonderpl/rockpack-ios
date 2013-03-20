@@ -16,6 +16,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
+#import "SYNAccountSettingsPopoverBackgroundView.h"
 
 @interface SYNYouRootViewController ()
 
@@ -128,7 +129,7 @@
     self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
     self.accountSettingsPopover.delegate = self;
     
-    // self.accountSettingsPopover.popoverBackgroundViewClass = [SYNGenericPopoverBackgroundView class];
+    self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
     
     CGRect rect = CGRectMake(self.view.frame.size.width*0.5,
                              self.view.frame.size.height*0.5 + 30.0, 1, 1);
