@@ -511,6 +511,7 @@
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
+		BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
@@ -1194,6 +1195,8 @@
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
 		BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
+		BE21EE7A16F9FF520067223B /* SYNAccountSettingsTextInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsTextInputController.h; sourceTree = "<group>"; };
+		BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsTextInputController.m; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
@@ -2593,6 +2596,8 @@
 			children = (
 				BE03A6D416F784B000245314 /* SYNAccountSettingsGender.h */,
 				BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */,
+				BE21EE7A16F9FF520067223B /* SYNAccountSettingsTextInputController.h */,
+				BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */,
 			);
 			name = "Secondary Tables";
 			sourceTree = "<group>";
@@ -3532,6 +3537,7 @@
 				BE03A6D616F784B000245314 /* SYNAccountSettingsGender.m in Sources */,
 				BE03A6D916F787CB00245314 /* SYNAccountSettingTableViewCell.m in Sources */,
 				014D514F16F738C500B82B00 /* SYNAbstractNetworkEngine.m in Sources */,
+				BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,16 +10,22 @@
 #import "UIFont+SYNFont.h"
 #import "SYNAccountSettingTableViewCell.h"
 #import "SYNAccountSettingsGender.h"
+#import "SYNAppDelegate.h"
+#import "AppConstants.h"
+#import "User.h"
+#import "SYNAccountSettingsTextInputController.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
 @property (nonatomic, strong) NSArray* dataItems2ndSection;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic, weak) User* user;
 
 @end
 
 @implementation SYNAccountSettingsMainTableViewController
 
-@synthesize dataItems2ndSection;
+@synthesize dataItems2ndSection, appDelegate, user;
 
 - (id)init
 {
@@ -32,6 +38,10 @@
                                 @"About",
                                 @"Logout"];
         
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        user = appDelegate.currentUser;
+        
         
         
     }
@@ -42,9 +52,24 @@
 {
     [super viewDidLoad];
     
+    self.contentSizeForViewInPopover = CGSizeMake(380, 476);
 
     self.tableView.scrollEnabled = NO;
     
+}
+
+- (void) forcePopoverSize {
+    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,7 +82,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    
     return 2;
 }
 
@@ -84,18 +108,18 @@
         switch (indexPath.row) {
                 
             case 0:
-                cell.textLabel.text = @"Alexandra Longname-Smith";
+                cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", user.firstName, user.lastName];
                 cell.detailTextLabel.text = @"Full Name - Public";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 1:
-                cell.textLabel.text = @"alex_1989";
+                cell.textLabel.text = user.username;
                 cell.detailTextLabel.text = @"Username - Public";
                 break;
                 
             case 2:
-                cell.textLabel.text = @"alex_longname@gmail.com";
+                cell.textLabel.text = user.emailAddress;
                 cell.detailTextLabel.text = @"Email - Private";
                 break;
                 
@@ -105,7 +129,7 @@
                 break;
                 
             case 4:
-                cell.textLabel.text = @"Female";
+                cell.textLabel.text = ([user.gender isEqual:@(GenderMale)]) ? @"Male" : @"Female";
                 cell.detailTextLabel.text = @"Gender - Private";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
@@ -185,6 +209,23 @@
     if(indexPath.section == 0)
     {
         switch (indexPath.row) {
+                
+            case 0:
+                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                break;
+                
+            case 1:
+                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                break;
+                
+            case 2:
+                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                break;
+                
+            case 3:
+                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                break;
+            
             case 4:
                 [self.navigationController pushViewController:[[SYNAccountSettingsGender alloc] init] animated:YES];
                 break;

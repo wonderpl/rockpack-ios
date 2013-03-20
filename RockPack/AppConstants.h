@@ -117,6 +117,14 @@
 // Enable full screen thumbnail view 
 #define FULL_SCREEN_THUMBNAILS__
 
+
+typedef enum _Gender {
+    
+    GenderMale = 0,
+    GenderFemale = 1
+    
+} Gender;
+
 //
 // Colours
 //

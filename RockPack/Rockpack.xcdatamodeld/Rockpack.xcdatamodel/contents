@@ -42,6 +42,7 @@
         <attribute name="dateOfBirth" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gender" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -72,7 +73,7 @@
         <element name="ChannelOwner" positionX="-648" positionY="144" width="128" height="88"/>
         <element name="Subcategory" positionX="-515" positionY="-27" width="128" height="58"/>
         <element name="TabItem" positionX="-603" positionY="-126" width="128" height="73"/>
-        <element name="User" positionX="-648" positionY="261" width="128" height="135"/>
+        <element name="User" positionX="-648" positionY="261" width="128" height="148"/>
         <element name="Video" positionX="-0" positionY="144" width="128" height="195"/>
         <element name="VideoInstance" positionX="-225" positionY="144" width="128" height="135"/>
     </elements>
