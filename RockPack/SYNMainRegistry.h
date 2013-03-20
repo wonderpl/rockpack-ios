@@ -15,5 +15,6 @@
 -(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId;
 -(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary;
 -(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary;
+-(BOOL)registerUserFromDictionary:(NSDictionary*)dictionary;
 
 @end

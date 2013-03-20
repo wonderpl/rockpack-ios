@@ -56,6 +56,9 @@
     // Create default user
     [self createDefaultUser];
     
+    // Get User
+    [self fetchCurrentUser];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginCompleted:)
@@ -407,6 +410,30 @@
     }
 }
 
+
+-(void)fetchCurrentUser
+{
+    NSError *error = nil;
+    NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
+                                                  inManagedObjectContext: self.mainManagedObjectContext];
+    
+    
+    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+    [userFetchRequest setEntity: userEntity];
+    
+    
+    NSArray *userEntries = [self.mainManagedObjectContext executeFetchRequest:userFetchRequest
+                                                                        error:&error];
+    
+    if(userEntries.count > 0)
+    {
+        _currentUser = (User*)userEntries[0];
+    }
+    else
+    {
+        DebugLog(@"No User found");
+    }
+}
 
 #pragma mark - Social Integration Delegate
 

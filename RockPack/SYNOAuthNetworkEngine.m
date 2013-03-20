@@ -163,6 +163,8 @@
 }
 
 
+
+
 // Get authentication token by registering details with server
 - (void) registerUserWithData: (NSDictionary*) userData
             completionHandler: (MKNKLoginCompleteBlock) completionBlock
@@ -228,6 +230,35 @@
     [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary) {
+        
+        
+        NSString* possibleError = responseDictionary[@"error"];
+         
+        if (possibleError)
+        {
+            errorBlock(responseDictionary);
+            return;
+        }
+        
+        // Register User
+        
+        [self.registry registerUserFromDictionary:responseDictionary];
+        
+        // Test if new User is in Core Data
+        
+        
+        
+        completionBlock(responseDictionary);
+         
+     } errorHandler: ^(NSError* error) {
+         
+         DebugLog(@"API Call failed");
+         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+         
+     }];
     
     [self enqueueSignedOperation: networkOperation];
 }

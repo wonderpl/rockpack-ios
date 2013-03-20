@@ -16,7 +16,7 @@
 {
     NSError *error = nil;
     
-    NSString *uniqueId = [dictionary objectForKey: @"userid"]; 
+    NSString *uniqueId = [dictionary objectForKey: @"id"]; 
     
     if(!uniqueId)
         return nil;

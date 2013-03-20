@@ -554,36 +554,39 @@
     [activityIndicator startAnimating];
     
     [appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: userNameInputField.text
-     forPassword: passwordInputField.text
-     completionHandler: ^(SYNOAuth2Credential* credential)
-     {
-        [self completeLoginProcess: credential];
-     }
-     errorHandler: ^(NSDictionary* errorDictionary)
-     {
-         NSDictionary* errors = errorDictionary [@"error"];
+                                                 forPassword: passwordInputField.text
+                                           completionHandler: ^(SYNOAuth2Credential* credential) {
+                                               
+                                               
+                                               
+                                               
+                                           } errorHandler: ^(NSDictionary* errorDictionary) {
+                                               
+                                               NSDictionary* errors = errorDictionary [@"error"];
          
-         if (errors)
-         {
-             [self placeErrorLabel: @"Username could be incorrect"
-                        NextToView: userNameInputField];
+                                               if (errors)
+                                               {
+                                                   [self placeErrorLabel: @"Username could be incorrect"
+                                                              NextToView: userNameInputField];
              
-             [self placeErrorLabel: @"Password could be incorrect"
-                        NextToView: passwordInputField];
-         }
+                                                   [self placeErrorLabel: @"Password could be incorrect"
+                                                              NextToView: passwordInputField];
+                                               }
          
-         finalLoginButton.enabled = YES;
-         [activityIndicator stopAnimating];
+                                               finalLoginButton.enabled = YES;
+                                               
+                                               [activityIndicator stopAnimating];
          
-         [UIView animateWithDuration:0.3 animations:^
-          {
-              finalLoginButton.alpha = 1.0;
-          }
-                          completion:^(BOOL finished)
-          {
-              [userNameInputField becomeFirstResponder];
-          }];
-     }];
+                                               [UIView animateWithDuration:0.3 animations:^{
+                                                   
+                                                   finalLoginButton.alpha = 1.0;
+                                                   
+                                               } completion:^(BOOL finished) {
+                                                   
+                                                   [userNameInputField becomeFirstResponder];
+                                                   
+                                               }];
+                                           }];
     
 }
 
@@ -829,7 +832,15 @@
     [appDelegate.oAuthNetworkEngine registerUserWithData:userData
      completionHandler: ^(SYNOAuth2Credential* credential)
      {
-         [self completeLoginProcess: credential];
+         [appDelegate.oAuthNetworkEngine userInformationForUserId:credential.userId completionHandler:^(NSDictionary* dictionary) {
+             
+             
+             [self completeLoginProcess: credential];
+             
+         } errorHandler:^(NSDictionary* errorDictionary) {
+             
+         }];
+         
          registerNewUserButton.enabled = YES;
      }
      errorHandler: ^(NSDictionary* errorDictionary)

@@ -31,6 +31,52 @@
 
 #pragma mark - Update Data Methods
 
+-(BOOL)registerUserFromDictionary:(NSDictionary*)dictionary
+{
+    // == Check for Validity == //
+    
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    User* newUser = [User instanceFromDictionary:dictionary
+                       usingManagedObjectContext:importManagedObjectContext];
+    
+    if(!newUser)
+        return NO;
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveContext: TRUE];
+    
+    // Test
+    
+    
+    NSError *error = nil;
+    NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
+                                                  inManagedObjectContext: importManagedObjectContext];
+    
+    
+    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
+    [userFetchRequest setEntity: userEntity];
+    
+    
+    NSArray *userEntries = [importManagedObjectContext executeFetchRequest:userFetchRequest
+                                                                        error:&error];
+    
+    if(userEntries.count > 0)
+    {
+        newUser = (User*)userEntries[0];
+    }
+    else
+    {
+        DebugLog(@"No User found");
+    }
+    
+    return YES;
+}
+
 -(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary
 {
     
