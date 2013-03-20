@@ -44,14 +44,10 @@
 // Avatar
 #define kAPIUpdateAvatar           @"/ws/USERID/avatar/"                       /* PUT */
 
-// Channel details
+// Channel manageent
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
-
-// Channel management
 #define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
-
-// Channel privacy
 #define kAPIUpdateChannelPrivacy    @"/ws/USERID/channel/CHANNELID/public/"     /* PUT */
 
 // User activity
@@ -93,6 +89,9 @@
 #define kSaveSynchronously TRUE
 #define kSaveAsynchronously FALSE
 
+// Placeholders
+
+#define kNewChannelPlaceholderId @"NewChannelPlaceholder"
 
 // Notifications
 

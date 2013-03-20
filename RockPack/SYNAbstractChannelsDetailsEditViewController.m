@@ -16,6 +16,7 @@
 #import "SYNChannelHeaderView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNTextField.h"
+#import "SYNOAuth2Credential.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 
 @interface SYNAbstractChannelsDetailsEditViewController ()
@@ -228,6 +229,8 @@
 {
     NSLog (@"User touched done button");
     
+//    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
+    
 //    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
 //    
 //    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
@@ -265,17 +268,16 @@
     //    }
     
     // Do we create a new channel, or just update an existing one
-    if (self.channel.channelOwner == nil)
+    if ([self.channel.uniqueId isEqualToString: kNewChannelPlaceholderId])
     {
         // Create a new channel
-        NSDictionary* userData = @{@"title": self.channelTitleTextField.text,
-                                   @"description": self.collectionHeaderView.channelDescriptionTextView.text,
-                                   @"category": @"123",
-                                   @"cover": @"",
-                                   @"public": [NSNumber numberWithBool: TRUE]};
-        
-        [appDelegate.oAuthNetworkEngine createChannelWithData: userData
-          completionHandler: ^(NSDictionary *responseDictionary)
+        [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                         title: self.channelTitleTextField.text
+                                                   description: self.collectionHeaderView.channelDescriptionTextView.text
+                                                      category: @"123"
+                                                         cover: @""
+                                                      isPublic: TRUE
+         completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
              
@@ -287,8 +289,9 @@
                  self.channel.uniqueId = newChannelId;
                  
                  // Now upload the list of videos for the channel
-                 [appDelegate.oAuthNetworkEngine updateVideosForChannelWithChannelId: newChannelId
-                                                                        videoIdArray: nil
+                 [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                                       channelId: newChannelId
+                                                                    videoIdArray: self.channel.videoInstancesSet.array
                   completionHandler: ^(NSDictionary *responseDictionary)
                   {
                       DebugLog(@"Channel video array update successful");
@@ -300,10 +303,8 @@
              }
              else
              {
-                 
+                 AssertOrLog(@"No channel Id returned after channel creation");
              }
-
-
          }
          errorHandler: ^(NSDictionary* errorDictionary)
          {
@@ -320,27 +321,36 @@
     else
     {
         // Update an existing channel
-        // Create a new channel
-        NSDictionary* userData = @{@"title": self.channelTitleTextField.text,
-                                   @"description": self.collectionHeaderView.channelDescriptionTextView.text,
-                                   @"category": [NSNumber numberWithInt: 0],
-                                   @"cover": @"",
-                                   @"public": [NSNumber numberWithBool: TRUE]};
-        
-        [appDelegate.oAuthNetworkEngine updateChannelWithChannelId: self.channel.uniqueId
-                                                              data: userData
+        [appDelegate.oAuthNetworkEngine updateChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                     channelId: self.channel.uniqueId
+                                                         title: self.channelTitleTextField.text
+                                                   description: self.collectionHeaderView.channelDescriptionTextView.text
+                                                      category: @"123"
+                                                         cover: @""
+                                                      isPublic: TRUE
          completionHandler: ^(NSDictionary *responseDictionary)
          {
-             DebugLog(@"Channel creation successful");
-             // If we successfuly created a channel, then upload the videos for that channel
-             //             [self uploadVideosForChannel];
+             DebugLog(@"Channel update successful");
+
+             // Now upload the list of videos for the channel
+             [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                                   channelId: self.channel.uniqueId
+                                                                videoIdArray: self.channel.videoInstancesSet.array
+                                                           completionHandler: ^(NSDictionary *responseDictionary)
+              {
+                  DebugLog(@"Channel video array update successful");
+              }
+                                                                errorHandler: ^(NSDictionary* errorDictionary)
+              {
+                  DebugLog(@"Channel video array update failed");
+              }];
          }
          errorHandler: ^(NSDictionary* errorDictionary)
          {
              DebugLog(@"Channel creation failed");
-             NSDictionary* formErrors = errorDictionary[@"form_errors"];
+             NSDictionary* formErrors = [errorDictionary objectForKey: @"form_errors"];
              
-             if (formErrors)
+             if(formErrors)
              {
                  // TODO: Show errors in channel creation
                  //           [self showRegistrationError:formErrors];

@@ -50,19 +50,37 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
 // Channel creation
 
-- (void) createChannelWithData: (NSDictionary*) userData
-             completionHandler: (MKNKUserSuccessBlock) completionBlock
-                  errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) channelDataForUserId: (NSString *) userId
+                    channelId: (NSString *) channelId
+                        start: (unsigned int) start
+                         size: (unsigned int) size
+            completionHandler: (MKNKUserSuccessBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) updateChannelWithChannelId: (NSString *) channelId
-                               data: (NSDictionary*) userData
-                  completionHandler: (MKNKUserSuccessBlock) completionBlock
-                       errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) createChannelForUserId: (NSString *) userId
+                          title: (NSString *) title
+                    description: (NSString *) description
+                       category: (NSString *) category
+                          cover: (NSString *) cover
+                       isPublic: (BOOL) isPublic
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) updateVideosForChannelWithChannelId: (NSString *) channelId
-                                videoIdArray: (NSArray *) videoIdArray
-                           completionHandler: (MKNKUserSuccessBlock) completionBlock
-                                errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) updateChannelForUserId: (NSString *) userId
+                      channelId: (NSString *) channelId
+                          title: (NSString *) title
+                    description: (NSString *) description
+                       category: (NSString *) category
+                          cover: (NSString *) cover
+                       isPublic: (BOOL) isPublic
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) updateVideosForChannelForUserId: (NSString *) userId
+                               channelId: (NSString *) channelId
+                            videoIdArray: (NSArray *) videoIdArray
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 
 
