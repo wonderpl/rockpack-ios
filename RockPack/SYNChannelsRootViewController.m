@@ -13,6 +13,7 @@
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNChannelsRootViewController.h"
+#import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
@@ -31,9 +32,9 @@
 
 #pragma mark - View lifecycle
 
--(void)loadView
+- (void) loadView
 {
-    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
@@ -44,7 +45,8 @@
     
     CGRect collectionViewFrame = CGRectMake(0.0, 86.0, 1024.0, 600.0);
     
-    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
+                                                             collectionViewLayout: flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];

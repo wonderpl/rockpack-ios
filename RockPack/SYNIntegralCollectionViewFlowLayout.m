@@ -32,6 +32,9 @@
         {
             [newAttributes addObject:attribute];
         }
+        
+        // Also include this to ensure that we don't have fractional offsets
+        attribute.frame = CGRectIntegral(attribute.frame);
     }
     return newAttributes;
 }

@@ -3607,7 +3607,8 @@
 			baseConfigurationReference = 276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Nick Banks (QWB4Z97ECZ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nick Banks (QWB4Z97ECZ)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3626,7 +3627,8 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = rockpack;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "0EE419CB-9B49-4341-AA31-A0A30B5FC14F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0EE419CB-9B49-4341-AA31-A0A30B5FC14F";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
