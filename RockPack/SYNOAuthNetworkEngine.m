@@ -295,6 +295,7 @@
 #pragma mark - Avatars
 
 - (void) updateAvatarForUserId: (NSString *) userId
+                         image: (UIImage *) image
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -306,11 +307,8 @@
                                                                                                        params: nil
                                                                                                    httpMethod: @"PUT"
                                                                                                           ssl: TRUE];
-
-    
-    
     // We have to perform the image upload with an input stream
-    NSData *imageData = UIImagePNGRepresentation([UIImage imageNamed: @"Icon@2x.png"]);
+    NSData *imageData = UIImagePNGRepresentation(image);
     NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
     NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
     networkOperation.uploadStream = inputStream;
@@ -325,48 +323,28 @@
 }
 
 
-
 #pragma mark - Channel creation
 
 - (void) createChannelWithData: (NSDictionary*) userData
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    [self updateAvatarForUserId: self.oAuth2Credential.userId
-                 completionHandler: ^(NSDictionary* errorDictionary)
-     {
-         DebugLog(@"User data %@", errorDictionary);
-         // If we successfuly created a channel, then upload the videos for that channel
-         //             [self uploadVideosForChannel];
-     }
-                      errorHandler: ^(NSDictionary* errorDictionary)
-     {
-         DebugLog(@"Channel creation failed");
-         NSDictionary* formErrors = errorDictionary[@"form_errors"];
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
 
-         if (formErrors)
-         {
-             // TODO: Show errors in channel creation
-             //           [self showRegistrationError:formErrors];
-         }
-     }];
+    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
-//
-//    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-//    
-//    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-//                                                                                                       params: userData
-//                                                                                                   httpMethod: @"POST"
-//                                                                                                          ssl: TRUE];
-//   [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
-//    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-//    
-//    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
-//                                         completionHandler: completionBlock
-//                                              errorHandler: errorBlock];
-//    
-//    [self enqueueSignedOperation: networkOperation];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: userData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+   [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
 }
 
 

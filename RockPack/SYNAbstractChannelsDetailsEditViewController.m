@@ -270,7 +270,7 @@
         // Create a new channel
         NSDictionary* userData = @{@"title": self.channelTitleTextField.text,
                                    @"description": self.collectionHeaderView.channelDescriptionTextView.text,
-                                   @"category": [NSNumber numberWithInt: 0],
+                                   @"category": @"123",
                                    @"cover": @"",
                                    @"public": [NSNumber numberWithBool: TRUE]};
         
@@ -278,8 +278,32 @@
           completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
-             // If we successfuly created a channel, then upload the videos for that channel
-             //             [self uploadVideosForChannel];
+             
+             NSString *newChannelId = responseDictionary[@"id"];
+             
+             if (newChannelId != nil && ([newChannelId isEqualToString: @""] == FALSE))
+             {
+                 // Set our channel Id to the one returned from the server
+                 self.channel.uniqueId = newChannelId;
+                 
+                 // Now upload the list of videos for the channel
+                 [appDelegate.oAuthNetworkEngine updateVideosForChannelWithChannelId: newChannelId
+                  videoIdArray: videoIdArray
+                  completionHandler: ^(NSDictionary *responseDictionary)
+                  {
+                      DebugLog(@"Channel video array update successful");
+                  }
+                  errorHandler: ^(NSDictionary* errorDictionary)
+                  {
+                      DebugLog(@"Channel video array update failed");
+                  }];
+             }
+             else
+             {
+                 
+             }
+
+
          }
          errorHandler: ^(NSDictionary* errorDictionary)
          {

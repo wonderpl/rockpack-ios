@@ -121,20 +121,14 @@ typedef enum _kQueueMoveDirection {
 }
 
 
--(Channel*)getChannelFromCurrentQueue
+- (Channel*) getChannelFromCurrentQueue
 {
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     newChannel.channelOwner = appDelegate.channelOwnerMe;
-    
     newChannel.viewId = @"ChannelDetails";
-    
-    
-    // Currently cerating a unique string as an id for the channel to be fetched in the channels details controller.
-    
-    newChannel.uniqueId = [self getUUID];
     
     for (VideoInstance *videoInstance in self.selectedVideos)
     {
@@ -142,16 +136,8 @@ typedef enum _kQueueMoveDirection {
     }
     
     return newChannel;
-
 }
 
--(NSString *)getUUID
-{
-    CFUUIDRef theUUID = CFUUIDCreate(NULL);
-    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-    CFRelease(theUUID);
-    return (__bridge NSString *)string;
-}
 
 #pragma mark - UICollectionViewDelegate Methods
 
