@@ -327,24 +327,110 @@
 }
 
 
-#pragma mark - Channel creation
+#pragma mark - Channel management
 
-- (void) createChannelWithData: (NSDictionary*) userData
-             completionHandler: (MKNKUserSuccessBlock) completionBlock
-                  errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) channelDataForUserId: (NSString *) userId
+                    channelId: (NSString *) channelId
+                        start: (unsigned int) start
+                         size: (unsigned int) size
+            completionHandler: (MKNKUserSuccessBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    if(!self.oAuth2Credential) {
-        DebugLog(@"No OAuth@Credential for createChannelWithData...");
-        errorBlock(@{@"credentials_error" : @"No OAuth2 Credentials found..."});
-        return;
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
+    NSDictionary *params = nil;
+    if (size > 0)
+    {
+        params = @{@"start" : @(start), @"size" : @(size)};
     }
     
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
-
-    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    NSString *apiString = [kAPIGetChannelDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: userData
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+// Wrapper functions for common
+- (void) createChannelForUserId: (NSString *) userId
+                          title: (NSString *) title
+                    description: (NSString *) description
+                       category: (NSString *) category
+                          cover: (NSString *) cover
+                       isPublic: (BOOL) isPublic
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    [self manageChannelForUserId: userId
+                           title: title
+                     description: description
+                        category: category
+                           cover: cover
+                        isPublic: isPublic
+                       apiString: apiString
+                        httpVerb: @"POST"
+               completionHandler: completionBlock
+                    errorHandler: errorBlock];
+}
+
+- (void) updateChannelForUserId: (NSString *) userId
+                      channelId: (NSString *) channelId
+                          title: (NSString *) title
+                    description: (NSString *) description
+                       category: (NSString *) category
+                          cover: (NSString *) cover
+                       isPublic: (BOOL) isPublic
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSString *apiString = [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    [self manageChannelForUserId: userId
+                           title: title
+                     description: description
+                        category: category
+                           cover: cover
+                        isPublic: isPublic
+                        apiString: apiString
+                        httpVerb: @"PUT"
+               completionHandler: completionBlock
+                    errorHandler: errorBlock];
+}
+
+- (void) manageChannelForUserId: (NSString *) userId
+                          title: (NSString *) title
+                    description: (NSString *) description
+                       category: (NSString *) category
+                          cover: (NSString *) cover
+                       isPublic: (BOOL) isPublic
+                       apiString: apiString
+                       httpVerb: (NSString *) httpVerb
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *params = @{@"title" : title,
+                             @"description" : description,
+                             @"category" : category,
+                             @"cover" : cover,
+                             @"public" : @(isPublic)};
+
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
                                                                                                    httpMethod: @"POST"
                                                                                                           ssl: TRUE];
    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
@@ -358,40 +444,6 @@
 }
 
 
-// /ws/USERID/channels/CHANNELID/  /* PUT */
-
-- (void) updateChannelWithChannelId: (NSString *) channelId
-                               data: (NSDictionary*) userData
-                  completionHandler: (MKNKUserSuccessBlock) completionBlock
-                       errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    if(!self.oAuth2Credential) {
-        DebugLog(@"No OAuth@Credential for createChannelWithData...");
-        errorBlock(@{@"credentials_error" : @"No OAuth2 Credentials found..."});
-        return;
-    }
-    
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId,
-                                                @"CHANNELID" : channelId};
-
-    NSString *apiString = [kAPIUpdateExistingChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: userData
-                                                                                                   httpMethod: @"PUT"
-                                                                                                          ssl: TRUE];
-    
-    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
-    
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
-
-    [self enqueueSignedOperation: networkOperation];
-
-}
-
-
 // /ws/USERID/channels/CHANNELID/videos/    /* PUT */
 
 //    [self updateVideosForChannelWithChannelId: @"abc"
@@ -399,18 +451,13 @@
 //                            completionHandler: nil
 //                                 errorHandler: nil];
 
-- (void) updateVideosForChannelWithChannelId: (NSString *) channelId
-                                videoIdArray: (NSArray *) videoIdArray
-                           completionHandler: (MKNKUserSuccessBlock) completionBlock
-                                errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) updateVideosForChannelForUserId: (NSString *) userId
+                               channelId: (NSString *) channelId
+                            videoIdArray: (NSArray *) videoIdArray
+                       completionHandler: (MKNKUserSuccessBlock) completionBlock
+                            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    if(!self.oAuth2Credential) {
-        DebugLog(@"No OAuth@Credential for createChannelWithData...");
-        errorBlock(@{@"credentials_error" : @"No OAuth2 Credentials found..."});
-        return;
-    }
-    
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId,
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
                                                 @"CHANNELID" : channelId};
     
     NSString *apiString = [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
@@ -440,7 +487,6 @@
     
     [self enqueueSignedOperation: networkOperation];
 }
-
 
 
 -(SYNOAuth2Credential*)oAuth2Credential

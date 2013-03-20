@@ -130,6 +130,9 @@ typedef enum _kQueueMoveDirection {
     newChannel.channelOwner = appDelegate.channelOwnerMe;
     newChannel.viewId = @"ChannelDetails";
     
+    // Set the channel's unique Id to something temporary so that we can perform queries for the videoinstances it contains
+    newChannel.uniqueId = kNewChannelPlaceholderId;
+    
     for (VideoInstance *videoInstance in self.selectedVideos)
     {
         [[newChannel videoInstancesSet] addObject: videoInstance];
