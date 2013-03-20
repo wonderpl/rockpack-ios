@@ -22,35 +22,37 @@
 @property (nonatomic, copy) SYNOAuth2CompletionBlock oAuthCompletionBlock;
 @property (nonatomic, copy) SYNOAuth2RefreshCompletionBlock oAuthRefreshCompletionBlock;
 
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
+
 @end
 
 @implementation SYNOAuthNetworkEngine
 
 #pragma mark - OAuth2 Housekeeping functions
 
+-(id)initWithDefaultSettings
+{
+    self = [super initWithDefaultSettings];
+    
+    self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    return self;
+}
+
+
+
 - (NSString *) hostName
 {
     return kAPISecureHostName;
 }
 
-- (BOOL) isAuthenticated
-{
-    if (self.oAuth2Credential == nil)
-    {
-        self.oAuth2Credential = [SYNOAuth2Credential credentialFromKeychainForService: kOAuth2ClientId
-                                                                              account: kOAuth2ClientId];
-    }
-    
-    // Check to see if wa have a credential and an access token
-	return (self.oAuth2Credential.accessToken != nil);
-}
 
 
 // Enqueues the operation if already authenticated, and if not, tries to authentican and then re-queue if successful
 - (void) enqueueSignedOperation: (MKNetworkOperation *) request
 {
 	// If we're not authenticated, and this is not part of the OAuth process,
-	if (!self.isAuthenticated)
+	if (!self.oAuth2Credential)
     {
 		AssertOrLog(@"enqueueSignedOperation - Not authenticated");
 	}
@@ -90,25 +92,22 @@
              return;
          }
          
-         self.oAuth2Credential = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
-                                                                      expiresIn: responseDictionary[@"expires_in"]
-                                                                   refreshToken: responseDictionary[@"refresh_token"]
-                                                                    resourceURL: responseDictionary[@"resource_url"]
-                                                                      tokenType: responseDictionary[@"token_type"]
-                                                                         userId: responseDictionary[@"user_id"]];
+         SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
+                                                                                          expiresIn: responseDictionary[@"expires_in"]
+                                                                                       refreshToken: responseDictionary[@"refresh_token"]
+                                                                                        resourceURL: responseDictionary[@"resource_url"]
+                                                                                          tokenType: responseDictionary[@"token_type"]
+                                                                                             userId: responseDictionary[@"user_id"]];
          
-         if (self.oAuth2Credential == nil)
+         if (newOAuth2Credentials == nil)
          {
              DebugLog(@"Invalid credential returned");
              errorBlock(@{@"parsing_error": @"credentialWithAccessToken: did not complete correctly"});
              return;
          }
          
-         // We were successful, so save the credentials to the keychain
-         [self.oAuth2Credential saveToKeychainForService: kOAuth2ClientId
-                                                 account: kOAuth2ClientId];
          
-         completionBlock(self.oAuth2Credential);
+         completionBlock(newOAuth2Credentials);
          
      }
                                   errorHandler: ^(NSError* error)
@@ -215,11 +214,12 @@
 
 #pragma mark - User management
 
-- (void) userInformationForUserId: (NSString *) userId
-                 completionHandler: (MKNKUserSuccessBlock) completionBlock
-                      errorHandler: (MKNKUserErrorBlock) errorBlock
+
+- (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
+                      completionHandler: (MKNKUserSuccessBlock) completionBlock
+                           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : credentials.userId};
     
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
@@ -231,7 +231,7 @@
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary) {
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary) {
         
         
         NSString* possibleError = responseDictionary[@"error"];
@@ -246,9 +246,6 @@
         
         [self.registry registerUserFromDictionary:responseDictionary];
         
-        // Test if new User is in Core Data
-        
-        
         
         completionBlock(responseDictionary);
          
@@ -258,9 +255,16 @@
          NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
          errorBlock(customErrorDictionary);
          
+         
      }];
     
-    [self enqueueSignedOperation: networkOperation];
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: kOAuth2ClientSecret];
+    
+    [networkOperation setAuthorizationHeaderValue: credentials.accessToken
+                                      forAuthType: @"Bearer"];
+    
+    [self enqueueOperation: networkOperation];
 }
 
 
@@ -329,6 +333,12 @@
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    if(!self.oAuth2Credential) {
+        DebugLog(@"No OAuth@Credential for createChannelWithData...");
+        errorBlock(@{@"credentials_error" : @"No OAuth2 Credentials found..."});
+        return;
+    }
+    
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId};
 
     NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
@@ -355,6 +365,12 @@
                   completionHandler: (MKNKUserSuccessBlock) completionBlock
                        errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    if(!self.oAuth2Credential) {
+        DebugLog(@"No OAuth@Credential for createChannelWithData...");
+        errorBlock(@{@"credentials_error" : @"No OAuth2 Credentials found..."});
+        return;
+    }
+    
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId,
                                                 @"CHANNELID" : channelId};
 
@@ -388,6 +404,12 @@
                            completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    if(!self.oAuth2Credential) {
+        DebugLog(@"No OAuth@Credential for createChannelWithData...");
+        errorBlock(@{@"credentials_error" : @"No OAuth2 Credentials found..."});
+        return;
+    }
+    
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : self.oAuth2Credential.userId,
                                                 @"CHANNELID" : channelId};
     
@@ -417,6 +439,13 @@
                                               errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
+}
+
+
+
+-(SYNOAuth2Credential*)oAuth2Credential
+{
+    return self.appDelegate.currentOAuth2Credentials;
 }
 
 // Test code template

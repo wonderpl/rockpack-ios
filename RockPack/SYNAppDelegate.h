@@ -12,6 +12,7 @@
 #import "SYNSearchRegistry.h"
 #import "SYNRegistry.h"
 #import "User.h"
+#import "SYNOAuth2Credential.h"
 
 // Something new!
 
@@ -32,6 +33,7 @@
 @property (readonly, nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 
 @property (readonly, nonatomic, strong) User* currentUser;
+@property (nonatomic, strong) SYNOAuth2Credential* currentOAuth2Credentials;
 
 // Root view controller
 @property (strong, nonatomic) UIViewController *viewController;

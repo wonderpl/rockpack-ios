@@ -557,6 +557,24 @@
                                                  forPassword: passwordInputField.text
                                            completionHandler: ^(SYNOAuth2Credential* credential) {
                                                
+                                               // Case where the user is a member of Rockpack but has not signing in this device
+                                               
+                                               [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
+                                                                                      completionHandler:^(NSDictionary* dictionary) {
+                                                  
+                                                   
+                                                                                          [credential saveToKeychainForService: kOAuth2Service
+                                                                                                                       account: credential.userId];
+                                                   
+                                                                                          [activityIndicator stopAnimating];
+                                                                                          [self completeLoginProcess:credential];
+                                                   
+                                                                                      } errorHandler:^(NSDictionary* errorDictionary) {
+                                                   
+                                                   
+                                                   
+                                                                                      }];
+                                               
                                                
                                                
                                                
@@ -664,37 +682,52 @@
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
         [appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
-         completionHandler: ^(SYNOAuth2Credential* credential)
-         {
-             DebugLog(@"Loggin in User with id: %@", credential.accessToken);
-             [activityIndicator stopAnimating];
-             [self completeLoginProcess:credential];
-         }
-         errorHandler: ^(NSDictionary* errorDictionary)
-         {
-             facebookLogingInLabel.alpha = 0.0;
+                                                     completionHandler: ^(SYNOAuth2Credential* credential) {
+                                                         
+                                                         [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
+                                                                                                      completionHandler:^(NSDictionary* dictionary) {
+                                                                                                          
+                                                                                                          
+                                                                                                          [credential saveToKeychainForService: kOAuth2Service
+                                                                                                                                       account: credential.userId];
+                                                                                                          
+                                                                                                          DebugLog(@"Loggin in User with id: %@", credential.accessToken);
+                                                                                                          [activityIndicator stopAnimating];
+                                                                                                          [self completeLoginProcess:credential];
+                                                                                                          
+                                                                                                      } errorHandler:^(NSDictionary* errorDictionary) {
+                                                                                                          
+                                                                                                          
+                                                                                                          
+                                                                                                      }];
+                                                         
+                                                         
+                                                         
+                                                     } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                         
+                                                         facebookLogingInLabel.alpha = 0.0;
              
-             signUpButton.alpha = 1.0;
+                                                         signUpButton.alpha = 1.0;
              
-             signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
-             [activityIndicator stopAnimating];
+                                                         signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
+                                                         [activityIndicator stopAnimating];
              
-             NSDictionary* formErrors = errorDictionary [@"form_errors"];
+                                                         NSDictionary* formErrors = errorDictionary [@"form_errors"];
              
-             userNameInputField.enabled = YES;
-             passwordForgottenButton.enabled = YES;
-             finalLoginButton.enabled = YES;
-             loginButton.enabled = YES;
+                                                         userNameInputField.enabled = YES;
+                                                         passwordForgottenButton.enabled = YES;
+                                                         finalLoginButton.enabled = YES;
+                                                         loginButton.enabled = YES;
              
-             passwordForgottenButton.enabled = YES;
+                                                         passwordForgottenButton.enabled = YES;
              
-             if (formErrors)
-             {
-                 facebookSignInButton.enabled = YES;
-                 secondaryFacebookMessage.text = @"Could not log in through facebook";
-                 secondaryFacebookMessage.alpha = 1.0;
-             }
-         }];
+                                                         if (formErrors)
+                                                         {
+                                                             facebookSignInButton.enabled = YES;
+                                                             secondaryFacebookMessage.text = @"Could not log in through facebook";
+                                                             secondaryFacebookMessage.alpha = 1.0;
+                                                         }
+                                                     }];
     }
     onFailure: ^(NSString* errorString)
     {
@@ -708,6 +741,11 @@
 -(IBAction)forgottenPasswordPressed:(id)sender
 {
     
+}
+
+-(void)showAutologin
+{
+    [self doFacebookLoginAnimation];
 }
 -(BOOL)registrationFormIsValid
 {
@@ -830,34 +868,41 @@
     [activityIndicator startAnimating];
     
     [appDelegate.oAuthNetworkEngine registerUserWithData:userData
-     completionHandler: ^(SYNOAuth2Credential* credential)
-     {
-         [appDelegate.oAuthNetworkEngine userInformationForUserId:credential.userId completionHandler:^(NSDictionary* dictionary) {
+                                       completionHandler: ^(SYNOAuth2Credential* credential) {
+                                           
+                                           // Case where the user registers
+                                           
+                                           [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
+                                                                                        completionHandler:^(NSDictionary* dictionary) {
+                                                                                      
+                                                                                      
+                                                                                            [credential saveToKeychainForService: kOAuth2Service
+                                                                                                                         account: credential.userId];
              
              
-             [self completeLoginProcess: credential];
+                                                                                            [self completeLoginProcess: credential];
              
-         } errorHandler:^(NSDictionary* errorDictionary) {
+                                                                                        } errorHandler:^(NSDictionary* errorDictionary) {
              
-         }];
+                                                                                        }];
          
-         registerNewUserButton.enabled = YES;
-     }
-     errorHandler: ^(NSDictionary* errorDictionary)
-     {
-         NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                                           registerNewUserButton.enabled = YES;
+                                           
+                                       } errorHandler: ^(NSDictionary* errorDictionary) {
+                                           
+                                           NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
          
-         if (formErrors)
-         {
-             [self showRegistrationError:formErrors];
-         }
+                                           if (formErrors)
+                                           {
+                                               [self showRegistrationError:formErrors];
+                                           }
          
-         registerNewUserButton.enabled = YES;
+                                           registerNewUserButton.enabled = YES;
          
-         [activityIndicator stopAnimating];
-         registerNewUserButton.alpha = 1.0;
+                                           [activityIndicator stopAnimating];
+                                           registerNewUserButton.alpha = 1.0;
          
-     }];
+                                       }];
 
     return;
 }
