@@ -43,7 +43,7 @@
         
         user = appDelegate.currentUser;
         
-        
+        self.title = @"Account Settings";
         
     }
     return self;
@@ -228,6 +228,8 @@
 {
     if(indexPath.section == 0)
     {
+        
+        
         switch (indexPath.row) {
                 
             case 0:

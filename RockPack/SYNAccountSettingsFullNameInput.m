@@ -30,8 +30,8 @@
 {
     [super viewDidLoad];
     
-    self.inputField.rightViewMode = UITextFieldViewModeAlways;
-    self.inputField.rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+    self.inputField.leftViewMode = UITextFieldViewModeAlways;
+    self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFullname.png"]];
     
     CGRect tableViewFrame = CGRectMake(10.0, 50.0, self.contentSizeForViewInPopover.width - 10.0, 120.0);
     self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStyleGrouped];
