@@ -200,9 +200,9 @@
     
     self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-    {
-        NSError *error = nil;
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+//    {
+//        NSError *error = nil;
     
         NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
                                                                   inDomains: NSUserDomainMask] lastObject];
@@ -245,7 +245,7 @@
         {
             DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
         }
-    });
+//    });
     
     // Registries
     
