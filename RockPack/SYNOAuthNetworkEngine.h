@@ -29,7 +29,6 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-
 // User information
 
 - (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
@@ -76,16 +75,77 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
               completionHandler: (MKNKUserSuccessBlock) completionBlock
                    errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) updatePrivacyForChannelForUserId: (NSString *) userId
+                                channelId: (NSString *) channelId
+                                 isPublic: (BOOL) isPublic
+                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) deleteChannelForUserId: (NSString *) userId
+                      channelId: (NSString *) channelId
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+
+- (void) videosForChannelForUserId: (NSString *) userId
+                         channelId: (NSString *) channelId
+                 completionHandler: (MKNKUserSuccessBlock) completionBlock
+                      errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
                         videoInstanceSet: (NSOrderedSet *) videoInstanceSet
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) updatePrivacyForChannelForUserId: (NSString *) userId
-                                channelId: (NSString *) channelId
-                                 isPublic: (BOOL) isPublic
-                        completionHandler: (MKNKUserSuccessBlock) completionBlock
-                             errorHandler: (MKNKUserErrorBlock) errorBlock;
+// User activity
+
+- (void) recordActivityForUserId: (NSString *) userId
+                          action: (NSString *) action
+                 videoInstanceId: (NSString *) videoInstanceId
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) activityForUserId: (NSString *) userId
+         completionHandler: (MKNKUserSuccessBlock) completionBlock
+              errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+// Cover art
+
+- (void) coverArtForUserId: (NSString *) userId
+                     start: (unsigned int) start
+                      size: (unsigned int) size
+         completionHandler: (MKNKUserSuccessBlock) completionBlock
+              errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) uploadCoverArtForUserId: (NSString *) userId
+                           image: (UIImage *) image
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+
+- (void) deleteCoverArtForUserId: (NSString *) userId
+                         coverId: (NSString *) coverId
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+// Sunscriptions
+
+- (void) channelSubscriptionsForUserId: (NSString *) userId
+                                 start: (unsigned int) start
+                                  size: (unsigned int) size
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) channelSubscribeForUserId: (NSString *) userId
+                        channelURL: (NSString *) channelURL
+                 completionHandler: (MKNKUserSuccessBlock) completionBlock
+                      errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) channelUnsubscribeForUserId: (NSString *) userId
+                        resourceURL: (NSString *) resourceURL
+                  completionHandler: (MKNKUserSuccessBlock) completionBlock
+                       errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 
 @end

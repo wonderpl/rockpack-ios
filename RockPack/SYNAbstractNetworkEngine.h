@@ -8,7 +8,10 @@
 
 #import "MKNetworkEngine.h"
 #import "SYNMainRegistry.h"
+#import "SYNNetworkOperationJsonObject.h"
 #import "SYNSearchRegistry.h"
+
+@class SYNNetworkOperationJsonObject;
 
 @interface SYNAbstractNetworkEngine : MKNetworkEngine
 
@@ -19,5 +22,9 @@
 - (id) initWithDefaultSettings;
 
 - (NSString *) hostName;
+
+- (void) addCommonHandlerToNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                          completionHandler: (MKNKUserSuccessBlock) completionBlock
+                               errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 @end

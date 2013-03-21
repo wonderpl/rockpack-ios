@@ -34,6 +34,42 @@
 
 #pragma mark - Engine API
 
+// Subscription updates
+
+// New way of getting updates to the user's subscriptions
+
+- (void) subscriptionsUpdatesForUserId: (NSString *) userId
+                                 start: (unsigned int) start
+                                  size: (unsigned int) size
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
+    NSDictionary *params = nil;
+    if (size > 0)
+    {
+        params = @{@"start" : @(start), @"size" : @(size)};
+    }
+    
+    NSString *apiString = [kAPIUserSubscriptionUpdates stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
+// TODO: Need to deprecate this in favour of the method above
 - (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
