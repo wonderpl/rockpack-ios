@@ -36,9 +36,11 @@
     
     passwordField = [self createInputField];
     passwordField.placeholder = @"New Password";
+    passwordField.secureTextEntry = YES;
     [self.view addSubview:passwordField];
     
     passwordConfirmField = [self createInputField];
+    passwordConfirmField.secureTextEntry = YES;
     passwordConfirmField.placeholder = @"Confirm Password";
     [self.view addSubview:passwordConfirmField];
 	

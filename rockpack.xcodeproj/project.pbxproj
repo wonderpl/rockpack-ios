@@ -534,6 +534,14 @@
 		BE21EEAC16FB4C060067223B /* SYNAccountSettingsShareSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EEAA16FB4C050067223B /* SYNAccountSettingsShareSettings.m */; };
 		BE21EEAF16FB4ECE0067223B /* SYNAccountSettingsPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EEAE16FB4ECD0067223B /* SYNAccountSettingsPassword.m */; };
 		BE21EEB216FB56090067223B /* SYNPaddedUITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EEB116FB56080067223B /* SYNPaddedUITextField.m */; };
+		BE21EEBB16FB584C0067223B /* ButtonAccountBackDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB316FB584C0067223B /* ButtonAccountBackDefault.png */; };
+		BE21EEBC16FB584C0067223B /* ButtonAccountBackDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB416FB584C0067223B /* ButtonAccountBackDefault@2x.png */; };
+		BE21EEBD16FB584C0067223B /* ButtonAccountBackHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB516FB584C0067223B /* ButtonAccountBackHighlighted.png */; };
+		BE21EEBE16FB584C0067223B /* ButtonAccountBackHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB616FB584C0067223B /* ButtonAccountBackHighlighted@2x.png */; };
+		BE21EEBF16FB584C0067223B /* ButtonAccountSaveDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB716FB584C0067223B /* ButtonAccountSaveDefault.png */; };
+		BE21EEC016FB584C0067223B /* ButtonAccountSaveDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB816FB584C0067223B /* ButtonAccountSaveDefault@2x.png */; };
+		BE21EEC116FB584C0067223B /* ButtonAccountSaveHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEB916FB584C0067223B /* ButtonAccountSaveHighlighted.png */; };
+		BE21EEC216FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EEBA16FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png */; };
 		BE270B7F16EDE0E800CDDA6D /* SYNLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */; };
 		BE270B8016EDE0E800CDDA6D /* SYNLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */; };
 		BE270B8316EE200C00CDDA6D /* ChannelButtonBuy.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270B8116EE200C00CDDA6D /* ChannelButtonBuy.png */; };
@@ -1249,6 +1257,14 @@
 		BE21EEAE16FB4ECD0067223B /* SYNAccountSettingsPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsPassword.m; sourceTree = "<group>"; };
 		BE21EEB016FB56070067223B /* SYNPaddedUITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNPaddedUITextField.h; sourceTree = "<group>"; };
 		BE21EEB116FB56080067223B /* SYNPaddedUITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNPaddedUITextField.m; sourceTree = "<group>"; };
+		BE21EEB316FB584C0067223B /* ButtonAccountBackDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAccountBackDefault.png; path = Assets/Images/ButtonAccountBackDefault.png; sourceTree = "<group>"; };
+		BE21EEB416FB584C0067223B /* ButtonAccountBackDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAccountBackDefault@2x.png"; path = "Assets/Images/ButtonAccountBackDefault@2x.png"; sourceTree = "<group>"; };
+		BE21EEB516FB584C0067223B /* ButtonAccountBackHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAccountBackHighlighted.png; path = Assets/Images/ButtonAccountBackHighlighted.png; sourceTree = "<group>"; };
+		BE21EEB616FB584C0067223B /* ButtonAccountBackHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAccountBackHighlighted@2x.png"; path = "Assets/Images/ButtonAccountBackHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE21EEB716FB584C0067223B /* ButtonAccountSaveDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAccountSaveDefault.png; path = Assets/Images/ButtonAccountSaveDefault.png; sourceTree = "<group>"; };
+		BE21EEB816FB584C0067223B /* ButtonAccountSaveDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAccountSaveDefault@2x.png"; path = "Assets/Images/ButtonAccountSaveDefault@2x.png"; sourceTree = "<group>"; };
+		BE21EEB916FB584C0067223B /* ButtonAccountSaveHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAccountSaveHighlighted.png; path = Assets/Images/ButtonAccountSaveHighlighted.png; sourceTree = "<group>"; };
+		BE21EEBA16FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAccountSaveHighlighted@2x.png"; path = "Assets/Images/ButtonAccountSaveHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE270B7C16EDE0E800CDDA6D /* SYNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewController.h; sourceTree = "<group>"; };
 		BE270B7D16EDE0E800CDDA6D /* SYNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewController.m; sourceTree = "<group>"; };
 		BE270B7E16EDE0E800CDDA6D /* SYNLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewController.xib; sourceTree = "<group>"; };
@@ -2793,6 +2809,14 @@
 		BE21EE8816FA27EF0067223B /* Account Settings */ = {
 			isa = PBXGroup;
 			children = (
+				BE21EEB316FB584C0067223B /* ButtonAccountBackDefault.png */,
+				BE21EEB416FB584C0067223B /* ButtonAccountBackDefault@2x.png */,
+				BE21EEB516FB584C0067223B /* ButtonAccountBackHighlighted.png */,
+				BE21EEB616FB584C0067223B /* ButtonAccountBackHighlighted@2x.png */,
+				BE21EEB716FB584C0067223B /* ButtonAccountSaveDefault.png */,
+				BE21EEB816FB584C0067223B /* ButtonAccountSaveDefault@2x.png */,
+				BE21EEB916FB584C0067223B /* ButtonAccountSaveHighlighted.png */,
+				BE21EEBA16FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png */,
 				BE21EE8916FA28680067223B /* IconBirthday.png */,
 				BE21EE8A16FA28680067223B /* IconBirthday@2x.png */,
 				BE21EE8B16FA28680067223B /* IconEmail.png */,
@@ -3483,6 +3507,14 @@
 				BE21EE9E16FA28680067223B /* IconLocation@2x.png in Resources */,
 				BE21EE9F16FA28680067223B /* IconUsername.png in Resources */,
 				BE21EEA016FA28680067223B /* IconUsername@2x.png in Resources */,
+				BE21EEBB16FB584C0067223B /* ButtonAccountBackDefault.png in Resources */,
+				BE21EEBC16FB584C0067223B /* ButtonAccountBackDefault@2x.png in Resources */,
+				BE21EEBD16FB584C0067223B /* ButtonAccountBackHighlighted.png in Resources */,
+				BE21EEBE16FB584C0067223B /* ButtonAccountBackHighlighted@2x.png in Resources */,
+				BE21EEBF16FB584C0067223B /* ButtonAccountSaveDefault.png in Resources */,
+				BE21EEC016FB584C0067223B /* ButtonAccountSaveDefault@2x.png in Resources */,
+				BE21EEC116FB584C0067223B /* ButtonAccountSaveHighlighted.png in Resources */,
+				BE21EEC216FB584C0067223B /* ButtonAccountSaveHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -43,9 +43,10 @@
     lastTextFieldY = 10.0;
     
     CGRect buttonRect = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
-    saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     saveButton.frame = buttonRect;
-    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    [saveButton setImage:[UIImage imageNamed:@"ButtonAccountSaveDefault.png"] forState:UIControlStateNormal];
+    [saveButton setImage:[UIImage imageNamed:@"ButtonAccountSaveHighlighted.png"] forState:UIControlStateHighlighted];
     [self.view addSubview:saveButton];
 	
     inputField = [self createInputField];
