@@ -11,7 +11,7 @@
 
 @interface SYNAccountSettingsTextInputController ()
 
-
+@property (nonatomic) CGFloat lastTextFieldY;
 
 @end
 
@@ -19,6 +19,7 @@
 
 @synthesize inputField, saveButton;
 @synthesize appDelegate;
+@synthesize lastTextFieldY;
 
 -(id)initWithUserFieldType:(UserFieldType)userFieldType
 {
@@ -38,19 +39,45 @@
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
     
     self.view.backgroundColor = [UIColor clearColor];
-	
-    inputField = [[UITextField alloc] initWithFrame:CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 30.0)];
-    inputField.backgroundColor = [UIColor whiteColor];
-    inputField.layer.cornerRadius = 5.0f;
-    [self.view addSubview:inputField];
     
-    CGRect buttonRect = CGRectMake(10.0, 100.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
+    lastTextFieldY = 10.0;
+    
+    CGRect buttonRect = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
     saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     saveButton.frame = buttonRect;
     [saveButton setTitle:@"Save" forState:UIControlStateNormal];
     [self.view addSubview:saveButton];
+	
+    inputField = [self createInputField];
+    [self.view addSubview:inputField];
+    
+    
     
     [saveButton addTarget:self action:@selector(saveButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(SYNPaddedUITextField*)createInputField
+{
+    
+    
+    
+    
+    SYNPaddedUITextField* newInputField = [[SYNPaddedUITextField alloc] initWithFrame:CGRectMake(10.0,
+                                                                                                 lastTextFieldY,
+                                                                                                 self.contentSizeForViewInPopover.width - 10.0,
+                                                                                                 40.0)];
+    
+    
+                           
+                           
+    newInputField.backgroundColor = [UIColor whiteColor];
+    newInputField.layer.cornerRadius = 5.0f;
+    
+    saveButton.center = CGPointMake(saveButton.center.x, saveButton.center.y + lastTextFieldY);
+    
+    lastTextFieldY += newInputField.frame.size.height + 10.0;
+    
+    return newInputField;
 }
 
 -(void)saveButtonPressed:(UIButton*)button

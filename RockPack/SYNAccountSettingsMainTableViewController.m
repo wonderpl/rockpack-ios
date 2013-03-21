@@ -18,6 +18,7 @@
 #import "SYNAccountSettingsDOB.h"
 #import "SYNAccountSettingsPushNotifications.h"
 #import "SYNAccountSettingsShareSettings.h"
+#import "SYNAccountSettingsPassword.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -278,7 +279,7 @@
                 break;
                 
             case 2:
-                
+                [self.navigationController pushViewController:[[SYNAccountSettingsPassword alloc] init] animated:YES];
                 break;
                 
             case 3:
