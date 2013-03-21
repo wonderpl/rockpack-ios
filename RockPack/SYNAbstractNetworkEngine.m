@@ -62,4 +62,33 @@
     AssertOrLog(@"Should not be calling abstract host name method");
     return nil;
 }
+
+#pragma mark - Common functionality
+
+// This code block is common to all of the signup/signin methods
+- (void) addCommonHandlerToNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+                          completionHandler: (MKNKUserSuccessBlock) completionBlock
+                               errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    [networkOperation addJSONCompletionHandler: ^(id response)
+     {
+         // Check to see if our response is a NSDictionary and if it has an error hash
+         if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
+         {
+             DebugLog(@"API Call failed: %@", response);
+             errorBlock(response);
+         }
+         else
+         {
+             // OK, all seems to have gone well, return the object
+             completionBlock(response);
+         }
+     }
+                                  errorHandler: ^(NSError* error)
+     {
+         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         DebugLog(@"API Call failed: %@", customErrorDictionary);
+         errorBlock(customErrorDictionary);
+     }];
+}
 @end

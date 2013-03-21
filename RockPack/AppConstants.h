@@ -49,6 +49,11 @@
 #define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
 #define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"     /* PUT */
+#define kAPIDeleteChannel           @"/ws/USERID/channels/CHANNELID/"     /* PUT */
+
+// Videos for channel
+#define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
+#define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */
 
 // User activity
 #define kAPIRecordUserActivity      @"/ws/USERID/activity/"                     /* POST */
@@ -64,9 +69,9 @@
 #define kAPICreateUserSubscription  @"/ws/USERID/subscriptions/"                /* POST */
 #define kAPIDeleteUserSubscription  @"/ws/USERID/subscriptions/SUBSCRIPTION/"   /* DELETE */  
 
-// Videos for channel
-#define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
-#define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */
+// Subscription updates
+
+#define kAPIUserSubscriptionUpdates @"/ws/USERID/subscriptions/recent_videos/"  /* GET */
 
 // Something
 #define kAPIPopularVideos           @"ws/videos/"

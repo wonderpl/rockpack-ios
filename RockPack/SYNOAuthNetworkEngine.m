@@ -84,10 +84,14 @@
                                           completionHandler: (MKNKLoginCompleteBlock) completionBlock
                                                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    // Add locale to every request
+    NSDictionary* localeParam = @{@"locale" : self.localeString};
+    [networkOperation addParams: localeParam];
+    
     [networkOperation setUsername: kOAuth2ClientId
                          password: @""
                         basicAuth: YES];
-    
+
     [networkOperation addJSONCompletionHandler: ^(id response)
      {
          if ([response isKindOfClass: [NSDictionary class]])
@@ -196,36 +200,6 @@
 }
 
 
-#pragma mark - Common functionality
-
-// This code block is common to all of the signup/signin methods
-- (void) addCommonOAuthPropertiesToSignedNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
-                                        completionHandler: (MKNKUserSuccessBlock) completionBlock
-                                             errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    [networkOperation addJSONCompletionHandler: ^(id response)
-     {
-         // Check to see if our response is a NSDictionary and if it has an error hash
-         if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
-         {
-             DebugLog(@"API Call failed: %@", response);
-             errorBlock(response);
-         }
-         else
-         {
-             // OK, all seems to have gone well, return the object
-             completionBlock(response);
-         }
-     }
-     errorHandler: ^(NSError* error)
-     {
-         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
-         DebugLog(@"API Call failed: %@", customErrorDictionary);
-         errorBlock(customErrorDictionary);
-     }];
-}
-
-
 #pragma mark - User management
 
 - (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
@@ -237,10 +211,10 @@
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: nil
+                                                                                                       params: @{@"locale" : self.localeString}
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];    
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+    [self addCommonHandlerToNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
@@ -301,7 +275,7 @@
          return JSONFormattedPassword;
      } forType: @"application/json"];
     
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+    [self addCommonHandlerToNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
@@ -332,7 +306,7 @@
     
     [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
 
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+    [self addCommonHandlerToNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
@@ -354,9 +328,14 @@
     
     // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
     NSDictionary *params = nil;
-    if (size > 0)
+    
+    if (size == 0)
     {
-        params = @{@"start" : @(start), @"size" : @(size)};
+        params = @{@"locale" : self.localeString};
+    }
+    else
+    {
+        params = @{@"locale" : self.localeString, @"start" : @(start), @"size" : @(size)};
     }
     
     NSString *apiString = [kAPIGetChannelDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
@@ -365,7 +344,7 @@
                                                                                                        params: params
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+    [self addCommonHandlerToNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
@@ -397,7 +376,7 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+    [self addCommonHandlerToNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
@@ -415,19 +394,55 @@
               completionHandler: (MKNKUserSuccessBlock) completionBlock
                    errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
-    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+//    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+//    
+//    [self manageChannelForUserId: userId
+//                           title: title
+//                     description: description
+//                        category: category
+//                           cover: cover
+//                        isPublic: isPublic
+//                       apiString: apiString
+//                        httpVerb: @"POST"
+//               completionHandler: completionBlock
+//                    errorHandler: errorBlock];
+
+    // http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/
     
-    [self manageChannelForUserId: userId
-                           title: title
-                     description: description
-                        category: category
-                           cover: cover
-                        isPublic: isPublic
-                       apiString: apiString
-                        httpVerb: @"POST"
-               completionHandler: completionBlock
-                    errorHandler: errorBlock];
+//    [self channelSubscribeForUserId: (NSString *) userId
+//                         channelURL: @"http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/"
+//                completionHandler: ^(id thing)
+//     {
+//         NSLog (@"Worked %@", thing);
+//     }
+//                     errorHandler: ^(id thing)
+//     {
+//         NSLog (@"Didn't work");
+//     }];
+    
+    [self channelUnsubscribeForUserId: (NSString *) userId
+                         resourceURL: @"https://secure.demo.rockpack.com/ws/pKjfvsAqRT2QNx1CH1L-yA/subscriptions/chbAApZrKhRN-ABK-q-oSdig/"
+                   completionHandler: ^(id thing)
+     {
+         NSLog (@"Worked %@", thing);
+     }
+                        errorHandler: ^(id thing)
+     {
+         NSLog (@"Didn't work");
+     }];
+    
+    
+//    [self channelSubscriptionsForUserId: (NSString *) userId
+//                         start: 0 size: 0
+//                  completionHandler: ^(id thing)
+//     {
+//         NSLog (@"Worked %@", thing);
+//     }
+//                       errorHandler: ^(id thing)
+//     {
+//         NSLog (@"Didn't work");
+//     }];
 }
 
 
@@ -460,9 +475,86 @@
 }
 
 
+- (void) updatePrivacyForChannelForUserId: (NSString *) userId
+                                channelId: (NSString *) channelId
+                                isPublic: (BOOL) isPublic
+                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSString *apiString = [kAPIUpdateChannelPrivacy stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"PUT"
+                                                                                                          ssl: TRUE];
+    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
+     {
+         // Wrap it in quotes to make it valid JSON
+         NSString *privacyValueString = [NSString stringWithFormat: @"%@", isPublic ? @"true" : @"false"];
+         return privacyValueString;
+     }
+     forType: @"application/json"];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+- (void) deleteChannelForUserId: (NSString *) userId
+                      channelId: (NSString *) channelId
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSString *apiString = [kAPIDeleteChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"DELETE"
+                                                                                                          ssl: TRUE];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+- (void) videosForChannelForUserId: (NSString *) userId
+                         channelId: (NSString *) channelId
+                 completionHandler: (MKNKUserSuccessBlock) completionBlock
+                      errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSString *apiString = [kAPIUpdateVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
-                            videoInstanceSet: (NSOrderedSet *) videoInstanceSet
+                        videoInstanceSet: (NSOrderedSet *) videoInstanceSet
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -494,9 +586,9 @@
          
          return jsonString;
      }
-     forType: @"application/json"];
+                                               forType: @"application/json"];
     
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+    [self addCommonHandlerToNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
@@ -504,55 +596,217 @@
 }
 
 
-- (void) updatePrivacyForChannelForUserId: (NSString *) userId
-                                channelId: (NSString *) channelId
-                                isPublic: (BOOL) isPublic
-                        completionHandler: (MKNKUserSuccessBlock) completionBlock
-                             errorHandler: (MKNKUserErrorBlock) errorBlock
+// User activity
+
+- (void) recordActivityForUserId: (NSString *) userId
+                          action: (NSString *) action
+                 videoInstanceId: (NSString *) videoInstanceId
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
-                                                @"CHANNELID" : channelId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
-    NSString *apiString = [kAPIUpdateChannelPrivacy stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    NSString *apiString = [kAPIRecordUserActivity stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
+    
+    NSDictionary *params = @{@"action" : action,
+                             @"video_instance" : videoInstanceId};
+
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+- (void) activityForUserId: (NSString *) userId
+         completionHandler: (MKNKUserSuccessBlock) completionBlock
+              errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIGetUserActivity stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
-                                                                                                   httpMethod: @"PUT"
+                                                                                                   httpMethod: @"GET"
                                                                                                           ssl: TRUE];
-    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
-     {
-         // Wrap it in quotes to make it valid JSON
-         NSString *privacyValueString = [NSString stringWithFormat: @"%@", isPublic ? @"true" : @"false"];
-         return privacyValueString;
-     }
-     forType: @"application/json"];
     
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+    [self addCommonHandlerToNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
 
-// Test code template
+// Cover art
 
-//[self userInformationForUserId: self.oAuth2Credential.userId
-//             completionHandler: ^(NSDictionary* errorDictionary)
-// {
-//     DebugLog(@"User data %@", errorDictionary);
-//     // If we successfuly created a channel, then upload the videos for that channel
-//     //             [self uploadVideosForChannel];
-// }
-//                  errorHandler: ^(NSDictionary* errorDictionary)
-// {
-//     DebugLog(@"Channel creation failed");
-//     NSDictionary* formErrors = errorDictionary[@"form_errors"];
-//     
-//     if (formErrors)
-//     {
-//         // TODO: Show errors in channel creation
-//         //           [self showRegistrationError:formErrors];
-//     }
-// }];
+- (void) coverArtForUserId: (NSString *) userId
+                     start: (unsigned int) start
+                      size: (unsigned int) size
+         completionHandler: (MKNKUserSuccessBlock) completionBlock
+              errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
+    NSDictionary *params = nil;
+    if (size > 0)
+    {
+        params = @{@"start" : @(start), @"size" : @(size)};
+    }
+    
+    NSString *apiString = [kAPIGetCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+- (void) uploadCoverArtForUserId: (NSString *) userId
+                           image: (UIImage *) image
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIUploadCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    // We have to perform the image upload with an input stream
+    NSData *imageData = UIImagePNGRepresentation(image);
+    NSString *lengthString = [NSString stringWithFormat: @"%@", [NSNumber numberWithUnsignedLong: imageData.length]];
+    NSInputStream *inputStream = [NSInputStream inputStreamWithData: imageData];
+    networkOperation.uploadStream = inputStream;
+    
+    [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+- (void) deleteCoverArtForUserId: (NSString *) userId
+                         coverId: (NSString *) coverId
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"COVERID" : coverId};
+    
+    NSString *apiString = [kAPIDeleteCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"DELETE"
+                                                                                                          ssl: TRUE];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+// Channel subsctiptions
+
+- (void) channelSubscriptionsForUserId: (NSString *) userId
+                                 start: (unsigned int) start
+                                  size: (unsigned int) size
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
+    NSDictionary *params = nil;
+    if (size > 0)
+    {
+        params = @{@"start" : @(start), @"size" : @(size)};
+    }
+    
+    NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+- (void) channelSubscribeForUserId: (NSString *) userId
+                        channelURL: (NSString *) channelURL
+                 completionHandler: (MKNKUserSuccessBlock) completionBlock
+                      errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPICreateUserSubscription stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    
+    
+    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
+     {
+         // Wrap it in quotes to make it valid JSON
+         NSString *channelURLJSONString = [NSString stringWithFormat: @"\"%@\"", channelURL];
+         return channelURLJSONString;
+     }
+     forType: @"application/json"];
+    
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+- (void) channelUnsubscribeForUserId: (NSString *) userId
+                        resourceURL: (NSString *) resourceURL
+                  completionHandler: (MKNKUserSuccessBlock) completionBlock
+                       errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
+                                                                                                            params: nil
+                                                                                                        httpMethod: @"DELETE"];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
 
 @end
