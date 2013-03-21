@@ -45,6 +45,7 @@
         self.numberLabel.userInteractionEnabled = NO;
         self.numberLabel.backgroundColor = [UIColor clearColor];
         self.numberLabel.center = CGPointMake(self.numberLabel.center.x, 30.0);
+        self.numberLabel.frame = CGRectIntegral(self.numberLabel.frame);
         [self addSubview:self.numberLabel];
         
         
@@ -61,6 +62,7 @@
         self.nameLabel.userInteractionEnabled = NO;
         self.nameLabel.backgroundColor = [UIColor clearColor];
         self.nameLabel.center = CGPointMake(self.nameLabel.center.x, 55.0);
+        self.nameLabel.frame = CGRectIntegral(self.nameLabel.frame);
         [self addSubview:self.nameLabel];
         
         

@@ -274,6 +274,10 @@ typedef enum _kQueueMoveDirection {
     CGFloat offset = (direction == kQueueMoveDirectionUp) ? -(kQueueViewOffset) : kQueueViewOffset ;
     CGFloat timeDuration = (direction == kQueueMoveDirectionUp) ? 0.3 : 0.2;
     
+    CGRect videoQRect = self.videoQueueView.frame;
+    videoQRect.origin.y += offset;
+    
+    
     if (animated)
     {
         [UIView animateWithDuration: timeDuration
@@ -281,8 +285,7 @@ typedef enum _kQueueMoveDirection {
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^{
                              
-                             
-                             self.videoQueueView.center = CGPointMake(self.videoQueueView.center.x, self.videoQueueView.center.y + offset);
+                             self.videoQueueView.frame = CGRectIntegral(videoQRect);
                          }
                          completion: ^(BOOL finished) {
                              

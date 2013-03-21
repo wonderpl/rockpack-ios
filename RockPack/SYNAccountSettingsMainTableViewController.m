@@ -43,7 +43,7 @@
         
         user = appDelegate.currentUser;
         
-        
+        self.title = @"Account Settings";
         
     }
     return self;
@@ -115,6 +115,7 @@
                 } else {
                     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", user.firstName, user.lastName];
                 }
+                cell.imageView.image = [UIImage imageNamed:@"IconFullname.png"];
                 cell.detailTextLabel.text = @"Full Name - Public";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
@@ -125,6 +126,7 @@
                 } else {
                     cell.textLabel.text = user.username;
                 }
+                cell.imageView.image = [UIImage imageNamed:@"IconUsername.png"];
                 cell.detailTextLabel.text = @"Username - Public";
                 break;
                 
@@ -134,24 +136,27 @@
                 } else {
                     cell.textLabel.text = user.emailAddress;
                 }
-                
+                cell.imageView.image = [UIImage imageNamed:@"IconEmail.png"];
                 cell.detailTextLabel.text = @"Email - Private";
                 break;
                 
             case 3:
-                cell.textLabel.text = @"078897898";
-                cell.detailTextLabel.text = @"Phone - Private";
+                cell.textLabel.text = @"London - UK";
+                cell.detailTextLabel.text = @"Location";
+                cell.imageView.image = [UIImage imageNamed:@"IconLocation.png"];
                 break;
                 
             case 4:
                 cell.textLabel.text = ([user.gender isEqual:@(GenderMale)]) ? @"Male" : @"Female";
                 cell.detailTextLabel.text = @"Gender - Private";
+                cell.imageView.image = [UIImage imageNamed:@"IconGender.png"];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 5:
                 cell.textLabel.text = @"14 Jan 1989";
                 cell.detailTextLabel.text = @"D.O.B Private";
+                cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
                 break;
                 
         }
@@ -223,6 +228,8 @@
 {
     if(indexPath.section == 0)
     {
+        
+        
         switch (indexPath.row) {
                 
             case 0:
