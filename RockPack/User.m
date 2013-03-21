@@ -70,20 +70,20 @@
                              andViewId: viewId];
     
     self.username = [dictionary objectForKey: @"username"];
-    if(self.username || [self.username isEqualToString:@""])
+    if(self.username && [self.username isEqualToString:@""])
         self.username = @"(Username)";
 
-    self.emailAddress = [dictionary objectForKey: @"email_address"];
-    if(self.emailAddress || [self.emailAddress isEqualToString:@""])
+    self.emailAddress = [dictionary objectForKey: @"email"];
+    if(self.emailAddress && [self.emailAddress isEqualToString:@""])
         self.emailAddress = @"(Email Address)";
     
     self.firstName = [dictionary objectForKey: @"first_name"];
-    if(self.firstName || [self.firstName isEqualToString:@""])
+    if(self.firstName && [self.firstName isEqualToString:@""])
         self.firstName = @"(First Name)";
 
     
     self.lastName = [dictionary objectForKey: @"last_name"];
-    if(self.lastName || [self.firstName isEqualToString:@""])
+    if(self.lastName && [self.firstName isEqualToString:@""])
         self.lastName = @"(Last Name)";
     
     NSDictionary* activity_url_dict = [dictionary objectForKey: @"activity"];
@@ -104,8 +104,23 @@
     
     self.gender = @(GenderMale);
     
-    self.dateOfBirth = [dictionary dateFromISO6801StringForKey: @"birthday"
-                                                   withDefault: [NSDate date]];
+    NSString* dateOfBirthString = [dictionary objectForKey:@"date_of_birth"];
+    if(!dateOfBirthString) {
+        
+        self.dateOfBirth = nil;
+        
+    } else {
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSDate *dateOfBirthDate = [dateFormatter dateFromString:dateOfBirthString];
+        
+        self.dateOfBirth = dateOfBirthDate;
+        
+    }
+    
+                        
+                        
 }
 
 
