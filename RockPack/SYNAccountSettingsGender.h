@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsGender : UITableViewController
+@interface SYNAccountSettingsGender : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

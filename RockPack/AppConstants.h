@@ -148,6 +148,8 @@ typedef enum _Gender {
 // Tabs
 #define kTabAnimationDuration 0.3f
 
+#define kChangedAccountSettingsValue @"kChangedAccountSettingsValue"
+
 // Rockie-talkie
 #define kRockieTalkieAnimationDuration 0.3f
 

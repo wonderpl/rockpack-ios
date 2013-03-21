@@ -2635,8 +2635,6 @@
 			isa = PBXGroup;
 			children = (
 				BE21EE8416FA200C0067223B /* Specific Fields */,
-				BE03A6D416F784B000245314 /* SYNAccountSettingsGender.h */,
-				BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */,
 				BE21EE7A16F9FF520067223B /* SYNAccountSettingsTextInputController.h */,
 				BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */,
 			);
@@ -2761,6 +2759,8 @@
 				BE21EE8616FA202F0067223B /* SYNAccountSettingsFullNameInput.m */,
 				BE21EEA116FB1E750067223B /* SYNAccountSettingsDOB.h */,
 				BE21EEA216FB1E750067223B /* SYNAccountSettingsDOB.m */,
+				BE03A6D416F784B000245314 /* SYNAccountSettingsGender.h */,
+				BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */,
 			);
 			name = "Specific Fields";
 			sourceTree = "<group>";
