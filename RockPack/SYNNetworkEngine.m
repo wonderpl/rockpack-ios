@@ -40,8 +40,8 @@
                   errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
-    NSDictionary *params = [self paramsForStart: start
-                                           size: size];
+    NSDictionary *params = [self paramsAndLocaleForStart: start
+                                                    size: size];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
                                                                                                        params: params
@@ -63,8 +63,8 @@
                      completionHandler: (MKNKUserSuccessBlock) completionBlock
                           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *params = [self paramsForStart: start
-                                           size: size];
+    NSDictionary *params = [self paramsAndLocaleForStart: start
+                                                    size: size];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIUserSubscriptionUpdates
                                                                                                        params: params

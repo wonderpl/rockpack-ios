@@ -93,8 +93,8 @@
 }
 
 
-- (NSDictionary *) paramsForStart: (int) start
-                             size: (int) size
+- (NSDictionary *) paramsAndLocaleForStart: (int) start
+                                      size: (int) size
 {
     NSDictionary *params = nil;
     
@@ -109,4 +109,18 @@
 
     return params;
 }
+
+- (NSDictionary *) paramsForStart: (int) start
+                             size: (int) size
+{
+    NSDictionary *params = nil;
+    
+    if (size > 0)
+    {
+        params = @{@"start" : @(start), @"size" : @(size)};
+    }
+    
+    return params;
+}
+
 @end

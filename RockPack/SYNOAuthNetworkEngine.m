@@ -327,16 +327,8 @@
                                                 @"CHANNELID" : channelId};
     
     // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
-    NSDictionary *params = nil;
-    
-    if (size == 0)
-    {
-        params = @{@"locale" : self.localeString};
-    }
-    else
-    {
-        params = @{@"locale" : self.localeString, @"start" : @(start), @"size" : @(size)};
-    }
+    NSDictionary *params = [self paramsAndLocaleForStart: start
+                                                    size: size];
     
     NSString *apiString = [kAPIGetChannelDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
@@ -421,28 +413,7 @@
 //         NSLog (@"Didn't work");
 //     }];
     
-    [self channelUnsubscribeForUserId: (NSString *) userId
-                         resourceURL: @"https://secure.demo.rockpack.com/ws/pKjfvsAqRT2QNx1CH1L-yA/subscriptions/chbAApZrKhRN-ABK-q-oSdig/"
-                   completionHandler: ^(id thing)
-     {
-         NSLog (@"Worked %@", thing);
-     }
-                        errorHandler: ^(id thing)
-     {
-         NSLog (@"Didn't work");
-     }];
-    
-    
-//    [self channelSubscriptionsForUserId: (NSString *) userId
-//                         start: 0 size: 0
-//                  completionHandler: ^(id thing)
-//     {
-//         NSLog (@"Worked %@", thing);
-//     }
-//                       errorHandler: ^(id thing)
-//     {
-//         NSLog (@"Didn't work");
-//     }];
+
 }
 
 
@@ -660,12 +631,8 @@
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
-    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
-    NSDictionary *params = nil;
-    if (size > 0)
-    {
-        params = @{@"start" : @(start), @"size" : @(size)};
-    }
+    NSDictionary *params = [self paramsForStart: start
+                                           size: size];
     
     NSString *apiString = [kAPIGetUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
@@ -741,12 +708,8 @@
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
-    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
-    NSDictionary *params = nil;
-    if (size > 0)
-    {
-        params = @{@"start" : @(start), @"size" : @(size)};
-    }
+    NSDictionary *params = [self paramsForStart: start
+                                           size: size];
     
     NSString *apiString = [kAPIGetUserSubscriptions stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
@@ -808,5 +771,16 @@
     
     [self enqueueSignedOperation: networkOperation];
 }
+
+//[self channelUnsubscribeForUserId: (NSString *) userId
+//                      resourceURL: @"https://secure.demo.rockpack.com/ws/pKjfvsAqRT2QNx1CH1L-yA/subscriptions/chbAApZrKhRN-ABK-q-oSdig/"
+//                completionHandler: ^(id thing)
+// {
+//     NSLog (@"Worked %@", thing);
+// }
+//                     errorHandler: ^(id thing)
+// {
+//     NSLog (@"Didn't work");
+// }];
 
 @end

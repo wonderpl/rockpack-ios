@@ -30,4 +30,7 @@
 - (NSDictionary *) paramsForStart: (int) start
                              size: (int) size;
 
+- (NSDictionary *) paramsAndLocaleForStart: (int) start
+                                      size: (int) size;
+
 @end
