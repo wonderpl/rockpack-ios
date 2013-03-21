@@ -128,7 +128,8 @@
 typedef enum _Gender {
     
     GenderMale = 0,
-    GenderFemale = 1
+    GenderFemale = 1,
+    GenderUndecided = 2 // how post-modern
     
 } Gender;
 

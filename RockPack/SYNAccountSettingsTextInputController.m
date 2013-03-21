@@ -8,6 +8,7 @@
 
 #import "SYNAccountSettingsTextInputController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNAccountSettingsTextInputController ()
 
@@ -32,6 +33,12 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    saveButton.enabled = YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -45,8 +52,11 @@
     CGRect buttonRect = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
     saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     saveButton.frame = buttonRect;
+    
     [saveButton setImage:[UIImage imageNamed:@"ButtonAccountSaveDefault.png"] forState:UIControlStateNormal];
     [saveButton setImage:[UIImage imageNamed:@"ButtonAccountSaveHighlighted.png"] forState:UIControlStateHighlighted];
+    [saveButton setImage:[UIImage imageNamed:@"ButtonAccountSaveHighlighted.png"] forState:UIControlStateDisabled];
+    
     [self.view addSubview:saveButton];
 	
     inputField = [self createInputField];
@@ -54,16 +64,19 @@
     switch (currentFieldType) {
             
         case UserFieldTypeFullname:
+            self.inputField.text = [NSString stringWithFormat:@"%@ %@", appDelegate.currentUser.firstName, appDelegate.currentUser.lastName];
             self.inputField.leftViewMode = UITextFieldViewModeAlways;
             self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFullname.png"]];
             break;
             
         case UserFieldTypeUsername:
+            self.inputField.text = appDelegate.currentUser.username;
             self.inputField.leftViewMode = UITextFieldViewModeAlways;
             self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconUsername.png"]];
             break;
             
         case UserFieldTypeEmail:
+            self.inputField.text = appDelegate.currentUser.emailAddress;
             self.inputField.leftViewMode = UITextFieldViewModeAlways;
             self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconEmail.png"]];
             break;
@@ -78,6 +91,25 @@
     
     
     [saveButton addTarget:self action:@selector(saveButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // navigation back button
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage* backButtonImage = [UIImage imageNamed:@"ButtonAccountBackDefault.png"];
+    [backButton setImage:backButtonImage forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(didTapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    backButton.frame = CGRectMake(0.0, 0.0, backButtonImage.size.width, backButtonImage.size.height);
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+    
+}
+
+- (void) didTapBackButton:(id)sender {
+    if(self.navigationController.viewControllers.count > 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(SYNPaddedUITextField*)createInputField
@@ -114,7 +146,9 @@
         // show error;
     }
     
-    NSArray* componentsOfInput = nil;
+    
+    
+   NSArray* componentsOfInput = nil;
     
     switch (currentFieldType) {
             
@@ -125,10 +159,15 @@
             appDelegate.currentUser.firstName = componentsOfInput[0];
             appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
             
+            
+            
             break;
             
         case UserFieldTypeUsername:
-            appDelegate.currentUser.username = inputField.text;
+            
+            [self updateUsername];
+            
+            
             break;
             
         case UserFieldTypeEmail:
@@ -137,10 +176,50 @@
             
     }
     
-    [appDelegate saveContext:YES];
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
+#pragma mark - Updating User
+
+-(void)updateUsername
+{
+    saveButton.enabled = NO;
+    
+    [appDelegate.oAuthNetworkEngine changeUsernameForUserId:appDelegate.currentUser.uniqueId
+                                                   username:inputField.text
+                                          completionHandler:^(id object) {
+                                              
+                                              
+                                              
+                                              appDelegate.currentUser.username = inputField.text;
+                                              
+                                              
+                                              [appDelegate saveContext:YES];
+                                              
+                                              [self.navigationController popViewControllerAnimated:YES];
+                                              
+                                          } errorHandler:^(id object) {
+                                              
+                                          }];
+    
+    
+}
+
+-(void)updateEmail
+{
+    
+}
+
+-(void)updateFullname
+{
+    
+}
+
+-(void)updateLocale
+{
+    
+}
+
 -(BOOL)formIsValid
 {
     switch (currentFieldType) {

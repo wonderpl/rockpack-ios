@@ -43,6 +43,15 @@
     [self.view addSubview:datePicker];
     
     [datePicker setDatePickerMode:UIDatePickerModeDate];
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage* backButtonImage = [UIImage imageNamed:@"ButtonAccountBackDefault.png"];
+    [backButton setImage:backButtonImage forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(didTapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    backButton.frame = CGRectMake(0.0, 0.0, backButtonImage.size.width, backButtonImage.size.height);
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    self.navigationItem.leftBarButtonItem = backButtonItem;
 
     
 }
