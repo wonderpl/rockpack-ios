@@ -47,6 +47,7 @@
     
     for (NSString* field in fields)
     {
+        
         CGRect onOffFieldFrame = CGRectMake(10.0, offsetY, self.contentSizeForViewInPopover.width - 10.0, 50.0);
         SYNAccountSettingsOnOffField* onOffField = [[SYNAccountSettingsOnOffField alloc] initWithFrame:onOffFieldFrame andString:field];
         

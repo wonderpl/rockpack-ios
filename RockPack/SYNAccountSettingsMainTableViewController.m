@@ -19,6 +19,7 @@
 #import "SYNAccountSettingsPushNotifications.h"
 #import "SYNAccountSettingsShareSettings.h"
 #import "SYNAccountSettingsPassword.h"
+#import "SYNAccountSettingsLocation.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -133,6 +134,7 @@
                 }
                 cell.imageView.image = [UIImage imageNamed:@"IconUsername.png"];
                 cell.detailTextLabel.text = @"Username - Public";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 2:
@@ -143,12 +145,14 @@
                 }
                 cell.imageView.image = [UIImage imageNamed:@"IconEmail.png"];
                 cell.detailTextLabel.text = @"Email - Private";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 3:
                 cell.textLabel.text = @"London - UK";
                 cell.detailTextLabel.text = @"Location";
                 cell.imageView.image = [UIImage imageNamed:@"IconLocation.png"];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 4:
@@ -257,7 +261,7 @@
                 break;
                 
             case 3:
-                
+                [self.navigationController pushViewController:[[SYNAccountSettingsLocation alloc] init] animated:YES];
                 break;
             
             case 4:
