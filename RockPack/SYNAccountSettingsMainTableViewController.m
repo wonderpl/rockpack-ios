@@ -287,11 +287,9 @@
                 
             case 4:
                 
+                [self showLogoutAlert];
                 break;
                 
-            case 5:
-                
-                break;
                 
             default:
                 break;
@@ -301,7 +299,26 @@
     }
 
 }
+-(void)showLogoutAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Logout"
+                          message: @"Are you sure you want to log out?"
+                          delegate: self
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Logout", nil];
+    [alert show];
+}
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+	if (buttonIndex == 0) { // cancel
+		
+	}
+	else { // logout
+		
+	}
+}
 
 -(void)showDOBPopover
 {
