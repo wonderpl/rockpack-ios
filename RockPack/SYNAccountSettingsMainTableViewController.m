@@ -17,6 +17,7 @@
 #import "SYNAccountSettingsFullNameInput.h"
 #import "SYNAccountSettingsDOB.h"
 #import "SYNAccountSettingsPushNotifications.h"
+#import "SYNAccountSettingsShareSettings.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -269,7 +270,7 @@
         switch (indexPath.row) {
                 
             case 0:
-                
+                [self.navigationController pushViewController:[[SYNAccountSettingsShareSettings alloc] init] animated:YES];
                 break;
                 
             case 1:
