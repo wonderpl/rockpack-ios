@@ -136,6 +136,9 @@
             break;
             
     }
+    
+    [appDelegate saveContext:YES];
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 -(BOOL)formIsValid

@@ -33,6 +33,7 @@
 @property (readonly, nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 
 @property (readonly, nonatomic, strong) User* currentUser;
+
 @property (nonatomic, strong) SYNOAuth2Credential* currentOAuth2Credentials;
 
 // Root view controller
