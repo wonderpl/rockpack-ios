@@ -57,7 +57,8 @@
         // == Username == //
         
         UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:22.0];
-        self.usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(160.0, 0.0, 300.0, 80.0)];
+        CGRect usernameRect = CGRectIntegral(CGRectMake(160.0, 0.0, 300.0, 80.0));
+        self.usernameLabel = [[UILabel alloc] initWithFrame:usernameRect];
         self.usernameLabel.font = rockpackBoldFont;
         self.usernameLabel.textAlignment = NSTextAlignmentLeft;
         self.usernameLabel.backgroundColor = [UIColor clearColor];
@@ -100,6 +101,7 @@
         [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
         [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
         cogImageButton.center = CGPointMake(170.0, 90.0);
+        cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
         [self.overlayView addSubview:cogImageButton];
         
         
@@ -114,6 +116,7 @@
         accountSettingsLabel.backgroundColor = [UIColor clearColor];
         accountSettingsLabel.text = accountSettingsString;
         accountSettingsLabel.textColor = [UIColor whiteColor];
+        accountSettingsLabel.frame = CGRectIntegral(accountSettingsLabel.frame);
         [self.overlayView addSubview:accountSettingsLabel];
         
         
@@ -131,11 +134,13 @@
             
             CGFloat itemY = self.frame.size.height - itemTab.frame.size.height * 0.5;
             dividerImageView.center = CGPointMake(currentX, itemY);
-            
+            dividerImageView.frame = CGRectIntegral(dividerImageView.frame);
             [dividerView addSubview:dividerImageView];
             
             
             itemTab.center = CGPointMake(currentX + halfOffset, itemY);
+            
+            itemTab.frame = CGRectIntegral(itemTab.frame);
             
             [self.mainTabsView addSubview:itemTab];
             
