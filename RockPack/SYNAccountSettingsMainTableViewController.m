@@ -15,12 +15,14 @@
 #import "User.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsFullNameInput.h"
+#import "SYNAccountSettingsDOB.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
 @property (nonatomic, strong) NSArray* dataItems2ndSection;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, weak) User* user;
+@property (nonatomic, strong) UIPopoverController* dobPopover;
 
 @end
 
@@ -154,7 +156,7 @@
                 break;
                 
             case 5:
-                cell.textLabel.text = @"14 Jan 1989";
+                cell.textLabel.text = [self getDOBStringFromCurrentUser];
                 cell.detailTextLabel.text = @"D.O.B Private";
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
                 break;
@@ -252,11 +254,81 @@
                 [self.navigationController pushViewController:[[SYNAccountSettingsGender alloc] init] animated:YES];
                 break;
                 
+            case 5:
+                [self showDOBPopover];
+                break;
+                
             default:
                 break;
                 
         }
     }
+}
+
+
+-(void)showDOBPopover
+{
+    if(self.dobPopover)
+        return;
+    
+    SYNAccountSettingsDOB* dobController = [[SYNAccountSettingsDOB alloc] init];
+    
+    [dobController.datePicker addTarget:self
+                                 action:@selector(datePickerValueChanged:)
+                       forControlEvents:UIControlEventValueChanged];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:dobController];
+    
+    
+    self.dobPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+    self.dobPopover.popoverContentSize = CGSizeMake(180.0, 220.0);
+    self.dobPopover.delegate = self;
+    
+    
+    
+    
+    [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
+                                     inView: self.view
+                   permittedArrowDirections: UIPopoverArrowDirectionAny
+                                   animated: YES];
+    
+    
+    
+}
+
+-(UITableViewCell*)getDOBTableViewCell
+{
+    
+    UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:5 inSection:0]];
+    return cellClicked;
+}
+
+-(void)datePickerValueChanged:(UIDatePicker*)datePicker
+{
+    user.dateOfBirth = datePicker.date;
+    
+    [self getDOBTableViewCell].textLabel.text = [self getDOBStringFromCurrentUser];
+    
+    
+}
+
+-(NSString*)getDOBStringFromCurrentUser
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    return [dateFormatter stringFromDate:user.dateOfBirth];
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if(popoverController == self.dobPopover)
+    {
+        self.dobPopover = nil;
+    }
+    
 }
 
 @end

@@ -1,0 +1,61 @@
+//
+//  SYNAccountSettingsDOB.m
+//  rockpack
+//
+//  Created by Michael Michailidis on 21/03/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//
+
+#import "SYNAccountSettingsDOB.h"
+#import "SYNAppDelegate.h"
+#import "User.h"
+
+@interface SYNAccountSettingsDOB ()
+
+
+@end
+
+@implementation SYNAccountSettingsDOB
+
+@synthesize datePicker;
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        
+        datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 200.0)];
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+    
+    
+    [self.view addSubview:datePicker];
+    
+    [datePicker setDatePickerMode:UIDatePickerModeDate];
+
+    
+}
+
+-(void)saveButtonPressed:(UIButton*)button
+{
+    
+    NSDate* dateSelected = datePicker.date;
+    
+    DebugLog(@"dateSelected: %@", dateSelected);
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
