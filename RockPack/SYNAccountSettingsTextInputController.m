@@ -50,6 +50,29 @@
     [self.view addSubview:saveButton];
 	
     inputField = [self createInputField];
+    
+    switch (currentFieldType) {
+            
+        case UserFieldTypeFullname:
+            self.inputField.leftViewMode = UITextFieldViewModeAlways;
+            self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFullname.png"]];
+            break;
+            
+        case UserFieldTypeUsername:
+            self.inputField.leftViewMode = UITextFieldViewModeAlways;
+            self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconUsername.png"]];
+            break;
+            
+        case UserFieldTypeEmail:
+            self.inputField.leftViewMode = UITextFieldViewModeAlways;
+            self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconEmail.png"]];
+            break;
+            
+        default:
+            break;
+    }
+    
+    
     [self.view addSubview:inputField];
     
     
@@ -74,7 +97,9 @@
     newInputField.backgroundColor = [UIColor whiteColor];
     newInputField.layer.cornerRadius = 5.0f;
     
-    saveButton.center = CGPointMake(saveButton.center.x, saveButton.center.y + lastTextFieldY);
+    CGRect saveButtonFrame = saveButton.frame;
+    saveButtonFrame.origin.y = newInputField.frame.origin.y + newInputField.frame.size.height + 10.0;
+    saveButton.frame = saveButtonFrame;
     
     lastTextFieldY += newInputField.frame.size.height + 10.0;
     
@@ -83,14 +108,27 @@
 
 -(void)saveButtonPressed:(UIButton*)button
 {
+    
+    
+    if(![self formIsValid]) {
+        // show error;
+    }
+    
+    NSArray* componentsOfInput = nil;
+    
     switch (currentFieldType) {
             
-        case UserFieldTypeFirstName:
-            appDelegate.currentUser.firstName = inputField.text;
+        case UserFieldTypeFullname:
+            
+            componentsOfInput = [inputField.text componentsSeparatedByString:@" "];
+            // have already checked for validity
+            appDelegate.currentUser.firstName = componentsOfInput[0];
+            appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
+            
             break;
             
-        case UserFieldTypeLastName:
-            appDelegate.currentUser.lastName = inputField.text;
+        case UserFieldTypeUsername:
+            appDelegate.currentUser.username = inputField.text;
             break;
             
         case UserFieldTypeEmail:
@@ -100,7 +138,25 @@
     }
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
-
+-(BOOL)formIsValid
+{
+    switch (currentFieldType) {
+            
+        case UserFieldTypeFullname:
+            
+            break;
+            
+        case UserFieldTypeUsername:
+            
+            break;
+            
+        case UserFieldTypeEmail:
+            
+            break;
+            
+    }
+    return YES;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
