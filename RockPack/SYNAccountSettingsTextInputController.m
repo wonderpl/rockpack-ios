@@ -11,7 +11,7 @@
 
 @interface SYNAccountSettingsTextInputController ()
 
-
+@property (nonatomic) CGFloat lastTextFieldY;
 
 @end
 
@@ -19,6 +19,7 @@
 
 @synthesize inputField, saveButton;
 @synthesize appDelegate;
+@synthesize lastTextFieldY;
 
 -(id)initWithUserFieldType:(UserFieldType)userFieldType
 {
@@ -38,31 +39,96 @@
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
     
     self.view.backgroundColor = [UIColor clearColor];
+    
+    lastTextFieldY = 10.0;
+    
+    CGRect buttonRect = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
+    saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    saveButton.frame = buttonRect;
+    [saveButton setImage:[UIImage imageNamed:@"ButtonAccountSaveDefault.png"] forState:UIControlStateNormal];
+    [saveButton setImage:[UIImage imageNamed:@"ButtonAccountSaveHighlighted.png"] forState:UIControlStateHighlighted];
+    [self.view addSubview:saveButton];
 	
-    inputField = [[UITextField alloc] initWithFrame:CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 30.0)];
-    inputField.backgroundColor = [UIColor whiteColor];
-    inputField.layer.cornerRadius = 5.0f;
+    inputField = [self createInputField];
+    
+    switch (currentFieldType) {
+            
+        case UserFieldTypeFullname:
+            self.inputField.leftViewMode = UITextFieldViewModeAlways;
+            self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconFullname.png"]];
+            break;
+            
+        case UserFieldTypeUsername:
+            self.inputField.leftViewMode = UITextFieldViewModeAlways;
+            self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconUsername.png"]];
+            break;
+            
+        case UserFieldTypeEmail:
+            self.inputField.leftViewMode = UITextFieldViewModeAlways;
+            self.inputField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconEmail.png"]];
+            break;
+            
+        default:
+            break;
+    }
+    
+    
     [self.view addSubview:inputField];
     
-    CGRect buttonRect = CGRectMake(10.0, 100.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
-    saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    saveButton.frame = buttonRect;
-    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
-    [self.view addSubview:saveButton];
+    
     
     [saveButton addTarget:self action:@selector(saveButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
+-(SYNPaddedUITextField*)createInputField
+{
+    
+    
+    
+    
+    SYNPaddedUITextField* newInputField = [[SYNPaddedUITextField alloc] initWithFrame:CGRectMake(10.0,
+                                                                                                 lastTextFieldY,
+                                                                                                 self.contentSizeForViewInPopover.width - 10.0,
+                                                                                                 40.0)];
+    
+    
+                           
+                           
+    newInputField.backgroundColor = [UIColor whiteColor];
+    newInputField.layer.cornerRadius = 5.0f;
+    
+    CGRect saveButtonFrame = saveButton.frame;
+    saveButtonFrame.origin.y = newInputField.frame.origin.y + newInputField.frame.size.height + 10.0;
+    saveButton.frame = saveButtonFrame;
+    
+    lastTextFieldY += newInputField.frame.size.height + 10.0;
+    
+    return newInputField;
+}
+
 -(void)saveButtonPressed:(UIButton*)button
 {
+    
+    
+    if(![self formIsValid]) {
+        // show error;
+    }
+    
+    NSArray* componentsOfInput = nil;
+    
     switch (currentFieldType) {
             
-        case UserFieldTypeFirstName:
-            appDelegate.currentUser.firstName = inputField.text;
+        case UserFieldTypeFullname:
+            
+            componentsOfInput = [inputField.text componentsSeparatedByString:@" "];
+            // have already checked for validity
+            appDelegate.currentUser.firstName = componentsOfInput[0];
+            appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
+            
             break;
             
-        case UserFieldTypeLastName:
-            appDelegate.currentUser.lastName = inputField.text;
+        case UserFieldTypeUsername:
+            appDelegate.currentUser.username = inputField.text;
             break;
             
         case UserFieldTypeEmail:
@@ -72,7 +138,25 @@
     }
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
-
+-(BOOL)formIsValid
+{
+    switch (currentFieldType) {
+            
+        case UserFieldTypeFullname:
+            
+            break;
+            
+        case UserFieldTypeUsername:
+            
+            break;
+            
+        case UserFieldTypeEmail:
+            
+            break;
+            
+    }
+    return YES;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

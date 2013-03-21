@@ -7,18 +7,28 @@
 //
 
 #import "SYNAccountSettingsGender.h"
+#import "SYNAppDelegate.h"
+#import "AppConstants.h"
 
 @interface SYNAccountSettingsGender ()
-
+@property (nonatomic, strong) UITableView* tableView;
 @end
 
 @implementation SYNAccountSettingsGender
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)init
 {
-    self = [super initWithStyle:style];
+    self = [super init];
     if (self) {
         
+        self.contentSizeForViewInPopover = CGSizeMake(380, 476);
+        CGRect tableViewFrame = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 100.0);
+        self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStyleGrouped];
+        self.tableView.backgroundColor = [UIColor clearColor];
+        self.tableView.opaque = NO;
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.backgroundView = nil;
     }
     return self;
 }
@@ -27,9 +37,9 @@
 {
     [super viewDidLoad];
 
-    self.contentSizeForViewInPopover = CGSizeMake(380, 476);
-    
+    [self.view addSubview:self.tableView];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,7 +119,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    appDelegate.currentUser.gender = indexPath.row == 0 ? @(GenderMale) : @(GenderFemale);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -15,12 +15,17 @@
 #import "User.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsFullNameInput.h"
+#import "SYNAccountSettingsDOB.h"
+#import "SYNAccountSettingsPushNotifications.h"
+#import "SYNAccountSettingsShareSettings.h"
+#import "SYNAccountSettingsPassword.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
 @property (nonatomic, strong) NSArray* dataItems2ndSection;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, weak) User* user;
+@property (nonatomic, strong) UIPopoverController* dobPopover;
 
 @end
 
@@ -154,7 +159,7 @@
                 break;
                 
             case 5:
-                cell.textLabel.text = @"14 Jan 1989";
+                cell.textLabel.text = [self getDOBStringFromCurrentUser];
                 cell.detailTextLabel.text = @"D.O.B Private";
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
                 break;
@@ -233,30 +238,154 @@
         switch (indexPath.row) {
                 
             case 0:
-                [self.navigationController pushViewController:[[SYNAccountSettingsFullNameInput alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsFullNameInput alloc] initWithUserFieldType:UserFieldTypeFullname] animated:YES];
                 break;
                 
             case 1:
-                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                
+                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeUsername] animated:YES];
+                
                 break;
                 
             case 2:
-                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeEmail] animated:YES];
                 break;
                 
             case 3:
-                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                
                 break;
             
             case 4:
                 [self.navigationController pushViewController:[[SYNAccountSettingsGender alloc] init] animated:YES];
                 break;
                 
+            case 5:
+                [self showDOBPopover];
+                break;
+                
             default:
                 break;
                 
         }
+        
+    } else {
+        
+        switch (indexPath.row) {
+                
+            case 0:
+                [self.navigationController pushViewController:[[SYNAccountSettingsShareSettings alloc] init] animated:YES];
+                break;
+                
+            case 1:
+                [self.navigationController pushViewController:[[SYNAccountSettingsPushNotifications alloc] init] animated:YES];
+                break;
+                
+            case 2:
+                [self.navigationController pushViewController:[[SYNAccountSettingsPassword alloc] init] animated:YES];
+                break;
+                
+            case 3:
+            
+                break;
+                
+            case 4:
+                
+                [self showLogoutAlert];
+                break;
+                
+                
+            default:
+                break;
+                
+        }
+    
     }
+
+}
+-(void)showLogoutAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Logout"
+                          message: @"Are you sure you want to log out?"
+                          delegate: self
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Logout", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+	if (buttonIndex == 0) { // cancel
+		
+	}
+	else { // logout
+		
+	}
+}
+
+-(void)showDOBPopover
+{
+    if(self.dobPopover)
+        return;
+    
+    SYNAccountSettingsDOB* dobController = [[SYNAccountSettingsDOB alloc] init];
+    
+    [dobController.datePicker addTarget:self
+                                 action:@selector(datePickerValueChanged:)
+                       forControlEvents:UIControlEventValueChanged];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:dobController];
+    
+    
+    self.dobPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+    self.dobPopover.popoverContentSize = dobController.datePicker.frame.size;
+    self.dobPopover.delegate = self;
+    
+    
+    
+    
+    [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
+                                     inView: self.view
+                   permittedArrowDirections: UIPopoverArrowDirectionAny
+                                   animated: YES];
+    
+    
+    
+}
+
+-(UITableViewCell*)getDOBTableViewCell
+{
+    
+    UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:5 inSection:0]];
+    return cellClicked;
+}
+
+-(void)datePickerValueChanged:(UIDatePicker*)datePicker
+{
+    user.dateOfBirth = datePicker.date;
+    
+    [self getDOBTableViewCell].textLabel.text = [self getDOBStringFromCurrentUser];
+    
+    
+}
+
+-(NSString*)getDOBStringFromCurrentUser
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    return [dateFormatter stringFromDate:user.dateOfBirth];
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if(popoverController == self.dobPopover)
+    {
+        self.dobPopover = nil;
+    }
+    
 }
 
 @end

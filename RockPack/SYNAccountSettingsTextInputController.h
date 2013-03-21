@@ -10,10 +10,12 @@
 
 #import "SYNAppDelegate.h"
 
+#import "SYNPaddedUITextField.h"
+
 typedef enum {
     
-    UserFieldTypeFirstName = 0,
-    UserFieldTypeLastName,
+    UserFieldTypeFullname = 0,
+    UserFieldTypeUsername,
     UserFieldTypeEmail
     
 } UserFieldType;
@@ -22,10 +24,11 @@ typedef enum {
     UserFieldType currentFieldType;
 }
 
-@property (nonatomic, strong) UITextField* inputField;
+@property (nonatomic, strong) SYNPaddedUITextField* inputField;
 @property (nonatomic, strong) UIButton* saveButton;
 @property (nonatomic, strong) SYNAppDelegate* appDelegate;
 
 
 -(id)initWithUserFieldType:(UserFieldType)userFieldType;
+-(SYNPaddedUITextField*)createInputField;
 @end
