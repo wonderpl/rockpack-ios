@@ -71,20 +71,20 @@
     
     self.username = [dictionary objectForKey: @"username"];
     if(self.username && [self.username isEqualToString:@""])
-        self.username = @"(Username)";
+        self.username = @"";
 
     self.emailAddress = [dictionary objectForKey: @"email"];
     if(self.emailAddress && [self.emailAddress isEqualToString:@""])
-        self.emailAddress = @"(Email Address)";
+        self.emailAddress = @"";
     
     self.firstName = [dictionary objectForKey: @"first_name"];
     if(self.firstName && [self.firstName isEqualToString:@""])
-        self.firstName = @"(First Name)";
+        self.firstName = @"";
 
     
     self.lastName = [dictionary objectForKey: @"last_name"];
     if(self.lastName && [self.firstName isEqualToString:@""])
-        self.lastName = @"(Last Name)";
+        self.lastName = @"";
     
     NSDictionary* activity_url_dict = [dictionary objectForKey: @"activity"];
     NSDictionary* coverart_url_dict = [dictionary objectForKey: @"cover_art"];
@@ -102,10 +102,10 @@
         self.subscriptionsUrl = [coverart_url_dict objectForKey:@"resource_url"];
     }
     
-    self.gender = @(GenderMale);
+    self.gender = @(GenderUndecided);
     
     NSString* dateOfBirthString = [dictionary objectForKey:@"date_of_birth"];
-    if(!dateOfBirthString) {
+    if([dateOfBirthString isKindOfClass:[NSNull class]]) {
         
         self.dateOfBirth = nil;
         

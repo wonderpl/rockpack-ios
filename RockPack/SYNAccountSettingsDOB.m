@@ -43,6 +43,7 @@
     [self.view addSubview:datePicker];
     
     [datePicker setDatePickerMode:UIDatePickerModeDate];
+    
 
     
 }

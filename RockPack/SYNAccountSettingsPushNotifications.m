@@ -47,6 +47,7 @@
     
     for (NSString* field in fields)
     {
+        
         CGRect onOffFieldFrame = CGRectMake(10.0, offsetY, self.contentSizeForViewInPopover.width - 10.0, 50.0);
         SYNAccountSettingsOnOffField* onOffField = [[SYNAccountSettingsOnOffField alloc] initWithFrame:onOffFieldFrame andString:field];
         
@@ -58,9 +59,22 @@
         
     }
     
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage* backButtonImage = [UIImage imageNamed:@"ButtonAccountBackDefault.png"];
+    [backButton setImage:backButtonImage forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(didTapBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    backButton.frame = CGRectMake(0.0, 0.0, backButtonImage.size.width, backButtonImage.size.height);
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    self.navigationItem.leftBarButtonItem = backButtonItem;
+    
     
 }
 
-
+- (void) didTapBackButton:(id)sender {
+    if(self.navigationController.viewControllers.count > 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 
 @end

@@ -1,26 +1,24 @@
 //
-//  SYNAccountSettingsGender.m
+//  SYNAccountSettingsLocation.m
 //  rockpack
 //
-//  Created by Michael Michailidis on 18/03/2013.
+//  Created by Michael Michailidis on 21/03/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAccountSettingsGender.h"
-#import "SYNAppDelegate.h"
-#import "AppConstants.h"
+#import "SYNAccountSettingsLocation.h"
 
-@interface SYNAccountSettingsGender ()
+@interface SYNAccountSettingsLocation ()
+
 @property (nonatomic, strong) UITableView* tableView;
+
 @end
 
-@implementation SYNAccountSettingsGender
+@implementation SYNAccountSettingsLocation
 
-- (id)init
+-(id)init
 {
-    self = [super init];
-    if (self) {
-        
+    if(self = [super init]) {
         self.contentSizeForViewInPopover = CGSizeMake(380, 476);
         CGRect tableViewFrame = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 100.0);
         self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStyleGrouped];
@@ -30,14 +28,16 @@
         self.tableView.dataSource = self;
         self.tableView.backgroundView = nil;
     }
+    
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self.view addSubview:self.tableView];
+	
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -49,19 +49,9 @@
     
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
+    
 }
 
-- (void) didTapBackButton:(id)sender {
-    if(self.navigationController.viewControllers.count > 1) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - Table view data source
 
@@ -83,23 +73,24 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     if(indexPath.row == 0) {
-        cell.textLabel.text = @"Male";
+        cell.textLabel.text = @"United States";
     } else if(indexPath.row == 1) {
-        cell.textLabel.text = @"Female";
+        cell.textLabel.text = @"United Kingdom";
     }
     
     return cell;
 }
 
+- (void) didTapBackButton:(id)sender {
+    if(self.navigationController.viewControllers.count > 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
 
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)didReceiveMemoryWarning
 {
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    appDelegate.currentUser.gender = indexPath.row == 0 ? @(GenderMale) : @(GenderFemale);
-    [self.navigationController popViewControllerAnimated:YES];
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end

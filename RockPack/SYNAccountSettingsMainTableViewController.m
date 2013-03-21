@@ -19,6 +19,7 @@
 #import "SYNAccountSettingsPushNotifications.h"
 #import "SYNAccountSettingsShareSettings.h"
 #import "SYNAccountSettingsPassword.h"
+#import "SYNAccountSettingsLocation.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -115,7 +116,7 @@
                 
             case 0:
                 
-                if([user.firstName isEqualToString:@"(First Name)"] || [user.lastName isEqualToString:@"(Last Name)"]) {
+                if([user.firstName isEqualToString:@""] || [user.lastName isEqualToString:@""]) {
                     cell.textLabel.text = @"Full Name";
                 } else {
                     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", user.firstName, user.lastName];
@@ -126,33 +127,41 @@
                 break;
                 
             case 1:
-                if([user.username isEqualToString:@"(Username)"]) {
+                if([user.username isEqualToString:@""]) {
                     cell.textLabel.text = @"Username";
                 } else {
                     cell.textLabel.text = user.username;
                 }
                 cell.imageView.image = [UIImage imageNamed:@"IconUsername.png"];
                 cell.detailTextLabel.text = @"Username - Public";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 2:
-                if([user.emailAddress isEqualToString:@"(Email Address)"]) {
+                if([user.emailAddress isEqualToString:@""]) {
                     cell.textLabel.text = @"Email Address";
                 } else {
                     cell.textLabel.text = user.emailAddress;
                 }
                 cell.imageView.image = [UIImage imageNamed:@"IconEmail.png"];
                 cell.detailTextLabel.text = @"Email - Private";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 3:
                 cell.textLabel.text = @"London - UK";
                 cell.detailTextLabel.text = @"Location";
                 cell.imageView.image = [UIImage imageNamed:@"IconLocation.png"];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
             case 4:
-                cell.textLabel.text = ([user.gender isEqual:@(GenderMale)]) ? @"Male" : @"Female";
+                if([user.gender isEqual:@(GenderUndecided)]) {
+                    cell.textLabel.text = @"Gender";
+                } else {
+                    cell.textLabel.text = [user.gender isEqual:@(GenderMale)] ? @"Male" : @"Female";
+                }
+                
                 cell.detailTextLabel.text = @"Gender - Private";
                 cell.imageView.image = [UIImage imageNamed:@"IconGender.png"];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -252,7 +261,7 @@
                 break;
                 
             case 3:
-                
+                [self.navigationController pushViewController:[[SYNAccountSettingsLocation alloc] init] animated:YES];
                 break;
             
             case 4:
