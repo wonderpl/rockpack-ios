@@ -107,6 +107,7 @@
         
         UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopDivider.png"]];
         dividerImageView.center = CGPointMake(nextOrigin, midMainFrame - 4.0);
+        dividerImageView.frame = CGRectIntegral(dividerImageView.frame);
         [dividerOverlayView addSubview:dividerImageView];
         
     }
