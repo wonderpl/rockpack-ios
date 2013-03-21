@@ -48,7 +48,7 @@
 #define kAPIGetChannelDetails       @"/ws/USERID/channels/CHANNELID/"           /* GET */
 #define kAPICreateNewChannel        @"/ws/USERID/channels/"                     /* POST */
 #define kAPIUpdateExistingChannel   @"/ws/USERID/channels/CHANNELID/"           /* PUT */
-#define kAPIUpdateChannelPrivacy    @"/ws/USERID/channel/CHANNELID/public/"     /* PUT */
+#define kAPIUpdateChannelPrivacy    @"/ws/USERID/channels/CHANNELID/public/"     /* PUT */
 
 // User activity
 #define kAPIRecordUserActivity      @"/ws/USERID/activity/"                     /* POST */
