@@ -16,6 +16,7 @@
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsFullNameInput.h"
 #import "SYNAccountSettingsDOB.h"
+#import "SYNAccountSettingsPushNotifications.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -262,7 +263,42 @@
                 break;
                 
         }
+        
+    } else {
+        
+        switch (indexPath.row) {
+                
+            case 0:
+                
+                break;
+                
+            case 1:
+                [self.navigationController pushViewController:[[SYNAccountSettingsPushNotifications alloc] init] animated:YES];
+                break;
+                
+            case 2:
+                
+                break;
+                
+            case 3:
+            
+                break;
+                
+            case 4:
+                
+                break;
+                
+            case 5:
+                
+                break;
+                
+            default:
+                break;
+                
+        }
+    
     }
+
 }
 
 
