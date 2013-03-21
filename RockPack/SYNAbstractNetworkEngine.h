@@ -27,4 +27,7 @@
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (NSDictionary *) paramsForStart: (int) start
+                             size: (int) size;
+
 @end

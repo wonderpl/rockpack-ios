@@ -34,33 +34,41 @@
 
 #pragma mark - Engine API
 
+- (void) coverArtWithWithStart: (unsigned int) start
+                          size: (unsigned int) size
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
+                  errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
+    NSDictionary *params = [self paramsForStart: start
+                                           size: size];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
 // Subscription updates
 
 // New way of getting updates to the user's subscriptions
 
-- (void) subscriptionsUpdatesForUserId: (NSString *) userId
-                                 start: (unsigned int) start
+- (void) subscriptionsUpdatesWithStart: (unsigned int) start
                                   size: (unsigned int) size
                      completionHandler: (MKNKUserSuccessBlock) completionBlock
                           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSDictionary *params = [self paramsForStart: start
+                                           size: size];
     
-    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
-    NSDictionary *params = nil;
-    if (size > 0)
-    {
-        params = @{@"start" : @(start), @"size" : @(size)};
-    }
-    
-    NSString *apiString = [kAPIUserSubscriptionUpdates stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-    
-    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIUserSubscriptionUpdates
                                                                                                        params: params
-                                                                                                   httpMethod: @"GET"
-                                                                                                          ssl: TRUE];
+                                                                                                   httpMethod: @"GET"];
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];

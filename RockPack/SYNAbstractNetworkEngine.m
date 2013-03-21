@@ -91,4 +91,22 @@
          errorBlock(customErrorDictionary);
      }];
 }
+
+
+- (NSDictionary *) paramsForStart: (int) start
+                             size: (int) size
+{
+    NSDictionary *params = nil;
+    
+    if (size == 0)
+    {
+        params = @{@"locale" : self.localeString};
+    }
+    else
+    {
+        params = @{@"locale" : self.localeString, @"start" : @(start), @"size" : @(size)};
+    }
+
+    return params;
+}
 @end

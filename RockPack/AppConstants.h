@@ -60,9 +60,9 @@
 #define kAPIGetUserActivity         @"/ws/USERID/activity/"                     /* GET */
 
 // Cover art
-#define kAPIGetCoverArt             @"/ws/USERID/cover_art/"                    /* GET */
-#define kAPIUploadCoverArt          @"/ws/USERID/cover_art/"                    /* POST */
-#define kAPIDeleteCoverArt          @"/ws/USERID/cover_art/COVERID"             /* DELETE */
+#define kAPIGetUserCoverArt         @"/ws/USERID/cover_art/"                    /* GET */
+#define kAPIUploadUserCoverArt      @"/ws/USERID/cover_art/"                    /* POST */
+#define kAPIDeleteUserCoverArt      @"/ws/USERID/cover_art/COVERID"             /* DELETE */
 
 // User subscriptions
 #define kAPIGetUserSubscriptions    @"/ws/USERID/subscriptions/"                /* GET */ 
@@ -72,6 +72,9 @@
 // Subscription updates
 
 #define kAPIUserSubscriptionUpdates @"/ws/USERID/subscriptions/recent_videos/"  /* GET */
+
+// Cover art
+#define kAPIGetCoverArt             @"/ws/cover_art/"                    /* GET */
 
 // Something
 #define kAPIPopularVideos           @"ws/videos/"

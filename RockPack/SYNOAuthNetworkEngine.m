@@ -256,7 +256,7 @@
 
 
 - (void) changeUsernameForUserId: (NSString *) userId
-                        password: (NSString *) password
+                        username: (NSString *) username
                 completionHandler: (MKNKUserSuccessBlock) completionBlock
                      errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -271,7 +271,7 @@
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {
          // Wrap it in quotes to make it valid JSON
-         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", password];
+         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", username];
          return JSONFormattedPassword;
      } forType: @"application/json"];
     
@@ -667,7 +667,7 @@
         params = @{@"start" : @(start), @"size" : @(size)};
     }
     
-    NSString *apiString = [kAPIGetCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    NSString *apiString = [kAPIGetUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
@@ -687,7 +687,7 @@
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
-    NSString *apiString = [kAPIUploadCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    NSString *apiString = [kAPIUploadUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
@@ -717,7 +717,7 @@
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
                                                 @"COVERID" : coverId};
     
-    NSString *apiString = [kAPIDeleteCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    NSString *apiString = [kAPIDeleteUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
