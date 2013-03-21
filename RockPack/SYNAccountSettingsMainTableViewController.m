@@ -281,7 +281,7 @@
     
     
     self.dobPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-    self.dobPopover.popoverContentSize = CGSizeMake(180.0, 220.0);
+    self.dobPopover.popoverContentSize = dobController.datePicker.frame.size;
     self.dobPopover.delegate = self;
     
     

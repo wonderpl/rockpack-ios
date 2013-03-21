@@ -20,13 +20,16 @@
 @synthesize datePicker;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+
+-(id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    self = [super init];
+    if(self) {
+        datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 0.0, 230.0, 280.0)];
         
-        datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 200.0)];
+        self.title = @"Choose a Date";
     }
+    
     return self;
 }
 
