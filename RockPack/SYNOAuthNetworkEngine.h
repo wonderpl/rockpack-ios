@@ -82,4 +82,10 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                        completionHandler: (MKNKUserSuccessBlock) completionBlock
                             errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) updatePrivacyForChannelForUserId: (NSString *) userId
+                                channelId: (NSString *) channelId
+                                 isPublic: (BOOL) isPublic
+                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 @end

@@ -42,12 +42,16 @@
 }
 
 
-
 - (NSString *) hostName
 {
     return kAPISecureHostName;
 }
 
+
+-(SYNOAuth2Credential*)oAuth2Credential
+{
+    return self.appDelegate.currentOAuth2Credentials;
+}
 
 
 // Enqueues the operation if already authenticated, and if not, tries to authentican and then re-queue if successful
@@ -84,35 +88,43 @@
                          password: @""
                         basicAuth: YES];
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
+    [networkOperation addJSONCompletionHandler: ^(id response)
      {
-         NSString* possibleError = responseDictionary[@"error"];
-         
-         if(possibleError)
+         if ([response isKindOfClass: [NSDictionary class]])
          {
-             errorBlock(responseDictionary);
-             return;
+             NSDictionary *responseDictionary = (NSDictionary *) response;
+             
+             NSString* possibleError = responseDictionary[@"error"];
+             
+             if(possibleError)
+             {
+                 errorBlock(responseDictionary);
+                 return;
+             }
+             
+             SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
+                                                                                              expiresIn: responseDictionary[@"expires_in"]
+                                                                                           refreshToken: responseDictionary[@"refresh_token"]
+                                                                                            resourceURL: responseDictionary[@"resource_url"]
+                                                                                              tokenType: responseDictionary[@"token_type"]
+                                                                                                 userId: responseDictionary[@"user_id"]];
+             if (newOAuth2Credentials == nil)
+             {
+                 DebugLog(@"Invalid credential returned");
+                 errorBlock(@{@"parsing_error": @"credentialWithAccessToken: did not complete correctly"});
+                 return;
+             }
+             
+             completionBlock(newOAuth2Credentials);
          }
-         
-         SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
-                                                                                          expiresIn: responseDictionary[@"expires_in"]
-                                                                                       refreshToken: responseDictionary[@"refresh_token"]
-                                                                                        resourceURL: responseDictionary[@"resource_url"]
-                                                                                          tokenType: responseDictionary[@"token_type"]
-                                                                                             userId: responseDictionary[@"user_id"]];
-         
-         if (newOAuth2Credentials == nil)
+         else
          {
-             DebugLog(@"Invalid credential returned");
-             errorBlock(@{@"parsing_error": @"credentialWithAccessToken: did not complete correctly"});
-             return;
+             // We were expecing a dictionary back, so call error block
+             errorBlock(response);
          }
-         
-         
-         completionBlock(newOAuth2Credentials);
-         
+  
      }
-                                  errorHandler: ^(NSError* error)
+      errorHandler: ^(NSError* error)
      {
          DebugLog(@"Register Facebook Token with Server Failed");
          NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
@@ -164,8 +176,6 @@
 }
 
 
-
-
 // Get authentication token by registering details with server
 - (void) registerUserWithData: (NSDictionary*) userData
             completionHandler: (MKNKLoginCompleteBlock) completionBlock
@@ -185,6 +195,7 @@
     [self enqueueOperation: networkOperation];
 }
 
+
 #pragma mark - Common functionality
 
 // This code block is common to all of the signup/signin methods
@@ -192,30 +203,30 @@
                                         completionHandler: (MKNKUserSuccessBlock) completionBlock
                                              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *responseDictionary)
+    [networkOperation addJSONCompletionHandler: ^(id response)
      {
-         NSString* possibleError = responseDictionary[@"error"];
-         
-         if (possibleError)
+         // Check to see if our response is a NSDictionary and if it has an error hash
+         if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
          {
-             errorBlock(responseDictionary);
-             return;
+             DebugLog(@"API Call failed: %@", response);
+             errorBlock(response);
          }
-         
-         completionBlock(responseDictionary);
-         
+         else
+         {
+             // OK, all seems to have gone well, return the object
+             completionBlock(response);
+         }
      }
      errorHandler: ^(NSError* error)
      {
-         DebugLog(@"API Call failed");
          NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         DebugLog(@"API Call failed: %@", customErrorDictionary);
          errorBlock(customErrorDictionary);
      }];
-    
 }
 
-#pragma mark - User management
 
+#pragma mark - User management
 
 - (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
                       completionHandler: (MKNKUserSuccessBlock) completionBlock
@@ -288,8 +299,8 @@
          // Wrap it in quotes to make it valid JSON
          NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", password];
          return JSONFormattedPassword;
-     }
-                                               forType: @"application/json"];
+     } forType: @"application/json"];
+    
     [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
                                          completionHandler: completionBlock
                                               errorHandler: errorBlock];
@@ -362,7 +373,39 @@
 }
 
 
-// Wrapper functions for common
+- (void) manageChannelForUserId: (NSString *) userId
+                          title: (NSString *) title
+                    description: (NSString *) description
+                       category: (NSString *) category
+                          cover: (NSString *) cover
+                       isPublic: (BOOL) isPublic
+                      apiString: apiString
+                       httpVerb: (NSString *) httpVerb
+              completionHandler: (MKNKUserSuccessBlock) completionBlock
+                   errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *params = @{@"title" : title,
+                             @"description" : description,
+                             @"category" : category,
+                             @"cover" : cover,
+                             @"public" : @(isPublic)};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+// Wrapper function for channel creation
 - (void) createChannelForUserId: (NSString *) userId
                           title: (NSString *) title
                     description: (NSString *) description
@@ -387,6 +430,8 @@
                     errorHandler: errorBlock];
 }
 
+
+// Wrapper function for channel update
 - (void) updateChannelForUserId: (NSString *) userId
                       channelId: (NSString *) channelId
                           title: (NSString *) title
@@ -414,44 +459,6 @@
                     errorHandler: errorBlock];
 }
 
-- (void) manageChannelForUserId: (NSString *) userId
-                          title: (NSString *) title
-                    description: (NSString *) description
-                       category: (NSString *) category
-                          cover: (NSString *) cover
-                       isPublic: (BOOL) isPublic
-                       apiString: apiString
-                       httpVerb: (NSString *) httpVerb
-              completionHandler: (MKNKUserSuccessBlock) completionBlock
-                   errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    NSDictionary *params = @{@"title" : title,
-                             @"description" : description,
-                             @"category" : category,
-                             @"cover" : cover,
-                             @"public" : @(isPublic)};
-
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params
-                                                                                                   httpMethod: @"POST"
-                                                                                                          ssl: TRUE];
-   [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
-    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
-    
-    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
-    
-    [self enqueueSignedOperation: networkOperation];
-}
-
-
-// /ws/USERID/channels/CHANNELID/videos/    /* PUT */
-
-//    [self updateVideosForChannelWithChannelId: @"abc"
-//                                 videoIdArray: @[@"aaa", @"bbb", @"ccc"]
-//                            completionHandler: nil
-//                                 errorHandler: nil];
 
 - (void) updateVideosForChannelForUserId: (NSString *) userId
                                channelId: (NSString *) channelId
@@ -497,9 +504,34 @@
 }
 
 
--(SYNOAuth2Credential*)oAuth2Credential
+- (void) updatePrivacyForChannelForUserId: (NSString *) userId
+                                channelId: (NSString *) channelId
+                                isPublic: (BOOL) isPublic
+                        completionHandler: (MKNKUserSuccessBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    return self.appDelegate.currentOAuth2Credentials;
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSString *apiString = [kAPIUpdateChannelPrivacy stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"PUT"
+                                                                                                          ssl: TRUE];
+    [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
+     {
+         // Wrap it in quotes to make it valid JSON
+         NSString *privacyValueString = [NSString stringWithFormat: @"%@", isPublic ? @"true" : @"false"];
+         return privacyValueString;
+     }
+     forType: @"application/json"];
+    
+    [self addCommonOAuthPropertiesToSignedNetworkOperation: networkOperation
+                                         completionHandler: completionBlock
+                                              errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
 }
 
 // Test code template
