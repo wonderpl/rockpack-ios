@@ -73,8 +73,6 @@
 
 - (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
 {
-    
-    
     if (videoInstance.video.starredByUserValue == TRUE)
     {
         // Currently highlighted, so decrement
@@ -86,9 +84,7 @@
         // Currently highlighted, so increment
         videoInstance.video.starredByUserValue = TRUE;
         videoInstance.video.starCountValue += 1;
-    }
-    
-    
+    }   
 }
 
 #pragma mark - Button Delegates

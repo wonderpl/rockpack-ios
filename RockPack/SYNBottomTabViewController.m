@@ -267,8 +267,6 @@
     if(_selectedViewController == newSelectedViewController)
         return;
     
-    
-    
     // even if nill, that is OK. It will just animate the selectedViewController out.
     
     if(newSelectedViewController)
@@ -307,6 +305,18 @@
         
         
         _selectedViewController = newSelectedViewController;
+    }
+    
+    if ([newSelectedViewController isKindOfClass: [UINavigationController class]] &&
+        [[(UINavigationController *)newSelectedViewController viewControllers] count] > 1)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
+                                                            object: self];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonHide
+                                                            object: self];
     }
     
 }

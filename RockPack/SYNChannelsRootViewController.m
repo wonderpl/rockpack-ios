@@ -320,6 +320,8 @@
     if(tabExpanded)
         return;
     
+    tabExpanded = YES;
+    
     [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
         CGPoint currentCenter = self.channelThumbnailCollectionView.center;
         [self.channelThumbnailCollectionView setCenter:CGPointMake(currentCenter.x, currentCenter.y + kCategorySecondRowHeight)];

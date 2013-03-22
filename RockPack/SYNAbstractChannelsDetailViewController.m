@@ -130,12 +130,6 @@
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
                                withReuseIdentifier: @"SYNChannelHeaderView"];
     
-    [self.videoThumbnailCollectionView registerNib: headerViewNib
-                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
-                               withReuseIdentifier: @"SYNChannelHeaderView"];
-    
-
-    
     // Now add the long-press gesture recognizers to the custom flow layout
     [layout setUpGestureRecognizersOnCollectionView];
     
@@ -194,12 +188,6 @@
 
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
-    
-//    NSLog (@"xx %@", [self.videoThumbnailCollectionView recursiveDescription]);
-    
-//    UIView *dummyView = [[UIView alloc] initWithFrame: CGRectMake(100, 100, 100, 1000)];
-//    dummyView.backgroundColor = [UIColor redColor];
-//    [self.videoThumbnailCollectionView insertSubview: dummyView atIndex: 0];
 }
 
 - (void) dealloc
@@ -222,10 +210,8 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    // @"viewId == \"%@\"", viewId
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"AND viewId == \"Channels\"", self.channel.uniqueId]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\" AND viewId == \"Channels\"", self.channel.uniqueId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                         managedObjectContext: appDelegate.mainManagedObjectContext
@@ -490,6 +476,7 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
+        // 290
         return CGSizeMake(1024, 390);
     }
     else
