@@ -30,7 +30,7 @@
     [super layoutSubviews];
     CGRect tableCellFrame = self.textLabel.frame;
     tableCellFrame.size.width += 30.0;
-    tableCellFrame.origin.y = 7.0;
+    tableCellFrame.origin.y = 6.0;
     self.textLabel.frame = tableCellFrame;
 }
 @end

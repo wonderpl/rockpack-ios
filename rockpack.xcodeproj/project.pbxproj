@@ -512,6 +512,7 @@
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
 		BE13E38916FB85220098F23C /* SYNAccountSettingsLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13E38816FB85220098F23C /* SYNAccountSettingsLocation.m */; };
+		BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13E38B16FC85E50098F23C /* SYNAccountSettingsAbout.m */; };
 		BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */; };
 		BE21EE7F16FA0CFB0067223B /* AccountSettingsView.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE7D16FA0CFA0067223B /* AccountSettingsView.png */; };
 		BE21EE8016FA0CFB0067223B /* AccountSettingsView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE7E16FA0CFB0067223B /* AccountSettingsView@2x.png */; };
@@ -1228,6 +1229,8 @@
 		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
 		BE13E38716FB85220098F23C /* SYNAccountSettingsLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsLocation.h; sourceTree = "<group>"; };
 		BE13E38816FB85220098F23C /* SYNAccountSettingsLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsLocation.m; sourceTree = "<group>"; };
+		BE13E38A16FC85E50098F23C /* SYNAccountSettingsAbout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsAbout.h; sourceTree = "<group>"; };
+		BE13E38B16FC85E50098F23C /* SYNAccountSettingsAbout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsAbout.m; sourceTree = "<group>"; };
 		BE21EE7A16F9FF520067223B /* SYNAccountSettingsTextInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsTextInputController.h; sourceTree = "<group>"; };
 		BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsTextInputController.m; sourceTree = "<group>"; };
 		BE21EE7D16FA0CFA0067223B /* AccountSettingsView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AccountSettingsView.png; sourceTree = "<group>"; };
@@ -2807,6 +2810,8 @@
 				BE21EEB116FB56080067223B /* SYNPaddedUITextField.m */,
 				BE13E38716FB85220098F23C /* SYNAccountSettingsLocation.h */,
 				BE13E38816FB85220098F23C /* SYNAccountSettingsLocation.m */,
+				BE13E38A16FC85E50098F23C /* SYNAccountSettingsAbout.h */,
+				BE13E38B16FC85E50098F23C /* SYNAccountSettingsAbout.m */,
 			);
 			name = "Specific Fields";
 			sourceTree = "<group>";
@@ -3696,6 +3701,7 @@
 				BE21EEAF16FB4ECE0067223B /* SYNAccountSettingsPassword.m in Sources */,
 				BE21EEB216FB56090067223B /* SYNPaddedUITextField.m in Sources */,
 				BE13E38916FB85220098F23C /* SYNAccountSettingsLocation.m in Sources */,
+				BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.inputField.text = @"";
     self.inputField.placeholder = @"Old Password";
     
     passwordField = [self createInputField];
