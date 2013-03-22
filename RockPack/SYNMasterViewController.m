@@ -550,18 +550,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     CGPoint currentPoint = self.topButtonsContainer.center;
     
     CGPoint targetPoint;
+    CGRect targetFrame;
     CGFloat targetAlpha;
     
     
     if(show)
     {
-        targetPoint = CGPointMake(currentPoint.x + 60.0, self.topButtonsContainer.center.y);
+//        targetPoint = CGPointMake(currentPoint.x + 60.0, self.topButtonsContainer.center.y);
+        targetFrame = self.topButtonsContainer.frame;
+        targetFrame.origin.x = 15;
+        
         targetAlpha = 1.0;
         
     }
     else
     {
-        targetPoint = CGPointMake(currentPoint.x - 60.0, self.topButtonsContainer.center.y);
+//        targetPoint = CGPointMake(currentPoint.x - 60.0, self.topButtonsContainer.center.y);
+        targetFrame = self.topButtonsContainer.frame;
+        targetFrame.origin.x = (-60);
         targetAlpha = 0.0;
     }
     
@@ -570,8 +576,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
                     {
-                         
-                         self.topButtonsContainer.center = targetPoint;
+//                         
+//                         self.topButtonsContainer.center = targetPoint;
+                        self.topButtonsContainer.frame = targetFrame;
                          self.backButton.alpha = targetAlpha;
                          
                      } completion: ^(BOOL finished) {
