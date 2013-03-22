@@ -49,9 +49,9 @@
         if(type == TabItemTypeMain)
             correctY = self.frame.size.height*0.5 + 3.0;
         else
-            correctY = self.frame.size.height*0.5;
+            correctY = self.frame.size.height*0.5 + 4.0;
         
-        label.center = CGPointMake(self.frame.size.width*0.5, correctY);
+        label.center = CGPointMake(self.frame.size.width*0.5, correctY - 4.0);
         [self addSubview:label];
         
         if(type == TabItemTypeMain)
