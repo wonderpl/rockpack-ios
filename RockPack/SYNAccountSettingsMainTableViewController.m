@@ -168,7 +168,11 @@
                 break;
                 
             case 5:
-                cell.textLabel.text = [self getDOBStringFromCurrentUser];
+                if(!user.dateOfBirth)
+                    cell.textLabel.text = @"Date of Birth";
+                else
+                    cell.textLabel.text = [self getDOBStringFromCurrentUser];
+                
                 cell.detailTextLabel.text = @"D.O.B Private";
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
                 break;
@@ -380,6 +384,9 @@
 
 -(NSString*)getDOBStringFromCurrentUser
 {
+    if(!user.dateOfBirth)
+        return @"";
+    
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];

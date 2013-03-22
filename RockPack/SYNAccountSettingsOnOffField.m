@@ -17,7 +17,7 @@
 - (id)initWithFrame:(CGRect)frame andString:(NSString*)value
 {
     
-    UIFont *rockpackFont = [UIFont rockpackFontOfSize:16];
+    UIFont *rockpackFont = [UIFont boldRockpackFontOfSize:20];
     CGSize measure = [value sizeWithFont:rockpackFont];
     
     
@@ -44,7 +44,7 @@
         selfFrame.size.height = onOffFrame.size.height;
         self.frame = selfFrame;
         
-        self.textField.center = CGPointMake(self.textField.center.x, self.onOffSwitch.center.y + 4.0);
+        self.textField.center = CGPointMake(self.textField.center.x, self.onOffSwitch.center.y);
         self.textField.frame = CGRectIntegral(self.textField.frame);
         
     }

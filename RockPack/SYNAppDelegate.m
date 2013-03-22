@@ -139,6 +139,7 @@
 
 -(void)loginCompleted:(NSNotification*)notification
 {
+    
     self.window.rootViewController = self.masterViewController;
     
     self.loginViewController = nil;
