@@ -48,7 +48,7 @@
         
         // Bottom Bar //
         UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
-        CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height - 6.0, totalWidth, secondaryTabsBGImage.size.height);
+        CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height, totalWidth, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
         
         self.secondaryDividerOverlay = [[UIView alloc] initWithFrame:secondaryFrame];
@@ -106,7 +106,7 @@
         nextOrigin += itemWidth;
         
         UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopDivider.png"]];
-        dividerImageView.center = CGPointMake(nextOrigin, midMainFrame - 4.0);
+        dividerImageView.center = CGPointMake(nextOrigin, midMainFrame);
         dividerImageView.frame = CGRectIntegral(dividerImageView.frame);
         [dividerOverlayView addSubview:dividerImageView];
         
