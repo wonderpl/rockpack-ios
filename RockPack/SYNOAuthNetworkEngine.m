@@ -386,34 +386,19 @@
               completionHandler: (MKNKUserSuccessBlock) completionBlock
                    errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-//    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
-//    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
-//    
-//    [self manageChannelForUserId: userId
-//                           title: title
-//                     description: description
-//                        category: category
-//                           cover: cover
-//                        isPublic: isPublic
-//                       apiString: apiString
-//                        httpVerb: @"POST"
-//               completionHandler: completionBlock
-//                    errorHandler: errorBlock];
-
-    // http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSString *apiString = [kAPICreateNewChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-//    [self channelSubscribeForUserId: (NSString *) userId
-//                         channelURL: @"http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/"
-//                completionHandler: ^(id thing)
-//     {
-//         NSLog (@"Worked %@", thing);
-//     }
-//                     errorHandler: ^(id thing)
-//     {
-//         NSLog (@"Didn't work");
-//     }];
-    
-
+    [self manageChannelForUserId: userId
+                           title: title
+                     description: description
+                        category: category
+                           cover: cover
+                        isPublic: isPublic
+                       apiString: apiString
+                        httpVerb: @"POST"
+               completionHandler: completionBlock
+                    errorHandler: errorBlock];
 }
 
 
@@ -782,5 +767,20 @@
 // {
 //     NSLog (@"Didn't work");
 // }];
+
+// http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/
+
+//    [self channelSubscribeForUserId: (NSString *) userId
+//                         channelURL: @"http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/"
+//                completionHandler: ^(id thing)
+//     {
+//         NSLog (@"Worked %@", thing);
+//     }
+//                     errorHandler: ^(id thing)
+//     {
+//         NSLog (@"Didn't work");
+//     }];
+
+
 
 @end
