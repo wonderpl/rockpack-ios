@@ -8,6 +8,7 @@
 
 #import "SYNOAuth2Credential.h"
 #import "SSKeychain.h"
+#import "AppConstants.h"
 
 @interface SYNOAuth2Credential ()
 
@@ -128,6 +129,12 @@
 {
     [SSKeychain deletePasswordForService: service
                                  account: account];
+}
+
+-(void)removeFromKeychain
+{
+    [self removeFromKeychainForService:kOAuth2Service
+                               account:self.userId];
 }
 
 #pragma mark - For debugging only

@@ -301,7 +301,7 @@
 
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) selectedIndexPath
 {
-    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.viewController;
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
     
     [masterViewController addVideoOverlayToViewController: self
                              withFetchedResultsController: self.fetchedResultsController
@@ -468,7 +468,7 @@
         [self.draggedView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
                                      placeHolderImage: nil];
         
-        [((SYNMasterViewController*)appDelegate.viewController).overEverythingView addSubview:self.draggedView];
+        [((SYNMasterViewController*)appDelegate.masterViewController).overEverythingView addSubview:self.draggedView];
         
         // now add the item to the view
         //[self.view addSubview: self.draggedView];

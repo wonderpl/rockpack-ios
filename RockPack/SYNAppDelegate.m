@@ -80,11 +80,10 @@
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
 
     SYNBottomTabViewController* bottomTabVC = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
-                                                                       bundle: nil];
+                                                                                           bundle: nil];
     
-    SYNMasterViewController* masterViewContoller = [[SYNMasterViewController alloc] initWithRootViewController:bottomTabVC];
     
-    self.viewController = masterViewContoller;
+    self.masterViewController = [[SYNMasterViewController alloc] initWithRootViewController:bottomTabVC];
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
@@ -94,7 +93,7 @@
     }
         
     else {
-        self.window.rootViewController = self.viewController;
+        self.window.rootViewController = self.masterViewController;
     }
         
     
@@ -116,9 +115,31 @@
     return YES;
 }
 
+
+-(void)logout
+{
+    
+    if(!self.currentUser || !self.currentUser.current)
+        return;
+    
+    self.currentUser.current = @(NO);
+    
+    [self.currentOAuth2Credentials removeFromKeychain];
+    
+    [self.loginViewController setUpInitialState];
+    
+    
+    self.loginViewController = [[SYNLoginViewController alloc] init];
+    
+    self.window.rootViewController = self.loginViewController;
+    
+    
+    
+}
+
 -(void)loginCompleted:(NSNotification*)notification
 {
-    self.window.rootViewController = self.viewController;
+    self.window.rootViewController = self.masterViewController;
     
     self.loginViewController = nil;
 }

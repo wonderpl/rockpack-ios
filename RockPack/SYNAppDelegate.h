@@ -37,10 +37,11 @@
 @property (nonatomic, strong) SYNOAuth2Credential* currentOAuth2Credentials;
 
 // Root view controller
-@property (strong, nonatomic) UIViewController *viewController;
+@property (strong, nonatomic) UIViewController *masterViewController;
 
 // Bit of a hack to represent the current user
 @property (weak, nonatomic) ChannelOwner *channelOwnerMe;
+
 
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
@@ -48,5 +49,6 @@
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
 - (void) resetCoreDataStack;
+-(void)logout;
 
 @end
