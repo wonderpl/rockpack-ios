@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNOAuthNetworkEngine.h"
 #import "RegexKitLite.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNAccountSettingsTextInputController ()
 
@@ -19,7 +20,7 @@
 
 @implementation SYNAccountSettingsTextInputController
 
-@synthesize inputField, saveButton;
+@synthesize inputField, saveButton, errorTextField;
 @synthesize appDelegate;
 @synthesize lastTextFieldY;
 
@@ -103,6 +104,17 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+    
+    errorTextField = [[UITextField alloc] initWithFrame:CGRectMake(10.0,
+                                                                   saveButton.frame.origin.y + saveButton.frame.size.height + 10.0, 0.0,
+                                                                   self.contentSizeForViewInPopover.width - 10.0)];
+    
+    errorTextField.textColor = [UIColor redColor];
+    errorTextField.font = [UIFont rockpackFontOfSize:18];
+    errorTextField.textAlignment = NSTextAlignmentCenter;
+    
+    [self.view addSubview:errorTextField];
     
     
 }
