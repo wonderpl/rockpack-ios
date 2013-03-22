@@ -26,6 +26,7 @@ typedef enum {
 
 @property (nonatomic, strong) SYNPaddedUITextField* inputField;
 @property (nonatomic, strong) UIButton* saveButton;
+@property (nonatomic, strong) UITextField* errorTextField;
 @property (nonatomic, strong) SYNAppDelegate* appDelegate;
 
 

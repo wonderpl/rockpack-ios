@@ -20,7 +20,7 @@
 #import "UncaughtExceptionHandler.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-#define kShowLoginPhase NO
+#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 
@@ -87,38 +87,22 @@
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
-    if(kShowLoginPhase) {
-        self.window.rootViewController = self.loginViewController;
-        
-    }
-        
-    else {
-        self.window.rootViewController = self.masterViewController;
-    }
-        
-    
     
     [self.window makeKeyAndVisible];
     
     
-    if(self.currentUser) {
-        DebugLog(@"Found User: %@", _currentUser);
-        if(self.currentOAuth2Credentials) {
-            // TODO: Check for validity of the token against the server
-            [self showAutologin];
-        }
+    if(self.currentUser && self.currentOAuth2Credentials) {
         
-    } else {
-        DebugLog(@"No User found");
+        self.window.rootViewController = self.masterViewController;
+        return YES;
     }
+    
+    
+    self.window.rootViewController = self.loginViewController;
     
     return YES;
 }
 
--(void)showAutologin
-{
-    self.window.rootViewController = self.masterViewController;
-}
 
 -(void)logout
 {
@@ -130,10 +114,9 @@
     
     [self.currentOAuth2Credentials removeFromKeychain];
     
-    [self.loginViewController setUpInitialState];
-    
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
+    
     
     self.window.rootViewController = self.loginViewController;
     
