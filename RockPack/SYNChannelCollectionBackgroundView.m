@@ -18,7 +18,7 @@
         self.backgroundColor = [UIColor colorWithRed: 0.0f
                                                green: 0.0f
                                                 blue: 0.0f
-                                               alpha: 0.6f];
+                                               alpha: 0.73f];
     }
     
     return self;

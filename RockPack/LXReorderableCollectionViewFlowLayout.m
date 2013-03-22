@@ -532,7 +532,8 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
                                                                                        withIndexPath: indexPath];
         
 //        layoutAttributes.frame = CGRectMake(0.0, 0.0, self.collectionViewContentSize.width, self.collectionViewContentSize.height);
-        layoutAttributes.frame = CGRectMake(0.0f, 372.0f, 1024.0f, self.collectionViewContentSize.height - 372.0f);
+//        layoutAttributes.frame = CGRectMake(0.0f, 372.0f, 1024.0f, self.collectionViewContentSize.height - 372.0f);
+        layoutAttributes.frame = CGRectMake(0.0f, 390.0f, 1024.0f, self.collectionViewContentSize.height - 390.0f);
         layoutAttributes.zIndex = -1;
     }
     
