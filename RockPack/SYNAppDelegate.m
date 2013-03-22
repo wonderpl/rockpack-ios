@@ -93,6 +93,13 @@
     
     if(self.currentUser && self.currentOAuth2Credentials) {
         
+        if([self.currentOAuth2Credentials hasExpired]) {
+            
+            // renew
+            
+            
+        }
+        
         self.window.rootViewController = self.masterViewController;
         return YES;
     }
