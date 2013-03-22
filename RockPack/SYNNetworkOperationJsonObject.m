@@ -48,6 +48,21 @@
                  responseBlock(jsonObject);
              }];
          }
+         else if(error.code == 401)
+         {
+             // Invalid or expired token
+             [errorOp responseJSONWithOptions: NSJSONReadingAllowFragments
+                            completionHandler: ^(id jsonObject)
+              {
+                  if (!jsonObject)
+                  {
+                      errorBlock(error);
+                      return;
+                  }
+                  
+                  responseBlock(jsonObject);
+              }];
+         }
          else
          {
              errorBlock(error);

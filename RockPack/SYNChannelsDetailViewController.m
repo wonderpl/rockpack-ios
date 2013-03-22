@@ -41,7 +41,6 @@
     
     // Disable text fields until edit button selected
     self.channelTitleTextField.enabled = FALSE;
-
 }
 
 
@@ -71,7 +70,6 @@
 
 - (void) reloadCollectionViews
 {
-//    self.videoInstancesArray = [NSMutableArray arrayWithArray: self.channel.videoInstancesSet.array];
     [self.videoThumbnailCollectionView reloadData];
 }
 

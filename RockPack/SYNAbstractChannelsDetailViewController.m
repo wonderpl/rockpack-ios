@@ -222,8 +222,8 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
+    // @"viewId == \"%@\"", viewId
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"AND viewId == \"Channels\"", self.channel.uniqueId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     

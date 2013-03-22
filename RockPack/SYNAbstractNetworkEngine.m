@@ -66,7 +66,7 @@
 #pragma mark - Common functionality
 
 // This code block is common to all of the signup/signin methods
-- (void) addCommonHandlerToNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
+- (void) addCommonHandlerToNetworkOperation:  (SYNNetworkOperationJsonObject *) networkOperation
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -84,12 +84,48 @@
              completionBlock(response);
          }
      }
-                                  errorHandler: ^(NSError* error)
+     errorHandler: ^(id response)
      {
-         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
-         DebugLog(@"API Call failed: %@", customErrorDictionary);
-         errorBlock(customErrorDictionary);
+         if ([response isKindOfClass: [NSError class]])
+         {
+             NSError *responseErrror = (NSError *) response;
+             NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", responseErrror.domain, responseErrror.code]};
+             DebugLog(@"API Call failed: %@", customErrorDictionary);
+             errorBlock(customErrorDictionary);
+         }
+         else if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
+         {
+             NSDictionary *responseDictionary = (NSDictionary *) response;
+//             NSString *
+//             if (
+             DebugLog(@"API Call failed: %@", response);
+             errorBlock(response);
+         }
+         else
+         {
+             // No idea what has been passed back, so try to do the least worst thing...
+             errorBlock(nil);
+         }
      }];
+}
+
+- (void) reattemptOperationWithRenewedToken: (SYNNetworkOperationJsonObject *) networkOperation
+{
+    NSLog (@"reattemptOperationWithRenewedToken");
+//    [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
+//     completionHandler:^ (NSDictionary* dictionary)
+//     {                                            
+//         [credential saveToKeychainForService: kOAuth2Service
+//                                      account: credential.userId];
+//         
+//         [activityIndicator stopAnimating];
+//         [self completeLoginProcess:credential];
+//     }
+//     errorHandler: ^(NSDictionary* errorDictionary)
+//     {
+//     }];
+
+    
 }
 
 
