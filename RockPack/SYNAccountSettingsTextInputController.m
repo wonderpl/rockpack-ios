@@ -9,6 +9,7 @@
 #import "SYNAccountSettingsTextInputController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNOAuthNetworkEngine.h"
+#import "RegexKitLite.h"
 
 @interface SYNAccountSettingsTextInputController ()
 
@@ -143,23 +144,19 @@
     
     
     if(![self formIsValid]) {
+        
         // show error;
+        
+        
+        return;
     }
     
     
     
-   NSArray* componentsOfInput = nil;
     
     switch (currentFieldType) {
             
         case UserFieldTypeFullname:
-            
-            componentsOfInput = [inputField.text componentsSeparatedByString:@" "];
-            // have already checked for validity
-            appDelegate.currentUser.firstName = componentsOfInput[0];
-            appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
-            
-            
             
             break;
             
@@ -171,7 +168,7 @@
             break;
             
         case UserFieldTypeEmail:
-            appDelegate.currentUser.emailAddress = inputField.text;
+            
             break;
             
     }
@@ -180,6 +177,54 @@
 }
 
 #pragma mark - Updating User
+
+
+-(void)updateEmail
+{
+    saveButton.enabled = NO;
+    
+    [appDelegate.oAuthNetworkEngine changeUsernameForUserId:appDelegate.currentUser.uniqueId
+                                                   username:inputField.text
+                                          completionHandler:^(id object) {
+                                              
+                                              
+                                              
+                                              appDelegate.currentUser.emailAddress = inputField.text;
+                                              
+                                              
+                                              [appDelegate saveContext:YES];
+                                              
+                                              [self.navigationController popViewControllerAnimated:YES];
+                                              
+                                          } errorHandler:^(id object) {
+                                              
+                                          }];
+}
+
+-(void)updateFullName
+{
+    saveButton.enabled = NO;
+    
+    [appDelegate.oAuthNetworkEngine changeUsernameForUserId:appDelegate.currentUser.uniqueId
+                                                   username:inputField.text
+                                          completionHandler:^(id object) {
+                                              
+                                              
+                                              
+                                              NSArray* componentsOfInput = [inputField.text componentsSeparatedByString:@" "];
+                                          
+                                              appDelegate.currentUser.firstName = componentsOfInput[0];
+                                              appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
+                                              
+                                              
+                                              [appDelegate saveContext:YES];
+                                              
+                                              [self.navigationController popViewControllerAnimated:YES];
+                                              
+                                          } errorHandler:^(id object) {
+                                              
+                                          }];
+}
 
 -(void)updateUsername
 {
@@ -205,35 +250,31 @@
     
 }
 
--(void)updateEmail
-{
-    
-}
 
--(void)updateFullname
-{
-    
-}
 
 -(void)updateLocale
 {
     
 }
 
+#pragma mark - Validating
+
 -(BOOL)formIsValid
 {
+    BOOL isMatched = NO;
+    
     switch (currentFieldType) {
             
-        case UserFieldTypeFullname:
-            
+        case UserFieldTypeFullname: // only letters
+            isMatched = [self.inputField.text isMatchedByRegex:@"^[a-zA-Z\\.]+$"];
             break;
             
         case UserFieldTypeUsername:
-            
+            isMatched = [self.inputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"];
             break;
             
         case UserFieldTypeEmail:
-            
+            isMatched = [self.inputField.text isMatchedByRegex:@"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
             break;
             
     }

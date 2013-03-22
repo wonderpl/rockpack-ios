@@ -747,15 +747,15 @@
 -(void)showAutologinWithCredentials:(SYNOAuth2Credential*)credentials
 {
     
-    activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
-                                           facebookSignInButton.center.y);
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        signUpButton.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        [activityIndicator startAnimating];
-        [self completeLoginProcess:credentials];
-    }];
+//    activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
+//                                           facebookSignInButton.center.y);
+//    
+//    [UIView animateWithDuration:0.3 animations:^{
+//        signUpButton.alpha = 0.0;
+//    } completion:^(BOOL finished) {
+//        [activityIndicator startAnimating];
+//        [self completeLoginProcess:credentials];
+//    }];
     
     
 }

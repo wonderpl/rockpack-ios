@@ -105,7 +105,7 @@
         DebugLog(@"Found User: %@", _currentUser);
         if(self.currentOAuth2Credentials) {
             // TODO: Check for validity of the token against the server
-            [self.loginViewController showAutologinWithCredentials:self.currentOAuth2Credentials];
+            [self showAutologin];
         }
         
     } else {
@@ -115,6 +115,10 @@
     return YES;
 }
 
+-(void)showAutologin
+{
+    self.window.rootViewController = self.masterViewController;
+}
 
 -(void)logout
 {
