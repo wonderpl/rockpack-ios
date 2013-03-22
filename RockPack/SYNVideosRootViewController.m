@@ -117,7 +117,7 @@
                 forControlEvents:UIControlEventTouchUpInside];
     
     [self.largeVideoPanelController.channelImageButton addTarget:self
-                                                          action:@selector(toggleLargeVideoPanelStarItButton:)
+                                                          action:@selector(userTouchedLargeVideoChannelButton:)
                                                 forControlEvents:UIControlEventTouchUpInside];
     
     self.channelImageView = self.largeVideoPanelController.channelImageView;
