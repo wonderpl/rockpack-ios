@@ -1011,10 +1011,14 @@
 {
     [activityIndicator stopAnimating];
     
-    [UIView animateWithDuration: 0.4
-                     animations: ^
-    {
-        self.view.alpha = 0.0;
+    UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
+    splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];
+    splashView.alpha = 0.0;
+	[self.view addSubview: splashView];
+    
+    [UIView animateWithDuration: 0.3
+                     animations: ^{
+                         splashView.alpha = 1.0;
     }
     completion: ^(BOOL finished)
     {
