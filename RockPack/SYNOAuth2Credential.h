@@ -51,6 +51,8 @@
 
 - (BOOL) hasExpired;
 
+-(void)removeFromKeychain;
+
 // Debugging
 
 - (NSString *) description;

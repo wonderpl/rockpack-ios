@@ -41,6 +41,8 @@
     if(!newUser)
         return NO;
     
+    newUser.current = @(YES);
+    
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;

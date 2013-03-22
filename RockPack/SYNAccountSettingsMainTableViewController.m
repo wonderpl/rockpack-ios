@@ -328,7 +328,7 @@
 		
 	}
 	else { // logout
-		
+		[appDelegate logout];
 	}
 }
 
