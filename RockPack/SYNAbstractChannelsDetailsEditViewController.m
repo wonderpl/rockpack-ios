@@ -229,14 +229,6 @@
 {
     NSLog (@"User touched done button");
     
-//    SYNAppDelegate *appDelegate = UIApplication.sharedApplication.delegate;
-    
-//    SYNAppDelegate *delegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    
-//    SYNBottomTabViewController *bottomTabViewController = delegate.viewController;
-//    
-//    [bottomTabViewController popCurrentViewController: nil];
-    
     self.editButton.hidden = FALSE;
     self.shareButton.hidden = FALSE;
     
