@@ -41,7 +41,7 @@
 						<reference key="NSNextResponder" ref="378423625"/>
 						<int key="NSvFlags">265</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{0, 118}, {1024, 642}}</string>
+						<string key="NSFrame">{{0, 118}, {1024, 568}}</string>
 						<reference key="NSSuperview" ref="378423625"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -272,14 +272,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewLayout</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
 					</object>
 				</object>
 			</array>
