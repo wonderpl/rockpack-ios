@@ -126,7 +126,6 @@
              // We were expecing a dictionary back, so call error block
              errorBlock(response);
          }
-  
      }
       errorHandler: ^(NSError* error)
      {
@@ -213,10 +212,12 @@
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: @{@"locale" : self.localeString}
                                                                                                    httpMethod: @"GET"
-                                                                                                          ssl: TRUE];    
-    [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                                                                                                          ssl: TRUE];
+    // FIXME: I think that this functionality is already duplicated by the code below
+    
+//    [self addCommonHandlerToNetworkOperation: networkOperation
+//                                         completionHandler: completionBlock
+//                                              errorHandler: errorBlock];
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary) {
         
@@ -276,8 +277,8 @@
      } forType: @"application/json"];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -307,8 +308,8 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
 
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -337,8 +338,8 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -369,8 +370,8 @@
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -455,8 +456,8 @@
      forType: @"application/json"];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -478,8 +479,8 @@
                                                                                                           ssl: TRUE];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -501,8 +502,8 @@
                                                                                                           ssl: TRUE];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -545,8 +546,8 @@
                                                forType: @"application/json"];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -579,8 +580,8 @@
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -600,8 +601,8 @@
                                                                                                           ssl: TRUE];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -626,8 +627,8 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -654,8 +655,8 @@
     [networkOperation addHeaders: @{@"Content-Type" : @"image/png", @"Content-Length" : lengthString}];
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -676,8 +677,8 @@
                                                                                                    httpMethod: @"DELETE"
                                                                                                           ssl: TRUE];
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -703,8 +704,8 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -736,8 +737,8 @@
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
@@ -751,11 +752,13 @@
                                                                                                             params: nil
                                                                                                         httpMethod: @"DELETE"];
     [self addCommonHandlerToNetworkOperation: networkOperation
-                                         completionHandler: completionBlock
-                                              errorHandler: errorBlock];
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }
+
+// TODO: removed this test code when testing complete
 
 //[self channelUnsubscribeForUserId: (NSString *) userId
 //                      resourceURL: @"https://secure.demo.rockpack.com/ws/pKjfvsAqRT2QNx1CH1L-yA/subscriptions/chbAApZrKhRN-ABK-q-oSdig/"
