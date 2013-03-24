@@ -71,7 +71,7 @@
 
 #pragma mark - 
 
-- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
+- (void) toggleVideoStarItAtIndex: (NSIndexPath *) indexPath
 {
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -107,7 +107,7 @@
     
 }
 
-- (IBAction) userTouchedVideoRockItButton: (UIButton *) button
+- (IBAction) userTouchedVideoStarItButton: (UIButton *) button
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteRockItButtonPressed
                                                         object: self];

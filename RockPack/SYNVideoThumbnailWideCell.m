@@ -109,7 +109,7 @@
 
     // Add button targets
     [self.rockItButton addTarget: self.viewControllerDelegate
-                          action: @selector(userTouchedVideoRockItButton:)
+                          action: @selector(userTouchedVideoStarItButton:)
                 forControlEvents: UIControlEventTouchUpInside];
     
     [self.shareItButton addTarget: self.viewControllerDelegate

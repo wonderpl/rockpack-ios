@@ -349,7 +349,7 @@
 
 
 
-- (IBAction) toggleVideoRockItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoStarItButton: (UIButton *) rockItButton
 {
     rockItButton.selected = !rockItButton.selected;
     
@@ -363,7 +363,7 @@
         return;
     }
     
-    [self toggleVideoRockItAtIndex: indexPath];
+    [self toggleVideoStarItAtIndex: indexPath];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];

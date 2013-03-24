@@ -14,10 +14,12 @@
 #import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
+#import "SYNAppDelegate.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNMasterViewController.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoQueueViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
@@ -181,8 +183,10 @@
 }
 
 
-- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath
+- (void) toggleVideoStarItAtIndex: (NSIndexPath *) indexPath
 {
+    
+    NSString *action = nil;
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     if (videoInstance.video.starredByUserValue == TRUE)
@@ -190,17 +194,30 @@
         // Currently highlighted, so decrement
         videoInstance.video.starredByUserValue = FALSE;
         videoInstance.video.starCountValue -= 1;
+        action = @"unstar";
     }
     else
     {
         // Currently highlighted, so increment
         videoInstance.video.starredByUserValue = TRUE;
         videoInstance.video.starCountValue += 1;
+        action = @"star";
     }
     
     [self saveDB];
     
-//    [self.videoThumbnailCollectionView reloadData];
+    // Update the star/unstar status on the server
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                     action: action
+                                            videoInstanceId: videoInstance.uniqueId
+                                          completionHandler: ^(NSDictionary *responseDictionary)
+     {
+         DebugLog(@"Record action successful");
+     }
+                                               errorHandler: ^(NSDictionary* errorDictionary)
+     {
+         DebugLog(@"Record action failed");
+     }];
 }
 
 
@@ -225,11 +242,8 @@
 }
 
 
-- (IBAction) userTouchedVideoRockItButton: (UIButton *) rockItButton
+- (IBAction) userTouchedVideoStarItButton: (UIButton *) rockItButton
 {
-
-    
-    
     // Get to cell it self (from button subview)
     UIView *v = rockItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
@@ -238,7 +252,7 @@
     if (indexPath)
     {
         // Need to do this first as this changes the actual video object
-        [self toggleVideoRockItAtIndex: indexPath];
+        [self toggleVideoStarItAtIndex: indexPath];
         [self updateOtherOnscreenVideoAssetsForIndexPath: indexPath];
         
         if (self.shouldUpdateRockItStatus == TRUE)

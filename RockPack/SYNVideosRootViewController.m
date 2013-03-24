@@ -14,6 +14,7 @@
 #import "SYNCategoryItemView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "SYNVideosRootViewController.h"
@@ -411,6 +412,7 @@
     // called for a press to the large video panel's star button
     
     button.selected = !button.selected;
+    NSString *action = nil;
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
     
@@ -419,18 +421,33 @@
         // Currently highlighted, so decrement
         videoInstance.video.starredByUserValue = FALSE;
         videoInstance.video.starCountValue -= 1;
+        action = @"unstar";
     }
     else
     {
         // Currently highlighted, so increment
         videoInstance.video.starredByUserValue = TRUE;
         videoInstance.video.starCountValue += 1;
+        action = @"star";
     }
     
     
     [self.videoThumbnailCollectionView reloadData];
     
     [self saveDB];
+    
+    // Update the star/unstar status on the server
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                     action: action
+                                            videoInstanceId: videoInstance.uniqueId
+                                          completionHandler: ^(NSDictionary *responseDictionary)
+     {
+         DebugLog(@"Record action successful");
+     }
+     errorHandler: ^(NSDictionary* errorDictionary)
+     {
+         DebugLog(@"Record action failed");
+     }];
 }
 
 
@@ -446,9 +463,7 @@
 }
 
 
-
-
--(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
 {
     [super handleMainTap:recogniser];
     
@@ -474,16 +489,17 @@
     }];
 }
 
--(BOOL)showSubcategories
+
+- (BOOL) showSubcategories
 {
     return NO;
 }
 
 
--(void)handleNewTabSelectionWithId:(NSString *)selectionId
+- (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
     
-    [appDelegate.networkEngine updateVideosScreenForCategory:selectionId];
+    [appDelegate.networkEngine updateVideosScreenForCategory: selectionId];
 }
 
 @end

@@ -55,7 +55,7 @@
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
 
-- (void) toggleVideoRockItAtIndex: (NSIndexPath *) indexPath;
+- (void) toggleVideoStarItAtIndex: (NSIndexPath *) indexPath;
 - (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath;
