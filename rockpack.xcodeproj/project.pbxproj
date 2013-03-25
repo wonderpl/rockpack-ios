@@ -1465,7 +1465,7 @@
 		010DEFDA1629BDC40080F26B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				01982525162A02DD00216900 /* Contstants */,
+				01982525162A02DD00216900 /* Constants */,
 				019825EE162C948000216900 /* Categories */,
 				019824E21629CAC000216900 /* App Delegate */,
 				012632CC162DF7B30009FF9C /* Collection Cells */,
@@ -2148,12 +2148,12 @@
 			name = Tabs;
 			sourceTree = "<group>";
 		};
-		01982525162A02DD00216900 /* Contstants */ = {
+		01982525162A02DD00216900 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
 				01982526162A02F700216900 /* AppConstants.h */,
 			);
-			name = Contstants;
+			name = Constants;
 			sourceTree = "<group>";
 		};
 		01982550162A2AAC00216900 /* Panels */ = {

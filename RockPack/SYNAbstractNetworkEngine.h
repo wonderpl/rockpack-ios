@@ -11,6 +11,9 @@
 #import "SYNNetworkOperationJsonObject.h"
 #import "SYNSearchRegistry.h"
 
+#define kJSONParseError 110
+#define kNetworkError   112
+
 @class SYNNetworkOperationJsonObject;
 
 @interface SYNAbstractNetworkEngine : MKNetworkEngine

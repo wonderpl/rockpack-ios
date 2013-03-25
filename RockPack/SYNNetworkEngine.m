@@ -16,9 +16,6 @@
 #import "SYNSearchRegistry.h"
 #import "VideoInstance.h"
 
-#define kJSONParseError 110
-#define kNetworkError   112
-
 @interface SYNNetworkEngine ()
 
 @end
@@ -54,27 +51,6 @@
 }
 
 
-// Subscription updates
-
-// New way of getting updates to the user's subscriptions
-
-- (void) subscriptionsUpdatesWithStart: (unsigned int) start
-                                  size: (unsigned int) size
-                     completionHandler: (MKNKUserSuccessBlock) completionBlock
-                          errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    NSDictionary *params = [self paramsAndLocaleForStart: start
-                                                    size: size];
-    
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIUserSubscriptionUpdates
-                                                                                                       params: params
-                                                                                                   httpMethod: @"GET"];
-    [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: completionBlock
-                                errorHandler: errorBlock];
-    
-    [self enqueueOperation: networkOperation];
-}
 
 
 // TODO: Need to deprecate this in favour of the method above

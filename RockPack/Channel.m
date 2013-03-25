@@ -151,12 +151,6 @@ static NSEntityDescription *channelEntity = nil;
     self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
                                                    withDefault: [NSDate date]];
     
-    self.rockCount = [dictionary objectForKey: @"rock_count"
-                                  withDefault: [NSNumber numberWithInt: 0]];
-    
-    self.rockCount = [dictionary objectForKey: @"rocked_by_user"
-                                  withDefault: [NSNumber numberWithBool: FALSE]];
-    
     self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
                                          withDefault: [NSNumber numberWithBool: FALSE]];
     
@@ -177,13 +171,6 @@ static NSEntityDescription *channelEntity = nil;
     
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {
-        // NSManagedObjects
-//        self.videoInstances = [VideoInstance instanceFromDictionary: [dictionary objectForKey: @"videos"]
-//                                          usingManagedObjectContext: managedObjectContext
-//                                                 withRootObjectType: rootObject
-//                                                          andViewId: viewId];
-        
-
         NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
         
         // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary

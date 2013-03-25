@@ -143,9 +143,15 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                       errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) channelUnsubscribeForUserId: (NSString *) userId
-                        resourceURL: (NSString *) resourceURL
-                  completionHandler: (MKNKUserSuccessBlock) completionBlock
-                       errorHandler: (MKNKUserErrorBlock) errorBlock;
+                           channelId: (NSString *) channelId
+                   completionHandler: (MKNKUserSuccessBlock) completionBlock
+                        errorHandler: (MKNKUserErrorBlock) errorBlock;
+
+- (void) subscriptionsUpdatesForUserId: (NSString *) userId
+                                 start: (unsigned int) start
+                                  size: (unsigned int) size
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 
 @end

@@ -14,9 +14,6 @@
 
 @interface SYNNetworkEngine : SYNAbstractNetworkEngine
 
-- (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
-                              onError: (MKNKErrorBlock) errorBlock;
-
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
 

@@ -15,6 +15,7 @@
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
@@ -105,13 +106,27 @@
 {
     [self startRefreshCycle];
     
-    [appDelegate.networkEngine updateHomeScreenOnCompletion: ^
-    {
-         // TODO: Might want to put in some error reporting here
+//    [appDelegate.networkEngine updateHomeScreenOnCompletion: ^
+//    {
+//         // TODO: Might want to put in some error reporting here
+//         [self endRefreshCycle];
+//     }
+//     onError: ^(NSError *error)
+//     {
+//         [self endRefreshCycle];
+//     }];
+    
+    [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
+     start: 0
+     size: 0
+     completionHandler: ^(NSDictionary *responseDictionary)
+     {
+         DebugLog(@"Refresh subscription updates successful");
          [self endRefreshCycle];
      }
-     onError: ^(NSError *error)
+     errorHandler: ^(NSDictionary* errorDictionary)
      {
+         DebugLog(@"Refresh subscription updates failed");
          [self endRefreshCycle];
      }];
 }

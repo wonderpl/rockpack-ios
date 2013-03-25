@@ -213,15 +213,9 @@
                                                                                                        params: @{@"locale" : self.localeString}
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
-    // FIXME: I think that this functionality is already duplicated by the code below
     
-//    [self addCommonHandlerToNetworkOperation: networkOperation
-//                                         completionHandler: completionBlock
-//                                              errorHandler: errorBlock];
-    
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary) {
-        
-        
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
+    {
         NSString* possibleError = responseDictionary[@"error"];
          
         if (possibleError)
@@ -236,14 +230,12 @@
         
         
         completionBlock(responseDictionary);
-         
-     } errorHandler: ^(NSError* error) {
-         
+     }
+     errorHandler: ^(NSError* error)
+     {
          DebugLog(@"API Call failed");
          NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
          errorBlock(customErrorDictionary);
-         
-         
      }];
     
     [networkOperation setUsername: kOAuth2ClientId
@@ -751,13 +743,18 @@
 }
 
 - (void) channelUnsubscribeForUserId: (NSString *) userId
-                        resourceURL: (NSString *) resourceURL
-                  completionHandler: (MKNKUserSuccessBlock) completionBlock
-                       errorHandler: (MKNKUserErrorBlock) errorBlock
+                           channelId: (NSString *) channelId
+                   completionHandler: (MKNKUserSuccessBlock) completionBlock
+                        errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
-                                                                                                            params: nil
-                                                                                                        httpMethod: @"DELETE"];
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"SUBSCRIPTION" : channelId};
+    
+    NSString *apiString = [kAPIDeleteUserSubscription stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: nil
+                                                                                                   httpMethod: @"DELETE"];
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -765,31 +762,53 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
-// TODO: removed this test code when testing complete
+// Subscription updates
 
-//[self channelUnsubscribeForUserId: (NSString *) userId
-//                      resourceURL: @"https://secure.demo.rockpack.com/ws/pKjfvsAqRT2QNx1CH1L-yA/subscriptions/chbAApZrKhRN-ABK-q-oSdig/"
-//                completionHandler: ^(id thing)
-// {
-//     NSLog (@"Worked %@", thing);
-// }
-//                     errorHandler: ^(id thing)
-// {
-//     NSLog (@"Didn't work");
-// }];
+// New way of getting updates to the user's subscriptions
 
-// http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/
+- (void) subscriptionsUpdatesForUserId: (NSString *) userId
+                                 start: (unsigned int) start
+                                  size: (unsigned int) size
+                     completionHandler: (MKNKUserSuccessBlock) completionBlock
+                          errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIUserSubscriptionUpdates stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSDictionary *params = [self paramsAndLocaleForStart: start
+                                                    size: size];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"GET"];
+    
+    SYNOAuthNetworkEngine *weakSelf = self;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: ^(id response)
+     {
+         BOOL registryResultOk = [weakSelf.registry registerVideoInstancesFromDictionary: (NSDictionary *) response
+                                                                           forViewId: @"Home"];
+         
+         if (!registryResultOk)
+         {
+             NSError* error = [NSError errorWithDomain: @""
+                                                  code: kJSONParseError
+                                              userInfo: nil];
+             errorBlock(error);
+             return;
+         }
+         else
+         {
+             completionBlock(response);
+         }
+     }
+     errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
 
-//    [self channelSubscribeForUserId: (NSString *) userId
-//                         channelURL: @"http://demo.rockpack.com/ws/tlBD71MZQ76PgSThAtTvIw/channels/chbAApZrKhRN-ABK-q-oSdig/"
-//                completionHandler: ^(id thing)
-//     {
-//         NSLog (@"Worked %@", thing);
-//     }
-//                     errorHandler: ^(id thing)
-//     {
-//         NSLog (@"Didn't work");
-//     }];
 
 
 

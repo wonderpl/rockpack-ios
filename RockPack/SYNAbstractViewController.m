@@ -230,12 +230,36 @@
         // Currently highlighted, so decrement
         channel.rockedByUserValue = FALSE;
         channel.rockCountValue -= 1;
+        
+        // Update the star/unstar status on the server
+        [appDelegate.oAuthNetworkEngine channelUnsubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
+         channelId: channel.uniqueId
+         completionHandler: ^(NSDictionary *responseDictionary)
+         {
+             DebugLog(@"Unsubscribe action successful");
+         }
+         errorHandler: ^(NSDictionary* errorDictionary)
+         {
+             DebugLog(@"Unsubscribe action failed");
+         }];
     }
     else
     {
         // Currently highlighted, so increment
         channel.rockedByUserValue = TRUE;
         channel.rockCountValue += 1;
+        
+        // Update the star/unstar status on the server
+        [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
+         channelURL: channel.resourceURL
+         completionHandler: ^(NSDictionary *responseDictionary)
+         {
+             DebugLog(@"Subscribe action successful");
+         }
+         errorHandler: ^(NSDictionary* errorDictionary)
+         {
+             DebugLog(@"Subscribe action failed");
+         }];
     }
     
     [self saveDB];
