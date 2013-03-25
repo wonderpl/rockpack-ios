@@ -228,7 +228,6 @@
                 break;
                 
             case 1:
-                
                 [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeUsername] animated:YES];
                 
                 break;
@@ -286,6 +285,8 @@
         }
     
     }
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 -(void)showLogoutAlert
