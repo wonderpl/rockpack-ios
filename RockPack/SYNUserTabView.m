@@ -12,6 +12,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNAppDelegate.h"
 #import "User.h"
+#import "UIColor+SYNColor.h"
 
 @interface SYNUserTabView ()
 
@@ -68,10 +69,10 @@
         if(self.user.firstName && self.user.lastName && ![self.user.firstName isEqualToString:@""] && ![self.user.lastName isEqualToString:@""])
             nameString = [NSString stringWithFormat:@"%@ %@", self.user.firstName, self.user.lastName];
         else
-            nameString = @"Full Name";
+            nameString = @"KISH PATEL";
         
         CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
-        CGRect nameRect = CGRectIntegral(CGRectMake(160.0, 32.0, 300.0, sizeOfNameLabel.height));
+        CGRect nameRect = CGRectIntegral(CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height));
         self.fullnameLabel = [[UILabel alloc] initWithFrame:nameRect];
         self.fullnameLabel.font = rockpackBoldFont;
         self.fullnameLabel.textAlignment = NSTextAlignmentLeft;
@@ -84,24 +85,24 @@
         
         
         // == Username == //
+        // Kish says: Username position/size is no longer dependant on Fullname as Fullname can be longer than
+        // username. Also it was messing with the position of the flag button.
         UIFont* usernameFont = [UIFont rockpackFontOfSize:16.0];
         NSString* usernameString;
         if(self.user.username && ![self.user.username isEqualToString:@""])
             usernameString = [self.user.username uppercaseString];
         else
-            usernameString = @"USERNAME";
+            usernameString = @"THEKISHPATEL91";
         
         CGSize usernameStringSize = [usernameString sizeWithFont:usernameFont];
-        
-        nameRect.origin.y += nameRect.size.height;
-        nameRect.size.height = usernameStringSize.height;
-        self.usernameLabel = [[UILabel alloc] initWithFrame:nameRect];
+        CGRect usernameRect = CGRectIntegral(CGRectMake(132.0, 66.0, usernameStringSize.width, usernameStringSize.height));
+        self.usernameLabel = [[UILabel alloc] initWithFrame:usernameRect];
         self.usernameLabel.font = usernameFont;
         self.usernameLabel.textAlignment = NSTextAlignmentLeft;
         self.usernameLabel.backgroundColor = [UIColor clearColor];
         self.usernameLabel.text = usernameString;
-        self.usernameLabel.textColor = [UIColor lightGrayColor];
-        self.usernameLabel.frame = nameRect;
+        self.usernameLabel.textColor = [UIColor rockpackHeaderSubtitleColor];
+        self.usernameLabel.frame = usernameRect;
         [self.overlayView addSubview:self.usernameLabel];
         
         
@@ -151,7 +152,7 @@
         [cogImageButton setImage:cogImage forState:UIControlStateNormal];
         [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
         [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
-        cogImageButton.center = CGPointMake(170.0, 90.0);
+        cogImageButton.center = CGPointMake(660.0, 57.0);
         cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
         [self.overlayView addSubview:cogImageButton];
         
@@ -174,16 +175,22 @@
         
         // == Place Correclty == //
         
-        NSArray* tabsToPlace = @[self.channelsItemView, self.followersItemView, self.followingItemView];
+        NSArray* tabsToPlace = @[self.channelsItemView, self.followingItemView, self.followersItemView];
         
         CGFloat currentX = 700.0;
         CGFloat halfOffset = itemFrame.size.width * 0.5;
       
         for (SYNSearchItemView* itemTab in tabsToPlace)
         {
-            UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchTabDividerHeader.png"]];
+            UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DividerYou.png"]];
             
-            CGFloat itemY = self.frame.size.height - itemTab.frame.size.height * 0.5;
+            //Mike's maths
+            //CGFloat itemY = self.frame.size.height - itemTab.frame.size.height * 0.5;
+            
+            //Kish's Absolute
+            CGFloat itemY = 57.0;
+
+            
             dividerImageView.center = CGPointMake(currentX, itemY);
             dividerImageView.frame = CGRectIntegral(dividerImageView.frame);
             [dividerView addSubview:dividerImageView];
@@ -205,6 +212,12 @@
         self.profileImageView.image = [UIImage imageNamed:@"AvatarKish.png"];
         [self.overlayView addSubview:self.profileImageView];
         
+        
+        // == Profile Gloss, Shadows & Divider == //
+        
+        self.profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 116.0, 115.0)];
+        self.profileImageView.image = [UIImage imageNamed:@"GlossAvatarProfile.png"];
+        [self.overlayView addSubview:self.profileImageView];
         
         
         
