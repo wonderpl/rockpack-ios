@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3103" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractCommon" representedClassName="AbstractCommon" isAbstract="YES" syncable="YES">
         <attribute name="markedForDeletion" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
@@ -18,6 +18,7 @@
         <attribute name="resourceURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="rockCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="rockedByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="subscribedByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="subscribersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
@@ -56,9 +57,10 @@
         <attribute name="source" attributeType="String" syncable="YES"/>
         <attribute name="sourceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="starredByUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="starredByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" defaultValueString="http://" syncable="YES"/>
         <attribute name="viewCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="viewedByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="videoInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VideoInstance" inverseName="video" inverseEntity="VideoInstance" syncable="YES"/>
     </entity>
     <entity name="VideoInstance" representedClassName="VideoInstance" parentEntity="AbstractCommon" syncable="YES">
@@ -70,14 +72,14 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstances" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractCommon" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Channel" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ChannelOwner" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Subcategory" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="TabItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Video" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="VideoInstance" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AbstractCommon" positionX="-486" positionY="-459" width="128" height="75"/>
+        <element name="Category" positionX="81" positionY="-225" width="128" height="60"/>
+        <element name="Channel" positionX="-567" positionY="-141" width="128" height="298"/>
+        <element name="ChannelOwner" positionX="-747" positionY="-144" width="128" height="90"/>
+        <element name="Subcategory" positionX="-83" positionY="-225" width="128" height="60"/>
+        <element name="TabItem" positionX="-11" positionY="-378" width="128" height="75"/>
+        <element name="User" positionX="-747" positionY="93" width="128" height="195"/>
+        <element name="Video" positionX="-396" positionY="-144" width="128" height="208"/>
+        <element name="VideoInstance" positionX="-209" positionY="-144" width="128" height="135"/>
     </elements>
 </model>

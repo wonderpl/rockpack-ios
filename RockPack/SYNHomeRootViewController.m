@@ -106,16 +106,6 @@
 {
     [self startRefreshCycle];
     
-//    [appDelegate.networkEngine updateHomeScreenOnCompletion: ^
-//    {
-//         // TODO: Might want to put in some error reporting here
-//         [self endRefreshCycle];
-//     }
-//     onError: ^(NSError *error)
-//     {
-//         [self endRefreshCycle];
-//     }];
-    
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
      start: 0
      size: 0

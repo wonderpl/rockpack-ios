@@ -14,6 +14,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.resourceURL = @"resourceURL",
 	.rockCount = @"rockCount",
 	.rockedByUser = @"rockedByUser",
+	.subscribedByUser = @"subscribedByUser",
 	.subscribersCount = @"subscribersCount",
 	.title = @"title",
 	.viewId = @"viewId",
@@ -66,6 +67,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 	}
 	if ([key isEqualToString:@"rockedByUserValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"rockedByUser"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"subscribedByUserValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"subscribedByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -202,6 +208,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 - (void)setPrimitiveRockedByUserValue:(BOOL)value_ {
 	[self setPrimitiveRockedByUser:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic subscribedByUser;
+
+
+
+- (BOOL)subscribedByUserValue {
+	NSNumber *result = [self subscribedByUser];
+	return [result boolValue];
+}
+
+- (void)setSubscribedByUserValue:(BOOL)value_ {
+	[self setSubscribedByUser:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveSubscribedByUserValue {
+	NSNumber *result = [self primitiveSubscribedByUser];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveSubscribedByUserValue:(BOOL)value_ {
+	[self setPrimitiveSubscribedByUser:[NSNumber numberWithBool:value_]];
 }
 
 

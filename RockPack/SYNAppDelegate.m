@@ -19,6 +19,7 @@
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "SYNActivityManager.h"
 
 #define kShowLoginPhase YES
 

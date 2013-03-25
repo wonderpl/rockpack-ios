@@ -1,7 +1,8 @@
+#import "NSDate-Utilities.h"
 #import "NSDictionary+Validation.h"
+#import "SYNActivityManager.h"
 #import "Video.h"
 #import <Foundation/Foundation.h>
-#import "NSDate-Utilities.h"
 
 
 static NSEntityDescription *videoEntity = nil;
@@ -54,13 +55,11 @@ static NSEntityDescription *videoEntity = nil;
     NSArray *matchingVideoEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
                                                                           error: &error];
     
-    Video *instance;
+    Video *instance = nil;;
     
     if (matchingVideoEntries.count > 0)
     {
         instance = matchingVideoEntries[0];
-        // NSLog(@"Using existing Video instance with id %@", instance.uniqueId);
-        return instance;
     }
     else
     {
@@ -73,11 +72,12 @@ static NSEntityDescription *videoEntity = nil;
                     usingManagedObjectContext: managedObjectContext
                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
-        
-        // NSLog(@"Created Video instance with id %@", instance.uniqueId);
-        
-        return instance;
     }
+    
+    // Update video starred & viewed
+    [SYNActivityManager.sharedInstance updateActivityForVideo: instance];
+    
+    return instance;
 }
 
 

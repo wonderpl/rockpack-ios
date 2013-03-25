@@ -13,6 +13,7 @@ const struct VideoAttributes VideoAttributes = {
 	.starredByUser = @"starredByUser",
 	.thumbnailURL = @"thumbnailURL",
 	.viewCount = @"viewCount",
+	.viewedByUser = @"viewedByUser",
 };
 
 const struct VideoRelationships VideoRelationships = {
@@ -65,6 +66,11 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 	}
 	if ([key isEqualToString:@"viewCountValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"viewCount"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"viewedByUserValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"viewedByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -208,6 +214,32 @@ const struct VideoFetchedProperties VideoFetchedProperties = {
 
 - (void)setPrimitiveViewCountValue:(int64_t)value_ {
 	[self setPrimitiveViewCount:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
+@dynamic viewedByUser;
+
+
+
+- (BOOL)viewedByUserValue {
+	NSNumber *result = [self viewedByUser];
+	return [result boolValue];
+}
+
+- (void)setViewedByUserValue:(BOOL)value_ {
+	[self setViewedByUser:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveViewedByUserValue {
+	NSNumber *result = [self primitiveViewedByUser];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveViewedByUserValue:(BOOL)value_ {
+	[self setPrimitiveViewedByUser:[NSNumber numberWithBool:value_]];
 }
 
 

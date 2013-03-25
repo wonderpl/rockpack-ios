@@ -7,6 +7,7 @@
 //
 
 #import "RegexKitLite.h"
+#import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNFacebookManager.h"
 #import "SYNLoginErrorArrow.h"
@@ -1009,6 +1010,9 @@
 
 - (void) completeLoginProcess: (SYNOAuth2Credential *) credential
 {
+    
+    [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
+    
     [activityIndicator stopAnimating];
     
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];

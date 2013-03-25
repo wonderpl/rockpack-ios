@@ -15,6 +15,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *resourceURL;
 	__unsafe_unretained NSString *rockCount;
 	__unsafe_unretained NSString *rockedByUser;
+	__unsafe_unretained NSString *subscribedByUser;
 	__unsafe_unretained NSString *subscribersCount;
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *viewId;
@@ -31,6 +32,7 @@ extern const struct ChannelFetchedProperties {
 
 @class ChannelOwner;
 @class VideoInstance;
+
 
 
 
@@ -167,6 +169,20 @@ extern const struct ChannelFetchedProperties {
 - (void)setRockedByUserValue:(BOOL)value_;
 
 //- (BOOL)validateRockedByUser:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* subscribedByUser;
+
+
+
+@property BOOL subscribedByUserValue;
+- (BOOL)subscribedByUserValue;
+- (void)setSubscribedByUserValue:(BOOL)value_;
+
+//- (BOOL)validateSubscribedByUser:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -310,6 +326,15 @@ extern const struct ChannelFetchedProperties {
 
 - (BOOL)primitiveRockedByUserValue;
 - (void)setPrimitiveRockedByUserValue:(BOOL)value_;
+
+
+
+
+- (NSNumber*)primitiveSubscribedByUser;
+- (void)setPrimitiveSubscribedByUser:(NSNumber*)value;
+
+- (BOOL)primitiveSubscribedByUserValue;
+- (void)setPrimitiveSubscribedByUserValue:(BOOL)value_;
 
 
 

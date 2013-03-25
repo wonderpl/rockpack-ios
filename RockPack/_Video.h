@@ -14,6 +14,7 @@ extern const struct VideoAttributes {
 	__unsafe_unretained NSString *starredByUser;
 	__unsafe_unretained NSString *thumbnailURL;
 	__unsafe_unretained NSString *viewCount;
+	__unsafe_unretained NSString *viewedByUser;
 } VideoAttributes;
 
 extern const struct VideoRelationships {
@@ -24,6 +25,7 @@ extern const struct VideoFetchedProperties {
 } VideoFetchedProperties;
 
 @class VideoInstance;
+
 
 
 
@@ -154,6 +156,20 @@ extern const struct VideoFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* viewedByUser;
+
+
+
+@property BOOL viewedByUserValue;
+- (BOOL)viewedByUserValue;
+- (void)setViewedByUserValue:(BOOL)value_;
+
+//- (BOOL)validateViewedByUser:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSSet *videoInstances;
 
 - (NSMutableSet*)videoInstancesSet;
@@ -238,6 +254,15 @@ extern const struct VideoFetchedProperties {
 
 - (int64_t)primitiveViewCountValue;
 - (void)setPrimitiveViewCountValue:(int64_t)value_;
+
+
+
+
+- (NSNumber*)primitiveViewedByUser;
+- (void)setPrimitiveViewedByUser:(NSNumber*)value;
+
+- (BOOL)primitiveViewedByUserValue;
+- (void)setPrimitiveViewedByUserValue:(BOOL)value_;
 
 
 
