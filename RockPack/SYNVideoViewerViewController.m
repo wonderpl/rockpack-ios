@@ -33,7 +33,7 @@
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
-@property (nonatomic, strong) IBOutlet UIButton *starItButton;
+@property (nonatomic, strong) IBOutlet UIButton *starButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
@@ -191,7 +191,7 @@
     self.videoTitleLabel.text = videoInstance.title;
     self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
     
-    self.starItButton.selected = videoInstance.video.starredByUserValue;
+    self.starButton.selected = videoInstance.video.starredByUserValue;
 }
 
 
@@ -335,7 +335,7 @@
 }
 
 
-- (IBAction) toggleStarItButton: (UIButton *) button
+- (IBAction) toggleStarButton: (UIButton *) button
 {
     button.selected = !button.selected;
     

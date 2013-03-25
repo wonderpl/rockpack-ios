@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNLargeVideoPanelViewController.h"
-#import "UIFont+SYNFont.h"
-#import "VideoInstance.h"
-#import "Video.h"
 #import "AppConstants.h"
+#import "SYNLargeVideoPanelViewController.h"
 #import "SYNVideoPlaybackViewController.h"
+#import "UIFont+SYNFont.h"
+#import "Video.h"
+#import "VideoInstance.h"
 
 @interface SYNLargeVideoPanelViewController ()
 
@@ -53,9 +53,9 @@
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.channelLabel.font = [UIFont rockpackFontOfSize: 14.0f];
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.rockItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.starLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.rockItNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.starNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(13, 11, 494, 278)];
     
@@ -71,7 +71,7 @@
 
 #pragma mark - 
 
-- (void) toggleVideoStarItAtIndex: (NSIndexPath *) indexPath
+- (void) toggleVideoStarAtIndex: (NSIndexPath *) indexPath
 {
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -107,22 +107,10 @@
     
 }
 
-- (IBAction) userTouchedVideoStarItButton: (UIButton *) button
+- (IBAction) userTouchedVideoStarButton: (UIButton *) button
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteRockItButtonPressed
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteStarButtonPressed
                                                         object: self];
-}
-
-
-- (IBAction) userTouchedLargeVideoChannelButton: (UIButton *) channelButton
-{
-    // Bail if we don't have an index path
-//    if (self.currentIndexPath)
-//    {
-//        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
-//        
-//        [self viewChannelDetails:videoInstance.channel];
-//    }
 }
 
 

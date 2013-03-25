@@ -15,9 +15,9 @@
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;
 
 // Star Button and Label
-@property (nonatomic, strong) IBOutlet UIButton *rockItButtonLarge;
-@property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
+@property (nonatomic, strong) IBOutlet UIButton *starButtonLarge;
+@property (nonatomic, strong) IBOutlet UILabel *starLabel;
+@property (nonatomic, strong) IBOutlet UILabel *starNumberLabel;
 
 
 // Add (plus) Button and Label

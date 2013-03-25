@@ -138,10 +138,10 @@ typedef enum _Gender {
 //
 
 // Highlighted RockIt number text colour
-#define kHighlightedRockItTextColour [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f]
+#define kHighlightedStarTextColour [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f]
 
 // Default
-#define kDefaultRockItTextColour
+#define kDefaultStarTextColour
 
 //
 // Animations
@@ -252,7 +252,7 @@ typedef enum {
 #define kNoteBackButtonHide @"kNoteBackButtonHide"
 #define kNoteTabPressed @"kNoteTabPressed"
 #define kNoteSharePanelRequested @"kNoteSharePanelRequested"
-#define kNoteRockItButtonPressed @"kNoteRockItButtonPressed"
+#define kNoteStarButtonPressed @"kNoteStarButtonPressed"
 
 //
 // Tracking

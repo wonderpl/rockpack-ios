@@ -178,10 +178,8 @@
         NSUInteger seconds = [video.duration integerValue] % 60;
         videoThumbnailCell.durationLabel.text = [NSString stringWithFormat:@"%i:%i", minutes, seconds];
         
-        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-        
-      //  [self updateVideoCellRockItButtonAndCount: videoThumbnailCell selected: videoInstance.video.starredByUserValue];
-        
+        videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+
         videoThumbnailCell.viewControllerDelegate = self;
         
         cell = videoThumbnailCell;

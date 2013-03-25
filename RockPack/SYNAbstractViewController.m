@@ -183,7 +183,7 @@
 }
 
 
-- (void) toggleVideoStarItAtIndex: (NSIndexPath *) indexPath
+- (void) toggleVideoStarAtIndex: (NSIndexPath *) indexPath
 {
     
     NSString *action = nil;
@@ -221,7 +221,7 @@
 }
 
 
-- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath
+- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath
 {
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
@@ -242,35 +242,35 @@
 }
 
 
-- (IBAction) userTouchedVideoStarItButton: (UIButton *) rockItButton
+- (IBAction) userTouchedVideoStarButton: (UIButton *) starButton
 {
     // Get to cell it self (from button subview)
-    UIView *v = rockItButton.superview.superview;
+    UIView *v = starButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
     if (indexPath)
     {
         // Need to do this first as this changes the actual video object
-        [self toggleVideoStarItAtIndex: indexPath];
+        [self toggleVideoStarAtIndex: indexPath];
         [self updateOtherOnscreenVideoAssetsForIndexPath: indexPath];
         
-        if (self.shouldUpdateRockItStatus == TRUE)
+        if (self.shouldUpdateStarStatus == TRUE)
         {
             VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
             SYNVideoThumbnailWideCell *videoThumbnailCell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
             
-            [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
+            [self updateVideoCellStarButtonAndCount: videoThumbnailCell
                                              selected: videoInstance.video.starredByUserValue];
-//            videoThumbnailCell.rockItButton.selected = videoInstance.video.starredByUserValue;
-            videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+
+            videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         }
     }
 }
 
 
-// This can be overridden if updating RockIt may cause the videoFetchedResults
-- (BOOL) shouldUpdateRockItStatus
+// This can be overridden if updating star may cause the videoFetchedResults
+- (BOOL) shouldUpdateStarStatus
 {
     return TRUE;
 }
@@ -332,18 +332,18 @@
 }
 
 
-- (void) updateVideoCellRockItButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
+- (void) updateVideoCellStarButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
                                     selected: (BOOL) selected
 {
-    videoThumbnailCell.rockItButton.selected = selected;
+    videoThumbnailCell.starButton.selected = selected;
     
     if (selected)
     {
-        videoThumbnailCell.rockItNumber.textColor = [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f];
+        videoThumbnailCell.starNumber.textColor = [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f];
     }
     else
     {
-        videoThumbnailCell.rockItNumber.textColor = [UIColor colorWithRed: 0.510f green: 0.553f blue: 0.569f alpha: 1.0f];
+        videoThumbnailCell.starNumber.textColor = [UIColor colorWithRed: 0.510f green: 0.553f blue: 0.569f alpha: 1.0f];
     }
 }
 
@@ -366,9 +366,9 @@
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
         videoThumbnailCell.displayName.text = videoInstance.channel.channelOwner.displayName;
-        videoThumbnailCell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+        videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         
-        [self updateVideoCellRockItButtonAndCount: videoThumbnailCell
+        [self updateVideoCellStarButtonAndCount: videoThumbnailCell
                                          selected: videoInstance.video.starredByUserValue];
         
         videoThumbnailCell.viewControllerDelegate = self;
@@ -425,8 +425,6 @@
 
 - (IBAction) userTouchedProfileButton: (UIButton *) profileButton
 {
-    //    rockItButton.selected = !rockItButton.selected;
-    
     // Get to cell it self (from button subview)
     UIView *v = profileButton.superview.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];

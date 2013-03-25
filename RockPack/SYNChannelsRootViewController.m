@@ -152,16 +152,16 @@
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
     channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
-    channelThumbnailCell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
-    channelThumbnailCell.rockItButton.selected = channel.rockedByUserValue;
+    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
+    channelThumbnailCell.subscribeButton.selected = channel.rockedByUserValue;
     
     // Wire the Done button up to the correct method in the sign up controller
-    [channelThumbnailCell.rockItButton removeTarget: nil
-                                             action: @selector(toggleChannelRockItButton:)
+    [channelThumbnailCell.subscribeButton removeTarget: nil
+                                             action: @selector(toggleChannelSubscribeButton:)
                                    forControlEvents: UIControlEventTouchUpInside];
     
-    [channelThumbnailCell.rockItButton addTarget: self
-                                          action: @selector(toggleChannelRockItButton:)
+    [channelThumbnailCell.subscribeButton addTarget: self
+                                          action: @selector(toggleChannelSubscribeButton:)
                                 forControlEvents: UIControlEventTouchUpInside];
     
     return channelThumbnailCell;
@@ -215,10 +215,10 @@
 
 
 // Buttons activated from scrolling list of thumbnails
-- (IBAction) toggleChannelRockItButton: (UIButton *) rockItButton
+- (IBAction) toggleChannelSubscribeButton: (UIButton *) subscribeButton
 {
     // Get to cell it self (from button subview)
-    UIView *v = rockItButton.superview.superview;
+    UIView *v = subscribeButton.superview.superview;
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
@@ -227,13 +227,13 @@
         return;
     }
     
-    [self toggleChannelRockItAtIndex: indexPath];
+    [self toggleChannelSubscribeAtIndex: indexPath];
     
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.rockItButton.selected = channel.rockedByUserValue;
-    cell.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
+    cell.subscribeButton.selected = channel.rockedByUserValue;
+    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
 }
 
 

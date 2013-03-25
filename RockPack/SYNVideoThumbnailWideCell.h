@@ -20,10 +20,10 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UILabel *videoTitle;
 @property (nonatomic, strong) IBOutlet UILabel *channelName;
 @property (nonatomic, strong) IBOutlet UILabel *displayName;
-@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
+@property (nonatomic, strong) IBOutlet UIButton *starButton;
 @property (nonatomic, strong) IBOutlet UIButton *addItButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumber;
+@property (nonatomic, strong) IBOutlet UILabel *starNumber;
 @property (nonatomic, strong) IBOutlet UIView* channelInfoView;
 @property (nonatomic, strong) IBOutlet UIView* videoInfoView;
 

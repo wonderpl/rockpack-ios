@@ -13,9 +13,9 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
-@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
+@property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
+@property (nonatomic, strong) IBOutlet UILabel *subscribersNumberLabel;
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
 

@@ -36,7 +36,7 @@
     self.videoTitle.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.channelName.font = [UIFont rockpackFontOfSize: 15.0f];
     self.displayName.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.rockItNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.starNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.dateAddedLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.durationLabel.font = [UIFont rockpackFontOfSize: 12.0f];
@@ -108,8 +108,8 @@
     [self.longPressView addGestureRecognizer: tapOnThumbnailGestureRecognizer];
 
     // Add button targets
-    [self.rockItButton addTarget: self.viewControllerDelegate
-                          action: @selector(userTouchedVideoStarItButton:)
+    [self.starButton addTarget: self.viewControllerDelegate
+                          action: @selector(userTouchedVideoStarButton:)
                 forControlEvents: UIControlEventTouchUpInside];
     
     [self.shareItButton addTarget: self.viewControllerDelegate

@@ -40,9 +40,6 @@
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 
 
-
-
-
 -(void) reloadCollectionViews;
 
 // Persist the current state of CoreData to the mySQL DB
@@ -55,15 +52,12 @@
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
 
-- (void) toggleVideoStarItAtIndex: (NSIndexPath *) indexPath;
-- (void) toggleChannelRockItAtIndex: (NSIndexPath *) indexPath;
+- (void) toggleVideoStarAtIndex: (NSIndexPath *) indexPath;
+- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath;
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath;
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
-
-
-
 
 
 // Video Queue

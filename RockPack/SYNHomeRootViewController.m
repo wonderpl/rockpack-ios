@@ -349,12 +349,12 @@
 
 
 
-- (IBAction) toggleVideoStarItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoStarButton: (UIButton *) starButton
 {
-    rockItButton.selected = !rockItButton.selected;
+    starButton.selected = !starButton.selected;
     
     // Get to cell it self (from button subview)
-    UIView *v = rockItButton.superview.superview;
+    UIView *v = starButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     // Bail if we don't have an index path
@@ -363,16 +363,16 @@
         return;
     }
     
-    [self toggleVideoStarItAtIndex: indexPath];
+    [self toggleVideoStarAtIndex: indexPath];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.rockItButton.selected = videoInstance.video.starredByUserValue;
-    cell.rockItNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+    cell.starButton.selected = videoInstance.video.starredByUserValue;
+    cell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
 }
 
-- (IBAction) toggleVideoShareItButton: (UIButton *) rockItButton
+- (IBAction) toggleVideoShareItButton: (UIButton *) shareButton
 {
 }
 

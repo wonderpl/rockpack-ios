@@ -30,12 +30,12 @@
                                            UIScrollViewDelegate,
                                            UIWebViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIButton *rockItButton;
+@property (nonatomic, strong) IBOutlet UIButton *starButton;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelLabel;
-@property (nonatomic, strong) IBOutlet UILabel *rockItLabel;
-@property (nonatomic, strong) IBOutlet UILabel *rockItNumberLabel;
+@property (nonatomic, strong) IBOutlet UILabel *starLabel;
+@property (nonatomic, strong) IBOutlet UILabel *starNumberLabel;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
@@ -109,17 +109,17 @@
     
     [self.view addSubview:self.largeVideoPanelView];
     
-    self.rockItButton = self.largeVideoPanelController.rockItButtonLarge;
+    self.starButton = self.largeVideoPanelController.starButtonLarge;
     
     // add it button
     
-    [self.rockItButton addTarget:self
-                          action:@selector(toggleLargeVideoPanelStarItButton:)
-                forControlEvents:UIControlEventTouchUpInside];
+    [self.starButton addTarget: self
+                        action: @selector(toggleLargeVideoPanelStarButton:)
+              forControlEvents: UIControlEventTouchUpInside];
     
-    [self.largeVideoPanelController.channelImageButton addTarget:self
-                                                          action:@selector(userTouchedLargeVideoChannelButton:)
-                                                forControlEvents:UIControlEventTouchUpInside];
+    [self.largeVideoPanelController.channelImageButton addTarget: self
+                                                          action: @selector(userTouchedLargeVideoChannelButton:)
+                                                forControlEvents: UIControlEventTouchUpInside];
     
     self.channelImageView = self.largeVideoPanelController.channelImageView;
     
@@ -375,8 +375,8 @@
 {
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    self.rockItNumberLabel.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-    self.rockItButton.selected = videoInstance.video.starredByUserValue;
+    self.starNumberLabel.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+    self.starButton.selected = videoInstance.video.starredByUserValue;
 }
 
 
@@ -407,7 +407,7 @@
 
 
 
-- (void) toggleLargeVideoPanelStarItButton: (UIButton *) button
+- (void) toggleLargeVideoPanelStarButton: (UIButton *) button
 {
     // called for a press to the large video panel's star button
     
