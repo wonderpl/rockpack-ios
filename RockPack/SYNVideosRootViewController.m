@@ -72,10 +72,10 @@
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
     standardFlowLayout.minimumLineSpacing = 0.0f;
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 2, 0, 2);
+    standardFlowLayout.sectionInset = UIEdgeInsetsMake(6, 2, 5, 2);
     
     
-    CGRect videoCollectionViewFrame = CGRectMake(512.0, 92.0, 512.0, 594.0);
+    CGRect videoCollectionViewFrame = CGRectMake(512.0, 87.0, 512.0, 569.0);
     
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
