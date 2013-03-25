@@ -111,7 +111,7 @@
         UIImage* flagImage = [UIImage imageNamed:@"ButtonFlagDefault.png"];
         UIButton* flagButton = [UIButton buttonWithType:UIButtonTypeCustom];
         flagButton.frame = CGRectMake(self.usernameLabel.frame.origin.x + self.usernameLabel.frame.size.width + 10.0,
-                                      self.usernameLabel.frame.origin.y,
+                                      self.usernameLabel.frame.origin.y - 6.0,
                                       flagImage.size.width, flagImage.size.height);
         
         [flagButton setImage:flagImage forState:UIControlStateNormal];
