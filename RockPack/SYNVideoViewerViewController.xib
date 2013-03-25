@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -274,7 +274,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 357}, {111, 240}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1160,20 +1159,20 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAdd.png">{16, 16}</string>
-			<string key="ButtonAddHighlighted.png">{16, 16}</string>
-			<string key="ButtonClose.png">{16, 16}</string>
-			<string key="ButtonRock.png">{16, 16}</string>
-			<string key="ButtonRockHighlighted.png">{16, 16}</string>
-			<string key="ButtonShare.png">{16, 16}</string>
-			<string key="ButtonShareHighlighted.png">{16, 16}</string>
-			<string key="ButtonStar.png">{16, 16}</string>
-			<string key="ButtonStarHighlighted.png">{16, 16}</string>
-			<string key="ButtonVideoScreenNext.png">{16, 16}</string>
-			<string key="ButtonVideoScreenNextHighlighted.png">{16, 16}</string>
-			<string key="ButtonVideoScreenPrevious.png">{16, 16}</string>
-			<string key="ButtonVideoScreenPreviousHighlighted.png">{16, 16}</string>
-			<string key="PanelVideoScreenVideoMainOverlay.png">{16, 16}</string>
+			<string key="ButtonAdd.png">{43, 43}</string>
+			<string key="ButtonAddHighlighted.png">{43, 43}</string>
+			<string key="ButtonClose.png">{40, 41}</string>
+			<string key="ButtonRock.png">{43, 43}</string>
+			<string key="ButtonRockHighlighted.png">{43, 43}</string>
+			<string key="ButtonShare.png">{43, 43}</string>
+			<string key="ButtonShareHighlighted.png">{43, 43}</string>
+			<string key="ButtonStar.png">{43, 43}</string>
+			<string key="ButtonStarHighlighted.png">{43, 43}</string>
+			<string key="ButtonVideoScreenNext.png">{50, 51}</string>
+			<string key="ButtonVideoScreenNextHighlighted.png">{50, 51}</string>
+			<string key="ButtonVideoScreenPrevious.png">{50, 51}</string>
+			<string key="ButtonVideoScreenPreviousHighlighted.png">{50, 51}</string>
+			<string key="PanelVideoScreenVideoMainOverlay.png">{1024, 748}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
