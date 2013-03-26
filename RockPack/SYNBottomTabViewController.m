@@ -163,6 +163,7 @@
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
         [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        
     }
     
 }
