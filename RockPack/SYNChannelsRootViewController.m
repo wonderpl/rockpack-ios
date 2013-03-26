@@ -25,10 +25,13 @@
 
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
+@property (nonatomic, strong) NSString* currentCategoryId;
 
 @end
 
 @implementation SYNChannelsRootViewController
+
+@synthesize currentCategoryId;
 
 #pragma mark - View lifecycle
 
@@ -54,6 +57,9 @@
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
     
     [self.view addSubview:self.channelThumbnailCollectionView];
+    
+    
+    currentCategoryId = @"all";
 }
 
 
@@ -104,6 +110,7 @@
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
+    
 }
 
 
@@ -111,7 +118,7 @@
 {
     [super viewWillAppear: animated];
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:@"all"];
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId];
 }
 
 
@@ -332,7 +339,8 @@
 
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {
-    [appDelegate.networkEngine updateChannelsScreenForCategory:selectionId];
+    currentCategoryId = selectionId;
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId];
 }
 
 @end
