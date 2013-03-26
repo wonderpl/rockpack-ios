@@ -1137,7 +1137,7 @@
     
     [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
                                                       inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionRight
+                                    permittedArrowDirections: UIPopoverArrowDirectionUp
                                                     animated: YES];
 }
 
@@ -1162,7 +1162,7 @@
         
         [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
                                                       inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionRight
+                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
                                                     animated: YES];
     }
     else
