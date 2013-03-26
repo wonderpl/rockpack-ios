@@ -13,8 +13,7 @@
 
 @interface SYNSearchItemView ()
 
-@property (nonatomic, strong) UILabel* numberLabel;
-@property (nonatomic, strong) UILabel* nameLabel;
+
 @property (nonatomic, strong) UIImageView* bottomGlowImageView;
 @property (nonatomic, strong) NSArray* labels;
 
@@ -77,6 +76,7 @@
         // register labels in array
         
         self.labels = @[self.numberLabel, self.nameLabel];
+        
         
     }
     return self;

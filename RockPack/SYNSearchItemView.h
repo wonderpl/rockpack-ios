@@ -11,7 +11,11 @@
 
 @interface SYNSearchItemView : UIView
 
+@property (nonatomic, strong) UILabel* numberLabel;
+@property (nonatomic, strong) UILabel* nameLabel;
+
 - (id)initWithTitle:(NSString*)name andFrame:(CGRect)frame;
+
 
 -(void)setNumberOfItems:(NSInteger)noi animated:(BOOL)animated;
 
