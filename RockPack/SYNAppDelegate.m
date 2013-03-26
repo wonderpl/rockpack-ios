@@ -409,6 +409,26 @@
     
 }
 
+-(void)clearData
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"VideoInstance"
+                                              inManagedObjectContext:self.mainManagedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSError *error;
+    NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+                          
+    for (NSManagedObject* objectToDelete in items) {
+        
+        [self.mainManagedObjectContext deleteObject:objectToDelete];
+    }
+    
+    [self saveContext:YES];
+   
+}
 
 - (void) createDefaultUser
 {

@@ -7,14 +7,19 @@
 //
 
 #import "SYNAccountSettingsLocation.h"
+#import "User.h"
+#import "SYNAppDelegate.h"
 
 @interface SYNAccountSettingsLocation ()
 
 @property (nonatomic, strong) UITableView* tableView;
+@property (nonatomic, weak) User* user;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
 
 @implementation SYNAccountSettingsLocation
+@synthesize appDelegate;
 
 -(id)init
 {
@@ -27,6 +32,9 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.backgroundView = nil;
+        
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        self.user = appDelegate.currentUser;
     }
     
     return self;
@@ -72,11 +80,21 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
     if(indexPath.row == 0) {
         cell.textLabel.text = @"United States";
+        if([self.user.locale isEqualToString:@"en-us"]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
     } else if(indexPath.row == 1) {
         cell.textLabel.text = @"United Kingdom";
+        if([self.user.locale isEqualToString:@"en-gb"]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
     }
+    
+    
     
     return cell;
 }
@@ -91,6 +109,31 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    
+    
+    NSString* oldLocale = self.user.locale;
+    
+    if(indexPath.row == 1) {
+        self.user.locale = @"en-gb";
+    } else {
+        self.user.locale = @"en-us";
+    }
+    if(![oldLocale isEqualToString:self.user.locale]) {
+        // clear core data
+        [appDelegate clearData];
+    }
+    
+    
+    [self.tableView reloadData];
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

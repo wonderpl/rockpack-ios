@@ -49,31 +49,6 @@
     
     [appDelegate saveContext: TRUE];
     
-    // Test
-    
-    
-    NSError *error = nil;
-    NSEntityDescription *userEntity = [NSEntityDescription entityForName: @"User"
-                                                  inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    
-    
-    NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
-    
-    [userFetchRequest setEntity: userEntity];
-    
-    
-    NSArray *userEntries = [appDelegate.mainManagedObjectContext executeFetchRequest:userFetchRequest
-                                                                               error:&error];
-    
-    if(userEntries.count > 0)
-    {
-        newUser = (User*)userEntries[0];
-    }
-    else
-    {
-        DebugLog(@"No User found");
-    }
     
     return YES;
 }

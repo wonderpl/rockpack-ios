@@ -142,6 +142,13 @@
         [self.followersItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
         
+        // == Temporary fix: Divider at end of Tabs == //
+        
+        UIImageView *endDividerYouImage = [[UIImageView alloc] initWithFrame:CGRectMake(1014.0, 0.0, 2.0, 115.0)];
+                                    UIImage *image = [UIImage imageNamed:@"DividerYou.png"];
+                                    endDividerYouImage.image = image;
+        [self.overlayView addSubview:endDividerYouImage];
+        
         
         // == Account Settings == //
         
@@ -152,7 +159,7 @@
         [cogImageButton setImage:cogImage forState:UIControlStateNormal];
         [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
         [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
-        cogImageButton.center = CGPointMake(660.0, 57.0);
+        cogImageButton.center = CGPointMake(676.0, 57.0);
         cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
         [self.overlayView addSubview:cogImageButton];
         
@@ -177,7 +184,7 @@
         
         NSArray* tabsToPlace = @[self.channelsItemView, self.followingItemView, self.followersItemView];
         
-        CGFloat currentX = 700.0;
+        CGFloat currentX = 716.0;
         CGFloat halfOffset = itemFrame.size.width * 0.5;
       
         for (SYNSearchItemView* itemTab in tabsToPlace)
@@ -219,6 +226,7 @@
         self.profileImageView.image = [UIImage imageNamed:@"GlossAvatarProfile.png"];
         [self.overlayView addSubview:self.profileImageView];
         
+
         
         
         [self addSubview:self.mainTabsView];

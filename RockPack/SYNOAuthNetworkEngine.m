@@ -229,6 +229,7 @@
         [self.registry registerUserFromDictionary:responseDictionary];
         
         
+        
         completionBlock(responseDictionary);
      }
      errorHandler: ^(NSError* error)

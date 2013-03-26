@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3103" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractCommon" representedClassName="AbstractCommon" isAbstract="YES" syncable="YES">
         <attribute name="markedForDeletion" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
@@ -47,6 +47,7 @@
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gender" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locale" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscriptionsUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -78,7 +79,7 @@
         <element name="ChannelOwner" positionX="-747" positionY="-144" width="128" height="90"/>
         <element name="Subcategory" positionX="-83" positionY="-225" width="128" height="60"/>
         <element name="TabItem" positionX="-11" positionY="-378" width="128" height="75"/>
-        <element name="User" positionX="-747" positionY="93" width="128" height="195"/>
+        <element name="User" positionX="-747" positionY="93" width="128" height="210"/>
         <element name="Video" positionX="-396" positionY="-144" width="128" height="208"/>
         <element name="VideoInstance" positionX="-209" positionY="-144" width="128" height="135"/>
     </elements>
