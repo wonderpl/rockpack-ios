@@ -535,6 +535,23 @@
     return YES;
 }
 
+-(BOOL)checkAndSaveRegisteredUser:(SYNOAuth2Credential*)credential
+{
+    
+    User* newUser = appDelegate.currentUser;
+    
+    if(!newUser) {
+        // problem
+        DebugLog(@"The user was not registered correctly...");
+        return NO;
+    }
+    
+    [credential saveToKeychainForService: kOAuth2Service
+                                 account: credential.userId];
+    
+    return YES;
+}
+
 - (IBAction) doLogin: (id) sender
 {
     [self clearAllErrorArrows];
@@ -563,11 +580,10 @@
                                                [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
                                                                                       completionHandler:^(NSDictionary* dictionary) {
                                                   
-                                                   
-                                                                                          [credential saveToKeychainForService: kOAuth2Service
-                                                                                                                       account: credential.userId];
-                                                   
+                                                                                          [self checkAndSaveRegisteredUser:credential];
+                                                                                          
                                                                                           [activityIndicator stopAnimating];
+                                                                                          
                                                                                           [self completeLoginProcess:credential];
                                                    
                                                                                       } errorHandler:^(NSDictionary* errorDictionary) {
@@ -689,10 +705,9 @@
                                                                                                       completionHandler:^(NSDictionary* dictionary) {
                                                                                                           
                                                                                                           
-                                                                                                          [credential saveToKeychainForService: kOAuth2Service
-                                                                                                                                       account: credential.userId];
+                                                                                                          [self checkAndSaveRegisteredUser:credential];
                                                                                                           
-                                                                                                          DebugLog(@"Loggin in User with id: %@", credential.accessToken);
+                                                                                                          
                                                                                                           [activityIndicator stopAnimating];
                                                                                                           [self completeLoginProcess:credential];
                                                                                                           
@@ -892,9 +907,9 @@
                                                                                         completionHandler:^(NSDictionary* dictionary) {
                                                                                       
                                                                                       
-                                                                                            [credential saveToKeychainForService: kOAuth2Service
-                                                                                                                         account: credential.userId];
+                                                                                            [self checkAndSaveRegisteredUser:credential];
              
+                                                                                            [activityIndicator stopAnimating];
              
                                                                                             [self completeLoginProcess: credential];
              

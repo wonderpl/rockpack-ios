@@ -49,6 +49,7 @@
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
 - (void) resetCoreDataStack;
+-(void)clearData;
 -(void)logout;
 
 @end

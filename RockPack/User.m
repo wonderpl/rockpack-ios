@@ -102,7 +102,13 @@
         self.subscriptionsUrl = [coverart_url_dict objectForKey:@"resource_url"];
     }
     
+    // == Gender == //
+    
     self.gender = @(GenderUndecided);
+    
+    
+    
+    // == Date of Birth == //
     
     NSString* dateOfBirthString = [dictionary objectForKey:@"date_of_birth"];
     if([dateOfBirthString isKindOfClass:[NSNull class]]) {
@@ -119,7 +125,14 @@
         
     }
     
-                        
+    
+    // == Locale == //
+    
+    // NSString* localeFromDevice = [[NSLocale currentLocale] localeIdentifier]; // en_GB | en_US
+    
+    NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
+    
+    self.locale = localeFromDevice;
                         
 }
 

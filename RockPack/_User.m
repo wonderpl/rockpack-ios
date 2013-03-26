@@ -12,6 +12,7 @@ const struct UserAttributes UserAttributes = {
 	.firstName = @"firstName",
 	.gender = @"gender",
 	.lastName = @"lastName",
+	.locale = @"locale",
 	.subscriptionsUrl = @"subscriptionsUrl",
 	.username = @"username",
 };
@@ -153,6 +154,13 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 @dynamic lastName;
+
+
+
+
+
+
+@dynamic locale;
 
 
 
