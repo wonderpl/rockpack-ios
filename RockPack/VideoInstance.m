@@ -159,7 +159,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"uniqueId(%@), dateAdded: %@, title: %@", self.uniqueId, self.dateAdded, self.title];
+    return [NSString stringWithFormat: @"uniqueId(%@), viewId(%@), dateAdded (%@), title(%@)", self.uniqueId, self.viewId, self.dateAdded, self.title];
 }
 
 @end

@@ -51,46 +51,6 @@
 }
 
 
-
-
-// TODO: Need to deprecate this in favour of the method above
-- (void) updateHomeScreenOnCompletion: (MKNKVoidBlock) completionBlock
-                              onError: (MKNKErrorBlock) errorBlock
-{
-    
-    
-    
-    // TODO: We need to replace USERID with actual userId ASAP
-    // TODO: Figure out the REST parameters and format
-    
-    NSString *apiURL = [NSString stringWithFormat:kAPIRecentlyAddedVideoInSubscribedChannelsForUser, @"USERID"];
-    
-    SYNNetworkOperationJsonObject *networkOperation =
-    (SYNNetworkOperationJsonObject*)[self operationWithPath:apiURL params:[self getLocalParam]];
-    
-    
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
-        
-        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Home"];
-        if (!registryResultOk) {
-            NSError* error = [NSError errorWithDomain:@"" code:kJSONParseError userInfo:nil];
-            errorBlock(error);
-            return;
-        }
-        
-        completionBlock();
-        
-        
-        
-    } errorHandler:errorBlock];
-    
-    
-    [self enqueueOperation:networkOperation];
-    
-    
-}
-
-
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock
 {
@@ -116,6 +76,7 @@
     
     
 }
+
 
 - (void) updateVideosScreenForCategory:(NSString*)categoryId
 {

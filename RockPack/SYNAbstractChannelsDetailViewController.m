@@ -210,7 +210,9 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\" AND viewId == \"Channels\"", self.channel.uniqueId]];
+//    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\" AND viewId == \"ChannelDetails\"", self.channel.uniqueId]];
+    
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -218,10 +220,12 @@
                                                                           sectionNameKeyPath: nil
                                                                                    cacheName: nil];
     fetchedResultsController.delegate = self;
+
     
     NSError *error = nil;
     ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
+    NSLog (@"Objects = %@", fetchedResultsController.fetchedObjects);
     return fetchedResultsController;
 }
 
@@ -335,6 +339,7 @@
     else
     {
         id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+        DebugLog (@"Objects %d", sectionInfo.numberOfObjects);
         return sectionInfo.numberOfObjects;
     }
 }

@@ -174,7 +174,7 @@
     [Channel instanceFromDictionary: dictionary
           usingManagedObjectContext: importManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing
-                          andViewId: @"Channels"];
+                          andViewId: @"ChannelDetails"];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
