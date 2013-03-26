@@ -626,6 +626,7 @@
 		BED4312216F1F12E0051465B /* LoginError.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312016F1F12D0051465B /* LoginError.png */; };
 		BED4312316F1F12E0051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312116F1F12D0051465B /* LoginError@2x.png */; };
 		BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4312A16F20CD70051465B /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BEE4A69C1701FF17008F9D05 /* SYNUserItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69B1701FF17008F9D05 /* SYNUserItemView.m */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
@@ -1381,6 +1382,8 @@
 		BED4312116F1F12D0051465B /* LoginError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginError@2x.png"; path = "Assets/Images/LoginError@2x.png"; sourceTree = "<group>"; };
 		BED4312916F20CD70051465B /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		BED4312A16F20CD70051465B /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
+		BEE4A69A1701FF17008F9D05 /* SYNUserItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserItemView.h; sourceTree = "<group>"; };
+		BEE4A69B1701FF17008F9D05 /* SYNUserItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserItemView.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2942,6 +2945,8 @@
 				BE03A69516F754BC00245314 /* SYNUserTabViewController.m */,
 				BE29A32716DD2CD300C00F92 /* SYNUserTabView.h */,
 				BE29A32816DD2CD300C00F92 /* SYNUserTabView.m */,
+				BEE4A69A1701FF17008F9D05 /* SYNUserItemView.h */,
+				BEE4A69B1701FF17008F9D05 /* SYNUserItemView.m */,
 			);
 			name = "User Tab";
 			sourceTree = "<group>";
@@ -3740,6 +3745,7 @@
 				BE13E38916FB85220098F23C /* SYNAccountSettingsLocation.m in Sources */,
 				BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */,
 				01AEFBCD1701AC460060467A /* SYNActivityManager.m in Sources */,
+				BEE4A69C1701FF17008F9D05 /* SYNUserItemView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

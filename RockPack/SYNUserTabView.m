@@ -13,19 +13,21 @@
 #import "SYNAppDelegate.h"
 #import "User.h"
 #import "UIColor+SYNColor.h"
+#import "SYNUserItemView.h"
 
 @interface SYNUserTabView ()
 
 
 @property (nonatomic, strong) UIView* mainTabsView;
 @property (nonatomic, strong) UIView* overlayView;
-@property (nonatomic, strong) SYNSearchItemView* channelsItemView;
-@property (nonatomic, strong) SYNSearchItemView* followingItemView;
-@property (nonatomic, strong) SYNSearchItemView* followersItemView;
+@property (nonatomic, strong) SYNUserItemView* channelsItemView;
+@property (nonatomic, strong) SYNUserItemView* followingItemView;
+@property (nonatomic, strong) SYNUserItemView* followersItemView;
 @property (nonatomic, strong) UILabel* fullnameLabel;
 @property (nonatomic, strong) UILabel* usernameLabel;
 @property (nonatomic, strong) UIImageView* profileImageView;
 @property (nonatomic, strong) UILabel* profileNameLabel;
+@property (nonatomic, weak) SYNSearchItemView* currentItemView;
 @property (nonatomic, weak) User* user;
 
 @end
@@ -54,13 +56,15 @@
         
         self.overlayView = [[UIView alloc] initWithFrame:mainFrame];
         self.overlayView.backgroundColor = [UIColor clearColor];
+        self.overlayView.userInteractionEnabled = NO;
         
         UIView* dividerView = [[UIView alloc] initWithFrame:self.frame];
         dividerView.userInteractionEnabled = NO;
         
         
         
-        CGRect itemFrame = CGRectMake(0.0, 0.0, kSearchBarItemWidth, 80.0);
+        CGRect itemFrame = CGRectMake(0.0, 0.0, kSearchBarItemWidth, self.frame.size.height);
+        
         
         // == Full Name == //
         
@@ -121,7 +125,7 @@
         
         // == Channels Tab == //
         
-        self.channelsItemView = [[SYNSearchItemView alloc] initWithTitle:@"CHANNELS" andFrame:itemFrame];
+        self.channelsItemView = [[SYNUserItemView alloc] initWithTitle:@"CHANNELS" andFrame:itemFrame];
         
         [self.channelsItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
@@ -129,7 +133,7 @@
         
         // == Following Tab == //
         
-        self.followingItemView = [[SYNSearchItemView alloc] initWithTitle:@"FOLLOWING" andFrame:itemFrame];
+        self.followingItemView = [[SYNUserItemView alloc] initWithTitle:@"FOLLOWING" andFrame:itemFrame];
         
         [self.followingItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
@@ -137,7 +141,7 @@
         
         // == Followers Tab == //
         
-        self.followersItemView = [[SYNSearchItemView alloc] initWithTitle:@"FOLLOWERS" andFrame:itemFrame];
+        self.followersItemView = [[SYNUserItemView alloc] initWithTitle:@"FOLLOWERS" andFrame:itemFrame];
         
         [self.followersItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
@@ -207,6 +211,9 @@
             
             itemTab.frame = CGRectIntegral(itemTab.frame);
             
+            
+            [itemTab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+            
             [self.mainTabsView addSubview:itemTab];
             
             currentX += halfOffset * 2;
@@ -236,8 +243,6 @@
         
         
         
-        
-        
     }
     
     
@@ -256,5 +261,48 @@
     self.fullnameLabel.text = user.username;
 }
 
+
+#pragma mark - Delegate Methods
+
+-(void)handleMainTap:(UITapGestureRecognizer*)recogniser
+{
+    
+    
+    SYNSearchItemView* viewClicked = (SYNSearchItemView*)recogniser.view;
+    if (self.currentItemView == viewClicked)
+        return;
+    
+    self.currentItemView = viewClicked;
+    
+    
+    NSString* tabTappedId;
+    
+    if(self.currentItemView == self.channelsItemView)
+        tabTappedId = @"0";
+    else if(self.currentItemView == self.followingItemView)
+        tabTappedId = @"1";
+    else
+        tabTappedId = @"2";
+    
+    [self setSelectedWithId:tabTappedId];
+    
+}
+
+-(void)setSelectedWithId:(NSString*)selectedId
+{
+    
+    for(SYNSearchItemView* itemViewS in self.mainTabsView.subviews)
+        [itemViewS makeFaded];
+    
+    if([selectedId isEqualToString:@"0"])
+        [self.channelsItemView makeHighlightedWithImage:YES];
+    else if([selectedId isEqualToString:@"1"])
+        [self.followingItemView makeHighlightedWithImage:YES];
+    else
+        [self.followersItemView makeHighlightedWithImage:YES];
+    
+    
+    [self.tapDelegate handleNewTabSelectionWithId:selectedId];
+}
 
 @end
