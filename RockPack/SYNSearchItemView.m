@@ -34,14 +34,14 @@
         
         // == Number Label == //
         
-        UIFont* numberFontToUse = [UIFont boldRockpackFontOfSize: 20.0f];
+        UIFont* numberFontToUse = [UIFont boldRockpackFontOfSize: 18.0f];
         CGSize numberLabelSize = [@"100" sizeWithFont:numberFontToUse];
     
         self.numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, numberLabelSize.height)];
         self.numberLabel.font = numberFontToUse;
         self.numberLabel.text = @"0";
         self.numberLabel.textAlignment = NSTextAlignmentCenter;
-        self.numberLabel.textColor = [UIColor whiteColor];
+        self.numberLabel.textColor = [UIColor rockpackHeaderSubtitleColor];
         self.numberLabel.userInteractionEnabled = NO;
         self.numberLabel.backgroundColor = [UIColor clearColor];
         self.numberLabel.center = CGPointMake(self.numberLabel.center.x, 30.0);
@@ -51,14 +51,14 @@
         
         // == Name Label == //
         
-        UIFont* nameFontToUse = [UIFont rockpackFontOfSize: 15.0f];
+        UIFont* nameFontToUse = [UIFont rockpackFontOfSize: 12.0f];
         CGSize nameLabelSize = [name sizeWithFont:nameFontToUse];
         
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, nameLabelSize.height)];
         self.nameLabel.font = nameFontToUse;
         self.nameLabel.text = name;
         self.nameLabel.textAlignment = NSTextAlignmentCenter;
-        self.nameLabel.textColor = [UIColor whiteColor];
+        self.nameLabel.textColor = [UIColor rockpackHeaderSubtitleColor];
         self.nameLabel.userInteractionEnabled = NO;
         self.nameLabel.backgroundColor = [UIColor clearColor];
         self.nameLabel.center = CGPointMake(self.nameLabel.center.x, 55.0);
@@ -142,7 +142,7 @@
     
     if(withImage)
     {
-        UIImage* pressedImage = [UIImage imageNamed:@"SearchTabHeaderSelected.png"];
+        UIImage* pressedImage = [UIImage imageNamed:@"BarHeaderSearchSelected.png"];
         self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
     }
     
@@ -150,7 +150,7 @@
     for (UILabel* label in self.labels)
     {
         
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [UIColor rockpackBlueColor];
 //        label.layer.shadowColor = [color CGColor];
 //        label.layer.shadowRadius = 7.0f;
 //        label.layer.shadowOpacity = 1.0;
@@ -185,9 +185,9 @@
     for (UILabel* label in self.labels)
     {
         
-        label.textColor = [UIColor lightGrayColor];
+        label.textColor = [UIColor rockpackHeaderSubtitleColor];
         label.layer.shadowColor = [[UIColor clearColor] CGColor];
-        label.textColor = [UIColor lightGrayColor];
+        label.textColor = [UIColor rockpackHeaderSubtitleColor];
         label.layer.shadowColor = [[UIColor clearColor] CGColor];
         
         

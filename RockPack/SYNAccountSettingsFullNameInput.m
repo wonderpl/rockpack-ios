@@ -79,6 +79,7 @@
     
     
     cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
+    cell.accessoryType = UITableViewCellAccessoryNone;
     
     return cell;
 }
@@ -89,11 +90,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    [self.tableView reloadData];
+    
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
     if(indexPath.row == 1) {
         
     } else {
         
     }
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 

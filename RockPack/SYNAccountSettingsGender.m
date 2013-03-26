@@ -88,6 +88,8 @@
         cell.textLabel.text = @"Female";
     }
     
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
     return cell;
 }
 
@@ -98,7 +100,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    appDelegate.currentUser.gender = indexPath.row == 0 ? @(GenderMale) : @(GenderFemale);
+    
+    [self.tableView reloadData];
+    
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    if (indexPath.row == 0) {
+        
+        appDelegate.currentUser.gender = @(GenderMale);
+        
+        
+        
+    } else {
+        appDelegate.currentUser.gender = @(GenderFemale);
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

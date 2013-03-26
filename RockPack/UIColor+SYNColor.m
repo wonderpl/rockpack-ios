@@ -43,4 +43,11 @@
     return [UIColor colorWithRed: 45.0f/255.0f green: 53.0f/255.0f blue: 58.0f/255.0f alpha: 1.0f];
 }
 
+
+//For most text on Header bar on You Tab
++ (UIColor *) rockpackHeaderSubtitleColor
+{
+    return [UIColor colorWithRed: 146.0f/255.0f green: 169.0f/255.0f blue: 174.0f/255.0f alpha: 1.0f];
+}
+
 @end
