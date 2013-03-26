@@ -29,11 +29,13 @@
 @property (nonatomic, strong) UILabel* profileNameLabel;
 @property (nonatomic, weak) SYNSearchItemView* currentItemView;
 @property (nonatomic, weak) User* user;
+@property (nonatomic, strong) NSMutableArray* tabItems;
 
 @end
 
 @implementation SYNUserTabView
 
+@synthesize tabItems;
 
 -(id)initWithSize:(CGFloat)totalWidth
 {
@@ -61,7 +63,7 @@
         UIView* dividerView = [[UIView alloc] initWithFrame:self.frame];
         dividerView.userInteractionEnabled = NO;
         
-        
+        tabItems = [[NSMutableArray alloc] initWithCapacity:3];
         
         CGRect itemFrame = CGRectMake(0.0, 0.0, kSearchBarItemWidth, self.frame.size.height);
         
@@ -73,7 +75,7 @@
         if(self.user.firstName && self.user.lastName && ![self.user.firstName isEqualToString:@""] && ![self.user.lastName isEqualToString:@""])
             nameString = [NSString stringWithFormat:@"%@ %@", self.user.firstName, self.user.lastName];
         else
-            nameString = @"KISH PATEL";
+            nameString = @"FULL NAME";
         
         CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
         CGRect nameRect = CGRectIntegral(CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height));
@@ -165,22 +167,7 @@
         [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
         cogImageButton.center = CGPointMake(676.0, 57.0);
         cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
-        [self.overlayView addSubview:cogImageButton];
-        
-        
-//        NSString* accountSettingsString = @"ACCOUNT SETTINGS";
-//        UIFont* rockpackFont = [UIFont rockpackFontOfSize:16];
-//        CGSize acRect = [accountSettingsString sizeWithFont:rockpackFont];
-//        UILabel* accountSettingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, acRect.width, acRect.height)];
-//        accountSettingsLabel.center = CGPointMake(cogImageButton.center.x + 100.0, cogImageButton.center.y + 5.0);
-//        
-//        accountSettingsLabel.font = rockpackFont;
-//        accountSettingsLabel.textAlignment = NSTextAlignmentLeft;
-//        accountSettingsLabel.backgroundColor = [UIColor clearColor];
-//        accountSettingsLabel.text = accountSettingsString;
-//        accountSettingsLabel.textColor = [UIColor whiteColor];
-//        accountSettingsLabel.frame = CGRectIntegral(accountSettingsLabel.frame);
-//        [self.overlayView addSubview:accountSettingsLabel];
+        [self.mainTabsView addSubview:cogImageButton];
         
         
         
@@ -213,6 +200,8 @@
             
             
             [itemTab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+            
+            [tabItems addObject:itemTab];
             
             [self.mainTabsView addSubview:itemTab];
             
@@ -291,7 +280,7 @@
 -(void)setSelectedWithId:(NSString*)selectedId
 {
     
-    for(SYNSearchItemView* itemViewS in self.mainTabsView.subviews)
+    for(SYNSearchItemView* itemViewS in tabItems)
         [itemViewS makeFaded];
     
     if([selectedId isEqualToString:@"0"])
