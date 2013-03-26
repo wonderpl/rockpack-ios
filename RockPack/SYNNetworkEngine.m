@@ -125,6 +125,8 @@
     else
         parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
     
+    DebugLog(@"Network Engine requesting Videos with locale: %@", self.localeString);
+    
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularVideos params:parameters];
     

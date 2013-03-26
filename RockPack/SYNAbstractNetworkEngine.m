@@ -9,6 +9,8 @@
 #import "SYNAbstractNetworkEngine.h"
 #import "SYNAppDelegate.h"
 #import "SYNNetworkOperationJsonObjectParse.h"
+#import "SYNAppDelegate.h"
+#import "User.h"
 
 @implementation SYNAbstractNetworkEngine
 
@@ -18,11 +20,13 @@
     if ((self = [super initWithHostName: self.hostName
                      customHeaderFields: @{@"x-client-identifier" : @"Rockpack iPad client"}]))
     {
-        // Set our local string (i.e. en_GB, en_US or fr_FR)
-        self.localeString = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
+        
+        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+        
+        
+        
         
         // Cache registries
-        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
         self.registry = appDelegate.mainRegistry;
         self.searchRegistry = appDelegate.searchRegistry;
         
@@ -48,6 +52,23 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: NSCurrentLocaleDidChangeNotification
                                                   object: nil];
+}
+
+-(NSString*)localeString
+{
+    
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+    
+    // Set our local string (i.e. en_GB, en_US or fr_FR)
+    NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
+    
+    if(appDelegate.currentUser) {
+        return appDelegate.currentUser.locale;
+    } else {
+        return localeFromDevice;
+    }
+    
+    
 }
 
 // If the locale changes, then we need to reset the CoreData DB

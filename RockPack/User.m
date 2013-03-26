@@ -130,9 +130,21 @@
     
     // NSString* localeFromDevice = [[NSLocale currentLocale] localeIdentifier]; // en_GB | en_US
     
+    NSString* localeFromDict = [dictionary objectForKey:@"locale" withDefault:@""];
+    
+    
     NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
     
-    self.locale = localeFromDevice;
+    if([localeFromDict isEqualToString:@""]) {
+        
+        self.locale = localeFromDevice;
+        
+    } else {
+        
+        self.locale = localeFromDict;
+    }
+    
+    
                         
 }
 

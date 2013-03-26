@@ -116,8 +116,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    
-    
     NSString* oldLocale = self.user.locale;
     
     if(indexPath.row == 1) {
@@ -125,6 +123,7 @@
     } else {
         self.user.locale = @"en-us";
     }
+    
     if(![oldLocale isEqualToString:self.user.locale]) {
         // clear core data
         [appDelegate clearData];
