@@ -80,13 +80,21 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
     if(indexPath.row == 0) {
         cell.textLabel.text = @"United States";
+        if([self.user.locale isEqualToString:@"en-us"]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
     } else if(indexPath.row == 1) {
         cell.textLabel.text = @"United Kingdom";
+        if([self.user.locale isEqualToString:@"en-gb"]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
     }
     
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    
     
     return cell;
 }
@@ -108,10 +116,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    [self.tableView reloadData];
     
-    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     NSString* oldLocale = self.user.locale;
     
@@ -124,6 +129,10 @@
         // clear core data
         [appDelegate clearData];
     }
+    
+    
+    [self.tableView reloadData];
+    
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

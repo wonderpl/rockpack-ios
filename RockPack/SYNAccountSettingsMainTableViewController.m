@@ -150,7 +150,12 @@
                 break;
                 
             case 3:
-                cell.textLabel.text = @"London - UK";
+                if([user.locale isEqualToString:@"en-gb"]) {
+                    cell.textLabel.text = @"United Kingdom";
+                } else {
+                    cell.textLabel.text = @"United States";
+                }
+                
                 cell.detailTextLabel.text = @"Location";
                 cell.imageView.image = [UIImage imageNamed:@"IconLocation.png"];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
