@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
+#import "GKImagePicker.h"
+
 typedef enum {
     kLoginScreenStateNull = 0,
     kLoginScreenStateInitial,
@@ -18,7 +20,7 @@ typedef enum {
 
 
 
-@interface SYNLoginViewController : UIViewController
+@interface SYNLoginViewController : UIViewController <UIPopoverControllerDelegate, GKImagePickerDelegate>
 
 @property (nonatomic) kLoginScreenState state;
 @property (nonatomic) BOOL facebookLoginIsInProcess;
