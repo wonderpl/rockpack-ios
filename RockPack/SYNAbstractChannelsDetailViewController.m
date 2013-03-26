@@ -29,6 +29,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppConstants.h"
 
 @interface SYNAbstractChannelsDetailViewController () <HPGrowingTextViewDelegate,
                                                        GKImagePickerDelegate,
@@ -50,6 +51,7 @@
 @property (nonatomic, strong) UIPopoverController *cameraPopoverController;
 @property (nonatomic, strong) UIPopoverController *cameraMenuPopoverController;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
+@property (nonatomic, strong) IBOutlet UIButton* avatarButton;
 
 @end
 
@@ -169,6 +171,8 @@
     [self.userAvatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                                          placeHolderImage: nil];
     
+    
+    
     // Set wallpaper
     [self.channelWallpaperImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
                                                placeHolderImage: nil];
@@ -179,6 +183,11 @@
 	{
 		self.cameraButton.hidden = TRUE;
 	}
+}
+
+-(IBAction)tappedOnUserAvatar:(UIButton*)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":self.channel.channelOwner}];
 }
 
 

@@ -23,6 +23,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNUserTabView.h"
 #import "SYNUserTabViewController.h"
+#import "ChannelOwner.h"
+#import "SYNChannelsUserViewController.h"
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -35,7 +38,7 @@
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
-
+@property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 
 
 
@@ -48,6 +51,8 @@
 
 @property (nonatomic, strong) IBOutlet UIView* tabsViewContainer;
 
+
+
 @end
 
 @implementation SYNBottomTabViewController
@@ -55,6 +60,7 @@
 @synthesize selectedIndex = _selectedIndex;
 @synthesize selectedViewController = _selectedViewController;
 @synthesize videoQueueController = videoQueueController;
+@synthesize channelsUserViewController = channelsUserViewController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -120,6 +126,13 @@
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     
+    
+    // == Channels User (out of normal controller array)
+    
+    self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannel"];
+    
+    
+    
     // == Video Queue
     
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
@@ -136,6 +149,40 @@
     
     self.didNotSwipeMessageInbox = TRUE;
     self.didNotSwipeShareMenu = TRUE;
+    
+    // notifications
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
+}
+
+
+-(void)showUserChannel:(NSNotification*)notification
+{
+    NSDictionary* userInfo = [notification userInfo];
+    
+    ChannelOwner* channelOwner = (ChannelOwner*)[userInfo objectForKey:@"ChannelOwner"];
+    
+    if(!channelOwner)
+        return;
+    
+    [appDelegate.networkEngine userPublicInformationById:channelOwner.uniqueId completionHandler:^(id objectReturned) {
+       
+        // DebugLog(@"Object : %@", objectReturned);
+        
+        NSDictionary* channelsDictionary = (NSDictionary*)[objectReturned objectForKey:@"channels"];
+        NSNumber* channelsNumber = [channelsDictionary objectForKey:@"total"];
+        NSArray* items = [channelsDictionary objectForKey:@"items"];
+        
+        // present 
+        
+        self.selectedViewController = self.channelsUserViewController;
+        
+    } errorHandler:^(id error) {
+        
+        
+        
+    }];
+    
 }
 
 

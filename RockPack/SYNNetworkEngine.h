@@ -29,4 +29,8 @@
                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
+-(void)userPublicInformationById:(NSString*)userId
+               completionHandler:(MKNKUserSuccessBlock) completionBlock
+                    errorHandler:(MKNKUserErrorBlock) errorBlock;
+
 @end

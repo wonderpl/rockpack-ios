@@ -627,6 +627,7 @@
 		BED4312316F1F12E0051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312116F1F12D0051465B /* LoginError@2x.png */; };
 		BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4312A16F20CD70051465B /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BEE4A69C1701FF17008F9D05 /* SYNUserItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69B1701FF17008F9D05 /* SYNUserItemView.m */; };
+		BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
@@ -1384,6 +1385,8 @@
 		BED4312A16F20CD70051465B /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		BEE4A69A1701FF17008F9D05 /* SYNUserItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserItemView.h; sourceTree = "<group>"; };
 		BEE4A69B1701FF17008F9D05 /* SYNUserItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserItemView.m; sourceTree = "<group>"; };
+		BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsUserViewController.h; sourceTree = "<group>"; };
+		BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsUserViewController.m; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2451,6 +2454,8 @@
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
 				01EA81D216B9773E0069AFF9 /* SYNChannelsDetailViewController.h */,
 				01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */,
+				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
+				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -3746,6 +3751,7 @@
 				BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */,
 				01AEFBCD1701AC460060467A /* SYNActivityManager.m in Sources */,
 				BEE4A69C1701FF17008F9D05 /* SYNUserItemView.m in Sources */,
+				BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -84,6 +84,7 @@
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 
 
+#define kShowUserChannels             @"kShowUserChannels"
 
 // Timeout for API calls
 

@@ -201,6 +201,8 @@
 
 #pragma mark - User management
 
+
+
 - (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials
                       completionHandler: (MKNKUserSuccessBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock

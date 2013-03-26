@@ -294,4 +294,40 @@
     
 }
 
+-(void)userPublicInformationById:(NSString*)userId
+               completionHandler:(MKNKUserSuccessBlock) completionBlock
+                    errorHandler:(MKNKUserErrorBlock) errorBlock {
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: @{@"locale" : self.localeString}
+                                                                                                   httpMethod: @"GET"];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
+     {
+         NSString* possibleError = responseDictionary[@"error"];
+         
+         if (possibleError)
+         {
+             errorBlock(responseDictionary);
+             return;
+         }
+         
+         completionBlock(responseDictionary);
+         
+     } errorHandler: ^(NSError* error) {
+         
+         DebugLog(@"API Call failed");
+         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+         errorBlock(customErrorDictionary);
+     }];
+    
+    
+    [self enqueueOperation: networkOperation];
+    
+}
+
 @end
