@@ -1070,23 +1070,23 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonCamera.png">{65, 66}</string>
-			<string key="ButtonCameraHighlighted.png">{65, 66}</string>
-			<string key="ButtonCameraSelected.png">{65, 66}</string>
-			<string key="ButtonCover.png">{75, 70}</string>
-			<string key="ButtonCoverHighlighted.png">{75, 70}</string>
-			<string key="ButtonDone.png">{43, 44}</string>
-			<string key="ButtonDoneHighlighted.png">{43, 44}</string>
-			<string key="ButtonEdit.png">{43, 44}</string>
-			<string key="ButtonEditHighlighted.png">{43, 44}</string>
-			<string key="ButtonSave.png">{43, 44}</string>
-			<string key="ButtonSaveHighlighted.png">{43, 44}</string>
-			<string key="ButtonShareHeader.png">{43, 44}</string>
-			<string key="ButtonShareHeaderHighlighted.png">{43, 44}</string>
-			<string key="GlossAvatarChannel.png">{72, 72}</string>
-			<string key="HighlightChannelName.png">{405, 84}</string>
-			<string key="PanelCoverSelection.png">{1024, 278}</string>
-			<string key="PanelHeaderChannel.png">{1024, 73}</string>
+			<string key="ButtonCamera.png">{16, 16}</string>
+			<string key="ButtonCameraHighlighted.png">{16, 16}</string>
+			<string key="ButtonCameraSelected.png">{16, 16}</string>
+			<string key="ButtonCover.png">{16, 16}</string>
+			<string key="ButtonCoverHighlighted.png">{16, 16}</string>
+			<string key="ButtonDone.png">{16, 16}</string>
+			<string key="ButtonDoneHighlighted.png">{16, 16}</string>
+			<string key="ButtonEdit.png">{16, 16}</string>
+			<string key="ButtonEditHighlighted.png">{16, 16}</string>
+			<string key="ButtonSave.png">{16, 16}</string>
+			<string key="ButtonSaveHighlighted.png">{16, 16}</string>
+			<string key="ButtonShareHeader.png">{16, 16}</string>
+			<string key="ButtonShareHeaderHighlighted.png">{16, 16}</string>
+			<string key="GlossAvatarChannel.png">{16, 16}</string>
+			<string key="HighlightChannelName.png">{16, 16}</string>
+			<string key="PanelCoverSelection.png">{16, 16}</string>
+			<string key="PanelHeaderChannel.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
