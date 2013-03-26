@@ -119,8 +119,10 @@
 }
 
 
--(void)viewDidAppear:(BOOL)animated
+- (void) viewDidAppear: (BOOL) animated
 {
+    [super viewDidAppear: animated];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
 }
@@ -433,8 +435,7 @@
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        [self viewChannelDetails:
-         videoInstance.channel];
+        [self viewChannelDetails: videoInstance.channel];
     }
 }
 

@@ -22,7 +22,7 @@
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
-
+@property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
@@ -111,7 +111,9 @@
 {
     [super viewWillAppear: animated];
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:@"all"];
+    self.touchedChannelButton = NO;
+    
+    [appDelegate.networkEngine updateChannelsScreenForCategory: @"all"];
 }
 
 
@@ -172,11 +174,16 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: channelVC];
+    if (self.hasTouchedChannelButton == NO)
+    {
+        self.touchedChannelButton = YES;
+        
+        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+        
+        [self animatedPushViewController: channelVC];
+    }
 }
 
 

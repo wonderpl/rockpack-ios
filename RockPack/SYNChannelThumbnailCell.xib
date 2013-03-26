@@ -228,7 +228,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{153, 234}, {43, 43}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
