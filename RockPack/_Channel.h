@@ -13,8 +13,6 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *lastUpdated;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *resourceURL;
-	__unsafe_unretained NSString *rockCount;
-	__unsafe_unretained NSString *rockedByUser;
 	__unsafe_unretained NSString *subscribedByUser;
 	__unsafe_unretained NSString *subscribersCount;
 	__unsafe_unretained NSString *title;
@@ -32,8 +30,6 @@ extern const struct ChannelFetchedProperties {
 
 @class ChannelOwner;
 @class VideoInstance;
-
-
 
 
 
@@ -141,34 +137,6 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateResourceURL:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* rockCount;
-
-
-
-@property int64_t rockCountValue;
-- (int64_t)rockCountValue;
-- (void)setRockCountValue:(int64_t)value_;
-
-//- (BOOL)validateRockCount:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* rockedByUser;
-
-
-
-@property BOOL rockedByUserValue;
-- (BOOL)rockedByUserValue;
-- (void)setRockedByUserValue:(BOOL)value_;
-
-//- (BOOL)validateRockedByUser:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -308,24 +276,6 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveResourceURL;
 - (void)setPrimitiveResourceURL:(NSString*)value;
-
-
-
-
-- (NSNumber*)primitiveRockCount;
-- (void)setPrimitiveRockCount:(NSNumber*)value;
-
-- (int64_t)primitiveRockCountValue;
-- (void)setPrimitiveRockCountValue:(int64_t)value_;
-
-
-
-
-- (NSNumber*)primitiveRockedByUser;
-- (void)setPrimitiveRockedByUser:(NSNumber*)value;
-
-- (BOOL)primitiveRockedByUserValue;
-- (void)setPrimitiveRockedByUserValue:(BOOL)value_;
 
 
 

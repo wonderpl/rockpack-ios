@@ -22,6 +22,7 @@
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
+@property (nonatomic, assign) BOOL ignoreRefresh;
 @property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
@@ -124,14 +125,18 @@
 }
 
 
-
-
-
 - (void) reloadCollectionViews
 {
-    [self.channelThumbnailCollectionView reloadData];
+    // Don't refresh whole collection if we are just updating a value
+    if (self.ignoreRefresh == TRUE)
+    {
+        self.ignoreRefresh = FALSE;
+    }
+    else
+    {
+        [self.channelThumbnailCollectionView reloadData];
+    }
 }
-
 
 
 #pragma mark - CollectionView Delegate
@@ -161,8 +166,8 @@
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
     channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
-    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
-    channelThumbnailCell.subscribeButton.selected = channel.rockedByUserValue;
+    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
+    channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
     channelThumbnailCell.viewControllerDelegate = self;
     
     return channelThumbnailCell;
@@ -235,13 +240,16 @@
         return;
     }
     
+    // Prevent any changes refreshing the whole collection
+    self.ignoreRefresh = TRUE;
+
     [self toggleChannelSubscribeAtIndex: indexPath];
     
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.subscribeButton.selected = channel.rockedByUserValue;
-    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
+    cell.subscribeButton.selected = channel.subscribedByUserValue;
+    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
 }
 
 

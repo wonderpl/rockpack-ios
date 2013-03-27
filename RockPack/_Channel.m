@@ -12,8 +12,6 @@ const struct ChannelAttributes ChannelAttributes = {
 	.lastUpdated = @"lastUpdated",
 	.position = @"position",
 	.resourceURL = @"resourceURL",
-	.rockCount = @"rockCount",
-	.rockedByUser = @"rockedByUser",
 	.subscribedByUser = @"subscribedByUser",
 	.subscribersCount = @"subscribersCount",
 	.title = @"title",
@@ -57,16 +55,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 	
 	if ([key isEqualToString:@"positionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"position"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-	if ([key isEqualToString:@"rockCountValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"rockCount"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-	if ([key isEqualToString:@"rockedByUserValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"rockedByUser"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -157,58 +145,6 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 @dynamic resourceURL;
 
-
-
-
-
-
-@dynamic rockCount;
-
-
-
-- (int64_t)rockCountValue {
-	NSNumber *result = [self rockCount];
-	return [result longLongValue];
-}
-
-- (void)setRockCountValue:(int64_t)value_ {
-	[self setRockCount:[NSNumber numberWithLongLong:value_]];
-}
-
-- (int64_t)primitiveRockCountValue {
-	NSNumber *result = [self primitiveRockCount];
-	return [result longLongValue];
-}
-
-- (void)setPrimitiveRockCountValue:(int64_t)value_ {
-	[self setPrimitiveRockCount:[NSNumber numberWithLongLong:value_]];
-}
-
-
-
-
-
-@dynamic rockedByUser;
-
-
-
-- (BOOL)rockedByUserValue {
-	NSNumber *result = [self rockedByUser];
-	return [result boolValue];
-}
-
-- (void)setRockedByUserValue:(BOOL)value_ {
-	[self setRockedByUser:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitiveRockedByUserValue {
-	NSNumber *result = [self primitiveRockedByUser];
-	return [result boolValue];
-}
-
-- (void)setPrimitiveRockedByUserValue:(BOOL)value_ {
-	[self setPrimitiveRockedByUser:[NSNumber numberWithBool:value_]];
-}
 
 
 

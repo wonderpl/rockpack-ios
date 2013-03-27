@@ -178,8 +178,8 @@
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
     channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
-    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
-    channelThumbnailCell.subscribeButton.selected = channel.rockedByUserValue;
+    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
+    channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
     channelThumbnailCell.viewControllerDelegate = self;
     
     return channelThumbnailCell;
@@ -246,8 +246,8 @@
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.subscribeButton.selected = channel.rockedByUserValue;
-    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
+    cell.subscribeButton.selected = channel.subscribedByUserValue;
+    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
 }
 
 
