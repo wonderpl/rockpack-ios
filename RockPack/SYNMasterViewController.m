@@ -75,14 +75,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         inboxOverlayFrame.origin.y = 45.0;
         self.inboxOverlayViewController.view.frame = inboxOverlayFrame;
         
-        
         // == Set up Share Overlay
         self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
         CGRect shareOverlayFrame = self.inboxOverlayViewController.view.frame;
         shareOverlayFrame.origin.x = -(shareOverlayFrame.size.width);
         shareOverlayFrame.origin.y = 45.0;
         self.shareOverlayViewController.view.frame = shareOverlayFrame;
-        
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         
@@ -125,7 +123,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          [splashView removeFromSuperview];
      }];
     
-    self.slidersView.userInteractionEnabled = NO;
+    self.slidersView.userInteractionEnabled = YES;
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
@@ -224,48 +222,59 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 // Show Overlay
 
--(void)showOverlay: (UIViewController*) overlayViewController
+- (void) showOverlay: (UIViewController*) overlayViewController
 {
     [self showOverlay: overlayViewController withCompletionBlock:nil];
 }
 
--(void)showOverlay: (UIViewController *) overlayViewController withCompletionBlock:(AnimationCompletionBlock)block
+- (void) showOverlay: (UIViewController *) overlayViewController
+         withCompletionBlock: (AnimationCompletionBlock) block
 {
     self.currentOverlayViewController = overlayViewController;
     
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
-    
-    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
-    
-    // Take out of screen
-    overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                                   overlayViewController.view.frame.origin.y,
-                                                   overlayViewFrame.size.width,
-                                                   overlayViewFrame.size.height);
-    
-    [self.slidersView addSubview:overlayViewController.view];
-    
-    [UIView animateWithDuration: kRockieTalkieAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         overlayViewController.view.frame =  CGRectMake(0.0,
-                                                                        overlayViewFrame.origin.y,
-                                                                        overlayViewFrame.size.width,
-                                                                        overlayViewFrame.size.height);
-                         
-                     } completion: ^(BOOL finished) {
-                         if(block) block(finished);
-                     }];
+    // Don't reshow panel if it is alreay showing
+    if (overlayViewFrame.origin.x < 0)
+    {
+        [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
+        
+        // Take out of screen
+        overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                                       overlayViewController.view.frame.origin.y,
+                                                       overlayViewFrame.size.width,
+                                                       overlayViewFrame.size.height);
+        
+        // Add swipe-away gesture
+        UISwipeGestureRecognizer* inboxLeftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                                    action: @selector(sharePanelSwipedAway:)];
+        inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.slidersView addGestureRecognizer: inboxLeftSwipeGesture];
+        
+        [self.slidersView addSubview: overlayViewController.view];
+        
+        [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
+                             
+                             overlayViewController.view.frame =  CGRectMake(0.0,
+                                                                            overlayViewFrame.origin.y,
+                                                                            overlayViewFrame.size.width,
+                                                                            overlayViewFrame.size.height);
+                             
+                         } completion: ^(BOOL finished) {
+                             if(block) block(finished);
+                         }];
+    }
 }
 
 // Hide Overlay
 
 -(void)hideOverlay: (UIViewController*) overlayViewController
 {
-    [self hideOverlay:overlayViewController withCompletionBlock:nil];
+    [self hideOverlay: overlayViewController
+          withCompletionBlock: nil];
 }
 
 -(void)hideOverlay: (UIViewController *) overlayViewController withCompletionBlock:(AnimationCompletionBlock)block
@@ -545,27 +554,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
-- (void) showBackButton:(BOOL)show
+- (void) showBackButton: (BOOL) show
 {
-    CGPoint currentPoint = self.topButtonsContainer.center;
-    
-    CGPoint targetPoint;
     CGRect targetFrame;
     CGFloat targetAlpha;
     
-    
-    if(show)
+    if (show)
     {
-//        targetPoint = CGPointMake(currentPoint.x + 60.0, self.topButtonsContainer.center.y);
         targetFrame = self.topButtonsContainer.frame;
         targetFrame.origin.x = 15;
-        
         targetAlpha = 1.0;
-        
     }
     else
     {
-//        targetPoint = CGPointMake(currentPoint.x - 60.0, self.topButtonsContainer.center.y);
         targetFrame = self.topButtonsContainer.frame;
         targetFrame.origin.x = (-60);
         targetAlpha = 0.0;
@@ -575,41 +576,50 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
-                    {
-//                         
-//                         self.topButtonsContainer.center = targetPoint;
+                     {
                         self.topButtonsContainer.frame = targetFrame;
-                         self.backButton.alpha = targetAlpha;
-                         
-                     } completion: ^(BOOL finished) {
-                         
-                         
-                         
+                        self.backButton.alpha = targetAlpha;
+                     }
+                     completion: ^(BOOL finished)
+                     {
                      }];
-    
 }
 
 
--(void)tabPressed:(NSNotification*)notification
+- (void) tabPressed: (NSNotification*) notification
 {
     self.searchTextField.text = @"";
 }
 
--(void)sharePanelRequested:(NSNotification*)notification
+
+- (void) sharePanelRequested: (NSNotification*) notification
 {
     
     [self showOrSwapOverlay:self.shareOverlayViewController];
 }
 
 
+- (void) sharePanelSwipedAway: (NSNotification*) notification
+{
+     [self showOrSwapOverlay:self.shareOverlayViewController];
+}
+
+
+- (void) inboxSwipedAway: (NSNotification*) notification
+{
+    [self showOrSwapOverlay:self.shareOverlayViewController];
+}
+
+
 #pragma mark - Autocomplete Methods
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void) tableView: (UITableView *) tableView
+         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    NSString* wordsSelected = [self.autocompleteController getWordAtIndex:indexPath.row];
+    NSString* wordsSelected = [self.autocompleteController getWordAtIndex: indexPath.row];
     self.searchTextField.text = wordsSelected;
     
-    [self textFieldShouldReturn:self.searchTextField];
+    [self textFieldShouldReturn: self.searchTextField];
 }
 
 

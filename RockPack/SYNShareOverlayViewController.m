@@ -48,17 +48,12 @@
     
 }
 
-- (void)didReceiveMemoryWarning
+#pragma mark - Voice Recording Methods
+
+- (IBAction) toggleRecording: (UIButton *) recordButton
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-#pragma mark - Voide Recording Methods
-
-- (IBAction) toggleRecording
-{
+    recordButton.selected = !recordButton.selected;
+    
     if (self.isRecording)
     {
         self.isRecording = FALSE;

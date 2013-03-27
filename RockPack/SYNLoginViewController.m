@@ -702,55 +702,57 @@
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
         [appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
-                                                     completionHandler: ^(SYNOAuth2Credential* credential) {
-                                                         
-                                                         [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
-                                                                                                      completionHandler:^(NSDictionary* dictionary) {
-                                                                                                          
-                                                                                                          
-                                                                                                          [self checkAndSaveRegisteredUser:credential];
-                                                                                                          
-                                                                                                          
-                                                                                                          [activityIndicator stopAnimating];
-                                                                                                          [self completeLoginProcess:credential];
-                                                                                                          
-                                                                                                      } errorHandler:^(NSDictionary* errorDictionary) {
-                                                                                                          
-                                                                                                          
-                                                                                                          
-                                                                                                      }];
-                                                         
-                                                         
-                                                         
-                                                     } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                         
-                                                         facebookLogingInLabel.alpha = 0.0;
-             
-                                                         signUpButton.alpha = 1.0;
-             
-                                                         signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
-                                                         [activityIndicator stopAnimating];
-             
-                                                         NSDictionary* formErrors = errorDictionary [@"form_errors"];
-             
-                                                         userNameInputField.enabled = YES;
-                                                         passwordForgottenButton.enabled = YES;
-                                                         finalLoginButton.enabled = YES;
-                                                         loginButton.enabled = YES;
-             
-                                                         passwordForgottenButton.enabled = YES;
-             
-                                                         if (formErrors)
-                                                         {
-                                                             facebookSignInButton.enabled = YES;
-                                                             secondaryFacebookMessage.text = @"Could not log in through facebook";
-                                                             secondaryFacebookMessage.alpha = 1.0;
-                                                         }
-                                                     }];
+         completionHandler: ^(SYNOAuth2Credential* credential)
+         {
+             [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
+              completionHandler: ^(NSDictionary* dictionary)
+              {                                  
+                  [self checkAndSaveRegisteredUser:credential];
+                  [activityIndicator stopAnimating];
+                  [self completeLoginProcess:credential];
+                  
+              }
+              errorHandler: ^(NSDictionary* errorDictionary)
+              {
+              }];
+         }
+         errorHandler: ^(NSDictionary* errorDictionary)
+         {
+             facebookLogingInLabel.alpha = 0.0;
+
+             signUpButton.alpha = 1.0;
+
+             signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
+             [activityIndicator stopAnimating];
+
+             NSDictionary* formErrors = errorDictionary [@"form_errors"];
+
+             userNameInputField.enabled = YES;
+             passwordForgottenButton.enabled = YES;
+             finalLoginButton.enabled = YES;
+             loginButton.enabled = YES;
+
+             passwordForgottenButton.enabled = YES;
+
+             if (formErrors)
+             {
+                 facebookSignInButton.enabled = YES;
+                 secondaryFacebookMessage.text = @"Could not log in through facebook";
+                 secondaryFacebookMessage.alpha = 1.0;
+             }
+          }];
     }
     onFailure: ^(NSString* errorString)
     {
         _facebookLoginIsInProcess = NO;
+        facebookSignInButton.enabled = YES;
+        
+        // TODO: Use custom alert box here
+        [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
+                                    message: errorString
+                                   delegate: nil
+                          cancelButtonTitle: @"OK"
+                          otherButtonTitles: nil] show];
         
         DebugLog(@"Log in failed!"); 
     }];

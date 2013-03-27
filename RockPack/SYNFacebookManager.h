@@ -12,7 +12,7 @@
 
 // Localizable error messages
 
-#define kFacebookLoginCancelled     NSLocalizedString(@"Log in cancelled", nil)
+#define kFacebookLoginCancelled     NSLocalizedString(@"Log in cancelled, or permission denied.  Check Facebook settings", nil)
 #define kFacebookPermissionDenied   NSLocalizedString(@"Permission denied", nil)
 #define kFacebookUnknownError       NSLocalizedString(@"Unknown error, nil", nil)
 
