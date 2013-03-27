@@ -12,6 +12,8 @@
 
 @interface SYNChannelThumbnailCell ()
 
+@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
+
 @end
 
 @implementation SYNChannelThumbnailCell
@@ -40,5 +42,19 @@
 
     self.imageView.image = nil;
 }
+
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+{
+    _viewControllerDelegate = viewControllerDelegate;
+    
+    [self.shareItButton addTarget: self.viewControllerDelegate
+                           action: @selector(userTouchedVideoShareItButton:)
+                 forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.subscribeButton addTarget: self.viewControllerDelegate
+                         action: @selector(toggleChannelSubscribeButton:)
+               forControlEvents: UIControlEventTouchUpInside];
+}
+
 
 @end

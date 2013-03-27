@@ -154,6 +154,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharePanelRequested:) name:kNoteSharePanelRequested object:nil];
     
     
+    // Add swipe-away gesture
+    UISwipeGestureRecognizer* inboxLeftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                                action: @selector(sharePanelSwipedAway:)];
+    inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.slidersView addGestureRecognizer: inboxLeftSwipeGesture];
 }
 
 - (void)didReceiveMemoryWarning
@@ -244,12 +249,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                        overlayViewController.view.frame.origin.y,
                                                        overlayViewFrame.size.width,
                                                        overlayViewFrame.size.height);
-        
-        // Add swipe-away gesture
-        UISwipeGestureRecognizer* inboxLeftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                                    action: @selector(sharePanelSwipedAway:)];
-        inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-        [self.slidersView addGestureRecognizer: inboxLeftSwipeGesture];
         
         [self.slidersView addSubview: overlayViewController.view];
         

@@ -228,6 +228,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{153, 234}, {43, 43}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -446,12 +447,12 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundChannelThumbnail.png">{16, 16}</string>
-			<string key="ButtonRock.png">{16, 16}</string>
-			<string key="ButtonRockHighlighted.png">{16, 16}</string>
-			<string key="ButtonShare.png">{16, 16}</string>
-			<string key="ButtonShareHighlighted.png">{16, 16}</string>
-			<string key="GlossChannelThumbnail.png">{16, 16}</string>
+			<string key="BackgroundChannelThumbnail.png">{251, 302}</string>
+			<string key="ButtonRock.png">{43, 43}</string>
+			<string key="ButtonRockHighlighted.png">{43, 43}</string>
+			<string key="ButtonShare.png">{43, 43}</string>
+			<string key="ButtonShareHighlighted.png">{43, 43}</string>
+			<string key="GlossChannelThumbnail.png">{191, 177}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
