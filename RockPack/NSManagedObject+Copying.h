@@ -22,13 +22,13 @@
 - (id) copyShallowNoInsert;
 - (id) copyShallowWithZone: (NSZone *) zone;
 - (id) copyShallowWithZone: (NSZone *) zone
-insertIntoManagedObjectContext: (NSManagedObjectContext *) context;
+       insertIntoManagedObjectContext: (NSManagedObjectContext *) context;
 
 - (id) copyDeep;
 - (id) copyDeepNoInsert;
 - (id) copyDeepWithZone: (NSZone *) zone;
 - (id) copyDeepWithZone: (NSZone *) zone
-insertIntoManagedObjectContext: (NSManagedObjectContext *) context;
+       insertIntoManagedObjectContext: (NSManagedObjectContext *) context;
 
 - (NSDictionary * )ownedIDs;
 

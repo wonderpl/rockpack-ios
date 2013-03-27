@@ -25,6 +25,7 @@
 - (void) addVideoToQueue: (VideoInstance *) videoInstance;
 
 -(void) setHighlighted:(BOOL)highlighted;
--(Channel*)getChannelFromCurrentQueue;
+- (Channel*) getChannelFromCurrentQueue;
+- (Channel*) copyChannelFromCurrentQueue;
 
 @end

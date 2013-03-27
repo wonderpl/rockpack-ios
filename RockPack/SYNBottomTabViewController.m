@@ -195,7 +195,7 @@
     else
     {
         SYNAbstractViewController* child = (SYNAbstractViewController*)self.selectedViewController;
-        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        [child createChannel: [self.videoQueueController copyChannelFromCurrentQueue]];
     }
 }
 

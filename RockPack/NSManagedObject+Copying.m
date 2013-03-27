@@ -23,7 +23,7 @@
 - (id) copyDeepNoInsert
 {
     return [self copyDeepWithZone: NSDefaultMallocZone()
-   insertIntoManagedObjectContext: nil];
+                 insertIntoManagedObjectContext: nil];
 }
 
 
@@ -34,7 +34,7 @@
 	NSManagedObjectContext *context = [self managedObjectContext];
     
     return [self copyDeepWithZone: zone
-   insertIntoManagedObjectContext: context];
+                 insertIntoManagedObjectContext: context];
 }
 
 - (id) copyDeepWithZone: (NSZone *) zone
@@ -42,21 +42,22 @@
 {
 	NSMutableDictionary *ownedIDs = [[self ownedIDs] mutableCopy];
     
-	id copied = [self copyShallowWithZone: zone]; // -copyWithZone: copies the attributes for us
+	id copied = [self copyShallowWithZone: zone
+                      insertIntoManagedObjectContext: context]; // -copyWithZone: copies the attributes for us
     
 	for (NSManagedObjectID *key in [ownedIDs allKeys])
     {
         // deep copy relationships
-		id copiedObject = [[context objectWithID: key]
-                           copyShallowWithZone: zone];
+		id copiedObject = [[context objectWithID: key] copyDeepWithZone: zone
+                                         insertIntoManagedObjectContext: context];
         
 		[ownedIDs setObject: copiedObject
                      forKey: key];
         
-		[copiedObject release];
+//		[copiedObject release];
 	}
     
-	[self setRelationshipsToObjectsByIDs: ownedIDs];
+	[copied setRelationshipsToObjectsByIDs: ownedIDs];
     
 	for (NSManagedObjectID *key in [ownedIDs allKeys])
     {
@@ -78,7 +79,7 @@
 - (id) copyShallowNoInsert
 {
     return [self copyShallowWithZone: NSDefaultMallocZone()
-      insertIntoManagedObjectContext: nil];
+                 insertIntoManagedObjectContext: nil];
 }
 
 
@@ -88,7 +89,8 @@
     // Use the MOC of the original NSManagedObject
 	NSManagedObjectContext *context = [self managedObjectContext];
     
-    return [self copyShallowWithZone: zone insertIntoManagedObjectContext: context];
+    return [self copyShallowWithZone: zone
+                 insertIntoManagedObjectContext: context];
 }
 
 - (id) copyShallowWithZone: (NSZone *) zone
@@ -157,7 +159,7 @@
     {
 		id relationship = [relationships objectForKey: key];
         
-		if ([relationship deleteRule] == NSCascadeDeleteRule)
+//		if ([relationship deleteRule] == NSCascadeDeleteRule)
         {
             // ownership
 			if ([relationship isToMany])

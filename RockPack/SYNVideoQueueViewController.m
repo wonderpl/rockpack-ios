@@ -13,6 +13,7 @@
 #import "SYNSoundPlayer.h"
 #import <CoreData/CoreData.h>
 #import "SYNAppDelegate.h"
+#import "NSManagedObject+Copying.h"
     
 #define kQueueSelectedImage @"PanelVideoQueueHighlighted.png"
 #define kQueueDefaultImage @"PanelVideoQueue.png"
@@ -152,6 +153,30 @@ typedef enum _kQueueMoveDirection {
     
     return newChannel;
 }
+
+- (Channel*) copyChannelFromCurrentQueue
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
+    
+    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    newChannel.channelOwner = appDelegate.channelOwnerMe;
+    newChannel.viewId = @"ChannelDetails";
+    
+    // Set the channel's unique Id to something temporary so that we can perform queries for the videoinstances it contains
+    newChannel.uniqueId = kNewChannelPlaceholderId;
+    
+    for (VideoInstance *videoInstance in self.selectedVideos)
+    {
+        VideoInstance *newVideoInstance = [videoInstance copyDeepWithZone: NSDefaultMallocZone()
+                                           insertIntoManagedObjectContext: appDelegate.mainManagedObjectContext];
+        
+        [newChannel.videoInstancesSet addObject: newVideoInstance];
+    }
+    
+    return newChannel;
+}
+
 
 
 #pragma mark - UICollectionViewDelegate Methods
