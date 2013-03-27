@@ -56,20 +56,32 @@ typedef enum _kQueueMoveDirection {
     self.isVisible = NO;
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    [self.videoQueueView.deleteButton addTarget:self action: @selector(deleteLastVideoAdded) forControlEvents: UIControlEventTouchUpInside];
+    [self.videoQueueView.deleteButton addTarget: self
+                                         action: @selector(deleteLastVideoAdded)
+                               forControlEvents: UIControlEventTouchUpInside];
     
-    [self.videoQueueView.channelButton addTarget:self action: @selector(createChannelFromVideoQueue) forControlEvents: UIControlEventTouchUpInside];
+    [self.videoQueueView.channelButton addTarget: self
+                                          action: @selector(createChannelFromVideoQueue)
+                                forControlEvents: UIControlEventTouchUpInside];
     
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleVideoQueueAddRequest:)
+                                                 name: kVideoQueueAdd
+                                               object: nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleVideoQueueAddRequest:) name:kVideoQueueAdd object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleVideoQueueHideRequest:)
+                                                 name: kVideoQueueHide
+                                               object: nil];
     
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleVideoQueueHideRequest:) name:kVideoQueueHide object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleVideoQueueShowRequest:) name:kVideoQueueShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleVideoQueueShowRequest:)
+                                                 name: kVideoQueueShow
+                                               object: nil];
     
     [self reloadData];
 	
@@ -77,27 +89,31 @@ typedef enum _kQueueMoveDirection {
 
 #pragma mark - Notification Handlers
 
--(void)handleVideoQueueAddRequest:(NSNotification*)notification
+- (void) handleVideoQueueAddRequest:(NSNotification*)notification
 {
-    VideoInstance* videoInstanceToAdd = (VideoInstance*)[notification.userInfo objectForKey:@"VideoInstance"];
-    [self addVideoToQueue:videoInstanceToAdd];
+    VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[@"VideoInstance"];
+    [self addVideoToQueue: videoInstanceToAdd];
 }
 
 
--(void)handleVideoQueueHideRequest:(NSNotification*)notification
+- (void) handleVideoQueueHideRequest: (NSNotification*) notification
 {
-    [self hideVideoQueue:YES];
+    [self hideVideoQueue: YES];
 }
 
--(void)handleVideoQueueShowRequest:(NSNotification*)notification
+- (void) handleVideoQueueShowRequest:(NSNotification*) notification
 {
-    NSDictionary* userInfo = [notification userInfo];
-    if(userInfo)
+    NSDictionary* userInfo = notification.userInfo;
+    
+    if (userInfo)
     {
-        NSNumber* lockValueObject = [userInfo objectForKey:@"lock"];
+        NSNumber* lockValueObject = userInfo[@"lock"];
         BOOL lockValue = [lockValueObject boolValue];
-        if(lockValue)
+        
+        if (lockValue)
+        {
             self.locked = YES;
+        }
     }
     
     [self showVideoQueue:YES];
@@ -106,26 +122,20 @@ typedef enum _kQueueMoveDirection {
 
 #pragma mark - Channel Handlers
 
--(void)createChannelFromVideoQueue
+- (void) createChannelFromVideoQueue
 {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueCreateChannel
+                                                        object:self];
     
     [self.delegate createChannelFromVideoQueue];
     
     [self clearVideoQueue];
-    
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
 - (Channel*) getChannelFromCurrentQueue
 {
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
     
     Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
     
@@ -137,7 +147,7 @@ typedef enum _kQueueMoveDirection {
     
     for (VideoInstance *videoInstance in self.selectedVideos)
     {
-        [[newChannel videoInstancesSet] addObject: videoInstance];
+        [newChannel.videoInstancesSet addObject: videoInstance];
     }
     
     return newChannel;
@@ -146,12 +156,16 @@ typedef enum _kQueueMoveDirection {
 
 #pragma mark - UICollectionViewDelegate Methods
 
-- (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
+- (NSInteger) collectionView: (UICollectionView *) cv
+      numberOfItemsInSection: (NSInteger) section
+{
     
     return self.selectedVideos.count;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     UICollectionViewCell *cell = nil;
     
@@ -168,29 +182,29 @@ typedef enum _kQueueMoveDirection {
     return cell;
 }
 
+
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
 {
-    
     BOOL handledInAbstractView = YES;
-    
     DebugLog (@"Selecting image well cell does nothing");
     
     return handledInAbstractView;
 }
 
--(SYNVideoQueueView*)videoQueueView
+
+- (SYNVideoQueueView*) videoQueueView
 {
     return (SYNVideoQueueView*)self.view;
 }
 
+
 #pragma mark - Delegate
 
--(void)setDelegate:(id<SYNVideoQueueDelegate>)del
+- (void) setDelegate: (id<SYNVideoQueueDelegate>) del
 {
     delegate = del;
-    
-    
 }
+
 
 -(void)deleteLastVideoAdded
 {
@@ -205,6 +219,7 @@ typedef enum _kQueueMoveDirection {
     
 }
 
+
 - (void) clearVideoQueue
 {
     
@@ -215,10 +230,12 @@ typedef enum _kQueueMoveDirection {
     [self.videoQueueView clearVideoQueue];
 }
 
+
 -(void)reloadData
 {
     [self.videoQueueView.videoQueueCollectionView reloadData];
 }
+
 
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -233,6 +250,7 @@ typedef enum _kQueueMoveDirection {
 {
     [self showVideoQueue:YES];
 }
+
 
 - (void) showVideoQueue: (BOOL) animated;
 {
@@ -249,18 +267,22 @@ typedef enum _kQueueMoveDirection {
 }
 
 
--(void)hideVideoQueue
+- (void) hideVideoQueue
 {
-    [self hideVideoQueue:YES];
+    [self hideVideoQueue: YES];
 }
+
 
 - (void) hideVideoQueue: (BOOL) animated;
 {
     
     if(!self.isVisible)
+    {
         return;
+    }
     
-    [self moveVideoQueue:kQueueMoveDirectionDown animated:animated];
+    [self moveVideoQueue: kQueueMoveDirectionDown
+                animated: animated];
     
     self.isVisible = NO;
     self.locked = NO;
@@ -268,30 +290,27 @@ typedef enum _kQueueMoveDirection {
 }
 
 
--(void)moveVideoQueue:(kQueueMoveDirection)direction animated:(BOOL)animated
+- (void) moveVideoQueue: (kQueueMoveDirection) direction
+               animated: (BOOL) animated
 {
-    
-    
-    
     CGFloat offset = (direction == kQueueMoveDirectionUp) ? -(kQueueViewOffset) : kQueueViewOffset ;
     CGFloat timeDuration = (direction == kQueueMoveDirectionUp) ? 0.3 : 0.2;
     
     CGRect videoQRect = self.videoQueueView.frame;
     videoQRect.origin.y += offset;
     
-    
     if (animated)
     {
         [UIView animateWithDuration: timeDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^{
-                             
-                             self.videoQueueView.frame = CGRectIntegral(videoQRect);
-                         }
-                         completion: ^(BOOL finished) {
-                             
-                         }];
+         delay: 0.0f
+         options: UIViewAnimationOptionCurveEaseInOut
+         animations: ^
+         {
+             self.videoQueueView.frame = CGRectIntegral(videoQRect);
+         }
+         completion: ^(BOOL finished)
+         {   
+         }];
     }
     else
     {
@@ -299,33 +318,33 @@ typedef enum _kQueueMoveDirection {
     }
 }
 
+
 - (void) addVideoToQueue: (VideoInstance *) videoInstance
 {
-    
-    if(!videoInstance) {
+    if (!videoInstance)
+    {
         DebugLog(@"Trying to add a nil video instance into the queue through: 'addVideoToQueue:'");
         return;
     }
         
-    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundSelect];
+    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundSelect];
     
-    [self showVideoQueue:YES];
+    [self showVideoQueue: YES];
     
     if(self.showingEmptyQueue)
         self.showingEmptyQueue = NO;
     
-    
     [self.selectedVideos addObject: videoInstance];
     
-    [self.videoQueueView addVideoToQueue:videoInstance];
-    
-    
+    [self.videoQueueView addVideoToQueue: videoInstance];
 }
 
--(void)setHighlighted:(BOOL)value
+
+- (void) setHighlighted: (BOOL) value
 {
     self.videoQueueView.backgroundImageView.image = [UIImage imageNamed: (value ? kQueueSelectedImage : kQueueDefaultImage)];
 }
+
 
 - (void) setVideoQueueAnimationTimer: (NSTimer*) timer
 {
@@ -334,6 +353,7 @@ typedef enum _kQueueMoveDirection {
     _videoQueueAnimationTimer = timer;
     
 }
+
 
 - (void) startVideoQueueDismissalTimer
 {
@@ -345,7 +365,6 @@ typedef enum _kQueueMoveDirection {
 }
 
 
-
 - (void) videoQueueTimerCallback
 {
     if(self.locked)
@@ -354,7 +373,8 @@ typedef enum _kQueueMoveDirection {
     [self hideVideoQueue: TRUE];
 }
 
--(void)setShowingEmptyQueue:(BOOL)ShowingEmptyQueueValue
+
+- (void) setShowingEmptyQueue: (BOOL) ShowingEmptyQueueValue
 {
     showingEmptyQueue = ShowingEmptyQueueValue;
     if(!showingEmptyQueue) // queue is not empty

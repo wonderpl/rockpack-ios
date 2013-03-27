@@ -573,9 +573,6 @@
 }
 
 
-
-
-
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd

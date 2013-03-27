@@ -191,9 +191,10 @@ typedef enum _Gender {
 //#define kVideoQueueWidth 475
 #define kVideoQueueOffsetX 10
 
-#define kVideoQueueShow @"kVideoQueueShow"
-#define kVideoQueueHide @"kVideoQueueHide"
-#define kVideoQueueAdd @"kVideoQueueAdd"
+#define kVideoQueueShow             @"kVideoQueueShow"
+#define kVideoQueueHide             @"kVideoQueueHide"
+#define kVideoQueueAdd              @"kVideoQueueAdd"
+#define kVideoQueueCreateChannel    @"kVideoQueueCreateChannel"
 
 
 #define kLoginCompleted @"kLoginCompleted"
