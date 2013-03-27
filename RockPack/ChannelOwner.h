@@ -14,4 +14,7 @@
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId;
 
++ (ChannelOwner *) instanceFromChannelOwner:(ChannelOwner*)existingChannelOwner
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 @end

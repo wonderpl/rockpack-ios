@@ -18,6 +18,96 @@ static NSEntityDescription *channelEntity = nil;
 
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        channelOwner: (ChannelOwner*)owner
+                           andViewId: (NSString *) viewId {
+    
+    
+    
+    NSString *uniqueId = [dictionary objectForKey: @"id"
+                                      withDefault: @"Uninitialized Id"];
+    
+    // Do once, and only once
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+                      channelEntity = [NSEntityDescription entityForName: @"Channel"
+                                                  inManagedObjectContext: managedObjectContext];
+                  });
+    
+    
+    Channel *instance = [Channel insertInManagedObjectContext: managedObjectContext];
+    
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext
+                             channelOwner: owner
+                                andViewId: viewId];
+    
+    
+    return instance;
+    
+    
+    
+    
+}
+
+- (void) setAttributesFromDictionary: (NSDictionary *) dictionary
+                              withId: (NSString *) uniqueId
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        channelOwner: (ChannelOwner*)owner
+                           andViewId: (NSString *) viewId
+{
+    // Is we are not actually a dictionary, then bail
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        return;
+    }
+    
+    // Simple objects
+    self.uniqueId = uniqueId;
+    
+    self.viewId = viewId;
+    
+    self.categoryId = [dictionary objectForKey: @"category_id"
+                                   withDefault: @""];
+    
+    self.position = [dictionary objectForKey: @"position"
+                                 withDefault: [NSNumber numberWithInt: 0]];
+    
+    self.title = [dictionary upperCaseStringForKey: @"title"
+                                       withDefault: @""];
+    
+    self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
+                                                   withDefault: [NSDate date]];
+    
+    self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
+                                         withDefault: [NSNumber numberWithBool: FALSE]];
+    
+    self.coverThumbnailSmallURL = [dictionary objectForKey: @"cover_thumbnail_small_url"
+                                               withDefault: @"http://localhost"];
+    
+    self.coverThumbnailLargeURL = [dictionary objectForKey: @"cover_thumbnail_large_url"
+                                               withDefault: @"http://localhost"];
+    
+    self.wallpaperURL = [dictionary objectForKey: @"cover_background_url"
+                                     withDefault: @"http://localhost"];
+    
+    self.resourceURL = [dictionary objectForKey: @"resource_url"
+                                    withDefault: @"http://localhost"];
+    
+    self.channelDescription = [dictionary objectForKey: @"description"
+                                           withDefault: @"Description of channel goes here"];
+    
+    
+    
+    self.channelOwner = owner;
+}
+
+
+#pragma mark - Without Owner
+
++ (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {

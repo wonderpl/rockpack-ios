@@ -7,12 +7,13 @@
 //
 
 #import "SYNChannelsRootViewController.h"
+#import "ChannelOwner.h"
 
 @interface SYNChannelsUserViewController : SYNChannelsRootViewController {
-    NSString* userId;
+    ChannelOwner* owner;
 }
 
 
--(void)fetchUserChannels:(NSString*)userId;
+-(void)fetchUserChannels:(ChannelOwner*)channelOwner;
 
 @end

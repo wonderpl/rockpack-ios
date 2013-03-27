@@ -8,4 +8,10 @@
                   ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId;
 
+
++ (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                        channelOwner: (ChannelOwner*)owner
+                           andViewId: (NSString *) viewId;
+
 @end

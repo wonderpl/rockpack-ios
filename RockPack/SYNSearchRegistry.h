@@ -7,6 +7,7 @@
 //
 
 #import "SYNRegistry.h"
+#import "ChannelOwner.h"
 
 @interface SYNSearchRegistry : SYNRegistry
 
@@ -14,4 +15,6 @@
 -(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary;
 
 -(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary withViewId:(NSString*)viewId;
+-(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary withViewId:(NSString*)viewId andOwner:(ChannelOwner*)owner;
+
 @end

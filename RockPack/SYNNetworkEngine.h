@@ -11,6 +11,7 @@
 #import "AppConstants.h"
 #import "SYNAbstractNetworkEngine.h"
 #import "SYNNetworkOperationJsonObject.h"
+#import "ChannelOwner.h"
 
 @interface SYNNetworkEngine : SYNAbstractNetworkEngine
 
@@ -29,6 +30,6 @@
                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
--(void)userPublicChannelsById:(NSString*)userId;
+-(void)userPublicChannelsByOwner:(ChannelOwner*)channelOwner;
 
 @end

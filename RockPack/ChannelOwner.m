@@ -14,6 +14,23 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 #pragma mark - Object factory
 
++ (ChannelOwner *) instanceFromChannelOwner:(ChannelOwner*)existingChannelOwner
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+{
+    if(!existingChannelOwner)
+        return nil;
+    
+    ChannelOwner *instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
+    
+    instance.uniqueId = existingChannelOwner.uniqueId;
+    
+    instance.thumbnailURL = existingChannelOwner.thumbnailURL;
+    
+    instance.displayName = existingChannelOwner.displayName;
+    
+    return instance;
+}
+
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                       ignoringObjectTypes: (IgnoringObjects) ignoringObjects
