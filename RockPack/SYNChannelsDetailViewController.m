@@ -28,7 +28,19 @@
     [super viewDidLoad];
     
     // Show edit and share buttons
-    self.editButton.hidden = FALSE;
+    
+    if (![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+    {
+        self.editButton.hidden = YES;
+        self.buyButton.hidden = NO;
+        
+    }
+    else
+    {
+        self.editButton.hidden = NO;
+        self.buyButton.hidden = YES;
+    }
+    
     self.shareButton.hidden = FALSE;
     
     // Hide save or done buttons and hide cover selection carousel

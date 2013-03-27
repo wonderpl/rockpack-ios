@@ -20,6 +20,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *changeCoverButton;
 @property (nonatomic, strong) IBOutlet UIButton *doneButton;
 @property (nonatomic, strong) IBOutlet UIButton *editButton;
+@property (nonatomic, strong) IBOutlet UIButton* buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *saveButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelCoverCarouselCollectionView;
