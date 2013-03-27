@@ -156,7 +156,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // Add swipe-away gesture
     UISwipeGestureRecognizer* inboxLeftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                                action: @selector(sharePanelSwipedAway:)];
+                                                                                                action: @selector(panelSwipedAway:)];
     inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.slidersView addGestureRecognizer: inboxLeftSwipeGesture];
 }
@@ -195,28 +195,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (IBAction) userTouchedInboxButton: (UIButton*) button
 {
-    
-    
-    if(button.selected)
+    if (button.selected)
     {
         button.selected = NO;
-        [self hideOverlay:self.inboxOverlayViewController];
+        [self hideOverlay: self.inboxOverlayViewController];
     }
     else
     {
         button.selected = YES;
-        [self showOrSwapOverlay:self.inboxOverlayViewController];
+        [self showOrSwapOverlay: self.inboxOverlayViewController];
     }
 }
 
 
--(void)showOrSwapOverlay: (UIViewController*) overlayViewController
+- (void) showOrSwapOverlay: (UIViewController*) overlayViewController
 {
-    if(self.currentOverlayViewController && self.currentOverlayViewController != overlayViewController)
+    if (self.currentOverlayViewController && self.currentOverlayViewController != overlayViewController)
     {
-        [self hideOverlay:self.currentOverlayViewController withCompletionBlock:^(BOOL finished) {
-            [self showOverlay:overlayViewController];
-        }];
+        [self hideOverlay: self.currentOverlayViewController
+         withCompletionBlock: ^(BOOL finished)
+         {
+             [self showOverlay:overlayViewController];
+         }];
     }
     else
     {
@@ -270,36 +270,66 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 // Hide Overlay
 
--(void)hideOverlay: (UIViewController*) overlayViewController
+- (void) hideOverlay: (UIViewController*) overlayViewController
 {
     [self hideOverlay: overlayViewController
           withCompletionBlock: nil];
 }
 
--(void)hideOverlay: (UIViewController *) overlayViewController withCompletionBlock:(AnimationCompletionBlock)block
+- (void) hideOverlay: (UIViewController *) overlayViewController
+         withCompletionBlock: (AnimationCompletionBlock) block
 {
+    // If we are hding the inbox panel, ensure that we deselect the con
+    if (self.currentOverlayViewController == self.inboxOverlayViewController)
+    {
+        self.inboxButton.selected = FALSE;
+    }
+    
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
-    
-    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideOut];
+    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
-                                                                        overlayViewFrame.origin.y,
-                                                                        overlayViewFrame.size.width,
-                                                                        overlayViewFrame.size.height);
-                         
-                     } completion: ^(BOOL finished) {
-                         [overlayViewController.view removeFromSuperview];
-                         self.currentOverlayViewController = nil;
-                         if(block) block(finished);
-                     }];
+     delay: 0.0f
+     options: UIViewAnimationOptionCurveEaseInOut
+     animations: ^
+     {
+         overlayViewController.view.frame =  CGRectMake(-overlayViewFrame.size.width,
+                                                        overlayViewFrame.origin.y,
+                                                        overlayViewFrame.size.width,
+                                                        overlayViewFrame.size.height);
+     }
+     completion: ^(BOOL finished)
+     {
+         [overlayViewController.view removeFromSuperview];
+         self.currentOverlayViewController = nil;
+         if (block)
+         {
+             block(finished);
+         }
+     }];
 }
 
+- (void) sharePanelRequested: (NSNotification*) notification
+{
+    [self showOrSwapOverlay:self.shareOverlayViewController];
+}
+
+
+- (void) panelSwipedAway: (NSNotification*) notification
+{
+    NSLog (@"Swiped");
+    
+    if (self.inboxButton.selected == TRUE)
+    {
+        self.inboxButton.selected = FALSE;
+        [self hideOverlay: self.inboxOverlayViewController];
+    }
+    else
+    {
+        [self hideOverlay: self.shareOverlayViewController];
+    }
+}
 
 
 #pragma mark - Video Overlay View
@@ -323,66 +353,53 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.videoViewerViewController.overlayParent = self;
     
     [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         self.videoViewerViewController.view.alpha = 1.0f;
-                     }
-                     completion: ^(BOOL finished)
-                     {
-
-                        self.overlayView.userInteractionEnabled = YES;
-                         
-                         // == Add video queue == //
-                         
-                         UIView* queueView = bottomTabViewController.videoQueueController.view;
-                         
-                         [queueView removeFromSuperview];
-                         
-                         queueView.center = CGPointMake(queueView.center.x, queueView.center.y + queueView.frame.size.height * 0.5);
-                         
-                         [self.view insertSubview:queueView aboveSubview:self.overlayView];
-                         
-                     }];
+     delay: 0.0f
+     options: UIViewAnimationOptionCurveEaseInOut
+     animations: ^
+     {
+         self.videoViewerViewController.view.alpha = 1.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+        self.overlayView.userInteractionEnabled = YES;
+         
+         // == Add video queue == //
+         
+         UIView* queueView = bottomTabViewController.videoQueueController.view;
+         
+         [queueView removeFromSuperview];
+         
+         queueView.center = CGPointMake(queueView.center.x, queueView.center.y + queueView.frame.size.height * 0.5);
+         
+         [self.view insertSubview:queueView aboveSubview:self.overlayView];
+     }];
 }
 
--(void)removeVideoOverlayController
+- (void) removeVideoOverlayController
 {
     SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
     
     UIView* child = self.overlayView.subviews[0];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueHide
+                                                        object: self];
     
     [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         child.alpha = 0.0f;
-                     }
-                     completion: ^(BOOL finished) {
-         
-                         self.overlayView.userInteractionEnabled = NO;
-                        
-                         self.videoViewerViewController = nil;
-                         
-                         [child removeFromSuperview];
-                         
-                         [bottomTabViewController.videoQueueController.view removeFromSuperview];
-                         
-                         [bottomTabViewController repositionQueueView];
-                         
-                     }];
+     delay: 0.0f
+     options: UIViewAnimationOptionCurveEaseInOut
+     animations: ^
+     {
+         child.alpha = 0.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+         self.overlayView.userInteractionEnabled = NO;
+         self.videoViewerViewController = nil;
+         [child removeFromSuperview];
+         [bottomTabViewController.videoQueueController.view removeFromSuperview];
+         [bottomTabViewController repositionQueueView];
+     }];
 }
-
-
-
-
-
-
 
 
 #pragma mark - TextField Delegate Methods
@@ -588,25 +605,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) tabPressed: (NSNotification*) notification
 {
     self.searchTextField.text = @"";
-}
-
-
-- (void) sharePanelRequested: (NSNotification*) notification
-{
-    
-    [self showOrSwapOverlay:self.shareOverlayViewController];
-}
-
-
-- (void) sharePanelSwipedAway: (NSNotification*) notification
-{
-     [self showOrSwapOverlay:self.shareOverlayViewController];
-}
-
-
-- (void) inboxSwipedAway: (NSNotification*) notification
-{
-    [self showOrSwapOverlay:self.shareOverlayViewController];
 }
 
 
