@@ -17,6 +17,8 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
+#import "SYNUserTabView.h"
+#import "SYNUserTabViewController.h"
 
 @interface SYNYouRootViewController ()
 
@@ -141,6 +143,15 @@
                                                animated: YES];
     
     
+}
+
+-(void)setTabViewController:(SYNTabViewController *)newTabViewController
+{
+    
+    [super setTabViewController:newTabViewController];
+    
+    SYNUserTabViewController* userTabVC = (SYNUserTabViewController*)newTabViewController;
+    [userTabVC setOwner:appDelegate.currentUser];
 }
 
 #pragma mark - Collection view support

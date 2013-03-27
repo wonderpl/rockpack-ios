@@ -14,6 +14,7 @@
 #import "User.h"
 #import "UIColor+SYNColor.h"
 #import "SYNUserItemView.h"
+#import "UIImageView+ImageProcessing.h"
 
 @interface SYNUserTabView ()
 
@@ -28,7 +29,6 @@
 @property (nonatomic, strong) UIImageView* profileImageView;
 @property (nonatomic, strong) UILabel* profileNameLabel;
 @property (nonatomic, weak) SYNSearchItemView* currentItemView;
-@property (nonatomic, weak) User* user;
 @property (nonatomic, strong) NSMutableArray* tabItems;
 
 @end
@@ -44,15 +44,12 @@
         
         // == Main Holder Views == //
         
-        SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        self.user = appDelegate.currentUser;
         
         UIImage* mainTabsBGImage = [UIImage imageNamed:@"BarHeaderYou.png"]; // 121 height
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
         
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
-        self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
+        self.mainTabsView.backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
         
         self.frame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height);
         
@@ -67,52 +64,29 @@
         
         CGRect itemFrame = CGRectMake(0.0, 0.0, kSearchBarItemWidth, self.frame.size.height);
         
+     
+        // == Full name label == //
         
-        // == Full Name == //
-        
-        UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:28.0];
-        NSString* nameString;
-        if(self.user.firstName && self.user.lastName && ![self.user.firstName isEqualToString:@""] && ![self.user.lastName isEqualToString:@""])
-            nameString = [NSString stringWithFormat:@"%@ %@", self.user.firstName, self.user.lastName];
-        else
-            nameString = @"FULL NAME";
-        
-        CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
-        CGRect nameRect = CGRectIntegral(CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height));
-        self.fullnameLabel = [[UILabel alloc] initWithFrame:nameRect];
-        self.fullnameLabel.font = rockpackBoldFont;
+        self.fullnameLabel = [[UILabel alloc] initWithFrame:CGRectMake(132.0, 34.0, 450.0, 50.0)];
         self.fullnameLabel.textAlignment = NSTextAlignmentLeft;
         self.fullnameLabel.backgroundColor = [UIColor clearColor];
-        
-        nameString = [nameString uppercaseString];
-        self.fullnameLabel.text = nameString;
         self.fullnameLabel.textColor = [UIColor whiteColor];
-        [self.overlayView addSubview:self.fullnameLabel];
+        [self addSubview:self.fullnameLabel];
         
         
         // == Username == //
-        // Kish says: Username position/size is no longer dependant on Fullname as Fullname can be longer than
-        // username. Also it was messing with the position of the flag button.
-        UIFont* usernameFont = [UIFont rockpackFontOfSize:16.0];
-        NSString* usernameString;
-        if(self.user.username && ![self.user.username isEqualToString:@""])
-            usernameString = [self.user.username uppercaseString];
-        else
-            usernameString = @"THEKISHPATEL91";
         
-        CGSize usernameStringSize = [usernameString sizeWithFont:usernameFont];
-        CGRect usernameRect = CGRectIntegral(CGRectMake(132.0, 66.0, usernameStringSize.width, usernameStringSize.height));
-        self.usernameLabel = [[UILabel alloc] initWithFrame:usernameRect];
-        self.usernameLabel.font = usernameFont;
+        self.usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(132.0, 66.0, 100.0, 30.0)];
+        
         self.usernameLabel.textAlignment = NSTextAlignmentLeft;
         self.usernameLabel.backgroundColor = [UIColor clearColor];
-        self.usernameLabel.text = usernameString;
+        
         self.usernameLabel.textColor = [UIColor rockpackHeaderSubtitleColor];
-        self.usernameLabel.frame = usernameRect;
-        [self.overlayView addSubview:self.usernameLabel];
+        
+        [self addSubview:self.usernameLabel];
         
         
-        // Flag
+        // == Flag Button == //
         
         UIImage* flagImage = [UIImage imageNamed:@"ButtonFlagDefault.png"];
         UIButton* flagButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -155,19 +129,7 @@
                                     endDividerYouImage.image = image;
         [self.overlayView addSubview:endDividerYouImage];
         
-        
-        // == Account Settings == //
-        
-        
-        UIButton* cogImageButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage* cogImage = [UIImage imageNamed:@"ButtonSettingsDefault.png"];
-        cogImageButton.frame = CGRectMake(0.0, 0.0, cogImage.size.width, cogImage.size.height);
-        [cogImageButton setImage:cogImage forState:UIControlStateNormal];
-        [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
-        [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
-        cogImageButton.center = CGPointMake(676.0, 57.0);
-        cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
-        [self.mainTabsView addSubview:cogImageButton];
+       
         
         
         
@@ -212,7 +174,7 @@
         // == Profile Pic and Name == //
         
         self.profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 114.0, 114.0)];
-        self.profileImageView.image = [UIImage imageNamed:@"AvatarKish.png"];
+        
         [self.overlayView addSubview:self.profileImageView];
         
         
@@ -238,16 +200,86 @@
     return self;
 }
 
+-(void)createAccountSettings
+{
+    UIButton* cogImageButton  = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage* cogImage = [UIImage imageNamed:@"ButtonSettingsDefault.png"];
+    cogImageButton.frame = CGRectMake(0.0, 0.0, cogImage.size.width, cogImage.size.height);
+    [cogImageButton setImage:cogImage forState:UIControlStateNormal];
+    [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
+    [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
+    cogImageButton.center = CGPointMake(676.0, 57.0);
+    cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
+    [self.mainTabsView addSubview:cogImageButton];
+}
+
 -(void)pressedCogButton:(UIButton*)button
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
                                                         object:self];
 }
 
--(void)setUser:(User*)user
+-(void)showUserData:(User*)nuser
 {
     
-    self.fullnameLabel.text = user.username;
+    if(nuser.firstName && nuser.lastName && ![nuser.firstName isEqualToString:@""] && ![nuser.lastName isEqualToString:@""])
+        [self setFullName:[[NSString stringWithFormat:@"%@ %@", nuser.firstName, nuser.lastName] uppercaseString]];
+    else
+        [self setFullName:@"FULL NAME"];
+    
+    
+    
+    UIFont* usernameFont = [UIFont rockpackFontOfSize:16.0];
+    NSString* usernameString;
+    if(nuser.username && ![nuser.username isEqualToString:@""])
+        usernameString = [nuser.username uppercaseString];
+    else
+        usernameString = @"USERNAME";
+    
+    CGSize usernameStringSize = [usernameString sizeWithFont:usernameFont];
+    
+    
+    self.usernameLabel.frame = CGRectIntegral(CGRectMake(132.0, 66.0, usernameStringSize.width, usernameStringSize.height));
+    self.usernameLabel.font = usernameFont;
+    self.usernameLabel.text = usernameString;
+    
+    
+}
+
+-(void)setFullName:(NSString*)nameString
+{
+    
+    UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:28.0];
+    
+    CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
+    CGRect nameRect = CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height);
+    
+    
+    
+    self.fullnameLabel.frame = CGRectIntegral(nameRect);
+    self.fullnameLabel.font = rockpackBoldFont;
+    self.fullnameLabel.text = nameString;
+}
+
+-(void)showOwnerData:(ChannelOwner*)nuser
+{
+    
+    if([nuser isKindOfClass:[User class]]) {
+        
+        [self showUserData:(User*)nuser];
+        [self createAccountSettings];
+        
+    } else {
+        [self setFullName:nuser.displayName];
+    }
+    
+    
+    [self.profileImageView setAsynchronousImageFromURL: [NSURL URLWithString: nuser.thumbnailURL]
+                                      placeHolderImage: [UIImage imageNamed:@"NotFoundAvatarYou.png"]];
+    
+    
+    
+    
 }
 
 

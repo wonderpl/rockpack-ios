@@ -38,8 +38,8 @@
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
+@property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
-
 
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
@@ -60,7 +60,8 @@
 @synthesize selectedIndex = _selectedIndex;
 @synthesize selectedViewController = _selectedViewController;
 @synthesize videoQueueController = videoQueueController;
-@synthesize channelsUserViewController = channelsUserViewController;
+@synthesize channelsUserNavigationViewController;
+@synthesize channelsUserViewController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -130,6 +131,12 @@
     // == Channels User (out of normal controller array)
     
     self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannels"];
+    self.channelsUserViewController.tabViewController = [[SYNUserTabViewController alloc] init];
+    self.channelsUserNavigationViewController = [[UINavigationController alloc] initWithRootViewController:channelsUserViewController];
+    self.channelsUserNavigationViewController.navigationBarHidden = TRUE;
+    self.channelsUserNavigationViewController.view.autoresizesSubviews = TRUE;
+    self.channelsUserNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    
     
     
     
@@ -156,22 +163,7 @@
 }
 
 
--(void)showUserChannel:(NSNotification*)notification
-{
-    NSDictionary* userInfo = [notification userInfo];
-    
-    ChannelOwner* channelOwner = (ChannelOwner*)[userInfo objectForKey:@"ChannelOwner"];
-    
-    if(!channelOwner)
-        return;
-    
-    
-    
-    self.selectedViewController = self.channelsUserViewController;
-    
-    
-    [self.channelsUserViewController fetchUserChannels:channelOwner];
-}
+
 
 
 -(void)repositionQueueView
@@ -396,7 +388,7 @@
 }
 
 
-
+#pragma mark - Show Special Views
 
 -(void) showSearchViewControllerWithTerm:(NSString*)searchTerm
 {
@@ -408,6 +400,23 @@
     [self.searchViewController showSearchResultsForTerm:searchTerm];
     
     
+}
+
+-(void)showUserChannel:(NSNotification*)notification
+{
+    NSDictionary* userInfo = [notification userInfo];
+    
+    ChannelOwner* channelOwner = (ChannelOwner*)[userInfo objectForKey:@"ChannelOwner"];
+    
+    if(!channelOwner)
+        return;
+    
+    [self setSelectedIndex:-1]; // turn all off
+    
+    self.selectedViewController = self.channelsUserNavigationViewController;
+    
+    
+    [self.channelsUserViewController fetchUserChannels:channelOwner];
 }
 
 

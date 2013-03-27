@@ -628,6 +628,8 @@
 		BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4312A16F20CD70051465B /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BEE4A69C1701FF17008F9D05 /* SYNUserItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69B1701FF17008F9D05 /* SYNUserItemView.m */; };
 		BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */; };
+		BEE4A6A2170339B9008F9D05 /* NotFoundAvatarYou.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6A0170339B9008F9D05 /* NotFoundAvatarYou.png */; };
+		BEE4A6A3170339B9008F9D05 /* NotFoundAvatarYou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6A1170339B9008F9D05 /* NotFoundAvatarYou@2x.png */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
@@ -1387,6 +1389,8 @@
 		BEE4A69B1701FF17008F9D05 /* SYNUserItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserItemView.m; sourceTree = "<group>"; };
 		BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsUserViewController.h; sourceTree = "<group>"; };
 		BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsUserViewController.m; sourceTree = "<group>"; };
+		BEE4A6A0170339B9008F9D05 /* NotFoundAvatarYou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotFoundAvatarYou.png; path = Assets/Images/NotFoundAvatarYou.png; sourceTree = "<group>"; };
+		BEE4A6A1170339B9008F9D05 /* NotFoundAvatarYou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NotFoundAvatarYou@2x.png"; path = "Assets/Images/NotFoundAvatarYou@2x.png"; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -1745,6 +1749,8 @@
 		0142ED8D16B1B7FE008694DA /* You */ = {
 			isa = PBXGroup;
 			children = (
+				BEE4A6A0170339B9008F9D05 /* NotFoundAvatarYou.png */,
+				BEE4A6A1170339B9008F9D05 /* NotFoundAvatarYou@2x.png */,
 				0142ED8E16B1B85C008694DA /* HeaderYou.png */,
 				0142ED8F16B1B85C008694DA /* HeaderYou@2x.png */,
 			);
@@ -3572,6 +3578,8 @@
 				01AEFBFF1701AD460060467A /* TabTop@2x.png in Resources */,
 				01AEFC001701AD460060467A /* TabTopSub.png in Resources */,
 				01AEFC011701AD460060467A /* TabTopSub@2x.png in Resources */,
+				BEE4A6A2170339B9008F9D05 /* NotFoundAvatarYou.png in Resources */,
+				BEE4A6A3170339B9008F9D05 /* NotFoundAvatarYou@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

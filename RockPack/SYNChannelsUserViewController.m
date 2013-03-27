@@ -7,6 +7,7 @@
 //
 
 #import "SYNChannelsUserViewController.h"
+#import "SYNUserTabViewController.h"
 
 @interface SYNChannelsUserViewController ()
 
@@ -50,9 +51,23 @@
 {
     owner = channelOwner;
     
+    
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    
     [appDelegate.networkEngine userPublicChannelsByOwner:owner];
+    
+    SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
+    [userTabViewController setOwner:owner];
 }
 
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
+                                                             self.channelThumbnailCollectionView.center.y + 70.0);
+}
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {

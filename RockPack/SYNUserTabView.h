@@ -7,11 +7,11 @@
 //
 
 #import "SYNTabView.h"
-
+#import "ChannelOwner.h"
 #import "User.h"
 
 @interface SYNUserTabView : SYNTabView
 
--(void)setUser:(User*)user;
+-(void)showOwnerData:(ChannelOwner*)user;
 
 @end
