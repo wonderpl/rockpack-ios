@@ -493,7 +493,7 @@
     if (collectionView == self.videoThumbnailCollectionView)
     {
         // 290
-        return CGSizeMake(1024, 390);
+        return CGSizeMake(1024, 463.0f);
     }
     else
     {
