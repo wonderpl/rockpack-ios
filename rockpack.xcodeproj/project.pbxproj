@@ -2452,10 +2452,10 @@
 			children = (
 				014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */,
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
-				01EA81D216B9773E0069AFF9 /* SYNChannelsDetailViewController.h */,
-				01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */,
 				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
 				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
+				01EA81D216B9773E0069AFF9 /* SYNChannelsDetailViewController.h */,
+				01EA81D316B9773E0069AFF9 /* SYNChannelsDetailViewController.m */,
 			);
 			name = Channels;
 			sourceTree = "<group>";

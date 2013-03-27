@@ -294,9 +294,7 @@
     
 }
 
--(void)userPublicInformationById:(NSString*)userId
-               completionHandler:(MKNKUserSuccessBlock) completionBlock
-                    errorHandler:(MKNKUserErrorBlock) errorBlock {
+-(void)userPublicChannelsById:(NSString*)userId {
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
     
@@ -308,21 +306,17 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
      {
-         NSString* possibleError = responseDictionary[@"error"];
          
-         if (possibleError)
-         {
-             errorBlock(responseDictionary);
+         
+         BOOL registryResultOk = [self.searchRegistry registerChannelFromDictionary:responseDictionary withViewId:@"UserChannels"];
+         if (!registryResultOk)
              return;
-         }
          
-         completionBlock(responseDictionary);
          
      } errorHandler: ^(NSError* error) {
          
          DebugLog(@"API Call failed");
-         NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
-         errorBlock(customErrorDictionary);
+         
      }];
     
     

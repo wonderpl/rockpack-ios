@@ -8,6 +8,11 @@
 
 #import "SYNChannelsRootViewController.h"
 
-@interface SYNChannelsUserViewController : SYNChannelsRootViewController
+@interface SYNChannelsUserViewController : SYNChannelsRootViewController {
+    NSString* userId;
+}
+
+
+-(void)fetchUserChannels:(NSString*)userId;
 
 @end

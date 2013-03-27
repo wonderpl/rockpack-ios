@@ -109,8 +109,10 @@ typedef enum _kQueueMoveDirection {
 -(void)createChannelFromVideoQueue
 {
     
-    [self clearVideoQueue];
+    
     [self.delegate createChannelFromVideoQueue];
+    
+    [self clearVideoQueue];
     
 }
 

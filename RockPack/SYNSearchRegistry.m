@@ -11,6 +11,7 @@
 #import "VideoInstance.h"
 #import "Channel.h"
 #import "SYNAppDelegate.h"
+#import "AppConstants.h"
 
 @implementation SYNSearchRegistry
 
@@ -70,13 +71,8 @@
     return YES;
 }
 
-
--(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary
+-(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary withViewId:(NSString*)viewId
 {
-    //[self clearImportContextFromEntityName:@"Channel"];
-    
-    // == Check for Validity == //
-    
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
@@ -92,7 +88,7 @@
             [Channel instanceFromDictionary: itemDictionary
                   usingManagedObjectContext: importManagedObjectContext
                         ignoringObjectTypes: kIgnoreNothing
-                                  andViewId: @"Search"];
+                                  andViewId: viewId];
     
     
     BOOL saveResult = [self saveImportContext];
@@ -104,6 +100,17 @@
     
     return YES;
 }
+
+-(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary
+{
+    
+    return [self registerChannelFromDictionary:dictionary withViewId:@"Search"];
+    
+}
+
+
+
+
 
 
 @end

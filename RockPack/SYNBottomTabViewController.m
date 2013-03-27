@@ -129,7 +129,7 @@
     
     // == Channels User (out of normal controller array)
     
-    self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannel"];
+    self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannels"];
     
     
     
@@ -165,24 +165,12 @@
     if(!channelOwner)
         return;
     
-    [appDelegate.networkEngine userPublicInformationById:channelOwner.uniqueId completionHandler:^(id objectReturned) {
-       
-        // DebugLog(@"Object : %@", objectReturned);
-        
-        NSDictionary* channelsDictionary = (NSDictionary*)[objectReturned objectForKey:@"channels"];
-        NSNumber* channelsNumber = [channelsDictionary objectForKey:@"total"];
-        NSArray* items = [channelsDictionary objectForKey:@"items"];
-        
-        // present 
-        
-        self.selectedViewController = self.channelsUserViewController;
-        
-    } errorHandler:^(id error) {
-        
-        
-        
-    }];
     
+    
+    self.selectedViewController = self.channelsUserViewController;
+    
+    
+    [self.channelsUserViewController fetchUserChannels:channelOwner.uniqueId];
 }
 
 
