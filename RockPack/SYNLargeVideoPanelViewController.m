@@ -57,7 +57,7 @@
     self.shareItLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.starNumberLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(13, 11, 494, 278)];
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(12, 11, 494, 278)];
     
     [self.view insertSubview:self.videoPlaybackViewController.view aboveSubview:self.backgroundImageView];
 }
