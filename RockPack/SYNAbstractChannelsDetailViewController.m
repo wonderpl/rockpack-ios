@@ -602,6 +602,7 @@
 - (IBAction) userTouchedShareButton: (id) sender
 {
     NSLog (@"User touched share button");
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSharePanelRequested object: self];
 }
 
 
