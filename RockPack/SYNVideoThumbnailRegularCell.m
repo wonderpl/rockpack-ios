@@ -26,7 +26,8 @@
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
 {
-    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString] placeHolderImage: nil];
+    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                               placeHolderImage: nil];
 }
 
 
