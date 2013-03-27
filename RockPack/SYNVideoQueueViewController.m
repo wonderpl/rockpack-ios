@@ -108,7 +108,7 @@ typedef enum _kQueueMoveDirection {
 
 -(void)createChannelFromVideoQueue
 {
-    
+    DebugLog(@"Creating Channel with %i videos", self.selectedVideos.count);
     
     [self.delegate createChannelFromVideoQueue];
     

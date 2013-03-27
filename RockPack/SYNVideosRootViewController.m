@@ -89,9 +89,16 @@
     
     
     self.largeVideoPanelController = [[SYNLargeVideoPanelViewController alloc] init];
-    
+    UITapGestureRecognizer* tapGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(channelOwnerLabelPressed:)];
+    [self.largeVideoPanelController.displayNameLabel addGestureRecognizer:tapGestureRecogniser];
 }
 
+-(void)channelOwnerLabelPressed:(UITapGestureRecognizer*)recogniser
+{
+    
+    VideoInstance* currentlyPlayingVideoInstance = self.largeVideoPanelController.videoInstance;
+    [self viewProfileDetails: currentlyPlayingVideoInstance.channel.channelOwner];
+}
 
 -(void)setLargeVideoPanelController:(SYNLargeVideoPanelViewController *)largeVideoPanelController
 {

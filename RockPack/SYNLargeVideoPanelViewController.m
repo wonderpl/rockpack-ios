@@ -11,7 +11,6 @@
 #import "SYNVideoPlaybackViewController.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
-#import "VideoInstance.h"
 
 @interface SYNLargeVideoPanelViewController ()
 
@@ -93,10 +92,10 @@
 - (IBAction) addToVideoQueueFromLargeVideo: (UIButton*) button
 {
     
-    VideoInstance* currentVideoInstance = self.videoPlaybackViewController.currentVideoInstance;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
                                                         object:self
-                                                      userInfo:@{@"VideoInstance" : currentVideoInstance}];
+                                                      userInfo:@{@"VideoInstance" : self.videoInstance}];
 }
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
@@ -128,6 +127,11 @@
 - (void) playVideoAtIndex: (NSIndexPath *) newIndexPath
 {
     [self.videoPlaybackViewController playVideoAtIndex:newIndexPath];
+}
+
+-(VideoInstance*)videoInstance
+{
+    return self.videoPlaybackViewController.currentVideoInstance;
 }
 
 @end

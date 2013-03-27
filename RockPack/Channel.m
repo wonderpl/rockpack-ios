@@ -321,7 +321,15 @@ static NSEntityDescription *channelEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"uniqueId(%@), categoryId: %@, channelDescription: %@, position: %@, lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, coverThumbnailSmallURL: %@, coverThumbnailLargeURL: %@,, title: %@, wallpaperURL: %@, resourceURL: %@", self.uniqueId, self.categoryId, self.channelDescription, self.position, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.coverThumbnailSmallURL, self.coverThumbnailLargeURL, self.title, self.wallpaperURL, self.resourceURL];
+    
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: \n\tuniqueId(%@), categoryId:%@, lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, coverThumbnailSmallURL: %@, coverThumbnailLargeURL: %@, title: %@", self.uniqueId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.coverThumbnailSmallURL, self.coverThumbnailLargeURL, self.title];
+    
+    for (VideoInstance* childrenVideoInstance in self.videoInstances)
+    {
+        [initialDescription appendFormat:@"\n\t-%@", childrenVideoInstance];
+    }
+    
+    return initialDescription;
 }
 
 
