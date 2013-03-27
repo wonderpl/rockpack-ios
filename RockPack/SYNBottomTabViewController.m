@@ -254,8 +254,13 @@
 	
     
     
-    if(_selectedIndex == newSelectedIndex)
+    if(_selectedIndex == newSelectedIndex) {
+        if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {
+            [self popCurrentViewController:(UIButton *)self.tabsViewContainer.subviews[_selectedIndex]];
+        }
         return;
+    }
+        
     
     
     _selectedIndex = newSelectedIndex;
@@ -274,7 +279,7 @@
     
     UIButton* toButton = (UIButton *)self.tabsViewContainer.subviews[_selectedIndex];
     toButton.selected = YES;
-    toButton.userInteractionEnabled = NO;
+    // toButton.userInteractionEnabled = NO;
     
     
     self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
@@ -288,8 +293,11 @@
     
     // if we try and push the same controller, escape
     
-    if(_selectedViewController == newSelectedViewController)
+    if(_selectedViewController == newSelectedViewController) {
+        
         return;
+    }
+        
     
     // even if nill, that is OK. It will just animate the selectedViewController out.
     
