@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -385,7 +385,7 @@
 							<object class="IBUIButton" id="513092959">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{277, 88}, {43, 43}}</string>
+								<string key="NSFrame">{{274, 86}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSNextKeyView" ref="458129219"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -417,7 +417,7 @@
 							<object class="IBUIButton" id="182689996">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{437, 89}, {43, 43}}</string>
+								<string key="NSFrame">{{433, 86}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSNextKeyView" ref="863100514"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -446,7 +446,7 @@
 							<object class="IBUIButton" id="458129219">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{357, 91}, {43, 43}}</string>
+								<string key="NSFrame">{{354, 87}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSNextKeyView" ref="182689996"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -971,12 +971,12 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAdd.png">{43, 43}</string>
-			<string key="ButtonAddHighlighted.png">{43, 43}</string>
-			<string key="ButtonShare.png">{43, 43}</string>
-			<string key="ButtonShareHighlighted.png">{43, 43}</string>
-			<string key="ButtonStar.png">{43, 43}</string>
-			<string key="ButtonStarHighlighted.png">{43, 43}</string>
+			<string key="ButtonAdd.png">{50, 50}</string>
+			<string key="ButtonAddHighlighted.png">{50, 50}</string>
+			<string key="ButtonShare.png">{50, 50}</string>
+			<string key="ButtonShareHighlighted.png">{50, 50}</string>
+			<string key="ButtonStar.png">{50, 50}</string>
+			<string key="ButtonStarHighlighted.png">{50, 50}</string>
 			<string key="GlossChannelSmall.png">{60, 34}</string>
 			<string key="GlossVideo.png">{170, 170}</string>
 			<string key="PanelVideo.png">{507, 182}</string>
