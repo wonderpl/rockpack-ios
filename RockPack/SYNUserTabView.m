@@ -35,7 +35,7 @@
 
 @implementation SYNUserTabView
 
-@synthesize tabItems;
+@synthesize tabItems, user;
 
 -(id)initWithSize:(CGFloat)totalWidth
 {
@@ -44,15 +44,12 @@
         
         // == Main Holder Views == //
         
-        SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
-        self.user = appDelegate.currentUser;
         
         UIImage* mainTabsBGImage = [UIImage imageNamed:@"BarHeaderYou.png"]; // 121 height
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
         
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
-        self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
+        self.mainTabsView.backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
         
         self.frame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height);
         
@@ -67,52 +64,29 @@
         
         CGRect itemFrame = CGRectMake(0.0, 0.0, kSearchBarItemWidth, self.frame.size.height);
         
+     
+        // == Full name label == //
         
-        // == Full Name == //
-        
-        UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:28.0];
-        NSString* nameString;
-        if(self.user.firstName && self.user.lastName && ![self.user.firstName isEqualToString:@""] && ![self.user.lastName isEqualToString:@""])
-            nameString = [NSString stringWithFormat:@"%@ %@", self.user.firstName, self.user.lastName];
-        else
-            nameString = @"FULL NAME";
-        
-        CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
-        CGRect nameRect = CGRectIntegral(CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height));
-        self.fullnameLabel = [[UILabel alloc] initWithFrame:nameRect];
-        self.fullnameLabel.font = rockpackBoldFont;
+        self.fullnameLabel = [[UILabel alloc] initWithFrame:CGRectMake(132.0, 34.0, 450.0, 50.0)];
         self.fullnameLabel.textAlignment = NSTextAlignmentLeft;
         self.fullnameLabel.backgroundColor = [UIColor clearColor];
-        
-        nameString = [nameString uppercaseString];
-        self.fullnameLabel.text = nameString;
         self.fullnameLabel.textColor = [UIColor whiteColor];
-        [self.overlayView addSubview:self.fullnameLabel];
+        [self addSubview:self.fullnameLabel];
         
         
         // == Username == //
-        // Kish says: Username position/size is no longer dependant on Fullname as Fullname can be longer than
-        // username. Also it was messing with the position of the flag button.
-        UIFont* usernameFont = [UIFont rockpackFontOfSize:16.0];
-        NSString* usernameString;
-        if(self.user.username && ![self.user.username isEqualToString:@""])
-            usernameString = [self.user.username uppercaseString];
-        else
-            usernameString = @"THEKISHPATEL91";
         
-        CGSize usernameStringSize = [usernameString sizeWithFont:usernameFont];
-        CGRect usernameRect = CGRectIntegral(CGRectMake(132.0, 66.0, usernameStringSize.width, usernameStringSize.height));
-        self.usernameLabel = [[UILabel alloc] initWithFrame:usernameRect];
-        self.usernameLabel.font = usernameFont;
+        self.usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(132.0, 66.0, 100.0, 30.0)];
+        
         self.usernameLabel.textAlignment = NSTextAlignmentLeft;
         self.usernameLabel.backgroundColor = [UIColor clearColor];
-        self.usernameLabel.text = usernameString;
+        
         self.usernameLabel.textColor = [UIColor rockpackHeaderSubtitleColor];
-        self.usernameLabel.frame = usernameRect;
-        [self.overlayView addSubview:self.usernameLabel];
+        
+        [self addSubview:self.usernameLabel];
         
         
-        // Flag
+        // == Flag Button == //
         
         UIImage* flagImage = [UIImage imageNamed:@"ButtonFlagDefault.png"];
         UIButton* flagButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -244,10 +218,47 @@
                                                         object:self];
 }
 
--(void)setUser:(User*)user
+-(void)setUser:(User*)nuser
 {
+    user = nuser;
     
-    self.fullnameLabel.text = user.username;
+    
+    UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:28.0];
+    NSString* nameString;
+    if(self.user.firstName && self.user.lastName && ![self.user.firstName isEqualToString:@""] && ![self.user.lastName isEqualToString:@""])
+        nameString = [[NSString stringWithFormat:@"%@ %@", self.user.firstName, self.user.lastName] uppercaseString];
+    else
+        nameString = @"FULL NAME";
+    
+    CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
+    CGRect nameRect = CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height);
+    
+    
+    
+    // == Full name == //
+    
+    self.fullnameLabel.frame = CGRectIntegral(nameRect);
+    self.fullnameLabel.font = rockpackBoldFont;
+    self.fullnameLabel.text = nameString;
+    
+    
+    // == Username == //
+    
+    UIFont* usernameFont = [UIFont rockpackFontOfSize:16.0];
+    NSString* usernameString;
+    if(self.user.username && ![self.user.username isEqualToString:@""])
+        usernameString = [self.user.username uppercaseString];
+    else
+        usernameString = @"USERNAME";
+    
+    CGSize usernameStringSize = [usernameString sizeWithFont:usernameFont];
+    
+    
+    self.usernameLabel.frame = CGRectIntegral(CGRectMake(132.0, 66.0, usernameStringSize.width, usernameStringSize.height));
+    self.usernameLabel.font = usernameFont;
+    self.usernameLabel.text = usernameString;
+    
+    
 }
 
 

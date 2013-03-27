@@ -50,6 +50,9 @@
 {
     owner = channelOwner;
     
+    
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    
     [appDelegate.networkEngine userPublicChannelsByOwner:owner];
 }
 
