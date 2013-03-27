@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -425,7 +425,7 @@
 							<object class="IBUIButton" id="160978130">
 								<reference key="NSNextResponder" ref="1041950190"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{237, 502}, {43, 43}}</string>
+								<string key="NSFrame">{{234, 499}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="1041950190"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1027179269"/>
@@ -456,7 +456,7 @@
 							<object class="IBUIButton" id="652365752">
 								<reference key="NSNextResponder" ref="1041950190"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{347, 505}, {43, 43}}</string>
+								<string key="NSFrame">{{344, 502}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="1041950190"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="667935979"/>
@@ -487,7 +487,7 @@
 							<object class="IBUIButton" id="111671221">
 								<reference key="NSNextResponder" ref="1041950190"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{457, 503}, {43, 44}}</string>
+								<string key="NSFrame">{{454, 499}, {50, 50}}</string>
 								<reference key="NSSuperview" ref="1041950190"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="850004507"/>
@@ -1041,9 +1041,9 @@
 							<reference ref="1027179269"/>
 							<reference ref="251605374"/>
 							<reference ref="111671221"/>
-							<reference ref="652365752"/>
 							<reference ref="160978130"/>
 							<reference ref="496362038"/>
+							<reference ref="652365752"/>
 						</array>
 						<reference key="parent" ref="753127512"/>
 					</object>
@@ -1346,15 +1346,15 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAdd.png">{43, 43}</string>
-			<string key="ButtonAddHighlighted.png">{43, 43}</string>
+			<string key="ButtonAdd.png">{50, 50}</string>
+			<string key="ButtonAddHighlighted.png">{50, 50}</string>
 			<string key="ButtonClose.png">{40, 41}</string>
-			<string key="ButtonRock.png">{43, 43}</string>
-			<string key="ButtonRockHighlighted.png">{43, 43}</string>
-			<string key="ButtonShare.png">{43, 43}</string>
-			<string key="ButtonShareHighlighted.png">{43, 43}</string>
-			<string key="ButtonStar.png">{43, 43}</string>
-			<string key="ButtonStarHighlighted.png">{43, 43}</string>
+			<string key="ButtonRock.png">{50, 50}</string>
+			<string key="ButtonRockHighlighted.png">{100, 100}</string>
+			<string key="ButtonShare.png">{50, 50}</string>
+			<string key="ButtonShareHighlighted.png">{50, 50}</string>
+			<string key="ButtonStar.png">{50, 50}</string>
+			<string key="ButtonStarHighlighted.png">{50, 50}</string>
 			<string key="ButtonVideoScreenNext.png">{50, 51}</string>
 			<string key="ButtonVideoScreenNextHighlighted.png">{50, 51}</string>
 			<string key="ButtonVideoScreenPrevious.png">{50, 51}</string>
