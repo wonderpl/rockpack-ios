@@ -158,6 +158,11 @@
     [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
                                               atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                                       animated: NO];
+    // Look out for the user creating a channel
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(userCreatedNewChannel)
+                                                 name: kVideoQueueCreateChannel
+                                               object: nil];
 }
 
 
@@ -165,6 +170,8 @@
 {
     // Let's make sure that we stop playing the current video
     self.videoPlaybackViewController = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     
     [super viewWillDisappear: animated];
 }
@@ -388,11 +395,19 @@
                                                placeHolderImage: nil];
 }
 
+
+- (void) userCreatedNewChannel
+{
+    [self.overlayParent removeVideoOverlayController];
+}
+
+
 - (IBAction) userTouchedCloseButton: (id) sender
 {
     // Call the close method on our parent
     [self.overlayParent removeVideoOverlayController];
 }
+
 
 // The user touched the invisible button above the channel thumbnail, taking the user to the channel page
 - (IBAction) userTouchedChannelButton: (id) sender
