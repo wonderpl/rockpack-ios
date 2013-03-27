@@ -46,11 +46,11 @@
     return fetchedResultsController;
 }
 
--(void)fetchUserChannels:(NSString *)nUserId
+-(void)fetchUserChannels:(ChannelOwner *)channelOwner
 {
-    userId = nUserId;
+    owner = channelOwner;
     
-    [appDelegate.networkEngine userPublicChannelsById:userId];
+    [appDelegate.networkEngine userPublicChannelsByOwner:owner];
 }
 
 

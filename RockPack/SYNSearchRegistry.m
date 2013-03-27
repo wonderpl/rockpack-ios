@@ -71,6 +71,43 @@
     return YES;
 }
 
+-(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary withViewId:(NSString*)viewId andOwner:(ChannelOwner*)owner
+{
+    NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
+    if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    if(!owner)
+        return NO;
+    
+    ChannelOwner* copiedChannelOwner = [ChannelOwner instanceFromChannelOwner:owner usingManagedObjectContext:importManagedObjectContext];
+    if(!copiedChannelOwner)
+        return NO;
+    
+    NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    
+    for (NSDictionary *itemDictionary in itemArray)
+        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+            [Channel instanceFromDictionary: itemDictionary
+                  usingManagedObjectContext: importManagedObjectContext
+                               channelOwner: copiedChannelOwner
+                                  andViewId: viewId];
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveSearchContext];
+    
+    
+    return YES;
+    
+}
+
 -(BOOL)registerChannelFromDictionary:(NSDictionary *)dictionary withViewId:(NSString*)viewId
 {
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];

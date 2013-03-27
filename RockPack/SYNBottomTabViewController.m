@@ -170,7 +170,7 @@
     self.selectedViewController = self.channelsUserViewController;
     
     
-    [self.channelsUserViewController fetchUserChannels:channelOwner.uniqueId];
+    [self.channelsUserViewController fetchUserChannels:channelOwner];
 }
 
 

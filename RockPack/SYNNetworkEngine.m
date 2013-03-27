@@ -294,9 +294,9 @@
     
 }
 
--(void)userPublicChannelsById:(NSString*)userId {
+-(void)userPublicChannelsByOwner:(ChannelOwner*)channelOwner {
     
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : channelOwner.uniqueId};
     
     NSString *apiString = [kAPIGetUserDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
@@ -304,11 +304,10 @@
                                                                                                        params: @{@"locale" : self.localeString}
                                                                                                    httpMethod: @"GET"];
     
-    [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary)
-     {
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary) {
          
          
-         BOOL registryResultOk = [self.searchRegistry registerChannelFromDictionary:responseDictionary withViewId:@"UserChannels"];
+         BOOL registryResultOk = [self.searchRegistry registerChannelFromDictionary:responseDictionary withViewId:@"UserChannels" andOwner:channelOwner];
          if (!registryResultOk)
              return;
          
