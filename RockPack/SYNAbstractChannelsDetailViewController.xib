@@ -311,7 +311,7 @@
 										<string key="NSFrame">{{414, 184}, {197, 29}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="972981445"/>
+										<reference key="NSNextKeyView" ref="370278881"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -522,6 +522,7 @@
 						<string key="NSFrame">{{956, 73}, {48, 21}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="1008304628"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -557,13 +558,34 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
-					<object class="IBUIButton" id="972981445">
+					<object class="IBUIButton" id="370278881">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{-1, 44}, {73, 72}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="915393374"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="804446849"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="346029630"/>
+						<reference key="IBUIFontDescription" ref="549930349"/>
+						<reference key="IBUIFont" ref="806388323"/>
+					</object>
+					<object class="IBUIButton" id="1008304628">
+						<reference key="NSNextResponder" ref="65885460"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{93, 83}, {370, 24}}</string>
+						<reference key="NSSuperview" ref="65885460"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -766,7 +788,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">avatarButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="972981445"/>
+						<reference key="destination" ref="370278881"/>
 					</object>
 					<int key="connectionID">151</int>
 				</object>
@@ -859,11 +881,20 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">tappedOnUserAvatar:</string>
-						<reference key="source" ref="972981445"/>
+						<reference key="source" ref="370278881"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">152</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">tappedOnUserAvatar:</string>
+						<reference key="source" ref="1008304628"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">154</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -897,7 +928,8 @@
 							<reference ref="13768505"/>
 							<reference ref="173731743"/>
 							<reference ref="621335574"/>
-							<reference ref="972981445"/>
+							<reference ref="370278881"/>
+							<reference ref="1008304628"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">View - Main</string>
@@ -1060,9 +1092,15 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">150</int>
-						<reference key="object" ref="972981445"/>
+						<reference key="object" ref="370278881"/>
 						<reference key="parent" ref="65885460"/>
 						<string key="objectName">Avatar Button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">153</int>
+						<reference key="object" ref="1008304628"/>
+						<reference key="parent" ref="65885460"/>
+						<string key="objectName">Owner Name Button</string>
 					</object>
 				</array>
 			</object>
@@ -1092,6 +1130,7 @@
 				<string key="146.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="146.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="150.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="153.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1108,52 +1147,24 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">152</int>
+			<int key="maxID">154</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractChannelsDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="tappedOnUserAvatar:">UIButton</string>
-						<string key="userTouchedCameraButton:">UIButton</string>
-						<string key="userTouchedChangeCoverButton:">id</string>
-						<string key="userTouchedDoneButton:">id</string>
-						<string key="userTouchedEditButton:">id</string>
-						<string key="userTouchedSaveButton:">id</string>
-						<string key="userTouchedShareButton:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="tappedOnUserAvatar:">
-							<string key="name">tappedOnUserAvatar:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedCameraButton:">
-							<string key="name">userTouchedCameraButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedChangeCoverButton:">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">userTouchedChangeCoverButton:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="userTouchedDoneButton:">
-							<string key="name">userTouchedDoneButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedEditButton:">
-							<string key="name">userTouchedEditButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedSaveButton:">
-							<string key="name">userTouchedSaveButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedShareButton:">
-							<string key="name">userTouchedShareButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="avatarButton">UIButton</string>
 						<string key="cameraButton">UIButton</string>
