@@ -396,6 +396,7 @@
 		01AEFBFF1701AD460060467A /* TabTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFBFB1701AD460060467A /* TabTop@2x.png */; };
 		01AEFC001701AD460060467A /* TabTopSub.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFBFC1701AD460060467A /* TabTopSub.png */; };
 		01AEFC011701AD460060467A /* TabTopSub@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFBFD1701AD460060467A /* TabTopSub@2x.png */; };
+		01AEFC38170377E20060467A /* NSManagedObject+Copying.m in Sources */ = {isa = PBXBuildFile; fileRef = 01AEFC37170377E20060467A /* NSManagedObject+Copying.m */; };
 		01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */; };
 		01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */; };
 		01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96A166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png */; };
@@ -1086,6 +1087,8 @@
 		01AEFBFB1701AD460060467A /* TabTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TabTop@2x.png"; path = "Assets/Images/TabTop@2x.png"; sourceTree = "<group>"; };
 		01AEFBFC1701AD460060467A /* TabTopSub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TabTopSub.png; path = Assets/Images/TabTopSub.png; sourceTree = "<group>"; };
 		01AEFBFD1701AD460060467A /* TabTopSub@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TabTopSub@2x.png"; path = "Assets/Images/TabTopSub@2x.png"; sourceTree = "<group>"; };
+		01AEFC36170377E20060467A /* NSManagedObject+Copying.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Copying.h"; sourceTree = "<group>"; };
+		01AEFC37170377E20060467A /* NSManagedObject+Copying.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Copying.m"; sourceTree = "<group>"; };
 		01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailRegularCell.h; sourceTree = "<group>"; };
 		01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailRegularCell.m; sourceTree = "<group>"; };
 		01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailRegularCell.xib; sourceTree = "<group>"; };
@@ -2310,6 +2313,8 @@
 				017A9EF916E77E6600AA5B18 /* UIView+Subviews.m */,
 				012502AF16C958FA0029C7C8 /* UIView+Toast.h */,
 				012502B016C958FA0029C7C8 /* UIView+Toast.m */,
+				01AEFC36170377E20060467A /* NSManagedObject+Copying.h */,
+				01AEFC37170377E20060467A /* NSManagedObject+Copying.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3808,6 +3813,7 @@
 				01AEFBCD1701AC460060467A /* SYNActivityManager.m in Sources */,
 				BEE4A69C1701FF17008F9D05 /* SYNUserItemView.m in Sources */,
 				BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */,
+				01AEFC38170377E20060467A /* NSManagedObject+Copying.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

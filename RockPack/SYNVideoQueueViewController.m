@@ -42,7 +42,7 @@ typedef enum _kQueueMoveDirection {
 @synthesize delegate;
 @synthesize showingEmptyQueue;
 
--(void)loadView
+- (void) loadView
 {
     SYNVideoQueueView* videoQView = [[SYNVideoQueueView alloc] init];
     videoQView.videoQueueCollectionView.dataSource = self;

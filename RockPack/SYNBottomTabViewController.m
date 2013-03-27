@@ -183,16 +183,20 @@
     [super viewWillAppear: animated];
 }
 
--(void)createChannelFromVideoQueue
+- (void) createChannelFromVideoQueue
 {
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    if ([self.selectedViewController isKindOfClass: [UINavigationController class]])
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
         [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
     }
-    
+    else
+    {
+        SYNAbstractViewController* child = (SYNAbstractViewController*)self.selectedViewController;
+        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+    }
 }
 
 
