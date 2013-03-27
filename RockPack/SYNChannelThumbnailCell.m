@@ -18,7 +18,7 @@
 
 @implementation SYNChannelThumbnailCell
 
-
+@synthesize viewControllerDelegate = _viewControllerDelegate;
 
 - (void) awakeFromNib
 {
@@ -39,7 +39,6 @@
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
 - (void) prepareForReuse
 {
-
     self.imageView.image = nil;
 }
 

@@ -82,7 +82,7 @@
 @end
 
 
-#define kOffsetForLoginForm 240.0
+#define kOffsetForLoginForm 280.0
 #define kOffsetForRegisterForm 100.0
 
 @implementation SYNLoginViewController

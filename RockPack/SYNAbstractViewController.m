@@ -79,8 +79,6 @@
 }
 
 
-
-
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
     [self reloadCollectionViews];
@@ -227,11 +225,11 @@
 {
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    if (channel.rockedByUserValue == TRUE)
+    if (channel.subscribedByUserValue == TRUE)
     {
         // Currently highlighted, so decrement
-        channel.rockedByUserValue = FALSE;
-        channel.rockCountValue -= 1;
+        channel.subscribedByUserValue = FALSE;
+        channel.subscribersCountValue -= 1;
         
         // Update the star/unstar status on the server
         [appDelegate.oAuthNetworkEngine channelUnsubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
@@ -248,8 +246,8 @@
     else
     {
         // Currently highlighted, so increment
-        channel.rockedByUserValue = TRUE;
-        channel.rockCountValue += 1;
+        channel.subscribedByUserValue = TRUE;
+        channel.subscribersCountValue += 1;
         
         // Update the star/unstar status on the server
         [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
@@ -375,8 +373,8 @@
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
-{
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
+    
     UICollectionViewCell *cell = nil;
     
     if (cv == self.videoThumbnailCollectionView)
@@ -395,7 +393,7 @@
         videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         
         [self updateVideoCellStarButtonAndCount: videoThumbnailCell
-                                         selected: videoInstance.video.starredByUserValue];
+                                       selected: videoInstance.video.starredByUserValue];
         
         videoThumbnailCell.viewControllerDelegate = self;
         
@@ -404,6 +402,8 @@
 
     return cell;
 }
+
+
 
 
 - (BOOL) collectionView: (UICollectionView *) cv
@@ -465,9 +465,8 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-//    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
-//    
-//    [self animatedPushViewController: channelVC];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":channelOwner}];
 }
 
 

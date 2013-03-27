@@ -17,6 +17,8 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
+#import "SYNUserTabView.h"
+#import "SYNUserTabViewController.h"
 
 @interface SYNYouRootViewController ()
 
@@ -143,6 +145,15 @@
     
 }
 
+-(void)setTabViewController:(SYNTabViewController *)newTabViewController
+{
+    
+    [super setTabViewController:newTabViewController];
+    
+    SYNUserTabViewController* userTabVC = (SYNUserTabViewController*)newTabViewController;
+    [userTabVC setOwner:appDelegate.currentUser];
+}
+
 #pragma mark - Collection view support
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
@@ -167,8 +178,8 @@
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
     channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
-    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
-    channelThumbnailCell.subscribeButton.selected = channel.rockedByUserValue;
+    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
+    channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
     channelThumbnailCell.viewControllerDelegate = self;
     
     return channelThumbnailCell;
@@ -235,8 +246,8 @@
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
     
-    cell.subscribeButton.selected = channel.rockedByUserValue;
-    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
+    cell.subscribeButton.selected = channel.subscribedByUserValue;
+    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
 }
 
 

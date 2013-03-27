@@ -7,7 +7,11 @@
 //
 
 #import "SYNTabViewController.h"
+#import "User.h"
+#import "ChannelOwner.h"
 
 @interface SYNUserTabViewController : SYNTabViewController
+
+@property (nonatomic, weak) ChannelOwner* owner;
 
 @end
