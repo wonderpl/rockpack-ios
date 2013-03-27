@@ -286,7 +286,7 @@
 										<reference key="NSNextResponder" ref="993763524"/>
 										<int key="NSvFlags">-2147483374</int>
 										<array class="NSMutableArray" key="NSSubviews"/>
-										<string key="NSFrame">{{62, 42}, {860, 195}}</string>
+										<string key="NSFrame">{{61, 41}, {860, 195}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="950684700"/>
@@ -311,7 +311,7 @@
 										<string key="NSFrame">{{414, 184}, {197, 29}}</string>
 										<reference key="NSSuperview" ref="993763524"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="370278881"/>
+										<reference key="NSNextKeyView" ref="124308356"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -522,7 +522,7 @@
 						<string key="NSFrame">{{956, 73}, {48, 21}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1008304628"/>
+						<reference key="NSNextKeyView" ref="1071455683"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -558,7 +558,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
-					<object class="IBUIButton" id="370278881">
+					<object class="IBUIButton" id="124308356">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{-1, 44}, {73, 72}}</string>
@@ -579,13 +579,12 @@
 						<reference key="IBUIFontDescription" ref="549930349"/>
 						<reference key="IBUIFont" ref="806388323"/>
 					</object>
-					<object class="IBUIButton" id="1008304628">
+					<object class="IBUIButton" id="1071455683">
 						<reference key="NSNextResponder" ref="65885460"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{93, 83}, {370, 24}}</string>
 						<reference key="NSSuperview" ref="65885460"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -597,6 +596,31 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="346029630"/>
+						<reference key="IBUIFontDescription" ref="549930349"/>
+						<reference key="IBUIFont" ref="806388323"/>
+					</object>
+					<object class="IBUIButton" id="226164693">
+						<reference key="NSNextResponder" ref="65885460"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{755, 51}, {94, 76}}</string>
+						<reference key="NSSuperview" ref="65885460"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<string key="IBUINormalTitle">Button</string>
+						<reference key="IBUIHighlightedTitleColor" ref="804446849"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="346029630"/>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ChannelButtonBuy.png</string>
+						</object>
 						<reference key="IBUIFontDescription" ref="549930349"/>
 						<reference key="IBUIFont" ref="806388323"/>
 					</object>
@@ -788,9 +812,17 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">avatarButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="370278881"/>
+						<reference key="destination" ref="124308356"/>
 					</object>
 					<int key="connectionID">151</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">buyButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="226164693"/>
+					</object>
+					<int key="connectionID">156</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -881,7 +913,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">tappedOnUserAvatar:</string>
-						<reference key="source" ref="370278881"/>
+						<reference key="source" ref="124308356"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -890,7 +922,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">tappedOnUserAvatar:</string>
-						<reference key="source" ref="1008304628"/>
+						<reference key="source" ref="1071455683"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -928,8 +960,9 @@
 							<reference ref="13768505"/>
 							<reference ref="173731743"/>
 							<reference ref="621335574"/>
-							<reference ref="370278881"/>
-							<reference ref="1008304628"/>
+							<reference ref="124308356"/>
+							<reference ref="1071455683"/>
+							<reference ref="226164693"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">View - Main</string>
@@ -1031,9 +1064,9 @@
 							<reference ref="220019552"/>
 							<reference ref="960321968"/>
 							<reference ref="802725534"/>
-							<reference ref="245815771"/>
 							<reference ref="950684700"/>
 							<reference ref="365122975"/>
+							<reference ref="245815771"/>
 						</array>
 						<reference key="parent" ref="13768505"/>
 						<string key="objectName">View - Cover selection</string>
@@ -1092,15 +1125,21 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">150</int>
-						<reference key="object" ref="370278881"/>
+						<reference key="object" ref="124308356"/>
 						<reference key="parent" ref="65885460"/>
 						<string key="objectName">Avatar Button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">153</int>
-						<reference key="object" ref="1008304628"/>
+						<reference key="object" ref="1071455683"/>
 						<reference key="parent" ref="65885460"/>
 						<string key="objectName">Owner Name Button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">155</int>
+						<reference key="object" ref="226164693"/>
+						<reference key="parent" ref="65885460"/>
+						<string key="objectName">Buy Button</string>
 					</object>
 				</array>
 			</object>
@@ -1131,6 +1170,7 @@
 				<real value="2" key="146.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="150.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="153.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="155.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1147,26 +1187,55 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">154</int>
+			<int key="maxID">156</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractChannelsDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="tappedOnUserAvatar:">UIButton</string>
+						<string key="userTouchedCameraButton:">UIButton</string>
+						<string key="userTouchedChangeCoverButton:">id</string>
+						<string key="userTouchedDoneButton:">id</string>
+						<string key="userTouchedEditButton:">id</string>
+						<string key="userTouchedSaveButton:">id</string>
+						<string key="userTouchedShareButton:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="tappedOnUserAvatar:">
+							<string key="name">tappedOnUserAvatar:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedCameraButton:">
+							<string key="name">userTouchedCameraButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedChangeCoverButton:">
 							<string key="name">userTouchedChangeCoverButton:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+						<object class="IBActionInfo" key="userTouchedDoneButton:">
+							<string key="name">userTouchedDoneButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedEditButton:">
+							<string key="name">userTouchedEditButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedSaveButton:">
+							<string key="name">userTouchedSaveButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedShareButton:">
+							<string key="name">userTouchedShareButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="avatarButton">UIButton</string>
+						<string key="buyButton">UIButton</string>
 						<string key="cameraButton">UIButton</string>
 						<string key="changeCoverButton">UIButton</string>
 						<string key="changeCoverLabel">UILabel</string>
@@ -1195,6 +1264,10 @@
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="avatarButton">
 							<string key="name">avatarButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="buyButton">
+							<string key="name">buyButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="cameraButton">
@@ -1389,6 +1462,7 @@
 			<string key="ButtonSaveHighlighted.png">{43, 44}</string>
 			<string key="ButtonShareHeader.png">{43, 44}</string>
 			<string key="ButtonShareHeaderHighlighted.png">{43, 44}</string>
+			<string key="ChannelButtonBuy.png">{94, 76}</string>
 			<string key="HighlightChannelName.png">{405, 84}</string>
 			<string key="PanelCoverSelection.png">{1024, 278}</string>
 			<string key="PanelHeaderChannel.png">{1024, 73}</string>

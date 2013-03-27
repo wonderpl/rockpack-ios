@@ -15,6 +15,12 @@
 @property (nonatomic, strong) IBOutlet UILabel *videosLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followersCountLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followersLabel;
+
+
+@property (nonatomic, strong) IBOutlet UIButton* ceditChannelButton;
+@property (nonatomic, strong) IBOutlet UIButton* cfollowButton;
+
+
 @property (nonatomic, strong) IBOutlet HPGrowingTextView *channelDescriptionTextView;
 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;

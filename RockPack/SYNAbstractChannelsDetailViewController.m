@@ -183,6 +183,8 @@
 	{
 		self.cameraButton.hidden = TRUE;
 	}
+    
+    
 }
 
 -(IBAction)tappedOnUserAvatar:(UIButton*)sender
@@ -486,8 +488,8 @@
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
            layout: (UICollectionViewLayout*) collectionViewLayout
-           referenceSizeForHeaderInSection: (NSInteger) section
-{
+           referenceSizeForHeaderInSection: (NSInteger) section {
+    
     if (collectionView == self.videoThumbnailCollectionView)
     {
         // 290
@@ -515,6 +517,8 @@
         // Special case, remember the first section view
         sectionSupplementaryView.viewControllerDelegate = self;
         sectionSupplementaryView.channelDescriptionTextView.text = self.channel.channelDescription;
+        
+        
         self.collectionHeaderView = sectionSupplementaryView;
         
         UIImage *rawEntryBackground = [UIImage imageNamed: @"MessageEntryInputField.png"];
@@ -527,6 +531,7 @@
         self.channelDescriptionHightlightView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         self.channelDescriptionHightlightView.hidden = self.hideChannelDescriptionHighlight;
         self.collectionHeaderView.channelDescriptionTextView.editable = !self.hideChannelDescriptionHighlight;
+        
         [self.collectionHeaderView.channelDescriptionTextContainerView addSubview: self.channelDescriptionHightlightView];
     }
     
@@ -540,7 +545,6 @@
 }
 
 
-//
 - (void) scrollViewDidEndDecelerating: (UICollectionView *) collectionView
 {
     if (collectionView == self.channelCoverCarouselCollectionView)
@@ -570,7 +574,7 @@
 }
 
 
-- (IBAction) userTouchedChangeCoverButton: (id) sender;
+- (IBAction) userTouchedChangeCoverButton: (id) sender
 {
     NSLog (@"User touched change cover button");
 }
