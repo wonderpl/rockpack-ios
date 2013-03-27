@@ -14,6 +14,7 @@
 #import "User.h"
 #import "UIColor+SYNColor.h"
 #import "SYNUserItemView.h"
+#import "UIImageView+ImageProcessing.h"
 
 @interface SYNUserTabView ()
 
@@ -28,14 +29,13 @@
 @property (nonatomic, strong) UIImageView* profileImageView;
 @property (nonatomic, strong) UILabel* profileNameLabel;
 @property (nonatomic, weak) SYNSearchItemView* currentItemView;
-@property (nonatomic, weak) User* user;
 @property (nonatomic, strong) NSMutableArray* tabItems;
 
 @end
 
 @implementation SYNUserTabView
 
-@synthesize tabItems, user;
+@synthesize tabItems;
 
 -(id)initWithSize:(CGFloat)totalWidth
 {
@@ -129,19 +129,7 @@
                                     endDividerYouImage.image = image;
         [self.overlayView addSubview:endDividerYouImage];
         
-        
-        // == Account Settings == //
-        
-        
-        UIButton* cogImageButton  = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage* cogImage = [UIImage imageNamed:@"ButtonSettingsDefault.png"];
-        cogImageButton.frame = CGRectMake(0.0, 0.0, cogImage.size.width, cogImage.size.height);
-        [cogImageButton setImage:cogImage forState:UIControlStateNormal];
-        [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
-        [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
-        cogImageButton.center = CGPointMake(676.0, 57.0);
-        cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
-        [self.mainTabsView addSubview:cogImageButton];
+       
         
         
         
@@ -186,7 +174,7 @@
         // == Profile Pic and Name == //
         
         self.profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 114.0, 114.0)];
-        self.profileImageView.image = [UIImage imageNamed:@"AvatarKish.png"];
+        
         [self.overlayView addSubview:self.profileImageView];
         
         
@@ -212,42 +200,39 @@
     return self;
 }
 
+-(void)createAccountSettings
+{
+    UIButton* cogImageButton  = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage* cogImage = [UIImage imageNamed:@"ButtonSettingsDefault.png"];
+    cogImageButton.frame = CGRectMake(0.0, 0.0, cogImage.size.width, cogImage.size.height);
+    [cogImageButton setImage:cogImage forState:UIControlStateNormal];
+    [cogImageButton setImage:[UIImage imageNamed:@"ButtonSettingsHighlighted.png"] forState:UIControlStateHighlighted];
+    [cogImageButton addTarget:self action:@selector(pressedCogButton:) forControlEvents:UIControlEventTouchUpInside];
+    cogImageButton.center = CGPointMake(676.0, 57.0);
+    cogImageButton.frame = CGRectIntegral(cogImageButton.frame);
+    [self.mainTabsView addSubview:cogImageButton];
+}
+
 -(void)pressedCogButton:(UIButton*)button
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
                                                         object:self];
 }
 
--(void)setUser:(User*)nuser
+-(void)showUserData:(User*)nuser
 {
-    user = nuser;
     
-    
-    UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:28.0];
-    NSString* nameString;
-    if(self.user.firstName && self.user.lastName && ![self.user.firstName isEqualToString:@""] && ![self.user.lastName isEqualToString:@""])
-        nameString = [[NSString stringWithFormat:@"%@ %@", self.user.firstName, self.user.lastName] uppercaseString];
+    if(nuser.firstName && nuser.lastName && ![nuser.firstName isEqualToString:@""] && ![nuser.lastName isEqualToString:@""])
+        [self setFullName:[[NSString stringWithFormat:@"%@ %@", nuser.firstName, nuser.lastName] uppercaseString]];
     else
-        nameString = @"FULL NAME";
-    
-    CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
-    CGRect nameRect = CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height);
+        [self setFullName:@"FULL NAME"];
     
     
-    
-    // == Full name == //
-    
-    self.fullnameLabel.frame = CGRectIntegral(nameRect);
-    self.fullnameLabel.font = rockpackBoldFont;
-    self.fullnameLabel.text = nameString;
-    
-    
-    // == Username == //
     
     UIFont* usernameFont = [UIFont rockpackFontOfSize:16.0];
     NSString* usernameString;
-    if(self.user.username && ![self.user.username isEqualToString:@""])
-        usernameString = [self.user.username uppercaseString];
+    if(nuser.username && ![nuser.username isEqualToString:@""])
+        usernameString = [nuser.username uppercaseString];
     else
         usernameString = @"USERNAME";
     
@@ -257,6 +242,42 @@
     self.usernameLabel.frame = CGRectIntegral(CGRectMake(132.0, 66.0, usernameStringSize.width, usernameStringSize.height));
     self.usernameLabel.font = usernameFont;
     self.usernameLabel.text = usernameString;
+    
+    
+}
+
+-(void)setFullName:(NSString*)nameString
+{
+    
+    UIFont* rockpackBoldFont = [UIFont boldRockpackFontOfSize:28.0];
+    
+    CGSize sizeOfNameLabel = [nameString sizeWithFont:rockpackBoldFont];
+    CGRect nameRect = CGRectMake(132.0, 34.0, 450.0, sizeOfNameLabel.height);
+    
+    
+    
+    self.fullnameLabel.frame = CGRectIntegral(nameRect);
+    self.fullnameLabel.font = rockpackBoldFont;
+    self.fullnameLabel.text = nameString;
+}
+
+-(void)showOwnerData:(ChannelOwner*)nuser
+{
+    
+    if([nuser isKindOfClass:[User class]]) {
+        
+        [self showUserData:(User*)nuser];
+        [self createAccountSettings];
+        
+    } else {
+        [self setFullName:nuser.displayName];
+    }
+    
+    
+    [self.profileImageView setAsynchronousImageFromURL: [NSURL URLWithString: nuser.thumbnailURL]
+                                      placeHolderImage: [UIImage imageNamed:@"NotFoundAvatarYou.png"]];
+    
+    
     
     
 }

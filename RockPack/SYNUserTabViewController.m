@@ -13,18 +13,22 @@
 
 @interface SYNUserTabViewController ()
 
+@property (nonatomic, readonly) SYNUserTabView* userTabView;
+
 @end
 
 @implementation SYNUserTabViewController
+@synthesize owner;
+@synthesize userTabView;
 
 -(void)loadView
 {
     
     
-    SYNUserTabView* userTabView = [[SYNUserTabView alloc] initWithSize:1024.0];
-    userTabView.tapDelegate = self;
+    SYNUserTabView* nuserTabView = [[SYNUserTabView alloc] initWithSize:1024.0];
+    nuserTabView.tapDelegate = self;
     
-    self.view = userTabView;
+    self.view = nuserTabView;
     
     self.view.frame = CGRectMake(0.0, 44.0,
                                  self.view.frame.size.width,
@@ -33,12 +37,20 @@
     
 }
 
+-(void)setOwner:(ChannelOwner *)owner
+{
+    [self.userTabView showOwnerData:owner];
+}
+
 -(void)handleNewTabSelectionWithId:(NSString *)itemId
 {
     [self.delegate handleNewTabSelectionWithId:itemId];
 }
 
-
+-(SYNUserTabView*)userTabView
+{
+    return (SYNUserTabView*)self.view;
+}
 
 
 @end
