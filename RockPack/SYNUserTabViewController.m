@@ -37,9 +37,9 @@
     
 }
 
--(void)setOwner:(ChannelOwner *)owner
+-(void)setOwner:(ChannelOwner *)nowner
 {
-    [self.userTabView showOwnerData:owner];
+    [self.userTabView showOwnerData:nowner];
 }
 
 -(void)handleNewTabSelectionWithId:(NSString *)itemId

@@ -514,6 +514,19 @@
         sectionSupplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                       withReuseIdentifier: @"SYNChannelHeaderView"
                                                                              forIndexPath: indexPath];
+        
+        if (![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+        {
+            sectionSupplementaryView.cfollowButton.hidden = NO;
+            sectionSupplementaryView.ceditChannelButton.hidden = YES;
+            
+        }
+        else
+        {
+            sectionSupplementaryView.cfollowButton.hidden = YES;
+            sectionSupplementaryView.ceditChannelButton.hidden = NO;
+        }
+        
         // Special case, remember the first section view
         sectionSupplementaryView.viewControllerDelegate = self;
         sectionSupplementaryView.channelDescriptionTextView.text = self.channel.channelDescription;

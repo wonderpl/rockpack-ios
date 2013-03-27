@@ -116,7 +116,7 @@
          }
          else if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
          {
-             NSDictionary *responseDictionary = (NSDictionary *) response;
+             //NSDictionary *responseDictionary = (NSDictionary *) response;
 //             NSString *
 //             if (
              DebugLog(@"API Call failed: %@", response);
