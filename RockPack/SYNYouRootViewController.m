@@ -165,23 +165,11 @@
                                                                                               forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    
     channelThumbnailCell.titleLabel.text = channel.title;
-    
     channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
-    
     channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.rockCount];
-    
     channelThumbnailCell.subscribeButton.selected = channel.rockedByUserValue;
-    
-    // Wire the Done button up to the correct method in the sign up controller
-    [channelThumbnailCell.subscribeButton removeTarget: nil
-                                                action: @selector(toggleChannelSubscribeButton:)
-                                      forControlEvents: UIControlEventTouchUpInside];
-    
-    [channelThumbnailCell.subscribeButton addTarget: self
-                                             action: @selector(toggleChannelSubscribeButton:)
-                                   forControlEvents: UIControlEventTouchUpInside];
+    channelThumbnailCell.viewControllerDelegate = self;
     
     return channelThumbnailCell;
     

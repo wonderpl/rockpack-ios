@@ -13,10 +13,12 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
-@property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
-@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UILabel *subscribersNumberLabel;
+@property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
+
+// This is used to indicate the UIViewController that
+@property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 @end
