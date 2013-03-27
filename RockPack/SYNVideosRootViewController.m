@@ -209,7 +209,7 @@
 }
 
 
-#pragma mark - Collection view support
+#pragma mark - Collection View Delegate
 
 - (NSInteger) collectionView: (UICollectionView *)collectionView numberOfItemsInSection: (NSInteger) section
 {
@@ -239,21 +239,25 @@
     return 1;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) userTouchedProfileButton: (UIButton *) profileButton
 {
-    // See if this can be handled in our abstract base class
-    UICollectionViewCell *cell = [super collectionView: collectionView
-                                cellForItemAtIndexPath: indexPath];
+    // Get to cell it self (from button subview)
+    UIView *v = profileButton.superview.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    // Do we have a valid cell?
-    if (!cell)
+    // Bail if we don't have an index path
+    if (indexPath)
     {
-        AssertOrLog(@"No valid collection view found");
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        [self viewProfileDetails: videoInstance.channel.channelOwner];
     }
-    
-    return cell;
 }
+
+
+
+
+
 
 
 #pragma mark - User interface

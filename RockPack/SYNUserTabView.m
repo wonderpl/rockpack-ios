@@ -86,17 +86,7 @@
         [self addSubview:self.usernameLabel];
         
         
-        // == Flag Button == //
         
-        UIImage* flagImage = [UIImage imageNamed:@"ButtonFlagDefault.png"];
-        UIButton* flagButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        flagButton.frame = CGRectMake(self.usernameLabel.frame.origin.x + self.usernameLabel.frame.size.width + 10.0,
-                                      self.usernameLabel.frame.origin.y - 6.0,
-                                      flagImage.size.width, flagImage.size.height);
-        
-        [flagButton setImage:flagImage forState:UIControlStateNormal];
-        [flagButton setImage:[UIImage imageNamed:@"ButtonFlagHighlighted.png"] forState:UIControlStateHighlighted];
-        [self.overlayView addSubview:flagButton];
         
         
         // == Channels Tab == //
@@ -200,6 +190,21 @@
     return self;
 }
 
+-(void)createFlag
+{
+    // == Flag Button == //
+    
+    UIImage* flagImage = [UIImage imageNamed:@"ButtonFlagDefault.png"];
+    UIButton* flagButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    flagButton.frame = CGRectMake(self.usernameLabel.frame.origin.x + self.usernameLabel.frame.size.width + 10.0,
+                                  self.usernameLabel.frame.origin.y - 6.0,
+                                  flagImage.size.width, flagImage.size.height);
+    
+    [flagButton setImage:flagImage forState:UIControlStateNormal];
+    [flagButton setImage:[UIImage imageNamed:@"ButtonFlagHighlighted.png"] forState:UIControlStateHighlighted];
+    [self.overlayView addSubview:flagButton];
+}
+
 -(void)createAccountSettings
 {
     UIButton* cogImageButton  = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -268,6 +273,7 @@
         
         [self showUserData:(User*)nuser];
         [self createAccountSettings];
+        [self createFlag];
         
     } else {
         [self setFullName:nuser.displayName];

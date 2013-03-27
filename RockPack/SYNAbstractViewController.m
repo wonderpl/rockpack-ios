@@ -375,8 +375,8 @@
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
-{
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
+    
     UICollectionViewCell *cell = nil;
     
     if (cv == self.videoThumbnailCollectionView)
@@ -404,6 +404,8 @@
 
     return cell;
 }
+
+
 
 
 - (BOOL) collectionView: (UICollectionView *) cv
@@ -465,9 +467,8 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-//    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
-//    
-//    [self animatedPushViewController: channelVC];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":channelOwner}];
 }
 
 
