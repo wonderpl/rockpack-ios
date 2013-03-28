@@ -153,8 +153,8 @@
 - (NSString *) description
 {
     NSMutableString* userDescription = [NSMutableString stringWithFormat:
-                                        @"User - username:%@, firstName:%@, lastName:%@, emailAddress:%@",
-                                        self.username, self.firstName, self.lastName, self.emailAddress];
+                                        @"User (%i) - username: '%@'",
+                                        [self.uniqueId intValue], self.username];
     [userDescription appendFormat:@"\nUser Channels:"];
     for (Channel* channel in self.channels)
     {
