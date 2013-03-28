@@ -159,7 +159,7 @@
     {
 		id relationship = [relationships objectForKey: key];
         
-//		if ([relationship deleteRule] == NSCascadeDeleteRule)
+		if ([relationship deleteRule] == NSCascadeDeleteRule)
         {
             // ownership
 			if ([relationship isToMany])
