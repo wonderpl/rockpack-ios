@@ -64,6 +64,10 @@ typedef enum _kQueueMoveDirection {
                                          action: @selector(deleteLastVideoAdded)
                                forControlEvents: UIControlEventTouchUpInside];
     
+    UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                            action:@selector(longPressOnDeleteButton)];
+    [self.videoQueueView.deleteButton addGestureRecognizer:longPress];
+    
     [self.videoQueueView.channelButton addTarget: self
                                           action: @selector(createChannelFromVideoQueue)
                                 forControlEvents: UIControlEventTouchUpInside];
@@ -85,6 +89,11 @@ typedef enum _kQueueMoveDirection {
     
     [self reloadData];
 	
+}
+
+-(void)longPressOnDeleteButton
+{
+    [self clearVideoQueue];
 }
 
 #pragma mark - Notification Handlers

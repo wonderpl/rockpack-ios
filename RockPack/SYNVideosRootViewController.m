@@ -138,6 +138,15 @@
     
 }
 
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+    [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
+    
+}
+
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
@@ -151,7 +160,6 @@
     
     
     
-    [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
     
 
     [self reloadCollectionViews];

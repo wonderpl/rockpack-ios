@@ -409,6 +409,8 @@
     
 }
 
+#pragma mark - Clearing Data
+
 -(void)clearData
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
