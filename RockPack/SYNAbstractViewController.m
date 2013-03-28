@@ -389,6 +389,7 @@
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
         videoThumbnailCell.displayName.text = [NSString stringWithFormat: @"BY %@", videoInstance.channel.channelOwner.displayName];
+
         videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         
         [self updateVideoCellStarButtonAndCount: videoThumbnailCell

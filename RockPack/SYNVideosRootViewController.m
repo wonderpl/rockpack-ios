@@ -375,6 +375,7 @@
     self.titleLabel.text = videoInstance.title;
     self.channelLabel.text = videoInstance.channel.title;
     self.displayNameLabel.text = [NSString stringWithFormat:@"BY %@", videoInstance.channel.channelOwner.displayName];;
+
     
     [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
                                       placeHolderImage: nil];

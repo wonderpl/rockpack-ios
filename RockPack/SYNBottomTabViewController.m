@@ -8,24 +8,24 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "ChannelOwner.h"
 #import "MKNetworkEngine.h"
 #import "SYNActivityPopoverViewController.h"
 #import "SYNBottomTabViewController.h"
 #import "SYNChannelsRootViewController.h"
-#import "SYNVideosRootViewController.h"
+#import "SYNChannelsUserViewController.h"
 #import "SYNFriendsRootViewController.h"
 #import "SYNHomeRootViewController.h"
 #import "SYNMovableView.h"
-#import "SYNYouRootViewController.h"
-#import "UIFont+SYNFont.h"
-#import "SYNSearchTabViewController.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
-#import <QuartzCore/QuartzCore.h>
+#import "SYNSearchTabViewController.h"
 #import "SYNUserTabView.h"
 #import "SYNUserTabViewController.h"
-#import "ChannelOwner.h"
-#import "SYNChannelsUserViewController.h"
-#import "SYNOAuthNetworkEngine.h"
+#import "SYNVideosRootViewController.h"
+#import "SYNYouRootViewController.h"
+#import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -37,10 +37,11 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
+@property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
+@property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
-@property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
@@ -164,16 +165,39 @@
 
 - (void) repositionQueueView
 {
-    videoQueueController.view.center = CGPointMake(videoQueueController.view.center.x, [[UIScreen mainScreen] bounds].size.width);
+    videoQueueController.view.center = CGPointMake(videoQueueController.view.center.x, [[UIScreen mainScreen] bounds].size.width + 60);
     
     [self.view insertSubview: videoQueueController.view
                 belowSubview: self.tabsViewContainer];
 }
 
 
-- (void) viewWillAppear: (BOOL)animated
+- (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    // Register for tab bar hiding notifications
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(hideTabBar)
+                                                 name: kNoteHideTabBar
+                                               object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(showTabBar)
+                                                 name: kNoteShowTabBar
+                                               object: nil];
+}
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    // Deregister for tab bar hiding notifications
+     [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                     name: kNoteHideTabBar
+                                                   object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: kNoteShowTabBar
+                                                  object: nil];
 }
 
 
@@ -404,6 +428,52 @@
     
     
     [self.channelsUserViewController fetchUserChannels: channelOwner];
+}
+
+
+- (void) showTabBar
+{
+    if (self.isTabBarHidden == TRUE)
+    {
+        self.tabBarHidden = !self.tabBarHidden;
+        
+        [UIView animateWithDuration: kTabAnimationDuration
+         delay: 0.0f
+         options: UIViewAnimationOptionCurveEaseInOut
+         animations: ^
+         {
+             // Move the tab view so that it is just off the bottom of the screen
+             CGRect tabContainerViewFrame = self.tabsViewContainer.frame;
+             tabContainerViewFrame.origin.y -= tabContainerViewFrame.size.height;
+             self.tabsViewContainer.frame = tabContainerViewFrame;
+         }
+         completion: ^(BOOL finished)
+         {
+         }];
+    }
+}
+
+
+- (void) hideTabBar
+{
+    if (self.isTabBarHidden == FALSE)
+    {
+        self.tabBarHidden = !self.tabBarHidden;
+    }
+    
+    [UIView animateWithDuration: kTabAnimationDuration
+     delay: 0.0f
+     options: UIViewAnimationOptionCurveEaseInOut
+     animations: ^
+     {
+         // Move the tab view so that it is just off the bottom of the screen
+         CGRect tabContainerViewFrame = self.tabsViewContainer.frame;
+         tabContainerViewFrame.origin.y += tabContainerViewFrame.size.height;
+         self.tabsViewContainer.frame = tabContainerViewFrame;
+     }
+     completion: ^(BOOL finished)
+     {
+     }];
 }
 
 

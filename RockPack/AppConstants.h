@@ -255,6 +255,8 @@ typedef enum {
 #define kNoteTabPressed @"kNoteTabPressed"
 #define kNoteSharePanelRequested @"kNoteSharePanelRequested"
 #define kNoteStarButtonPressed @"kNoteStarButtonPressed"
+#define kNoteHideTabBar @"kNoteHideTabBar"
+#define kNoteShowTabBar @"kNoteShowTabBar"
 
 //
 // Tracking
