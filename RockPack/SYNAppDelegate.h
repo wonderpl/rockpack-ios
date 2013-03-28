@@ -46,6 +46,7 @@
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
+-(void)deleteDataObject:(NSManagedObject*)managedObject;
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
 - (void) resetCoreDataStack;
