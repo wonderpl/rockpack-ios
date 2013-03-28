@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
 #import "CCoverflowCollectionViewLayout.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
@@ -13,14 +14,15 @@
 #import "HPGrowingTextView.h"
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractChannelsDetailViewController.h"
-#import "SYNCameraPopoverViewController.h"
 #import "SYNAppDelegate.h"  
+#import "SYNAutocompletePopoverBackgroundView.h"
+#import "SYNCameraPopoverViewController.h"
+#import "SYNCategoryChooserViewController.h"
 #import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNNetworkEngine.h"
 #import "SYNSoundPlayer.h"
-#import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
@@ -29,7 +31,6 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
-#import "AppConstants.h"
 
 @interface SYNAbstractChannelsDetailViewController () <HPGrowingTextViewDelegate,
                                                        GKImagePickerDelegate,
@@ -640,6 +641,12 @@
                                         permittedArrowDirections: UIPopoverArrowDirectionRight
                                                         animated: YES];
     }
+}
+
+
+- (IBAction) userTouchedChooseCategoryButton: (id) sender
+{
+    [self displayCategoryChooser];
 }
 
 

@@ -19,6 +19,7 @@
 #import "SYNBottomTabViewController.h"
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
+#import "SYNCategoryChooserViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -45,6 +46,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
 @property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
+@property (nonatomic, strong) SYNCategoryChooserViewController *categoryChooserViewController;
 @property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
 @property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
 @property (nonatomic, weak) UIViewController* currentOverlayViewController;
@@ -398,6 +400,31 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          [child removeFromSuperview];
          [bottomTabViewController.videoQueueController.view removeFromSuperview];
          [bottomTabViewController repositionQueueView];
+     }];
+}
+
+- (void) addCategoryChooserOverlayToViewController: (UIViewController *) originViewController
+{
+    // Remember the view controller that we came from
+    self.originViewController = originViewController;
+
+    self.categoryChooserViewController = [[SYNCategoryChooserViewController alloc] init];
+    
+    [self.overlayView addSubview: self.categoryChooserViewController.view];
+    
+    self.categoryChooserViewController.view.alpha = 0.0f;
+    self.categoryChooserViewController.overlayParent = self;
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         self.categoryChooserViewController.view.alpha = 1.0f;
+     }
+                     completion: ^(BOOL finished)
+     {
+         self.overlayView.userInteractionEnabled = YES;
      }];
 }
 

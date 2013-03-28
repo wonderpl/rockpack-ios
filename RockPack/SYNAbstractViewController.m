@@ -345,6 +345,13 @@
                                              andIndexPath: selectedIndexPath];
 }
 
+- (void) displayCategoryChooser
+{
+    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
+    
+    [masterViewController addCategoryChooserOverlayToViewController: self];
+}
+
 
 #pragma mark - Initialisation
 
@@ -417,7 +424,6 @@
 
 - (void) createChannel:(Channel*)channel
 {
-    
     SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelCreationVC];

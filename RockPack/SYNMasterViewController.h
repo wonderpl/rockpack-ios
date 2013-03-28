@@ -31,6 +31,8 @@
             withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
                             andIndexPath: (NSIndexPath *) indexPath;
 
+- (void) addCategoryChooserOverlayToViewController: (UIViewController *) originViewController;
+
 - (void) removeVideoOverlayController;
 
 @end

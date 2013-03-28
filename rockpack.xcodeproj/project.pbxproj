@@ -418,6 +418,9 @@
 		01AEFC651704A5430060467A /* ButtonSkip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFC4F1704A5430060467A /* ButtonSkip@2x.png */; };
 		01AEFC661704A5430060467A /* ButtonSkipHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFC501704A5430060467A /* ButtonSkipHighlighted.png */; };
 		01AEFC671704A5430060467A /* ButtonSkipHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFC511704A5430060467A /* ButtonSkipHighlighted@2x.png */; };
+		01AEFC6B1704B3F30060467A /* SYNCategoryChooserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01AEFC691704B3F30060467A /* SYNCategoryChooserViewController.m */; };
+		01AEFC6C1704B3F30060467A /* SYNCategoryChooserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFC6A1704B3F30060467A /* SYNCategoryChooserViewController.xib */; };
+		01AEFC6E1704BADC0060467A /* template1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFC6D1704BADC0060467A /* template1.png */; };
 		01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */; };
 		01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */; };
 		01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B0A96A166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png */; };
@@ -1132,6 +1135,10 @@
 		01AEFC4F1704A5430060467A /* ButtonSkip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSkip@2x.png"; path = "Assets/Images/ButtonSkip@2x.png"; sourceTree = "<group>"; };
 		01AEFC501704A5430060467A /* ButtonSkipHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSkipHighlighted.png; path = Assets/Images/ButtonSkipHighlighted.png; sourceTree = "<group>"; };
 		01AEFC511704A5430060467A /* ButtonSkipHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSkipHighlighted@2x.png"; path = "Assets/Images/ButtonSkipHighlighted@2x.png"; sourceTree = "<group>"; };
+		01AEFC681704B3F30060467A /* SYNCategoryChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoryChooserViewController.h; sourceTree = "<group>"; };
+		01AEFC691704B3F30060467A /* SYNCategoryChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoryChooserViewController.m; sourceTree = "<group>"; };
+		01AEFC6A1704B3F30060467A /* SYNCategoryChooserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCategoryChooserViewController.xib; sourceTree = "<group>"; };
+		01AEFC6D1704BADC0060467A /* template1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = template1.png; sourceTree = "<group>"; };
 		01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailRegularCell.h; sourceTree = "<group>"; };
 		01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailRegularCell.m; sourceTree = "<group>"; };
 		01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailRegularCell.xib; sourceTree = "<group>"; };
@@ -1872,6 +1879,7 @@
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01AEFC6D1704BADC0060467A /* template1.png */,
 				01AEFC3C1704A5430060467A /* ButtonPrivate.png */,
 				01AEFC3D1704A5430060467A /* ButtonPrivate@2x.png */,
 				01AEFC3E1704A5430060467A /* ButtonPrivateHighlighted.png */,
@@ -2720,6 +2728,9 @@
 			children = (
 				01B3DCE316C5597900ED54D3 /* SYNChannelsDetailsCreationViewController.h */,
 				01B3DCE416C5597900ED54D3 /* SYNChannelsDetailsCreationViewController.m */,
+				01AEFC681704B3F30060467A /* SYNCategoryChooserViewController.h */,
+				01AEFC691704B3F30060467A /* SYNCategoryChooserViewController.m */,
+				01AEFC6A1704B3F30060467A /* SYNCategoryChooserViewController.xib */,
 			);
 			name = "Channel Creation";
 			sourceTree = "<group>";
@@ -3724,6 +3735,8 @@
 				01AEFC651704A5430060467A /* ButtonSkip@2x.png in Resources */,
 				01AEFC661704A5430060467A /* ButtonSkipHighlighted.png in Resources */,
 				01AEFC671704A5430060467A /* ButtonSkipHighlighted@2x.png in Resources */,
+				01AEFC6C1704B3F30060467A /* SYNCategoryChooserViewController.xib in Resources */,
+				01AEFC6E1704BADC0060467A /* template1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3904,6 +3917,7 @@
 				01AEFBCD1701AC460060467A /* SYNActivityManager.m in Sources */,
 				BEE4A69C1701FF17008F9D05 /* SYNUserItemView.m in Sources */,
 				BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */,
+				01AEFC6B1704B3F30060467A /* SYNCategoryChooserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
