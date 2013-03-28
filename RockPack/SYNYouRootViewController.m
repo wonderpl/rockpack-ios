@@ -176,7 +176,7 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
-    channelThumbnailCell.displayNameLabel.text = channel.channelOwner.displayName;
+    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"BY: %@", channel.channelOwner.displayName];
     channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
     channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
     channelThumbnailCell.viewControllerDelegate = self;
