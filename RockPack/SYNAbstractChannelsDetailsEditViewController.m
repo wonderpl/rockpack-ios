@@ -284,6 +284,7 @@
                  [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                                        channelId: newChannelId
                                                                 videoInstanceSet: self.channel.videoInstancesSet
+                  
                   completionHandler: ^(NSDictionary *responseDictionary)
                   {
                       DebugLog(@"Channel video array update successful");

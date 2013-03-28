@@ -33,12 +33,14 @@
     {
         self.editButton.hidden = YES;
         self.buyButton.hidden = NO;
+        self.buyEditLabel.text = @"BUY";
         
     }
     else
     {
         self.editButton.hidden = NO;
         self.buyButton.hidden = YES;
+        self.buyEditLabel.text = @"EDIT";
     }
     
     self.shareButton.hidden = FALSE;

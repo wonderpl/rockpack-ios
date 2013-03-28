@@ -17,6 +17,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 @implementation VideoInstance
 
 
+
 #pragma mark - Object factory
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
