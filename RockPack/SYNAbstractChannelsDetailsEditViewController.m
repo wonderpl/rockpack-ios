@@ -468,11 +468,12 @@
 	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerViewFrame;
 }
 
+
+
 -(IBAction)tappedOnUserAvatar:(UIButton*)sender
 {
-    // just override so as not to cause a crash
+    // override
 }
-
 - (IBAction) userTouchedEditButton: (UIButton *) sender
 {
     sender.selected = !sender.selected;
