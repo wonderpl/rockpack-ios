@@ -127,6 +127,12 @@
     [appDelegate logout];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
+    [userTabViewController setOwner:appDelegate.currentUser];
+}
 
 -(void)showAccountSettingsPopover
 {

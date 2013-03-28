@@ -119,9 +119,12 @@
     
     self.currentUser.current = @(NO);
     
+    [self saveContext:YES];
+    
     [self.currentOAuth2Credentials removeFromKeychain];
     
     self.currentOAuth2Credentials = nil;
+    _currentUser = nil;
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
