@@ -8,6 +8,9 @@
                ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                          andViewId: (NSString *) viewId;
 
++(Video*)instanceFromVideo:(Video*)video
+ usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 
 - (UIImage *) thumbnailImage;
 - (NSURL *) localVideoURL;

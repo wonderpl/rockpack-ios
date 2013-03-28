@@ -18,6 +18,35 @@ static NSEntityDescription *videoEntity = nil;
 
 #pragma mark - Object factory
 
++(Video*)instanceFromVideo:(Video*)video
+ usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
+    
+    Video* instance = instance = [Video insertInManagedObjectContext: managedObjectContext];
+    
+    instance.uniqueId = video.uniqueId;
+    
+    instance.categoryId = video.categoryId;
+    
+    instance.viewCount = video.viewCount;
+    
+    instance.dateUploaded = video.dateUploaded;
+    
+    instance.duration = video.duration;
+    
+    instance.source = video.source;
+    
+    instance.sourceId = video.sourceId;
+    
+    instance.starCount = video.starCount;
+    
+    instance.starredByUser = video.starredByUser;
+    
+    instance.thumbnailURL = video.thumbnailURL;
+    
+    return instance;
+    
+}
+
 + (Video *) instanceFromDictionary: (NSDictionary *) dictionary
          usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects

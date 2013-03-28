@@ -150,7 +150,11 @@ typedef enum _kQueueMoveDirection {
     
     for (VideoInstance *videoInstance in self.selectedVideos)
     {
-        [newChannel.videoInstancesSet addObject: videoInstance];
+        VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
+                                                                           forChannel:newChannel
+                                                            usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                                            andViewId:@"ChannelDetails"];
+        [newChannel.videoInstancesSet addObject: copyOfVideoInstance];
     }
     
     return newChannel;

@@ -16,7 +16,31 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 @implementation VideoInstance
 
-
++(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
+                                 forChannel:(Channel*)channel
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                                  andViewId: (NSString *) viewId {
+    
+    VideoInstance* instance = [VideoInstance insertInManagedObjectContext: managedObjectContext];
+    
+    instance.uniqueId = existingInstance.uniqueId;
+    instance.viewId = viewId;
+    
+    instance.position = existingInstance.position;
+    
+    instance.dateAdded = existingInstance.dateAdded;
+    
+    instance.title = existingInstance.title;
+    
+    
+    instance.video = [Video instanceFromVideo:existingInstance.video
+                    usingManagedObjectContext:managedObjectContext];
+    
+    instance.channel = channel;
+    
+    return instance;
+    
+}
 
 #pragma mark - Object factory
 

@@ -8,6 +8,11 @@
                        ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                                  andViewId: (NSString *) viewId;
 
++(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
+                                 forChannel:(Channel*)channel
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                                  andViewId: (NSString *) viewId;
+
 - (NSNumber *) daysAgo;
 - (NSDate *) dateAddedIgnoringTime;
 
