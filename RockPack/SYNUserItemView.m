@@ -7,6 +7,7 @@
 //
 
 #import "SYNUserItemView.h"
+#import "UIColor+SYNColor.h"
 
 @implementation SYNUserItemView
 
@@ -22,6 +23,37 @@
         self.nameLabel.frame = CGRectIntegral(self.nameLabel.frame);
     }
     return self;
+}
+
+-(void)makeHighlightedWithImage:(BOOL)withImage
+{
+    
+    if(withImage)
+    {
+        UIImage* pressedImage = [UIImage imageNamed:@"BarHeaderYouSelected.png"];
+        self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
+    }
+    
+    
+    for (UILabel* label in self.labels)
+    {
+        
+        label.textColor = [UIColor rockpackBlueColor];
+        //        label.layer.shadowColor = [color CGColor];
+        //        label.layer.shadowRadius = 7.0f;
+        //        label.layer.shadowOpacity = 1.0;
+        //        label.layer.shadowOffset = CGSizeZero;
+        //        label.layer.masksToBounds = NO;
+    }
+    
+    // TODO: See what can be done with the animations
+    
+    if(withImage)
+    {
+        self.bottomGlowImageView.alpha = 0.0;
+        self.bottomGlowImageView.hidden = NO;
+        self.bottomGlowImageView.alpha = 1.0;
+    }
 }
 
 
