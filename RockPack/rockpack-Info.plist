@@ -49,13 +49,13 @@
 		<string>armv7</string>
 	</array>
 	<key>FacebookAppID</key>
-	<string>131721883664256</string>
+	<string>217008995103822</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb131721883664256</string>
+				<string>fb217008995103822</string>
 			</array>
 		</dict>
 	</array>

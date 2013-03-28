@@ -553,7 +553,9 @@
     }
     
     [credential saveToKeychainForService: kOAuth2Service
-                                 account: credential.userId];
+                                 account: newUser.uniqueId];
+    
+    [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
     
     return YES;
 }
@@ -585,6 +587,8 @@
                                                
                                                [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
                                                                                       completionHandler:^(NSDictionary* dictionary) {
+                                                                                          
+                                                                                          DebugLog(@"User Registerd");
                                                   
                                                                                           [self checkAndSaveRegisteredUser:credential];
                                                                                           
@@ -1031,7 +1035,7 @@
 - (void) completeLoginProcess: (SYNOAuth2Credential *) credential
 {
     
-    [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
+    
     
     [activityIndicator stopAnimating];
     
@@ -1048,6 +1052,8 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName: kLoginCompleted
                                                             object: self];
+        
+        
     }];
 }
 

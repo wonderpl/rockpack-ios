@@ -121,6 +121,7 @@
     
     [self.currentOAuth2Credentials removeFromKeychain];
     
+    self.currentOAuth2Credentials = nil;
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     
