@@ -272,12 +272,21 @@ typedef enum _kQueueMoveDirection {
 
 - (void) clearVideoQueue
 {
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
     
     self.showingEmptyQueue = YES;
     
-    self.currentlyCreatingChannel = nil;
     
     [self.selectedVideos removeAllObjects];
+    
+    for (VideoInstance* currentVideoInstance in currentlyCreatingChannel.videoInstances) {
+        [appDelegate deleteDataObject:currentVideoInstance];
+    }
+    
+    [appDelegate saveContext:YES];
+    
+    
+    self.currentlyCreatingChannel = nil;
     
     [self.videoQueueView clearVideoQueue];
 }
