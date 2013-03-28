@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Channel.h"
 
 @interface SYNChannelThumbnailCell : UICollectionViewCell
 
@@ -15,6 +16,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, strong) IBOutlet UILabel *subscribersNumberLabel;
 @property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
+@property (nonatomic, strong) IBOutlet UIButton *displayNameButton;
+
+@property (nonatomic, weak) Channel* channel;
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
 

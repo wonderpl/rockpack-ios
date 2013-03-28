@@ -170,9 +170,22 @@
     channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
     channelThumbnailCell.viewControllerDelegate = self;
     
+    
     return channelThumbnailCell;
 }
 
+-(void)displayNameButtonPressed:(UIButton*)button
+{
+    SYNChannelThumbnailCell* parent = (SYNChannelThumbnailCell*)[[button superview] superview];
+    
+    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell:parent];
+    
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels
+                                                        object:self userInfo:@{@"ChannelOwner":channel.channelOwner}];
+    
+}
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -251,6 +264,7 @@
     cell.subscribeButton.selected = channel.subscribedByUserValue;
     cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
 }
+
 
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender

@@ -7,10 +7,9 @@
 //
 
 #import "SYNAbstractTopTabViewController.h"
-
 #import "SYNLargeVideoPanelViewController.h"
 
-@interface SYNVideosRootViewController : SYNAbstractTopTabViewController 
+@interface SYNVideosRootViewController : SYNAbstractTopTabViewController
 
 
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;

@@ -53,7 +53,13 @@
     [self.subscribeButton addTarget: self.viewControllerDelegate
                          action: @selector(toggleChannelSubscribeButton:)
                forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.displayNameButton addTarget:self.viewControllerDelegate
+                               action:@selector(displayNameButtonPressed:)
+                     forControlEvents:UIControlEventTouchUpInside];
 }
+
+
 
 
 @end

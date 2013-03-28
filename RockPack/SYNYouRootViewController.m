@@ -167,8 +167,7 @@
     return 1;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
-{
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
@@ -183,6 +182,19 @@
     channelThumbnailCell.viewControllerDelegate = self;
     
     return channelThumbnailCell;
+    
+}
+
+-(void)displayNameButtonPressed:(UIButton*)button
+{
+    SYNChannelThumbnailCell* parent = (SYNChannelThumbnailCell*)[[button superview] superview];
+    
+    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell:parent];
+    
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels
+                                                        object:self userInfo:@{@"ChannelOwner":channel.channelOwner}];
     
 }
 
@@ -226,6 +238,9 @@
          [self.pinchedView removeFromSuperview];
      }];
 }
+
+
+
 
 
 // Buttons activated from scrolling list of thumbnails
