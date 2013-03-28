@@ -20,6 +20,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *starLabel;
 @property (nonatomic, strong) IBOutlet UILabel *starNumberLabel;
 
+@property (nonatomic, strong) IBOutlet UIButton* disaplyNameButton;
+
 
 @property (nonatomic, readonly) VideoInstance* videoInstance;
 

@@ -281,7 +281,7 @@
 						<string key="NSFrame">{{92, 363}, {400, 21}}</string>
 						<reference key="NSSuperview" ref="952530978"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="912030067"/>
+						<reference key="NSNextKeyView" ref="799380304"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="263813374"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -299,6 +299,27 @@
 						<reference key="IBUIFontDescription" ref="805916088"/>
 						<reference key="IBUIFont" ref="197414230"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+					</object>
+					<object class="IBUIButton" id="799380304">
+						<reference key="NSNextResponder" ref="952530978"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{92, 363}, {400, 21}}</string>
+						<reference key="NSSuperview" ref="952530978"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="912030067"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="609544499"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="839467324"/>
+						<reference key="IBUIFontDescription" ref="914418371"/>
+						<reference key="IBUIFont" ref="701820078"/>
 					</object>
 				</array>
 				<string key="NSFrameSize">{512, 598}</string>
@@ -395,6 +416,14 @@
 					<int key="connectionID">62</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">disaplyNameButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="799380304"/>
+					</object>
+					<int key="connectionID">64</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">userTouchedVideoShareItButton:</string>
 						<reference key="source" ref="149607063"/>
@@ -446,6 +475,7 @@
 							<reference ref="149607063"/>
 							<reference ref="652512587"/>
 							<reference ref="51524120"/>
+							<reference ref="799380304"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -515,6 +545,12 @@
 						<reference key="parent" ref="952530978"/>
 						<string key="objectName">Image - Screen gloss</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">63</int>
+						<reference key="object" ref="799380304"/>
+						<reference key="parent" ref="952530978"/>
+						<string key="objectName">Display Name Button</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -533,6 +569,7 @@
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="63.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -541,7 +578,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">62</int>
+			<int key="maxID">64</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -551,7 +588,6 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addToVideoQueueFromLargeVideo:">UIButton</string>
 						<string key="userTouchedVideoShareItButton:">UIButton</string>
-						<string key="userTouchedVideoStarButton:">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addToVideoQueueFromLargeVideo:">
@@ -562,10 +598,6 @@
 							<string key="name">userTouchedVideoShareItButton:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBActionInfo" key="userTouchedVideoStarButton:">
-							<string key="name">userTouchedVideoStarButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addItButton">UIButton</string>
@@ -574,6 +606,7 @@
 						<string key="channelImageButton">UIButton</string>
 						<string key="channelImageView">UIImageView</string>
 						<string key="channelLabel">UILabel</string>
+						<string key="disaplyNameButton">UIButton</string>
 						<string key="displayNameLabel">UILabel</string>
 						<string key="shareItButton">UIButton</string>
 						<string key="shareItLabel">UILabel</string>
@@ -606,6 +639,10 @@
 						<object class="IBToOneOutletInfo" key="channelLabel">
 							<string key="name">channelLabel</string>
 							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="disaplyNameButton">
+							<string key="name">disaplyNameButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="displayNameLabel">
 							<string key="name">displayNameLabel</string>
