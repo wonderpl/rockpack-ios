@@ -87,7 +87,7 @@
 
 -(void) reloadCollectionViews
 {
-    AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
+    //AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
 
 // Helper method: Save the current DB state

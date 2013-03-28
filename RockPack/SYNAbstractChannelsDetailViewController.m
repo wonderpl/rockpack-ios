@@ -202,6 +202,11 @@
     [self.videoThumbnailCollectionView reloadData];
 }
 
+-(void) reloadCollectionViews
+{
+    [self.videoThumbnailCollectionView reloadData];
+}
+
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];

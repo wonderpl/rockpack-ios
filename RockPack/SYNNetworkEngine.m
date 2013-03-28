@@ -120,6 +120,14 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
+        NSString* possibleError = dictionary[@"error"];
+        
+        if (possibleError)
+        {
+            DebugLog(@"Call for updateChannel failed with error");
+            return;
+        }
+        
         BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
         if (!registryResultOk) {
             DebugLog(@"Update Channel Screens Request Failed");
@@ -169,20 +177,6 @@
 }
 
 
-#pragma mark - Utility Methods
-
--(NSDictionary*)getLocalParam
-{
-    return [NSDictionary dictionaryWithObject:self.localeString forKey:@"locale"];
-}
-
--(NSDictionary*)getLocalParamWithParams:(NSDictionary*)parameters
-{
-    
-    NSMutableDictionary* dictionaryWithLocale = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [dictionaryWithLocale addEntriesFromDictionary:[self getLocalParam]];
-    return dictionaryWithLocale;
-}
 
 
 
