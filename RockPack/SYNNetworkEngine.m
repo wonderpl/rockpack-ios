@@ -7,6 +7,7 @@
 //
 
 #import "Category.h"
+#import "SYNAppDelegate.h"
 #import "Channel.h"
 #import "NSString+Utils.h"
 #import "SYNAppDelegate.h"
@@ -24,6 +25,9 @@
 
 - (NSString *) hostName
 {
+    if(kUsingProductionAPI)
+        return kAPIProductionHostName;
+    
     return kAPIHostName;
 }
 

@@ -44,6 +44,9 @@
 
 - (NSString *) hostName
 {
+    if(kUsingProductionAPI)
+        return kAPISecureProductionHostName;
+    
     return kAPISecureHostName;
 }
 
