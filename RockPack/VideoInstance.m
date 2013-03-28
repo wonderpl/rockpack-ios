@@ -17,6 +17,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 @implementation VideoInstance
 
 
+
 #pragma mark - Object factory
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary
@@ -159,7 +160,7 @@ static NSEntityDescription *videoInstanceEntity = nil;
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"uniqueId(%@), viewId(%@), dateAdded (%@), title(%@)", self.uniqueId, self.viewId, self.dateAdded, self.title];
+    return [NSString stringWithFormat: @"VideoInstance: uniqueId(%@), viewId(%@), dateAdded (%@), title(%@)", self.uniqueId, self.viewId, self.dateAdded, self.title];
 }
 
 @end

@@ -19,11 +19,11 @@
     [super viewDidLoad];
     
     // Hide buttons not used in channel creation
-    self.editButton.hidden = TRUE;
-    self.shareButton.hidden = TRUE;
-    self.saveOrDoneButtonLabel.hidden = FALSE;
+    self.editButton.hidden = YES;
+    self.shareButton.hidden = YES;
+    self.saveOrDoneButtonLabel.hidden = NO;
     
-    self.channelTitleTextField.enabled = TRUE;
+    self.channelTitleTextField.enabled = YES;
     
     [self showDoneButton];
     

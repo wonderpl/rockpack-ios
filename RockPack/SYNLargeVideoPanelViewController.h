@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "VideoInstance.h"
 
 @interface SYNLargeVideoPanelViewController : UIViewController
 
@@ -18,6 +19,9 @@
 @property (nonatomic, strong) IBOutlet UIButton *starButtonLarge;
 @property (nonatomic, strong) IBOutlet UILabel *starLabel;
 @property (nonatomic, strong) IBOutlet UILabel *starNumberLabel;
+
+
+@property (nonatomic, readonly) VideoInstance* videoInstance;
 
 
 // Add (plus) Button and Label

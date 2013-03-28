@@ -493,7 +493,7 @@
     if (collectionView == self.videoThumbnailCollectionView)
     {
         // 290
-        return CGSizeMake(1024, 463.0f);
+        return CGSizeMake(1024, 390);
     }
     else
     {
@@ -602,7 +602,6 @@
 - (IBAction) userTouchedShareButton: (id) sender
 {
     NSLog (@"User touched share button");
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSharePanelRequested object: self];
 }
 
 

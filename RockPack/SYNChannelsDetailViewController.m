@@ -33,19 +33,22 @@
     {
         self.editButton.hidden = YES;
         self.buyButton.hidden = NO;
+        self.buyEditLabel.text = @"BUY";
         
     }
     else
     {
         self.editButton.hidden = NO;
         self.buyButton.hidden = YES;
+        self.buyEditLabel.text = @"EDIT";
     }
     
     self.shareButton.hidden = FALSE;
     
     // Hide save or done buttons and hide cover selection carousel
-    self.saveOrDoneButtonLabel.hidden = TRUE;
-    self.coverSelectionView.hidden = TRUE;
+    self.saveOrDoneButtonLabel.hidden = NO;
+    self.saveOrDoneButtonLabel.text = @"SHARE";
+    self.coverSelectionView.hidden = YES;
     
     // Remove text field highlightes
     self.channelTitleHighlightImageView.hidden = TRUE;

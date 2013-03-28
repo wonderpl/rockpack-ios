@@ -229,25 +229,23 @@
 {
     NSLog (@"User touched done button");
     
-    self.editButton.hidden = FALSE;
-    self.shareButton.hidden = FALSE;
+    self.editButton.hidden = NO;
+    self.shareButton.hidden = NO;
     
     self.saveButton.hidden = TRUE;
     
-    // We need to start off with the DONE button visible as user may choose not to customise anything
-    self.doneButton.hidden = TRUE;
-    self.saveOrDoneButtonLabel.hidden = TRUE;
     
-    // Hide save or done buttons and hide cover selection carousel
-    self.saveOrDoneButtonLabel.hidden = TRUE;
-    self.coverSelectionView.hidden = TRUE;
+    self.doneButton.hidden = YES;
+    self.saveOrDoneButtonLabel.hidden = YES;
+    
+    self.coverSelectionView.hidden = YES;
     
     // Remove text field highlightes
-    self.channelTitleHighlightImageView.hidden = TRUE;
-    self.channelDescriptionHightlightView.hidden = TRUE;
+    self.channelTitleHighlightImageView.hidden = YES;
+    self.channelDescriptionHightlightView.hidden = YES;
     
     // Disable text fields until edit button selected
-    self.channelTitleTextField.enabled = FALSE;
+    self.channelTitleTextField.enabled = NO;
     
     
     // TODO: Fix coverart id and public
@@ -284,6 +282,7 @@
                  [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                                        channelId: newChannelId
                                                                 videoInstanceSet: self.channel.videoInstancesSet
+                  
                   completionHandler: ^(NSDictionary *responseDictionary)
                   {
                       DebugLog(@"Channel video array update successful");
