@@ -387,6 +387,8 @@ typedef enum _kQueueMoveDirection {
         DebugLog(@"Trying to add a nil video instance into the queue through: 'addVideoToQueue:'");
         return;
     }
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
         
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundSelect];
     
@@ -396,6 +398,20 @@ typedef enum _kQueueMoveDirection {
         self.showingEmptyQueue = NO;
     
     [self.selectedVideos addObject: videoInstance];
+    
+    // add to core data
+    
+    if(currentlyCreatingChannel)
+    {
+        VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
+                                                                           forChannel:currentlyCreatingChannel
+                                                            usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                                            andViewId:@"ChannelDetails"];
+        
+        [currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];
+    }
+    
+    
     
     [self.videoQueueView addVideoToQueue: videoInstance];
 }
