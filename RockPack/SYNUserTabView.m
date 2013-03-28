@@ -71,7 +71,7 @@
         self.fullnameLabel.textAlignment = NSTextAlignmentLeft;
         self.fullnameLabel.backgroundColor = [UIColor clearColor];
         self.fullnameLabel.textColor = [UIColor whiteColor];
-        [self addSubview:self.fullnameLabel];
+        [self.overlayView addSubview:self.fullnameLabel];
         
         
         // == Username == //
@@ -83,7 +83,7 @@
         
         self.usernameLabel.textColor = [UIColor rockpackHeaderSubtitleColor];
         
-        [self addSubview:self.usernameLabel];
+        [self.overlayView addSubview:self.usernameLabel];
         
         
         
