@@ -481,6 +481,9 @@
         NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
         [userFetchRequest setEntity: userEntity];
         
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"current == %@", @(YES)];
+        [userFetchRequest setPredicate: predicate];
+        
         
         NSArray *userEntries = [self.mainManagedObjectContext executeFetchRequest:userFetchRequest
                                                                             error:&error];

@@ -84,6 +84,8 @@
 #define kAPICategories              @"ws/categories/"
 
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
+#define kAccountSettingsLogout     @"kAccountSettingsLogout"
+
 
 
 #define kShowUserChannels             @"kShowUserChannels"

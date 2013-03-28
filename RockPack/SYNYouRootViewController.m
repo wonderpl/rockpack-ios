@@ -112,11 +112,19 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsPressed:) name:kAccountSettingsPressed object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout:) name:kAccountSettingsLogout object:nil];
 }
 
 -(void)accountSettingsPressed:(NSNotification*)notification
 {
     [self showAccountSettingsPopover];
+}
+
+-(void)accountSettingsLogout:(NSNotification*)notification
+{
+    [self.accountSettingsPopover dismissPopoverAnimated:NO];
+    self.accountSettingsPopover = nil;
+    [appDelegate logout];
 }
 
 
