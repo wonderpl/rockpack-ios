@@ -44,6 +44,9 @@
 
 - (NSString *) hostName
 {
+    if(kUsingProductionAPI)
+        return kAPISecureProductionHostName;
+    
     return kAPISecureHostName;
 }
 
@@ -526,14 +529,14 @@
          
          for (VideoInstance *videoInstance in videoInstanceSet)
          {
-             [videoIdArray addObject: videoInstance.video.uniqueId];
+             //[videoIdArray addObject: videoInstance.video.uniqueId];
              
              // TODO: We need to switch over to using video instance ids to support search
              
              // We then need to process the response to create any new video instances that don't exist from the data
              // passed back from the API (for an existing channel that is being updated) and all new videoInstances for a
              // new channel
-             // [videoIdArray addObject: videoInstance.uniqueId];
+             [videoIdArray addObject: videoInstance.uniqueId];
          }
          
          NSData *jsonData = [NSJSONSerialization dataWithJSONObject: videoIdArray
@@ -552,6 +555,40 @@
                                 errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
+}
+
+
+- (void) updateChannel: (NSString *) resourceURL
+{
+    
+    SYNNetworkOperationJsonObject *networkOperation =
+    (SYNNetworkOperationJsonObject*)[self operationWithURLString:resourceURL params:[self getLocalParam]];
+    
+    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
+        
+        NSString* possibleError = dictionary[@"error"];
+        
+        if (possibleError)
+        {
+            DebugLog(@"Call for updateChannel failed with error");
+            return;
+        }
+        
+        BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
+        if (!registryResultOk) {
+            DebugLog(@"Update Channel Screens Request Failed");
+            return;
+        }
+        
+        
+        
+    } errorHandler:^(NSError* error) {
+        DebugLog(@"Update Channel Screens Request Failed");
+    }];
+    
+    
+    [self enqueueSignedOperation: networkOperation];
+    
 }
 
 

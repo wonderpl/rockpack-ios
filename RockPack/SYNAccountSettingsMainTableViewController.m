@@ -311,7 +311,9 @@
 		
 	}
 	else { // logout
-		[appDelegate logout];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsLogout
+                                                            object:self];
+		
 	}
 }
 

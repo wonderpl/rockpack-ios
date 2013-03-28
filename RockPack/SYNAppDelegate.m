@@ -21,7 +21,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNActivityManager.h"
 
-#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 
@@ -409,6 +408,8 @@
     
 }
 
+#pragma mark - Clearing Data
+
 -(void)clearData
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -429,7 +430,10 @@
     [self saveContext:YES];
    
 }
-
+-(void)deleteDataObject:(NSManagedObject*)managedObject
+{
+    [self.mainManagedObjectContext deleteObject:managedObject];
+}
 - (void) createDefaultUser
 {
     // See if we have already created a default user object, and if not create one
@@ -476,6 +480,9 @@
         
         NSFetchRequest *userFetchRequest = [[NSFetchRequest alloc] init];
         [userFetchRequest setEntity: userEntity];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"current == %@", @(YES)];
+        [userFetchRequest setPredicate: predicate];
         
         
         NSArray *userEntries = [self.mainManagedObjectContext executeFetchRequest:userFetchRequest

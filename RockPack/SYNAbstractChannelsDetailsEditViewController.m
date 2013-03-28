@@ -277,15 +277,14 @@
     if ([self.channel.uniqueId isEqualToString: kNewChannelPlaceholderId])
     {
         // Create a new channel
-        [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+        [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentUser.uniqueId
                                                          title: self.channelTitleTextField.text
                                                    description: self.collectionHeaderView.channelDescriptionTextView.text
                                                       category: @"123"
                                                          cover: @""
                                                       isPublic: TRUE
-         
-         completionHandler: ^(NSDictionary *responseDictionary)
-         {
+                                             completionHandler: ^(NSDictionary *responseDictionary) {
+                                                 
              DebugLog(@"Channel creation successful");
              
              NSString *newChannelId = responseDictionary[@"id"];
@@ -296,19 +295,19 @@
                  self.channel.uniqueId = newChannelId;
                  
                  // Now upload the list of videos for the channel
-                 [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                 [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
                                                                        channelId: newChannelId
                                                                 videoInstanceSet: self.channel.videoInstancesSet
-                  
-                  completionHandler: ^(NSDictionary *responseDictionary)
-                  {
-                      DebugLog(@"Channel video array update successful");
-                  }
-                  errorHandler: ^(NSDictionary* errorDictionary)
-                  {
-                      DebugLog(@"Channel video array update failed");
-                  }];
-             }
+                                                               completionHandler: ^(NSDictionary *responseDictionary) {
+                                                                   
+                                                                   DebugLog(@"Channel video array update successful");
+                                                                   
+                                                               } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                                   
+                                                                   DebugLog(@"Channel video array update failed");
+                                                               }];
+                }
+             
              else
              {
                  AssertOrLog(@"No channel Id returned after channel creation");
@@ -529,6 +528,13 @@
         self.channelTitleTextField.enabled = FALSE;
         self.collectionHeaderView.channelDescriptionTextView.editable = FALSE;
     }
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
     
 }
 

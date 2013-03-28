@@ -1,4 +1,5 @@
 #import "ChannelOwner.h"
+#import "Channel.h"
 #import "NSDictionary+Validation.h"
 
 static NSEntityDescription *channelOwnerEntity = nil;
@@ -98,9 +99,9 @@ static NSEntityDescription *channelOwnerEntity = nil;
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId
-
-{
+                           andViewId: (NSString *) viewId {
+    
+    
     // Is we are not actually a dictionary, then bail
     if (![dictionary isKindOfClass: [NSDictionary class]])
     {
@@ -116,6 +117,20 @@ static NSEntityDescription *channelOwnerEntity = nil;
     
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
                                       withDefault: @""];
+    
+    NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
+    NSArray* channelItemsArray = [channelsArray objectForKey:@"items"];
+    for (NSDictionary* channelDictionary in channelItemsArray)
+    {
+        
+        Channel* channel = [Channel instanceFromDictionary:channelDictionary
+                                 usingManagedObjectContext:managedObjectContex
+                                              channelOwner:self
+                                                 andViewId:@"You"];
+        
+        [self addChannelsObject:channel];
+        
+    }
 }
 
 

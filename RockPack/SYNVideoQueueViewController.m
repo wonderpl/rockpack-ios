@@ -30,6 +30,7 @@ typedef enum _kQueueMoveDirection {
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic) NSMutableArray* selectedVideos;
 @property (nonatomic) BOOL showingEmptyQueue;
+@property (nonatomic, strong) Channel* currentlyCreatingChannel;
 
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 
@@ -40,6 +41,7 @@ typedef enum _kQueueMoveDirection {
 @dynamic videoQueueView;
 
 @synthesize delegate;
+@synthesize currentlyCreatingChannel;
 @synthesize showingEmptyQueue;
 
 -(void)loadView
@@ -64,6 +66,10 @@ typedef enum _kQueueMoveDirection {
                                          action: @selector(deleteLastVideoAdded)
                                forControlEvents: UIControlEventTouchUpInside];
     
+    UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                            action:@selector(longPressOnDeleteButton)];
+    [self.videoQueueView.deleteButton addGestureRecognizer:longPress];
+    
     [self.videoQueueView.channelButton addTarget: self
                                           action: @selector(createChannelFromVideoQueue)
                                 forControlEvents: UIControlEventTouchUpInside];
@@ -85,6 +91,11 @@ typedef enum _kQueueMoveDirection {
     
     [self reloadData];
 	
+}
+
+-(void)longPressOnDeleteButton
+{
+    [self clearVideoQueue];
 }
 
 #pragma mark - Notification Handlers
@@ -132,12 +143,16 @@ typedef enum _kQueueMoveDirection {
     
     [self.delegate createChannelFromVideoQueue];
     
-    [self clearVideoQueue];
+    //[self clearVideoQueue];
 }
 
 
 - (Channel*) getChannelFromCurrentQueue
 {
+    if(self.currentlyCreatingChannel) {
+        return self.currentlyCreatingChannel;
+    }
+    
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
     
     Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
@@ -156,6 +171,8 @@ typedef enum _kQueueMoveDirection {
                                                                             andViewId:@"ChannelDetails"];
         [newChannel.videoInstancesSet addObject: copyOfVideoInstance];
     }
+    
+    currentlyCreatingChannel = newChannel;
     
     return newChannel;
 }
@@ -215,11 +232,36 @@ typedef enum _kQueueMoveDirection {
 
 -(void)deleteLastVideoAdded
 {
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
+    
+    VideoInstance* lastVideoObject = [self.selectedVideos lastObject];
+    
     [self.selectedVideos removeLastObject];
     
+    // clear objects from core data
+    if(currentlyCreatingChannel) {
+        
+        for (VideoInstance* currentVideoInstance in currentlyCreatingChannel.videoInstances) {
+            if([currentVideoInstance.uniqueId isEqualToString:lastVideoObject.uniqueId]) {
+                [appDelegate deleteDataObject:currentVideoInstance];
+                
+                [appDelegate saveContext:YES];
+                
+                break;
+            }
+        }
+        
+        
+    }
+    
+    // Animate
     if(self.selectedVideos.count == 0) {
+        
         [self clearVideoQueue];
+        
     } else {
+        
+        
         
         [self.videoQueueView showRemovedLastVideo];
     }
@@ -227,12 +269,24 @@ typedef enum _kQueueMoveDirection {
 }
 
 
+
 - (void) clearVideoQueue
 {
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
     
     self.showingEmptyQueue = YES;
     
+    
     [self.selectedVideos removeAllObjects];
+    
+    for (VideoInstance* currentVideoInstance in currentlyCreatingChannel.videoInstances) {
+        [appDelegate deleteDataObject:currentVideoInstance];
+    }
+    
+    [appDelegate saveContext:YES];
+    
+    
+    self.currentlyCreatingChannel = nil;
     
     [self.videoQueueView clearVideoQueue];
 }
@@ -333,6 +387,8 @@ typedef enum _kQueueMoveDirection {
         DebugLog(@"Trying to add a nil video instance into the queue through: 'addVideoToQueue:'");
         return;
     }
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
         
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundSelect];
     
@@ -342,6 +398,20 @@ typedef enum _kQueueMoveDirection {
         self.showingEmptyQueue = NO;
     
     [self.selectedVideos addObject: videoInstance];
+    
+    // add to core data
+    
+    if(currentlyCreatingChannel)
+    {
+        VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
+                                                                           forChannel:currentlyCreatingChannel
+                                                            usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                                            andViewId:@"ChannelDetails"];
+        
+        [currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];
+    }
+    
+    
     
     [self.videoQueueView addVideoToQueue: videoInstance];
 }
