@@ -196,7 +196,8 @@
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels
-                                                        object:self userInfo:@{@"ChannelOwner":channel.channelOwner}];
+                                                        object:self
+                                                      userInfo:@{@"ChannelOwner":channel.channelOwner}];
     
 }
 
