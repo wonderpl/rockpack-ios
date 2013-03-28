@@ -3725,7 +3725,6 @@
 				BEE4A6BB17035F9A008F9D05 /* ButtonChannelFollowingHighlighted@2x.png in Resources */,
 				1FF358F717048CA600E543F4 /* ChannelButtonBuyHighlighted.png in Resources */,
 				1FF358F817048CA600E543F4 /* ChannelButtonBuyHighlighted@2x.png in Resources */,
-<<<<<<< HEAD
 				01AEFC521704A5430060467A /* ButtonPrivate.png in Resources */,
 				01AEFC531704A5430060467A /* ButtonPrivate@2x.png in Resources */,
 				01AEFC541704A5430060467A /* ButtonPrivateHighlighted.png in Resources */,
@@ -3750,12 +3749,10 @@
 				01AEFC671704A5430060467A /* ButtonSkipHighlighted@2x.png in Resources */,
 				01AEFC6C1704B3F30060467A /* SYNCategoryChooserViewController.xib in Resources */,
 				01AEFC6E1704BADC0060467A /* template1.png in Resources */,
-=======
 				1FF358FB1704CB3300E543F4 /* TabBarShadow.png in Resources */,
 				1FF358FC1704CB3300E543F4 /* TabBarShadow@2x.png in Resources */,
 				1FF358FF1704D39900E543F4 /* ComingSoonFriends.png in Resources */,
 				1FF359001704D39900E543F4 /* ComingSoonFriends@2x.png in Resources */,
->>>>>>> origin/develop
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
