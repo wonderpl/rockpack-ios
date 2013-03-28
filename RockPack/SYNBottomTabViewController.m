@@ -39,6 +39,7 @@
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
+@property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 
 
@@ -124,8 +125,13 @@
     
     // == Search (out of normal controller array)
     
+    
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
+//    self.seachViewNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
+//    self.seachViewNavigationViewController.navigationBarHidden = TRUE;
+//    self.seachViewNavigationViewController.view.autoresizesSubviews = TRUE;
+//    self.seachViewNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     
     // == Channels User (out of normal controller array)
@@ -191,6 +197,10 @@
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
         [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
+    }
+    else if(self.selectedViewController == self.searchViewController)
+    {
+        [self.searchViewController createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
     }
     
 }
