@@ -237,6 +237,9 @@
      {
          [self.pinchedView removeFromSuperview];
      }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
+                                                        object: self];
 }
 
 

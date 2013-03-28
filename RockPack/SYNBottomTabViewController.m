@@ -112,8 +112,6 @@
     // TODO: Nest Friends Bar
     SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
     
-    
-    
     // == Register Controllers
     
     self.viewControllers = @[homeRootNavigationViewController,
@@ -122,17 +120,11 @@
                              youRootRootNavigationViewController,
                              friendsRootViewController];
     
-    
     // == Search (out of normal controller array)
     
     
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
-//    self.seachViewNavigationViewController = [[UINavigationController alloc] initWithRootViewController: self.searchViewController];
-//    self.seachViewNavigationViewController.navigationBarHidden = TRUE;
-//    self.seachViewNavigationViewController.view.autoresizesSubviews = TRUE;
-//    self.seachViewNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
-    
     
     // == Channels User (out of normal controller array)
     
@@ -143,16 +135,12 @@
     self.channelsUserNavigationViewController.view.autoresizesSubviews = TRUE;
     self.channelsUserNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    
-    
-    
     // == Video Queue
     
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
     videoQueueController.delegate = self;
     
     [self repositionQueueView];
-    
     
     // Set Initial View Controller
     
@@ -169,18 +157,12 @@
 }
 
 
-
-
-
--(void)repositionQueueView
+- (void) repositionQueueView
 {
-    //[videoQueueController.view removeFromSuperview];
-    
-    
     videoQueueController.view.center = CGPointMake(videoQueueController.view.center.x, [[UIScreen mainScreen] bounds].size.width);
     
-    [self.view insertSubview:videoQueueController.view belowSubview:self.tabsViewContainer];
-    
+    [self.view insertSubview: videoQueueController.view
+                belowSubview: self.tabsViewContainer];
 }
 
 
@@ -189,20 +171,20 @@
     [super viewWillAppear: animated];
 }
 
--(void)createChannelFromVideoQueue
+
+- (void) createChannelFromVideoQueue
 {
     if([self.selectedViewController isKindOfClass:[UINavigationController class]])
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        [child createChannel: [self.videoQueueController getChannelFromCurrentQueue]];
         
     }
     else if(self.selectedViewController == self.searchViewController)
     {
-        [self.searchViewController createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        [self.searchViewController createChannel: [self.videoQueueController getChannelFromCurrentQueue]];
     }
-    
 }
 
 
@@ -261,23 +243,19 @@
 - (void) setSelectedIndex: (NSUInteger) newSelectedIndex
                  animated: (BOOL) animated
 {
-	
-    
-    
-    if(_selectedIndex == newSelectedIndex) {
-        if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {
-            [self popCurrentViewController:(UIButton *)self.tabsViewContainer.subviews[_selectedIndex]];
+    if (_selectedIndex == newSelectedIndex)
+    {
+        if ([_selectedViewController isKindOfClass: [UINavigationController class]])
+        {
+            [self popCurrentViewController: (UIButton *)self.tabsViewContainer.subviews[_selectedIndex]];
         }
         return;
     }
-        
-    
-    
+
     _selectedIndex = newSelectedIndex;
     
-    
-    
-    for (UIButton* tabButton in self.tabsViewContainer.subviews) {
+    for (UIButton* tabButton in self.tabsViewContainer.subviews)
+    {
         tabButton.selected = NO;
         tabButton.userInteractionEnabled = YES;
     }
@@ -297,22 +275,21 @@
     
 }
 
--(void)setSelectedViewController:(UIViewController *)newSelectedViewController
+- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
 {
-    
-    
     // if we try and push the same controller, escape
     
-    if(_selectedViewController == newSelectedViewController) {
-        
+    if(_selectedViewController == newSelectedViewController)
+    {
         return;
     }
         
-    
     // even if nill, that is OK. It will just animate the selectedViewController out.
     
-    if(newSelectedViewController)
+    if (newSelectedViewController)
+    {
         [self.containerView addSubview:newSelectedViewController.view];
+    }
     
     if (self.shouldAnimateViewTransitions)
     {
@@ -321,30 +298,27 @@
         newSelectedViewController.view.alpha = 0.0f;
         
         [UIView animateWithDuration: kTabAnimationDuration
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations: ^{
-                             
-                             _selectedViewController.view.alpha = 0.0f;
-                             
-                             if(newSelectedViewController)
-                                 newSelectedViewController.view.alpha = 1.0f;
-                             
-                         } completion: ^(BOOL finished) {
-                             
-                             [_selectedViewController.view removeFromSuperview];
-                             
-                             self.view.userInteractionEnabled = YES;
-                             
-                             _selectedViewController = newSelectedViewController;
-                             
-                         }];
+         delay: 0.0f
+         options: UIViewAnimationOptionCurveEaseInOut
+         animations: ^
+         {
+             _selectedViewController.view.alpha = 0.0f;
+             
+             if(newSelectedViewController)
+                 newSelectedViewController.view.alpha = 1.0f;
+         }
+         completion: ^(BOOL finished)
+         {
+             [_selectedViewController.view removeFromSuperview];
+             
+             self.view.userInteractionEnabled = YES;
+             
+             _selectedViewController = newSelectedViewController;
+         }];
     }
     else
     {
-        
         [_selectedViewController.view removeFromSuperview];
-        
         
         _selectedViewController = newSelectedViewController;
     }
@@ -408,37 +382,37 @@
 
 #pragma mark - Show Special Views
 
--(void) showSearchViewControllerWithTerm:(NSString*)searchTerm
+- (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
 {
-    [self setSelectedIndex:-1]; // turn all off
+    [self setSelectedIndex: -1]; // turn all off
     
-    if(self.selectedViewController != self.searchViewController)
+    if (self.selectedViewController != self.searchViewController)
         self.selectedViewController = self.searchViewController;
     
-    [self.searchViewController showSearchResultsForTerm:searchTerm];
+    [self.searchViewController showSearchResultsForTerm: searchTerm];
     
     
 }
 
--(void)showUserChannel:(NSNotification*)notification
+- (void) showUserChannel: (NSNotification*) notification
 {
     NSDictionary* userInfo = [notification userInfo];
     
-    ChannelOwner* channelOwner = (ChannelOwner*)[userInfo objectForKey:@"ChannelOwner"];
+    ChannelOwner* channelOwner = (ChannelOwner*)[userInfo objectForKey: @"ChannelOwner"];
     
-    if(!channelOwner)
+    if (!channelOwner)
         return;
     
-    [self setSelectedIndex:-1]; // turn all off
+    [self setSelectedIndex: -1]; // turn all off
     
     self.selectedViewController = self.channelsUserNavigationViewController;
     
     
-    [self.channelsUserViewController fetchUserChannels:channelOwner];
+    [self.channelsUserViewController fetchUserChannels: channelOwner];
 }
 
 
--(NSString*)description
+- (NSString*) description
 {
     return NSStringFromClass([self class]);
 }
