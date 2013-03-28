@@ -231,6 +231,9 @@
 {
     NSLog (@"User touched done button");
     
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowTabBar
+                                                        object: self];
+    
     self.editButton.hidden = NO;
     self.buyEditLabel.hidden = NO;
     self.buyEditLabel.text = @"EDIT";
@@ -238,6 +241,9 @@
     self.saveOrDoneButtonLabel.text = @"SHARE";
     self.saveButton.hidden = TRUE;
     
+    self.categoryButton.hidden = YES;
+    self.categoryStaticLabel.hidden = NO;
+    self.privateImageView.hidden = YES;
     
     self.doneButton.hidden = YES;
     
@@ -250,6 +256,13 @@
     // Disable text fields until edit button selected
     self.channelTitleTextField.enabled = NO;
     
+    CGRect labelFrame = self.categoryLabel.frame;
+    labelFrame.origin.x = 536;
+    labelFrame.origin.y = 31;
+    self.categoryLabel.frame = labelFrame;
+    self.categoryLabel.textAlignment = NSTextAlignmentLeft;
+    
+    [self updateCategoryLabel];
     
     // TODO: Fix coverart id and public
     //    {

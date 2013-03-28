@@ -72,6 +72,7 @@
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
+- (void) displayCategoryChooser;
 
 
 - (void) createChannel:(Channel*)channel;
