@@ -34,5 +34,6 @@
 - (void) addCategoryChooserOverlayToViewController: (UIViewController *) originViewController;
 
 - (void) removeVideoOverlayController;
+- (void) removeCategoryChooserOverlayController;
 
 @end

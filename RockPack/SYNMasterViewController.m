@@ -428,6 +428,30 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
      }];
 }
 
+- (void) removeCategoryChooserOverlayController
+{
+    SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
+    
+    UIView* child = self.overlayView.subviews[0];
+    
+    [UIView animateWithDuration: 0.25f
+     delay: 0.0f
+     options: UIViewAnimationOptionCurveEaseInOut
+     animations: ^
+     {
+         child.alpha = 0.0f;
+     }
+     completion: ^(BOOL finished)
+     {
+         self.overlayView.userInteractionEnabled = NO;
+         self.videoViewerViewController = nil;
+         [child removeFromSuperview];
+         [bottomTabViewController.videoQueueController.view removeFromSuperview];
+         [bottomTabViewController repositionQueueView];
+     }];
+
+}
+
 
 #pragma mark - TextField Delegate Methods
 
