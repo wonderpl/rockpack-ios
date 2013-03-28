@@ -588,7 +588,8 @@
                                                [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
                                                                                       completionHandler:^(NSDictionary* dictionary) {
                                                                                           
-                                                                                          DebugLog(@"User Registerd");
+                                                                                          NSString* username = [dictionary objectForKey:@"username"];
+                                                                                          DebugLog(@"User Registerd: %@", username);
                                                   
                                                                                           [self checkAndSaveRegisteredUser:credential];
                                                                                           

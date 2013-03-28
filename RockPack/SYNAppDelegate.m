@@ -90,8 +90,9 @@
     
     [self.window makeKeyAndVisible];
     
+    // TODO: remove last condition and handle it in the if inside
     
-    if(self.currentUser && self.currentOAuth2Credentials) {
+    if(self.currentUser && self.currentOAuth2Credentials && ![self.currentOAuth2Credentials hasExpired]) {
         
         if([self.currentOAuth2Credentials hasExpired]) {
             
@@ -119,9 +120,12 @@
     
     self.currentUser.current = @(NO);
     
+    [self saveContext:YES];
+    
     [self.currentOAuth2Credentials removeFromKeychain];
     
     self.currentOAuth2Credentials = nil;
+    _currentUser = nil;
     
     self.loginViewController = [[SYNLoginViewController alloc] init];
     

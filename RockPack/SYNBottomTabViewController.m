@@ -403,9 +403,13 @@
 
 - (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
 {
-    [self setSelectedIndex: -1]; // turn all off
+     
     
-    self.selectedViewController = self.seachViewNavigationViewController;
+    if(self.selectedViewController != self.seachViewNavigationViewController) {
+        self.selectedViewController = self.seachViewNavigationViewController;
+        [self setSelectedIndex: -1];
+    }
+        
 
     
     [self.searchViewController showSearchResultsForTerm: searchTerm];
@@ -424,7 +428,8 @@
     
     [self setSelectedIndex: -1]; // turn all off
     
-    self.selectedViewController = self.channelsUserNavigationViewController;
+    if(self.selectedViewController != self.channelsUserNavigationViewController)
+        self.selectedViewController = self.channelsUserNavigationViewController;
     
     
     [self.channelsUserViewController fetchUserChannels: channelOwner];
