@@ -73,11 +73,13 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
+    ChannelOwner* meAsOwner = (ChannelOwner*)appDelegate.currentUser;
+    
     // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", @"Channels"]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
     
     // Edit the section name key path and cache name if appropriate.
@@ -237,6 +239,9 @@
      {
          [self.pinchedView removeFromSuperview];
      }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
+                                                        object: self];
 }
 
 

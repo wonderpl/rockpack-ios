@@ -267,6 +267,7 @@
                                                       category: @"123"
                                                          cover: @""
                                                       isPublic: TRUE
+         
          completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
@@ -462,6 +463,11 @@
     containerViewFrame.size.height -= diff;
     //    containerViewFrame.origin.y += diff;
 	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerViewFrame;
+}
+
+-(IBAction)tappedOnUserAvatar:(UIButton*)sender
+{
+    // just override so as not to cause a crash
 }
 
 - (IBAction) userTouchedEditButton: (UIButton *) sender

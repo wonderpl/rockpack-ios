@@ -1,6 +1,7 @@
 #import "User.h"
 #import "NSDictionary+Validation.h"
 #import "AppConstants.h"
+#import "Channel.h"
 
 @interface User ()
 
@@ -151,9 +152,16 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat:
-            @"username:%@, firstName:%@, lastName:%@, emailAddress:%@",
-            self.username, self.firstName, self.lastName, self.emailAddress];
+    NSMutableString* userDescription = [NSMutableString stringWithFormat:
+                                        @"User - username:%@, firstName:%@, lastName:%@, emailAddress:%@",
+                                        self.username, self.firstName, self.lastName, self.emailAddress];
+    [userDescription appendFormat:@"\nUser Channels:"];
+    for (Channel* channel in self.channels)
+    {
+        [userDescription appendFormat:@"\n - %@", channel.title];
+    }
+    
+    return userDescription;
 }
 
 @end
