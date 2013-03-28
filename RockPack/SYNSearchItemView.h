@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) UILabel* numberLabel;
 @property (nonatomic, strong) UILabel* nameLabel;
+@property (nonatomic, strong) NSArray* labels;
+@property (nonatomic, strong) UIImageView* bottomGlowImageView;
 
 - (id)initWithTitle:(NSString*)name andFrame:(CGRect)frame;
 

@@ -13,10 +13,6 @@
 
 @interface SYNSearchItemView ()
 
-
-@property (nonatomic, strong) UIImageView* bottomGlowImageView;
-@property (nonatomic, strong) NSArray* labels;
-
 @end
 
 
@@ -156,10 +152,7 @@
 //        label.layer.shadowOpacity = 1.0;
 //        label.layer.shadowOffset = CGSizeZero;
 //        label.layer.masksToBounds = NO;
-        
     }
-    
-    
     
     // TODO: See what can be done with the animations
     
@@ -169,12 +162,6 @@
         self.bottomGlowImageView.hidden = NO;
         self.bottomGlowImageView.alpha = 1.0;
     }
-    
-    
-    
-    
-    
-    
 }
 
 
