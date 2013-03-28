@@ -112,18 +112,6 @@
 }
 
 
-#pragma mark - Navigation Controller
-
-- (void) animatedPushViewController: (UIViewController *) vc
-{
-    [self.parent animatedPushViewController:vc];
-}
-
-
-- (void) animatedPopViewController
-{
-    [self.parent animatedPopViewController];
-}
 
 
 #pragma mark - Collection View Delegate
