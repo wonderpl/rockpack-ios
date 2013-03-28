@@ -63,7 +63,7 @@
 @synthesize selectedViewController = _selectedViewController;
 @synthesize videoQueueController = videoQueueController;
 @synthesize channelsUserNavigationViewController;
-@synthesize channelsUserViewController;
+@synthesize channelsUserViewController, searchViewController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -126,14 +126,19 @@
     
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
+    self.seachViewNavigationViewController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+    self.seachViewNavigationViewController.navigationBarHidden = YES;
+    self.seachViewNavigationViewController.view.autoresizesSubviews = YES;
+    self.seachViewNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    
     
     // == Channels User (out of normal controller array)
     
     self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannels"];
     self.channelsUserViewController.tabViewController = [[SYNUserTabViewController alloc] init];
     self.channelsUserNavigationViewController = [[UINavigationController alloc] initWithRootViewController:channelsUserViewController];
-    self.channelsUserNavigationViewController.navigationBarHidden = TRUE;
-    self.channelsUserNavigationViewController.view.autoresizesSubviews = TRUE;
+    self.channelsUserNavigationViewController.navigationBarHidden = YES;
+    self.channelsUserNavigationViewController.view.autoresizesSubviews = YES;
     self.channelsUserNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // == Video Queue
@@ -205,10 +210,7 @@
         [child createChannel: [self.videoQueueController getChannelFromCurrentQueue]];
         
     }
-    else if(self.selectedViewController == self.searchViewController)
-    {
-        [self.searchViewController createChannel: [self.videoQueueController getChannelFromCurrentQueue]];
-    }
+
 }
 
 
@@ -381,26 +383,19 @@
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-	// Any cleanup
-    // self.notificationsButton.selected = FALSE;
+	
 }
 
 
 - (void) popCurrentViewController: (id) sender
 {
-    // TODO: Might want to abstract al the push and pop into the master
-    
-    if(self.selectedViewController == self.searchViewController)
-    {
-        [self.searchViewController animatedPopViewController];
-        return;
-    }
-    
+
     UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
     
     SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
     
     [abstractVC animatedPopViewController];
+    
 }
 
 
@@ -410,8 +405,8 @@
 {
     [self setSelectedIndex: -1]; // turn all off
     
-    if (self.selectedViewController != self.searchViewController)
-        self.selectedViewController = self.searchViewController;
+    self.selectedViewController = self.seachViewNavigationViewController;
+
     
     [self.searchViewController showSearchResultsForTerm: searchTerm];
     

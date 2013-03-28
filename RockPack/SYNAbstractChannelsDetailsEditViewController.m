@@ -36,12 +36,14 @@
 
 - (void) showDoneButton
 {
-    self.saveButton.hidden = TRUE;
+    self.saveButton.hidden = YES;
     
     // We need to start off with the DONE button visible as user may choose not to customise anything
-    self.doneButton.hidden = FALSE;
+    self.doneButton.hidden = NO;
     self.saveOrDoneButtonLabel.text = NSLocalizedString(@"DONE", @"Save / Done button");
     
+    self.buyButton.hidden = YES;
+    self.buyEditLabel.hidden = YES;
     // Need also to hide our carousel
     
     [UIView animateWithDuration: kCreateChannelPanelAnimationDuration
@@ -230,13 +232,14 @@
     NSLog (@"User touched done button");
     
     self.editButton.hidden = NO;
+    self.buyEditLabel.hidden = NO;
+    self.buyEditLabel.text = @"EDIT";
     self.shareButton.hidden = NO;
-    
+    self.saveOrDoneButtonLabel.text = @"SHARE";
     self.saveButton.hidden = TRUE;
     
     
     self.doneButton.hidden = YES;
-    self.saveOrDoneButtonLabel.hidden = YES;
     
     self.coverSelectionView.hidden = YES;
     
@@ -267,6 +270,7 @@
                                                       category: @"123"
                                                          cover: @""
                                                       isPublic: TRUE
+         
          completionHandler: ^(NSDictionary *responseDictionary)
          {
              DebugLog(@"Channel creation successful");
@@ -462,6 +466,11 @@
     containerViewFrame.size.height -= diff;
     //    containerViewFrame.origin.y += diff;
 	self.collectionHeaderView.channelDescriptionTextContainerView.frame = containerViewFrame;
+}
+
+-(IBAction)tappedOnUserAvatar:(UIButton*)sender
+{
+    // just override so as not to cause a crash
 }
 
 - (IBAction) userTouchedEditButton: (UIButton *) sender

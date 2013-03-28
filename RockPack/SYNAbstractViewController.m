@@ -148,8 +148,7 @@
          
      }];
     
-    [self.navigationController pushViewController: vc
-                                         animated: NO];
+    [self.navigationController pushViewController:vc animated: NO];
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
@@ -161,21 +160,21 @@
     UIViewController *parentVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count - 2];
     parentVC.view.alpha = 0.0f;
     
-    [self.navigationController popViewControllerAnimated: NO];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-         // Contract thumbnail view
+         
          self.view.alpha = 0.0f;
          parentVC.view.alpha = 1.0f;
          
-     }
-                     completion: ^(BOOL finished)
-     {
+     } completion: ^(BOOL finished) {
          
      }];
+    
+    
+    [self.navigationController popViewControllerAnimated:NO];
     
     // Hide back button
     
@@ -389,7 +388,7 @@
         videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
-        videoThumbnailCell.displayName.text = videoInstance.channel.channelOwner.displayName;
+        videoThumbnailCell.displayName.text = [NSString stringWithFormat:@"BY %@", videoInstance.channel.channelOwner.displayName];
         videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         
         [self updateVideoCellStarButtonAndCount: videoThumbnailCell
