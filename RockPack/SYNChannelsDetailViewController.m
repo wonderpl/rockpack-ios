@@ -46,8 +46,9 @@
     self.shareButton.hidden = FALSE;
     
     // Hide save or done buttons and hide cover selection carousel
-    self.saveOrDoneButtonLabel.hidden = TRUE;
-    self.coverSelectionView.hidden = TRUE;
+    self.saveOrDoneButtonLabel.hidden = NO;
+    self.saveOrDoneButtonLabel.text = @"SHARE";
+    self.coverSelectionView.hidden = YES;
     
     // Remove text field highlightes
     self.channelTitleHighlightImageView.hidden = TRUE;
