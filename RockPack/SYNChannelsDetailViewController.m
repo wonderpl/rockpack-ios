@@ -14,6 +14,7 @@
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNTextField.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 
@@ -68,8 +69,18 @@
                                                  name: kDataUpdated
                                                object: nil];
     
+    DebugLog(@"URL for channel %@", self.channel.resourceURL);
     
-    [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
+    NSString* protocol = [self.channel.resourceURL substringWithRange:NSMakeRange(0, 5)];
+    
+    if([protocol isEqualToString:@"https"]) {
+        [appDelegate.oAuthNetworkEngine updateChannel:self.channel.resourceURL];
+    } else {
+        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
+    }
+    
+    
+    
 }
 
 -(IBAction)tappedOnUserAvatar:(UIButton*)sender

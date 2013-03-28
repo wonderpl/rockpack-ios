@@ -37,4 +37,8 @@
 - (NSDictionary *) paramsAndLocaleForStart: (int) start
                                       size: (int) size;
 
+-(NSDictionary*)getLocalParam;
+
+-(NSDictionary*)getLocalParamWithParams:(NSDictionary*)parameters;
+
 @end
