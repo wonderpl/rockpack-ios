@@ -27,6 +27,7 @@
 @property (nonatomic, strong) UILabel* fullnameLabel;
 @property (nonatomic, strong) UILabel* usernameLabel;
 @property (nonatomic, strong) UIImageView* profileImageView;
+@property (nonatomic, strong) UIImageView* profileImageGlossView;
 @property (nonatomic, strong) UILabel* profileNameLabel;
 @property (nonatomic, weak) SYNSearchItemView* currentItemView;
 @property (nonatomic, strong) NSMutableArray* tabItems;
@@ -170,9 +171,9 @@
         
         // == Profile Gloss, Shadows & Divider == //
         
-        self.profileImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 116.0, 115.0)];
-        self.profileImageView.image = [UIImage imageNamed:@"GlossAvatarProfile.png"];
-        [self.overlayView addSubview:self.profileImageView];
+        self.profileImageGlossView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 116.0, 115.0)];
+        self.profileImageGlossView.image = [UIImage imageNamed:@"GlossAvatarProfile.png"];
+        [self.overlayView addSubview:self.profileImageGlossView];
         
 
         
