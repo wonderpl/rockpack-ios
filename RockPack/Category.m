@@ -114,7 +114,7 @@ static NSEntityDescription *categoryEntity = nil;
 - (NSString *) description
 {
     NSMutableString* descriptioString = [[NSMutableString alloc] init];
-    [descriptioString appendFormat: @"Category(%@) name: %@, priority: %@ subcategories:", self.uniqueId, self.name, self.priority];
+    [descriptioString appendFormat: @"Category(%i) name: %@, priority:  subcategories:", [self.priority intValue], self.name];
     for (Subcategory* sub in self.subcategories) {
         [descriptioString appendFormat:@"\n- %@", sub];
     }

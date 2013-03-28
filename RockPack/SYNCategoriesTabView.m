@@ -140,7 +140,7 @@
     CGFloat midSecondaryFrame = self.secondaryTabsView.frame.size.height * 0.5;
     
     
-    NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"uniqueId" ascending:YES];
+    NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"priority" ascending:NO];
     NSArray* sortedSubcategories = [subcategories sortedArrayUsingDescriptors:[NSArray arrayWithObject:idSortDescriptor]];
         
     for (Subcategory* subcategory in sortedSubcategories)
