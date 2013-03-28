@@ -21,7 +21,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SYNActivityManager.h"
 
-#define kShowLoginPhase YES
 
 @interface SYNAppDelegate ()
 

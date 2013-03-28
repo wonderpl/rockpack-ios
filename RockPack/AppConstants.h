@@ -19,7 +19,9 @@
 
 //#define kAPIHostName @"dev.rockpack.com"
 #define kAPIHostName @"demo.rockpack.com"
+#define kAPIProductionHostName @"api.rockpack.com"
 #define kAPISecureHostName @"secure.demo.rockpack.com"
+#define kAPISecureProductionHostName @"secure.rockpack.com"
 
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"

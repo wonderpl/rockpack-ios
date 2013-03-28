@@ -14,6 +14,10 @@
 #import "User.h"
 #import "SYNOAuth2Credential.h"
 
+
+#define kShowLoginPhase YES
+#define kUsingProductionAPI YES
+
 // Something new!
 
 @class SYNBottomTabViewController, ChannelOwner, SYNNetworkEngine, SYNOAuthNetworkEngine;
