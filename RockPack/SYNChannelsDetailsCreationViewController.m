@@ -45,6 +45,23 @@
     self.channel.channelDescription = @"Describe your channel...";
 }
 
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear: animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideTabBar
+                                                        object: self];
+}
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowTabBar
+                                                        object: self];
+    
+    [super viewWillDisappear: animated];
+}
+
 - (BOOL) hideChannelDescriptionHighlight
 {
     return FALSE;

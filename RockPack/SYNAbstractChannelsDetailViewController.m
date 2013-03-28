@@ -105,9 +105,9 @@
     self.selectACoverLabel.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
     self.selectACoverLabel.layer.masksToBounds = NO;
     
-    //Kish & Gregory woz ere: Aligning the SELECT A COVER text to centre and spacing the Y-Axis correctly!
-    self.selectACoverLabel.textAlignment = NSTextAlignmentCenter;
-    self.selectACoverLabel.layer.position = CGPointMake( 512.0 , 88.0 );
+//    //Kish & Gregory woz ere: Aligning the SELECT A COVER text to centre and spacing the Y-Axis correctly!
+//    self.selectACoverLabel.textAlignment = NSTextAlignmentCenter;
+//    self.selectACoverLabel.layer.position = CGPointMake( 512.0 , 88.0 );
 
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
@@ -154,7 +154,7 @@
     self.channelCoverCarouselCollectionView.collectionViewLayout = channelCoverCarouselHorizontalLayout;
     
     //Kish & Gregory woz ere: Aligning the carousel to centre and spacing the Y-Axis correctly in relation to the label
-    self.channelCoverCarouselCollectionView.frame = CGRectMake(80.0, 77.0, 864.0, 300.0);
+//    self.channelCoverCarouselCollectionView.frame = CGRectMake(80.0, 77.0, 864.0, 300.0);
 
     self.channelTitleTextField.textAlignment = NSTextAlignmentLeft;
     self.channelTitleTextField.textColor = [UIColor whiteColor];

@@ -17,7 +17,7 @@
 #define kQueueSelectedImage @"PanelVideoQueueHighlighted.png"
 #define kQueueDefaultImage @"PanelVideoQueue.png"
 
-#define kQueueViewOffset 140.0
+#define kQueueViewOffset 200.0
 
 typedef enum _kQueueMoveDirection {
     kQueueMoveDirectionDown = 0,
