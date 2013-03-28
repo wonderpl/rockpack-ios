@@ -507,6 +507,8 @@
 		1F6D17AD1700A23100B66F09 /* BarHeaderSearchSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F6D17AB1700A23100B66F09 /* BarHeaderSearchSelected@2x.png */; };
 		1FF358F717048CA600E543F4 /* ChannelButtonBuyHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF358F517048CA600E543F4 /* ChannelButtonBuyHighlighted.png */; };
 		1FF358F817048CA600E543F4 /* ChannelButtonBuyHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF358F617048CA600E543F4 /* ChannelButtonBuyHighlighted@2x.png */; };
+		1FF358FB1704CB3300E543F4 /* TabBarShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF358F91704CB3300E543F4 /* TabBarShadow.png */; };
+		1FF358FC1704CB3300E543F4 /* TabBarShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF358FA1704CB3300E543F4 /* TabBarShadow@2x.png */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A69616F754BC00245314 /* SYNUserTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69516F754BC00245314 /* SYNUserTabViewController.m */; };
 		BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B816F7697900245314 /* ButtonFlagDefault.png */; };
@@ -1231,6 +1233,8 @@
 		1F6D17AB1700A23100B66F09 /* BarHeaderSearchSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BarHeaderSearchSelected@2x.png"; path = "Assets/Images/BarHeaderSearchSelected@2x.png"; sourceTree = "<group>"; };
 		1FF358F517048CA600E543F4 /* ChannelButtonBuyHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelButtonBuyHighlighted.png; path = Assets/Images/ChannelButtonBuyHighlighted.png; sourceTree = "<group>"; };
 		1FF358F617048CA600E543F4 /* ChannelButtonBuyHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelButtonBuyHighlighted@2x.png"; path = "Assets/Images/ChannelButtonBuyHighlighted@2x.png"; sourceTree = "<group>"; };
+		1FF358F91704CB3300E543F4 /* TabBarShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TabBarShadow.png; path = Assets/Images/TabBarShadow.png; sourceTree = "<group>"; };
+		1FF358FA1704CB3300E543F4 /* TabBarShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TabBarShadow@2x.png"; path = "Assets/Images/TabBarShadow@2x.png"; sourceTree = "<group>"; };
 		276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
@@ -2176,6 +2180,8 @@
 		0198250F1629E21F00216900 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				1FF358F91704CB3300E543F4 /* TabBarShadow.png */,
+				1FF358FA1704CB3300E543F4 /* TabBarShadow@2x.png */,
 				01891A1916724FDF00AB07BB /* TabHomeDefault.png */,
 				01891A1A16724FDF00AB07BB /* TabHomeDefault@2x.png */,
 				01891A05167245CB00AB07BB /* TabHomeHighlighted.png */,
@@ -3636,6 +3642,8 @@
 				BEE4A6BB17035F9A008F9D05 /* ButtonChannelFollowingHighlighted@2x.png in Resources */,
 				1FF358F717048CA600E543F4 /* ChannelButtonBuyHighlighted.png in Resources */,
 				1FF358F817048CA600E543F4 /* ChannelButtonBuyHighlighted@2x.png in Resources */,
+				1FF358FB1704CB3300E543F4 /* TabBarShadow.png in Resources */,
+				1FF358FC1704CB3300E543F4 /* TabBarShadow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
