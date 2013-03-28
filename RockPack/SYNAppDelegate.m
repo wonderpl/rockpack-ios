@@ -431,7 +431,10 @@
     [self saveContext:YES];
    
 }
-
+-(void)deleteDataObject:(NSManagedObject*)managedObject
+{
+    [self.mainManagedObjectContext deleteObject:managedObject];
+}
 - (void) createDefaultUser
 {
     // See if we have already created a default user object, and if not create one
