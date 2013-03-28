@@ -21,15 +21,23 @@
     // Hide buttons not used in channel creation
     self.editButton.hidden = YES;
     self.shareButton.hidden = YES;
+    self.categoryButton.hidden = NO;
+    self.categoryStaticLabel.hidden = YES;
+    self.privateImageView.hidden = NO;
     self.saveOrDoneButtonLabel.hidden = NO;
-    
     self.channelTitleTextField.enabled = YES;
+    
+    // Frig the label frame
+    CGRect labelFrame = self.categoryLabel.frame;
+    labelFrame.origin.x += 130;
+    labelFrame.origin.y -= 10;
+    self.categoryLabel.frame = labelFrame;
+    self.categoryLabel.textAlignment = NSTextAlignmentCenter;
     
     [self showDoneButton];
     
     self.channelCoverCarouselCollectionView.hidden = TRUE;
 
-    
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = @"NAME YOUR CHANNEL...";
     self.displayNameLabel.text = @"BY YOU";

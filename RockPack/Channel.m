@@ -229,7 +229,7 @@ static NSEntityDescription *channelEntity = nil;
         self.viewId = viewId;
     }
     
-    self.categoryId = [dictionary objectForKey: @"category_id"
+    self.categoryId = [dictionary objectForKey: @"category"
                                    withDefault: @""];
     
     self.position = [dictionary objectForKey: @"position"

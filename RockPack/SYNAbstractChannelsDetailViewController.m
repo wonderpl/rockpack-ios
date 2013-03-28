@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "CCoverflowCollectionViewLayout.h"
+#import "Category.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "GKImagePicker.h"
@@ -25,6 +26,7 @@
 #import "SYNSoundPlayer.h"
 #import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
+#import "Subcategory.h"
 #import "UIFont+SYNFont.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+ImageProcessing.h"
@@ -53,10 +55,6 @@
 @property (nonatomic, strong) UIPopoverController *cameraMenuPopoverController;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet UIButton* avatarButton;
-@property (nonatomic, strong) IBOutlet UIButton* privateButton;
-@property (nonatomic, strong) IBOutlet UIButton* publicButton;
-@property (nonatomic, strong) IBOutlet UILabel* categoryLabel;
-@property (nonatomic, strong) IBOutlet UIImageView* privateImageView;
 
 @end
 
@@ -95,6 +93,9 @@
     self.saveOrDoneButtonLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.changeCoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
     self.categoryLabel.font = [UIFont rockpackFontOfSize: 17.0f];
+    self.categoryStaticLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    
+    [self updateCategoryLabel];
     
     UIColor *color = [UIColor blackColor];
     self.changeCoverLabel.layer.shadowColor = [color CGColor];
@@ -193,6 +194,48 @@
     
     
 }
+
+- (void) updateCategoryLabel
+{
+    if (self.channel.categoryId == nil)
+    {
+        self.categoryLabel.text = @"SELECT A CATEGORY";
+    }
+    else
+    {
+        NSError *error = nil;
+        
+        NSEntityDescription *subCategoryEntity = [NSEntityDescription entityForName: @"Subcategory"
+                                                             inManagedObjectContext: appDelegate.mainManagedObjectContext];
+        
+        // Now we need to see if this object already exists, and if so return it and if not create it
+        NSFetchRequest *categoryFetchRequest = [[NSFetchRequest alloc] init];
+        [categoryFetchRequest setEntity: subCategoryEntity];
+        
+        // Search on the unique Id
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", self.channel.categoryId];
+        [categoryFetchRequest setPredicate: predicate];
+        
+        NSArray *matchingChannelOwnerEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoryFetchRequest
+                                                                                                   error: &error];
+        Subcategory *subcategory;
+        
+        if (matchingChannelOwnerEntries.count > 0)
+        {
+            subcategory = matchingChannelOwnerEntries[0];
+            
+            NSString *categoryString = [NSString stringWithFormat: @"%@ / %@", subcategory.category.name, subcategory.name];
+            self.categoryLabel.text = categoryString;
+        }
+        else
+        {
+            self.categoryLabel.text = NSLocalizedString(@"Unknown", @"Unknown channel category");
+        }
+        
+    }
+}
+
+
 
 -(IBAction)tappedOnUserAvatar:(UIButton*)sender
 {
