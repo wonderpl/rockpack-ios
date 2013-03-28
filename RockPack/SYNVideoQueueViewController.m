@@ -241,7 +241,17 @@ typedef enum _kQueueMoveDirection {
     // clear objects from core data
     if(currentlyCreatingChannel) {
         
-        [appDelegate deleteDataObject:lastVideoObject];
+        for (VideoInstance* currentVideoInstance in currentlyCreatingChannel.videoInstances) {
+            if([currentVideoInstance.uniqueId isEqualToString:lastVideoObject.uniqueId]) {
+                [appDelegate deleteDataObject:currentVideoInstance];
+                
+                [appDelegate saveContext:YES];
+                
+                break;
+            }
+        }
+        
+        
     }
     
     // Animate
