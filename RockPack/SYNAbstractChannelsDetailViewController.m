@@ -52,6 +52,10 @@
 @property (nonatomic, strong) UIPopoverController *cameraMenuPopoverController;
 @property (nonatomic, strong) GKImagePicker *imagePicker;
 @property (nonatomic, strong) IBOutlet UIButton* avatarButton;
+@property (nonatomic, strong) IBOutlet UIButton* privateButton;
+@property (nonatomic, strong) IBOutlet UIButton* publicButton;
+@property (nonatomic, strong) IBOutlet UILabel* categoryLabel;
+@property (nonatomic, strong) IBOutlet UIImageView* privateImageView;
 
 @end
 
@@ -89,6 +93,7 @@
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     self.saveOrDoneButtonLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.changeCoverLabel.font = [UIFont boldRockpackFontOfSize: 24.0f];
+    self.categoryLabel.font = [UIFont rockpackFontOfSize: 17.0f];
     
     UIColor *color = [UIColor blackColor];
     self.changeCoverLabel.layer.shadowColor = [color CGColor];
@@ -518,7 +523,16 @@
         
         if (![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
         {
-            sectionSupplementaryView.cfollowButton.hidden = NO;
+            // Don't display follow button if we are creating a channel
+            if ([self.channel.uniqueId isEqualToString: kNewChannelPlaceholderId])
+            {
+                sectionSupplementaryView.cfollowButton.hidden = YES;
+            }
+            else
+            {
+                sectionSupplementaryView.cfollowButton.hidden = NO;
+            }
+            
             sectionSupplementaryView.ceditChannelButton.hidden = YES;
             
         }

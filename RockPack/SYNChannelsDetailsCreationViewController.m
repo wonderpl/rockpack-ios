@@ -28,9 +28,7 @@
     [self showDoneButton];
     
     self.channelCoverCarouselCollectionView.hidden = TRUE;
-    
-    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
-    self.collectionHeaderView.channelDescriptionTextView.text = @"Describe your channel...";
+
     
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = @"NAME YOUR CHANNEL...";
@@ -49,6 +47,10 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
+    self.collectionHeaderView.channelDescriptionTextView.text = @"Describe your channel...";
+    self.collectionHeaderView.cfollowButton.hidden = YES;
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideTabBar
                                                         object: self];
