@@ -26,6 +26,7 @@
 @property (nonatomic, strong) SYNUserItemView* followersItemView;
 @property (nonatomic, strong) UILabel* fullnameLabel;
 @property (nonatomic, strong) UILabel* usernameLabel;
+
 @property (nonatomic, strong) UIImageView* profileImageView;
 @property (nonatomic, strong) UIImageView* profileImageGlossView;
 @property (nonatomic, strong) UILabel* profileNameLabel;
@@ -45,9 +46,11 @@
         
         // == Main Holder Views == //
         
+
         
         UIImage* mainTabsBGImage = [UIImage imageNamed:@"BarHeaderYou.png"]; // 121 height
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
+
         
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
         self.mainTabsView.backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
@@ -57,6 +60,7 @@
         self.overlayView = [[UIView alloc] initWithFrame:mainFrame];
         self.overlayView.backgroundColor = [UIColor clearColor];
         self.overlayView.userInteractionEnabled = NO;
+
         
         UIView* dividerView = [[UIView alloc] initWithFrame:self.frame];
         dividerView.userInteractionEnabled = NO;
@@ -85,6 +89,7 @@
         self.usernameLabel.textColor = [UIColor rockpackHeaderSubtitleColor];
         
         [self.overlayView addSubview:self.usernameLabel];
+
         
         
         
@@ -96,6 +101,7 @@
         
         [self.channelsItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
+        [self.mainTabsView addSubview:self.channelsItemView];
         
         
         // == Following Tab == //
@@ -104,6 +110,7 @@
         
         [self.followingItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
+        [self.mainTabsView addSubview:self.followingItemView];
         
         
         // == Followers Tab == //
@@ -122,6 +129,7 @@
         
        
         
+
         
         
         // == Place Correclty == //
@@ -131,6 +139,7 @@
         CGFloat currentX = 716.0;
         CGFloat halfOffset = itemFrame.size.width * 0.5;
       
+
         for (SYNSearchItemView* itemTab in tabsToPlace)
         {
             UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DividerYou.png"]];
@@ -140,6 +149,7 @@
             
             //Kish's Absolute
             CGFloat itemY = 57.0;
+
 
             
             dividerImageView.center = CGPointMake(currentX, itemY);
@@ -175,19 +185,14 @@
         self.profileImageGlossView.image = [UIImage imageNamed:@"GlossAvatarProfile.png"];
         [self.overlayView addSubview:self.profileImageGlossView];
         
-
-        
         
         [self addSubview:self.mainTabsView];
         [self addSubview:dividerView];
-        [self addSubview:self.overlayView];
         
         
-        
+        // == Profile Pic and Name == //
         
     }
-    
-    
     return self;
 }
 
@@ -224,6 +229,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
                                                         object:self];
 }
+
 
 -(void)showUserData:(User*)nuser
 {
@@ -313,7 +319,7 @@
         tabTappedId = @"2";
     
     [self setSelectedWithId:tabTappedId];
-    
+
 }
 
 -(void)setSelectedWithId:(NSString*)selectedId

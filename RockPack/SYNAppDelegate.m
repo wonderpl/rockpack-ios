@@ -32,7 +32,6 @@
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
-
 @end
 
 @implementation SYNAppDelegate

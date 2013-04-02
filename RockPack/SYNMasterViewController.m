@@ -17,9 +17,11 @@
 #import "SYNSoundPlayer.h"
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNBottomTabViewController.h"
+
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNCategoryChooserViewController.h"
+
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -355,10 +357,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.videoViewerViewController.overlayParent = self;
     
     [UIView animateWithDuration: 0.5f
-     delay: 0.0f
-     options: UIViewAnimationOptionCurveEaseInOut
-     animations: ^
-     {
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
          self.videoViewerViewController.view.alpha = 1.0f;
      }
      completion: ^(BOOL finished)
@@ -401,6 +402,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          [bottomTabViewController.videoQueueController.view removeFromSuperview];
          [bottomTabViewController repositionQueueView];
      }];
+
 }
 
 - (void) addCategoryChooserOverlayToViewController: (UIViewController *) originViewController
@@ -650,6 +652,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      completion: ^(BOOL finished)
                      {
                      }];
+
 }
 
 
@@ -693,8 +696,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                       permittedArrowDirections: UIPopoverArrowDirectionUp
                                                       animated: YES];
 }
-
-
 
 -(void)hideAutocompletePopover
 {

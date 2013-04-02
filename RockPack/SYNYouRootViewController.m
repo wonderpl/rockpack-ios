@@ -27,8 +27,6 @@
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
-@property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
-
 @end
 
 @implementation SYNYouRootViewController
@@ -47,8 +45,8 @@
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
-    
     CGRect collectionViewFrame = CGRectMake(0.0, 158.0, 1024.0, 528.0);
+
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -110,15 +108,12 @@
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsPressed:) name:kAccountSettingsPressed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout:) name:kAccountSettingsLogout object:nil];
+
 }
 
--(void)accountSettingsPressed:(NSNotification*)notification
-{
-    [self showAccountSettingsPopover];
-}
 
 -(void)accountSettingsLogout:(NSNotification*)notification
 {
@@ -356,25 +351,6 @@
         DebugLog (@"UIGestureRecognizerStateCancelled");
         [self.pinchedView removeFromSuperview];
     }
-}
-
-
--(void)hideAutocompletePopover
-{
-    if(!self.accountSettingsPopover)
-        return;
-    
-    [self.accountSettingsPopover dismissPopoverAnimated:YES];
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    if(popoverController == self.accountSettingsPopover)
-    {
-        
-        self.accountSettingsPopover = nil;
-    }
-    
 }
 
 @end
