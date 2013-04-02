@@ -155,10 +155,10 @@ typedef enum _kQueueMoveDirection {
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
     
-    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.mainManagedObjectContext];
+    Channel *newChannel = [Channel insertInManagedObjectContext: appDelegate.channelsManagedObjectContext];
     
     newChannel.channelOwner = appDelegate.channelOwnerMe;
-    newChannel.viewId = @"ChannelDetails";
+    newChannel.viewId = @"ChannelCreation";
     
     // Set the channel's unique Id to something temporary so that we can perform queries for the videoinstances it contains
     newChannel.uniqueId = kNewChannelPlaceholderId;
@@ -167,10 +167,12 @@ typedef enum _kQueueMoveDirection {
     {
         VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
                                                                            forChannel:newChannel
-                                                            usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                                            andViewId:@"ChannelDetails"];
+                                                            usingManagedObjectContext:appDelegate.channelsManagedObjectContext
+                                                                            andViewId:@"ChannelCreation"];
         [newChannel.videoInstancesSet addObject: copyOfVideoInstance];
     }
+    
+    [appDelegate saveChannelsContext];
     
     currentlyCreatingChannel = newChannel;
     
@@ -239,12 +241,14 @@ typedef enum _kQueueMoveDirection {
     [self.selectedVideos removeLastObject];
     
     // clear objects from core data
+    
     if(currentlyCreatingChannel) {
         
         for (VideoInstance* currentVideoInstance in currentlyCreatingChannel.videoInstances) {
+            
             if([currentVideoInstance.uniqueId isEqualToString:lastVideoObject.uniqueId]) {
-                [appDelegate deleteDataObject:currentVideoInstance];
                 
+                [appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
                 [appDelegate saveContext:YES];
                 
                 break;
@@ -405,7 +409,7 @@ typedef enum _kQueueMoveDirection {
     {
         VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
                                                                            forChannel:currentlyCreatingChannel
-                                                            usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                            usingManagedObjectContext:appDelegate.channelsManagedObjectContext
                                                                             andViewId:@"ChannelDetails"];
         
         [currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];

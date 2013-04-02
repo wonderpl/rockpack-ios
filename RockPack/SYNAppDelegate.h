@@ -55,6 +55,7 @@
 -(void)deleteDataObject:(NSManagedObject*)managedObject;
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
+-(void) saveChannelsContext;
 - (void) resetCoreDataStack;
 -(void)clearData;
 -(void)logout;

@@ -411,6 +411,19 @@
     }
 }
 
+-(void) saveChannelsContext
+{
+    if(!self.channelsManagedObjectContext)
+        return;
+    
+    if([self.channelsManagedObjectContext hasChanges])
+    {
+        NSError *error = nil;
+        ZAssert([self.channelsManagedObjectContext save: &error], @"Error saving Search moc: %@\n%@",
+                [error localizedDescription], [error userInfo]);
+    }
+}
+
 
 #pragma mark - Network engine suport
 
