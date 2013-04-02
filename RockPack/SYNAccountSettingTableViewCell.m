@@ -33,4 +33,6 @@
     tableCellFrame.origin.y = 6.0;
     self.textLabel.frame = tableCellFrame;
 }
+
+
 @end
