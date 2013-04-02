@@ -31,13 +31,17 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == '%@'", uniqueId];
     [userFetchRequest setPredicate: predicate];
     
-    NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: userFetchRequest
-                                                                                   error: &error];
+    
+    NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: userFetchRequest error: &error];
     User *instance;
     
     if (matchingCategoryInstanceEntries.count > 0)
     {
         instance = matchingCategoryInstanceEntries[0];
+        
+        [instance updateAttributesFromDictionary:dictionary
+                                          withId:uniqueId
+                       usingManagedObjectContext:managedObjectContext];
         
         return instance;
     }
@@ -54,6 +58,58 @@
         
         return instance;
     }
+}
+
+-(void)updateAttributesFromDictionary: (NSDictionary*) dictionary
+                               withId: (NSString*)uniqueId
+            usingManagedObjectContext: (NSManagedObjectContext*)managedObjectContext {
+    
+    
+    
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        return;
+    }
+    
+    if(self.uniqueId != uniqueId)
+    {
+        DebugLog(@"The user you re trying to update does not match the data");
+        return;
+    }
+    
+    self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
+                                     withDefault: @"http://"];
+    
+    self.displayName = [dictionary upperCaseStringForKey: @"display_name"
+                                             withDefault: @""];
+    
+    NSDictionary* channelsDictionary = [self channelsDictionary];
+    
+    NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
+    NSArray* channelItemsArray = [channelsArray objectForKey:@"items"];
+    for (NSDictionary* channelDictionary in channelItemsArray)
+    {
+        
+        NSString* channelId = [dictionary objectForKey:@"id"];
+        if(!channelId || [channelId isEqualToString:@""])
+            continue;
+        
+        NSString* existingChannel = [channelsDictionary objectForKey:channelId];
+        if(existingChannel)
+            continue;
+        
+        Channel* channel = [Channel instanceFromDictionary:channelDictionary
+                                 usingManagedObjectContext:managedObjectContext
+                                              channelOwner:self
+                                                 andViewId:@"You"];
+        
+        [self addChannelsObject:channel];
+        
+    }
+    
+    
+    
 }
 
 

@@ -162,6 +162,15 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
+                                                        object:self
+                                                      userInfo:@{@"lock" : @(YES)}];
+}
+
 
 
 
