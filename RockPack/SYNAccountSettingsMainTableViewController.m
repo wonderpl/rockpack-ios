@@ -20,6 +20,8 @@
 #import "SYNAccountSettingsShareSettings.h"
 #import "SYNAccountSettingsPassword.h"
 #import "SYNAccountSettingsLocation.h"
+#import "SYNAccountSettingsEmail.h"
+#import "SYNAccountSettingsUsername.h"
 #import "SYNAccountSettingsAbout.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
@@ -233,12 +235,12 @@
                 break;
                 
             case 1:
-                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeUsername] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsUsername alloc] initWithUserFieldType:UserFieldTypeUsername] animated:YES];
                 
                 break;
                 
             case 2:
-                [self.navigationController pushViewController:[[SYNAccountSettingsTextInputController alloc] initWithUserFieldType:UserFieldTypeEmail] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsEmail alloc] initWithUserFieldType:UserFieldTypeEmail] animated:YES];
                 break;
                 
             case 3:
