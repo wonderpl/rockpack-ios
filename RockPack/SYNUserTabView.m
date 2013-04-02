@@ -188,6 +188,7 @@
         
         [self addSubview:self.mainTabsView];
         [self addSubview:dividerView];
+        [self addSubview:self.overlayView];
         
         
         // == Profile Pic and Name == //
