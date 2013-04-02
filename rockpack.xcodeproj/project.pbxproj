@@ -1307,7 +1307,6 @@
 		BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSettingsHighlighted@2x.png"; path = "Assets/Images/ButtonSettingsHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE03A6D416F784B000245314 /* SYNAccountSettingsGender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsGender.h; sourceTree = "<group>"; };
 		BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsGender.m; sourceTree = "<group>"; };
-		BE03A6D716F787CA00245314 /* SYNAccountSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingTableViewCell.h; sourceTree = "<group>"; };
 		BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingTableViewCell.m; sourceTree = "<group>"; };
 		BE08159D16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabViewController.h; sourceTree = "<group>"; };
 		BE08159E16D3EF7F00ADB1DC /* SYNCategoriesTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabViewController.m; sourceTree = "<group>"; };
@@ -1480,6 +1479,7 @@
 		BEE4A6AE17035F9A008F9D05 /* ButtonChannelFollowingHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonChannelFollowingHighlighted.png; path = Assets/Images/ButtonChannelFollowingHighlighted.png; sourceTree = "<group>"; };
 		BEE4A6AF17035F9A008F9D05 /* ButtonChannelFollowingHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChannelFollowingHighlighted@2x.png"; path = "Assets/Images/ButtonChannelFollowingHighlighted@2x.png"; sourceTree = "<group>"; };
 		BEE4A6BD170B0FD6008F9D05 /* rockpack-Release-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "rockpack-Release-Info.plist"; path = "RockPack/rockpack-Release-Info.plist"; sourceTree = "<group>"; };
+		BEE4A6BF170B273F008F9D05 /* SYNAccountSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingTableViewCell.h; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2812,7 +2812,7 @@
 				BE03A6D016F7840800245314 /* Secondary Tables */,
 				BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */,
 				BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */,
-				BE03A6D716F787CA00245314 /* SYNAccountSettingTableViewCell.h */,
+				BEE4A6BF170B273F008F9D05 /* SYNAccountSettingTableViewCell.h */,
 				BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */,
 				BE21EE8116FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.h */,
 				BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */,
