@@ -447,6 +447,12 @@
 
 -(void)clearData
 {
+    [self clearVideoInstances];
+    [self clearChannels];
+}
+
+-(void)clearVideoInstances
+{
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     
@@ -456,15 +462,36 @@
     
     NSError *error;
     NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
-                          
+    
     for (NSManagedObject* objectToDelete in items) {
         
         [self.mainManagedObjectContext deleteObject:objectToDelete];
     }
     
     [self saveContext:YES];
-   
 }
+
+-(void)clearChannels
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Channel"
+                                              inManagedObjectContext:self.mainManagedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSError *error;
+    NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    for (NSManagedObject* objectToDelete in items) {
+        
+        [self.mainManagedObjectContext deleteObject:objectToDelete];
+    }
+    
+    [self saveContext:YES];
+}
+
+
 -(void)deleteDataObject:(NSManagedObject*)managedObject
 {
     [self.mainManagedObjectContext deleteObject:managedObject];
