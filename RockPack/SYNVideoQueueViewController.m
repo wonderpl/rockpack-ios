@@ -284,15 +284,20 @@ typedef enum _kQueueMoveDirection {
     [self.selectedVideos removeAllObjects];
     
     for (VideoInstance* currentVideoInstance in currentlyCreatingChannel.videoInstances) {
-        [appDelegate deleteDataObject:currentVideoInstance];
+        [appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
     }
+    
+    if(currentlyCreatingChannel) {
+        [appDelegate.channelsManagedObjectContext deleteObject:currentlyCreatingChannel];
+        self.currentlyCreatingChannel = nil;
+    }
+    
     
     [appDelegate saveChannelsContext];
     
     
-    self.currentlyCreatingChannel = nil;
-    
     [self.videoQueueView clearVideoQueue];
+    
 }
 
 
