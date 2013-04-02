@@ -701,9 +701,6 @@
         }
         
         
-        
-        
-        
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
         [appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
@@ -719,6 +716,7 @@
               }
               errorHandler: ^(NSDictionary* errorDictionary)
               {
+                  
               }];
          }
          errorHandler: ^(NSDictionary* errorDictionary)
