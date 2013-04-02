@@ -32,6 +32,8 @@
 
 @property (nonatomic, readonly) NSManagedObjectContext *searchManagedObjectContext;
 
+@property (nonatomic, readonly) NSManagedObjectContext *channelsManagedObjectContext;
+
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (readonly, nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;

@@ -27,6 +27,8 @@
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *privateManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *searchManagedObjectContext;
+@property (nonatomic, strong) NSManagedObjectContext *channelsManagedObjectContext;
+
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
@@ -209,6 +211,9 @@
 
 - (void) initializeCoreDataStack
 {
+    
+    NSError* error;
+    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource: @"Rockpack" withExtension: @"momd"];
     ZAssert(modelURL, @"Failed to find model URL");
     
@@ -231,16 +236,29 @@
     
     self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     NSPersistentStoreCoordinator *searchPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
-    NSError* error;
     NSPersistentStore* searchStore = [searchPersistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
                                                                                     configuration:nil
                                                                                               URL:nil
                                                                                           options:nil
                                                                                             error:&error];
     ZAssert(searchStore, @"Failed to initialize search managed context in app delegate");
-    
-    
     self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
+    
+    
+    
+    // == Channel Context
+    
+    self.channelsManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
+    NSPersistentStoreCoordinator *channelsPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
+    NSPersistentStore* channelsStore = [channelsPersistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+                                                                                        configuration:nil
+                                                                                                  URL:nil
+                                                                                              options:nil
+                                                                                                error:&error];
+    
+    ZAssert(channelsStore, @"Failed to initialize channels managed context in app delegate");
+    self.channelsManagedObjectContext.persistentStoreCoordinator = channelsPersistentStoreCoordinator;
+    
     
 
     NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
