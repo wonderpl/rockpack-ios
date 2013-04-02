@@ -23,6 +23,7 @@
 @synthesize inputField, saveButton, errorTextField;
 @synthesize appDelegate;
 @synthesize lastTextFieldY;
+@synthesize spinner;
 
 -(id)initWithUserFieldType:(UserFieldType)userFieldType
 {
@@ -30,6 +31,8 @@
         
         currentFieldType = userFieldType;
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
         
     }
     return self;
@@ -89,6 +92,9 @@
     
     
     [self.view addSubview:inputField];
+    
+    self.spinner.center = self.saveButton.center;
+    [self.view addSubview:self.spinner];
     
     
     
@@ -154,110 +160,61 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    
-    if(![self formIsValid]) {
-        
-        // show error;
-        
-        
-        return;
-    }
-    
-    
-    
-    
-    switch (currentFieldType) {
-            
-        case UserFieldTypeFullname:
-            
-            break;
-            
-        case UserFieldTypeUsername:
-            
-            [self updateUsername];
-            
-            
-            break;
-            
-        case UserFieldTypeEmail:
-            
-            break;
-            
-    }
-    
+    // implement in subclass
     
 }
 
 #pragma mark - Updating User
 
 
+
 -(void)updateEmail
 {
     saveButton.enabled = NO;
     
-    [appDelegate.oAuthNetworkEngine changeUsernameForUserId:appDelegate.currentUser.uniqueId
-                                                   username:inputField.text
-                                          completionHandler:^(id object) {
-                                              
-                                              
-                                              
-                                              appDelegate.currentUser.emailAddress = inputField.text;
-                                              
-                                              
-                                              [appDelegate saveContext:YES];
-                                              
-                                              [self.navigationController popViewControllerAnimated:YES];
-                                              
-                                          } errorHandler:^(id object) {
-                                              
-                                          }];
+    
+    [appDelegate.oAuthNetworkEngine changeUserField:@"email"
+                                            forUser:appDelegate.currentUser
+                                  completionHandler:^ {
+                                      
+                                      NSArray* componentsOfInput = [inputField.text componentsSeparatedByString:@" "];
+                                      
+                                      appDelegate.currentUser.firstName = componentsOfInput[0];
+                                      appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
+                                      
+                                      
+                                      [appDelegate saveContext:YES];
+                                      
+                                      [self.navigationController popViewControllerAnimated:YES];
+                                      
+                                  } errorHandler:^(id object) {
+                                      
+                                  }];
 }
 
--(void)updateFullName
-{
-    saveButton.enabled = NO;
-    
-    [appDelegate.oAuthNetworkEngine changeUsernameForUserId:appDelegate.currentUser.uniqueId
-                                                   username:inputField.text
-                                          completionHandler:^(id object) {
-                                              
-                                              
-                                              
-                                              NSArray* componentsOfInput = [inputField.text componentsSeparatedByString:@" "];
-                                          
-                                              appDelegate.currentUser.firstName = componentsOfInput[0];
-                                              appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
-                                              
-                                              
-                                              [appDelegate saveContext:YES];
-                                              
-                                              [self.navigationController popViewControllerAnimated:YES];
-                                              
-                                          } errorHandler:^(id object) {
-                                              
-                                          }];
-}
+
 
 -(void)updateUsername
 {
     saveButton.enabled = NO;
     
-    [appDelegate.oAuthNetworkEngine changeUsernameForUserId:appDelegate.currentUser.uniqueId
-                                                   username:inputField.text
-                                          completionHandler:^(id object) {
-                                              
-                                              
-                                              
-                                              appDelegate.currentUser.username = inputField.text;
-                                              
-                                              
-                                              [appDelegate saveContext:YES];
-                                              
-                                              [self.navigationController popViewControllerAnimated:YES];
-                                              
-                                          } errorHandler:^(id object) {
-                                              
-                                          }];
+    [appDelegate.oAuthNetworkEngine changeUserField:@"username"
+                                            forUser:appDelegate.currentUser
+                                  completionHandler:^ {
+                                      
+                                      NSArray* componentsOfInput = [inputField.text componentsSeparatedByString:@" "];
+                                      
+                                      appDelegate.currentUser.firstName = componentsOfInput[0];
+                                      appDelegate.currentUser.lastName = componentsOfInput[componentsOfInput.count - 1];
+                                      
+                                      
+                                      [appDelegate saveContext:YES];
+                                      
+                                      [self.navigationController popViewControllerAnimated:YES];
+                                      
+                                  } errorHandler:^(id object) {
+                                      
+                                  }];
     
     
 }

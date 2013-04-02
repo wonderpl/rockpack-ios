@@ -42,6 +42,7 @@
 // User details
 #define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
 #define kAPIChangeUserName          @"/ws/USERID/username/"                     /* PUT */
+#define kAPIChangeUserFields        @"/ws/USERID/ATTRIBUTE/"
 
 // Avatar
 #define kAPIUpdateAvatar           @"/ws/USERID/avatar/"                       /* PUT */

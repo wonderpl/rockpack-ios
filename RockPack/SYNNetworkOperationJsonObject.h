@@ -15,6 +15,7 @@ typedef void (^MKNKLoginCompleteBlock) (SYNOAuth2Credential *);
 typedef void (^MKNKUserCompleteBlock) (User*);
 typedef void (^MKNKUserErrorBlock) (id);
 typedef void (^MKNKUserSuccessBlock) (id);
+typedef void (^MKNKBasicSuccessBlock)(void);
 
 #import "AppConstants.h"
 

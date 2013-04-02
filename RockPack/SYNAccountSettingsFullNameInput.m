@@ -8,6 +8,7 @@
 
 #import "SYNAccountSettingsFullNameInput.h"
 #import "UIFont+SYNFont.h"
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNAccountSettingsFullNameInput ()
 
@@ -84,7 +85,63 @@
     return cell;
 }
 
+-(void)saveButtonPressed:(UIButton*)button
+{
+    
+    self.saveButton.enabled = NO;
+    self.saveButton.hidden = YES;
+    
+    [self.spinner startAnimating];
+    
+    [self updateFirstName];
+}
 
+
+-(void)updateFirstName
+{
+    
+    
+    [self.appDelegate.oAuthNetworkEngine changeUserField:@"first_name"
+                                            forUser:self.appDelegate.currentUser
+                                  completionHandler:^ {
+                                      
+                                      NSArray* componentsOfInput = [self.inputField.text componentsSeparatedByString:@" "];
+                                      
+                                      self.appDelegate.currentUser.firstName = componentsOfInput[0];
+                                      
+                                      
+                                      [self.appDelegate saveContext:YES];
+                                      
+                                      [self updateLastName];
+                                      
+                                      
+                                      
+                                  } errorHandler:^(id object) {
+                                      
+                                  }];
+}
+
+-(void)updateLastName
+{
+    
+    
+    [self.appDelegate.oAuthNetworkEngine changeUserField:@"last_name"
+                                            forUser:self.appDelegate.currentUser
+                                  completionHandler:^ {
+                                      
+                                      NSArray* componentsOfInput = [self.inputField.text componentsSeparatedByString:@" "];
+                                      
+                                      self.appDelegate.currentUser.firstName = componentsOfInput[0];
+                                      
+                                      
+                                      [self.appDelegate saveContext:YES];
+                                      
+                                      [self.navigationController popViewControllerAnimated:YES];
+                                      
+                                  } errorHandler:^(id object) {
+                                      
+                                  }];
+}
 
 #pragma mark - Table view delegate
 

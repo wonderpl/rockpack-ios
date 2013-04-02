@@ -35,11 +35,6 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                       completionHandler: (MKNKUserSuccessBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) changeUsernameForUserId: (NSString *) userId
-                        username: (NSString *) username
-               completionHandler: (MKNKUserSuccessBlock) completionBlock
-                    errorHandler: (MKNKUserErrorBlock) errorBlock;
-
 // Avatars
 
 - (void) updateAvatarForUserId: (NSString *) userId
@@ -153,6 +148,11 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                      completionHandler: (MKNKUserSuccessBlock) completionBlock
                           errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+
+- (void) changeUserField: (NSString*) userField
+                 forUser: (User *) user
+       completionHandler: (MKNKBasicSuccessBlock) completionBlock
+            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) updateChannel: (NSString *) resourceURL;
 

@@ -28,6 +28,7 @@ typedef enum {
 @property (nonatomic, strong) UIButton* saveButton;
 @property (nonatomic, strong) UITextField* errorTextField;
 @property (nonatomic, strong) SYNAppDelegate* appDelegate;
+@property (nonatomic, strong) UIActivityIndicatorView* spinner;
 
 
 -(id)initWithUserFieldType:(UserFieldType)userFieldType;

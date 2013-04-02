@@ -256,14 +256,15 @@
 }
 
 
-- (void) changeUsernameForUserId: (NSString *) userId
-                        username: (NSString *) username
-                completionHandler: (MKNKUserSuccessBlock) completionBlock
-                     errorHandler: (MKNKUserErrorBlock) errorBlock
-{
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+
+- (void) changeUserField: (NSString*) userField
+                 forUser: (User *) user
+       completionHandler: (MKNKBasicSuccessBlock) completionBlock
+            errorHandler: (MKNKUserErrorBlock) errorBlock {
     
-    NSString *apiString = [kAPIChangeUserName stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId, @"ATTRIBUTE" : userField};
+    
+    NSString *apiString = [kAPIChangeUserFields stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: nil
@@ -272,13 +273,21 @@
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {
          // Wrap it in quotes to make it valid JSON
-         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", username];
+         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", user.username];
          return JSONFormattedPassword;
      } forType: @"application/json"];
     
-    [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: completionBlock
-                                errorHandler: errorBlock];
+    [networkOperation addCompletionHandler:^(MKNetworkOperation* operation) {
+        
+        if(operation.HTTPStatusCode == 204) {
+            
+            completionBlock();
+        }
+    
+    
+    } errorHandler:^(MKNetworkOperation* operation, NSError* error) {
+        
+    }];
     
     [self enqueueSignedOperation: networkOperation];
 }
