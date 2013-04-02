@@ -249,7 +249,7 @@ typedef enum _kQueueMoveDirection {
             if([currentVideoInstance.uniqueId isEqualToString:lastVideoObject.uniqueId]) {
                 
                 [appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
-                [appDelegate saveContext:YES];
+                [appDelegate saveChannelsContext];
                 
                 break;
             }
@@ -287,7 +287,7 @@ typedef enum _kQueueMoveDirection {
         [appDelegate deleteDataObject:currentVideoInstance];
     }
     
-    [appDelegate saveContext:YES];
+    [appDelegate saveChannelsContext];
     
     
     self.currentlyCreatingChannel = nil;
