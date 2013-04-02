@@ -17,4 +17,6 @@
 + (ChannelOwner *) instanceFromChannelOwner:(ChannelOwner*)existingChannelOwner
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
+-(NSDictionary*) channelsDictionary;
+
 @end

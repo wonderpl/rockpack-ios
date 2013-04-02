@@ -25,12 +25,24 @@
 
 - (NSString *) hostName
 {
-    if(kUsingProductionAPI)
-        return kAPIProductionHostName;
-    
-    return kAPIHostName;
+    return hostName;
 }
 
+-(id)initWithDefaultSettings
+{
+    self = [super initWithDefaultSettings];
+    
+    if(self) {
+        
+        hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIHostName"];
+        
+    }
+    
+    
+    // read host from plist
+    
+    return self;
+}
 
 
 #pragma mark - Engine API

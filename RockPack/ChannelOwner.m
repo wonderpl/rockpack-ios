@@ -29,6 +29,8 @@ static NSEntityDescription *channelOwnerEntity = nil;
     
     instance.displayName = existingChannelOwner.displayName;
     
+    // no videos
+    
     return instance;
 }
 
@@ -135,6 +137,15 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 
 #pragma mark - Helper methods
+
+-(NSDictionary*) channelsDictionary
+{
+    NSMutableDictionary* cDictionary = [NSMutableDictionary dictionary];
+    for (Channel *channel in self.channels) {
+        [cDictionary setObject:channel forKey:channel.uniqueId];
+    }
+    return [NSDictionary dictionaryWithDictionary:cDictionary];
+}
 
 - (NSString *) description
 {

@@ -32,6 +32,8 @@
 
 @property (nonatomic, readonly) NSManagedObjectContext *searchManagedObjectContext;
 
+@property (nonatomic, readonly) NSManagedObjectContext *channelsManagedObjectContext;
+
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (readonly, nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
@@ -53,6 +55,7 @@
 -(void)deleteDataObject:(NSManagedObject*)managedObject;
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
+-(void) saveChannelsContext;
 - (void) resetCoreDataStack;
 -(void)clearData;
 -(void)logout;
