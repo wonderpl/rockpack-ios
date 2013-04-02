@@ -38,16 +38,18 @@
     
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    // read host from plist
+    
+    hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"SecureAPIHostName"];
+
+    
     return self;
 }
 
 
 - (NSString *) hostName
 {
-    if(kUsingProductionAPI)
-        return kAPISecureProductionHostName;
-    
-    return kAPISecureHostName;
+    return hostName;
 }
 
 

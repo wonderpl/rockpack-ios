@@ -13,6 +13,7 @@
 #import "User.h"
 
 @implementation SYNAbstractNetworkEngine
+@synthesize hostName;
 
 - (id) initWithDefaultSettings
 {

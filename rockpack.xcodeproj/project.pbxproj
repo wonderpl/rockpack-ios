@@ -673,6 +673,7 @@
 		BEE4A6B917035F9A008F9D05 /* ButtonChannelFollowing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6AD17035F99008F9D05 /* ButtonChannelFollowing@2x.png */; };
 		BEE4A6BA17035F9A008F9D05 /* ButtonChannelFollowingHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6AE17035F9A008F9D05 /* ButtonChannelFollowingHighlighted.png */; };
 		BEE4A6BB17035F9A008F9D05 /* ButtonChannelFollowingHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6AF17035F9A008F9D05 /* ButtonChannelFollowingHighlighted@2x.png */; };
+		BEE4A6BE170B0FD6008F9D05 /* rockpack-Release-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6BD170B0FD6008F9D05 /* rockpack-Release-Info.plist */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
@@ -688,7 +689,7 @@
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		010DEFD81629BDC40080F26B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		010DEFDC1629BDC40080F26B /* rockpack-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "rockpack-Info.plist"; path = "RockPack/rockpack-Info.plist"; sourceTree = "<group>"; };
+		010DEFDC1629BDC40080F26B /* rockpack-Develop-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "rockpack-Develop-Info.plist"; path = "RockPack/rockpack-Develop-Info.plist"; sourceTree = "<group>"; };
 		010DEFDE1629BDC40080F26B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		010DEFE01629BDC40080F26B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		010DEFE21629BDC40080F26B /* rockpack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rockpack-Prefix.pch"; sourceTree = "<group>"; };
@@ -1478,6 +1479,7 @@
 		BEE4A6AD17035F99008F9D05 /* ButtonChannelFollowing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChannelFollowing@2x.png"; path = "Assets/Images/ButtonChannelFollowing@2x.png"; sourceTree = "<group>"; };
 		BEE4A6AE17035F9A008F9D05 /* ButtonChannelFollowingHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonChannelFollowingHighlighted.png; path = Assets/Images/ButtonChannelFollowingHighlighted.png; sourceTree = "<group>"; };
 		BEE4A6AF17035F9A008F9D05 /* ButtonChannelFollowingHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChannelFollowingHighlighted@2x.png"; path = "Assets/Images/ButtonChannelFollowingHighlighted@2x.png"; sourceTree = "<group>"; };
+		BEE4A6BD170B0FD6008F9D05 /* rockpack-Release-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "rockpack-Release-Info.plist"; path = "RockPack/rockpack-Release-Info.plist"; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2111,7 +2113,8 @@
 		019824DF1629CA6000216900 /* Property List */ = {
 			isa = PBXGroup;
 			children = (
-				010DEFDC1629BDC40080F26B /* rockpack-Info.plist */,
+				BEE4A6BD170B0FD6008F9D05 /* rockpack-Release-Info.plist */,
+				010DEFDC1629BDC40080F26B /* rockpack-Develop-Info.plist */,
 				01B37241162EBAD800A9F8F5 /* RockPack.entitlements */,
 			);
 			name = "Property List";
@@ -3753,6 +3756,7 @@
 				1FF358FC1704CB3300E543F4 /* TabBarShadow@2x.png in Resources */,
 				1FF358FF1704D39900E543F4 /* ComingSoonFriends.png in Resources */,
 				1FF359001704D39900E543F4 /* ComingSoonFriends@2x.png in Resources */,
+				BEE4A6BE170B0FD6008F9D05 /* rockpack-Release-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4022,7 +4026,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
-				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
+				INFOPLIST_FILE = "RockPack/rockpack-Develop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
@@ -4051,7 +4055,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
-				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
+				INFOPLIST_FILE = "RockPack/rockpack-Release-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
@@ -4105,7 +4109,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
-				INFOPLIST_FILE = "RockPack/rockpack-Info.plist";
+				INFOPLIST_FILE = "RockPack/rockpack-Release-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",

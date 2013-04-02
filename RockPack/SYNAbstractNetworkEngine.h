@@ -17,15 +17,17 @@
 
 @class SYNNetworkOperationJsonObject;
 
-@interface SYNAbstractNetworkEngine : MKNetworkEngine
+@interface SYNAbstractNetworkEngine : MKNetworkEngine {
+    NSString* hostName;
+}
 
 @property (nonatomic, strong) NSString *localeString;
 @property (nonatomic, strong) SYNMainRegistry* registry;
 @property (nonatomic, strong) SYNSearchRegistry* searchRegistry;
+@property (nonatomic, readonly) NSString* hostName;
 
 - (id) initWithDefaultSettings;
 
-- (NSString *) hostName;
 
 - (void) addCommonHandlerToNetworkOperation: (SYNNetworkOperationJsonObject *) networkOperation
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
@@ -37,8 +39,8 @@
 - (NSDictionary *) paramsAndLocaleForStart: (int) start
                                       size: (int) size;
 
--(NSDictionary*)getLocalParam;
+-(NSDictionary*) getLocalParam;
 
--(NSDictionary*)getLocalParamWithParams:(NSDictionary*)parameters;
+-(NSDictionary*) getLocalParamWithParams:(NSDictionary*)parameters;
 
 @end
