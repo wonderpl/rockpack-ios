@@ -179,7 +179,7 @@
                 if(!user.dateOfBirth)
                     cell.textLabel.text = @"Date of Birth";
                 else
-                    cell.textLabel.text = [self getDOBStringFromCurrentUser];
+                    cell.textLabel.text = [self getDOBPlainStringFromCurrentUser];
                 
                 cell.detailTextLabel.text = @"D.O.B Private";
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
@@ -360,7 +360,7 @@
 {
     user.dateOfBirth = datePicker.date;
     
-    NSString* dateString = [self getDOBStringFromCurrentUser];
+    NSString* dateString = [self getDOBFormattedStringFromCurrentUser];
     
     [self getDOBTableViewCell].textLabel.text = dateString;
     
@@ -379,7 +379,7 @@
     
 }
 
--(NSString*)getDOBStringFromCurrentUser
+-(NSString*)getDOBPlainStringFromCurrentUser
 {
     if(!user.dateOfBirth)
         return @"";
@@ -388,6 +388,18 @@
     
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    return [dateFormatter stringFromDate:user.dateOfBirth];
+}
+
+-(NSString*)getDOBFormattedStringFromCurrentUser
+{
+    if(!user.dateOfBirth)
+        return @"";
+    
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     return [dateFormatter stringFromDate:user.dateOfBirth];
 }
