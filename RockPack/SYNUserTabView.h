@@ -13,5 +13,6 @@
 @interface SYNUserTabView : SYNTabView
 
 -(void)showOwnerData:(ChannelOwner*)user;
+-(void)showUserData:(User*)nuser;
 
 @end

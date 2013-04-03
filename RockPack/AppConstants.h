@@ -86,6 +86,7 @@
 
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout     @"kAccountSettingsLogout"
+#define kUserDataChanged     @"kUserDataChanged"
 
 
 

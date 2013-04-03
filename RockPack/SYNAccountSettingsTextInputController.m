@@ -217,6 +217,10 @@
                                             withNewValue:newValue
                                        completionHandler:^ {
                                            
+                                           [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged
+                                                                                               object:self
+                                                                                             userInfo:@{field:newValue}];
+                                           
                                            successBlock();
                                            
                                        } errorHandler:^(id errorInfo) {

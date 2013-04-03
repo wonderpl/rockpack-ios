@@ -10,6 +10,7 @@
 #import "SYNUserTabView.h"
 #import "SYNSearchItemView.h"
 #import "SYNSearchTabView.h"
+#import "AppConstants.h"
 
 @interface SYNUserTabViewController ()
 
@@ -34,6 +35,19 @@
                                  self.view.frame.size.width,
                                  self.view.frame.size.height);
     
+    
+}
+
+-(void)viewDidLoad
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataDidChange:)
+                                                 name:kUserDataChanged
+                                               object:nil];
+}
+
+-(void)dataDidChange:(NSNotification*)notification
+{
     
 }
 
