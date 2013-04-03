@@ -48,7 +48,11 @@
 
 -(void)dataDidChange:(NSNotification*)notification
 {
+    User* currentUser = (User*)[[notification userInfo] objectForKey:@"user"];
+    if(!currentUser)
+        return;
     
+    [self.userTabView showUserData:currentUser];
 }
 
 -(void)setOwner:(ChannelOwner *)nowner

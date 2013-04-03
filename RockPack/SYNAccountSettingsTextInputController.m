@@ -170,6 +170,7 @@
         return;
     }
     
+    
 }
 
 
@@ -217,17 +218,21 @@
                                             withNewValue:newValue
                                        completionHandler:^ {
                                            
-                                           [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged
-                                                                                               object:self
-                                                                                             userInfo:@{field:newValue}];
-                                           
-                                           successBlock();
-                                           
-                                       } errorHandler:^(id errorInfo) {
-                                           
                                            [self.spinner stopAnimating];
                                            self.saveButton.hidden = NO;
                                            self.saveButton.enabled = YES;
+                                           
+                                           successBlock();
+                                           
+                                           [[NSNotificationCenter defaultCenter] postNotificationName:kUserDataChanged
+                                                                                               object:self
+                                                                                             userInfo:@{@"user":appDelegate.currentUser}];
+                                           
+                                           
+                                           
+                                       } errorHandler:^(id errorInfo) {
+                                           
+                                           
                                            
                                            if(!errorInfo || ![errorInfo isKindOfClass:[NSDictionary class]])
                                                return;
