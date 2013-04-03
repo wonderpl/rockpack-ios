@@ -300,6 +300,9 @@
                                                                 videoInstanceSet: self.channel.videoInstancesSet
                                                                completionHandler: ^(NSDictionary *responseDictionary) {
                                                                    
+                                                                   [[NSNotificationCenter defaultCenter]
+                                                                    postNotificationName:kVideoQueueChannelCreated object:self];
+                                                                   
                                                                    DebugLog(@"Channel video array update successful");
                                                                    
                                                                } errorHandler: ^(NSDictionary* errorDictionary) {
@@ -343,14 +346,16 @@
              [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                                    channelId: self.channel.uniqueId
                                                             videoInstanceSet: self.channel.videoInstancesSet
-              completionHandler: ^(NSDictionary *responseDictionary)
-              {
-                  DebugLog(@"Channel video array update successful");
-              }
-              errorHandler: ^(NSDictionary* errorDictionary)
-              {
-                  DebugLog(@"Channel video array update failed");
-              }];
+                                                           completionHandler: ^(NSDictionary *responseDictionary) {
+                                                               
+                                                               DebugLog(@"Channel video array update successful");
+                                                               
+                                                               [[NSNotificationCenter defaultCenter]
+                                                                postNotificationName:kVideoQueueChannelCreated object:self];
+                                                           
+                                                           } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                                    DebugLog(@"Channel video array update failed");
+                                                            }];
          }
          errorHandler: ^(NSDictionary* errorDictionary)
          {

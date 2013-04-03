@@ -92,7 +92,7 @@
 - (IBAction) addToVideoQueueFromLargeVideo: (UIButton*) button
 {
     
-    
+    //self.addItButton.enabled = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
                                                         object:self
                                                       userInfo:@{@"VideoInstance" : self.videoInstance}];
@@ -119,6 +119,7 @@
                                selectedIndexPath: (NSIndexPath *) selectedIndexPath
                                         autoPlay: (BOOL) autoPlay {
     
+    //self.addItButton.enabled = YES;
     [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: fetchedResultsController
                                                             selectedIndexPath: selectedIndexPath
                                                                      autoPlay: TRUE];
@@ -126,6 +127,8 @@
 
 - (void) playVideoAtIndex: (NSIndexPath *) newIndexPath
 {
+    
+    //self.addItButton.enabled = YES;
     [self.videoPlaybackViewController playVideoAtIndex:newIndexPath];
 }
 

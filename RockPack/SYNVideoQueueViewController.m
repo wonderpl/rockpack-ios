@@ -74,6 +74,10 @@ typedef enum _kQueueMoveDirection {
                                           action: @selector(createChannelFromVideoQueue)
                                 forControlEvents: UIControlEventTouchUpInside];
     
+    [self.videoQueueView.existingButton addTarget: self
+                                           action: @selector(addToExistingChannel)
+                                 forControlEvents: UIControlEventTouchUpInside];
+    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleVideoQueueAddRequest:)
                                                  name: kVideoQueueAdd
@@ -89,8 +93,28 @@ typedef enum _kQueueMoveDirection {
                                                  name: kVideoQueueShow
                                                object: nil];
     
-    [self reloadData];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleVideoQueueChannelCreated:)
+                                                 name: kVideoQueueChannelCreated
+                                               object: nil];
+    
+    
 	
+}
+
+-(void)handleVideoQueueChannelCreated:(NSNotification*)notification
+{
+    
+    [self clearVideoQueue];
+    
+}
+
+-(void)addToExistingChannel
+{
+    
+    
+    
+    
 }
 
 -(void)longPressOnDeleteButton
@@ -102,6 +126,7 @@ typedef enum _kQueueMoveDirection {
 
 - (void) handleVideoQueueAddRequest:(NSNotification*)notification
 {
+    
     VideoInstance* videoInstanceToAdd = (VideoInstance*) notification.userInfo[@"VideoInstance"];
     [self addVideoToQueue: videoInstanceToAdd];
 }
@@ -149,7 +174,8 @@ typedef enum _kQueueMoveDirection {
 
 - (Channel*) getChannelFromCurrentQueue
 {
-    if(self.currentlyCreatingChannel) {
+    if(self.currentlyCreatingChannel)
+    {
         return self.currentlyCreatingChannel;
     }
     
@@ -166,6 +192,7 @@ typedef enum _kQueueMoveDirection {
     
     for (VideoInstance *videoInstance in self.selectedVideos)
     {
+        
         VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
                                                                            forChannel:newChannel
                                                             usingManagedObjectContext:appDelegate.channelsManagedObjectContext
@@ -306,7 +333,12 @@ typedef enum _kQueueMoveDirection {
 {
     [self.videoQueueView.videoQueueCollectionView reloadData];
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self reloadData];
+}
 
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -328,7 +360,9 @@ typedef enum _kQueueMoveDirection {
     if(self.isVisible)
         return;
     
-    [self moveVideoQueue:kQueueMoveDirectionUp animated:animated];
+    
+    [self moveVideoQueue:kQueueMoveDirectionUp
+                animated:animated];
     
     if(self.selectedVideos.count == 0)
         self.showingEmptyQueue = YES;
@@ -398,6 +432,13 @@ typedef enum _kQueueMoveDirection {
         return;
     }
     
+    for (VideoInstance* existingInstance in self.selectedVideos)
+    {
+        if([existingInstance.video.uniqueId isEqualToString:videoInstance.video.uniqueId]) {
+            return;
+        }
+    }
+    
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)UIApplication.sharedApplication.delegate;
         
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundSelect];
@@ -407,12 +448,18 @@ typedef enum _kQueueMoveDirection {
     if(self.showingEmptyQueue)
         self.showingEmptyQueue = NO;
     
+    
+    
     [self.selectedVideos addObject: videoInstance];
     
     // add to core data
     
     if(currentlyCreatingChannel)
     {
+        
+        if(videoInstance.video.uniqueId) {
+            
+        }
         VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
                                                                            forChannel:currentlyCreatingChannel
                                                             usingManagedObjectContext:appDelegate.channelsManagedObjectContext

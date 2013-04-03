@@ -201,6 +201,7 @@ typedef enum _Gender {
 #define kVideoQueueHide             @"kVideoQueueHide"
 #define kVideoQueueAdd              @"kVideoQueueAdd"
 #define kVideoQueueCreateChannel    @"kVideoQueueCreateChannel"
+#define kVideoQueueChannelCreated   @"kVideoQueueChannelCreated"
 
 
 #define kLoginCompleted @"kLoginCompleted"

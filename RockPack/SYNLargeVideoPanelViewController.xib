@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3103</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -588,6 +588,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addToVideoQueueFromLargeVideo:">UIButton</string>
 						<string key="userTouchedVideoShareItButton:">UIButton</string>
+						<string key="userTouchedVideoStarButton:">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addToVideoQueueFromLargeVideo:">
@@ -596,6 +597,10 @@
 						</object>
 						<object class="IBActionInfo" key="userTouchedVideoShareItButton:">
 							<string key="name">userTouchedVideoShareItButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedVideoStarButton:">
+							<string key="name">userTouchedVideoStarButton:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 					</dictionary>
