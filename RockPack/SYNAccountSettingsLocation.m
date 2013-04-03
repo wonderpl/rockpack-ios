@@ -9,12 +9,14 @@
 #import "SYNAccountSettingsLocation.h"
 #import "User.h"
 #import "SYNAppDelegate.h"
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNAccountSettingsLocation ()
 
 @property (nonatomic, strong) UITableView* tableView;
 @property (nonatomic, weak) User* user;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic, strong) UIActivityIndicatorView* spinner;
 
 @end
 
@@ -35,6 +37,13 @@
         
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         self.user = appDelegate.currentUser;
+        
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        CGRect spinnerFrame = self.spinner.frame;
+        spinnerFrame.origin.y = self.tableView.frame.origin.y + self.tableView.frame.size.height + 20.0;
+        spinnerFrame.origin.x = self.tableView.frame.size.width * 0.5 - spinnerFrame.size.width * 0.5;
+        self.spinner.frame = CGRectIntegral(spinnerFrame);
+        [self.view addSubview:self.spinner];
     }
     
     return self;
@@ -117,22 +126,47 @@
 {
     
     NSString* oldLocale = self.user.locale;
-    
+    NSString* newLocale;
     if(indexPath.row == 1) {
-        self.user.locale = @"en-gb";
+        newLocale = @"en-gb";
     } else {
-        self.user.locale = @"en-us";
+        newLocale = @"en-us";
     }
     
-    if(![oldLocale isEqualToString:self.user.locale]) {
-        // clear core data
+    if(![oldLocale isEqualToString:newLocale]) {
+      
         [appDelegate clearData];
     }
     
+    [self changeUserLocaleForValue:newLocale];
     
     [self.tableView reloadData];
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [self.spinner startAnimating];
+}
+
+-(void)changeUserLocaleForValue:(NSString*)newLocale
+{
+    [self.appDelegate.oAuthNetworkEngine changeUserField:@"locale"
+                                                 forUser:appDelegate.currentUser
+                                            withNewValue:newLocale
+                                       completionHandler:^ {
+                                           
+                                           self.user.locale = newLocale; ;
+                                           [self.spinner stopAnimating];
+                                           
+                                           [self.navigationController popViewControllerAnimated:YES];
+                                           
+                                       } errorHandler:^(id errorInfo) {
+                                           
+                                           
+                                           [self.spinner stopAnimating];
+                                           
+                                           
+                                           
+                                       }];
 }
 
 @end
