@@ -8,7 +8,6 @@
 
 #import "SYNAccountSettingsTextInputController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNOAuthNetworkEngine.h"
 #import "RegexKitLite.h"
 #import "UIFont+SYNFont.h"
 
@@ -112,9 +111,8 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
     
-    errorTextField = [[UITextField alloc] initWithFrame:CGRectMake(10.0,
-                                                                   saveButton.frame.origin.y + saveButton.frame.size.height + 10.0, 0.0,
-                                                                   self.contentSizeForViewInPopover.width - 10.0)];
+    errorTextField = [[UITextField alloc] initWithFrame:CGRectMake(10.0, saveButton.frame.origin.y + saveButton.frame.size.height + 10.0,
+                                                                   self.contentSizeForViewInPopover.width - 10.0, 30)];
     
     errorTextField.textColor = [UIColor redColor];
     errorTextField.font = [UIFont rockpackFontOfSize:18];
@@ -150,7 +148,11 @@
     
     CGRect saveButtonFrame = saveButton.frame;
     saveButtonFrame.origin.y = newInputField.frame.origin.y + newInputField.frame.size.height + 10.0;
-    saveButton.frame = saveButtonFrame;
+    saveButton.frame = CGRectIntegral(saveButtonFrame);
+    
+    CGRect errorTextFrame = errorTextField.frame;
+    errorTextFrame.origin.y = saveButtonFrame.origin.y + saveButtonFrame.size.height + 10.0;
+    errorTextField.frame = CGRectIntegral(errorTextFrame);
     
     lastTextFieldY += newInputField.frame.size.height + 10.0;
     
@@ -160,16 +162,18 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    // implement in subclass
+    self.saveButton.hidden = YES;
+    [self.spinner startAnimating];
+    
+    if(![self formIsValid]) {
+        self.errorTextField.text = @"You Have Entered Invalid Characters";
+        return;
+    }
     
 }
 
 
 
--(void)updateLocale
-{
-    
-}
 
 #pragma mark - Validating
 
@@ -191,6 +195,9 @@
             isMatched = [self.inputField.text isMatchedByRegex:@"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
             break;
             
+        case UserFieldPassword:
+            isMatched = [self.inputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"];
+            break;
     }
     return YES;
 }
@@ -200,4 +207,42 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+-(void)updateField:(NSString*)field forValue:(NSString*)newValue withCompletionHandler:(MKNKBasicSuccessBlock)successBlock
+{
+    self.saveButton.enabled = NO;
+    
+    [self.appDelegate.oAuthNetworkEngine changeUserField:field
+                                                 forUser:self.appDelegate.currentUser
+                                            withNewValue:newValue
+                                       completionHandler:^ {
+                                           
+                                           successBlock();
+                                           
+                                       } errorHandler:^(id errorInfo) {
+                                           
+                                           [self.spinner stopAnimating];
+                                           self.saveButton.hidden = NO;
+                                           self.saveButton.enabled = YES;
+                                           
+                                           if(!errorInfo || ![errorInfo isKindOfClass:[NSDictionary class]])
+                                               return;
+                                           
+                                           NSString* message = [errorInfo objectForKey:@"message"];
+                                           if(message) {
+                                               if([message isKindOfClass:[NSArray class]]) {
+                                                   self.errorTextField.text = (NSString*)[((NSArray*)message) objectAtIndex:0];
+                                               } else if([message isKindOfClass:[NSString class]]) {
+                                                   self.errorTextField.text = message;
+                                               }
+                                               
+                                           }
+                                           
+                                           
+                                           
+                                       }];
+    
+    
+    
+}
 @end

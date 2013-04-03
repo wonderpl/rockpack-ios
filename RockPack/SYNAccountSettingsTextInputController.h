@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNAppDelegate.h"
 
 #import "SYNPaddedUITextField.h"
@@ -16,7 +17,8 @@ typedef enum {
     
     UserFieldTypeFullname = 0,
     UserFieldTypeUsername,
-    UserFieldTypeEmail
+    UserFieldTypeEmail,
+    UserFieldPassword
     
 } UserFieldType;
 
@@ -32,5 +34,10 @@ typedef enum {
 
 
 -(id)initWithUserFieldType:(UserFieldType)userFieldType;
+-(void)updateField:(NSString*)field forValue:(NSString*)newValue withCompletionHandler:(MKNKBasicSuccessBlock)successBlock;
 -(SYNPaddedUITextField*)createInputField;
+-(void)saveButtonPressed:(UIButton*)button;
+
+-(BOOL)formIsValid;
+
 @end

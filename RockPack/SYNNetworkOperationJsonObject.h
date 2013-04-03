@@ -16,6 +16,7 @@ typedef void (^MKNKUserCompleteBlock) (User*);
 typedef void (^MKNKUserErrorBlock) (id);
 typedef void (^MKNKUserSuccessBlock) (id);
 typedef void (^MKNKBasicSuccessBlock)(void);
+typedef void (^MKNKBasicFailureBlock)(void);
 
 #import "AppConstants.h"
 

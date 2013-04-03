@@ -37,9 +37,6 @@
 {
     [super viewDidLoad];
     
-    
-    
-    
     [self.view addSubview:datePicker];
     
     [datePicker setDatePickerMode:UIDatePickerModeDate];
@@ -48,18 +45,6 @@
     
 }
 
--(void)saveButtonPressed:(UIButton*)button
-{
-    
-    NSDate* dateSelected = datePicker.date;
-    
-    DebugLog(@"dateSelected: %@", dateSelected);
-}
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

@@ -27,31 +27,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
     
+    
+}
+-(void)saveButtonPressed:(UIButton*)button
+{
+    
+    [super saveButtonPressed:button];
+    
+    [self updateField:@"username" forValue:self.inputField.text withCompletionHandler:^{
+       
+        self.appDelegate.currentUser.username = self.inputField.text;
+        
+        
+        [self.appDelegate saveContext:YES];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }];
     
 }
 
--(void)updateUsername
-{
-    self.saveButton.enabled = NO;
-    
-    [self.appDelegate.oAuthNetworkEngine changeUserField:@"username"
-                                            forUser:self.appDelegate.currentUser
-                                  completionHandler:^ {
-                                                                            
-                                      self.appDelegate.currentUser.username = self.inputField.text;
-                                      
-                                      
-                                      [self.appDelegate saveContext:YES];
-                                      
-                                      [self.navigationController popViewControllerAnimated:YES];
-                                      
-                                  } errorHandler:^(id object) {
-                                      
-                                  }];
-    
-    
-}
+
 
 @end

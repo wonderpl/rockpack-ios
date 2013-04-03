@@ -88,60 +88,44 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    self.saveButton.enabled = NO;
-    self.saveButton.hidden = YES;
+    [super saveButtonPressed:button];
     
-    [self.spinner startAnimating];
+    NSArray* componentsOfInput = [self.inputField.text componentsSeparatedByString:@" "];
     
-    [self updateFirstName];
+    NSString* firstName = componentsOfInput[0];
+    NSString* lastName;
+    if(componentsOfInput.count >= 2) {
+        lastName = componentsOfInput[componentsOfInput.count-1];
+    }
+    
+    [self updateField:@"first_name" forValue:firstName withCompletionHandler:^{
+        
+        
+        self.appDelegate.currentUser.firstName = firstName;
+        
+        
+        [self.appDelegate saveContext:YES];
+        
+        if(!lastName) // do not update last name if there is no input for it
+            return;
+        
+        [self updateField:@"last_name" forValue:lastName withCompletionHandler:^{
+            
+            
+            self.appDelegate.currentUser.lastName = lastName;
+            
+            
+            [self.appDelegate saveContext:YES];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }];
+    }];
 }
 
 
--(void)updateFirstName
-{
-    
-    
-    [self.appDelegate.oAuthNetworkEngine changeUserField:@"first_name"
-                                            forUser:self.appDelegate.currentUser
-                                  completionHandler:^ {
-                                      
-                                      NSArray* componentsOfInput = [self.inputField.text componentsSeparatedByString:@" "];
-                                      
-                                      self.appDelegate.currentUser.firstName = componentsOfInput[0];
-                                      
-                                      
-                                      [self.appDelegate saveContext:YES];
-                                      
-                                      [self updateLastName];
-                                      
-                                      
-                                      
-                                  } errorHandler:^(id object) {
-                                      
-                                  }];
-}
 
--(void)updateLastName
-{
-    
-    
-    [self.appDelegate.oAuthNetworkEngine changeUserField:@"last_name"
-                                            forUser:self.appDelegate.currentUser
-                                  completionHandler:^ {
-                                      
-                                      NSArray* componentsOfInput = [self.inputField.text componentsSeparatedByString:@" "];
-                                      
-                                      self.appDelegate.currentUser.firstName = componentsOfInput[0];
-                                      
-                                      
-                                      [self.appDelegate saveContext:YES];
-                                      
-                                      [self.navigationController popViewControllerAnimated:YES];
-                                      
-                                  } errorHandler:^(id object) {
-                                      
-                                  }];
-}
+
 
 #pragma mark - Table view delegate
 

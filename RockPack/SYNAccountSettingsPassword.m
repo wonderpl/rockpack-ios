@@ -46,6 +46,17 @@
 	
 }
 
+
+-(void)saveButtonPressed:(UIButton*)button
+{
+    
+    [super saveButtonPressed:button];
+    
+    [self updateField:@"password" forValue:self.inputField.text withCompletionHandler:^{
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

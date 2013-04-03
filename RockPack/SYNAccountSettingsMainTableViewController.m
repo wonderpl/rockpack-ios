@@ -273,7 +273,7 @@
                 break;
                 
             case 2:
-                [self.navigationController pushViewController:[[SYNAccountSettingsPassword alloc] init] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsPassword alloc] initWithUserFieldType:UserFieldPassword] animated:YES];
                 break;
                 
             case 3:
@@ -360,7 +360,21 @@
 {
     user.dateOfBirth = datePicker.date;
     
-    [self getDOBTableViewCell].textLabel.text = [self getDOBStringFromCurrentUser];
+    NSString* dateString = [self getDOBStringFromCurrentUser];
+    
+    [self getDOBTableViewCell].textLabel.text = dateString;
+    
+    [self.appDelegate.oAuthNetworkEngine changeUserField:@"date_of_birth"
+                                                 forUser:self.appDelegate.currentUser
+                                            withNewValue:dateString
+                                       completionHandler:^ {
+                                           
+                                           
+                                       } errorHandler:^(id errorInfo) {
+                                           
+                                           
+                                           
+                                       }];
     
     
 }

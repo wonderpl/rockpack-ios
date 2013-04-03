@@ -33,33 +33,20 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    self.saveButton.enabled = NO;
-    [self.spinner startAnimating];
-    [self updateEmail];
+    [super saveButtonPressed:button];
+    
+    [self updateField:@"email" forValue:self.inputField.text withCompletionHandler:^{
+        self.appDelegate.currentUser.emailAddress = self.inputField.text;
+        
+        
+        [self.appDelegate saveContext:YES];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 
--(void)updateEmail
-{
-    
-    
-    [self.appDelegate.oAuthNetworkEngine changeUserField:@"email"
-                                                 forUser:self.appDelegate.currentUser
-                                       completionHandler:^ {
-                                           
-                                           self.appDelegate.currentUser.emailAddress = self.inputField.text;
-                                           
-                                           
-                                           [self.appDelegate saveContext:YES];
-                                           
-                                           [self.navigationController popViewControllerAnimated:YES];
-                                           
-                                       } errorHandler:^(id object) {
-                                           
-                                       }];
-    
-    
-}
+
 
 
 @end

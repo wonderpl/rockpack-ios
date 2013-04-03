@@ -259,7 +259,8 @@
 
 - (void) changeUserField: (NSString*) userField
                  forUser: (User *) user
-       completionHandler: (MKNKBasicSuccessBlock) completionBlock
+            withNewValue: (NSString*)newValue
+       completionHandler: (MKNKBasicSuccessBlock) successBlock
             errorHandler: (MKNKUserErrorBlock) errorBlock {
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId, @"ATTRIBUTE" : userField};
@@ -273,7 +274,7 @@
     [networkOperation setCustomPostDataEncodingHandler: ^NSString * (NSDictionary *postDataDict)
      {
          // Wrap it in quotes to make it valid JSON
-         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", user.username];
+         NSString *JSONFormattedPassword = [NSString stringWithFormat: @"\"%@\"", newValue];
          return JSONFormattedPassword;
      } forType: @"application/json"];
     
@@ -281,11 +282,25 @@
         
         if(operation.HTTPStatusCode == 204) {
             
-            completionBlock();
+            successBlock();
+            
+        } else {
+            
+            errorBlock(@{@"http_error":[NSString stringWithFormat:@"%i", operation.HTTPStatusCode]});
+            
         }
     
     
     } errorHandler:^(MKNetworkOperation* operation, NSError* error) {
+        
+        id responseJSON = [operation responseJSON];
+        
+        if(!responseJSON) {
+            errorBlock(@{@"responce_error" : @"malformed response"});
+            return;
+        }
+        
+        errorBlock(responseJSON);
         
     }];
     
