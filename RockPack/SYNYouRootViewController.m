@@ -131,8 +131,11 @@
 {
     [super viewWillAppear:animated];
     
-//    SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
-//    [userTabViewController setOwner:appDelegate.currentUser];
+    if(!self.tabViewController)
+        return;
+    
+    SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
+    [userTabViewController setOwner:appDelegate.currentUser];
 }
 
 -(void)showAccountSettingsPopover
@@ -162,14 +165,6 @@
     
 }
 
--(void)setTabViewController:(SYNTabViewController *)newTabViewController
-{
-    
-    [super setTabViewController:newTabViewController];
-    
-    SYNUserTabViewController* userTabVC = (SYNUserTabViewController*)newTabViewController;
-    [userTabVC setOwner:appDelegate.currentUser];
-}
 
 #pragma mark - Collection view support
 

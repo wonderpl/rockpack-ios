@@ -154,6 +154,7 @@
     errorTextFrame.origin.y = saveButtonFrame.origin.y + saveButtonFrame.size.height + 10.0;
     errorTextField.frame = CGRectIntegral(errorTextFrame);
     
+    
     lastTextFieldY += newInputField.frame.size.height + 10.0;
     
     return newInputField;
@@ -163,6 +164,8 @@
 {
     
     self.saveButton.hidden = YES;
+    
+    self.spinner.center = self.saveButton.center;
     [self.spinner startAnimating];
     
     if(![self formIsValid]) {

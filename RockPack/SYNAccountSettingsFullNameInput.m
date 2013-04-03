@@ -48,6 +48,9 @@
     saveButtonRect.origin.y = self.tableView.frame.origin.y + self.tableView.frame.size.height + 10.0;
     self.saveButton.frame = saveButtonRect;
     
+    
+    [self.spinner startAnimating];
+    
 }
 
 
