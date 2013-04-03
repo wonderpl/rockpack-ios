@@ -157,6 +157,8 @@
                                            self.user.locale = newLocale; ;
                                            [self.spinner stopAnimating];
                                            
+                                           [self.appDelegate saveContext:YES];
+                                           
                                            [self.navigationController popViewControllerAnimated:YES];
                                            
                                        } errorHandler:^(id errorInfo) {

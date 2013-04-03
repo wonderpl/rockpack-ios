@@ -9,13 +9,16 @@
 #import "SYNAccountSettingsGender.h"
 #import "SYNAppDelegate.h"
 #import "AppConstants.h"
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNAccountSettingsGender ()
 @property (nonatomic, strong) UITableView* tableView;
+@property (nonatomic, strong) UIActivityIndicatorView* spinner;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @end
 
 @implementation SYNAccountSettingsGender
-
+@synthesize appDelegate;
 - (id)init
 {
     self = [super init];
@@ -29,6 +32,15 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.backgroundView = nil;
+        
+        appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        CGRect spinnerFrame = self.spinner.frame;
+        spinnerFrame.origin.y = self.tableView.frame.origin.y + self.tableView.frame.size.height + 20.0;
+        spinnerFrame.origin.x = self.tableView.frame.size.width * 0.5 - spinnerFrame.size.width * 0.5;
+        self.spinner.frame = CGRectIntegral(spinnerFrame);
+        [self.view addSubview:self.spinner];
     }
     return self;
 }
@@ -99,7 +111,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
     
     [self.tableView reloadData];
     
@@ -107,16 +119,50 @@
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     if (indexPath.row == 0) {
-        
-        appDelegate.currentUser.gender = @(GenderMale);
-        
-        
-        
+        [self changeUserGenderForValue:@"m"];
     } else {
-        appDelegate.currentUser.gender = @(GenderFemale);
+        [self changeUserGenderForValue:@"f"];
     }
     
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    [self.spinner startAnimating];
+    
+}
+
+
+-(void)changeUserGenderForValue:(NSString*)newGender
+{
+    
+    [self.appDelegate.oAuthNetworkEngine changeUserField:@"gender"
+                                                 forUser:appDelegate.currentUser
+                                            withNewValue:newGender
+                                       completionHandler:^ {
+                                           
+                                           if([newGender isEqualToString:@"m"]) {
+                                               
+                                               appDelegate.currentUser.gender = @(GenderMale);
+                                               
+                                           } else if([newGender isEqualToString:@"f"]) {
+                                               
+                                               appDelegate.currentUser.gender = @(GenderFemale);
+                                               
+                                           }
+                                           
+                                           [self.appDelegate saveContext:YES];
+                                           
+                                           
+                                           [self.spinner stopAnimating];
+                                           
+                                           [self.navigationController popViewControllerAnimated:YES];
+                                           
+                                       } errorHandler:^(id errorInfo) {
+                                           
+                                           
+                                           [self.spinner stopAnimating];
+                                           
+                                           
+                                           
+                                       }];
 }
 
 @end
