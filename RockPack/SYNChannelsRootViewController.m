@@ -29,11 +29,14 @@
 @property (nonatomic, strong) UIImageView *pinchedView;
 @property (nonatomic, strong) NSString* currentCategoryId;
 
+@property (nonatomic) NSRange currentRange;
+
 @end
 
 @implementation SYNChannelsRootViewController
 
 @synthesize currentCategoryId;
+@synthesize currentRange;
 
 #pragma mark - View lifecycle
 
@@ -100,6 +103,8 @@
 {
     [super viewDidLoad];
     
+    currentRange = NSMakeRange(0, 50);
+    
 
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
@@ -131,7 +136,7 @@
     
     self.touchedChannelButton = NO;
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId];
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange];
 }
 
 
@@ -222,6 +227,9 @@
                                                                                     withReuseIdentifier:@"SYNChannelFooterMoreView"
                                                                                            forIndexPath:indexPath];
         
+        [channelMoreFooter.loadMoreButton addTarget:self
+                                             action:@selector(loadMoreChannels:)
+                                   forControlEvents:UIControlEventTouchUpInside];
         
         supplementaryView = channelMoreFooter;
     }
@@ -280,6 +288,15 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
                                                         object: self];
+}
+
+
+#pragma mark - Button Actions
+
+-(void)loadMoreChannels:(UIButton*)sender
+{
+    currentRange = NSMakeRange(currentRange.location + currentRange.length, currentRange.length);
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange];
 }
 
 
@@ -406,7 +423,8 @@
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {
     currentCategoryId = selectionId;
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId];
+    currentRange = NSMakeRange(0, 50);
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange];
 }
 
 @end

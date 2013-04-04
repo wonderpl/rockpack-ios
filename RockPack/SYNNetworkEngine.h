@@ -20,7 +20,7 @@
 
 - (void) updateVideosScreenForCategory: (NSString*) categoryId;
 - (void) updateChannel: (NSString *) resourceURL;
-- (void) updateChannelsScreenForCategory: (NSString*) category;
+- (void) updateChannelsScreenForCategory:(NSString*)categoryId forRange:(NSRange)range;
 
 - (void) searchVideosForTerm: (NSString*) searchTerm;
 - (void) searchChannelsForTerm: (NSString*) searchTerm;

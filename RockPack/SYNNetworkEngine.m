@@ -160,15 +160,20 @@
     
 }
 
-- (void) updateChannelsScreenForCategory:(NSString*)categoryId
+- (void) updateChannelsScreenForCategory:(NSString*)categoryId forRange:(NSRange)range
 {
     
     
-    NSDictionary* parameters;
-    if([categoryId isEqualToString:@"all"])
-        parameters = [self getLocalParam];
-    else
-        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
+    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
+    
+    if(![categoryId isEqualToString:@"all"]) {
+        [tempParameters setObject:categoryId forKey:@"category"];
+    }
+        
+    
+    NSDictionary* parameters = [self getLocalParamWithParams:tempParameters];
     
     
     SYNNetworkOperationJsonObject *networkOperation =
