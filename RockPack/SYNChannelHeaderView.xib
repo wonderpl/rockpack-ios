@@ -532,11 +532,11 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonChannelEdit.png">{16, 16}</string>
-			<string key="ButtonChannelEditHighlighted.png">{16, 16}</string>
-			<string key="ButtonChannelFollow.png">{16, 16}</string>
-			<string key="ButtonChannelFollowHighlighted.png">{16, 16}</string>
-			<string key="DividerChannelGlass.png">{16, 16}</string>
+			<string key="ButtonChannelEdit.png">{154, 36}</string>
+			<string key="ButtonChannelEditHighlighted.png">{154, 36}</string>
+			<string key="ButtonChannelFollow.png">{154, 36}</string>
+			<string key="ButtonChannelFollowHighlighted.png">{154, 36}</string>
+			<string key="DividerChannelGlass.png">{2, 100}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
