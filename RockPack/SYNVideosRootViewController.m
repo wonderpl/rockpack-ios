@@ -42,6 +42,8 @@
 
 @property (nonatomic, strong) SYNLargeVideoPanelViewController* largeVideoPanelController;
 
+@property (nonatomic) NSRange videosRequestCurrentRange;
+
 
 @end
 
@@ -141,6 +143,7 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     
     [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];

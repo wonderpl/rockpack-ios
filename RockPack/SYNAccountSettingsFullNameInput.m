@@ -93,6 +93,11 @@
     
     [super saveButtonPressed:button];
     
+    if(![self formIsValid]) {
+        self.errorTextField.text = @"You Have Entered Invalid Characters";
+        return;
+    }
+    
     NSArray* componentsOfInput = [self.inputField.text componentsSeparatedByString:@" "];
     
     NSString* firstName = componentsOfInput[0];

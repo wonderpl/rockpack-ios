@@ -635,6 +635,7 @@
 		BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */; };
 		BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */; };
 		BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */; };
+		BE7D340E170C9F300085AB81 /* SYNChannelsAddVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D340D170C9F300085AB81 /* SYNChannelsAddVideosViewController.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1427,6 +1428,8 @@
 		BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLargeVideoPanelViewController.xib; sourceTree = "<group>"; };
 		BE7C12A716EA69710015789B /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
 		BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
+		BE7D340C170C9F300085AB81 /* SYNChannelsAddVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsAddVideosViewController.h; sourceTree = "<group>"; };
+		BE7D340D170C9F300085AB81 /* SYNChannelsAddVideosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsAddVideosViewController.m; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -2333,6 +2336,8 @@
 			children = (
 				BE7C12A716EA69710015789B /* SYNVideosRootViewController.h */,
 				BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */,
+				BE7D340C170C9F300085AB81 /* SYNChannelsAddVideosViewController.h */,
+				BE7D340D170C9F300085AB81 /* SYNChannelsAddVideosViewController.m */,
 			);
 			name = Videos;
 			sourceTree = "<group>";
@@ -3950,6 +3955,7 @@
 				01AEFC6B1704B3F30060467A /* SYNCategoryChooserViewController.m in Sources */,
 				BEE4A6C2170B5640008F9D05 /* SYNAccountSettingsEmail.m in Sources */,
 				BEE4A6C5170B56B5008F9D05 /* SYNAccountSettingsUsername.m in Sources */,
+				BE7D340E170C9F300085AB81 /* SYNChannelsAddVideosViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

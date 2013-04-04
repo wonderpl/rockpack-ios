@@ -52,6 +52,17 @@
     
     [super saveButtonPressed:button];
     
+    if(![self formIsValid]) {
+        self.errorTextField.text = @"You Have Entered Invalid Characters";
+        return;
+    }
+    
+    if(![passwordField.text isEqualToString:passwordConfirmField.text]) {
+        self.errorTextField.text = @"Passwords do not match";
+        return;
+        
+    }
+    
     [self updateField:@"password" forValue:self.inputField.text withCompletionHandler:^{
         [self.navigationController popViewControllerAnimated:YES];
     }];

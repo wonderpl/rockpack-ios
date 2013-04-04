@@ -25,7 +25,7 @@
 #import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
-
+#import "SYNChannelsAddVideosViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
@@ -43,6 +43,7 @@
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
+
 
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
@@ -141,6 +142,7 @@
     self.channelsUserNavigationViewController.view.autoresizesSubviews = YES;
     self.channelsUserNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
+    
     // == Video Queue
     
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
@@ -161,6 +163,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
 }
+
 
 
 - (void) repositionQueueView
@@ -213,6 +216,16 @@
 
 }
 
+-(void)addVideosToExistingChannel
+{
+    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    {
+        
+        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
+        [child addToChannel: [self.videoQueueController getChannelFromCurrentQueue]];
+        
+    }
+}
 
 #pragma mark - Tab & Container switching mechanism
 
