@@ -43,4 +43,6 @@
 
 -(NSDictionary*) getLocalParamWithParams:(NSDictionary*)parameters;
 
+- (void) enqueueSignedOperation: (MKNetworkOperation *) request;
+
 @end

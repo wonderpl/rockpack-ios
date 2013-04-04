@@ -71,6 +71,11 @@
     {
 		DLog(@"enqueueSignedOperation - Authenticated");
         
+        // We need to make a copy of the request first, so that we can re-submit on authentication error
+//        [request addCommonHandlerToNetworkOperation: networkOperation
+//                               completionHandler: completionBlock
+//                                    errorHandler: errorBlock];
+        
         [request setUsername: kOAuth2ClientId
                     password: kOAuth2ClientSecret];
         
@@ -179,6 +184,54 @@
     [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
                                            completionHandler: completionBlock
                                                 errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+}
+
+
+- (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
+                                       errorHandler: (MKNKUserSuccessBlock) errorBlock
+{
+    NSDictionary *refreshParams = @{@"grant_type" : @"refresh_token",
+                                    @"refresh_token" : self.oAuth2Credential.refreshToken};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*) [self operationWithPath: kAPIRefreshToken
+                                                                                                        params: refreshParams
+                                                                                                    httpMethod: @"POST"
+                                                                                                           ssl: TRUE];  
+    // Set Basic Authentication username and password
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/x-www-form-urlencoded"}];
+    
+    
+    [networkOperation addCompletionHandler: ^(MKNetworkOperation *completedOperation)
+     {
+         NSDictionary *responseDictionary = [completedOperation responseJSON];
+         
+         // Parse the new OAuth details, creating a new credential object
+         SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
+                                                                                          expiresIn: responseDictionary[@"expires_in"]
+                                                                                       refreshToken: responseDictionary[@"refresh_token"]
+                                                                                        resourceURL: responseDictionary[@"resource_url"]
+                                                                                          tokenType: responseDictionary[@"token_type"]
+                                                                                             userId: responseDictionary[@"user_id"]];
+         
+         // Save the new credential object in the keychain
+         // The user passed back is assumed to be the current user
+         [newOAuth2Credentials saveToKeychainForService: kOAuth2Service
+                                                account: responseDictionary[@"user_id"]];
+         
+         completionBlock(responseDictionary);
+     }
+     errorHandler: ^(MKNetworkOperation* completedOperation, NSError* error)
+     {
+         NSDictionary *responseDictionary = [completedOperation responseJSON];
+         errorBlock(responseDictionary);
+         DebugLog (@"failed");
+     }];
     
     [self enqueueOperation: networkOperation];
 }

@@ -28,6 +28,10 @@
 
 // Main RestFul API
 
+// OAuth2
+
+#define kAPIRefreshToken            @"/ws/token"
+
 // Login
 #define kAPISecureLogin             @"/ws/login/"
 #define kAPISecureExternalLogin     @"/ws/login/external/"
