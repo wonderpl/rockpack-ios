@@ -99,20 +99,19 @@
     [networkOperation addJSONCompletionHandler: ^(id response)
      {
          // Check to see if our response is a NSDictionary and if it has an error hash
-//         if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
-         if (1)
+         if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
          {
              DebugLog(@"API Call failed: %@", response);
              
              // Now check to see if we need to refresh the token
              NSDictionary *responseDictionary = (NSDictionary *) response;
              NSString *reason = responseDictionary[@"error"];
-//             if ([reason isEqualToString: @"expired_token"] == FALSE)
-//             {
-//                 // Normal (?) error, we don't need to try refreshing the token
-//                 errorBlock(response);
-//             }
-//             else
+             if ([reason isEqualToString: @"expired_token"] == FALSE)
+             {
+                 // Normal (?) error, we don't need to try refreshing the token
+                 errorBlock(response);
+             }
+             else
              {
                  // OK, out OAuth2 token has expired, so refresh and try again
                  DebugLog (@"Token expired");
