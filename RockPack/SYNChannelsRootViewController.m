@@ -19,6 +19,9 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "SYNChannelFooterMoreView.h"
+#import "SYNMainRegistry.h"
+
+#define STANDARD_LENGTH 50
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
@@ -29,7 +32,11 @@
 @property (nonatomic, strong) UIImageView *pinchedView;
 @property (nonatomic, strong) NSString* currentCategoryId;
 
+@property (nonatomic, weak) SYNMainRegistry* mainRegistry;
+
+
 @property (nonatomic) NSRange currentRange;
+@property (nonatomic) NSInteger currentTotal;
 
 @end
 
@@ -37,6 +44,7 @@
 
 @synthesize currentCategoryId;
 @synthesize currentRange;
+@synthesize currentTotal;
 
 #pragma mark - View lifecycle
 
@@ -127,8 +135,34 @@
     
     [self.view addGestureRecognizer: pinchOnChannelView];
     
+    self.mainRegistry = appDelegate.mainRegistry;
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange withAppend:NO];
+    
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
+                                                      forRange:currentRange
+                                                  onCompletion:^(NSDictionary* response) {
+                                                      
+                                                      NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
+                                                      if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+                                                          return;
+                                                      
+                                                      NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
+                                                      if (![totalNumber isKindOfClass: [NSNumber class]])
+                                                          return;
+                                                      
+                                                      currentTotal = [totalNumber integerValue];
+                                                      
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                         byAppending:NO];
+                                                      if (!registryResultOk) {
+                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          return;
+                                                      }
+        
+                                                  } onError:^(NSDictionary* errorInfo) {
+        
+                                                  }];
     
 }
 
@@ -297,8 +331,28 @@
 
 -(void)loadMoreChannels:(UIButton*)sender
 {
-    currentRange = NSMakeRange(currentRange.location + currentRange.length, currentRange.length);
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange withAppend:YES];
+    
+    
+    NSInteger nextStart = currentRange.location + currentRange.length;
+    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
+    
+    currentRange = NSMakeRange(nextStart, nextSize);
+    
+    
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
+                                                      forRange:currentRange
+                                                  onCompletion:^(NSDictionary* response) {
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                             byAppending:YES];
+                                                      if (!registryResultOk) {
+                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          return;
+                                                      }
+                                                      
+                                                  } onError:^(NSDictionary* errorInfo) {
+                                                      
+                                                  }];
 }
 
 
@@ -426,7 +480,20 @@
 {
     currentCategoryId = selectionId;
     currentRange = NSMakeRange(0, 50);
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange withAppend:NO];
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
+                                                      forRange:currentRange
+                                                  onCompletion:^(NSDictionary* response) {
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                             byAppending:NO];
+                                                      if (!registryResultOk) {
+                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          return;
+                                                      }
+                                                      
+                                                  } onError:^(NSDictionary* errorInfo) {
+                                                      
+                                                  }];
 }
 
 @end

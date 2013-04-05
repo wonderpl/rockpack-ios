@@ -162,7 +162,8 @@
 
 - (void) updateChannelsScreenForCategory:(NSString*)categoryId
                                 forRange:(NSRange)range
-                              withAppend:(BOOL)append {
+                            onCompletion:(MKNKJSONCompleteBlock)completeBlock
+                                 onError:(MKNKJSONErrorBlock)errorBlock {
     
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
@@ -182,14 +183,11 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.registry registerNewChannelScreensFromDictionary:dictionary byAppending:append];
-        if (!registryResultOk) {
-            DebugLog(@"Update Channel Screens Request Failed");
-            return;
-        }
+        completeBlock(dictionary);
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Channel Screens Request Failed");
+        errorBlock(@{@"network_error":@"engine failed to load channels"});
     }];
     
     [self enqueueOperation: networkOperation];
