@@ -57,7 +57,7 @@
 -(void) saveSearchContext;
 -(void) saveChannelsContext;
 - (void) resetCoreDataStack;
--(void)clearData;
+-(void)clearUserBoundData;
 -(void)logout;
 
 @end

@@ -135,7 +135,7 @@
     
     if(![oldLocale isEqualToString:newLocale]) {
       
-        [appDelegate clearData];
+        [appDelegate clearUserBoundData];
     }
     
     [self changeUserLocaleForValue:newLocale];

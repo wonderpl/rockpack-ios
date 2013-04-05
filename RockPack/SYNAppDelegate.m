@@ -80,13 +80,8 @@
     
     self.window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
 
-    SYNBottomTabViewController* bottomTabVC = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
-                                                                                           bundle: nil];
     
     
-    self.masterViewController = [[SYNMasterViewController alloc] initWithRootViewController:bottomTabVC];
-    
-    self.loginViewController = [[SYNLoginViewController alloc] init];
     
     
     [self.window makeKeyAndVisible];
@@ -102,14 +97,37 @@
             
         }
         
-        self.window.rootViewController = self.masterViewController;
+        self.window.rootViewController = [self createAndReturnRootViewController];
         return YES;
+    }
+    else
+    {
+        self.window.rootViewController = [self createAndReturnLoginViewController];
     }
     
     
-    self.window.rootViewController = self.loginViewController;
+    
     
     return YES;
+}
+
+-(UIViewController*)createAndReturnRootViewController
+{
+    SYNBottomTabViewController* bottomTabVC = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
+                                                                                           bundle: nil];
+    
+    
+    self.masterViewController = [[SYNMasterViewController alloc] initWithRootViewController:bottomTabVC];
+    
+    return self.masterViewController;
+}
+
+-(UIViewController*)createAndReturnLoginViewController
+{
+    
+    self.loginViewController = [[SYNLoginViewController alloc] init];
+    
+    return self.loginViewController;
 }
 
 
@@ -121,17 +139,15 @@
     
     self.currentUser.current = @(NO);
     
-    [self saveContext:YES];
+    [self clearUserBoundData];
     
     [self.currentOAuth2Credentials removeFromKeychain];
     
     self.currentOAuth2Credentials = nil;
     _currentUser = nil;
     
-    self.loginViewController = [[SYNLoginViewController alloc] init];
     
-    
-    self.window.rootViewController = self.loginViewController;
+    self.window.rootViewController = [self createAndReturnLoginViewController];
     
     
     
@@ -140,7 +156,7 @@
 -(void)loginCompleted:(NSNotification*)notification
 {
     
-    self.window.rootViewController = self.masterViewController;
+    self.window.rootViewController = [self createAndReturnRootViewController];
     
     self.loginViewController = nil;
 }
@@ -445,51 +461,41 @@
 
 #pragma mark - Clearing Data
 
--(void)clearData
+-(void)clearUserBoundData
 {
-    [self clearVideoInstances];
-    [self clearChannels];
-}
-
--(void)clearVideoInstances
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"VideoInstance"
-                                              inManagedObjectContext:self.mainManagedObjectContext];
-    [fetchRequest setEntity:entity];
     
     NSError *error;
-    NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *itemsToDelete;
     
-    for (NSManagedObject* objectToDelete in items) {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"VideoInstance"
+                                        inManagedObjectContext:self.mainManagedObjectContext]];
+    
+    
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest
+                                                                 error:&error];
+    
+    for (NSManagedObject* objectToDelete in itemsToDelete) {
         
         [self.mainManagedObjectContext deleteObject:objectToDelete];
     }
     
-    [self saveContext:YES];
-}
-
--(void)clearChannels
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Channel"
+                                        inManagedObjectContext:self.mainManagedObjectContext]];
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Channel"
-                                              inManagedObjectContext:self.mainManagedObjectContext];
-    [fetchRequest setEntity:entity];
+    itemsToDelete = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
     
-    NSError *error;
-    NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    for (NSManagedObject* objectToDelete in items) {
+    for (NSManagedObject* objectToDelete in itemsToDelete) {
         
         [self.mainManagedObjectContext deleteObject:objectToDelete];
     }
     
+    
     [self saveContext:YES];
 }
+
 
 
 -(void)deleteDataObject:(NSManagedObject*)managedObject
