@@ -127,6 +127,9 @@
     
     [self.view addGestureRecognizer: pinchOnChannelView];
     
+    
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange withAppend:NO];
+    
 }
 
 
@@ -136,7 +139,6 @@
     
     self.touchedChannelButton = NO;
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange];
 }
 
 
@@ -296,7 +298,7 @@
 -(void)loadMoreChannels:(UIButton*)sender
 {
     currentRange = NSMakeRange(currentRange.location + currentRange.length, currentRange.length);
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange];
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange withAppend:YES];
 }
 
 
@@ -424,7 +426,7 @@
 {
     currentCategoryId = selectionId;
     currentRange = NSMakeRange(0, 50);
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange];
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId forRange:currentRange withAppend:NO];
 }
 
 @end

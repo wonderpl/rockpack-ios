@@ -13,6 +13,8 @@
 typedef void (^MKNKAutocompleteProcessBlock) (NSArray*);
 typedef void (^MKNKLoginCompleteBlock) (SYNOAuth2Credential *);
 typedef void (^MKNKUserCompleteBlock) (User*);
+typedef void (^MKNKJSONCompleteBlock) (NSDictionary*);
+typedef void (^MKNKJSONErrorBlock) (NSDictionary*);
 typedef void (^MKNKUserErrorBlock) (id);
 typedef void (^MKNKUserSuccessBlock) (id);
 typedef void (^MKNKBasicSuccessBlock)(void);

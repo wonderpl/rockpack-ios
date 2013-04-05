@@ -188,8 +188,8 @@
 
 
 
--(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary
-{
+-(BOOL)registerNewChannelScreensFromDictionary:(NSDictionary *)dictionary
+                                   byAppending:(BOOL)append {
     
     // == Check for Validity == //
     
@@ -205,13 +205,15 @@
     
     // == ================ == //
     
+    NSArray *existingObjectsInViewId;
     
+    if(!append)
+    {
+        existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
+                                                                                          andViewId: kChannelsViewId
+                                                                             inManagedObjectContext: importManagedObjectContext];
+    }
     
-    // We need to mark all of out existing objects corresponding to this viewId, just in case they are no longer required
-    // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
-                                                                                      andViewId: kChannelsViewId
-                                                                         inManagedObjectContext: importManagedObjectContext];
     
     
     // === Main Processing === //
@@ -227,8 +229,6 @@
     // == ================ == //
     
     
-    
-    // Now remove any objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: existingObjectsInViewId
               inManagedObjectContext: importManagedObjectContext];
     
@@ -289,6 +289,9 @@
 - (void) removeUnusedManagedObjects: (NSArray *) managedObjects
              inManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
+    if(!managedObjects)
+        return;
+    
     [managedObjects enumerateObjectsUsingBlock: ^(id managedObject, NSUInteger idx, BOOL *stop)
      {
          if (((AbstractCommon *)managedObject).markedForDeletionValue == TRUE)

@@ -160,8 +160,9 @@
     
 }
 
-- (void) updateChannelsScreenForCategory:(NSString*)categoryId forRange:(NSRange)range
-{
+- (void) updateChannelsScreenForCategory:(NSString*)categoryId
+                                forRange:(NSRange)range
+                              withAppend:(BOOL)append {
     
     
     NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
@@ -181,13 +182,11 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        
-        BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
+        BOOL registryResultOk = [self.registry registerNewChannelScreensFromDictionary:dictionary byAppending:append];
         if (!registryResultOk) {
             DebugLog(@"Update Channel Screens Request Failed");
             return;
         }
-        
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Channel Screens Request Failed");
