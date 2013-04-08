@@ -94,10 +94,10 @@
     // == Home Tab
     
     SYNHomeRootViewController *feedRootViewController = [[SYNHomeRootViewController alloc] initWithViewId: @"Home"];
-    UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: feedRootViewController];
-    homeRootNavigationViewController.navigationBarHidden = TRUE;
-    homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
+    UINavigationController *feedRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: feedRootViewController];
+    feedRootNavigationViewController.navigationBarHidden = TRUE;
+    feedRootNavigationViewController.view.autoresizesSubviews = TRUE;
+    feedRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
     // == Videos Tab
     
@@ -121,10 +121,10 @@
     
     SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
     myRockpackViewController.tabViewController = [[SYNUserTabViewController alloc] init];
-    UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
-    youRootRootNavigationViewController.navigationBarHidden = TRUE;
-    youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    UINavigationController *myRockpackNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
+    myRockpackNavigationViewController.navigationBarHidden = TRUE;
+    myRockpackNavigationViewController.view.autoresizesSubviews = TRUE;
+    myRockpackNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // == Friends tab
     // TODO: Nest Friends Bar
@@ -132,9 +132,9 @@
     
     // == Register Controllers
     
-    self.viewControllers = @[homeRootNavigationViewController,
+    self.viewControllers = @[feedRootNavigationViewController,
                              channelsRootNavigationViewController,
-                             youRootRootNavigationViewController];
+                             myRockpackNavigationViewController];
     
     // == Search (out of normal controller array)
     
@@ -318,6 +318,17 @@
     
     self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
     
+    SYNAbstractViewController* controllerOnView;
+    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    {
+        controllerOnView = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
+    }
+    else
+    {
+        controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
+    }
+    
+    [controllerOnView viewCameToScrollFront];
     
 }
 

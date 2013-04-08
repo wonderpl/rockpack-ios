@@ -83,5 +83,6 @@
 
 
 -(id)initWithViewId:(NSString*)vid;
+-(void)viewCameToScrollFront;
 
 @end

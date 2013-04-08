@@ -33,15 +33,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
 @property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
-@property (nonatomic, strong) IBOutlet UIButton* inboxButton;
-@property (nonatomic, strong) IBOutlet UIButton* notificationButton;
 @property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
-@property (nonatomic, strong) IBOutlet UILabel* inboxLabel;
-@property (nonatomic, strong) IBOutlet UILabel* notificationsLabel;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
+@property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
@@ -137,16 +134,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.topButtonsContainer.userInteractionEnabled = YES;
     
-    // == Set Up Labels == /
     
-    UIFont* boldFont = [UIFont boldRockpackFontOfSize:17.0f];
-    
-    self.inboxLabel.font = boldFont;
-    self.notificationsLabel.font = boldFont;
     
     self.clearTextButton.alpha = 0.0;
     self.glowTextImageView.alpha = 0.0;
     self.glowTextImageView.userInteractionEnabled = NO;
+    
+    // == Set up Dots View == //
+    
+    CGFloat currentDotOffset = 0.0;
+    for(int i = 0; i < 3; i++)
+    {
+        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        CGRect dotImageViewFrame = dotImageView.frame;
+        dotImageViewFrame.origin.x = currentDotOffset;
+        
+        [self.dotsView addSubview:dotImageView];
+        
+        currentDotOffset += 50.0;
+        
+     }
     
     // == Set Up Notifications == //
     
@@ -173,6 +180,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageNumber)
         return;
     
+    int page = [pageNumber intValue];
+    int totalDots = self.dotsView.subviews.count;
+    for (int i = 0; i < totalDots; i++)
+    {
+        UIImageView* dotImageView = (UIImageView*)self.dotsView.subviews[i];
+        if (i == page) {
+            dotImageView.image = [UIImage imageNamed:@""];
+            continue;
+        }
+        
+        dotImageView.image = [UIImage imageNamed:@""];
+        
+    }
+    
     // got page number
     
     // TODO: Implemente change
@@ -188,41 +209,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 #pragma mark - Overlays (Inbox/Popover)
 
 
-- (IBAction) userTouchedNotificationButton: (UIButton*) button
-{
-    button.selected = !button.selected;
-    
-    if (button.selected)
-    {
-        SYNActivityPopoverViewController *actionPopoverController = [[SYNActivityPopoverViewController alloc] init];
-        // Need show the popover controller
-        self.notificationsPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.notificationsPopoverController.popoverContentSize = CGSizeMake(320, 166);
-        self.notificationsPopoverController.delegate = self;
-        self.notificationsPopoverController.popoverBackgroundViewClass = [SYNAutocompletePopoverBackgroundView class];
-        
-        [self.notificationsPopoverController presentPopoverFromRect: button.frame
-                                                             inView: self.view
-                                           permittedArrowDirections: UIPopoverArrowDirectionUp
-                                                           animated: YES];
-    }
-    
-}
 
-
-- (IBAction) userTouchedInboxButton: (UIButton*) button
-{
-    if (button.selected)
-    {
-        button.selected = NO;
-        [self hideOverlay: self.inboxOverlayViewController];
-    }
-    else
-    {
-        button.selected = YES;
-        [self showOrSwapOverlay: self.inboxOverlayViewController];
-    }
-}
 
 
 - (void) showOrSwapOverlay: (UIViewController*) overlayViewController
@@ -299,7 +286,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // If we are hding the inbox panel, ensure that we deselect the con
     if (self.currentOverlayViewController == self.inboxOverlayViewController)
     {
-        self.inboxButton.selected = FALSE;
+        
     }
     
     CGRect overlayViewFrame = overlayViewController.view.frame;
@@ -335,17 +322,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) panelSwipedAway: (NSNotification*) notification
 {
-    NSLog (@"Swiped");
     
-    if (self.inboxButton.selected == TRUE)
-    {
-        self.inboxButton.selected = FALSE;
-        [self hideOverlay: self.inboxOverlayViewController];
-    }
-    else
-    {
-        [self hideOverlay: self.shareOverlayViewController];
-    }
 }
 
 
@@ -720,15 +697,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    if(popoverController == self.notificationsPopoverController)
-    {
-        self.notificationButton.selected = NO;
-        self.notificationsPopoverController = nil;
-    }
-    else if(popoverController == self.autocompletePopoverController)
-    {
-        self.autocompletePopoverController = nil;
-    }
+    
 }
 
 @end

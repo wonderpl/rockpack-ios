@@ -79,6 +79,10 @@
     
 }
 
+-(void)viewCameToScrollFront
+{
+    
+}
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
