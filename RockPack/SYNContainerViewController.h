@@ -16,8 +16,8 @@
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
 - (void) popCurrentViewController: (id) sender;
-- (void) repositionQueueView;
 -(void) showSearchViewControllerWithTerm:(NSString*)term;
 
+@property (nonatomic) NSInteger page;
 
 @end

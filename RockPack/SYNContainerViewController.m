@@ -54,7 +54,6 @@
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 
-@property (nonatomic, strong) IBOutlet UIView* tabsViewContainer;
 
 
 
@@ -68,6 +67,7 @@
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
 @dynamic scrollView;
+@dynamic page;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -162,7 +162,6 @@
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
     videoQueueController.delegate = self;
     
-    [self repositionQueueView];
     
     // Set Initial View Controller
     
@@ -202,13 +201,6 @@
 
 
 
-- (void) repositionQueueView
-{
-    videoQueueController.view.center = CGPointMake(videoQueueController.view.center.x, [[UIScreen mainScreen] bounds].size.width + 60);
-    
-    [self.view insertSubview: videoQueueController.view
-                belowSubview: self.tabsViewContainer];
-}
 
 
 -(void)backButtonShow:(NSNotification*)notification
@@ -281,64 +273,6 @@
 		[self addChildViewController: viewController];
 		[viewController didMoveToParentViewController: self];
 	}
-}
-
-
-// Set the selected tab (with no animation)
-
-- (void) setSelectedIndex: (NSInteger) newSelectedIndex
-{
-	[self setSelectedIndex: newSelectedIndex
-                  animated: NO];
-}
-
-
-// Set the selected tab (with animation if required)
-
-- (void) setSelectedIndex: (NSUInteger) newSelectedIndex
-                 animated: (BOOL) animated
-{
-    if (_selectedIndex == newSelectedIndex)
-    {
-        if ([_selectedViewController isKindOfClass: [UINavigationController class]])
-        {
-            [self popCurrentViewController: (UIButton *)self.tabsViewContainer.subviews[_selectedIndex]];
-        }
-        return;
-    }
-
-    _selectedIndex = newSelectedIndex;
-    
-    for (UIButton* tabButton in self.tabsViewContainer.subviews)
-    {
-        tabButton.selected = NO;
-        tabButton.userInteractionEnabled = YES;
-    }
-        
-
-    if(_selectedIndex < 0 || _selectedIndex > self.tabsViewContainer.subviews.count)
-        return;
-    
-    
-    UIButton* toButton = (UIButton *)self.tabsViewContainer.subviews[_selectedIndex];
-    toButton.selected = YES;
-    // toButton.userInteractionEnabled = NO;
-    
-    
-    self.selectedViewController = (UIViewController*)self.viewControllers[_selectedIndex];
-    
-    SYNAbstractViewController* controllerOnView;
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        controllerOnView = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
-    }
-    else
-    {
-        controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
-    }
-    
-    [controllerOnView viewCameToScrollFront];
-    
 }
 
 
@@ -419,15 +353,26 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
-    int pageWidth = (int)self.scrollView.contentSize.width / self.viewControllers.count;
-    int pageIndex = (currentScrollerOffset / pageWidth); // 1 indexed
     
+    NSInteger currentPage = self.page;
     
-    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{@"page":@(pageIndex)}];
+    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{@"page":@(currentPage)}];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     
-    self.selectedViewController = self.viewControllers[pageIndex];
+    self.selectedViewController = self.viewControllers[currentPage];
+    
+    
+    SYNAbstractViewController* controllerOnView;
+    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    {
+        controllerOnView = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
+    }
+    else
+    {
+        controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
+    }
+    
+    [controllerOnView viewCameToScrollFront];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -441,6 +386,26 @@
 }
 
 #pragma mark - Getters/Setters
+
+-(void)setPage:(NSInteger)page
+{
+    if(!self.scrollView.scrollEnabled)
+        return;
+    
+    CGPoint newPoint = CGPointMake(page * 1024.0, 0.0);
+    [self.scrollView setContentOffset:newPoint animated:YES];
+}
+
+// gets current page that the scroller is at from the current offset
+
+-(NSInteger)page
+{
+    CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
+    int pageWidth = (int)self.scrollView.contentSize.width / self.viewControllers.count;
+    NSInteger page = (currentScrollerOffset / pageWidth); // 0 indexed
+    return page;
+    
+}
 
 -(UIScrollView*)scrollView
 {

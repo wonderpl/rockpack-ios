@@ -390,7 +390,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          self.videoViewerViewController = nil;
          [child removeFromSuperview];
          [bottomTabViewController.videoQueueController.view removeFromSuperview];
-         [bottomTabViewController repositionQueueView];
      }];
 
 }
@@ -439,7 +438,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          self.videoViewerViewController = nil;
          [child removeFromSuperview];
          [bottomTabViewController.videoQueueController.view removeFromSuperview];
-         [bottomTabViewController repositionQueueView];
      }];
 
 }
