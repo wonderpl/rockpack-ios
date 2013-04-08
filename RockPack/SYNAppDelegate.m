@@ -579,6 +579,13 @@
     return _currentOAuth2Credentials;
 }
 
+
+// Used to force a refresh of the credentials
+- (void) resetCurrentOAuth2Credentials
+{
+    _currentOAuth2Credentials = nil;
+}
+
 #pragma mark - Social Integration Delegate
 
 -(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url

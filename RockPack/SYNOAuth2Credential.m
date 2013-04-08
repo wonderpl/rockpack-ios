@@ -9,6 +9,7 @@
 #import "SYNOAuth2Credential.h"
 #import "SSKeychain.h"
 #import "AppConstants.h"
+#import "SYNAppDelegate.h"
 
 @interface SYNOAuth2Credential ()
 
@@ -122,6 +123,11 @@
     [SSKeychain setPasswordData: credentialData
                      forService: service
                         account: account];
+    
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+    
+    // Invalidate any cached credentials we may have
+    [appDelegate resetCurrentOAuth2Credentials];
 }
 
 - (void) removeFromKeychainForService: (NSString *) service

@@ -59,5 +59,6 @@
 - (void) resetCoreDataStack;
 -(void)clearData;
 -(void)logout;
+- (void) resetCurrentOAuth2Credentials;
 
 @end
