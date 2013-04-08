@@ -80,6 +80,7 @@
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.delegate = self;
+    scrollView.pagingEnabled = YES;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
     
@@ -92,8 +93,8 @@
     
     // == Home Tab
     
-    SYNHomeRootViewController *homeRootViewController = [[SYNHomeRootViewController alloc] initWithViewId: @"Home"];
-    UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: homeRootViewController];
+    SYNHomeRootViewController *feedRootViewController = [[SYNHomeRootViewController alloc] initWithViewId: @"Home"];
+    UINavigationController *homeRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: feedRootViewController];
     homeRootNavigationViewController.navigationBarHidden = TRUE;
     homeRootNavigationViewController.view.autoresizesSubviews = TRUE;
     homeRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
@@ -132,7 +133,6 @@
     // == Register Controllers
     
     self.viewControllers = @[homeRootNavigationViewController,
-                             videosRootNavigationViewController,
                              channelsRootNavigationViewController,
                              youRootRootNavigationViewController];
     
@@ -168,7 +168,6 @@
     
     self.shouldAnimateViewTransitions = YES;
     
-    [self setSelectedIndex: 2];
     
     self.didNotSwipeMessageInbox = TRUE;
     self.didNotSwipeShareMenu = TRUE;
@@ -176,6 +175,21 @@
     
     // Scroller
     
+    CGFloat currentVCOffset = 0.0;
+    CGRect currentVCRect;
+    for (UIViewController * vc in self.viewControllers)
+    {
+        currentVCRect = vc.view.frame;
+        currentVCRect.origin.x = currentVCOffset;
+        
+        vc.view.frame = currentVCRect;
+        
+        [self.scrollView addSubview:vc.view];
+        
+        currentVCOffset += 1024.0;
+    }
+    
+    self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
     
     
     // notifications
