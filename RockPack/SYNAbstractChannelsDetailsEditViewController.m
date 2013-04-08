@@ -12,7 +12,7 @@
 #import "HPGrowingTextView.h"
 #import "SYNAbstractChannelsDetailsEditViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNTextField.h"

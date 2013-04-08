@@ -895,13 +895,16 @@
                                                                                                        params: params
                                                                                                    httpMethod: @"GET"];
     
-    SYNOAuthNetworkEngine *weakSelf = self;
+    __weak SYNOAuthNetworkEngine *weakSelf = self;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
-                           completionHandler: ^(id response)
-     {
+                           completionHandler: ^(id response) {
+                               
+         if(!weakSelf) return;
+         
          BOOL registryResultOk = [weakSelf.registry registerVideoInstancesFromDictionary: (NSDictionary *) response
-                                                                           forViewId: @"Home"];
+                                                                               forViewId: @"Home"
+                                                                             byAppending: NO];
          
          if (!registryResultOk)
          {

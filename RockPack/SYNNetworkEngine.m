@@ -109,7 +109,7 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
+        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos" byAppending:NO];
         if (!registryResultOk) {
             DebugLog(@"Update Videos Screens Request Failed");
             return;
@@ -161,14 +161,21 @@
 }
 
 - (void) updateChannelsScreenForCategory:(NSString*)categoryId
-{
+                                forRange:(NSRange)range
+                            onCompletion:(MKNKJSONCompleteBlock)completeBlock
+                                 onError:(MKNKJSONErrorBlock)errorBlock {
     
     
-    NSDictionary* parameters;
-    if([categoryId isEqualToString:@"all"])
-        parameters = [self getLocalParam];
-    else
-        parameters = [self getLocalParamWithParams:[NSDictionary dictionaryWithObject:categoryId forKey:@"category"]];
+    NSMutableDictionary* tempParameters = [NSMutableDictionary dictionary];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.location] forKey:@"start"];
+    [tempParameters setObject:[NSString stringWithFormat:@"%i", range.length] forKey:@"size"];
+    
+    if(![categoryId isEqualToString:@"all"]) {
+        [tempParameters setObject:categoryId forKey:@"category"];
+    }
+        
+    
+    NSDictionary* parameters = [self getLocalParamWithParams:tempParameters];
     
     
     SYNNetworkOperationJsonObject *networkOperation =
@@ -176,16 +183,11 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        
-        BOOL registryResultOk = [self.registry registerChannelScreensFromDictionary:dictionary];
-        if (!registryResultOk) {
-            DebugLog(@"Update Channel Screens Request Failed");
-            return;
-        }
-        
+        completeBlock(dictionary);
         
     } errorHandler:^(NSError* error) {
         DebugLog(@"Update Channel Screens Request Failed");
+        errorBlock(@{@"network_error":@"engine failed to load channels"});
     }];
     
     [self enqueueOperation: networkOperation];

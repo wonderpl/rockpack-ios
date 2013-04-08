@@ -18,6 +18,10 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
+#import "SYNChannelFooterMoreView.h"
+#import "SYNMainRegistry.h"
+
+#define STANDARD_LENGTH 50
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
@@ -28,11 +32,19 @@
 @property (nonatomic, strong) UIImageView *pinchedView;
 @property (nonatomic, strong) NSString* currentCategoryId;
 
+@property (nonatomic, weak) SYNMainRegistry* mainRegistry;
+
+
+@property (nonatomic) NSRange currentRange;
+@property (nonatomic) NSInteger currentTotal;
+
 @end
 
 @implementation SYNChannelsRootViewController
 
 @synthesize currentCategoryId;
+@synthesize currentRange;
+@synthesize currentTotal;
 
 #pragma mark - View lifecycle
 
@@ -41,7 +53,7 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(1024.0, 64.0);
     flowLayout.itemSize = CGSizeMake(251.0, 302.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
     flowLayout.minimumLineSpacing = 3.0;
@@ -99,18 +111,58 @@
 {
     [super viewDidLoad];
     
+    currentRange = NSMakeRange(0, 50);
+    
 
-    // Init collection view
+    // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.channelThumbnailCollectionView registerNib:footerViewNib
+                          forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                 withReuseIdentifier:@"SYNChannelFooterMoreView"];
+    
 
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
+    
+    self.mainRegistry = appDelegate.mainRegistry;
+    
+    
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
+                                                      forRange:currentRange
+                                                  onCompletion:^(NSDictionary* response) {
+                                                      
+                                                      NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
+                                                      if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+                                                          return;
+                                                      
+                                                      NSNumber *totalNumber = [channelsDictionary objectForKey: @"total"];
+                                                      if (![totalNumber isKindOfClass: [NSNumber class]])
+                                                          return;
+                                                      
+                                                      currentTotal = [totalNumber integerValue];
+                                                      
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                         byAppending:NO];
+                                                      if (!registryResultOk) {
+                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          return;
+                                                      }
+        
+                                                  } onError:^(NSDictionary* errorInfo) {
+        
+                                                  }];
     
 }
 
@@ -121,7 +173,6 @@
     
     self.touchedChannelButton = NO;
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId];
 }
 
 
@@ -187,6 +238,42 @@
     
 }
 
+
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath {
+    
+    if(collectionView != self.channelThumbnailCollectionView)
+        return nil;
+    
+    SYNChannelFooterMoreView *channelMoreFooter;
+    
+    UICollectionReusableView* supplementaryView;
+    
+    if (kind == UICollectionElementKindSectionHeader)
+    {
+        // nothing yet
+    }
+    
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        channelMoreFooter = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind:kind
+                                                                                    withReuseIdentifier:@"SYNChannelFooterMoreView"
+                                                                                           forIndexPath:indexPath];
+        
+        [channelMoreFooter.loadMoreButton addTarget:self
+                                             action:@selector(loadMoreChannels:)
+                                   forControlEvents:UIControlEventTouchUpInside];
+        
+        supplementaryView = channelMoreFooter;
+    }
+    
+    
+    return supplementaryView;
+}
+
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
@@ -237,6 +324,35 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
                                                         object: self];
+}
+
+
+#pragma mark - Button Actions
+
+-(void)loadMoreChannels:(UIButton*)sender
+{
+    
+    
+    NSInteger nextStart = currentRange.location + currentRange.length;
+    NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
+    
+    currentRange = NSMakeRange(nextStart, nextSize);
+    
+    
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
+                                                      forRange:currentRange
+                                                  onCompletion:^(NSDictionary* response) {
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                             byAppending:YES];
+                                                      if (!registryResultOk) {
+                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          return;
+                                                      }
+                                                      
+                                                  } onError:^(NSDictionary* errorInfo) {
+                                                      
+                                                  }];
 }
 
 
@@ -363,7 +479,21 @@
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {
     currentCategoryId = selectionId;
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId];
+    currentRange = NSMakeRange(0, 50);
+    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
+                                                      forRange:currentRange
+                                                  onCompletion:^(NSDictionary* response) {
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                             byAppending:NO];
+                                                      if (!registryResultOk) {
+                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          return;
+                                                      }
+                                                      
+                                                  } onError:^(NSDictionary* errorInfo) {
+                                                      
+                                                  }];
 }
 
 @end

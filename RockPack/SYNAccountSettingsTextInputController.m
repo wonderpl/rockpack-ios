@@ -168,10 +168,7 @@
     self.spinner.center = self.saveButton.center;
     [self.spinner startAnimating];
     
-    if(![self formIsValid]) {
-        self.errorTextField.text = @"You Have Entered Invalid Characters";
-        return;
-    }
+    
     
     
 }
@@ -203,7 +200,7 @@
             isMatched = [self.inputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"];
             break;
     }
-    return YES;
+    return isMatched;
 }
 - (void)didReceiveMemoryWarning
 {
@@ -235,7 +232,9 @@
                                            
                                        } errorHandler:^(id errorInfo) {
                                            
-                                           
+                                           [self.spinner stopAnimating];
+                                           self.saveButton.hidden = NO;
+                                           self.saveButton.enabled = YES;
                                            
                                            if(!errorInfo || ![errorInfo isKindOfClass:[NSDictionary class]])
                                                return;
