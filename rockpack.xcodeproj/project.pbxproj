@@ -290,7 +290,6 @@
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
 		019824F21629CE1600216900 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824F11629CE1600216900 /* libz.dylib */; };
 		0198250D1629DCF100216900 /* SYNContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNContainerViewController.m */; };
-		0198250E1629DCF100216900 /* SYNContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNContainerViewController.xib */; };
 		01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */; };
 		01982576162AFB9700216900 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01982575162AFB9600216900 /* QuartzCore.framework */; };
 		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
@@ -1004,7 +1003,6 @@
 		019824F11629CE1600216900 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0198250A1629DCF100216900 /* SYNContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNContainerViewController.h; sourceTree = "<group>"; };
 		0198250B1629DCF100216900 /* SYNContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNContainerViewController.m; sourceTree = "<group>"; };
-		0198250C1629DCF100216900 /* SYNContainerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNContainerViewController.xib; sourceTree = "<group>"; };
 		01982526162A02F700216900 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
 		01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractTopTabViewController.h; sourceTree = "<group>"; };
 		01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractTopTabViewController.m; sourceTree = "<group>"; };
@@ -2371,7 +2369,6 @@
 			children = (
 				0198250A1629DCF100216900 /* SYNContainerViewController.h */,
 				0198250B1629DCF100216900 /* SYNContainerViewController.m */,
-				0198250C1629DCF100216900 /* SYNContainerViewController.xib */,
 			);
 			name = "Container View Controller";
 			sourceTree = "<group>";
@@ -3282,7 +3279,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */,
-				0198250E1629DCF100216900 /* SYNContainerViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */,
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,

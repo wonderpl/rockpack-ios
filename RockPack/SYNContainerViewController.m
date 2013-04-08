@@ -46,11 +46,8 @@
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
 
 
-@property (nonatomic, strong) UIScrollView* scroller;
+@property (nonatomic, readonly) UIScrollView* scrollView;
 
-
-
-@property (nonatomic, strong) IBOutlet UIView* containerView;
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
@@ -70,11 +67,24 @@
 @synthesize videoQueueController = videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
-@synthesize scroller;
+@dynamic scrollView;
 
 // Initialise all the elements common to all 4 tabs
 
 #pragma mark - View lifecycle
+
+
+-(void)loadView
+{
+    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
+    UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
+    scrollView.backgroundColor = [UIColor clearColor];
+    scrollView.delegate = self;
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.showsVerticalScrollIndicator = NO;
+    
+    self.view = scrollView;
+}
  	
 - (void) viewDidLoad
 {
@@ -108,9 +118,9 @@
     
     // == You Tab
     
-    SYNYouRootViewController *youRootViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
-    youRootViewController.tabViewController = [[SYNUserTabViewController alloc] init];
-    UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: youRootViewController];
+    SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
+    myRockpackViewController.tabViewController = [[SYNUserTabViewController alloc] init];
+    UINavigationController *youRootRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
     youRootRootNavigationViewController.navigationBarHidden = TRUE;
     youRootRootNavigationViewController.view.autoresizesSubviews = TRUE;
     youRootRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
@@ -124,8 +134,7 @@
     self.viewControllers = @[homeRootNavigationViewController,
                              videosRootNavigationViewController,
                              channelsRootNavigationViewController,
-                             youRootRootNavigationViewController,
-                             friendsRootViewController];
+                             youRootRootNavigationViewController];
     
     // == Search (out of normal controller array)
     
@@ -167,9 +176,7 @@
     
     // Scroller
     
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
-    self.scroller = [[UIScrollView alloc] initWithFrame:scrollerFrame];
-    self.scroller.backgroundColor = [UIColor clearColor];
+    
     
     // notifications
     
@@ -335,12 +342,7 @@
         return;
     }
         
-    // even if nill, that is OK. It will just animate the selectedViewController out.
     
-    if (newSelectedViewController)
-    {
-        [self.containerView addSubview:newSelectedViewController.view];
-    }
     
     if (self.shouldAnimateViewTransitions)
     {
@@ -527,6 +529,13 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     
+}
+
+#pragma mark - Getters/Setters
+
+-(UIScrollView*)scrollView
+{
+    return (UIScrollView*)self.view;
 }
 
 - (NSString*) description
