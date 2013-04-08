@@ -117,7 +117,7 @@
                                                                                            bundle: nil];
     
     
-    self.masterViewController = [[SYNMasterViewController alloc] initWithRootViewController:bottomTabVC];
+    self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController:bottomTabVC];
     
     return self.masterViewController;
 }

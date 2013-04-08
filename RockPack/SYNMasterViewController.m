@@ -39,6 +39,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* slidersView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
+@property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
@@ -55,19 +56,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @implementation SYNMasterViewController
 
-@synthesize rootViewController = rootViewController;
+@synthesize containerViewController;
 @synthesize notificationsPopoverController = notificationsPopoverController;
 @synthesize autocompleteTimer;
+@synthesize pageTitleLabel;
 
 #pragma mark - Initialise
 
--(id)initWithRootViewController:(UIViewController*)root
+-(id)initWithContainerViewController:(SYNContainerViewController*)root
 {
     if ((self = [super initWithNibName: @"SYNMasterViewController" bundle: nil]))
     {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
-        self.rootViewController = root;
+        self.containerViewController = root;
 
         // == Set up Inbox Overlay
         self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
@@ -94,12 +96,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
--(void)setRootViewController:(UIViewController *)viewController
-{
-    rootViewController = viewController;
-    
-}
 
 #pragma mark - Life Cycle
 
@@ -128,7 +124,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
-    [self.containerView addSubview:rootViewController.view];
+    [self.containerView addSubview:containerViewController.view];
     
     self.backButton.alpha = 0.0;
     
@@ -337,7 +333,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
     
-    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.rootViewController;
+    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.containerViewController;
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
@@ -370,7 +366,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) removeVideoOverlayController
 {
-    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.rootViewController;
+    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.containerViewController;
     
     UIView* child = self.overlayView.subviews[0];
     
@@ -421,7 +417,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) removeCategoryChooserOverlayController
 {
-    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.rootViewController;
+    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.containerViewController;
     
     UIView* child = self.overlayView.subviews[0];
     
@@ -559,7 +555,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.autocompleteTimer invalidate];
     self.autocompleteTimer = nil;
     
-    [((SYNContainerViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
+    [((SYNContainerViewController*)self.containerViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
     
     [textField resignFirstResponder];
     
@@ -597,7 +593,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     NSString* notificationName = [notification name];
     
-    SYNContainerViewController* containerViewController = (SYNContainerViewController*)self.rootViewController;
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {

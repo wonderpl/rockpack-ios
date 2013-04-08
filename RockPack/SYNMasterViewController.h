@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "SYNContainerViewController.h"
-
 #import "SYNAppDelegate.h"
 
 @interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
@@ -23,9 +22,9 @@
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) IBOutlet UIView* overEverythingView;
 @property (nonatomic, strong) UIViewController* originViewController;
-@property (nonatomic, strong) UIViewController* rootViewController;
+@property (nonatomic, strong) SYNContainerViewController* containerViewController;
 
-- (id) initWithRootViewController: (UIViewController*) root;
+- (id) initWithContainerViewController: (UIViewController*) root;
 
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
             withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
