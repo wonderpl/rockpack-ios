@@ -191,6 +191,8 @@
     
     self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
     
+    self.selectedViewController = self.viewControllers[0];
+    
     
     // notifications
     
@@ -207,34 +209,6 @@
                 belowSubview: self.tabsViewContainer];
 }
 
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
-    
-    // Register for tab bar hiding notifications
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(hideTabBar)
-                                                 name: kNoteHideTabBar
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(showTabBar)
-                                                 name: kNoteShowTabBar
-                                               object: nil];
-}
-
-- (void) viewWillDisappear: (BOOL) animated
-{
-    // Deregister for tab bar hiding notifications
-     [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                     name: kNoteHideTabBar
-                                                   object: nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kNoteShowTabBar
-                                                  object: nil];
-}
 
 
 - (void) createChannelFromVideoQueue
@@ -347,73 +321,7 @@
     
 }
 
-- (void) setSelectedViewController: (UIViewController *) newSelectedViewController
-{
-    // if we try and push the same controller, escape
-    
-    if(_selectedViewController == newSelectedViewController)
-    {
-        return;
-    }
-        
-    
-    
-    if (self.shouldAnimateViewTransitions)
-    {
-        self.view.userInteractionEnabled = NO;
-        
-        newSelectedViewController.view.alpha = 0.0f;
-        
-        [UIView animateWithDuration: kTabAnimationDuration
-         delay: 0.0f
-         options: UIViewAnimationOptionCurveEaseInOut
-         animations: ^
-         {
-             _selectedViewController.view.alpha = 0.0f;
-             
-             if(newSelectedViewController)
-                 newSelectedViewController.view.alpha = 1.0f;
-         }
-         completion: ^(BOOL finished)
-         {
-             [_selectedViewController.view removeFromSuperview];
-             
-             self.view.userInteractionEnabled = YES;
-             
-             _selectedViewController = newSelectedViewController;
-         }];
-    }
-    else
-    {
-        [_selectedViewController.view removeFromSuperview];
-        
-        _selectedViewController = newSelectedViewController;
-    }
-    
-    if ([newSelectedViewController isKindOfClass: [UINavigationController class]] &&
-        [[(UINavigationController *)newSelectedViewController viewControllers] count] > 1)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
-                                                            object: self];
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonHide
-                                                            object: self];
-    }
-    
-}
 
-
-// Use the tag index of the button (100 - 103) to calculate the button index
-
-- (IBAction) tabButtonPressed: (UIButton *) sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteTabPressed object:self];
-    
-	[self setSelectedIndex: sender.tag - kBottomTabIndexOffset
-                  animated: YES];
-}
 
 
 - (IBAction) recordAction: (UIButton*) button
@@ -477,50 +385,7 @@
 }
 
 
-- (void) showTabBar
-{
-    if (self.isTabBarHidden == TRUE)
-    {
-        self.tabBarHidden = !self.tabBarHidden;
-        
-        [UIView animateWithDuration: kTabAnimationDuration
-         delay: 0.0f
-         options: UIViewAnimationOptionCurveEaseInOut
-         animations: ^
-         {
-             // Move the tab view so that it is just off the bottom of the screen
-             CGRect tabContainerViewFrame = self.tabsViewContainer.frame;
-             tabContainerViewFrame.origin.y -= tabContainerViewFrame.size.height;
-             self.tabsViewContainer.frame = tabContainerViewFrame;
-         }
-         completion: ^(BOOL finished)
-         {
-         }];
-    }
-}
 
-
-- (void) hideTabBar
-{
-    if (self.isTabBarHidden == FALSE)
-    {
-        self.tabBarHidden = !self.tabBarHidden;
-    }
-    
-    [UIView animateWithDuration: kTabAnimationDuration
-     delay: 0.0f
-     options: UIViewAnimationOptionCurveEaseInOut
-     animations: ^
-     {
-         // Move the tab view so that it is just off the bottom of the screen
-         CGRect tabContainerViewFrame = self.tabsViewContainer.frame;
-         tabContainerViewFrame.origin.y += tabContainerViewFrame.size.height;
-         self.tabsViewContainer.frame = tabContainerViewFrame;
-     }
-     completion: ^(BOOL finished)
-     {
-     }];
-}
 
 
 #pragma mark - UIScrollViewDelegate
@@ -534,9 +399,13 @@
 {
     CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
     int pageWidth = (int)self.scrollView.contentSize.width / self.viewControllers.count;
-    int page = (currentScrollerOffset / pageWidth) + 1; // 1 indexed
-    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{@"page":@(page)}];
+    int pageIndex = (currentScrollerOffset / pageWidth); // 1 indexed
+    
+    
+    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{@"page":@(pageIndex)}];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
+    
+    self.selectedViewController = self.viewControllers[pageIndex];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

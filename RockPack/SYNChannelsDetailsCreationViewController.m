@@ -60,14 +60,11 @@
     self.collectionHeaderView.channelDescriptionTextView.text = @"Describe your channel...";
     self.collectionHeaderView.cfollowButton.hidden = YES;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteHideTabBar
-                                                        object: self];
 }
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowTabBar
-                                                        object: self];
+
     
     [super viewWillDisappear: animated];
 }

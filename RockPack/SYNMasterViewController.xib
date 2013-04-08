@@ -738,6 +738,25 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="clearSearchField:">id</string>
+						<string key="userTouchedInboxButton:">UIButton</string>
+						<string key="userTouchedNotificationButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="clearSearchField:">
+							<string key="name">clearSearchField:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedInboxButton:">
+							<string key="name">userTouchedInboxButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedNotificationButton:">
+							<string key="name">userTouchedNotificationButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backButton">UIButton</string>
 						<string key="clearTextButton">UIButton</string>

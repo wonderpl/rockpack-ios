@@ -622,16 +622,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     NSString* notificationName = [notification name];
     
-    SYNContainerViewController* bottomTabController = (SYNContainerViewController*)self.rootViewController;
+    SYNContainerViewController* containerViewController = (SYNContainerViewController*)self.rootViewController;
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
-        [self.backButton addTarget:bottomTabController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButton addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:YES];
     }
     else
     {
-        [self.backButton removeTarget:bottomTabController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButton removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:NO];
     }
 }

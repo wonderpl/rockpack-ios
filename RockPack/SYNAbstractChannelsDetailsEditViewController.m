@@ -231,8 +231,6 @@
 {
     NSLog (@"User touched done button");
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteShowTabBar
-                                                        object: self];
     
     self.editButton.hidden = NO;
     self.buyEditLabel.hidden = NO;
