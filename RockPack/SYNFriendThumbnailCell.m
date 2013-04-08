@@ -41,17 +41,6 @@
 }
 
 
-// Need to do this outside awakeFromNib as the delegate is not set at that point
-- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
-{
-    _viewControllerDelegate = viewControllerDelegate;
-    
-    // Add dragging to video thumbnail view
-    UILongPressGestureRecognizer *longPressOnThumbnailGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
-                                                                                                                        action: @selector(longPressThumbnail:)];
-    
-    [self.friendImageView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
-}
 
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations

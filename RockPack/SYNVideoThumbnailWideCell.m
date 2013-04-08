@@ -94,16 +94,11 @@
 {
     _viewControllerDelegate = viewControllerDelegate;
     
-    // Add dragging to video thumbnail view
-    UILongPressGestureRecognizer *longPressOnThumbnailGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
-                                                                                                                        action: @selector(longPressThumbnail:)];
-    
-    [self.longPressView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
     
     // Allow tapping to show video player
     UITapGestureRecognizer *tapOnThumbnailGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
                                                                                                       action: @selector(displayVideoViewerFromView:)];
-    [self.longPressView addGestureRecognizer: longPressOnThumbnailGestureRecognizer];
+    
     
     [self.longPressView addGestureRecognizer: tapOnThumbnailGestureRecognizer];
 

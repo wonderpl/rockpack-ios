@@ -532,7 +532,11 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    
+    CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
+    int pageWidth = (int)self.scrollView.contentSize.width / self.viewControllers.count;
+    int page = (currentScrollerOffset / pageWidth) + 1; // 1 indexed
+    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{@"page":@(page)}];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

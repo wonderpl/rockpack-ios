@@ -157,12 +157,25 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharePanelRequested:) name:kNoteSharePanelRequested object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
+    
     
     // Add swipe-away gesture
     UISwipeGestureRecognizer* inboxLeftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                 action: @selector(panelSwipedAway:)];
     inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.slidersView addGestureRecognizer: inboxLeftSwipeGesture];
+}
+
+-(void)scrollerPageChanged:(NSNotification*)notification
+{
+    NSNumber* pageNumber = [[notification userInfo] objectForKey:@"page"];
+    if(!pageNumber)
+        return;
+    
+    // got page number
+    
+    // TODO: Implemente change
 }
 
 - (void)didReceiveMemoryWarning
