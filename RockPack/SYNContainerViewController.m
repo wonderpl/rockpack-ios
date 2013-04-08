@@ -197,6 +197,7 @@
     // notifications
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
 }
 
 
@@ -210,6 +211,14 @@
 }
 
 
+-(void)backButtonShow:(NSNotification*)notification
+{
+    
+    self.scrollView.scrollEnabled = NO;
+    
+    
+    
+}
 
 - (void) createChannelFromVideoQueue
 {
@@ -355,6 +364,8 @@
     SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
     
     [abstractVC animatedPopViewController];
+    
+    self.scrollView.scrollEnabled = YES;
     
 }
 

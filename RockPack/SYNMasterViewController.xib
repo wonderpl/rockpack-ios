@@ -80,7 +80,7 @@
 								<string key="NSFrameSize">{1024, 54}</string>
 								<reference key="NSSuperview" ref="836185708"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="243788442"/>
+								<reference key="NSNextKeyView" ref="919807930"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="210113303"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -90,10 +90,10 @@
 									<string key="NSResourceName">PanelMainTitle.png</string>
 								</object>
 							</object>
-							<object class="IBUIView" id="243788442">
+							<object class="IBUIView" id="919807930">
 								<reference key="NSNextResponder" ref="836185708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{660, 9}, {108, 27}}</string>
+								<string key="NSFrame">{{295, 9}, {108, 27}}</string>
 								<reference key="NSSuperview" ref="836185708"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="269703860"/>
@@ -390,7 +390,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dotsView</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="243788442"/>
+						<reference key="destination" ref="919807930"/>
 					</object>
 					<int key="connectionID">98</int>
 				</object>
@@ -453,7 +453,7 @@
 							<reference ref="182419213"/>
 							<reference ref="1066454248"/>
 							<reference ref="269703860"/>
-							<reference ref="243788442"/>
+							<reference ref="919807930"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Top Bar View</string>
@@ -523,7 +523,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">97</int>
-						<reference key="object" ref="243788442"/>
+						<reference key="object" ref="919807930"/>
 						<reference key="parent" ref="836185708"/>
 						<string key="objectName">Dots</string>
 					</object>
@@ -568,17 +568,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">clearSearchField:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">clearSearchField:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">clearSearchField:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backButton">UIButton</string>
 						<string key="clearTextButton">UIButton</string>
