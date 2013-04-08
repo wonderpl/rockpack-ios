@@ -39,10 +39,14 @@
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
+
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
+
+
+@property (nonatomic, strong) UIScrollView* scroller;
 
 
 
@@ -66,6 +70,7 @@
 @synthesize videoQueueController = videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
+@synthesize scroller;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -158,6 +163,13 @@
     
     self.didNotSwipeMessageInbox = TRUE;
     self.didNotSwipeShareMenu = TRUE;
+    
+    
+    // Scroller
+    
+    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
+    self.scroller = [[UIScrollView alloc] initWithFrame:scrollerFrame];
+    self.scroller.backgroundColor = [UIColor clearColor];
     
     // notifications
     
@@ -495,7 +507,7 @@
 }
 
 
-#pragma mark - ScrollViewDelegate
+#pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
