@@ -106,7 +106,9 @@
 }
 
 
--(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId
+-(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary
+                                  forViewId:(NSString*)viewId
+                                byAppending:(BOOL)append
 {
     
     // == Check for Validity == //

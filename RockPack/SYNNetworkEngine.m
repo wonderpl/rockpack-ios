@@ -109,7 +109,7 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos"];
+        BOOL registryResultOk = [self.registry registerVideoInstancesFromDictionary:dictionary forViewId:@"Videos" byAppending:NO];
         if (!registryResultOk) {
             DebugLog(@"Update Videos Screens Request Failed");
             return;
