@@ -13,7 +13,7 @@
 @interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
 
 
-@property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
+@property (nonatomic, weak) SYNVideoQueueViewController* videoQueueController;
 
 - (void) popCurrentViewController: (id) sender;
 -(void) showSearchViewControllerWithTerm:(NSString*)term;

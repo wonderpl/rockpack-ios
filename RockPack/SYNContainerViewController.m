@@ -63,7 +63,7 @@
 
 @synthesize selectedIndex = _selectedIndex;
 @synthesize selectedViewController = _selectedViewController;
-@synthesize videoQueueController = videoQueueController;
+@synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
 @dynamic scrollView;
@@ -130,11 +130,8 @@
     // TODO: Nest Friends Bar
     SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
     
-    // == Register Controllers
     
-    self.viewControllers = @[feedRootNavigationViewController,
-                             channelsRootNavigationViewController,
-                             myRockpackNavigationViewController];
+    
     
     // == Search (out of normal controller array)
     
@@ -157,14 +154,6 @@
     self.channelsUserNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     
-    // == Video Queue
-    
-    videoQueueController = [[SYNVideoQueueViewController alloc] init];
-    videoQueueController.delegate = self;
-    
-    
-    // Set Initial View Controller
-    
     self.shouldAnimateViewTransitions = YES;
     
     
@@ -172,7 +161,11 @@
     self.didNotSwipeShareMenu = TRUE;
     
     
-    // Scroller
+    // == Populate Scroller == //
+    
+    self.viewControllers = @[feedRootNavigationViewController,
+                             channelsRootNavigationViewController,
+                             myRockpackNavigationViewController];
     
     CGFloat currentVCOffset = 0.0;
     CGRect currentVCRect;
@@ -193,7 +186,7 @@
     self.selectedViewController = self.viewControllers[0];
     
     
-    // notifications
+    // = Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
@@ -235,45 +228,7 @@
     }
 }
 
-#pragma mark - Tab & Container switching mechanism
 
-// Add the five tab view controllers as sub-view controllers of this view controller
-- (void) setViewControllers: (NSArray *) newViewControllers
-{
-	UIViewController *oldSelectedViewController = self.selectedViewController;
-    
-	// Remove the old child view controllers.
-	for (UIViewController *viewController in _viewControllers)
-	{
-		[viewController willMoveToParentViewController: nil];
-		[viewController removeFromParentViewController];
-	}
-    
-	_viewControllers = [newViewControllers copy];
-    
-	// This follows the same rules as UITabBarController for trying to
-	// re-select the previously selected view controller.
-	NSUInteger newIndex = [_viewControllers indexOfObject: oldSelectedViewController];
-	if (newIndex != NSNotFound)
-    {
-		_selectedIndex = newIndex;
-    }
-	else if (newIndex < [_viewControllers count])
-    {
-		_selectedIndex = newIndex;
-    }
-	else
-    {
-		_selectedIndex = 0;
-    }
-    
-	// Add the new child view controllers.
-	for (UIViewController *viewController in _viewControllers)
-	{
-		[self addChildViewController: viewController];
-		[viewController didMoveToParentViewController: self];
-	}
-}
 
 
 
@@ -283,11 +238,6 @@
     button.selected = !button.selected;
 }
 
-
-- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-{
-	
-}
 
 
 - (void) popCurrentViewController: (id) sender
