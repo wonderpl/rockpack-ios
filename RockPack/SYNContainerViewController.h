@@ -10,7 +10,7 @@
 #import "SYNVideoQueueDelegate.h"
 #import "SYNVideoQueueViewController.h"
 
-@interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate>
+@interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
 
 
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
