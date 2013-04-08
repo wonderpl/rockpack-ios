@@ -9,7 +9,7 @@
 #import "AppConstants.h"
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNLoginViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNNetworkEngine.h"
@@ -113,7 +113,7 @@
 
 -(UIViewController*)createAndReturnRootViewController
 {
-    SYNBottomTabViewController* bottomTabVC = [[SYNBottomTabViewController alloc] initWithNibName: @"SYNBottomTabViewController"
+    SYNContainerViewController* bottomTabVC = [[SYNContainerViewController alloc] initWithNibName: @"SYNBottomTabViewController"
                                                                                            bundle: nil];
     
     

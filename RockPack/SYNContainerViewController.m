@@ -11,7 +11,7 @@
 #import "ChannelOwner.h"
 #import "MKNetworkEngine.h"
 #import "SYNActivityPopoverViewController.h"
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNChannelsUserViewController.h"
 #import "SYNFriendsRootViewController.h"
@@ -28,7 +28,7 @@
 #import "SYNChannelsAddVideosViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
+@interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
@@ -59,7 +59,7 @@
 
 @end
 
-@implementation SYNBottomTabViewController
+@implementation SYNContainerViewController
 
 @synthesize selectedIndex = _selectedIndex;
 @synthesize selectedViewController = _selectedViewController;

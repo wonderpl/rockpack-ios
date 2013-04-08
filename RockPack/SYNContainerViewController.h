@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SYNAbstractViewController.h"
 #import "SYNVideoQueueDelegate.h"
 #import "SYNVideoQueueViewController.h"
 
-@interface SYNBottomTabViewController : SYNAbstractViewController <SYNVideoQueueDelegate>
+@interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate>
 
 
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;

@@ -11,12 +11,12 @@
 #import "SYNActivityPopoverViewController.h"
 #import "SYNInboxOverlayViewController.h"
 #import "SYNShareOverlayViewController.h"
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
 #import "SYNAutocompletePopoverBackgroundView.h"
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
@@ -347,7 +347,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
                                                         object:self];
     
-    SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
+    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.rootViewController;
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
@@ -380,7 +380,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) removeVideoOverlayController
 {
-    SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
+    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.rootViewController;
     
     UIView* child = self.overlayView.subviews[0];
     
@@ -432,7 +432,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) removeCategoryChooserOverlayController
 {
-    SYNBottomTabViewController* bottomTabViewController = (SYNBottomTabViewController*)self.rootViewController;
+    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.rootViewController;
     
     UIView* child = self.overlayView.subviews[0];
     
@@ -571,7 +571,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.autocompleteTimer invalidate];
     self.autocompleteTimer = nil;
     
-    [((SYNBottomTabViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
+    [((SYNContainerViewController*)self.rootViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
     
     [textField resignFirstResponder];
     
@@ -609,7 +609,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     NSString* notificationName = [notification name];
     
-    SYNBottomTabViewController* bottomTabController = (SYNBottomTabViewController*)self.rootViewController;
+    SYNContainerViewController* bottomTabController = (SYNContainerViewController*)self.rootViewController;
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {

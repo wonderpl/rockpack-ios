@@ -20,7 +20,7 @@
 
 // Something new!
 
-@class SYNBottomTabViewController, ChannelOwner, SYNNetworkEngine, SYNOAuthNetworkEngine;
+@class SYNContainerViewController, ChannelOwner, SYNNetworkEngine, SYNOAuthNetworkEngine;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 

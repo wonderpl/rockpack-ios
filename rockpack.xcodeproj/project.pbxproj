@@ -289,8 +289,8 @@
 		019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 019824EB1629CBDF00216900 /* UncaughtExceptionHandler.m */; };
 		019824F01629CC7600216900 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824EE1629CC7600216900 /* libTestFlight.a */; };
 		019824F21629CE1600216900 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 019824F11629CE1600216900 /* libz.dylib */; };
-		0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNBottomTabViewController.m */; };
-		0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */; };
+		0198250D1629DCF100216900 /* SYNContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198250B1629DCF100216900 /* SYNContainerViewController.m */; };
+		0198250E1629DCF100216900 /* SYNContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0198250C1629DCF100216900 /* SYNContainerViewController.xib */; };
 		01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */; };
 		01982576162AFB9700216900 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01982575162AFB9600216900 /* QuartzCore.framework */; };
 		01982589162B605A00216900 /* SYNTabImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01982588162B605A00216900 /* SYNTabImageView.m */; };
@@ -1002,9 +1002,9 @@
 		019824EE1629CC7600216900 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = RockPack/libTestFlight.a; sourceTree = "<group>"; };
 		019824EF1629CC7600216900 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		019824F11629CE1600216900 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		0198250A1629DCF100216900 /* SYNBottomTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBottomTabViewController.h; sourceTree = "<group>"; };
-		0198250B1629DCF100216900 /* SYNBottomTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBottomTabViewController.m; sourceTree = "<group>"; };
-		0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNBottomTabViewController.xib; sourceTree = "<group>"; };
+		0198250A1629DCF100216900 /* SYNContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNContainerViewController.h; sourceTree = "<group>"; };
+		0198250B1629DCF100216900 /* SYNContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNContainerViewController.m; sourceTree = "<group>"; };
+		0198250C1629DCF100216900 /* SYNContainerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNContainerViewController.xib; sourceTree = "<group>"; };
 		01982526162A02F700216900 /* AppConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstants.h; sourceTree = "<group>"; };
 		01982564162ADEE300216900 /* SYNAbstractTopTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractTopTabViewController.h; sourceTree = "<group>"; };
 		01982565162ADEE300216900 /* SYNAbstractTopTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractTopTabViewController.m; sourceTree = "<group>"; };
@@ -2148,10 +2148,10 @@
 				BEF9E5A516DBCDEF00286113 /* Components */,
 				BE270B7B16EDE0A500CDDA6D /* Login */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
+				01982562162ADE5200216900 /* Container View Controller */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
-				01982562162ADE5200216900 /* Tab bar */,
 				0199F1371672199F00E479C6 /* Home */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				0198255F162ADE2900216900 /* Videos */,
@@ -2366,14 +2366,14 @@
 			name = Friends;
 			sourceTree = "<group>";
 		};
-		01982562162ADE5200216900 /* Tab bar */ = {
+		01982562162ADE5200216900 /* Container View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				0198250A1629DCF100216900 /* SYNBottomTabViewController.h */,
-				0198250B1629DCF100216900 /* SYNBottomTabViewController.m */,
-				0198250C1629DCF100216900 /* SYNBottomTabViewController.xib */,
+				0198250A1629DCF100216900 /* SYNContainerViewController.h */,
+				0198250B1629DCF100216900 /* SYNContainerViewController.m */,
+				0198250C1629DCF100216900 /* SYNContainerViewController.xib */,
 			);
-			name = "Tab bar";
+			name = "Container View Controller";
 			sourceTree = "<group>";
 		};
 		01982563162ADEAD00216900 /* Abstract */ = {
@@ -3282,7 +3282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */,
-				0198250E1629DCF100216900 /* SYNBottomTabViewController.xib in Resources */,
+				0198250E1629DCF100216900 /* SYNContainerViewController.xib in Resources */,
 				01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */,
 				01363F7C1631A03500FFAA09 /* SYNVideoQueueCell.xib in Resources */,
 				01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */,
@@ -3827,7 +3827,7 @@
 				010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */,
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
-				0198250D1629DCF100216900 /* SYNBottomTabViewController.m in Sources */,
+				0198250D1629DCF100216900 /* SYNContainerViewController.m in Sources */,
 				01982566162ADEE300216900 /* SYNAbstractTopTabViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,
 				019825F1162C94A300216900 /* UIColor+SYNColor.m in Sources */,
