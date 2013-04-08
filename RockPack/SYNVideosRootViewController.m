@@ -23,6 +23,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNChannelFooterMoreView.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 
@@ -41,6 +42,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 
 @property (nonatomic, strong) SYNLargeVideoPanelViewController* largeVideoPanelController;
+
+@property (nonatomic) NSRange videosRequestCurrentRange;
 
 
 @end
@@ -67,15 +70,16 @@
 
 -(void)loadView
 {
+    CGRect videoCollectionViewFrame = CGRectMake(512.0, 87.0, 512.0, 569.0);
+    
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
     standardFlowLayout.minimumLineSpacing = 0.0f;
+    standardFlowLayout.footerReferenceSize = CGSizeMake(videoCollectionViewFrame.size.width, 64.0);
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     standardFlowLayout.sectionInset = UIEdgeInsetsMake(6, 2, 5, 2);
     
-    
-    CGRect videoCollectionViewFrame = CGRectMake(512.0, 87.0, 512.0, 569.0);
     
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
@@ -142,6 +146,13 @@
 {
     [super viewDidLoad];
     
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.videoThumbnailCollectionView registerNib:footerViewNib
+                        forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                               withReuseIdentifier:@"SYNChannelFooterMoreView"];
     
     [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
     
@@ -247,6 +258,41 @@
     }
     
     return items;
+}
+
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath {
+    
+    if(collectionView != self.videoThumbnailCollectionView)
+        return nil;
+    
+    SYNChannelFooterMoreView *channelMoreFooter;
+    
+    UICollectionReusableView* supplementaryView;
+    
+    if (kind == UICollectionElementKindSectionHeader)
+    {
+        // nothing yet
+    }
+    
+    
+    if (kind == UICollectionElementKindSectionFooter)
+    {
+        channelMoreFooter = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind:kind
+                                                                                  withReuseIdentifier:@"SYNChannelFooterMoreView"
+                                                                                         forIndexPath:indexPath];
+        
+        [channelMoreFooter.loadMoreButton addTarget:self
+                                             action:@selector(loadMoreChannels:)
+                                   forControlEvents:UIControlEventTouchUpInside];
+        
+        supplementaryView = channelMoreFooter;
+    }
+    
+    
+    return supplementaryView;
 }
 
 

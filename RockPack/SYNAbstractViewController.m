@@ -15,7 +15,7 @@
 #import "NSObject+Blocks.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNChannelsDetailViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNMasterViewController.h"
@@ -27,6 +27,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNChannelsAddVideosViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -426,6 +427,13 @@
 - (void) createChannel:(Channel*)channel
 {
     SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
+    
+    [self animatedPushViewController: channelCreationVC];
+}
+
+- (void) addToChannel:(Channel*)channel
+{
+    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelCreationVC];
 }

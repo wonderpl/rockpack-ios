@@ -12,9 +12,9 @@
 @interface SYNMainRegistry : SYNRegistry
 
 -(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary;
--(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId;
+-(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId byAppending:(BOOL)append;
 -(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary;
--(BOOL)registerChannelScreensFromDictionary:(NSDictionary *)dictionary;
+-(BOOL)registerNewChannelScreensFromDictionary:(NSDictionary *)dictionary byAppending:(BOOL)append;
 -(BOOL)registerUserFromDictionary:(NSDictionary*)dictionary;
 
 @end

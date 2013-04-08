@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 
 #import "SYNAppDelegate.h"
 

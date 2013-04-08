@@ -20,7 +20,7 @@
 
 // Something new!
 
-@class SYNBottomTabViewController, ChannelOwner, SYNNetworkEngine, SYNOAuthNetworkEngine;
+@class SYNContainerViewController, ChannelOwner, SYNNetworkEngine, SYNOAuthNetworkEngine;
 
 @interface SYNAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -57,7 +57,7 @@
 -(void) saveSearchContext;
 -(void) saveChannelsContext;
 - (void) resetCoreDataStack;
--(void)clearData;
+-(void)clearUserBoundData;
 -(void)logout;
 
 @end

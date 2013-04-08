@@ -11,7 +11,7 @@
 #import "ChannelOwner.h"
 #import "MKNetworkEngine.h"
 #import "SYNActivityPopoverViewController.h"
-#import "SYNBottomTabViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNChannelsUserViewController.h"
 #import "SYNFriendsRootViewController.h"
@@ -25,10 +25,10 @@
 #import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
-
+#import "SYNChannelsAddVideosViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNBottomTabViewController () <UIPopoverControllerDelegate,
+@interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
 
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
@@ -45,6 +45,7 @@
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
 
 
+
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
@@ -58,7 +59,7 @@
 
 @end
 
-@implementation SYNBottomTabViewController
+@implementation SYNContainerViewController
 
 @synthesize selectedIndex = _selectedIndex;
 @synthesize selectedViewController = _selectedViewController;
@@ -141,6 +142,7 @@
     self.channelsUserNavigationViewController.view.autoresizesSubviews = YES;
     self.channelsUserNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
+    
     // == Video Queue
     
     videoQueueController = [[SYNVideoQueueViewController alloc] init];
@@ -161,6 +163,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
 }
+
 
 
 - (void) repositionQueueView
@@ -213,6 +216,16 @@
 
 }
 
+-(void)addVideosToExistingChannel
+{
+    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    {
+        
+        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
+        [child addToChannel: [self.videoQueueController getChannelFromCurrentQueue]];
+        
+    }
+}
 
 #pragma mark - Tab & Container switching mechanism
 
