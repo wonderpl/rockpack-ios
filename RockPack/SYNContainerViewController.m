@@ -91,7 +91,7 @@
 {
     [super viewDidLoad];
     
-    // == Home Tab
+    // == Home Page == //
     
     SYNHomeRootViewController *feedRootViewController = [[SYNHomeRootViewController alloc] initWithViewId: @"Home"];
     UINavigationController *feedRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: feedRootViewController];
@@ -99,7 +99,7 @@
     feedRootNavigationViewController.view.autoresizesSubviews = TRUE;
     feedRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
-    // == Videos Tab
+    // == Videos Page == //
     
     SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId: @"Videos"];
     videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
@@ -108,7 +108,7 @@
     videosRootNavigationViewController.view.autoresizesSubviews = TRUE;
     videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    // == Channels Tab
+    // == Channels Page == //
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: @"Channels"];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
@@ -117,7 +117,7 @@
     channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
     channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    // == You Tab
+    // == You Page == //
     
     SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
     myRockpackViewController.tabViewController = [[SYNUserTabViewController alloc] init];
@@ -126,9 +126,10 @@
     myRockpackNavigationViewController.view.autoresizesSubviews = TRUE;
     myRockpackNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
-    // == Friends tab
-    // TODO: Nest Friends Bar
-    SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
+    // == Friends Page == //
+    
+    // TODO: Implement Friends Section
+    //SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
     
     
     
@@ -157,8 +158,8 @@
     self.shouldAnimateViewTransitions = YES;
     
     
-    self.didNotSwipeMessageInbox = TRUE;
-    self.didNotSwipeShareMenu = TRUE;
+    self.didNotSwipeMessageInbox = YES;
+    self.didNotSwipeShareMenu = YES;
     
     
     // == Populate Scroller == //
