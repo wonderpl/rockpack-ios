@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "ChannelOwner.h"
+#import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
 #import "SYNLoginViewController.h"
@@ -19,7 +20,7 @@
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "SYNActivityManager.h"
+#import <XRay/XRay.h>
 
 
 @interface SYNAppDelegate ()
@@ -583,6 +584,13 @@
     }
     
     return _currentOAuth2Credentials;
+}
+
+
+// Used to force a refresh of the credentials
+- (void) resetCurrentOAuth2Credentials
+{
+    _currentOAuth2Credentials = nil;
 }
 
 #pragma mark - Social Integration Delegate
