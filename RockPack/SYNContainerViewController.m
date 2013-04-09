@@ -62,12 +62,13 @@
 @implementation SYNContainerViewController
 
 @synthesize selectedIndex = _selectedIndex;
-@synthesize selectedViewController = _selectedViewController;
+@synthesize selectedViewController;
 @synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
 @dynamic scrollView;
 @dynamic page;
+@dynamic showingViewController;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -91,40 +92,24 @@
 {
     [super viewDidLoad];
     
-    // == Home Page == //
+    // == Feed Page == //
     
     SYNHomeRootViewController *feedRootViewController = [[SYNHomeRootViewController alloc] initWithViewId: @"Home"];
-    UINavigationController *feedRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: feedRootViewController];
-    feedRootNavigationViewController.navigationBarHidden = TRUE;
-    feedRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    feedRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 784);
     
     // == Videos Page == //
     
     SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId: @"Videos"];
     videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    UINavigationController *videosRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: videosRootViewController];
-    videosRootNavigationViewController.navigationBarHidden = TRUE;
-    videosRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    videosRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // == Channels Page == //
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: @"Channels"];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    UINavigationController *channelsRootNavigationViewController = [[UINavigationController alloc] initWithRootViewController: channelsRootViewController];
-    channelsRootNavigationViewController.navigationBarHidden = TRUE;
-    channelsRootNavigationViewController.view.autoresizesSubviews = TRUE;
-    channelsRootNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // == You Page == //
     
     SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
     myRockpackViewController.tabViewController = [[SYNUserTabViewController alloc] init];
-    UINavigationController *myRockpackNavigationViewController = [[UINavigationController alloc] initWithRootViewController: myRockpackViewController];
-    myRockpackNavigationViewController.navigationBarHidden = TRUE;
-    myRockpackNavigationViewController.view.autoresizesSubviews = TRUE;
-    myRockpackNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
     
     // == Friends Page == //
     
@@ -163,10 +148,12 @@
     
     
     // == Populate Scroller == //
+    NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
+    [allControllers addObject:[self wrapInNavigationController:feedRootViewController]];
+    [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
+    [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
     
-    self.viewControllers = @[feedRootNavigationViewController,
-                             channelsRootNavigationViewController,
-                             myRockpackNavigationViewController];
+    self.viewControllers = [NSArray arrayWithArray:allControllers];
     
     CGFloat currentVCOffset = 0.0;
     CGRect currentVCRect;
@@ -313,17 +300,7 @@
     self.selectedViewController = self.viewControllers[currentPage];
     
     
-    SYNAbstractViewController* controllerOnView;
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        controllerOnView = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
-    }
-    else
-    {
-        controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
-    }
-    
-    [controllerOnView viewCameToScrollFront];
+    [self.showingViewController viewCameToScrollFront];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -337,6 +314,20 @@
 }
 
 #pragma mark - Getters/Setters
+
+-(SYNAbstractViewController*)showingViewController
+{
+    SYNAbstractViewController* controllerOnView;
+    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
+    {
+        controllerOnView = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
+    }
+    else
+    {
+        controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
+    }
+    return controllerOnView;
+}
 
 -(void)setPage:(NSInteger)page
 {
@@ -367,5 +358,19 @@
 {
     return NSStringFromClass([self class]);
 }
+
+
+#pragma mark - Helper Methods
+
+-(UINavigationController*)wrapInNavigationController:(SYNAbstractViewController*)anstractViewController
+{
+    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:anstractViewController];
+    navigationController.navigationBarHidden = YES;
+    navigationController.view.autoresizesSubviews = YES;
+    navigationController.view.frame = CGRectMake (0, 0, 1024, 686);
+    return navigationController;
+}
+
 
 @end

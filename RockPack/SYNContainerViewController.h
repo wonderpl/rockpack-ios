@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "SYNVideoQueueDelegate.h"
 #import "SYNVideoQueueViewController.h"
+#import "SYNAbstractViewController.h"
 
 @interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
 
 
 @property (nonatomic, weak) SYNVideoQueueViewController* videoQueueController;
+@property (nonatomic, readonly) SYNAbstractViewController* showingViewController;
 
 - (void) popCurrentViewController: (id) sender;
 -(void) showSearchViewControllerWithTerm:(NSString*)term;

@@ -190,7 +190,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
     }
     
-    // got page number
+    self.pageTitleLabel.text = self.containerViewController.showingViewController.title;
+    
     
     // TODO: Implemente change
 }
@@ -383,6 +384,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 #pragma mark - TextField Delegate Methods
+
+-(IBAction)showSearchBoxField:(id)sender
+{
+    
+}
 
 - (IBAction) clearSearchField: (id) sender
 {
