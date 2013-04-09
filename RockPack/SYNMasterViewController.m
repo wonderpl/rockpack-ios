@@ -82,6 +82,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         sideNavigationFrame.origin.y = 45.0;
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         
+        UISwipeGestureRecognizer* swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationSwiped)];
+        swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+        [self.sideNavigationViewController.view addGestureRecognizer:swipeGesture];
+        
         
         sideNavigationOn = NO;
         
@@ -99,6 +103,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 #pragma mark - Life Cycle
+
+-(void)sideNavigationSwiped
+{
+    [self hideSideNavigation];
+}
 
 - (void)viewDidLoad
 {
@@ -222,6 +231,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(sideNavigationOn)
         return;
     
+    self.sideNavigationOn = YES;
+    
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
     
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
@@ -238,7 +249,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {
-                         self.sideNavigationOn = YES;
+                         
                      }];
 }
 
@@ -251,11 +262,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!sideNavigationOn)
         return;
     
+    self.sideNavigationOn = NO;
+    
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
                           delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
+                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^ {
                          
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
@@ -265,7 +278,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion: ^(BOOL finished) {
                          
                          [self.sideNavigationViewController.view removeFromSuperview];
-                         self.sideNavigationOn = NO;
+                         
          
                      }];
 }

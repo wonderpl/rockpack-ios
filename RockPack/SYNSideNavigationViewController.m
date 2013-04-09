@@ -10,23 +10,43 @@
 #import "UIFont+SYNFont.h"
 #import "User.h"
 
+#define kSideNavTitle @"kSideNavTitle"
+#define kSideNavType @"kSideNavType"
+#define kSideNavAction @"kSideNavAction"
+
+typedef enum {
+    kSideNavigationTypeLoad = 0,
+    kSideNavigationTypePage
+
+} kSideNavigationType;
+
 @interface SYNSideNavigationViewController ()
 
 @property (nonatomic, strong) IBOutlet UILabel* serchLabel;
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
 @property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
-@property (nonatomic, strong) NSDictionary* navigationData;
+
 @property (nonatomic, strong) IBOutlet UIView* containerView;
+
+@property (nonatomic, strong) NSArray* navigationData;
+
 @end
 
 @implementation SYNSideNavigationViewController
+
+@synthesize navigationData;
 
 -(id)init
 {
     self = [super initWithNibName:@"SYNSideNavigationViewController" bundle:nil];
     if (self) {
-        
+        navigationData = @[
+                           @{kSideNavTitle:@"Notification", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""},
+                           @{kSideNavTitle:@"Acounts", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""},
+                           @{kSideNavTitle:@"Settings", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
+                           @{kSideNavTitle:@"Buy", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""}
+                           ];
     }
     return self;
 }
@@ -55,7 +75,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return navigationData.count;
     
 }
 
@@ -70,34 +90,16 @@
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
-        switch (indexPath.row) {
-                
-            case 0:
-                
-                cell.textLabel.text = @"Notification";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-                
-            case 1:
-                cell.textLabel.text = @"Acounts";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-                
-            case 2:
-                cell.textLabel.text = @"Settings";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-                
-            case 3:
-                cell.textLabel.text = @"Buy";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-                
-            
-                
-            
-                
-        }
+        NSDictionary* navigationElement = (NSDictionary*)[navigationData objectAtIndex:indexPath.row];
+        
+        cell.textLabel.text = [navigationElement objectForKey:kSideNavTitle];
+        
+        kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey:kSideNavType]) integerValue];
+        
+        if(navigationType == kSideNavigationTypeLoad)
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        else
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
         cell.detailTextLabel.font = [UIFont rockpackFontOfSize:13.0];
@@ -110,28 +112,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.row) {
-        case 0:
-            
-            break;
-            
-        case 1:
-            
-            break;
-            
-        case 2:
-            
-            break;
-            
-        case 3:
-            
-            break;
-            
-        case 4:
-            
-            break;
-            
+    NSDictionary* navigationElement = (NSDictionary*)[navigationData objectAtIndex:indexPath.row];
+    kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey:kSideNavType]) integerValue];
+    //NSString* navigationAction = (NSString*)[navigationElement objectForKey:kSideNavAction];
+    
+    if(navigationType == kSideNavigationTypeLoad)
+    {
+        
     }
+    else
+    {
+        
+    }
+    
  
 }
 
