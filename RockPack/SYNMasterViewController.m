@@ -113,7 +113,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewDidLoad];
     
-    // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) ==//
+    // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
     splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];
@@ -124,11 +124,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          splashView.alpha = 0.0f;
-                     }
-                     completion: ^(BOOL finished) {
-         splashView.alpha = 0.0f;
-         [splashView removeFromSuperview];
-     }];
+                     } completion: ^(BOOL finished) {
+                         splashView.alpha = 0.0f;
+                         [splashView removeFromSuperview];
+                     }];
     
     self.navigatioContainerView.userInteractionEnabled = YES;
     
@@ -139,7 +138,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.backButton.alpha = 0.0;
     
     self.topButtonsContainer.userInteractionEnabled = YES;
-    
     
     
     self.clearTextButton.alpha = 0.0;
