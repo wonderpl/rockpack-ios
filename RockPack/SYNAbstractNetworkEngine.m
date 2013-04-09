@@ -92,16 +92,99 @@
                           completionHandler: (MKNKUserSuccessBlock) completionBlock
                                errorHandler: (MKNKUserErrorBlock) errorBlock
 {
+    // First, copy the network operation so that if authentication fails we can try again
+    SYNNetworkOperationJsonObject *retryNetworkOperation = [networkOperation mutableCopy];
+    
+    // Set the callback logic for our standard network operation 
     [networkOperation addJSONCompletionHandler: ^(id response)
      {
          // Check to see if our response is a NSDictionary and if it has an error hash
          if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
          {
              DebugLog(@"API Call failed: %@", response);
-             errorBlock(response);
+             
+             // Now check to see if we need to refresh the token
+             NSDictionary *responseDictionary = (NSDictionary *) response;
+             NSString *reason = responseDictionary[@"error"];
+             if ([reason isEqualToString: @"expired_token"] == FALSE)
+             {
+                 // Normal (?) error, we don't need to try refreshing the token
+                 errorBlock(response);
+             }
+             else
+             {
+                 // OK, out OAuth2 token has expired, so refresh and try again
+                 DebugLog (@"Token expired");
+                 
+                 [self refreshOAuthTokenWithCompletionHandler: ^(id response)
+                  {
+                      DebugLog (@"Refreshed");
+                      // Now we have a new authentication token, we need to try the network operation again
+                      // Set the callback logic for the network operation re-issued if the authentication token has expired and been renewed
+                      [retryNetworkOperation addJSONCompletionHandler: ^(id response)
+                       {
+                           // Check to see if our response is a NSDictionary and if it has an error hash
+                           if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
+                           {
+                               DebugLog(@"API Call failed: %@", response);
+                               
+                               // Now check to see if we need to refresh the token
+                               NSDictionary *responseDictionary = (NSDictionary *) response;
+                               NSString *reason = responseDictionary[@"error"];
+                               if ([reason isEqualToString: @"expired_token"] == FALSE)
+                               {
+                                   // Normal (?) error, we don't need to try refreshing the token
+                                   errorBlock(response);
+                               }
+                               else
+                               {
+                                   // The OAuth2 token is still invalid, even after a refresh - so bail
+                                   DebugLog (@"refreshed token not valid");
+                                   errorBlock(response);
+                               }
+                               
+                           }
+                           else
+                           {
+                               // OK, all seems to have gone well, return the object
+                               completionBlock(response);
+                           }
+                       }
+                       errorHandler: ^(id response)
+                       {
+                           if ([response isKindOfClass: [NSError class]])
+                           {
+                               NSError *responseErrror = (NSError *) response;
+                               NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", responseErrror.domain, responseErrror.code]};
+                               DebugLog(@"API Call failed: %@", customErrorDictionary);
+                               errorBlock(customErrorDictionary);
+                           }
+                           else if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
+                           {
+                               DebugLog(@"API Call failed: %@", response);
+                               errorBlock(response);
+                           }
+                           else
+                           {
+                               // No idea what has been passed back, so try to do the least worst thing...
+                               errorBlock(nil);
+                           }
+                       }];
+                      
+                      [self enqueueSignedOperation: retryNetworkOperation];
+                  }
+                  errorHandler:  ^(id response)
+                  {
+                      DebugLog (@"Failed to Refresh");
+                      errorBlock(response);
+                  }];
+             }
+             
          }
          else
          {
+             // TODO: Remove test code
+             // Simulate failure, buy refreshing token and sending API call again
              // OK, all seems to have gone well, return the object
              completionBlock(response);
          }
@@ -117,9 +200,6 @@
          }
          else if ([response isKindOfClass: [NSDictionary class]] && ((NSDictionary *)response[@"error"] != nil))
          {
-             //NSDictionary *responseDictionary = (NSDictionary *) response;
-//             NSString *
-//             if (
              DebugLog(@"API Call failed: %@", response);
              errorBlock(response);
          }
@@ -131,23 +211,15 @@
      }];
 }
 
-- (void) reattemptOperationWithRenewedToken: (SYNNetworkOperationJsonObject *) networkOperation
+- (void) enqueueSignedOperation: (MKNetworkOperation *) request
 {
-    NSLog (@"reattemptOperationWithRenewedToken");
-//    [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
-//     completionHandler:^ (NSDictionary* dictionary)
-//     {                                            
-//         [credential saveToKeychainForService: kOAuth2Service
-//                                      account: credential.userId];
-//         
-//         [activityIndicator stopAnimating];
-//         [self completeLoginProcess:credential];
-//     }
-//     errorHandler: ^(NSDictionary* errorDictionary)
-//     {
-//     }];
+    NSLog (@"Called abstract function - unexpected");
+}
 
-    
+- (IBAction) refreshOAuthTokenWithCompletionHandler: (MKNKUserErrorBlock) completionBlock
+                                       errorHandler: (MKNKUserSuccessBlock) errorBlock
+{
+    NSLog (@"Called abstract function - unexpected");
 }
 
 
