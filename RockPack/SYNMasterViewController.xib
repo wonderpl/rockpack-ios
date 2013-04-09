@@ -306,6 +306,28 @@
 						<reference key="IBUIBackgroundColor" ref="210113303"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
+					<object class="IBUIButton" id="289097721">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{654, 4}, {43, 34}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<int key="IBUIButtonType">1</int>
+						<string key="IBUINormalTitle">=</string>
+						<reference key="IBUIHighlightedTitleColor" ref="4391538"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="960150261"/>
+						<reference key="IBUIFontDescription" ref="1042214128"/>
+						<reference key="IBUIFont" ref="1071906284"/>
+					</object>
 					<object class="IBUIView" id="542880119">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">274</int>
@@ -313,6 +335,7 @@
 						<string key="NSFrameSize">{1024, 748}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="289097721"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="210113303"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -383,14 +406,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">slidersView</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="307475558"/>
-					</object>
-					<int key="connectionID">90</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">overlayView</string>
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="835901607"/>
@@ -438,6 +453,14 @@
 					<int key="connectionID">100</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">navigatioContainerView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="307475558"/>
+					</object>
+					<int key="connectionID">103</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">clearSearchField:</string>
 						<reference key="source" ref="182419213"/>
@@ -453,6 +476,15 @@
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">73</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">showAndHideSideNavigation:</string>
+						<reference key="source" ref="289097721"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">102</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -484,6 +516,7 @@
 							<reference ref="835901607"/>
 							<reference ref="307475558"/>
 							<reference ref="542880119"/>
+							<reference ref="289097721"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -579,6 +612,12 @@
 						<string key="objectName">Page Title</string>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">101</int>
+						<reference key="object" ref="289097721"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Nav (=)</string>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">95</int>
 						<reference key="object" ref="542880119"/>
 						<reference key="parent" ref="766721923"/>
@@ -591,6 +630,7 @@
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="101.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -613,35 +653,24 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100</int>
+			<int key="maxID">103</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">clearSearchField:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">clearSearchField:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">clearSearchField:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backButton">UIButton</string>
 						<string key="clearTextButton">UIButton</string>
 						<string key="containerView">UIView</string>
 						<string key="dotsView">UIView</string>
 						<string key="glowTextImageView">UIImageView</string>
+						<string key="navigatioContainerView">UIView</string>
 						<string key="overEverythingView">UIView</string>
 						<string key="overlayView">UIView</string>
 						<string key="pageTitleLabel">UILabel</string>
 						<string key="searchTextField">UITextField</string>
-						<string key="slidersView">UIView</string>
 						<string key="topBarView">UIView</string>
 						<string key="topButtonsContainer">UIView</string>
 					</dictionary>
@@ -666,6 +695,10 @@
 							<string key="name">glowTextImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="navigatioContainerView">
+							<string key="name">navigatioContainerView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="overEverythingView">
 							<string key="name">overEverythingView</string>
 							<string key="candidateClassName">UIView</string>
@@ -681,10 +714,6 @@
 						<object class="IBToOneOutletInfo" key="searchTextField">
 							<string key="name">searchTextField</string>
 							<string key="candidateClassName">UITextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="slidersView">
-							<string key="name">slidersView</string>
-							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="topBarView">
 							<string key="name">topBarView</string>

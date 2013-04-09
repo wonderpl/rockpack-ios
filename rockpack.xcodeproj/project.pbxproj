@@ -2147,6 +2147,7 @@
 				BE270B7B16EDE0A500CDDA6D /* Login */,
 				BE0815C216D5386B00ADB1DC /* Master View Controller */,
 				01982562162ADE5200216900 /* Container View Controller */,
+				BE7D3496171412EC0085AB81 /* Side Navigation */,
 				01982563162ADEAD00216900 /* Abstract */,
 				01EA81D516B977B20069AFF9 /* Channel Creation */,
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
@@ -3189,7 +3190,6 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				BE7D3496171412EC0085AB81 /* Side Navigation */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				BE7C12A116EA68DE0015789B /* Large Video Player */,
 				BE0AAD2616E6521300DA958E /* Autocomplete Panel */,

@@ -17,7 +17,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
 @property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
 @property (nonatomic, strong) NSDictionary* navigationData;
-
+@property (nonatomic, strong) IBOutlet UIView* containerView;
 @end
 
 @implementation SYNSideNavigationViewController
@@ -34,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+   
 }
 
 
