@@ -557,8 +557,8 @@
 		BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */; };
 		BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815C916D5478A00ADB1DC /* SYNRegistry.m */; };
 		BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */; };
-		BE0815D216D6448200ADB1DC /* SYNInboxOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D016D6448200ADB1DC /* SYNInboxOverlayViewController.m */; };
-		BE0815D316D6448200ADB1DC /* SYNInboxOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNInboxOverlayViewController.xib */; };
+		BE0815D216D6448200ADB1DC /* SYNSideNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D016D6448200ADB1DC /* SYNSideNavigationViewController.m */; };
+		BE0815D316D6448200ADB1DC /* SYNSideNavigationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNSideNavigationViewController.xib */; };
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
 		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
@@ -1330,9 +1330,9 @@
 		BE0815C916D5478A00ADB1DC /* SYNRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRegistry.m; sourceTree = "<group>"; };
 		BE0815CB16D5487B00ADB1DC /* SYNSearchRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRegistry.h; sourceTree = "<group>"; };
 		BE0815CC16D5487B00ADB1DC /* SYNSearchRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchRegistry.m; sourceTree = "<group>"; };
-		BE0815CF16D6448200ADB1DC /* SYNInboxOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNInboxOverlayViewController.h; sourceTree = "<group>"; };
-		BE0815D016D6448200ADB1DC /* SYNInboxOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNInboxOverlayViewController.m; sourceTree = "<group>"; };
-		BE0815D116D6448200ADB1DC /* SYNInboxOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNInboxOverlayViewController.xib; sourceTree = "<group>"; };
+		BE0815CF16D6448200ADB1DC /* SYNSideNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigationViewController.h; sourceTree = "<group>"; };
+		BE0815D016D6448200ADB1DC /* SYNSideNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigationViewController.m; sourceTree = "<group>"; };
+		BE0815D116D6448200ADB1DC /* SYNSideNavigationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSideNavigationViewController.xib; sourceTree = "<group>"; };
 		BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNShareOverlayViewController.h; sourceTree = "<group>"; };
 		BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNShareOverlayViewController.m; sourceTree = "<group>"; };
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
@@ -2961,9 +2961,6 @@
 		BE0815CE16D6444200ADB1DC /* Overlays */ = {
 			isa = PBXGroup;
 			children = (
-				BE0815CF16D6448200ADB1DC /* SYNInboxOverlayViewController.h */,
-				BE0815D016D6448200ADB1DC /* SYNInboxOverlayViewController.m */,
-				BE0815D116D6448200ADB1DC /* SYNInboxOverlayViewController.xib */,
 				BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */,
 				BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */,
 				BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */,
@@ -3137,6 +3134,16 @@
 			name = "Large Video Player";
 			sourceTree = "<group>";
 		};
+		BE7D3496171412EC0085AB81 /* Side Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				BE0815CF16D6448200ADB1DC /* SYNSideNavigationViewController.h */,
+				BE0815D016D6448200ADB1DC /* SYNSideNavigationViewController.m */,
+				BE0815D116D6448200ADB1DC /* SYNSideNavigationViewController.xib */,
+			);
+			name = "Side Navigation";
+			sourceTree = "<group>";
+		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -3182,6 +3189,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D3496171412EC0085AB81 /* Side Navigation */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				BE7C12A116EA68DE0015789B /* Large Video Player */,
 				BE0AAD2616E6521300DA958E /* Autocomplete Panel */,
@@ -3560,7 +3568,7 @@
 				01E2FCBA16D15C05006E6DA7 /* TabTopSubSelectedGlow.png in Resources */,
 				01E2FCBB16D15C05006E6DA7 /* TabTopSubSelectedGlow@2x.png in Resources */,
 				BE0815C716D5389C00ADB1DC /* SYNMasterViewController.xib in Resources */,
-				BE0815D316D6448200ADB1DC /* SYNInboxOverlayViewController.xib in Resources */,
+				BE0815D316D6448200ADB1DC /* SYNSideNavigationViewController.xib in Resources */,
 				BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */,
 				015487D316DCE399002A41A2 /* FacebookSDKResources.bundle in Resources */,
 				0194FD2216DE6FE40058A7C2 /* SYNVideoThumbnailSmallCell.xib in Resources */,
@@ -3904,7 +3912,7 @@
 				BE0815C616D5389C00ADB1DC /* SYNMasterViewController.m in Sources */,
 				BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */,
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
-				BE0815D216D6448200ADB1DC /* SYNInboxOverlayViewController.m in Sources */,
+				BE0815D216D6448200ADB1DC /* SYNSideNavigationViewController.m in Sources */,
 				BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */,
 				BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */,
 				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,

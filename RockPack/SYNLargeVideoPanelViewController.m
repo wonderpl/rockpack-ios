@@ -100,8 +100,7 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteSharePanelRequested
-                                                        object: self];
+    
     
     
 }

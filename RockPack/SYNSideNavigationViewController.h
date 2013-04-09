@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNInboxOverlayViewController : UIViewController
+@interface SYNSideNavigationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

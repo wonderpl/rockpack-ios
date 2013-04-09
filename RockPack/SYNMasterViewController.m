@@ -9,8 +9,7 @@
 #import "SYNMasterViewController.h"
 #import "AppConstants.h"
 #import "SYNActivityPopoverViewController.h"
-#import "SYNInboxOverlayViewController.h"
-#import "SYNShareOverlayViewController.h"
+#import "SYNSideNavigationViewController.h"
 #import "SYNContainerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNAutocompleteViewController.h"
@@ -42,14 +41,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
+
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
-@property (nonatomic, strong) SYNInboxOverlayViewController* inboxOverlayViewController;
-@property (nonatomic, strong) SYNShareOverlayViewController* shareOverlayViewController;
+
+
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) SYNCategoryChooserViewController *categoryChooserViewController;
 @property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
-@property (nonatomic, strong) UIPopoverController* notificationsPopoverController;
-@property (nonatomic, weak) UIViewController* currentOverlayViewController;
+
+@property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
 
 
 @end
@@ -57,7 +57,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @implementation SYNMasterViewController
 
 @synthesize containerViewController;
-@synthesize notificationsPopoverController = notificationsPopoverController;
 @synthesize autocompleteTimer;
 @synthesize pageTitleLabel;
 
@@ -71,19 +70,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.containerViewController = root;
 
-        // == Set up Inbox Overlay
-        self.inboxOverlayViewController = [[SYNInboxOverlayViewController alloc] init];
-        CGRect inboxOverlayFrame = self.inboxOverlayViewController.view.frame;
-        inboxOverlayFrame.origin.x = -(inboxOverlayFrame.size.width);
-        inboxOverlayFrame.origin.y = 45.0;
-        self.inboxOverlayViewController.view.frame = inboxOverlayFrame;
         
-        // == Set up Share Overlay
-        self.shareOverlayViewController = [[SYNShareOverlayViewController alloc] init];
-        CGRect shareOverlayFrame = self.inboxOverlayViewController.view.frame;
-        shareOverlayFrame.origin.x = -(shareOverlayFrame.size.width);
-        shareOverlayFrame.origin.y = 45.0;
-        self.shareOverlayViewController.view.frame = shareOverlayFrame;
+        
+        // == Side Navigation == //
+        
+        self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
+        CGRect inboxOverlayFrame = self.sideNavigationViewController.view.frame;
+        inboxOverlayFrame.origin.x = 1024.0;
+        inboxOverlayFrame.origin.y = 45.0;
+        self.sideNavigationViewController.view.frame = inboxOverlayFrame;
+        
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         
@@ -158,7 +154,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tabPressed:) name:kNoteTabPressed object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharePanelRequested:) name:kNoteSharePanelRequested object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     
@@ -202,40 +197,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - Overlays (Inbox/Popover)
 
 
-
-
-
-- (void) showOrSwapOverlay: (UIViewController*) overlayViewController
-{
-    if (self.currentOverlayViewController && self.currentOverlayViewController != overlayViewController)
-    {
-        [self hideOverlay: self.currentOverlayViewController
-         withCompletionBlock: ^(BOOL finished)
-         {
-             [self showOverlay:overlayViewController];
-         }];
-    }
-    else
-    {
-        [self showOverlay:overlayViewController];
-    }
-}
-
-
-// Show Overlay
+#pragma mark - Navigation Panel Methods
 
 - (void) showOverlay: (UIViewController*) overlayViewController
 {
     [self showOverlay: overlayViewController withCompletionBlock:nil];
 }
 
-- (void) showOverlay: (UIViewController *) overlayViewController
-         withCompletionBlock: (AnimationCompletionBlock) block
+- (void) showOverlay: (UIViewController *) overlayViewController withCompletionBlock: (AnimationCompletionBlock) block
 {
-    self.currentOverlayViewController = overlayViewController;
+    
     
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
@@ -268,22 +241,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
-// Hide Overlay
+
 
 - (void) hideOverlay: (UIViewController*) overlayViewController
 {
-    [self hideOverlay: overlayViewController
-          withCompletionBlock: nil];
+    [self hideOverlay: overlayViewController withCompletionBlock: nil];
 }
 
-- (void) hideOverlay: (UIViewController *) overlayViewController
-         withCompletionBlock: (AnimationCompletionBlock) block
+- (void) hideOverlay: (UIViewController *) overlayViewController withCompletionBlock: (AnimationCompletionBlock) block
 {
-    // If we are hding the inbox panel, ensure that we deselect the con
-    if (self.currentOverlayViewController == self.inboxOverlayViewController)
-    {
-        
-    }
+    
     
     CGRect overlayViewFrame = overlayViewController.view.frame;
     
@@ -302,7 +269,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
      completion: ^(BOOL finished)
      {
          [overlayViewController.view removeFromSuperview];
-         self.currentOverlayViewController = nil;
+         
          if (block)
          {
              block(finished);
@@ -310,16 +277,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
      }];
 }
 
-- (void) sharePanelRequested: (NSNotification*) notification
-{
-    [self showOrSwapOverlay:self.shareOverlayViewController];
-}
 
 
-- (void) panelSwipedAway: (NSNotification*) notification
-{
-    
-}
+
 
 
 #pragma mark - Video Overlay View
@@ -539,7 +499,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
                                          } andError:^(NSError* error) {
                                              
-                                             [self.notificationsPopoverController dismissPopoverAnimated:YES];
+                                             
                                          
                                          }];
     

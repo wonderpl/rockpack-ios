@@ -12,6 +12,8 @@
 
 @implementation User
 
+@synthesize fullName;
+
 #pragma mark - Object factory
 
 + (User*) instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -205,6 +207,10 @@
                         
 }
 
+-(NSString*)fullName
+{
+    return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
+}
 
 - (NSString *) description
 {
