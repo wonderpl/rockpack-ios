@@ -522,20 +522,8 @@
 - (void) collectionView: (UICollectionView *) collectionView
                  layout: (UICollectionViewLayout *) layout
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *) toIndexPath
-{
-    // TODO: Need to change the object's priority field to change order
-    // As we can't actually change the order of the results of an
-    // NSFetchedResults controller
-    
-//    VideoInstance *fromObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: fromIndexPath];
-//    VideoInstance *toObject = (VideoInstance *) [self.fetchedResultsController objectAtIndexPath: toIndexPath];
-//
-//    // Swap positions
-//    NSNumber *tempPosition = fromObject.position;
-//    fromObject.position = toObject.position;
-//    toObject.position = tempPosition;
-//
+    willMoveToIndexPath: (NSIndexPath *) toIndexPath {
+
     [self saveDB];
 }
 

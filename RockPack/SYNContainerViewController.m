@@ -124,20 +124,14 @@
     
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
-    self.seachViewNavigationViewController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
-    self.seachViewNavigationViewController.navigationBarHidden = YES;
-    self.seachViewNavigationViewController.view.autoresizesSubviews = YES;
-    self.seachViewNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    self.seachViewNavigationViewController = [self wrapInNavigationController:self.searchViewController];
     
     
     // == Channels User (out of normal controller array)
     
     self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannels"];
     self.channelsUserViewController.tabViewController = [[SYNUserTabViewController alloc] init];
-    self.channelsUserNavigationViewController = [[UINavigationController alloc] initWithRootViewController:channelsUserViewController];
-    self.channelsUserNavigationViewController.navigationBarHidden = YES;
-    self.channelsUserNavigationViewController.view.autoresizesSubviews = YES;
-    self.channelsUserNavigationViewController.view.frame = CGRectMake (0, 0, 1024, 686);
+    self.channelsUserNavigationViewController = [self wrapInNavigationController:self.channelsUserViewController];
     
     
     self.shouldAnimateViewTransitions = YES;
@@ -148,6 +142,7 @@
     
     
     // == Populate Scroller == //
+    
     NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
     [allControllers addObject:[self wrapInNavigationController:feedRootViewController]];
     [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
@@ -174,7 +169,7 @@
     self.selectedViewController = self.viewControllers[0];
     
     
-    // = Register Notifications == //
+    // == Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
@@ -186,11 +181,7 @@
 
 -(void)backButtonShow:(NSNotification*)notification
 {
-    
     self.scrollView.scrollEnabled = NO;
-    
-    
-    
 }
 
 - (void) createChannelFromVideoQueue

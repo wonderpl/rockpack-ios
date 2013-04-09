@@ -1,0 +1,52 @@
+//
+//  SYNDeviceManager.m
+//  rockpack
+//
+//  Created by Michael Michailidis on 09/04/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//
+
+#import "SYNDeviceManager.h"
+
+@interface SYNDeviceManager()
+
+
+@end
+
+@implementation SYNDeviceManager
+
+
+@synthesize idiom;
+
++ (id) sharedInstance
+{
+    static dispatch_once_t onceQueue;
+    static SYNDeviceManager *deviceManager = nil;
+    static UIUserInterfaceIdiom idiom;
+    
+    
+    dispatch_once(&onceQueue, ^{
+        
+        deviceManager = [[self alloc] init];
+        idiom = UI_USER_INTERFACE_IDIOM();
+        
+        
+        
+    });
+    
+    return deviceManager;
+}
+
+
+-(BOOL)isIPad
+{
+    return (idiom == UIUserInterfaceIdiomPad);
+}
+-(BOOL)isIPhone
+{
+    return (idiom == UIUserInterfaceIdiomPhone);
+}
+
+
+
+@end
