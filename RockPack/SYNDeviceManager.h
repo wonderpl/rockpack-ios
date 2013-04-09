@@ -17,5 +17,6 @@
 
 -(BOOL)isIPad;
 -(BOOL)isIPhone;
+-(UIDeviceOrientation)orientation;
 
 @end

@@ -46,7 +46,10 @@
 {
     return (idiom == UIUserInterfaceIdiomPhone);
 }
-
+-(UIDeviceOrientation)orientation
+{
+    return [[UIDevice currentDevice] orientation];
+}
 
 
 @end
