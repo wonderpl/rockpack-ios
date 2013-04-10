@@ -30,6 +30,8 @@ typedef enum {
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 
+@property (nonatomic, strong) UIColor* navItemColor;
+
 @property (nonatomic, strong) NSArray* navigationData;
 
 @end
@@ -38,16 +40,18 @@ typedef enum {
 
 @synthesize navigationData;
 @synthesize user;
+@synthesize navItemColor;
 
 -(id)init
 {
     self = [super initWithNibName:@"SYNSideNavigationViewController" bundle:nil];
     if (self) {
         navigationData = @[
-                           @{kSideNavTitle:@"Notification", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""},
-                           @{kSideNavTitle:@"Acounts", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""},
-                           @{kSideNavTitle:@"Settings", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
-                           @{kSideNavTitle:@"Buy", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""}
+                           @{kSideNavTitle:@"FEED", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
+                           @{kSideNavTitle:@"CHANNELS", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
+                           @{kSideNavTitle:@"MY ROCKPACK", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
+                           @{kSideNavTitle:@"NOTIFICATIONS", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""},
+                           @{kSideNavTitle:@"ACCOUNTS", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""}
                            ];
     }
     return self;
@@ -56,6 +60,13 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.userNameLabel.font = [UIFont rockpackFontOfSize:20.0];
+    
+    navItemColor = [UIColor colorWithRed:(40.0/255.0)
+                                   green:(45.0/255.0)
+                                    blue:(51.0/255.0)
+                                   alpha:(1.0)];
    
 }
 
@@ -98,13 +109,16 @@ typedef enum {
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey:kSideNavType]) integerValue];
         
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        
         if(navigationType == kSideNavigationTypeLoad)
             cell.accessoryType = UITableViewCellAccessoryNone;
         else
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
-        cell.detailTextLabel.font = [UIFont rockpackFontOfSize:13.0];
+        cell.textLabel.font = [UIFont rockpackFontOfSize:15.0];
+        
+        cell.textLabel.textColor = navItemColor;
         
         cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         
