@@ -1506,50 +1506,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractChannelsDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="tappedOnUserAvatar:">UIButton</string>
-						<string key="userTouchedCameraButton:">UIButton</string>
-						<string key="userTouchedChangeCoverButton:">id</string>
-						<string key="userTouchedChooseCategoryButton:">id</string>
-						<string key="userTouchedDoneButton:">id</string>
-						<string key="userTouchedEditButton:">id</string>
-						<string key="userTouchedSaveButton:">id</string>
-						<string key="userTouchedShareButton:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="tappedOnUserAvatar:">
-							<string key="name">tappedOnUserAvatar:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedCameraButton:">
-							<string key="name">userTouchedCameraButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedChangeCoverButton:">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">userTouchedChangeCoverButton:</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">userTouchedChangeCoverButton:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="userTouchedChooseCategoryButton:">
-							<string key="name">userTouchedChooseCategoryButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedDoneButton:">
-							<string key="name">userTouchedDoneButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedEditButton:">
-							<string key="name">userTouchedEditButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedSaveButton:">
-							<string key="name">userTouchedSaveButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedShareButton:">
-							<string key="name">userTouchedShareButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="avatarButton">UIButton</string>
 						<string key="buyButton">UIButton</string>
@@ -1727,35 +1694,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractChannelsDetailsEditViewController</string>
 					<string key="superclassName">SYNAbstractChannelsDetailViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="tappedOnUserAvatar:">UIButton</string>
-						<string key="userTouchedChangeCoverButton:">id</string>
-						<string key="userTouchedDoneButton:">id</string>
-						<string key="userTouchedEditButton:">UIButton</string>
-						<string key="userTouchedSaveButton:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="tappedOnUserAvatar:">
-							<string key="name">tappedOnUserAvatar:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedChangeCoverButton:">
-							<string key="name">userTouchedChangeCoverButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedDoneButton:">
-							<string key="name">userTouchedDoneButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedEditButton:">
-							<string key="name">userTouchedEditButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedSaveButton:">
-							<string key="name">userTouchedSaveButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNAbstractChannelsDetailsEditViewController.h</string>

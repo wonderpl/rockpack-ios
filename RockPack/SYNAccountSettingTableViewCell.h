@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingTableViewCell : UITableViewCell
+@interface SYNAccountSettingTableViewCell : UITableViewCell {
+    
+}
+
+@property (nonatomic, strong) UILabel* timeLabel;
 
 @end

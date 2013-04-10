@@ -139,7 +139,7 @@
      }
       errorHandler: ^(NSError* error)
      {
-         DebugLog(@"Register Facebook Token with Server Failed");
+         DebugLog(@"Server Failed");
          NSDictionary* customErrorDictionary = @{@"network_error": [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
          errorBlock(customErrorDictionary);
      }];

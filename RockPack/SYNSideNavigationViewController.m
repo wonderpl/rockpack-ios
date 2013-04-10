@@ -26,6 +26,7 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
 @property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
+@property (nonatomic, strong) IBOutlet UIButton* settingsButton;
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 
@@ -58,7 +59,12 @@ typedef enum {
    
 }
 
+#pragma mark - Button Actions
 
+-(IBAction)settingsButtonPressed:(id)sender
+{
+    
+}
 
 
 
@@ -100,11 +106,15 @@ typedef enum {
         cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
         cell.detailTextLabel.font = [UIFont rockpackFontOfSize:13.0];
         
+        cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+        
         
     } 
     
     return cell;
 }
+
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -129,7 +139,7 @@ typedef enum {
 -(void)setUser:(User *)nuser
 {
     user = nuser;
-    self.userNameLabel.text = [NSString stringWithFormat:@"%@\n%@", user.firstName, user.lastName];
+    self.userNameLabel.text = [NSString stringWithFormat:@"%@", user.fullName];
     [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: user.thumbnailURL]
                                       placeHolderImage: [UIImage imageNamed:@"NotFoundAvatarYou.png"]];
 }
