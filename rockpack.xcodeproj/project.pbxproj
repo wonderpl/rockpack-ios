@@ -641,8 +641,6 @@
 		BE7D34D617159F3C0085AB81 /* SYNNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D34D517159F3C0085AB81 /* SYNNotificationsViewController.m */; };
 		BE7D34DC1715A9560085AB81 /* ButtonSettings.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34D81715A9560085AB81 /* ButtonSettings.png */; };
 		BE7D34DD1715A9560085AB81 /* ButtonSettings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34D91715A9560085AB81 /* ButtonSettings@2x.png */; };
-		BE7D34DE1715A9560085AB81 /* ButtonSettingsHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34DA1715A9560085AB81 /* ButtonSettingsHighlighted.png */; };
-		BE7D34DF1715A9560085AB81 /* ButtonSettingsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34DB1715A9560085AB81 /* ButtonSettingsHighlighted@2x.png */; };
 		BE7D34E21715A9BE0085AB81 /* PanelMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34E01715A9BE0085AB81 /* PanelMenu.png */; };
 		BE7D34E31715A9BE0085AB81 /* PanelMenu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34E11715A9BE0085AB81 /* PanelMenu@2x.png */; };
 		BE7D34E81715AC890085AB81 /* ButtonSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34E41715AC890085AB81 /* ButtonSearch.png */; };
@@ -3863,8 +3861,6 @@
 				BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */,
 				BE7D34DC1715A9560085AB81 /* ButtonSettings.png in Resources */,
 				BE7D34DD1715A9560085AB81 /* ButtonSettings@2x.png in Resources */,
-				BE7D34DE1715A9560085AB81 /* ButtonSettingsHighlighted.png in Resources */,
-				BE7D34DF1715A9560085AB81 /* ButtonSettingsHighlighted@2x.png in Resources */,
 				BE7D34E21715A9BE0085AB81 /* PanelMenu.png in Resources */,
 				BE7D34E31715A9BE0085AB81 /* PanelMenu@2x.png in Resources */,
 				BE7D34E81715AC890085AB81 /* ButtonSearch.png in Resources */,
