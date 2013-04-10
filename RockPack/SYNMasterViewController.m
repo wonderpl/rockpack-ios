@@ -32,7 +32,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
 @property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
-@property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
@@ -142,8 +141,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     self.clearTextButton.alpha = 0.0;
-    self.glowTextImageView.alpha = 0.0;
-    self.glowTextImageView.userInteractionEnabled = NO;
     
     // == Set up Dots View == //
     
@@ -416,9 +413,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     self.searchTextField.text = @"";
     
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 0.0;
-    }];
+    
     
     self.clearTextButton.alpha = 0.0;
     
@@ -530,9 +525,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [textField resignFirstResponder];
     
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 0.0;
-    }];
+    
     
     if(self.autocompletePopoverController) {
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
@@ -545,15 +538,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 1.0;
-    }];
+    
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 0.0;
-    }];
+    
 }
 
 
