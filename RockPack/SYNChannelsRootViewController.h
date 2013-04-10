@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractTopTabViewController.h"
+#import "SYNAbstractViewController.h"
 
-@interface SYNChannelsRootViewController : SYNAbstractTopTabViewController
+@interface SYNChannelsRootViewController : SYNAbstractViewController
 
 @property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
 

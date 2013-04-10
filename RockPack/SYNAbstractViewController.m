@@ -36,6 +36,7 @@
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
+@property (nonatomic, assign) NSUInteger selectedIndex;
 
 
 @property (nonatomic, strong) UIView *dropZoneView;
@@ -47,7 +48,9 @@
 
 
 @synthesize fetchedResultsController = fetchedResultsController;
+@synthesize selectedIndex = _selectedIndex;
 
+@synthesize tabViewController;
 
 #pragma mark - Custom accessor methods
 
@@ -531,6 +534,48 @@
 -(NSString*)description
 {
     return [NSString stringWithFormat:@"ViewController: %@", viewId];
+}
+
+
+#pragma mark - Tab View Methods
+
+- (void) highlightTab: (int) tabIndex
+{
+    
+}
+
+
+-(void)setTabViewController:(SYNTabViewController *)newTabViewController
+{
+    tabViewController = newTabViewController;
+    tabViewController.delegate = self;
+    [self.view addSubview:tabViewController.tabView];
+    
+    tabExpanded = NO;
+}
+
+#pragma mark - TabViewDelegate
+
+-(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+{
+    // to be implemented by child
+}
+
+
+-(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
+{
+    // to be implemented by child
+}
+
+
+-(void)handleNewTabSelectionWithId:(NSString*)selectionId
+{
+    // to be implemented by child
+}
+
+-(BOOL)showSubcategories
+{
+    return YES;
 }
 
 @end

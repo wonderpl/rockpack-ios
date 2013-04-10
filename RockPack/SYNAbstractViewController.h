@@ -9,7 +9,8 @@
 
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
-
+#import "SYNTabViewDelegate.h"
+#import "SYNTabViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNVideoQueueDelegate.h"
 
@@ -19,12 +20,11 @@
 
 @class VideoInstance, Channel, ChannelOwner;
 
-@interface SYNAbstractViewController : UIViewController <   NSFetchedResultsControllerDelegate,
-                                                            UICollectionViewDataSource,
-                                                            UICollectionViewDelegate>
-{
+@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate, UICollectionViewDataSource,                                                            UICollectionViewDelegate, SYNTabViewDelegate> {
 @protected
     SYNAppDelegate* appDelegate;
+    BOOL tabExpanded;
+    SYNTabViewController* tabViewController;
     NSString* viewId;
     NSFetchedResultsController* fetchedResultsController;
 }
@@ -38,6 +38,11 @@
 @property (nonatomic, strong) UIImageView *draggedView;
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
+
+@property (nonatomic, strong) SYNTabViewController* tabViewController;
+
+- (void) highlightTab: (int) tabIndex;
+-(void)handleNewTabSelectionWithId:(NSString*)selectionId;
 
 
 -(void) reloadCollectionViews;

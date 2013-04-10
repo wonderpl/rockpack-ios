@@ -26,6 +26,7 @@
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNChannelsAddVideosViewController.h"
+#import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
@@ -284,8 +285,6 @@
     CGRect vcFrame = viewController.view.frame;
     vcFrame.origin.x = showingOffset;
     viewController.view.frame = vcFrame;
-    
-    
     
     viewController.view.alpha = 0.0;
     

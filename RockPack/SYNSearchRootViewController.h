@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractTopTabViewController.h"
+#import "SYNAbstractViewController.h"
 
-@interface SYNSearchRootViewController : SYNAbstractTopTabViewController {
+@interface SYNSearchRootViewController : SYNAbstractViewController {
     @private
     NSString* searchTerm;
     BOOL viewIsOnScreen;

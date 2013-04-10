@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractTopTabViewController.h"
+#import "SYNAbstractViewController.h"
 #import "SYNLargeVideoPanelViewController.h"
 
-@interface SYNVideosRootViewController : SYNAbstractTopTabViewController
+@interface SYNVideosRootViewController : SYNAbstractViewController
 
 
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
