@@ -37,9 +37,9 @@
 // Initialisation
 - (id) initWithFrame: (CGRect) frame;
 
-- (void) setVideoWithSource: (NSString *) source
-                   sourceId: (NSString *) sourceId
-                   autoPlay: (BOOL) autoPlay;
+//- (void) setVideoWithSource: (NSString *) source
+//                   sourceId: (NSString *) sourceId
+//                   autoPlay: (BOOL) autoPlay;
 
 - (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
                                selectedIndexPath: (NSIndexPath *) selectedIndexPath

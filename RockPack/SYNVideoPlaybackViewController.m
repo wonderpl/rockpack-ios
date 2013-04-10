@@ -9,6 +9,8 @@
 #import "AppConstants.h"
 #import "NSIndexPath+Arithmetic.h"
 #import "NSString+Timecode.h"
+#import "SYNAppDelegate.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "UIFont+SYNFont.h"
 #import <CoreData/CoreData.h>
@@ -440,20 +442,21 @@
     return index;
 }
 
+// Hopefully depracated
 
-- (void) setVideoWithSource: (NSString *) source
-                   sourceId: (NSString *) sourceId
-                   autoPlay: (BOOL) autoPlay
-{
-    // Init out ivars
-    self.source = source;
-    self.sourceId = sourceId;
-    self.fetchedResultsController = nil;
-    self.currentSelectedIndexPath = nil;
-    self.autoPlay = autoPlay;
-    
-    [self loadCurrentVideoWebView];
-}
+//- (void) setVideoWithSource: (NSString *) source
+//                   sourceId: (NSString *) sourceId
+//                   autoPlay: (BOOL) autoPlay
+//{
+//    // Init out ivars
+//    self.source = source;
+//    self.sourceId = sourceId;
+//    self.fetchedResultsController = nil;
+//    self.currentSelectedIndexPath = nil;
+//    self.autoPlay = autoPlay;
+//    
+//    [self loadCurrentVideoWebView];
+//}
 
 - (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
                                selectedIndexPath: (NSIndexPath *) selectedIndexPath
@@ -1039,7 +1042,20 @@
         // Don't mark as viewed again
         self.currentVideoViewedFlag = TRUE;
         
-        DebugLog(@"viewed");
+        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+        
+        // Update the star/unstar status on the server
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                         action: @"view"
+                                                videoInstanceId: self.currentVideoInstance.uniqueId
+                                              completionHandler: ^(NSDictionary *responseDictionary)
+         {
+             DebugLog(@"View action successful");
+         }
+                                                   errorHandler: ^(NSDictionary* errorDictionary)
+         {
+             DebugLog(@"View action failed");
+         }];
     }
 }
 
