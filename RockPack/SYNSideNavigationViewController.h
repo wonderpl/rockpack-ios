@@ -13,4 +13,7 @@
 
 @property (nonatomic, weak) User* user;
 
+
+-(void)reset;
+
 @end

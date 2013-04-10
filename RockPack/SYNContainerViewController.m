@@ -242,6 +242,21 @@
     
 }
 
+#pragma mark - Navigate To Views
+
+-(void) navigateToPageByName:(NSString*)pageName
+{
+    int page = 0;
+    for (UINavigationController* nvc in self.viewControllers)
+    {
+        if([pageName isEqualToString:nvc.title]) {
+            [self setPage:page];
+            break;
+        }
+        page++;
+    }
+}
+
 
 #pragma mark - Show Special Views
 
@@ -399,10 +414,11 @@
 
 #pragma mark - Helper Methods
 
--(UINavigationController*)wrapInNavigationController:(SYNAbstractViewController*)anstractViewController
+-(UINavigationController*)wrapInNavigationController:(SYNAbstractViewController*)abstractViewController
 {
     
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:anstractViewController];
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:abstractViewController];
+    navigationController.title = abstractViewController.title;
     navigationController.navigationBarHidden = YES;
     navigationController.view.autoresizesSubviews = YES;
     navigationController.view.frame = CGRectMake (0, 0, 1024, 686);

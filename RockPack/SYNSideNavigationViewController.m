@@ -9,6 +9,7 @@
 #import "SYNSideNavigationViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "AppConstants.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -34,6 +35,10 @@ typedef enum {
 
 @property (nonatomic, strong) NSArray* navigationData;
 
+@property (nonatomic, strong) NSIndexPath* currentlySelectedIndexPath;
+
+@property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
+
 @end
 
 @implementation SYNSideNavigationViewController
@@ -41,16 +46,18 @@ typedef enum {
 @synthesize navigationData;
 @synthesize user;
 @synthesize navItemColor;
+@synthesize currentlySelectedIndexPath;
+@synthesize currentlyLoadedViewController;
 
 -(id)init
 {
     self = [super initWithNibName:@"SYNSideNavigationViewController" bundle:nil];
     if (self) {
         navigationData = @[
-                           @{kSideNavTitle:@"FEED", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
-                           @{kSideNavTitle:@"CHANNELS", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
-                           @{kSideNavTitle:@"MY ROCKPACK", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@""},
-                           @{kSideNavTitle:@"NOTIFICATIONS", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""},
+                           @{kSideNavTitle:@"FEED", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@"Feed"},
+                           @{kSideNavTitle:@"CHANNELS", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@"Channels"},
+                           @{kSideNavTitle:@"MY ROCKPACK", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@"My Rockpack"},
+                           @{kSideNavTitle:@"NOTIFICATIONS", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@"SYNNotificationsViewController"},
                            @{kSideNavTitle:@"ACCOUNTS", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""}
                            ];
     }
@@ -132,20 +139,60 @@ typedef enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([indexPath compare:currentlySelectedIndexPath] == NSOrderedSame)
+        return;
+    
+    //self.currentlySelectedIndexPath = indexPath;
+    
     NSDictionary* navigationElement = (NSDictionary*)[navigationData objectAtIndex:indexPath.row];
     kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey:kSideNavType]) integerValue];
-    //NSString* navigationAction = (NSString*)[navigationElement objectForKey:kSideNavAction];
+    NSString* navigationAction = (NSString*)[navigationElement objectForKey:kSideNavAction];
     
     if(navigationType == kSideNavigationTypeLoad)
     {
+        
+        Class theClass = NSClassFromString(navigationAction);
+        self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
         
     }
     else
     {
         
+        NSNotification* navigationNotification = [NSNotification notificationWithName:kNavigateToPage
+                                                                               object:self
+                                                                             userInfo:@{@"pageName":navigationAction}];
+        
+        [[NSNotificationCenter defaultCenter] postNotification:navigationNotification];
     }
     
  
+}
+
+-(void)setCurrentlyLoadedViewController:(UIViewController *)currentlyLoadedVC
+{
+    if(!currentlyLoadedVC)
+        return;
+    
+    if(currentlyLoadedViewController) {
+        [currentlyLoadedViewController.view removeFromSuperview];
+    }
+    
+    
+    currentlyLoadedViewController = currentlyLoadedVC;
+    
+    CGSize containerSize = self.containerView.frame.size;
+    CGRect vcRect = currentlyLoadedViewController.view.frame;
+    vcRect.size = containerSize;
+    currentlyLoadedViewController.view.frame = vcRect;
+    
+    [self.containerView addSubview:currentlyLoadedViewController.view];
+    
+    
+}
+
+-(void)reset
+{
+    self.currentlySelectedIndexPath = nil;
 }
 
 #pragma mark - Accessor Methods

@@ -9,7 +9,8 @@
 #import "SYNNotificationsViewController.h"
 #import "SYNNotificationsTableViewCell.h"
 
-#define kNotificationsCellIdent
+
+#define kNotificationsCellIdent @"kNotificationsCellIdent"
 
 @interface SYNNotificationsViewController ()
 
@@ -30,7 +31,8 @@
 {
     [super viewDidLoad];
 
-    [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:@""];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,22 +47,24 @@
 {
 
     
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
     
-    return 0;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"NotificationsCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNotificationsCellIdent forIndexPath:indexPath];
+    
+    
+    cell.textLabel.text = @"Mike";
+    cell.imageView.image = [UIImage imageNamed:@"NotFoundAvatarYou.png"];
     
     return cell;
 }
@@ -71,13 +75,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    
 }
 
 @end

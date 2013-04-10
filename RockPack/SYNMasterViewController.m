@@ -170,13 +170,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigateToPage:) name:kNavigateToPage object:nil];
+    
     
     // Add swipe-away gesture
     UISwipeGestureRecognizer* inboxLeftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                                action: @selector(panelSwipedAway:)];
+                                                                                                action: @selector(panelSwipedAway)];
     inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.navigatioContainerView addGestureRecognizer: inboxLeftSwipeGesture];
 }
+
+
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
@@ -205,6 +209,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
+
+-(void)panelSwipedAway
+{
+    [self hideSideNavigation];
+}
 
 
 
@@ -276,9 +285,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                      } completion: ^(BOOL finished) {
                          
+                         [self.sideNavigationViewController reset];
                          [self.sideNavigationViewController.view removeFromSuperview];
                          
-         
+                         
                      }];
 }
 
@@ -565,6 +575,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.backButton removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:NO];
     }
+}
+
+
+-(void)navigateToPage:(NSNotification*)notification
+{
+    
+    NSString* pageName = [[notification userInfo] objectForKey:@"pageName"];
+    if(!pageName)
+        return;
+    
+    [self.containerViewController navigateToPageByName:pageName];
+    
 }
 
 - (void) showBackButton: (BOOL) show

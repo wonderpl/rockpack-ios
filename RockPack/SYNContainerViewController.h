@@ -19,6 +19,7 @@
 
 - (void) popCurrentViewController: (id) sender;
 -(void) showSearchViewControllerWithTerm:(NSString*)term;
+-(void) navigateToPageByName:(NSString*)pageName;
 
 @property (nonatomic) NSInteger page;
 
