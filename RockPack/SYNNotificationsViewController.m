@@ -8,21 +8,25 @@
 
 #import "SYNNotificationsViewController.h"
 #import "SYNNotificationsTableViewCell.h"
-
+#import "SYNRockpackNotification.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
 @interface SYNNotificationsViewController ()
 
+@property (nonatomic, strong) NSArray* notifications;
+
 @end
 
 @implementation SYNNotificationsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+
+
+- (id)init
 {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        // Custom initialization
+        // TODO: Get notifications
     }
     return self;
 }
@@ -32,7 +36,7 @@
     [super viewDidLoad];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
+    [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,7 +57,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
-    
     return 5;
 }
 
@@ -63,19 +66,25 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNotificationsCellIdent forIndexPath:indexPath];
     
     
-    cell.textLabel.text = @"Mike";
+    cell.textLabel.text = @"LUCY KERRIGHAN has subscribed to your channel.";
     cell.imageView.image = [UIImage imageNamed:@"NotFoundAvatarYou.png"];
+    
+    cell.detailTextLabel.text = @"8 Mins";
     
     return cell;
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    return 80.0;
+}
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    // TODO: Get the notification and do something with it
+    // SYNRockpackNotification* notificationSelected = (SYNRockpackNotification*)[self.notifications objectAtIndex:indexPath.row];
 }
 
 @end

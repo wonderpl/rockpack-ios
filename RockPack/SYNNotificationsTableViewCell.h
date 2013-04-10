@@ -10,4 +10,6 @@
 
 @interface SYNNotificationsTableViewCell : UITableViewCell
 
+@property (nonatomic, strong) UIImageView* thumbnailImageView;
+
 @end

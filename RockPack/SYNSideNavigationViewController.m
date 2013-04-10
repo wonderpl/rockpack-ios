@@ -116,18 +116,23 @@ typedef enum {
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey:kSideNavType]) integerValue];
         
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
         
-        if(navigationType == kSideNavigationTypeLoad)
+        
+        if(navigationType == kSideNavigationTypePage) {
             cell.accessoryType = UITableViewCellAccessoryNone;
-        else
+        } else {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavArrow"]];
+        }
+            
         
         cell.textLabel.font = [UIFont rockpackFontOfSize:15.0];
         
         cell.textLabel.textColor = navItemColor;
         
-        cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+        UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
+        selectedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavSelected"]];
+        cell.selectedBackgroundView = selectedView;
         
         
     } 
@@ -170,8 +175,7 @@ typedef enum {
 
 -(void)setCurrentlyLoadedViewController:(UIViewController *)currentlyLoadedVC
 {
-    if(!currentlyLoadedVC)
-        return;
+    
     
     if(currentlyLoadedViewController) {
         [currentlyLoadedViewController.view removeFromSuperview];
@@ -179,6 +183,9 @@ typedef enum {
     
     
     currentlyLoadedViewController = currentlyLoadedVC;
+    
+    if(!currentlyLoadedViewController)
+        return;
     
     CGSize containerSize = self.containerView.frame.size;
     CGRect vcRect = currentlyLoadedViewController.view.frame;

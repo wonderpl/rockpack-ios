@@ -651,6 +651,13 @@
 		BE7D34F11715AD060085AB81 /* ButtonNav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34ED1715AD060085AB81 /* ButtonNav@2x.png */; };
 		BE7D34F21715AD060085AB81 /* ButtonNavHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34EE1715AD060085AB81 /* ButtonNavHighlighted.png */; };
 		BE7D34F31715AD060085AB81 /* ButtonNavHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34EF1715AD060085AB81 /* ButtonNavHighlighted@2x.png */; };
+		BE7D34F91715C66B0085AB81 /* NavSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34F71715C66B0085AB81 /* NavSelected.png */; };
+		BE7D34FA1715C66B0085AB81 /* NavSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34F81715C66B0085AB81 /* NavSelected@2x.png */; };
+		BE7D34FF1715C68C0085AB81 /* NavArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34FB1715C68C0085AB81 /* NavArrow.png */; };
+		BE7D35001715C68C0085AB81 /* NavArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34FC1715C68C0085AB81 /* NavArrow@2x.png */; };
+		BE7D35011715C68C0085AB81 /* NavArrowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34FD1715C68C0085AB81 /* NavArrowSelected.png */; };
+		BE7D35021715C68C0085AB81 /* NavArrowSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */; };
+		BE7D35051715CE450085AB81 /* SYNRockpackNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D35041715CE450085AB81 /* SYNRockpackNotification.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1465,6 +1472,14 @@
 		BE7D34ED1715AD060085AB81 /* ButtonNav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNav@2x.png"; path = "Assets/Images/ButtonNav@2x.png"; sourceTree = "<group>"; };
 		BE7D34EE1715AD060085AB81 /* ButtonNavHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNavHighlighted.png; path = Assets/Images/ButtonNavHighlighted.png; sourceTree = "<group>"; };
 		BE7D34EF1715AD060085AB81 /* ButtonNavHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNavHighlighted@2x.png"; path = "Assets/Images/ButtonNavHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE7D34F71715C66B0085AB81 /* NavSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavSelected.png; path = Assets/Images/NavSelected.png; sourceTree = "<group>"; };
+		BE7D34F81715C66B0085AB81 /* NavSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavSelected@2x.png"; path = "Assets/Images/NavSelected@2x.png"; sourceTree = "<group>"; };
+		BE7D34FB1715C68C0085AB81 /* NavArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavArrow.png; path = Assets/Images/NavArrow.png; sourceTree = "<group>"; };
+		BE7D34FC1715C68C0085AB81 /* NavArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavArrow@2x.png"; path = "Assets/Images/NavArrow@2x.png"; sourceTree = "<group>"; };
+		BE7D34FD1715C68C0085AB81 /* NavArrowSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavArrowSelected.png; path = Assets/Images/NavArrowSelected.png; sourceTree = "<group>"; };
+		BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavArrowSelected@2x.png"; path = "Assets/Images/NavArrowSelected@2x.png"; sourceTree = "<group>"; };
+		BE7D35031715CE440085AB81 /* SYNRockpackNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNRockpackNotification.h; sourceTree = "<group>"; };
+		BE7D35041715CE450085AB81 /* SYNRockpackNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRockpackNotification.m; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -3194,6 +3209,8 @@
 				BE7D34D517159F3C0085AB81 /* SYNNotificationsViewController.m */,
 				BE7D34D117159E2C0085AB81 /* SYNNotificationsTableViewCell.h */,
 				BE7D34D217159E2C0085AB81 /* SYNNotificationsTableViewCell.m */,
+				BE7D35031715CE440085AB81 /* SYNRockpackNotification.h */,
+				BE7D35041715CE450085AB81 /* SYNRockpackNotification.m */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -3215,6 +3232,12 @@
 				BE7D34ED1715AD060085AB81 /* ButtonNav@2x.png */,
 				BE7D34EE1715AD060085AB81 /* ButtonNavHighlighted.png */,
 				BE7D34EF1715AD060085AB81 /* ButtonNavHighlighted@2x.png */,
+				BE7D34F71715C66B0085AB81 /* NavSelected.png */,
+				BE7D34F81715C66B0085AB81 /* NavSelected@2x.png */,
+				BE7D34FB1715C68C0085AB81 /* NavArrow.png */,
+				BE7D34FC1715C68C0085AB81 /* NavArrow@2x.png */,
+				BE7D34FD1715C68C0085AB81 /* NavArrowSelected.png */,
+				BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */,
 			);
 			name = "Navigation Panel";
 			sourceTree = "<group>";
@@ -3871,6 +3894,12 @@
 				BE7D34F11715AD060085AB81 /* ButtonNav@2x.png in Resources */,
 				BE7D34F21715AD060085AB81 /* ButtonNavHighlighted.png in Resources */,
 				BE7D34F31715AD060085AB81 /* ButtonNavHighlighted@2x.png in Resources */,
+				BE7D34F91715C66B0085AB81 /* NavSelected.png in Resources */,
+				BE7D34FA1715C66B0085AB81 /* NavSelected@2x.png in Resources */,
+				BE7D34FF1715C68C0085AB81 /* NavArrow.png in Resources */,
+				BE7D35001715C68C0085AB81 /* NavArrow@2x.png in Resources */,
+				BE7D35011715C68C0085AB81 /* NavArrowSelected.png in Resources */,
+				BE7D35021715C68C0085AB81 /* NavArrowSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4058,6 +4087,7 @@
 				BE7D34CE1714434D0085AB81 /* SYNDeviceManager.m in Sources */,
 				BE7D34D317159E2C0085AB81 /* SYNNotificationsTableViewCell.m in Sources */,
 				BE7D34D617159F3C0085AB81 /* SYNNotificationsViewController.m in Sources */,
+				BE7D35051715CE450085AB81 /* SYNRockpackNotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
