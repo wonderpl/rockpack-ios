@@ -209,6 +209,8 @@ typedef enum _Gender {
 
 #define kScrollerPageChanged        @"kScrollerPageChanged"
 
+#define kCurrentPage        @"kCurrentPage"
+
 
 #define kLoginCompleted @"kLoginCompleted"
 

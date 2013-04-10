@@ -35,6 +35,15 @@
 
 #pragma mark - View lifecycle
 
+-(id)initWithViewId:(NSString *)vid
+{
+    if(self = [super initWithViewId:vid])
+    {
+        self.title = @"My Rockpack";
+    }
+    return self;
+}
+
 - (void) loadView
 {
     //    UIImageView *headerView = [UI]

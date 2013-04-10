@@ -81,6 +81,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         sideNavigationFrame.origin.x = 1024.0;
         sideNavigationFrame.origin.y = 45.0;
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
+        self.sideNavigationViewController.user = appDelegate.currentUser;
         
         UISwipeGestureRecognizer* swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationSwiped)];
         swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
@@ -179,7 +180,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
-    NSNumber* pageNumber = [[notification userInfo] objectForKey:@"page"];
+    NSNumber* pageNumber = [[notification userInfo] objectForKey:kCurrentPage];
     if(!pageNumber)
         return;
     

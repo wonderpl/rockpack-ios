@@ -35,6 +35,15 @@
 
 #pragma mark - View lifecycle
 
+-(id)initWithViewId:(NSString *)vid
+{
+    if(self = [super initWithViewId:vid])
+    {
+        self.title = @"Feed";
+    }
+    return self;
+}
+
 - (void) loadView
 {
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];

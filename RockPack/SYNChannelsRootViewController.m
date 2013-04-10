@@ -48,6 +48,15 @@
 
 #pragma mark - View lifecycle
 
+-(id)initWithViewId:(NSString *)vid
+{
+    if(self = [super initWithViewId:vid])
+    {
+        self.title = @"Channels";
+    }
+    return self;
+}
+
 - (void) loadView
 {
     SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];

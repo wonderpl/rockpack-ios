@@ -34,7 +34,6 @@
 @property (nonatomic) BOOL didNotSwipeMessageInbox;
 @property (nonatomic) BOOL shouldAnimateViewTransitions;
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
-@property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 @property (nonatomic, copy) NSArray *viewControllers;
@@ -61,7 +60,6 @@
 
 @implementation SYNContainerViewController
 
-@synthesize selectedIndex = _selectedIndex;
 @synthesize selectedViewController;
 @synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
@@ -239,11 +237,9 @@
 {
      
     
-    if(self.selectedViewController != self.seachViewNavigationViewController) {
-        self.selectedViewController = self.seachViewNavigationViewController;
-        [self setSelectedIndex: -1];
-    }
-        
+    self.selectedViewController = self.seachViewNavigationViewController;
+    
+    [self replaceShowingViewControllerWith:self.seachViewNavigationViewController];
 
     
     [self.searchViewController showSearchResultsForTerm: searchTerm];
@@ -260,10 +256,8 @@
     if (!channelOwner)
         return;
     
-    [self setSelectedIndex: -1]; // turn all off
-    
-    if(self.selectedViewController != self.channelsUserNavigationViewController)
-        self.selectedViewController = self.channelsUserNavigationViewController;
+    self.selectedViewController = self.channelsUserNavigationViewController;
+        
     
     
     [self.channelsUserViewController fetchUserChannels: channelOwner];
@@ -271,7 +265,33 @@
 
 
 
+- (void) replaceShowingViewControllerWith:(UIViewController*)viewController
+{
+    SYNAbstractViewController* showing = [self showingViewController];
 
+    CGRect showingRect = showing.view.frame;
+    
+    viewController.view.frame = showingRect;
+    //viewController.view.alpha = 0.0;
+    
+    [self.scrollView addSubview:viewController.view];
+    
+    //self.scrollView.scrollEnabled = NO;
+    
+//    [UIView animateWithDuration: 0.3f
+//                          delay: 0.0f
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations: ^{
+//                         
+//                         showing.view.alpha = 0.0;
+//                         viewController.view.alpha = 1.0;
+//                         
+//                     } completion: ^(BOOL finished) {
+//                     
+//                     }];
+    
+    
+}
 
 #pragma mark - UIScrollViewDelegate
 
@@ -283,12 +303,8 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     
-    NSInteger currentPage = self.page;
     
-    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{@"page":@(currentPage)}];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-    
-    self.selectedViewController = self.viewControllers[currentPage];
+    self.selectedViewController = self.viewControllers[self.page];
     
     
     [self.showingViewController viewCameToScrollFront];
@@ -329,7 +345,6 @@
     [self.scrollView setContentOffset:newPoint animated:YES];
 }
 
-// gets current page that the scroller is at from the current offset
 
 -(NSInteger)page
 {
@@ -338,6 +353,13 @@
     NSInteger page = (currentScrollerOffset / pageWidth); // 0 indexed
     return page;
     
+}
+
+-(void)setSelectedViewController:(UIViewController *)selectedVC
+{
+    selectedViewController = selectedVC;
+    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{kCurrentPage:@(self.page)}];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 -(UIScrollView*)scrollView
