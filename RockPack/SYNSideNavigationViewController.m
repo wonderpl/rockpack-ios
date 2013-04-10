@@ -8,7 +8,7 @@
 
 #import "SYNSideNavigationViewController.h"
 #import "UIFont+SYNFont.h"
-#import "User.h"
+#import "UIImageView+ImageProcessing.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -36,6 +36,7 @@ typedef enum {
 @implementation SYNSideNavigationViewController
 
 @synthesize navigationData;
+@synthesize user;
 
 -(id)init
 {
@@ -58,12 +59,7 @@ typedef enum {
 }
 
 
-#pragma mark - User Details
 
--(void)showUserDetails:(User*)user
-{
-    self.userNameLabel.text = [NSString stringWithFormat:@"%@\n%@", user.firstName, user.lastName];
-}
 
 
 #pragma mark - UITableView Deleagate
@@ -126,6 +122,16 @@ typedef enum {
     }
     
  
+}
+
+#pragma mark - Accessor Methods
+
+-(void)setUser:(User *)nuser
+{
+    user = nuser;
+    self.userNameLabel.text = [NSString stringWithFormat:@"%@\n%@", user.firstName, user.lastName];
+    [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: user.thumbnailURL]
+                                      placeHolderImage: [UIImage imageNamed:@"NotFoundAvatarYou.png"]];
 }
 
 @end
