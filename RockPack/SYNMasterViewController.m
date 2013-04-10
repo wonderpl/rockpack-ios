@@ -142,6 +142,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.clearTextButton.alpha = 0.0;
     
+    self.pageTitleLabel.font = [UIFont rockpackFontOfSize:25];
+    self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0) green:(45.0/255.0) blue:(51.0/255.0) alpha:(1.0)];
+    
+    
     // == Set up Dots View == //
     
     self.dotsView.backgroundColor = [UIColor clearColor];
@@ -166,6 +170,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Set Up Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tabPressed:) name:kNoteTabPressed object:nil];
@@ -181,6 +186,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                                 action: @selector(panelSwipedAway)];
     inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.navigatioContainerView addGestureRecognizer: inboxLeftSwipeGesture];
+    
+    
 }
 
 
