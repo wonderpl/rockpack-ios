@@ -658,6 +658,10 @@
 		BE7D35011715C68C0085AB81 /* NavArrowSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34FD1715C68C0085AB81 /* NavArrowSelected.png */; };
 		BE7D35021715C68C0085AB81 /* NavArrowSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */; };
 		BE7D35051715CE450085AB81 /* SYNRockpackNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D35041715CE450085AB81 /* SYNRockpackNotification.m */; };
+		BE7D350B1715D3080085AB81 /* NavigationDot.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D35071715D3080085AB81 /* NavigationDot.png */; };
+		BE7D350C1715D3080085AB81 /* NavigationDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D35081715D3080085AB81 /* NavigationDot@2x.png */; };
+		BE7D350D1715D3080085AB81 /* NavigationDotCurrent.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D35091715D3080085AB81 /* NavigationDotCurrent.png */; };
+		BE7D350E1715D3080085AB81 /* NavigationDotCurrent@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D350A1715D3080085AB81 /* NavigationDotCurrent@2x.png */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1480,6 +1484,10 @@
 		BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavArrowSelected@2x.png"; path = "Assets/Images/NavArrowSelected@2x.png"; sourceTree = "<group>"; };
 		BE7D35031715CE440085AB81 /* SYNRockpackNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNRockpackNotification.h; sourceTree = "<group>"; };
 		BE7D35041715CE450085AB81 /* SYNRockpackNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRockpackNotification.m; sourceTree = "<group>"; };
+		BE7D35071715D3080085AB81 /* NavigationDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavigationDot.png; path = Assets/Images/NavigationDot.png; sourceTree = "<group>"; };
+		BE7D35081715D3080085AB81 /* NavigationDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavigationDot@2x.png"; path = "Assets/Images/NavigationDot@2x.png"; sourceTree = "<group>"; };
+		BE7D35091715D3080085AB81 /* NavigationDotCurrent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavigationDotCurrent.png; path = Assets/Images/NavigationDotCurrent.png; sourceTree = "<group>"; };
+		BE7D350A1715D3080085AB81 /* NavigationDotCurrent@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavigationDotCurrent@2x.png"; path = "Assets/Images/NavigationDotCurrent@2x.png"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -3238,6 +3246,10 @@
 				BE7D34FC1715C68C0085AB81 /* NavArrow@2x.png */,
 				BE7D34FD1715C68C0085AB81 /* NavArrowSelected.png */,
 				BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */,
+				BE7D35071715D3080085AB81 /* NavigationDot.png */,
+				BE7D35081715D3080085AB81 /* NavigationDot@2x.png */,
+				BE7D35091715D3080085AB81 /* NavigationDotCurrent.png */,
+				BE7D350A1715D3080085AB81 /* NavigationDotCurrent@2x.png */,
 			);
 			name = "Navigation Panel";
 			sourceTree = "<group>";
@@ -3900,6 +3912,10 @@
 				BE7D35001715C68C0085AB81 /* NavArrow@2x.png in Resources */,
 				BE7D35011715C68C0085AB81 /* NavArrowSelected.png in Resources */,
 				BE7D35021715C68C0085AB81 /* NavArrowSelected@2x.png in Resources */,
+				BE7D350B1715D3080085AB81 /* NavigationDot.png in Resources */,
+				BE7D350C1715D3080085AB81 /* NavigationDot@2x.png in Resources */,
+				BE7D350D1715D3080085AB81 /* NavigationDotCurrent.png in Resources */,
+				BE7D350E1715D3080085AB81 /* NavigationDotCurrent@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

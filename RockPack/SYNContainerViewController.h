@@ -16,11 +16,12 @@
 
 @property (nonatomic, weak) SYNVideoQueueViewController* videoQueueController;
 @property (nonatomic, readonly) SYNAbstractViewController* showingViewController;
+@property (nonatomic) NSInteger page;
 
 - (void) popCurrentViewController: (id) sender;
 -(void) showSearchViewControllerWithTerm:(NSString*)term;
 -(void) navigateToPageByName:(NSString*)pageName;
 
-@property (nonatomic) NSInteger page;
+
 
 @end

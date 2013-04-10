@@ -144,18 +144,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Set up Dots View == //
     
-    CGFloat currentDotOffset = 0.0;
+    self.dotsView.backgroundColor = [UIColor clearColor];
+    
+    
+    
     for(int i = 0; i < 3; i++)
     {
-        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavigationDot"]];
         CGRect dotImageViewFrame = dotImageView.frame;
-        dotImageViewFrame.origin.x = currentDotOffset;
-        
+        dotImageViewFrame.origin.x = i * 30.0;
+        dotImageView.frame = dotImageViewFrame;
         [self.dotsView addSubview:dotImageView];
         
-        currentDotOffset += 50.0;
-        
+        UITapGestureRecognizer* tapGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dotTapped:)];
+        [dotImageView addGestureRecognizer:tapGestureRecogniser];
      }
+    
+    [self pageChanged:self.containerViewController.page];
+    
     
     // == Set Up Notifications == //
     
@@ -185,24 +191,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageNumber)
         return;
     
-    int page = [pageNumber intValue];
+    [self pageChanged:[pageNumber integerValue]];
+    
+    
+}
+
+-(void)pageChanged:(NSInteger)pageNumber
+{
     int totalDots = self.dotsView.subviews.count;
+    UIImageView* dotImageView;
     for (int i = 0; i < totalDots; i++)
     {
-        UIImageView* dotImageView = (UIImageView*)self.dotsView.subviews[i];
-        if (i == page) {
-            dotImageView.image = [UIImage imageNamed:@""];
+        dotImageView = (UIImageView*)self.dotsView.subviews[i];
+        if (i == pageNumber) {
+            dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
             continue;
         }
         
-        dotImageView.image = [UIImage imageNamed:@""];
+        dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
         
     }
     
     self.pageTitleLabel.text = self.containerViewController.showingViewController.title;
-    
-    
-    // TODO: Implemente change
 }
 
 
@@ -547,6 +557,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 #pragma mark - Notification Handlers
+
+-(void)dotTapped:(UIGestureRecognizer*)recogniser
+{
+    
+}
 
 -(void)backButtonRequested:(NSNotification*)notification
 {

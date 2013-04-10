@@ -52,28 +52,28 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
+					<object class="IBUIView" id="430836750">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">292</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrame">{{439, 41}, {147, 27}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="1039828572"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace">
+								<int key="NSID">2</int>
+							</object>
+						</object>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
 					<object class="IBUIView" id="836185708">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews">
-							<object class="IBUIView" id="430836750">
-								<reference key="NSNextResponder" ref="836185708"/>
-								<int key="NSvFlags">292</int>
-								<array class="NSMutableArray" key="NSSubviews"/>
-								<string key="NSFrame">{{295, 9}, {108, 27}}</string>
-								<reference key="NSSuperview" ref="836185708"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1039828572"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-									<object class="NSColorSpace" key="NSCustomColorSpace">
-										<int key="NSID">2</int>
-									</object>
-								</object>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-							</object>
 							<object class="IBUIView" id="1066454248">
 								<reference key="NSNextResponder" ref="836185708"/>
 								<int key="NSvFlags">292</int>
@@ -336,7 +336,7 @@
 				<reference key="NSNextKeyView" ref="215609239"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODQzMTM3MjU0OSAwLjg0MzEzNzI1NDkAA</bytes>
+					<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0NTA5ODAzOTIAA</bytes>
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -418,14 +418,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">dotsView</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="430836750"/>
-					</object>
-					<int key="connectionID">98</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">pageTitleLabel</string>
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="1039828572"/>
@@ -439,6 +431,14 @@
 						<reference key="destination" ref="307475558"/>
 					</object>
 					<int key="connectionID">103</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">dotsView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="430836750"/>
+					</object>
+					<int key="connectionID">98</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -506,6 +506,7 @@
 							<reference ref="542880119"/>
 							<reference ref="289097721"/>
 							<reference ref="468707721"/>
+							<reference ref="430836750"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -516,7 +517,6 @@
 							<reference ref="582574319"/>
 							<reference ref="182419213"/>
 							<reference ref="1066454248"/>
-							<reference ref="430836750"/>
 							<reference ref="1039828572"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
@@ -570,13 +570,6 @@
 						<string key="objectName">Video Overlay View</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">97</int>
-						<reference key="object" ref="430836750"/>
-						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="836185708"/>
-						<string key="objectName">Dots</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">99</int>
 						<reference key="object" ref="1039828572"/>
 						<reference key="parent" ref="836185708"/>
@@ -599,6 +592,12 @@
 						<reference key="object" ref="468707721"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Search Button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">97</int>
+						<reference key="object" ref="430836750"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Dots</string>
 					</object>
 				</array>
 			</object>
@@ -660,8 +659,6 @@
 						<string key="backButton">UIButton</string>
 						<string key="clearTextButton">UIButton</string>
 						<string key="containerView">UIView</string>
-						<string key="dotsView">UIView</string>
-						<string key="glowTextImageView">UIImageView</string>
 						<string key="navigatioContainerView">UIView</string>
 						<string key="overEverythingView">UIView</string>
 						<string key="overlayView">UIView</string>
@@ -682,14 +679,6 @@
 						<object class="IBToOneOutletInfo" key="containerView">
 							<string key="name">containerView</string>
 							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="dotsView">
-							<string key="name">dotsView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="glowTextImageView">
-							<string key="name">glowTextImageView</string>
-							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="navigatioContainerView">
 							<string key="name">navigatioContainerView</string>
