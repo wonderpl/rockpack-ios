@@ -507,7 +507,7 @@
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      action: action
                                             videoInstanceId: videoInstance.uniqueId
-                                          completionHandler: ^(NSDictionary *responseDictionary)
+     completionHandler: ^(NSDictionary *responseDictionary)
      {
          DebugLog(@"Record action successful");
      }

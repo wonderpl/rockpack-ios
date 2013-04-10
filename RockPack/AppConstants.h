@@ -280,6 +280,7 @@ typedef enum {
 // Block Definitions
 typedef void (^JSONResponseBlock)(id jsonObject);
 
-
+// Video view threshold
+#define kPercentageThresholdForView 0.1f
 
 #endif
