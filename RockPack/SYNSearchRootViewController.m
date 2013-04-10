@@ -31,7 +31,13 @@
 
 @implementation SYNSearchRootViewController
 
-
+-(id)initWithViewId:(NSString *)vid
+{
+    if (self = [super initWithViewId:vid]) {
+        self.title = @"Search";
+    }
+    return self;
+}
 
 -(void)loadView
 {

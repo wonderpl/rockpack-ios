@@ -53,6 +53,8 @@
 @property (nonatomic, weak) UIViewController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 
+@property (nonatomic, readonly) CGFloat currentScreenOffset;
+
 
 
 
@@ -61,6 +63,7 @@
 @implementation SYNContainerViewController
 
 @synthesize selectedViewController;
+@synthesize currentScreenOffset;
 @synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
@@ -148,21 +151,7 @@
     
     self.viewControllers = [NSArray arrayWithArray:allControllers];
     
-    CGFloat currentVCOffset = 0.0;
-    CGRect currentVCRect;
-    for (UIViewController * vc in self.viewControllers)
-    {
-        currentVCRect = vc.view.frame;
-        currentVCRect.origin.x = currentVCOffset;
-        
-        vc.view.frame = currentVCRect;
-        
-        [self.scrollView addSubview:vc.view];
-        
-        currentVCOffset += 1024.0;
-    }
-    
-    self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
+    [self packViews];
     
     self.selectedViewController = self.viewControllers[0];
     
@@ -174,6 +163,28 @@
 }
 
 
+#pragma mark - Placement of Views
+
+-(void)packViews
+{
+    // TODO: Scan for orientation
+    
+    CGFloat currentVCOffset = 0.0;
+    CGRect currentVCRect;
+    for (UIViewController * vc in self.viewControllers)
+    {
+        currentVCRect = vc.view.frame;
+        currentVCRect.origin.x = currentVCOffset;
+        
+        vc.view.frame = currentVCRect;
+        
+        [self.scrollView addSubview:vc.view];
+        
+        currentVCOffset += self.currentScreenOffset;
+    }
+    
+    self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
+}
 
 
 
@@ -237,11 +248,9 @@
 {
      
     
-    self.selectedViewController = self.seachViewNavigationViewController;
+    [self replaceShowingNavigationController:self.seachViewNavigationViewController];
     
-    [self replaceShowingViewControllerWith:self.seachViewNavigationViewController];
 
-    
     [self.searchViewController showSearchResultsForTerm: searchTerm];
     
     
@@ -265,30 +274,46 @@
 
 
 
-- (void) replaceShowingViewControllerWith:(UIViewController*)viewController
+- (void) replaceShowingNavigationController:(UIViewController*)viewController
 {
-    SYNAbstractViewController* showing = [self showingViewController];
+    UINavigationController* showingNavController = [self showingViewController].navigationController;
 
-    CGRect showingRect = showing.view.frame;
     
-    viewController.view.frame = showingRect;
-    //viewController.view.alpha = 0.0;
+    CGFloat showingOffset = showingNavController.view.frame.origin.x;
+    
+    CGRect vcFrame = viewController.view.frame;
+    vcFrame.origin.x = showingOffset;
+    viewController.view.frame = vcFrame;
+    
+    
+    
+    viewController.view.alpha = 0.0;
     
     [self.scrollView addSubview:viewController.view];
     
-    //self.scrollView.scrollEnabled = NO;
+    self.scrollView.scrollEnabled = NO;
     
-//    [UIView animateWithDuration: 0.3f
-//                          delay: 0.0f
-//                        options: UIViewAnimationOptionCurveEaseInOut
-//                     animations: ^{
-//                         
-//                         showing.view.alpha = 0.0;
-//                         viewController.view.alpha = 1.0;
-//                         
-//                     } completion: ^(BOOL finished) {
-//                     
-//                     }];
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations: ^{
+                         
+                         showingNavController.view.alpha = 0.0;
+                         
+                         
+                     } completion: ^(BOOL finished) {
+                         self.selectedViewController = self.seachViewNavigationViewController;
+                         
+                         [UIView animateWithDuration: 0.7f
+                                               delay: 0.2f
+                                             options: UIViewAnimationOptionCurveEaseOut
+                                          animations: ^{
+                                              
+                                              viewController.view.alpha = 1.0;
+                                              
+                                          } completion:nil];
+                         
+                    }];
     
     
 }
@@ -383,6 +408,11 @@
     navigationController.view.autoresizesSubviews = YES;
     navigationController.view.frame = CGRectMake (0, 0, 1024, 686);
     return navigationController;
+}
+
+-(CGFloat)currentScreenOffset
+{
+    return 1024.0;
 }
 
 
