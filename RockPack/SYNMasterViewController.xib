@@ -56,7 +56,7 @@
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{477, 41}, {71, 27}}</string>
+						<string key="NSFrame">{{477, 41}, {71, 24}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="468707721"/>
@@ -576,12 +576,6 @@
 						<string key="objectName">Side Panel Button</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">95</int>
-						<reference key="object" ref="542880119"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Over Everything View</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">105</int>
 						<reference key="object" ref="468707721"/>
 						<reference key="parent" ref="766721923"/>
@@ -598,6 +592,12 @@
 						<reference key="object" ref="1039828572"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Page Title</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">95</int>
+						<reference key="object" ref="542880119"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Over Everything View</string>
 					</object>
 				</array>
 			</object>

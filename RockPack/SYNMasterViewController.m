@@ -143,13 +143,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.clearTextButton.alpha = 0.0;
     
     self.pageTitleLabel.font = [UIFont rockpackFontOfSize:25];
-    self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0) green:(45.0/255.0) blue:(51.0/255.0) alpha:(1.0)];
-    
+    self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
+                                                    green:(45.0/255.0)
+                                                     blue:(51.0/255.0)
+                                                    alpha:(1.0)];
     
     // == Set up Dots View == //
     
     self.dotsView.backgroundColor = [UIColor clearColor];
-    
     
     
     for(int i = 0; i < 3; i++)
@@ -161,7 +162,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.dotsView addSubview:dotImageView];
         
         UITapGestureRecognizer* tapGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dotTapped:)];
-        [dotImageView addGestureRecognizer:tapGestureRecogniser];
+        [dotImageView addGesturexRecognizer:tapGestureRecogniser];
      }
     
     [self pageChanged:self.containerViewController.page];
