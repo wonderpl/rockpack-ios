@@ -114,8 +114,7 @@
 
 -(UIViewController*)createAndReturnRootViewController
 {
-    SYNContainerViewController* containerViewController = [[SYNContainerViewController alloc] initWithNibName: @"SYNBottomTabViewController"
-                                                                                                       bundle: nil];
+    SYNContainerViewController* containerViewController = [[SYNContainerViewController alloc] init];
     
     
     self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController:containerViewController];

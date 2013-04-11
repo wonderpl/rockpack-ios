@@ -70,15 +70,11 @@
 }
 
 
--(void)makeHighlightedWithImage:(BOOL)withImage
+-(void)makeHighlighted
 {
     
-    if(withImage)
-    {
-        UIImage* pressedImage = [UIImage imageNamed:@"CategoryBarSelected"];
-        self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
-    }
-    
+    UIImage* pressedImage = [UIImage imageNamed:@"CategoryBarSelected"];
+    self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
     
     UIColor *color = [UIColor whiteColor];
     label.textColor = color;
