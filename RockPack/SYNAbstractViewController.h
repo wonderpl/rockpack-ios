@@ -27,6 +27,7 @@
     SYNTabViewController* tabViewController;
     NSString* viewId;
     NSFetchedResultsController* fetchedResultsController;
+    CGFloat startAnimationDelay;
 }
 
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;

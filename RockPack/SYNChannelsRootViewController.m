@@ -80,6 +80,7 @@
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
+    startAnimationDelay = 0.0;
     
     currentCategoryId = @"all";
 }
@@ -227,7 +228,18 @@
     channelThumbnailCell.titleLabel.text = channel.title;
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
+    channelThumbnailCell.alpha = 0.0;
     
+    
+    
+    [UIView animateWithDuration:0.3 delay:(startAnimationDelay + 0.5) options:UIViewAnimationCurveEaseInOut animations:^{
+        channelThumbnailCell.alpha = 1.0;
+    
+    } completion:^(BOOL finished){
+    
+    }];
+    
+    startAnimationDelay += 0.08;
     
     return channelThumbnailCell;
 }

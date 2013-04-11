@@ -89,7 +89,7 @@
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
+    startAnimationDelay = 0.0;
     [self reloadCollectionViews];
 }
 
