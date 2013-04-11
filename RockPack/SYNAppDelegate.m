@@ -114,11 +114,10 @@
 
 -(UIViewController*)createAndReturnRootViewController
 {
-    SYNContainerViewController* bottomTabVC = [[SYNContainerViewController alloc] initWithNibName: @"SYNBottomTabViewController"
-                                                                                           bundle: nil];
+    SYNContainerViewController* containerViewController = [[SYNContainerViewController alloc] init];
     
     
-    self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController:bottomTabVC];
+    self.masterViewController = [[SYNMasterViewController alloc] initWithContainerViewController:containerViewController];
     
     return self.masterViewController;
 }

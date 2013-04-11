@@ -113,36 +113,22 @@
 
 - (void) refreshVideoThumbnails
 {
-    [self startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
-     start: 0
-     size: 0
-     completionHandler: ^(NSDictionary *responseDictionary)
-     {
-         DebugLog(@"Refresh subscription updates successful");
-         [self endRefreshCycle];
-     }
-     errorHandler: ^(NSDictionary* errorDictionary)
-     {
-         DebugLog(@"Refresh subscription updates failed");
-         [self endRefreshCycle];
-     }];
+                                                            start: 0
+                                                             size: 0
+                                                completionHandler: ^(NSDictionary *responseDictionary) {
+                                                    DebugLog(@"Refresh subscription updates successful");
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefresheComplete
+                                                                                                        object:self];
+                                                } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                    DebugLog(@"Refresh subscription updates failed");
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefresheComplete
+                                                                                                        object:self];
+         
+                                                }];
 }
 
-- (void) startRefreshCycle
-{
-    self.refreshing = TRUE;
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
-    [self.refreshControl beginRefreshing];
-}
-
-- (void) endRefreshCycle
-{
-    self.refreshing = FALSE;
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: FALSE];
-    [self.refreshControl endRefreshing];
-}
 
 #pragma mark - Fetched results
 
@@ -276,7 +262,6 @@
                                                                                                       forIndexPath: indexPath];
         NSString *sectionText;
         BOOL focus = FALSE;
-        BOOL refreshButtonHidden = TRUE;
         
         if (indexPath.section == 0)
         {
@@ -286,12 +271,8 @@
             // We need to store this away, so can control animations (but must nil when goes out of scope)
             self.supplementaryViewWithRefreshButton = headerSupplementaryView;
             
-            refreshButtonHidden = FALSE;
             
-            if (self.refreshing == TRUE)
-            {
-                [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
-            }
+            
         }
         
         // Unavoidably long if-then-else
@@ -319,7 +300,6 @@
         // Special case, remember the first section view
         headerSupplementaryView.viewControllerDelegate = self;
         headerSupplementaryView.focus = focus;
-        headerSupplementaryView.refreshView.hidden = refreshButtonHidden;
         headerSupplementaryView.sectionTitleLabel.text = sectionText;
         
         sectionSupplementaryView = headerSupplementaryView;
@@ -352,44 +332,13 @@
 
 #pragma mark - UI Actions
 
-- (IBAction) userTouchedRefreshButton: (id) sender
+
+
+
+-(void)refresh
 {
-    if (self.refreshing == FALSE)
-    {
-        self.refreshing = TRUE;
-        [self refreshVideoThumbnails];
-    }
+    [self refreshVideoThumbnails];
 }
-
-
-
-- (IBAction) toggleVideoStarButton: (UIButton *) starButton
-{
-    starButton.selected = !starButton.selected;
-    
-    // Get to cell it self (from button subview)
-    UIView *v = starButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleVideoStarAtIndex: indexPath];
-    
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-    cell.starButton.selected = videoInstance.video.starredByUserValue;
-    cell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-}
-
-- (IBAction) toggleVideoShareItButton: (UIButton *) shareButton
-{
-}
-
 
 - (IBAction) touchVideoAddItButton: (UIButton *) addItButton
 {

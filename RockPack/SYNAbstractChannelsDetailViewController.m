@@ -173,7 +173,7 @@
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = self.channel.title;
     
-    self.displayNameLabel.text = [NSString stringWithFormat:@"BY %@", self.channel.channelOwner.displayName];
+    self.displayNameLabel.text = [NSString stringWithFormat:@"%@", self.channel.channelOwner.displayName];
     
     // set User's avatar picture
     [self.userAvatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]

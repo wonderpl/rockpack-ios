@@ -92,6 +92,8 @@
 #define kAccountSettingsLogout     @"kAccountSettingsLogout"
 #define kUserDataChanged     @"kUserDataChanged"
 
+#define kRefresheComplete     @"kRefresheComplete"
+
 
 
 #define kShowUserChannels             @"kShowUserChannels"

@@ -27,6 +27,7 @@
     SYNTabViewController* tabViewController;
     NSString* viewId;
     NSFetchedResultsController* fetchedResultsController;
+    CGFloat startAnimationDelay;
 }
 
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
@@ -85,6 +86,8 @@
 
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
+
+- (void) refresh;
 
 
 -(id)initWithViewId:(NSString*)vid;

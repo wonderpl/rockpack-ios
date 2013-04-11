@@ -87,6 +87,19 @@
 
 -(void)handleMainTap:(UITapGestureRecognizer *)recogniser
 {
+    if(recogniser == nil) {
+        // home button pressed
+        
+        
+        [self.delegate handleMainTap:recogniser];
+        
+        [self.delegate handleNewTabSelectionWithId:@"all"];
+        
+        return;
+        
+        
+    }
+    
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;

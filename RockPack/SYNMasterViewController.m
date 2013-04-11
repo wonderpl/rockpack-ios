@@ -20,6 +20,7 @@
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNCategoryChooserViewController.h"
+#import "SYNRefreshButton.h"
 
 
 #import <QuartzCore/QuartzCore.h>
@@ -32,7 +33,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
 @property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
-@property (nonatomic, strong) IBOutlet UIImageView* glowTextImageView;
+@property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
@@ -40,7 +41,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
+
+@property (nonatomic, strong) SYNRefreshButton* refreshButton;
+
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
+
+@property (nonatomic) CGRect addToChannelFrame;
 
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 
@@ -60,6 +66,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize containerViewController;
 @synthesize autocompleteTimer;
 @synthesize pageTitleLabel;
+@synthesize addToChannelFrame;
 @synthesize sideNavigationOn;
 
 #pragma mark - Initialise
@@ -97,6 +104,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.overEverythingView.userInteractionEnabled = NO;
         
+        
+        
     }
     return self;
 }
@@ -113,6 +122,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // == Refresh button == //
+    
+    self.refreshButton = [SYNRefreshButton refreshButton];
+    [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    CGRect refreshButtonFrame = self.refreshButton.frame;
+    refreshButtonFrame.origin.y = 10.0;
+    refreshButtonFrame.origin.x = 10.0;
+    self.refreshButton.frame = refreshButtonFrame;
+    [self.view addSubview:self.refreshButton];
+    
+    self.clearTextButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -134,6 +155,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
+    
+    CGRect containerViewFrame = self.containerViewController.view.frame;
+    containerViewFrame.origin.y = 32.0;
+    self.containerViewController.view.frame = containerViewFrame;
     [self.containerView addSubview:containerViewController.view];
     
     self.backButton.alpha = 0.0;
@@ -141,28 +166,41 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.topButtonsContainer.userInteractionEnabled = YES;
     
     
-    self.clearTextButton.alpha = 0.0;
-    self.glowTextImageView.alpha = 0.0;
-    self.glowTextImageView.userInteractionEnabled = NO;
+    
+    self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:30];
+    self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
+                                                    green:(45.0/255.0)
+                                                     blue:(51.0/255.0)
+                                                    alpha:(1.0)];
+    
+    
+    addToChannelFrame = self.addToChannelButton.frame;
+    
     
     // == Set up Dots View == //
     
-    CGFloat currentDotOffset = 0.0;
+    self.dotsView.backgroundColor = [UIColor clearColor];
+    
+    
     for(int i = 0; i < 3; i++)
     {
-        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavigationDot"]];
         CGRect dotImageViewFrame = dotImageView.frame;
-        dotImageViewFrame.origin.x = currentDotOffset;
-        
+        dotImageViewFrame.origin.x = i * 30.0;
+        dotImageView.frame = dotImageViewFrame;
         [self.dotsView addSubview:dotImageView];
         
-        currentDotOffset += 50.0;
-        
+        UITapGestureRecognizer* tapGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dotTapped:)];
+        [dotImageView addGestureRecognizer:tapGestureRecogniser];
      }
+    
+    [self pageChanged:self.containerViewController.page];
+    
     
     // == Set Up Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tabPressed:) name:kNoteTabPressed object:nil];
@@ -178,9 +216,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                                                                 action: @selector(panelSwipedAway)];
     inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.navigatioContainerView addGestureRecognizer: inboxLeftSwipeGesture];
+    
+    
 }
 
-
+-(void)refreshButtonPressed
+{
+    
+    [self.refreshButton startRefreshCycle];
+    
+    [self.containerViewController.showingViewController refresh];
+}
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
@@ -188,24 +234,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageNumber)
         return;
     
-    int page = [pageNumber intValue];
+    [self pageChanged:[pageNumber integerValue]];
+    
+    
+}
+
+-(void)pageChanged:(NSInteger)pageNumber
+{
     int totalDots = self.dotsView.subviews.count;
+    UIImageView* dotImageView;
     for (int i = 0; i < totalDots; i++)
     {
-        UIImageView* dotImageView = (UIImageView*)self.dotsView.subviews[i];
-        if (i == page) {
-            dotImageView.image = [UIImage imageNamed:@""];
+        dotImageView = (UIImageView*)self.dotsView.subviews[i];
+        if (i == pageNumber) {
+            dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
             continue;
         }
         
-        dotImageView.image = [UIImage imageNamed:@""];
+        dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
         
     }
     
-    self.pageTitleLabel.text = self.containerViewController.showingViewController.title;
-    
-    
-    // TODO: Implemente change
+    self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
 }
 
 
@@ -215,6 +265,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self hideSideNavigation];
 }
 
+-(IBAction)addToChannelPressed:(id)sender
+{
+    
+    
+    
+}
 
 
 #pragma mark - Navigation Panel Methods
@@ -416,9 +472,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     self.searchTextField.text = @"";
     
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 0.0;
-    }];
+    
     
     self.clearTextButton.alpha = 0.0;
     
@@ -530,9 +584,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [textField resignFirstResponder];
     
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 0.0;
-    }];
+    
     
     if(self.autocompletePopoverController) {
         [self.autocompletePopoverController dismissPopoverAnimated:NO];
@@ -545,19 +597,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField {
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 1.0;
-    }];
+    
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
-    [UIView animateWithDuration:0.1 animations:^{
-        self.glowTextImageView.alpha = 0.0;
-    }];
+    
 }
 
 
 #pragma mark - Notification Handlers
+
+-(void)dotTapped:(UIGestureRecognizer*)recogniser
+{
+    
+}
 
 -(void)backButtonRequested:(NSNotification*)notification
 {
@@ -674,6 +727,51 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     
+}
+
+#pragma mark - Helper Methods
+
+-(void)showAddButton
+{
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseOut
+                     animations:^{
+                         
+                         self.addToChannelButton.frame = self.addToChannelFrame;
+        
+                   } completion:^(BOOL finished) {
+                       
+                       
+                
+                   }];
+    
+}
+
+-(void)hideAddButton
+{
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseOut
+                     animations:^{
+                         
+                         self.addToChannelButton.alpha = 0.0;
+                         
+                     } completion:^(BOOL finished) {
+                         
+                         [self moveAddButtonOutOfWay];
+                         
+                     }];
+    
+}
+
+-(void)moveAddButtonOutOfWay
+{
+    
+    self.addToChannelButton.frame = CGRectMake(self.view.frame.size.width + 2.0,
+                                               addToChannelFrame.origin.y,
+                                               addToChannelFrame.size.width,
+                                               addToChannelFrame.size.height);
 }
 
 @end

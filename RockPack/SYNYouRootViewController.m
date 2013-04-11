@@ -197,9 +197,7 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
-    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"BY %@", channel.channelOwner.displayName];
-    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
-    channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
+    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
     return channelThumbnailCell;
@@ -265,30 +263,6 @@
 }
 
 
-
-
-
-// Buttons activated from scrolling list of thumbnails
-- (IBAction) toggleChannelSubscribeButton: (UIButton *) subscribeButton
-{
-    // Get to cell it self (from button subview)
-    UIView *v = subscribeButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleChannelSubscribeAtIndex: indexPath];
-    
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-    cell.subscribeButton.selected = channel.subscribedByUserValue;
-    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
-}
 
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender

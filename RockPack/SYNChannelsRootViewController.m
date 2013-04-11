@@ -63,12 +63,12 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(1024.0, 64.0);
-    flowLayout.itemSize = CGSizeMake(251.0, 302.0);
+    flowLayout.itemSize = CGSizeMake(251.0, 212.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
-    flowLayout.minimumLineSpacing = 3.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(0.0, 86.0, 1024.0, 600.0);
+    CGRect collectionViewFrame = CGRectMake(4.0, 86.0, 1016.0, 600.0);
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -80,6 +80,7 @@
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
+    startAnimationDelay = 0.0;
     
     currentCategoryId = @"all";
 }
@@ -225,11 +226,20 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
-    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"BY %@", channel.channelOwner.displayName];
-    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
-    channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
+    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
+    channelThumbnailCell.alpha = 0.0;
     
+    
+    
+    [UIView animateWithDuration:0.3 delay:(startAnimationDelay + 0.5) options:UIViewAnimationCurveEaseInOut animations:^{
+        channelThumbnailCell.alpha = 1.0;
+    
+    } completion:^(BOOL finished){
+    
+    }];
+    
+    startAnimationDelay += 0.08;
     
     return channelThumbnailCell;
 }
@@ -365,32 +375,6 @@
 }
 
 
-// Buttons activated from scrolling list of thumbnails
-- (IBAction) toggleChannelSubscribeButton: (UIButton *) subscribeButton
-{
-    // Get to cell it self (from button subview)
-    UIView *v = subscribeButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    // Prevent any changes refreshing the whole collection
-    self.ignoreRefresh = TRUE;
-
-    [self toggleChannelSubscribeAtIndex: indexPath];
-    
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-    cell.subscribeButton.selected = channel.subscribedByUserValue;
-    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
-}
-
-
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
 {
@@ -472,6 +456,23 @@
 {
     [super handleMainTap:recogniser];
     
+    if(!recogniser) {
+        // then home button was pressed
+        
+        if(tabExpanded) {
+            [UIView animateWithDuration:0.4 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+                CGPoint currentCenter = self.channelThumbnailCollectionView.center;
+                [self.channelThumbnailCollectionView setCenter:CGPointMake(currentCenter.x, currentCenter.y - kCategorySecondRowHeight)];
+            }  completion:^(BOOL result) {
+                tabExpanded = NO;
+            }];
+        }
+        
+        
+        return;
+        
+    }
+    
     if(tabExpanded)
         return;
     
@@ -484,6 +485,7 @@
         tabExpanded = YES;
     }];
 }
+
 
 -(void)handleNewTabSelectionWithId:(NSString *)selectionId
 {

@@ -16,11 +16,11 @@
 
 @interface SYNVideoThumbnailWideCell ()
 
-@property (nonatomic, strong) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
-@property (nonatomic, strong) IBOutlet UIView *longPressView;
 @property (nonatomic, strong) IBOutlet UIButton *channelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileButton;
+@property (nonatomic, strong) IBOutlet UILabel* byLabel;
+@property (nonatomic, strong) IBOutlet UILabel* fromLabel;
 
 @end
 
@@ -28,15 +28,21 @@
 
 @synthesize viewControllerDelegate = _viewControllerDelegate;
 @synthesize displayMode = _displayMode;
+@synthesize usernameText;
 
 - (void) awakeFromNib
 {
     [super awakeFromNib];
     
-    self.videoTitle.font = [UIFont boldRockpackFontOfSize: 14.0f];
-    self.channelName.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.displayName.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.starNumber.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    self.videoTitle.font = [UIFont boldRockpackFontOfSize: 15.0f];
+    
+    self.fromLabel.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.channelName.font = [UIFont rockpackFontOfSize: 13.0f];
+    
+    self.usernameLabel.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.byLabel.font = [UIFont rockpackFontOfSize: 13.0f];
+    
+    
     self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.dateAddedLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.durationLabel.font = [UIFont rockpackFontOfSize: 12.0f];
@@ -95,21 +101,10 @@
     _viewControllerDelegate = viewControllerDelegate;
     
     
-    // Allow tapping to show video player
-    UITapGestureRecognizer *tapOnThumbnailGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self.viewControllerDelegate
-                                                                                                      action: @selector(displayVideoViewerFromView:)];
-    
-    
-    [self.longPressView addGestureRecognizer: tapOnThumbnailGestureRecognizer];
+
 
     // Add button targets
-    [self.starButton addTarget: self.viewControllerDelegate
-                          action: @selector(userTouchedVideoStarButton:)
-                forControlEvents: UIControlEventTouchUpInside];
     
-    [self.shareItButton addTarget: self.viewControllerDelegate
-                         action: @selector(userTouchedVideoShareItButton:)
-               forControlEvents: UIControlEventTouchUpInside];
     
     [self.addItButton addTarget: self.viewControllerDelegate
                          action: @selector(userTouchedVideoAddItButton:)
@@ -126,7 +121,28 @@
                  forControlEvents: UIControlEventTouchUpInside];
 }
 
+-(void)setUsernameText:(NSString *)value
+{
+    
+    CGSize stringSize = [value sizeWithFont:self.usernameLabel.font];
+    CGRect currentFrame = self.usernameLabel.frame;
+    currentFrame.size = stringSize;
+    currentFrame.origin.x = self.channelInfoView.frame.size.width - 30.0 - currentFrame.size.width;
+    self.usernameLabel.frame = currentFrame;
+    self.usernameLabel.text = value;
+    
+    CGSize bySize = [self.byLabel.text sizeWithFont:self.byLabel.font];
+    CGRect byFrame = self.byLabel.frame;
+    byFrame.size = bySize;
+    byFrame.origin.x = currentFrame.origin.x - byFrame.size.width - 4.0;
+    self.byLabel.frame = byFrame;
+    
+}
 
+-(NSString*)usernameText
+{
+    return self.usernameLabel.text;
+}
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
 - (void) prepareForReuse

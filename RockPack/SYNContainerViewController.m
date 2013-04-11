@@ -146,7 +146,9 @@
     // == Populate Scroller == //
     
     NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
-    [allControllers addObject:[self wrapInNavigationController:feedRootViewController]];
+    UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
+    feedNavController.view.frame = CGRectMake (0.0, 60.0, 1024, 686);
+    [allControllers addObject:feedNavController];
     [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
     [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
     
@@ -421,7 +423,7 @@
     navigationController.title = abstractViewController.title;
     navigationController.navigationBarHidden = YES;
     navigationController.view.autoresizesSubviews = YES;
-    navigationController.view.frame = CGRectMake (0, 0, 1024, 686);
+    navigationController.view.frame = CGRectMake (0.0, 0.0, 1024, 686);
     return navigationController;
 }
 

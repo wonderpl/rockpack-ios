@@ -71,14 +71,14 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstances" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractCommon" positionX="-486" positionY="-459" width="128" height="75"/>
-        <element name="Category" positionX="81" positionY="-225" width="128" height="60"/>
-        <element name="Channel" positionX="-567" positionY="-141" width="128" height="270"/>
-        <element name="ChannelOwner" positionX="-747" positionY="-144" width="128" height="90"/>
-        <element name="Subcategory" positionX="-83" positionY="-225" width="128" height="60"/>
-        <element name="TabItem" positionX="-11" positionY="-378" width="128" height="75"/>
-        <element name="User" positionX="-747" positionY="93" width="128" height="210"/>
-        <element name="Video" positionX="-396" positionY="-144" width="128" height="208"/>
-        <element name="VideoInstance" positionX="-209" positionY="-144" width="128" height="135"/>
+        <element name="AbstractCommon" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Channel" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ChannelOwner" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Subcategory" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TabItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Video" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="VideoInstance" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

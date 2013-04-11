@@ -18,6 +18,5 @@
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 - (void) setFocus: (BOOL) focus;
-- (void) spinRefreshButton: (BOOL) spin;
 
 @end

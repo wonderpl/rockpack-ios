@@ -167,9 +167,8 @@
         
         NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
         NSUInteger seconds = [video.duration integerValue] % 60;
-        videoThumbnailCell.durationLabel.text = [NSString stringWithFormat:@"%i:%i", minutes, seconds];
+        videoThumbnailCell.usernameText = [NSString stringWithFormat:@"%i:%i", minutes, seconds];
         
-        videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
 
         videoThumbnailCell.viewControllerDelegate = self;
         

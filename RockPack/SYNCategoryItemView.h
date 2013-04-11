@@ -23,8 +23,8 @@ typedef enum {
 
 @property (nonatomic, strong) UILabel* label;
 
-- (id)initWithTabItemModel:(TabItem*)tabItemModel andFrame:(CGRect)frame;
--(void)makeHighlightedWithImage:(BOOL)withImage;
+- (id)initWithTabItemModel:(TabItem*)tabItemModel;
+-(void)makeHighlighted;
 
 -(void)makeFaded;
 
