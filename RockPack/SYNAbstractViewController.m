@@ -274,31 +274,7 @@
 }
 
 
-- (IBAction) userTouchedVideoStarButton: (UIButton *) starButton
-{
-    // Get to cell it self (from button subview)
-    UIView *v = starButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (indexPath)
-    {
-        // Need to do this first as this changes the actual video object
-        [self toggleVideoStarAtIndex: indexPath];
-        [self updateOtherOnscreenVideoAssetsForIndexPath: indexPath];
-        
-        if (self.shouldUpdateStarStatus == TRUE)
-        {
-            VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-            SYNVideoThumbnailWideCell *videoThumbnailCell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-            
-            [self updateVideoCellStarButtonAndCount: videoThumbnailCell
-                                             selected: videoInstance.video.starredByUserValue];
 
-            videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-        }
-    }
-}
 
 
 // This can be overridden if updating star may cause the videoFetchedResults
@@ -371,20 +347,7 @@
 }
 
 
-- (void) updateVideoCellStarButtonAndCount: (SYNVideoThumbnailWideCell *) videoThumbnailCell
-                                    selected: (BOOL) selected
-{
-    videoThumbnailCell.starButton.selected = selected;
-    
-    if (selected)
-    {
-        videoThumbnailCell.starNumber.textColor = [UIColor colorWithRed: 0.894f green: 0.945f blue: 0.965f alpha: 1.0f];
-    }
-    else
-    {
-        videoThumbnailCell.starNumber.textColor = [UIColor colorWithRed: 0.510f green: 0.553f blue: 0.569f alpha: 1.0f];
-    }
-}
+
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
@@ -404,12 +367,8 @@
         videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
-        videoThumbnailCell.displayName.text = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
-
-        videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
+        videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
         
-        [self updateVideoCellStarButtonAndCount: videoThumbnailCell
-                                       selected: videoInstance.video.starredByUserValue];
         
         videoThumbnailCell.viewControllerDelegate = self;
         

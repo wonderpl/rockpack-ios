@@ -363,33 +363,6 @@
 
 
 
-- (IBAction) toggleVideoStarButton: (UIButton *) starButton
-{
-    starButton.selected = !starButton.selected;
-    
-    // Get to cell it self (from button subview)
-    UIView *v = starButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    [self toggleVideoStarAtIndex: indexPath];
-    
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    SYNVideoThumbnailWideCell *cell = (SYNVideoThumbnailWideCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-    cell.starButton.selected = videoInstance.video.starredByUserValue;
-    cell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
-}
-
-- (IBAction) toggleVideoShareItButton: (UIButton *) shareButton
-{
-}
-
 
 - (IBAction) touchVideoAddItButton: (UIButton *) addItButton
 {

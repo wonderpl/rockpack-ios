@@ -19,11 +19,8 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitle;
 @property (nonatomic, strong) IBOutlet UILabel *channelName;
-@property (nonatomic, strong) IBOutlet UILabel *displayName;
-@property (nonatomic, strong) IBOutlet UIButton *starButton;
+@property (nonatomic, strong) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, strong) IBOutlet UIButton *addItButton;
-@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
-@property (nonatomic, strong) IBOutlet UILabel *starNumber;
 @property (nonatomic, strong) IBOutlet UIView* channelInfoView;
 @property (nonatomic, strong) IBOutlet UIView* videoInfoView;
 
@@ -31,6 +28,8 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UILabel *numberOfViewLabel;
 @property (nonatomic, strong) IBOutlet UILabel *dateAddedLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
+
+@property (nonatomic, weak) NSString* usernameText;
 
 @property (nonatomic) kDisplayMode displayMode;
 
