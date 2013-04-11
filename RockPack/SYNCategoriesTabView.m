@@ -33,21 +33,22 @@
 {
     
     
-    
     if (self = [super init]) {
         
         
+        // == Tob Bar == //
         
-        // Tob Bar //
-        UIImage* mainTabsBGImage = [UIImage imageNamed:@"TabTop.png"];
+        UIImage* mainTabsBGImage = [UIImage imageNamed:@"CategoryBar"];
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
+        
+        self.mainTabsView.backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
-        self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
         
         
         
-        // Bottom Bar //
-        UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"TabTopSub.png"];
+        // == Bottom Bar == //
+        
+        UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"SubCategoryBar"];
         CGRect secondaryFrame = CGRectMake(0.0, mainFrame.size.height - 6.0, totalWidth, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
         
@@ -63,7 +64,6 @@
         CGRect masterFrame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height + secondaryFrame.size.height);
         self.frame = masterFrame;
         
-        // Add in correct order so that main is above secondary.
         
         [self addSubview:self.secondaryTabsBGView];
         [self addSubview:self.secondaryTabsView];
@@ -81,31 +81,34 @@
 -(void)createCategoriesTab:(NSArray*)categories
 {
     SYNCategoryItemView* tab = nil;
-    CGFloat nextOrigin = 0.0;
+    
     
     UIView* dividerOverlayView = [[UIView alloc] initWithFrame:self.mainTabsView.frame];
     dividerOverlayView.userInteractionEnabled = NO;
     
     
-    CGFloat itemWidth = self.frame.size.width / categories.count;
-    
-    CGRect itemFrame;
-    
     CGFloat midMainFrame = self.mainTabsView.frame.size.height * 0.5;
+    
+    
+    
+    CGFloat nextOrigin = 0.0;
     
     for (Category* category in categories)
     {
-        itemFrame = CGRectMake(nextOrigin + 2.0, 0.0, itemWidth - 2.0, self.mainTabsView.frame.size.height);
-        itemFrame = CGRectIntegral(itemFrame);
         
-        tab = [[SYNCategoryItemView alloc] initWithTabItemModel:category andFrame:itemFrame];
+        
+        tab = [[SYNCategoryItemView alloc] initWithTabItemModel:category];
+        CGRect tabFrame = tab.frame;
+        tabFrame.origin.x = nextOrigin + 2.0;
+        tabFrame.size.height = self.mainTabsView.frame.size.height;
+        tab.frame = tabFrame;
         [self.mainTabsView addSubview:tab];
         
         [tab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
         
-        nextOrigin += itemWidth;
+        nextOrigin += tabFrame.size.width;
         
-        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopDivider.png"]];
+        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CategoryBarDivider"]];
         dividerImageView.center = CGPointMake(nextOrigin, midMainFrame - 4.0);
         dividerImageView.frame = CGRectIntegral(dividerImageView.frame);
         [dividerOverlayView addSubview:dividerImageView];
@@ -129,13 +132,11 @@
         [divider removeFromSuperview];
  
     
-    CGFloat itemHeight = self.secondaryTabsView.frame.size.height;
     
     SYNCategoryItemView* tab = nil;
     CGFloat nextOrigin = 0.0;
         
     
-    CGRect itemFrame;
     
     CGFloat midSecondaryFrame = self.secondaryTabsView.frame.size.height * 0.5;
     
@@ -147,23 +148,20 @@
     {
         
         
-        // Change the font for the subcategory tab
-        UIFont *fontToUse = [UIFont rockpackFontOfSize: 13.0f];
-        CGSize tabMinSize = [subcategory.name sizeWithFont:fontToUse];
-        tabMinSize.width += 36.0;
         
-        itemFrame = CGRectMake(nextOrigin, 0.0, tabMinSize.width, itemHeight);
-        
-        tab = [[SYNCategoryItemView alloc] initWithTabItemModel:subcategory andFrame:itemFrame];
+        tab = [[SYNCategoryItemView alloc] initWithTabItemModel:subcategory];
+        CGRect tabFrame = tab.frame;
+        tabFrame.origin.x = nextOrigin + 2.0;
+        tabFrame.size.height = self.mainTabsView.frame.size.height;
+        tab.frame = tabFrame;
         [self.secondaryTabsView addSubview:tab];
         
-        tab.label.font = fontToUse;
         
         [tab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSecondaryTap:)]];
             
-        nextOrigin += tab.frame.size.width;
+        nextOrigin += tabFrame.size.width;
         
-        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSubDivider.png"]];
+        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SubCategoryBarDivider"]];
         dividerImageView.center = CGPointMake(nextOrigin, midSecondaryFrame);
         [self.secondaryDividerOverlay addSubview:dividerImageView];
         

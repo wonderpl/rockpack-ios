@@ -197,7 +197,7 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
-    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"BY %@", channel.channelOwner.displayName];
+    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
     return channelThumbnailCell;

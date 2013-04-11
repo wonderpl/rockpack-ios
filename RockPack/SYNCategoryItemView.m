@@ -13,17 +13,19 @@
 #import "Category.h"
 #import "Subcategory.h"
 
+#define kCategoriesTabOffsetX 32.0
+#define kCategoriesTabOffsetY 28.0
+
 @implementation SYNCategoryItemView
 
-@synthesize glowImageView;
 
 @synthesize label;
 
-- (id)initWithTabItemModel:(TabItem*)tabItemModel andFrame:(CGRect)frame
+- (id)initWithTabItemModel:(TabItem*)tabItemModel
 {
-    self = [super initWithFrame:frame];
     
-    if (self) {
+    
+    if (self = [super init]) {
         
         // Identify what type it is (could have passed is as argument)
         if ([tabItemModel isKindOfClass:[Subcategory class]]) 
@@ -31,48 +33,37 @@
         else
             type = TabItemTypeMain;
         
+        self.backgroundColor = [UIColor clearColor];
+        
         
         self.tag = [tabItemModel.uniqueId integerValue];
         
         NSString* itemName = tabItemModel.name;
         
-        UIFont* fontToUse = [UIFont rockpackFontOfSize: 14.0f];
+        UIFont* fontToUse;
+        if (type == TabItemTypeMain)
+            fontToUse = [UIFont rockpackFontOfSize: 15.0f];
+        else
+            fontToUse = [UIFont rockpackFontOfSize: 13.0f];
         
-        self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width, frame.size.height)];
+        
+        CGSize sizeToUse = [itemName sizeWithFont:fontToUse];
+        
+        self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, sizeToUse.width + kCategoriesTabOffsetX, sizeToUse.height + kCategoriesTabOffsetY)];
         label.font = fontToUse;
         label.text = itemName;
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         label.userInteractionEnabled = NO;
         label.backgroundColor = [UIColor clearColor];
-        CGFloat correctY;
-        if(type == TabItemTypeMain)
-            correctY = self.frame.size.height*0.5 + 3.0;
-        else
-            correctY = self.frame.size.height*0.5 + 4.0;
         
-        label.center = CGPointMake(self.frame.size.width*0.5, correctY - 4.0);
         [self addSubview:label];
         
-        if(type == TabItemTypeMain)
-        {
-            self.glowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSelectedGlow.png"]];
-            glowImageView.center = CGPointMake(self.frame.size.width*0.5, glowImageView.center.y);
-            glowImageView.hidden = YES;
-            glowImageView.userInteractionEnabled = NO;
-            
-        }
-        else
-        {
-            self.glowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TabTopSubSelectedGlow.png"]];
-            CGFloat offset = (self.frame.size.height - self.glowImageView.frame.size.height * 0.5) + 1;
-            glowImageView.center = CGPointMake(self.frame.size.width*0.5, offset);
-            glowImageView.hidden = YES;
-            glowImageView.userInteractionEnabled = NO;
-            
-        }
+        CGRect finalFrame = self.label.frame;
+        finalFrame.size.width += 2.0;
+        self.frame = finalFrame;
         
-        [self addSubview:glowImageView];
+        
         
     }
     return self;
@@ -84,22 +75,14 @@
     
     if(withImage)
     {
-        UIImage* pressedImage = [UIImage imageNamed:@"TabTopSelected.png"];
+        UIImage* pressedImage = [UIImage imageNamed:@"CategoryBarSelected"];
         self.backgroundColor = [UIColor colorWithPatternImage:pressedImage];
     }
     
     
-    UIColor *color = [UIColor rockpackBlueColor];
+    UIColor *color = [UIColor whiteColor];
     label.textColor = color;
 
-    
-    glowImageView.alpha = 0.0;
-    glowImageView.hidden = NO;
-    
-    
-    [UIView animateWithDuration:0.1 animations:^{
-        glowImageView.alpha = 1.0;
-    }];
     
     
     
@@ -109,15 +92,13 @@
 {
     self.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor lightGrayColor];
-    label.layer.shadowColor = [[UIColor clearColor] CGColor];
-    glowImageView.hidden = YES;
+    
 }
 -(void)makeStandard
 {
     self.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
-    label.layer.shadowColor = [[UIColor clearColor] CGColor];
-    glowImageView.hidden = YES;
+    
 }
 
 @end

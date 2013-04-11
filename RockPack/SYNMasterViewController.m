@@ -142,7 +142,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.clearTextButton.alpha = 0.0;
     
-    self.pageTitleLabel.font = [UIFont rockpackFontOfSize:25];
+    self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:30];
     self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
                                                     green:(45.0/255.0)
                                                      blue:(51.0/255.0)
@@ -220,7 +220,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
     }
     
-    self.pageTitleLabel.text = self.containerViewController.showingViewController.title;
+    self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
 }
 
 

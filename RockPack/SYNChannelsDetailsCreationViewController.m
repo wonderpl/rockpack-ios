@@ -40,7 +40,7 @@
 
     // Set all labels and images to correspond to the selected channel
     self.channelTitleTextField.text = @"NAME YOUR CHANNEL...";
-    self.displayNameLabel.text = @"BY YOU";
+    self.displayNameLabel.text = @"YOU";
     self.changeCoverLabel.text = @"ADD A COVER";
     
     // set User's avatar picture

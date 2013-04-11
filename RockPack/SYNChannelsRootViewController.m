@@ -65,10 +65,10 @@
     flowLayout.footerReferenceSize = CGSizeMake(1024.0, 64.0);
     flowLayout.itemSize = CGSizeMake(251.0, 212.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
-    flowLayout.minimumLineSpacing = 3.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(0.0, 86.0, 1024.0, 600.0);
+    CGRect collectionViewFrame = CGRectMake(4.0, 86.0, 1016.0, 600.0);
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -225,7 +225,7 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
-    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"BY %@", channel.channelOwner.displayName];
+    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
     

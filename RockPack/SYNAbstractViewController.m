@@ -404,7 +404,7 @@
         videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.channelName.text = videoInstance.channel.title;
-        videoThumbnailCell.displayName.text = [NSString stringWithFormat: @"BY %@", videoInstance.channel.channelOwner.displayName];
+        videoThumbnailCell.displayName.text = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
 
         videoThumbnailCell.starNumber.text = [NSString stringWithFormat: @"%@", videoInstance.video.starCount];
         
