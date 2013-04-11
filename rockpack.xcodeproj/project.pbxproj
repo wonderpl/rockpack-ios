@@ -668,6 +668,7 @@
 		BE7D3535171700010085AB81 /* ButtonAddToChannelInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352D171700010085AB81 /* ButtonAddToChannelInactive@2x.png */; };
 		BE7D3536171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352E171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png */; };
 		BE7D3537171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */; };
+		BE7D353B171708F60085AB81 /* SYNRefreshButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D353A171708F60085AB81 /* SYNRefreshButton.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1500,6 +1501,8 @@
 		BE7D352D171700010085AB81 /* ButtonAddToChannelInactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddToChannelInactive@2x.png"; path = "Assets/Images/ButtonAddToChannelInactive@2x.png"; sourceTree = "<group>"; };
 		BE7D352E171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAddToChannelInactiveHighlighted.png; path = Assets/Images/ButtonAddToChannelInactiveHighlighted.png; sourceTree = "<group>"; };
 		BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddToChannelInactiveHighlighted@2x.png"; path = "Assets/Images/ButtonAddToChannelInactiveHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE7D3539171708F60085AB81 /* SYNRefreshButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNRefreshButton.h; sourceTree = "<group>"; };
+		BE7D353A171708F60085AB81 /* SYNRefreshButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRefreshButton.m; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -3280,6 +3283,15 @@
 			name = "Master Panel";
 			sourceTree = "<group>";
 		};
+		BE7D3538171708E20085AB81 /* Refresh Button */ = {
+			isa = PBXGroup;
+			children = (
+				BE7D3539171708F60085AB81 /* SYNRefreshButton.h */,
+				BE7D353A171708F60085AB81 /* SYNRefreshButton.m */,
+			);
+			name = "Refresh Button";
+			sourceTree = "<group>";
+		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -3325,6 +3337,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D3538171708E20085AB81 /* Refresh Button */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				BE7C12A116EA68DE0015789B /* Large Video Player */,
 				BE0AAD2616E6521300DA958E /* Autocomplete Panel */,
@@ -4136,6 +4149,7 @@
 				BE7D34D317159E2C0085AB81 /* SYNNotificationsTableViewCell.m in Sources */,
 				BE7D34D617159F3C0085AB81 /* SYNNotificationsViewController.m in Sources */,
 				BE7D35051715CE450085AB81 /* SYNRockpackNotification.m in Sources */,
+				BE7D353B171708F60085AB81 /* SYNRefreshButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

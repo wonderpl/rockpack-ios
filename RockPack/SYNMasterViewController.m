@@ -32,6 +32,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) IBOutlet UIButton* backButton;
 @property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
+@property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
@@ -40,6 +41,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
+
+@property (nonatomic) CGRect addToChannelFrame;
 
 @property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
 
@@ -59,6 +62,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize containerViewController;
 @synthesize autocompleteTimer;
 @synthesize pageTitleLabel;
+@synthesize addToChannelFrame;
 @synthesize sideNavigationOn;
 
 #pragma mark - Initialise
@@ -152,6 +156,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                      blue:(51.0/255.0)
                                                     alpha:(1.0)];
     
+    // store frame and hide button
+    addToChannelFrame = self.addToChannelButton.frame;
+    
+    
     // == Set up Dots View == //
     
     self.dotsView.backgroundColor = [UIColor clearColor];
@@ -234,6 +242,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self hideSideNavigation];
 }
 
+-(IBAction)addToChannelPressed:(id)sender
+{
+    
+    
+    
+}
 
 
 #pragma mark - Navigation Panel Methods
@@ -690,6 +704,51 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     
+}
+
+#pragma mark - Helper Methods
+
+-(void)showAddButton
+{
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseOut
+                     animations:^{
+                         
+                         self.addToChannelButton.frame = self.addToChannelFrame;
+        
+                   } completion:^(BOOL finished) {
+                       
+                       
+                
+                   }];
+    
+}
+
+-(void)hideAddButton
+{
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseOut
+                     animations:^{
+                         
+                         self.addToChannelButton.alpha = 0.0;
+                         
+                     } completion:^(BOOL finished) {
+                         
+                         [self moveAddButtonOutOfWay];
+                         
+                     }];
+    
+}
+
+-(void)moveAddButtonOutOfWay
+{
+    
+    self.addToChannelButton.frame = CGRectMake(self.view.frame.size.width + 2.0,
+                                               addToChannelFrame.origin.y,
+                                               addToChannelFrame.size.width,
+                                               addToChannelFrame.size.height);
 }
 
 @end

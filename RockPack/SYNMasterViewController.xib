@@ -265,6 +265,7 @@
 						<string key="NSFrame">{{959, 4}, {60, 61}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="456695495"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -305,13 +306,38 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="960150261"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="680911851">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonSearchHighlighted.png</string>
 						</object>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonSearch.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="1042214128"/>
+						<reference key="IBUIFont" ref="1071906284"/>
+					</object>
+					<object class="IBUIButton" id="456695495">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{891, 73}, {130, 45}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="4391538"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="960150261"/>
+						<reference key="IBUIHighlightedImage" ref="680911851"/>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonAddToChannelInactive.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="1042214128"/>
 						<reference key="IBUIFont" ref="1071906284"/>
@@ -441,6 +467,14 @@
 					<int key="connectionID">100</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">addToChannelButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="456695495"/>
+					</object>
+					<int key="connectionID">110</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">clearSearchField:</string>
 						<reference key="source" ref="182419213"/>
@@ -475,6 +509,15 @@
 					</object>
 					<int key="connectionID">107</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">addToChannelPressed:</string>
+						<reference key="source" ref="456695495"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">111</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -508,6 +551,7 @@
 							<reference ref="468707721"/>
 							<reference ref="430836750"/>
 							<reference ref="1039828572"/>
+							<reference ref="456695495"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -599,6 +643,12 @@
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Over Everything View</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">108</int>
+						<reference key="object" ref="456695495"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Add Button</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -610,6 +660,8 @@
 				<real value="1" key="101.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="105.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="105.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="108.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="108.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="59.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -629,7 +681,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">107</int>
+			<int key="maxID">111</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -637,6 +689,7 @@
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="addToChannelButton">UIButton</string>
 						<string key="backButton">UIButton</string>
 						<string key="clearTextButton">UIButton</string>
 						<string key="containerView">UIView</string>
@@ -650,6 +703,10 @@
 						<string key="topButtonsContainer">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="addToChannelButton">
+							<string key="name">addToChannelButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="backButton">
 							<string key="name">backButton</string>
 							<string key="candidateClassName">UIButton</string>
@@ -715,6 +772,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="ButtonAddToChannelInactive.png">{130, 45}</string>
 			<string key="ButtonBack.png">{60, 61}</string>
 			<string key="ButtonBackHighlighted.png">{60, 61}</string>
 			<string key="ButtonCancelSearch.png">{23, 23}</string>
