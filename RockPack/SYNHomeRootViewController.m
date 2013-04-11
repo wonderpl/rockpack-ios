@@ -118,12 +118,15 @@
                                                             start: 0
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
-         DebugLog(@"Refresh subscription updates successful");
+                                                    DebugLog(@"Refresh subscription updates successful");
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefresheComplete
+                                                                                                        object:self];
+                                                } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                    DebugLog(@"Refresh subscription updates failed");
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefresheComplete
+                                                                                                        object:self];
          
-     } errorHandler: ^(NSDictionary* errorDictionary) {
-         DebugLog(@"Refresh subscription updates failed");
-         
-     }];
+                                                }];
 }
 
 
@@ -259,7 +262,6 @@
                                                                                                       forIndexPath: indexPath];
         NSString *sectionText;
         BOOL focus = FALSE;
-        BOOL refreshButtonHidden = TRUE;
         
         if (indexPath.section == 0)
         {
@@ -298,7 +300,6 @@
         // Special case, remember the first section view
         headerSupplementaryView.viewControllerDelegate = self;
         headerSupplementaryView.focus = focus;
-        headerSupplementaryView.refreshView.hidden = refreshButtonHidden;
         headerSupplementaryView.sectionTitleLabel.text = sectionText;
         
         sectionSupplementaryView = headerSupplementaryView;
@@ -331,17 +332,13 @@
 
 #pragma mark - UI Actions
 
-- (IBAction) userTouchedRefreshButton: (id) sender
+
+
+
+-(void)refresh
 {
-    if (self.refreshing == FALSE)
-    {
-        self.refreshing = TRUE;
-        [self refreshVideoThumbnails];
-    }
+    [self refreshVideoThumbnails];
 }
-
-
-
 
 - (IBAction) touchVideoAddItButton: (UIButton *) addItButton
 {

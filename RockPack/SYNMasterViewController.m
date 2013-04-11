@@ -223,7 +223,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)refreshButtonPressed
 {
     
+    [self.refreshButton startRefreshCycle];
     
+    [self.containerViewController.showingViewController refresh];
 }
 
 -(void)scrollerPageChanged:(NSNotification*)notification

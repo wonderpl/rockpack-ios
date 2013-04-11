@@ -378,7 +378,10 @@
     return cell;
 }
 
-
+-(void)refresh
+{
+    // to implement in subclass
+}
 
 
 - (BOOL) collectionView: (UICollectionView *) cv

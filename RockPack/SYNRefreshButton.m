@@ -7,6 +7,7 @@
 //
 
 #import "SYNRefreshButton.h"
+#import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation SYNRefreshButton
@@ -38,10 +39,20 @@
         button.frame = bg.frame;
         [self addSubview:button];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(refreshComplete)
+                                                     name:kRefresheComplete
+                                                   object:nil];
         
     }
     
     return self;
+}
+
+
+-(void)refreshComplete
+{
+    [self endRefreshCycle];
 }
 
 

@@ -35,10 +35,6 @@
 {
     _viewControllerDelegate = viewControllerDelegate;
     
-    // Add button targets
-    [self.refreshButton addTarget: _viewControllerDelegate
-                           action: @selector(userTouchedRefreshButton:)
-                 forControlEvents: UIControlEventTouchUpInside];
 }
 
 

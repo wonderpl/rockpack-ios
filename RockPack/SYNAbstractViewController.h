@@ -87,6 +87,8 @@
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 
+- (void) refresh;
+
 
 -(id)initWithViewId:(NSString*)vid;
 -(void)viewCameToScrollFront;
