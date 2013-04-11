@@ -9,6 +9,8 @@
 #import "AppConstants.h"
 #import "NSIndexPath+Arithmetic.h"
 #import "NSString+Timecode.h"
+#import "SYNAppDelegate.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "UIFont+SYNFont.h"
 #import <CoreData/CoreData.h>
@@ -18,6 +20,7 @@
 @interface SYNVideoPlaybackViewController () <UIWebViewDelegate>
 
 @property (nonatomic, assign) BOOL autoPlay;
+@property (nonatomic, assign) BOOL currentVideoViewedFlag;
 @property (nonatomic, assign) BOOL playFlag;
 @property (nonatomic, assign) CGRect requestedFrame;
 @property (nonatomic, assign) NSTimeInterval currentDuration;
@@ -91,6 +94,8 @@
     
     // Add button that can be used to play video (if not autoplaying)
 //    self.videoPlayButton = [self createVideoPlayButton];
+    
+    self.currentVideoViewedFlag = FALSE;
 }
 
 
@@ -296,10 +301,6 @@
     [newVideoPlayButton setImage: [UIImage imageNamed: @"ButtonLargeVideoPanelPlay.png"]
                         forState: UIControlStateNormal];
     
-//    [newVideoPlayButton addTarget: self
-//                           action: @selector(userTouchedPlay:)
-//                 forControlEvents: UIControlEventTouchUpInside];
-    
     newVideoPlayButton.alpha = 1.0f;
 
     
@@ -441,20 +442,21 @@
     return index;
 }
 
+// Hopefully depracated
 
-- (void) setVideoWithSource: (NSString *) source
-                   sourceId: (NSString *) sourceId
-                   autoPlay: (BOOL) autoPlay
-{
-    // Init out ivars
-    self.source = source;
-    self.sourceId = sourceId;
-    self.fetchedResultsController = nil;
-    self.currentSelectedIndexPath = nil;
-    self.autoPlay = autoPlay;
-    
-    [self loadCurrentVideoWebView];
-}
+//- (void) setVideoWithSource: (NSString *) source
+//                   sourceId: (NSString *) sourceId
+//                   autoPlay: (BOOL) autoPlay
+//{
+//    // Init out ivars
+//    self.source = source;
+//    self.sourceId = sourceId;
+//    self.fetchedResultsController = nil;
+//    self.currentSelectedIndexPath = nil;
+//    self.autoPlay = autoPlay;
+//    
+//    [self loadCurrentVideoWebView];
+//}
 
 - (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
                                selectedIndexPath: (NSIndexPath *) selectedIndexPath
@@ -589,17 +591,32 @@
 
 #pragma mark - Video playback HTML creation
 
+- (void) resetPlayerAttributes
+{
+    // Make sure we don't receive any shuttle bar or buffer update timer events until we have loaded the new video
+    [self stopShuttleBarUpdateTimer];
+    [self stopBufferMonitoringTimer];
+    
+    // Reset shuttle slider
+    self.shuttleSlider.value = 0.0f;
+    
+    // And time value
+    self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: 0.0f];
+}
+
+
 - (void) loadCurrentVideoWebView
 {
+    [self resetPlayerAttributes];
+    
     // Assume that we just have a single video as opposed to a playlist
     
     NSString *currentSource = self.source;
     NSString *currentSourceId = self.sourceId;
     
-    
+    self.currentVideoViewedFlag = FALSE;
     
     // But if we do have a playlist, then load up the source and sourceId for the current video index
-    
     if (self.isUsingPlaylist)
     {
         VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
@@ -653,11 +670,9 @@
     }
 }
 
-//YouTubeIFramePlayer
 
-// Support for YouTube JavaScript player
 - (void) loadWebViewWithIFramePlayer: (UIWebView *) webView
-               usingYouTubeId: (NSString *) sourceId
+                      usingYouTubeId: (NSString *) sourceId
 {
     NSError *error = nil;
     NSString *fullPath = [[NSBundle mainBundle] pathForResource: @"YouTubeIFramePlayer"
@@ -678,11 +693,7 @@
     [webView loadHTMLString: iFrameHTML
                     baseURL: [NSURL URLWithString: @"http://www.youtube.com"]];
     
-//    [webView loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: @"http://www.synchromation.com"]]];
-//    
-//    webView.alpha = 1.0f;
-    
-    // Not sure if this makes any difference
+    // Required to work correctly
     webView.mediaPlaybackRequiresUserAction = FALSE;
 }
 
@@ -778,7 +789,8 @@
 - (void) webView: (UIWebView *) webView
          didFailLoadWithError: (NSError *) error
 {
-//    DebugLog(@"YouTube webview failed to load - %@", [error description]);
+    // TODO: We should have some sort of error handling here
+    DebugLog(@"YouTube webview failed to load - %@", [error description]);
 }
 
 
@@ -809,8 +821,7 @@
         }
         else if ([actionData isEqualToString: @"ended"])
         {
-            [self stopShuttleBarUpdateTimer];
-            [self stopBufferMonitoringTimer];
+            [self resetPlayerAttributes];
             [self stopVideoInWebView: self.currentVideoWebView];
             [self swapVideoWebViews];
         }
@@ -1019,14 +1030,41 @@
     // Update current time label
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: currentTime];
     
+    // Calculate the currently viewed percentage
+    float viewedPercentage = currentTime / self.currentDuration;
+    
     // and slider
-    self.shuttleSlider.value = currentTime / self.currentDuration;
+    self.shuttleSlider.value = viewedPercentage;
+    
+    // Now, if we have viewed more than kPercentageThresholdForView%, then mark as viewed
+    if (viewedPercentage > kPercentageThresholdForView && self.currentVideoViewedFlag == FALSE)
+    {
+        // Don't mark as viewed again
+        self.currentVideoViewedFlag = TRUE;
+        
+        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
+        
+        // Update the star/unstar status on the server
+        [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                         action: @"view"
+                                                videoInstanceId: self.currentVideoInstance.uniqueId
+                                              completionHandler: ^(NSDictionary *responseDictionary)
+         {
+             DebugLog(@"View action successful");
+         }
+                                                   errorHandler: ^(NSDictionary* errorDictionary)
+         {
+             DebugLog(@"View action failed");
+         }];
+    }
 }
+
 
 - (void) updateTimeFromSlider: (UISlider *) slider
 {
     [self setCurrentTime: slider.value * self.currentDuration];
 }
+
 
 - (void) togglePlayPause
 {
@@ -1067,8 +1105,11 @@
 
 - (void) swapVideoWebViews
 {
+    self.currentVideoViewedFlag = FALSE;
+    
     if (self.nextVideoWebViewReadyToPlay == FALSE)
     {
+        // TODO: Need to handle this case
 //        DebugLog(@"*** Next video not ready");
     }
     else
@@ -1102,16 +1143,10 @@
     [UIView animateWithDuration: 0.0f
                           delay: 0.1f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         
-         
-         // Contract thumbnail view
-         webView.alpha = 1.0;
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
+                     animations: ^ {
+                         webView.alpha = 1.0;
+                     }
+                     completion: nil];
 }
 
 // Fades up the video player, fading out any placeholder
@@ -1121,7 +1156,6 @@
     
     // We need to remove immediately, as returns to start immediately
     webView.alpha = 0.0f;
-//    [webView removeFromSuperview];
 }
 
 // Fades up the play button (enabling it when fully opaque)
@@ -1130,14 +1164,12 @@
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoPlayButton.alpha = 1.0f;
-     }
-                     completion: ^(BOOL finished)
-     {
-         self.videoPlayButton.enabled = TRUE;
-     }];
+                     animations: ^ {
+                         self.videoPlayButton.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         self.videoPlayButton.enabled = TRUE;
+                     }];
 }
 
 
@@ -1149,14 +1181,12 @@
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         self.videoPlayButton.alpha = 0.0f;
-     }
-                     completion: ^(BOOL finished)
-     {
-     }];
+                     animations: ^ {
+                         self.videoPlayButton.alpha = 0.0f;
+                     }
+                     completion: nil];
 }
+
 
 - (VideoInstance*) currentVideoInstance
 {

@@ -8,7 +8,6 @@
 
 #import "SYNAbstractViewController.h"
 
-@class VideoInstance;
 @class SYNMasterViewController;
 
 @interface SYNVideoViewerViewController : SYNAbstractViewController

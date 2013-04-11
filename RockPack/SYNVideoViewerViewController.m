@@ -40,7 +40,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *followLabel;
-@property (nonatomic, strong) IBOutlet UILabel *numberOfRocksLabel;
+@property (nonatomic, strong) IBOutlet UILabel *numberOfStarsLabel;
 @property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *blackPanelView;
@@ -79,7 +79,7 @@
     self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.followLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
-    self.numberOfRocksLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.numberOfStarsLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
 
     // Regster video thumbnail cell
@@ -196,8 +196,7 @@
     self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
-    self.numberOfRocksLabel.text = videoInstance.video.starCount.stringValue;
-    
+    self.numberOfStarsLabel.text = videoInstance.video.starCount.stringValue;
     self.starButton.selected = videoInstance.video.starredByUserValue;
 }
 
@@ -213,7 +212,7 @@
 
 #pragma mark - Collection view support
 
-- (NSInteger) collectionView: (UICollectionView *) view
+- (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
@@ -224,23 +223,23 @@
 }
 
 
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) cv
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     DebugLog (@"Section %d", self.fetchedResultsController.sections.count);
     return self.fetchedResultsController.sections.count;
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    SYNVideoThumbnailSmallCell *cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"
-                                                                       forIndexPath: indexPath];
+    SYNVideoThumbnailSmallCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"
+                                                                                 forIndexPath: indexPath];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     cell.titleLabel.text = videoInstance.title;
     
-  SYNVideoViewerThumbnailLayoutAttributes* attributes = (SYNVideoViewerThumbnailLayoutAttributes *)[self.layout layoutAttributesForItemAtIndexPath: indexPath];
+    SYNVideoViewerThumbnailLayoutAttributes* attributes = (SYNVideoViewerThumbnailLayoutAttributes *)[self.layout layoutAttributesForItemAtIndexPath: indexPath];
     
     BOOL thumbnailIsColour = attributes.isHighlighted;
     
@@ -432,6 +431,7 @@
     [(SYNAbstractViewController *)self.overlayParent.originViewController viewProfileDetails: videoInstance.channel.channelOwner];
 }
 
+
 - (void) userTappedVideo
 {
     if (self.isVideoExpanded)
@@ -439,41 +439,34 @@
         [UIView transitionWithView: self.view
                           duration: 0.5f
                            options: UIViewAnimationOptionCurveEaseInOut
-                        animations: ^
-         {
-             self.blackPanelView.alpha = 0.0f;
-             self.chromeView.alpha = 1.0f;
-             self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
-             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
-             self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
-             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
-         }
-                        completion: ^(BOOL b)
-         {
-         }];
+                        animations: ^ {
+                            self.blackPanelView.alpha = 0.0f;
+                            self.chromeView.alpha = 1.0f;
+                            self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
+                            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                            self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
+                            self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                        }
+                        completion: nil];
     }
     else
     {
         [UIView transitionWithView: self.view
                           duration: 0.5f
                            options: UIViewAnimationOptionCurveEaseInOut
-                        animations: ^
-         {
-             self.blackPanelView.alpha = 1.0f;
-             self.chromeView.alpha = 0.0f;
-             self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
-             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
-             self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
-             self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
-         }
-                        completion: ^(BOOL b)
-         {
-         }];
+                        animations: ^ {
+                            self.blackPanelView.alpha = 1.0f;
+                            self.chromeView.alpha = 0.0f;
+                            self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
+                            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
+                            self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+                            self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                        }
+                        completion: nil];
     }
 
     self.videoExpanded = !self.videoExpanded;
 }
-
 
 
 @end
