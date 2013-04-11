@@ -660,6 +660,14 @@
 		BE7D35241716D29B0085AB81 /* CategoryBarDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D351E1716D29B0085AB81 /* CategoryBarDivider@2x.png */; };
 		BE7D35251716D29B0085AB81 /* CategoryBarSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D351F1716D29B0085AB81 /* CategoryBarSelected.png */; };
 		BE7D35261716D29B0085AB81 /* CategoryBarSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D35201716D29B0085AB81 /* CategoryBarSelected@2x.png */; };
+		BE7D3530171700010085AB81 /* ButtonAddToChannelActive.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D3528171700010085AB81 /* ButtonAddToChannelActive.png */; };
+		BE7D3531171700010085AB81 /* ButtonAddToChannelActive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D3529171700010085AB81 /* ButtonAddToChannelActive@2x.png */; };
+		BE7D3532171700010085AB81 /* ButtonAddToChannelActiveHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352A171700010085AB81 /* ButtonAddToChannelActiveHighlighted.png */; };
+		BE7D3533171700010085AB81 /* ButtonAddToChannelActiveHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352B171700010085AB81 /* ButtonAddToChannelActiveHighlighted@2x.png */; };
+		BE7D3534171700010085AB81 /* ButtonAddToChannelInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352C171700010085AB81 /* ButtonAddToChannelInactive.png */; };
+		BE7D3535171700010085AB81 /* ButtonAddToChannelInactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352D171700010085AB81 /* ButtonAddToChannelInactive@2x.png */; };
+		BE7D3536171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352E171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png */; };
+		BE7D3537171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1484,6 +1492,14 @@
 		BE7D351E1716D29B0085AB81 /* CategoryBarDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CategoryBarDivider@2x.png"; path = "Assets/Images/CategoryBarDivider@2x.png"; sourceTree = "<group>"; };
 		BE7D351F1716D29B0085AB81 /* CategoryBarSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CategoryBarSelected.png; path = Assets/Images/CategoryBarSelected.png; sourceTree = "<group>"; };
 		BE7D35201716D29B0085AB81 /* CategoryBarSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CategoryBarSelected@2x.png"; path = "Assets/Images/CategoryBarSelected@2x.png"; sourceTree = "<group>"; };
+		BE7D3528171700010085AB81 /* ButtonAddToChannelActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAddToChannelActive.png; path = Assets/Images/ButtonAddToChannelActive.png; sourceTree = "<group>"; };
+		BE7D3529171700010085AB81 /* ButtonAddToChannelActive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddToChannelActive@2x.png"; path = "Assets/Images/ButtonAddToChannelActive@2x.png"; sourceTree = "<group>"; };
+		BE7D352A171700010085AB81 /* ButtonAddToChannelActiveHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAddToChannelActiveHighlighted.png; path = Assets/Images/ButtonAddToChannelActiveHighlighted.png; sourceTree = "<group>"; };
+		BE7D352B171700010085AB81 /* ButtonAddToChannelActiveHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddToChannelActiveHighlighted@2x.png"; path = "Assets/Images/ButtonAddToChannelActiveHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE7D352C171700010085AB81 /* ButtonAddToChannelInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAddToChannelInactive.png; path = Assets/Images/ButtonAddToChannelInactive.png; sourceTree = "<group>"; };
+		BE7D352D171700010085AB81 /* ButtonAddToChannelInactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddToChannelInactive@2x.png"; path = "Assets/Images/ButtonAddToChannelInactive@2x.png"; sourceTree = "<group>"; };
+		BE7D352E171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonAddToChannelInactiveHighlighted.png; path = Assets/Images/ButtonAddToChannelInactiveHighlighted.png; sourceTree = "<group>"; };
+		BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddToChannelInactiveHighlighted@2x.png"; path = "Assets/Images/ButtonAddToChannelInactiveHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -2144,6 +2160,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D35271716FFD30085AB81 /* Master Panel */,
 				BE7D34D71715A8E30085AB81 /* Navigation Panel */,
 				BE21EE8816FA27EF0067223B /* Account Settings */,
 				019824F41629CEA200216900 /* App Icons */,
@@ -3226,12 +3243,8 @@
 				BE7D34DB1715A9560085AB81 /* ButtonSettingsHighlighted@2x.png */,
 				BE7D34E01715A9BE0085AB81 /* PanelMenu.png */,
 				BE7D34E11715A9BE0085AB81 /* PanelMenu@2x.png */,
-				BE7D34E41715AC890085AB81 /* ButtonSearch.png */,
-				BE7D34E51715AC890085AB81 /* ButtonSearch@2x.png */,
 				BE7D34E61715AC890085AB81 /* ButtonSearchHighlighted.png */,
 				BE7D34E71715AC890085AB81 /* ButtonSearchHighlighted@2x.png */,
-				BE7D34EC1715AD060085AB81 /* ButtonNav.png */,
-				BE7D34ED1715AD060085AB81 /* ButtonNav@2x.png */,
 				BE7D34EE1715AD060085AB81 /* ButtonNavHighlighted.png */,
 				BE7D34EF1715AD060085AB81 /* ButtonNavHighlighted@2x.png */,
 				BE7D34F71715C66B0085AB81 /* NavSelected.png */,
@@ -3240,12 +3253,31 @@
 				BE7D34FC1715C68C0085AB81 /* NavArrow@2x.png */,
 				BE7D34FD1715C68C0085AB81 /* NavArrowSelected.png */,
 				BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */,
+			);
+			name = "Navigation Panel";
+			sourceTree = "<group>";
+		};
+		BE7D35271716FFD30085AB81 /* Master Panel */ = {
+			isa = PBXGroup;
+			children = (
 				BE7D35071715D3080085AB81 /* NavigationDot.png */,
 				BE7D35081715D3080085AB81 /* NavigationDot@2x.png */,
 				BE7D35091715D3080085AB81 /* NavigationDotCurrent.png */,
 				BE7D350A1715D3080085AB81 /* NavigationDotCurrent@2x.png */,
+				BE7D34E41715AC890085AB81 /* ButtonSearch.png */,
+				BE7D34E51715AC890085AB81 /* ButtonSearch@2x.png */,
+				BE7D3528171700010085AB81 /* ButtonAddToChannelActive.png */,
+				BE7D3529171700010085AB81 /* ButtonAddToChannelActive@2x.png */,
+				BE7D352A171700010085AB81 /* ButtonAddToChannelActiveHighlighted.png */,
+				BE7D352B171700010085AB81 /* ButtonAddToChannelActiveHighlighted@2x.png */,
+				BE7D352C171700010085AB81 /* ButtonAddToChannelInactive.png */,
+				BE7D352D171700010085AB81 /* ButtonAddToChannelInactive@2x.png */,
+				BE7D352E171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png */,
+				BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */,
+				BE7D34EC1715AD060085AB81 /* ButtonNav.png */,
+				BE7D34ED1715AD060085AB81 /* ButtonNav@2x.png */,
 			);
-			name = "Navigation Panel";
+			name = "Master Panel";
 			sourceTree = "<group>";
 		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
@@ -3908,6 +3940,14 @@
 				BE7D35241716D29B0085AB81 /* CategoryBarDivider@2x.png in Resources */,
 				BE7D35251716D29B0085AB81 /* CategoryBarSelected.png in Resources */,
 				BE7D35261716D29B0085AB81 /* CategoryBarSelected@2x.png in Resources */,
+				BE7D3530171700010085AB81 /* ButtonAddToChannelActive.png in Resources */,
+				BE7D3531171700010085AB81 /* ButtonAddToChannelActive@2x.png in Resources */,
+				BE7D3532171700010085AB81 /* ButtonAddToChannelActiveHighlighted.png in Resources */,
+				BE7D3533171700010085AB81 /* ButtonAddToChannelActiveHighlighted@2x.png in Resources */,
+				BE7D3534171700010085AB81 /* ButtonAddToChannelInactive.png in Resources */,
+				BE7D3535171700010085AB81 /* ButtonAddToChannelInactive@2x.png in Resources */,
+				BE7D3536171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png in Resources */,
+				BE7D3537171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
