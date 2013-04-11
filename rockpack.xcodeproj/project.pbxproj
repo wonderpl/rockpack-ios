@@ -440,12 +440,6 @@
 		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
 		01C74BAD169F239800B1CA02 /* SYNNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */; };
 		01C9CFA61697496400C42479 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C9CFA51697496400C42479 /* NSDate-Utilities.m */; };
-		01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */; };
-		01CF11C91695CC1600E64620 /* ButtonRefreshDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */; };
-		01CF11CA1695CC1600E64620 /* ButtonRefreshSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C41695CC1600E64620 /* ButtonRefreshSelected.png */; };
-		01CF11CB1695CC1600E64620 /* ButtonRefreshSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C51695CC1600E64620 /* ButtonRefreshSelected@2x.png */; };
-		01CF11CC1695CC1600E64620 /* ButtonRefreshBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C61695CC1600E64620 /* ButtonRefreshBackground.png */; };
-		01CF11CD1695CC1600E64620 /* ButtonRefreshBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */; };
 		01D8BCBC16B818B4000B150A /* GlossLargeVideoView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */; };
 		01D8BCBD16B818B4000B150A /* GlossLargeVideoView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */; };
 		01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E2E7E016E11E67009999D2 /* UIImageView+ImageProcessing.m */; };
@@ -669,6 +663,12 @@
 		BE7D3536171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352E171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png */; };
 		BE7D3537171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */; };
 		BE7D353B171708F60085AB81 /* SYNRefreshButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D353A171708F60085AB81 /* SYNRefreshButton.m */; };
+		BE7D354217170F540085AB81 /* ButtonRefresh.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D353C17170F530085AB81 /* ButtonRefresh.png */; };
+		BE7D354317170F540085AB81 /* ButtonRefresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D353D17170F530085AB81 /* ButtonRefresh@2x.png */; };
+		BE7D354417170F540085AB81 /* ButtonRefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D353E17170F530085AB81 /* ButtonRefreshArrow.png */; };
+		BE7D354517170F540085AB81 /* ButtonRefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D353F17170F530085AB81 /* ButtonRefreshArrow@2x.png */; };
+		BE7D354617170F540085AB81 /* ButtonRefreshSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D354017170F540085AB81 /* ButtonRefreshSelected.png */; };
+		BE7D354717170F540085AB81 /* ButtonRefreshSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D354117170F540085AB81 /* ButtonRefreshSelected@2x.png */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1209,12 +1209,6 @@
 		01C74BAC169F239800B1CA02 /* SYNNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkEngine.m; sourceTree = "<group>"; };
 		01C9CFA41697496400C42479 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate-Utilities.h"; sourceTree = "<group>"; };
 		01C9CFA51697496400C42479 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate-Utilities.m"; sourceTree = "<group>"; };
-		01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshDefault.png; path = Assets/Images/ButtonRefreshDefault.png; sourceTree = "<group>"; };
-		01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshDefault@2x.png"; path = "Assets/Images/ButtonRefreshDefault@2x.png"; sourceTree = "<group>"; };
-		01CF11C41695CC1600E64620 /* ButtonRefreshSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshSelected.png; path = Assets/Images/ButtonRefreshSelected.png; sourceTree = "<group>"; };
-		01CF11C51695CC1600E64620 /* ButtonRefreshSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshSelected@2x.png"; path = "Assets/Images/ButtonRefreshSelected@2x.png"; sourceTree = "<group>"; };
-		01CF11C61695CC1600E64620 /* ButtonRefreshBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshBackground.png; path = Assets/Images/ButtonRefreshBackground.png; sourceTree = "<group>"; };
-		01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshBackground@2x.png"; path = "Assets/Images/ButtonRefreshBackground@2x.png"; sourceTree = "<group>"; };
 		01D8BCBA16B818B4000B150A /* GlossLargeVideoView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GlossLargeVideoView.png; path = Assets/Images/GlossLargeVideoView.png; sourceTree = "<group>"; };
 		01D8BCBB16B818B4000B150A /* GlossLargeVideoView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GlossLargeVideoView@2x.png"; path = "Assets/Images/GlossLargeVideoView@2x.png"; sourceTree = "<group>"; };
 		01E2E7DF16E11E67009999D2 /* UIImageView+ImageProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageProcessing.h"; sourceTree = "<group>"; };
@@ -1503,6 +1497,12 @@
 		BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonAddToChannelInactiveHighlighted@2x.png"; path = "Assets/Images/ButtonAddToChannelInactiveHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE7D3539171708F60085AB81 /* SYNRefreshButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNRefreshButton.h; sourceTree = "<group>"; };
 		BE7D353A171708F60085AB81 /* SYNRefreshButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNRefreshButton.m; sourceTree = "<group>"; };
+		BE7D353C17170F530085AB81 /* ButtonRefresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefresh.png; path = Assets/Images/ButtonRefresh.png; sourceTree = "<group>"; };
+		BE7D353D17170F530085AB81 /* ButtonRefresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefresh@2x.png"; path = "Assets/Images/ButtonRefresh@2x.png"; sourceTree = "<group>"; };
+		BE7D353E17170F530085AB81 /* ButtonRefreshArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshArrow.png; path = Assets/Images/ButtonRefreshArrow.png; sourceTree = "<group>"; };
+		BE7D353F17170F530085AB81 /* ButtonRefreshArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshArrow@2x.png"; path = "Assets/Images/ButtonRefreshArrow@2x.png"; sourceTree = "<group>"; };
+		BE7D354017170F540085AB81 /* ButtonRefreshSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonRefreshSelected.png; path = Assets/Images/ButtonRefreshSelected.png; sourceTree = "<group>"; };
+		BE7D354117170F540085AB81 /* ButtonRefreshSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonRefreshSelected@2x.png"; path = "Assets/Images/ButtonRefreshSelected@2x.png"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -1793,6 +1793,12 @@
 		012632F6162E18310009FF9C /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D353C17170F530085AB81 /* ButtonRefresh.png */,
+				BE7D353D17170F530085AB81 /* ButtonRefresh@2x.png */,
+				BE7D353E17170F530085AB81 /* ButtonRefreshArrow.png */,
+				BE7D353F17170F530085AB81 /* ButtonRefreshArrow@2x.png */,
+				BE7D354017170F540085AB81 /* ButtonRefreshSelected.png */,
+				BE7D354117170F540085AB81 /* ButtonRefreshSelected@2x.png */,
 				01A3EC1116AEC1BD008DCE08 /* ButtonActivityDefault.png */,
 				01A3EC1216AEC1BD008DCE08 /* ButtonActivityDefault@2x.png */,
 				01A3EC1316AEC1BD008DCE08 /* ButtonActivityHighlighted.png */,
@@ -1805,12 +1811,6 @@
 				01A3EC1A16AEC1BD008DCE08 /* ButtonInboxHighlighted@2x.png */,
 				01A3EC1B16AEC1BD008DCE08 /* ButtonInboxSelected.png */,
 				01A3EC1C16AEC1BD008DCE08 /* ButtonInboxSelected@2x.png */,
-				01CF11C21695CC1600E64620 /* ButtonRefreshDefault.png */,
-				01CF11C31695CC1600E64620 /* ButtonRefreshDefault@2x.png */,
-				01CF11C41695CC1600E64620 /* ButtonRefreshSelected.png */,
-				01CF11C51695CC1600E64620 /* ButtonRefreshSelected@2x.png */,
-				01CF11C61695CC1600E64620 /* ButtonRefreshBackground.png */,
-				01CF11C71695CC1600E64620 /* ButtonRefreshBackground@2x.png */,
 				01677DF616554AB500B1B1D8 /* ButtonBack.png */,
 				01677DF716554AB500B1B1D8 /* ButtonBack@2x.png */,
 				01677DF816554AB500B1B1D8 /* ButtonBackHighlighted.png */,
@@ -3591,12 +3591,6 @@
 				01946B5A1683209600354601 /* PanelVideo@2x.png in Resources */,
 				01946B5B1683209600354601 /* PanelVideoGlow.png in Resources */,
 				01946B5C1683209600354601 /* PanelVideoGlow@2x.png in Resources */,
-				01CF11C81695CC1600E64620 /* ButtonRefreshDefault.png in Resources */,
-				01CF11C91695CC1600E64620 /* ButtonRefreshDefault@2x.png in Resources */,
-				01CF11CA1695CC1600E64620 /* ButtonRefreshSelected.png in Resources */,
-				01CF11CB1695CC1600E64620 /* ButtonRefreshSelected@2x.png in Resources */,
-				01CF11CC1695CC1600E64620 /* ButtonRefreshBackground.png in Resources */,
-				01CF11CD1695CC1600E64620 /* ButtonRefreshBackground@2x.png in Resources */,
 				01B34C9816A99D6A002AD8FB /* GlossChannelThumbnail.png in Resources */,
 				01B34C9916A99D6A002AD8FB /* GlossChannelThumbnail@2x.png in Resources */,
 				01B34C9B16A9A84F002AD8FB /* BackgroundGeneric@2x.jpg in Resources */,
@@ -3961,6 +3955,12 @@
 				BE7D3535171700010085AB81 /* ButtonAddToChannelInactive@2x.png in Resources */,
 				BE7D3536171700010085AB81 /* ButtonAddToChannelInactiveHighlighted.png in Resources */,
 				BE7D3537171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png in Resources */,
+				BE7D354217170F540085AB81 /* ButtonRefresh.png in Resources */,
+				BE7D354317170F540085AB81 /* ButtonRefresh@2x.png in Resources */,
+				BE7D354417170F540085AB81 /* ButtonRefreshArrow.png in Resources */,
+				BE7D354517170F540085AB81 /* ButtonRefreshArrow@2x.png in Resources */,
+				BE7D354617170F540085AB81 /* ButtonRefreshSelected.png in Resources */,
+				BE7D354717170F540085AB81 /* ButtonRefreshSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

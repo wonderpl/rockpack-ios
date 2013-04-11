@@ -10,21 +10,28 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation SYNRefreshButton
+@synthesize refreshing;
 
++(id)refreshButton
+{
+    return [[self alloc] init];
+}
 
-- (id)initWithFrame:(CGRect)frame
+-(id)init
 {
     
-    self = [super initWithFrame:frame];
-    
-    if (self) {
-       
+    if (self = [super initWithFrame:CGRectZero]) {
         
-        UIImageView* bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        
+        UIImageView* bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ButtonRefresh"]];
         [self addSubview:bg];
         
+        self.frame = bg.frame;
         
-        image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        
+        image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ButtonRefreshArrow"]];
+        image.center = bg.center;
+        image.frame = CGRectIntegral(image.frame);
         [self addSubview:image];
         
         button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -36,6 +43,7 @@
     
     return self;
 }
+
 
 #pragma mark - UIControl Methods
 
@@ -53,6 +61,8 @@
 {
     return [button actionsForTarget:target forControlEvent:controlEvent];
 }
+
+
 
 
 #pragma mark - Animation Methods
@@ -99,6 +109,23 @@
 	{
 		[self spinRefreshButton: TRUE];
 	}
+}
+
+#pragma mark - API
+
+
+- (void) startRefreshCycle
+{
+    self.refreshing = TRUE;
+    [self spinRefreshButton: TRUE];
+    
+}
+
+- (void) endRefreshCycle
+{
+    self.refreshing = FALSE;
+    [self spinRefreshButton: FALSE];
+    
 }
 
 @end

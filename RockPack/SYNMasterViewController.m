@@ -20,6 +20,7 @@
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNCategoryChooserViewController.h"
+#import "SYNRefreshButton.h"
 
 
 #import <QuartzCore/QuartzCore.h>
@@ -40,6 +41,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
+
+@property (nonatomic, strong) SYNRefreshButton* refreshButton;
+
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
 
 @property (nonatomic) CGRect addToChannelFrame;
@@ -100,6 +104,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.overEverythingView.userInteractionEnabled = NO;
         
+        
+        
     }
     return self;
 }
@@ -116,6 +122,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // == Refresh button == //
+    
+    self.refreshButton = [SYNRefreshButton refreshButton];
+    [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    CGRect refreshButtonFrame = self.refreshButton.frame;
+    refreshButtonFrame.origin.y = 10.0;
+    refreshButtonFrame.origin.x = 10.0;
+    self.refreshButton.frame = refreshButtonFrame;
+    [self.view addSubview:self.refreshButton];
+    
+    self.clearTextButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -148,7 +166,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.topButtonsContainer.userInteractionEnabled = YES;
     
     
-    self.clearTextButton.alpha = 0.0;
     
     self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:30];
     self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
@@ -156,7 +173,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                      blue:(51.0/255.0)
                                                     alpha:(1.0)];
     
-    // store frame and hide button
+    
     addToChannelFrame = self.addToChannelButton.frame;
     
     
@@ -203,7 +220,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
-
+-(void)refreshButtonPressed
+{
+    
+    
+}
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {

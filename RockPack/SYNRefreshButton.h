@@ -12,8 +12,14 @@
 @interface SYNRefreshButton : UIControl {
     UIImageView* image;
     UIButton* button;
+    BOOL refreshing;
 }
 
-- (void) spinRefreshButton: (BOOL) spin;
+@property (nonatomic) BOOL refreshing;
+
+- (void) startRefreshCycle;
+- (void) endRefreshCycle;
+
++(id)refreshButton;
 
 @end

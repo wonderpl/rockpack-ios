@@ -113,36 +113,19 @@
 
 - (void) refreshVideoThumbnails
 {
-    [self startRefreshCycle];
     
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
-     start: 0
-     size: 0
-     completionHandler: ^(NSDictionary *responseDictionary)
-     {
+                                                            start: 0
+                                                             size: 0
+                                                completionHandler: ^(NSDictionary *responseDictionary) {
          DebugLog(@"Refresh subscription updates successful");
-         [self endRefreshCycle];
-     }
-     errorHandler: ^(NSDictionary* errorDictionary)
-     {
+         
+     } errorHandler: ^(NSDictionary* errorDictionary) {
          DebugLog(@"Refresh subscription updates failed");
-         [self endRefreshCycle];
+         
      }];
 }
 
-- (void) startRefreshCycle
-{
-    self.refreshing = TRUE;
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
-    [self.refreshControl beginRefreshing];
-}
-
-- (void) endRefreshCycle
-{
-    self.refreshing = FALSE;
-    [self.supplementaryViewWithRefreshButton spinRefreshButton: FALSE];
-    [self.refreshControl endRefreshing];
-}
 
 #pragma mark - Fetched results
 
@@ -286,12 +269,8 @@
             // We need to store this away, so can control animations (but must nil when goes out of scope)
             self.supplementaryViewWithRefreshButton = headerSupplementaryView;
             
-            refreshButtonHidden = FALSE;
             
-            if (self.refreshing == TRUE)
-            {
-                [self.supplementaryViewWithRefreshButton spinRefreshButton: TRUE];
-            }
+            
         }
         
         // Unavoidably long if-then-else
