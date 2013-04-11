@@ -181,41 +181,33 @@
 }
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
-{
-    // See if this can be handled in our abstract base class
-    int items = [super collectionView: collectionView
-               numberOfItemsInSection:  section];
+      numberOfItemsInSection: (NSInteger) section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
+    return sectionInfo.numberOfObjects;
     
-    if (items < 0)
-    {
-        if (collectionView == self.videoThumbnailCollectionView)
-        {
-            id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-            return sectionInfo.numberOfObjects;
-        }
-        else
-        {
-            AssertOrLog(@"No valid collection view found");
-        }
-    }
-    
-    return items;
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    // See if this can be handled in our abstract base class
-    UICollectionViewCell *cell = [super collectionView: collectionView
-                                cellForItemAtIndexPath: indexPath];
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
-    // Do we have a valid cell?
-    if (!cell)
-    {
-        AssertOrLog(@"No valid collection view found");
-    }
+    UICollectionViewCell *cell = nil;
+    
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
+                                                                                  forIndexPath: indexPath];
+    
+    videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
+    videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
+    videoThumbnailCell.videoTitle.text = videoInstance.title;
+    videoThumbnailCell.channelName.text = videoInstance.channel.title;
+    videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
+    
+    
+    videoThumbnailCell.viewControllerDelegate = self;
+    
+    cell = videoThumbnailCell;
     
     return cell;
 }

@@ -55,10 +55,8 @@
 - (id) initWithViewId: (NSString *) vid
 {
     if ((self = [super initWithNibName: @"SYNVideosRootViewController"
-                               bundle: nil]))
-    {
+                               bundle: nil])) {
         viewId = vid;
-        
         
     }
     
@@ -169,10 +167,6 @@
                                                         object:self
                                                       userInfo:@{@"lock" : @(YES)}];
     
-    
-    
-    
-
     [self reloadCollectionViews];
 }
 
@@ -222,8 +216,6 @@
         [self.largeVideoPanelController setPlaylistWithFetchedResultsController: self.fetchedResultsController
                                                                 selectedIndexPath: self.currentIndexPath
                                                                          autoPlay: TRUE];
-        
-        
         
         [self setLargeVideoToIndexPath: [NSIndexPath indexPathForRow: 0
                                                            inSection: 0]];
@@ -315,11 +307,6 @@
         [self viewProfileDetails: videoInstance.channel.channelOwner];
     }
 }
-
-
-
-
-
 
 
 #pragma mark - User interface
