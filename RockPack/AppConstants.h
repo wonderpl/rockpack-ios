@@ -261,7 +261,9 @@ typedef enum {
 #define kBufferMonitoringTimerInterval 1.0f
 #define kShuttleBarUpdateTimerInterval 0.5f
 #define kMiddlePlaceholderCycleTime 2.0f
+#define kMiddlePlaceholderIdentifier @"MiddlePlaceholder"
 #define kBottomPlaceholderCycleTime 4.0f
+#define kBottomPlaceholderIdentifier @"BottomPlaceholder"
 #define kShuttleBarHeight 44.0f
 #define kShuttleBarTimeLabelWidth 40.0f
 #define kShuttleBarTimeLabelOffset 100.0f
