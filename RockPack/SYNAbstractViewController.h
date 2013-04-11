@@ -61,7 +61,6 @@
 - (void) toggleVideoStarAtIndex: (NSIndexPath *) indexPath;
 - (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath;
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath;
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
@@ -73,7 +72,6 @@
 
 
 - (void) highlightVideoQueue: (BOOL) showHighlight;
-- (BOOL) pointInVideoQueue: (CGPoint) point;
 
 - (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 

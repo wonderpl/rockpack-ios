@@ -336,72 +336,7 @@
 }
 
 
-- (IBAction) longPressLargeVideo: (UIGestureRecognizer *) sender
-{
-    if (sender.state == UIGestureRecognizerStateBegan)
-    {
-        // figure out which item in the table was selected
-        
-        self.inDrag = YES;
-        
-        // Store the initial drag point, just in case we have to animate it back if the user misses the drop zone
-        self.initialDragCenter = [sender locationInView: self.view];
-        
-        // Hardcoded for now, eeek!
-        CGRect frame = CGRectMake(self.initialDragCenter.x - 63, self.initialDragCenter.y - 36, 123, 69);
-        self.draggedView = [[UIImageView alloc] initWithFrame: frame];
-        self.draggedView.alpha = 0.7;
-        
-        Video *video = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
-        self.draggedView.image = video.thumbnailImage;
-        
-        // now add the item to the view
-        [self.view addSubview: self.draggedView];
-        
-        // Highlight the image well
-        [self highlightVideoQueue: TRUE];
-    }
-    else if (sender.state == UIGestureRecognizerStateChanged && self.inDrag)
-    {
-        // we dragged it, so let's update the coordinates of the dragged view
-        CGPoint point = [sender locationInView: self.view];
-        self.draggedView.center = point;
-    }
-    else if (sender.state == UIGestureRecognizerStateEnded && self.inDrag)
-    {
-        // Un-highlight the image well
-        [self highlightVideoQueue: FALSE];
-        
-        // and let's figure out where we dropped it
-//        CGPoint point = [sender locationInView: self.dropZoneView];
-        CGPoint point = [sender locationInView: self.view];
-        
-        // If we have dropped it in the right place, then add it to our image well
-        if ([self pointInVideoQueue: point])
-            
-        {
-            // Hide the dragged thumbnail and add new image to image well
-//            [self.draggedView removeFromSuperview];
-//            [self addToVideoQueueFromLargeVideo: nil];
-        }
-        else
-        {
-            [UIView animateWithDuration: kLargeVideoPanelAnimationDuration
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^
-             {
-                 // Contract thumbnail view
-                 self.draggedView.center = self.initialDragCenter;
-                 
-             }
-                             completion: ^(BOOL finished)
-             {
-                 [self.draggedView removeFromSuperview];
-             }];
-        }
-    }
-}
+
 
 - (void) displayVideoViewerFromView: (UIGestureRecognizer *) sender
 {
@@ -474,48 +409,6 @@
 
 
 
-- (void) toggleLargeVideoPanelStarButton: (UIButton *) button
-{
-    // called for a press to the large video panel's star button
-    
-    button.selected = !button.selected;
-    NSString *action = nil;
-    
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentIndexPath];
-    
-    if (videoInstance.video.starredByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        videoInstance.video.starredByUserValue = FALSE;
-        videoInstance.video.starCountValue -= 1;
-        action = @"unstar";
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        videoInstance.video.starredByUserValue = TRUE;
-        videoInstance.video.starCountValue += 1;
-        action = @"star";
-    }
-    
-    
-    [self.videoThumbnailCollectionView reloadData];
-    
-    [self saveDB];
-    
-    // Update the star/unstar status on the server
-    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                     action: action
-                                            videoInstanceId: videoInstance.uniqueId
-     completionHandler: ^(NSDictionary *responseDictionary)
-     {
-         DebugLog(@"Record action successful");
-     }
-     errorHandler: ^(NSDictionary* errorDictionary)
-     {
-         DebugLog(@"Record action failed");
-     }];
-}
 
 
 - (IBAction) userTouchedLargeVideoChannelButton: (UIButton *) channelButton
