@@ -63,7 +63,7 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(1024.0, 64.0);
-    flowLayout.itemSize = CGSizeMake(251.0, 302.0);
+    flowLayout.itemSize = CGSizeMake(251.0, 212.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
@@ -226,8 +226,6 @@
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     channelThumbnailCell.titleLabel.text = channel.title;
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"BY %@", channel.channelOwner.displayName];
-    channelThumbnailCell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
-    channelThumbnailCell.subscribeButton.selected = channel.subscribedByUserValue;
     channelThumbnailCell.viewControllerDelegate = self;
     
     
@@ -362,32 +360,6 @@
                                                   } onError:^(NSDictionary* errorInfo) {
                                                       
                                                   }];
-}
-
-
-// Buttons activated from scrolling list of thumbnails
-- (IBAction) toggleChannelSubscribeButton: (UIButton *) subscribeButton
-{
-    // Get to cell it self (from button subview)
-    UIView *v = subscribeButton.superview.superview;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    
-    // Bail if we don't have an index path
-    if (!indexPath)
-    {
-        return;
-    }
-    
-    // Prevent any changes refreshing the whole collection
-    self.ignoreRefresh = TRUE;
-
-    [self toggleChannelSubscribeAtIndex: indexPath];
-    
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    SYNChannelThumbnailCell *cell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    
-    cell.subscribeButton.selected = channel.subscribedByUserValue;
-    cell.subscribersNumberLabel.text = [NSString stringWithFormat: @"%@", channel.subscribersCount];
 }
 
 

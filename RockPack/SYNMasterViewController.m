@@ -162,7 +162,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.dotsView addSubview:dotImageView];
         
         UITapGestureRecognizer* tapGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dotTapped:)];
-        [dotImageView addGesturexRecognizer:tapGestureRecogniser];
+        [dotImageView addGestureRecognizer:tapGestureRecogniser];
      }
     
     [self pageChanged:self.containerViewController.page];

@@ -12,7 +12,6 @@
 
 @interface SYNChannelThumbnailCell ()
 
-@property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 
 @end
 
@@ -26,7 +25,6 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.subscribersNumberLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
 }
 
 
@@ -46,13 +44,6 @@
 {
     _viewControllerDelegate = viewControllerDelegate;
     
-    [self.shareItButton addTarget: self.viewControllerDelegate
-                           action: @selector(userTouchedVideoShareItButton:)
-                 forControlEvents: UIControlEventTouchUpInside];
-    
-    [self.subscribeButton addTarget: self.viewControllerDelegate
-                         action: @selector(toggleChannelSubscribeButton:)
-               forControlEvents: UIControlEventTouchUpInside];
     
     [self.displayNameButton addTarget:self.viewControllerDelegate
                                action:@selector(displayNameButtonPressed:)

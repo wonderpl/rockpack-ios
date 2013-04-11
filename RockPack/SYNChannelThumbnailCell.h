@@ -14,8 +14,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
-@property (nonatomic, strong) IBOutlet UILabel *subscribersNumberLabel;
-@property (nonatomic, strong) IBOutlet UIButton *subscribeButton;
 @property (nonatomic, strong) IBOutlet UIButton *displayNameButton;
 
 @property (nonatomic, weak) Channel* channel;
