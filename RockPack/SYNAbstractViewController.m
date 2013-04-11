@@ -540,4 +540,9 @@
     return YES;
 }
 
+-(BOOL)needsAddButton
+{
+    return NO;
+}
+
 @end

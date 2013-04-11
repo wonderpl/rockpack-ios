@@ -92,5 +92,6 @@
 
 -(id)initWithViewId:(NSString*)vid;
 -(void)viewCameToScrollFront;
+-(BOOL)needsAddButton;
 
 @end

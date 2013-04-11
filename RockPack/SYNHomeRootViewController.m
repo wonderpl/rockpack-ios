@@ -329,6 +329,11 @@
     }
 }
 
+-(BOOL)needsAddButton
+{
+    return YES;
+}
+
 
 #pragma mark - UI Actions
 
