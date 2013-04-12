@@ -16,6 +16,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, strong) IBOutlet UIButton *displayNameButton;
 
+@property (nonatomic) BOOL shouldAnimate;
+
 @property (nonatomic, weak) Channel* channel;
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;

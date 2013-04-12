@@ -20,8 +20,6 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabViewController.h"
-#import "SYNUserTabView.h"
-#import "SYNUserTabViewController.h"
 #import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -113,7 +111,6 @@
     // == You Page == //
     
     SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
-    myRockpackViewController.tabViewController = [[SYNUserTabViewController alloc] init];
     
     // == Friends Page == //
     
@@ -134,7 +131,6 @@
     // == Channels User (out of normal controller array)
     
     self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannels"];
-    self.channelsUserViewController.tabViewController = [[SYNUserTabViewController alloc] init];
     self.channelsUserNavigationViewController = [self wrapInNavigationController:self.channelsUserViewController];
     
     

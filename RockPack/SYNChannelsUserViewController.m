@@ -7,7 +7,6 @@
 //
 
 #import "SYNChannelsUserViewController.h"
-#import "SYNUserTabViewController.h"
 
 @interface SYNChannelsUserViewController ()
 
@@ -49,15 +48,14 @@
 
 -(void)fetchUserChannels:(ChannelOwner *)channelOwner
 {
-    owner = channelOwner;
     
+    owner = channelOwner;
     
     [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     
     [appDelegate.networkEngine userPublicChannelsByOwner:owner];
     
-    SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
-    [userTabViewController setOwner:owner];
+    // TODO: Put Owner Data
 }
 
 -(void)viewDidLoad
