@@ -40,7 +40,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
+@property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
@@ -110,33 +110,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return self;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-    if ([keyPath isEqualToString:@"contentOffset"]) {
-        
-        CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
-        // NSLog(@"Change: %f", newContentOffset.x);
-        CGRect addButtonFrame;
-        CGFloat diff = newContentOffset.x - self.containerViewController.currentPageOffset.x;
-        SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
-        
-        if((nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton) ||
-           (!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)) {
-            
-            addButtonFrame = self.addToChannelButton.frame;
-            addButtonFrame.origin.x = originalAddButtonX - diff;
-            self.addToChannelButton.frame = addButtonFrame;
-        } 
-    }
-}
+
 
 
 #pragma mark - Life Cycle
 
--(void)sideNavigationSwiped
-{
-    [self hideSideNavigation];
-}
 
 - (void)viewDidLoad
 {
@@ -147,10 +125,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.refreshButton = [SYNRefreshButton refreshButton];
     [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.y = 10.0;
-    refreshButtonFrame.origin.x = 10.0;
+    refreshButtonFrame.origin.x = 54.0f;
     self.refreshButton.frame = refreshButtonFrame;
-    [self.view addSubview:self.refreshButton];
+    [self.movableButtonsContainer addSubview:self.refreshButton];
     
     self.clearTextButton.alpha = 0.0;
     
@@ -172,8 +149,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.navigatioContainerView.userInteractionEnabled = YES;
     
-    // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
+    
+    // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
     CGRect containerViewFrame = self.containerViewController.view.frame;
     containerViewFrame.origin.y = 32.0;
@@ -182,7 +160,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.backButton.alpha = 0.0;
     
-    self.topButtonsContainer.userInteractionEnabled = YES;
+    self.movableButtonsContainer.userInteractionEnabled = YES;
     
     
     
@@ -346,6 +324,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
+-(void)sideNavigationSwiped
+{
+    [self hideSideNavigation];
+}
 
 - (void) hideSideNavigation
 {
@@ -634,6 +616,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Notification Handlers
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if ([keyPath isEqualToString:@"contentOffset"]) {
+        
+        CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
+        // NSLog(@"Change: %f", newContentOffset.x);
+        CGRect addButtonFrame;
+        CGFloat diff = newContentOffset.x - self.containerViewController.currentPageOffset.x;
+        SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
+        
+        if((nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton) ||
+           (!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)) {
+            
+            addButtonFrame = self.addToChannelButton.frame;
+            addButtonFrame.origin.x = originalAddButtonX - diff;
+            self.addToChannelButton.frame = addButtonFrame;
+        }
+    }
+}
+
 -(void)dotTapped:(UIGestureRecognizer*)recogniser
 {
     
@@ -676,23 +678,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (show)
     {
-        targetFrame = self.topButtonsContainer.frame;
-        targetFrame.origin.x = 15;
+        targetFrame = self.movableButtonsContainer.frame;
+        targetFrame.origin.x = 30.0;
         targetAlpha = 1.0;
     }
     else
     {
-        targetFrame = self.topButtonsContainer.frame;
-        targetFrame.origin.x = (-60);
+        targetFrame = self.movableButtonsContainer.frame;
+        targetFrame.origin.x = -44;
         targetAlpha = 0.0;
     }
     
-    [UIView animateWithDuration: 0.4f
+    [UIView animateWithDuration: 0.6f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
                      {
-                        self.topButtonsContainer.frame = targetFrame;
+                        self.movableButtonsContainer.frame = targetFrame;
                         self.backButton.alpha = targetAlpha;
                      }
                      completion: ^(BOOL finished)

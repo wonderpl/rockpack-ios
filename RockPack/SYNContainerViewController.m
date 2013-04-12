@@ -207,7 +207,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannel: [self.videoQueueController getChannelFromCurrentQueue]];
+        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
     }
 
@@ -219,7 +219,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child addToChannel: [self.videoQueueController getChannelFromCurrentQueue]];
+        [child addToChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
     }
 }

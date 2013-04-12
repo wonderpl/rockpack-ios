@@ -19,6 +19,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
+#import "SYNVideoQueueViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <XRay/XRay.h>
 
@@ -33,6 +34,9 @@
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
+
+@property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
+
 @end
 
 @implementation SYNAppDelegate
@@ -43,6 +47,7 @@
 - (BOOL) application:(UIApplication *) application
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
+    
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
     [self performSelector: @selector(installUncaughtExceptionHandler)
                withObject: nil
@@ -58,13 +63,20 @@
     
     
     
+    // == Video Queue View Controller == //
     
-    // == Get User and Check Token == //
+    self.videoQueueController = [[SYNVideoQueueViewController alloc] init];
     
     
     
-    // Set up network engine
+    
+    
+    
+    // == Network Engine == //
+    
     [self initializeNetworkEngines];
+    
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginCompleted:)
