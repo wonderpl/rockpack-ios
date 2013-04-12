@@ -49,7 +49,7 @@
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
-    standardFlowLayout.minimumLineSpacing = 0.0f;
+    standardFlowLayout.minimumLineSpacing = 10.0f;
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
