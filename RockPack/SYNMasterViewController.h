@@ -16,6 +16,7 @@
                                                        UITableViewDelegate>
 {
     SYNAppDelegate* appDelegate;
+    CGFloat originalAddButtonX;
 }
 
 

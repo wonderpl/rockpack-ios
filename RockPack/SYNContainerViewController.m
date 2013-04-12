@@ -46,8 +46,6 @@
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
 
 
-@property (nonatomic, readonly) UIScrollView* scrollView;
-
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
@@ -68,9 +66,13 @@
 @synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
-@dynamic scrollView;
-@dynamic page;
+@synthesize scrollingDirection;
+@synthesize currentPageOffset;
+@synthesize currentPage;
+
 @dynamic showingViewController;
+@dynamic page;
+@dynamic scrollView;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -187,6 +189,9 @@
     }
     
     self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
+    self.currentPageOffset = self.scrollView.contentOffset;
+    self.currentPage = self.page;
+    scrollingDirection = ScrollingDirectionNone;
 }
 
 
@@ -339,14 +344,28 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
+    if(self.currentPageOffset.x < self.scrollView.contentOffset.x - 8.0)
+    {
+        
+        scrollingDirection = ScrollingDirectionRight;
+    }
+    else if(self.currentPageOffset.x > self.scrollView.contentOffset.x + 8.0)
+    {
+        
+        scrollingDirection = ScrollingDirectionLeft;
+    }
+    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     
+    scrollingDirection = ScrollingDirectionNone;
     
     self.selectedViewController = self.viewControllers[self.page];
     
+    self.currentPageOffset = self.scrollView.contentOffset;
+    self.currentPage = self.page;
     
     [self.showingViewController viewCameToScrollFront];
 }
@@ -376,7 +395,18 @@
     }
     return controllerOnView;
 }
-
+-(SYNAbstractViewController*)nextShowingViewController
+{
+    UINavigationController* navigationController;
+    SYNAbstractViewController* controllerOnView;
+    if(self.scrollingDirection == ScrollingDirectionRight && (self.currentPage+1) < self.viewControllers.count) {
+        navigationController = self.viewControllers[(self.currentPage+1)];
+    } else if(self.scrollingDirection == ScrollingDirectionLeft && (self.currentPage-1) >= 0) {
+        navigationController = self.viewControllers[(self.currentPage-1)];
+    }
+    controllerOnView = (SYNAbstractViewController*)(navigationController.visibleViewController);
+    return controllerOnView;
+}
 -(void)setPage:(NSInteger)page
 {
     if(!self.scrollView.scrollEnabled)
@@ -385,6 +415,7 @@
     CGPoint newPoint = CGPointMake(page * 1024.0, 0.0);
     [self.scrollView setContentOffset:newPoint animated:YES];
 }
+
 
 
 -(NSInteger)page

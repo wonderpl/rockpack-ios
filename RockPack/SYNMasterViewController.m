@@ -42,6 +42,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
 
+
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
@@ -80,7 +81,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.containerViewController = root;
 
         
-        
         // == Side Navigation == //
         
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
@@ -110,6 +110,25 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if ([keyPath isEqualToString:@"contentOffset"]) {
+        
+        CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
+        // NSLog(@"Change: %f", newContentOffset.x);
+        CGRect addButtonFrame;
+        CGFloat diff = newContentOffset.x - self.containerViewController.currentPageOffset.x;
+        SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
+        
+        if((nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton) ||
+           (!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)) {
+            
+            addButtonFrame = self.addToChannelButton.frame;
+            addButtonFrame.origin.x = originalAddButtonX - diff;
+            self.addToChannelButton.frame = addButtonFrame;
+        } 
+    }
+}
 
 
 #pragma mark - Life Cycle
@@ -174,6 +193,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                     alpha:(1.0)];
     
     
+    // == Add to Channel Button == //
+    
+    originalAddButtonX = self.addToChannelButton.frame.origin.x;
     addToChannelFrame = self.addToChannelButton.frame;
     
     
@@ -209,6 +231,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigateToPage:) name:kNavigateToPage object:nil];
+    
+    
+    [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
     
     // Add swipe-away gesture
@@ -254,6 +279,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
         
     }
+    
+    originalAddButtonX = self.addToChannelButton.frame.origin.x;
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
 }
