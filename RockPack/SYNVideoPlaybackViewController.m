@@ -81,11 +81,8 @@
     // Start off by making our view transparent
     self.view.backgroundColor = kVideoBackgroundColour;
     
-    // Use for placeholder
-//    [self.view insertSubview: self.videoPlaybackViewController.view
-//                               aboveSubview: self.videoPlaceholderImageView];
-    
-    [self createNewVideoPlaceholderImageViews];
+    // Create view containing animated subviews for the animated placeholder (displayed whilst video is loading)
+    self.videoPlaceholderView = [self createNewVideoPlaceholderView];
     
     self.shuttleBarView = [self createShuttleBarView];
     
@@ -94,8 +91,6 @@
     
     // Add button that can be used to play video (if not autoplaying)
 //    self.videoPlayButton = [self createVideoPlayButton];
-    
-    self.currentVideoViewedFlag = FALSE;
 }
 
 
@@ -228,7 +223,6 @@
     timeLabelFrame.origin.y = 4;
 
     UILabel *timeLabel = [[UILabel alloc] initWithFrame: timeLabelFrame];
-//    timeLabel.text = @"0:00";
     timeLabel.textColor = [UIColor whiteColor];
     timeLabel.textAlignment = textAlignment;
     timeLabel.font = [UIFont boldRockpackFontOfSize: 12.0f];
@@ -240,13 +234,13 @@
 
 - (UIWebView *) createNewVideoWebView
 {
-    UIWebView *newVideoWebView;
-    newVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
+    UIWebView *newVideoWebView = [[UIWebView alloc] initWithFrame: self.view.bounds];
 
     newVideoWebView.backgroundColor = self.view.backgroundColor;
 	newVideoWebView.opaque = NO;
     newVideoWebView.alpha = 0.0f;
     newVideoWebView.autoresizingMask = UIViewAutoresizingNone;
+    
     // Stop the user from scrolling the webview
     newVideoWebView.scrollView.scrollEnabled = false;
     newVideoWebView.scrollView.bounces = false;
@@ -264,18 +258,22 @@
 }
 
 
-- (void) createNewVideoPlaceholderImageViews
+- (UIView *) createNewVideoPlaceholderView
 {
-    self.videoPlaceholderTopImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoTop"];
-    self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle"];
-    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom"];
+    self.videoPlaceholderTopImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoTop.png"];
+    self.videoPlaceholderMiddleImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoMiddle.png"];
+    self.videoPlaceholderBottomImageView = [self createNewVideoPlaceholderImageView: @"PlaceholderVideoBottom.png"];
     
     // Pop them in a view to keep them together
-    self.videoPlaceholderView = [[UIView alloc] initWithFrame: self.view.bounds];
+    UIView *videoPlaceholderView = [[UIView alloc] initWithFrame: self.view.bounds];
     
-    [self.videoPlaceholderView addSubview: self.videoPlaceholderBottomImageView];
-    [self.videoPlaceholderView addSubview: self.videoPlaceholderMiddleImageView];
-    [self.videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
+    [videoPlaceholderView addSubview: self.videoPlaceholderBottomImageView];
+    [videoPlaceholderView addSubview: self.videoPlaceholderMiddleImageView];
+    [videoPlaceholderView addSubview: self.videoPlaceholderTopImageView];
+    
+    [self.view addSubview: videoPlaceholderView];
+
+    return videoPlaceholderView;
 }
 
 
@@ -311,30 +309,48 @@
 
 #pragma mark - Placeholder Animation
 
+- (void) animateVideoPlaceholder: (BOOL) animate
+{
+    if (animate == TRUE)
+    {
+        // Start the animations
+        [self spinBottomPlaceholderImageView];
+        [self spinMiddlePlaceholderImageView];
+    }
+    else
+    {
+        // Stop the animations
+        [self.videoPlaceholderMiddleImageView.layer removeAllAnimations];
+        [self.videoPlaceholderMiddleImageView.layer removeAllAnimations];
+    }
+}
+
 - (void) spinMiddlePlaceholderImageView
 {
-    [self spinView: self.videoPlaceholderMiddleImageView
-     withAnimation: self.placeholderMiddleLayerAnimation
-          duration: kMiddlePlaceholderCycleTime
-         clockwise: TRUE];
+    self.placeholderMiddleLayerAnimation = [self spinView: self.videoPlaceholderMiddleImageView
+                                                 duration: kMiddlePlaceholderCycleTime
+                                                clockwise: TRUE
+                                                     name: kMiddlePlaceholderIdentifier];
 }
 
 
 - (void) spinBottomPlaceholderImageView
 {
-    [self spinView: self.videoPlaceholderMiddleImageView
-     withAnimation: self.placeholderMiddleLayerAnimation
-          duration: kBottomPlaceholderCycleTime
-         clockwise: TRUE];
+    self.placeholderBottomLayerAnimation = [self spinView: self.videoPlaceholderBottomImageView
+                                                 duration: kBottomPlaceholderCycleTime
+                                                clockwise: FALSE
+                                                     name: kBottomPlaceholderIdentifier];
 }
 
 
-- (void) spinView: (UIView *) placeholderView
-    withAnimation: (CABasicAnimation *) animation
-         duration: (float) cycleTime
-        clockwise: (BOOL) clockwise
+- (CABasicAnimation *) spinView: (UIView *) placeholderView
+                       duration: (float) cycleTime
+                      clockwise: (BOOL) clockwise
+                           name: (NSString *) name
  
 {
+    CABasicAnimation *animation;
+    
 	[CATransaction begin];
     
 	[CATransaction setValue: (id) kCFBooleanTrue
@@ -356,6 +372,10 @@
 	
 	animation = [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
     
+    // We need to use set an explict key, as the animation is copied and not the same in the callback
+    [animation setValue: name
+                 forKey: @"name"];
+    
     // Alter to/from to change spin direction
     if (clockwise)
     {
@@ -375,6 +395,8 @@
                                  forKey: @"rotationAnimation"];
 	
 	[CATransaction commit];
+    
+    return animation;
 }
 
 
@@ -386,7 +408,7 @@
 {
 	if (finished)
 	{
-        if (animation == self.placeholderMiddleLayerAnimation)
+        if ([[animation valueForKey: @"name"] isEqualToString: kMiddlePlaceholderIdentifier])
         {
             [self spinMiddlePlaceholderImageView];
         }
@@ -442,21 +464,6 @@
     return index;
 }
 
-// Hopefully depracated
-
-//- (void) setVideoWithSource: (NSString *) source
-//                   sourceId: (NSString *) sourceId
-//                   autoPlay: (BOOL) autoPlay
-//{
-//    // Init out ivars
-//    self.source = source;
-//    self.sourceId = sourceId;
-//    self.fetchedResultsController = nil;
-//    self.currentSelectedIndexPath = nil;
-//    self.autoPlay = autoPlay;
-//    
-//    [self loadCurrentVideoWebView];
-//}
 
 - (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
                                selectedIndexPath: (NSIndexPath *) selectedIndexPath
@@ -849,7 +856,6 @@
         }
         else if ([actionData isEqualToString: @"buffering"])
         {
-            
         }
         else if ([actionData isEqualToString: @"cued"])
         {
@@ -1075,7 +1081,6 @@
                                         forState: UIControlStateNormal];
         
         [self pauseVideoInWebView: self.currentVideoWebView];
-
     }
     else
     {
@@ -1084,7 +1089,6 @@
         
         [self playVideoInWebView: self.currentVideoWebView];
     }
-
 }
 
 
@@ -1138,6 +1142,7 @@
 - (void) fadeUpVideoPlayerInWebView: (UIWebView *) webView
 {
     [self fadeOutPlayButton];
+    [self animateVideoPlaceholder: NO];
     
     // Tweaked this as the QuickTime logo seems to appear otherwise
     [UIView animateWithDuration: 0.0f
@@ -1149,10 +1154,11 @@
                      completion: nil];
 }
 
-// Fades up the video player, fading out any placeholder
+// Fades out the video player, fading in any placeholder
 - (void) fadeOutVideoPlayerInWebView: (UIWebView *) webView
 {
-    [self fadeOutPlayButton];
+//    [self fadeOutPlayButton];
+    [self animateVideoPlaceholder: YES];
     
     // We need to remove immediately, as returns to start immediately
     webView.alpha = 0.0f;
