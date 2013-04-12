@@ -338,44 +338,22 @@
 }
 
 
-#pragma mark - Initialisation
+#pragma mark - UICollectionView Data Source Stubb
 
-- (NSInteger) collectionView: (UICollectionView *) cv
-      numberOfItemsInSection: (NSInteger) section
-{
-    return -1;
+- (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
+    return 0;
+}
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
+    
+    UICollectionViewCell *cell = nil;
+    // to be implemented by subview
+    return cell;
 }
 
 
-
-
-
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
-    
-    UICollectionViewCell *cell = nil;
-    
-    if (cv == self.videoThumbnailCollectionView)
-    {
-        // No, but it was our collection view
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-        
-        SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
-                                                                                      forIndexPath: indexPath];
-        
-        videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
-        videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
-        videoThumbnailCell.videoTitle.text = videoInstance.title;
-        videoThumbnailCell.channelName.text = videoInstance.channel.title;
-        videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
-        
-        
-        videoThumbnailCell.viewControllerDelegate = self;
-        
-        cell = videoThumbnailCell;
-    }
-
-    return cell;
+- (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath {
+    return NO;
 }
 
 -(void)refresh
@@ -384,14 +362,7 @@
 }
 
 
-- (BOOL) collectionView: (UICollectionView *) cv
-         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
-{
-    
-    return NO;
-}
-
-// Create a channel pressed
+#pragma mark - Channel Creation Methods
 
 - (void) createChannel:(Channel*)channel
 {
@@ -485,10 +456,6 @@
 }
 
 
-- (BOOL) pointInVideoQueue: (CGPoint) point
-{
-    return YES;
-}
 
 
 #pragma mark - Trace
@@ -538,6 +505,11 @@
 -(BOOL)showSubcategories
 {
     return YES;
+}
+
+-(BOOL)needsAddButton
+{
+    return NO;
 }
 
 @end
