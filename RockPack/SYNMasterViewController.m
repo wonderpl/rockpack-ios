@@ -119,15 +119,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         CGRect addButtonFrame;
         CGFloat diff = newContentOffset.x - self.containerViewController.currentPageOffset.x;
         SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
-        if(nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton) {
+        
+        if((nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton) ||
+           (!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)) {
+            
             addButtonFrame = self.addToChannelButton.frame;
             addButtonFrame.origin.x = originalAddButtonX - diff;
             self.addToChannelButton.frame = addButtonFrame;
-        } else if(!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton) {
-            addButtonFrame = self.addToChannelButton.frame;
-            addButtonFrame.origin.x = originalAddButtonX - diff;
-            self.addToChannelButton.frame = addButtonFrame;
-        }
+        } 
     }
 }
 
