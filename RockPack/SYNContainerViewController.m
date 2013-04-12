@@ -69,7 +69,9 @@
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
 @dynamic scrollView;
+@synthesize scrollingDirection;
 @dynamic page;
+@synthesize currentPageOffset;
 @dynamic showingViewController;
 
 // Initialise all the elements common to all 4 tabs
@@ -187,6 +189,8 @@
     }
     
     self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
+    self.currentPageOffset = self.scrollView.contentOffset;
+    scrollingDirection = ScrollingDirectionNone;
 }
 
 
@@ -339,14 +343,27 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
+    if(self.currentPageOffset.x < self.scrollView.contentOffset.x - 8.0)
+    {
+        
+        scrollingDirection = ScrollingDirectionRight;
+    }
+    else if(self.currentPageOffset.x > self.scrollView.contentOffset.x + 8.0)
+    {
+        
+        scrollingDirection = ScrollingDirectionLeft;
+    }
+    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     
+    scrollingDirection = ScrollingDirectionNone;
     
     self.selectedViewController = self.viewControllers[self.page];
     
+    self.currentPageOffset = self.scrollView.contentOffset;
     
     [self.showingViewController viewCameToScrollFront];
 }
