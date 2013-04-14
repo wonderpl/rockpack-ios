@@ -6,14 +6,15 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "SYNContainerViewController.h"
+#import "GAITrackedViewController.h"
 #import "SYNAppDelegate.h"
+#import "SYNContainerViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
-                                                       UITextFieldDelegate,
-                                                       UIGestureRecognizerDelegate,
-                                                       UITableViewDelegate>
+@interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
+                                                               UITextFieldDelegate,
+                                                               UIGestureRecognizerDelegate,
+                                                               UITableViewDelegate>
 {
     SYNAppDelegate* appDelegate;
 }

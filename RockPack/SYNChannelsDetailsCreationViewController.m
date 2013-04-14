@@ -18,6 +18,9 @@
 {
     [super viewDidLoad];
     
+    // Google Analytics support
+    self.trackedViewName = @"Channel Creation - Root";
+    
     // Hide buttons not used in channel creation
     self.editButton.hidden = YES;
     self.shareButton.hidden = YES;

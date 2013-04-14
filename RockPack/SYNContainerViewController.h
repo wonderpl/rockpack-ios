@@ -6,12 +6,13 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GAITrackedViewController.h"
+#import "SYNAbstractViewController.h"
 #import "SYNVideoQueueDelegate.h"
 #import "SYNVideoQueueViewController.h"
-#import "SYNAbstractViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
+@interface SYNContainerViewController : GAITrackedViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
 
 
 @property (nonatomic, weak) SYNVideoQueueViewController* videoQueueController;

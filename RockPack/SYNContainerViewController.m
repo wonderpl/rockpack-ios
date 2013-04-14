@@ -15,7 +15,7 @@
 #import "SYNChannelsRootViewController.h"
 #import "SYNChannelsUserViewController.h"
 #import "SYNFriendsRootViewController.h"
-#import "SYNHomeRootViewController.h"
+#import "SYNFeedRootViewController.h"
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
@@ -96,7 +96,7 @@
     
     // == Feed Page == //
     
-    SYNHomeRootViewController *feedRootViewController = [[SYNHomeRootViewController alloc] initWithViewId: @"Home"];
+    SYNFeedRootViewController *feedRootViewController = [[SYNFeedRootViewController alloc] initWithViewId: @"Home"];
     
     // == Videos Page == //
     
@@ -291,7 +291,6 @@
 }
 
 
-
 - (void) replaceShowingNavigationController:(UIViewController*)viewController
 {
     UINavigationController* showingNavController = [self showingViewController].navigationController;
@@ -313,25 +312,19 @@
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseIn
                      animations: ^{
-                         
                          showingNavController.view.alpha = 0.0;
-                         
-                         
-                     } completion: ^(BOOL finished) {
+                     }
+                     completion: ^(BOOL finished) {
                          self.selectedViewController = self.seachViewNavigationViewController;
                          
                          [UIView animateWithDuration: 0.7f
                                                delay: 0.2f
                                              options: UIViewAnimationOptionCurveEaseOut
                                           animations: ^{
-                                              
                                               viewController.view.alpha = 1.0;
-                                              
-                                          } completion:nil];
-                         
-                    }];
-    
-    
+                                          }
+                                          completion: nil];
+                     }];
 }
 
 #pragma mark - UIScrollViewDelegate

@@ -64,17 +64,19 @@ typedef enum {
     return self;
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
-    self.userNameLabel.font = [UIFont rockpackFontOfSize:20.0];
+    // Google Analytics support
+    self.trackedViewName = @"Navigation";
     
-    navItemColor = [UIColor colorWithRed:(40.0/255.0)
-                                   green:(45.0/255.0)
-                                    blue:(51.0/255.0)
-                                   alpha:(1.0)];
-   
+    self.userNameLabel.font = [UIFont rockpackFontOfSize: 20.0];
+    
+    navItemColor = [UIColor colorWithRed: (40.0/255.0)
+                                   green: (45.0/255.0)
+                                    blue: (51.0/255.0)
+                                   alpha: (1.0)];
 }
 
 #pragma mark - Button Actions
@@ -83,7 +85,6 @@ typedef enum {
 {
     
 }
-
 
 
 #pragma mark - UITableView Deleagate

@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
+#import "SYNCategoriesTabView.h"
+#import "SYNTabView.h"
+#import "SYNTabViewDelegate.h"
 #import <UIKit/UIKit.h>
 
-#import "SYNTabViewDelegate.h"
-#import "SYNTabView.h"
-#import "SYNCategoriesTabView.h"
-
-@interface SYNTabViewController : UIViewController <SYNTabViewDelegate> 
+@interface SYNTabViewController : GAITrackedViewController <SYNTabViewDelegate>
 
 
 @property (nonatomic, weak) id <SYNTabViewDelegate> delegate;

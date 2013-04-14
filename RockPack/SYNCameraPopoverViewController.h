@@ -6,9 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNCameraPopoverViewController : UIViewController
+@interface SYNCameraPopoverViewController : GAITrackedViewController
 
 @property (nonatomic, assign) id delegate;
 

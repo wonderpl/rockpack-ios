@@ -6,9 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsDOB : UIViewController
+@interface SYNAccountSettingsDOB : GAITrackedViewController
 
 @property (nonatomic, strong) UIDatePicker* datePicker;
 

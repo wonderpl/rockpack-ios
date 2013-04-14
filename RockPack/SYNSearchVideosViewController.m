@@ -19,15 +19,38 @@
 
 @interface SYNSearchVideosViewController ()
 
-
 @end
-
-
 
 @implementation SYNSearchVideosViewController
 
 @synthesize itemToUpdate;
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.trackedViewName = @"Search - Videos";
+    
+    // override the data loading
+    
+    self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
+                                                           self.videoThumbnailCollectionView.center.y + 30.0);
+    
+    self.largeVideoPanelView.center = CGPointMake(self.largeVideoPanelView.center.x,
+                                                  self.largeVideoPanelView.center.y + 30.0);
+}
+
+// FIXME: Should there be a call to super in these methods?
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    //override with empty function
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    // override with empty function
+}
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -90,31 +113,6 @@
     [self reloadCollectionViews];
     
 }
-
--(void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    // override the data loading
-    
-    self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
-                                                           self.videoThumbnailCollectionView.center.y + 30.0);
-    
-    self.largeVideoPanelView.center = CGPointMake(self.largeVideoPanelView.center.x,
-                                                  self.largeVideoPanelView.center.y + 30.0);
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    //override with empty function
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    // override with empty function
-}
-
-
 
 
 #pragma mark - Collection View Delegate

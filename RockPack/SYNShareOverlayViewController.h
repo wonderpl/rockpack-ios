@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNShareOverlayViewController : UIViewController
+@interface SYNShareOverlayViewController : GAITrackedViewController
 
 @end

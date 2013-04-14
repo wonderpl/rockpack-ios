@@ -16,8 +16,19 @@
 @implementation SYNChannelsUserViewController
 
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Google Analytics support
+    self.trackedViewName = @"Channels - User";
+    
+    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
+                                                             self.channelThumbnailCollectionView.center.y + 70.0);
+}
 
-- (NSFetchedResultsController *)fetchedResultsController
+
+- (NSFetchedResultsController *) fetchedResultsController
 {
     
     if (fetchedResultsController != nil)
@@ -47,40 +58,32 @@
     return fetchedResultsController;
 }
 
--(void)fetchUserChannels:(ChannelOwner *)channelOwner
+
+- (void) fetchUserChannels: (ChannelOwner *) channelOwner
 {
     owner = channelOwner;
     
+    [appDelegate.searchRegistry clearImportContextFromEntityName: @"Channel"];
     
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
-    
-    [appDelegate.networkEngine userPublicChannelsByOwner:owner];
+    [appDelegate.networkEngine userPublicChannelsByOwner: owner];
     
     SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
-    [userTabViewController setOwner:owner];
+    [userTabViewController setOwner: owner];
 }
 
--(void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    
-    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
-                                                             self.channelThumbnailCollectionView.center.y + 70.0);
-}
+
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
-    
     [self reloadCollectionViews];
-    
 }
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    // override the data loading
+    [super viewWillAppear: animated];
     
+    // override the data loading
 }
 
 @end

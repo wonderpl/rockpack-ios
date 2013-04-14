@@ -27,6 +27,9 @@
 {
     [super viewDidLoad];
     
+    // Google Analytics support
+    self.trackedViewName = @"Channel Creation - Choose Category";
+    
     // Set custom fonts
     self.header.font = [UIFont boldRockpackFontOfSize: 28.0f];
     self.body.font = [UIFont rockpackFontOfSize: 17.0f];

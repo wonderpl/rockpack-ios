@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "ChannelOwner.h"
+#import "GAI.h"
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
@@ -44,9 +45,22 @@
          didFinishLaunchingWithOptions: (NSDictionary *) launchOptions
 {
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
-    [self performSelector: @selector(installUncaughtExceptionHandler)
-               withObject: nil
-               afterDelay: 0];
+//    [self performSelector: @selector(installUncaughtExceptionHandler)
+//               withObject: nil
+//               afterDelay: 0];
+    
+    // Automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval 
+    [GAI sharedInstance].dispatchInterval = 30;
+    
+    // Set debug to YES to enable  extra debugging information.
+    [GAI sharedInstance].debug = YES;
+    
+    // Create tracker instance.
+    [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
+    
     
     // Se up core data
     [self initializeCoreDataStack];

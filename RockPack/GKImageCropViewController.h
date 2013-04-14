@@ -6,11 +6,13 @@
 //  Copyright (c) 2012 Aurora Apps. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
 @protocol GKImageCropControllerDelegate;
 
-@interface GKImageCropViewController : UIViewController{
+@interface GKImageCropViewController : GAITrackedViewController
+{
     UIImage *_croppedImage;
 }
 

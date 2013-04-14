@@ -28,6 +28,9 @@
 {
     [super viewDidLoad];
     
+    // Google Analytics support
+    self.trackedViewName = @"Channels - Detail";
+    
     // Show edit and share buttons
     
     if (![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
