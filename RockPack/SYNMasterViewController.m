@@ -16,6 +16,7 @@
 #import "SYNSoundPlayer.h"
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNContainerViewController.h"
+#import "SYNBackButtonControl.h"
 
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
@@ -31,7 +32,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
 
-@property (nonatomic, strong) IBOutlet UIButton* backButton;
+@property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
+
 @property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
 @property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
@@ -158,7 +160,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.containerViewController.view.frame = containerViewFrame;
     [self.containerView addSubview:containerViewController.view];
     
-    self.backButton.alpha = 0.0;
+    
+    // == Back Button == //
+    
+    self.backButtonControl = [SYNBackButtonControl backButton];
+    [self.movableButtonsContainer addSubview:self.backButtonControl];
+    self.backButtonControl.alpha = 0.0;
     
     self.movableButtonsContainer.userInteractionEnabled = YES;
     
@@ -649,12 +656,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
-        [self.backButton addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonControl addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:YES];
     }
     else
     {
-        [self.backButton removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonControl removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:NO];
     }
 }
@@ -695,7 +702,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      animations: ^
                      {
                         self.movableButtonsContainer.frame = targetFrame;
-                        self.backButton.alpha = targetAlpha;
+                        self.backButtonControl.alpha = targetAlpha;
                      }
                      completion: ^(BOOL finished)
                      {
@@ -802,5 +809,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                addToChannelFrame.size.width,
                                                addToChannelFrame.size.height);
 }
+
+
 
 @end

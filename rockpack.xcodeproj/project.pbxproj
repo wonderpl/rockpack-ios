@@ -649,6 +649,7 @@
 		BE7D354717170F540085AB81 /* ButtonRefreshSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7D354117170F540085AB81 /* ButtonRefreshSelected@2x.png */; };
 		BE7D354C1718667F0085AB81 /* SYNUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D354A1718667F0085AB81 /* SYNUserProfileViewController.m */; };
 		BE7D354D1718667F0085AB81 /* SYNUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D354B1718667F0085AB81 /* SYNUserProfileViewController.xib */; };
+		BE7D3551171870780085AB81 /* SYNBackButtonControl.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3550171870780085AB81 /* SYNBackButtonControl.m */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1461,6 +1462,8 @@
 		BE7D35491718667F0085AB81 /* SYNUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNUserProfileViewController.h; sourceTree = "<group>"; };
 		BE7D354A1718667F0085AB81 /* SYNUserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNUserProfileViewController.m; sourceTree = "<group>"; };
 		BE7D354B1718667F0085AB81 /* SYNUserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNUserProfileViewController.xib; sourceTree = "<group>"; };
+		BE7D354F171870780085AB81 /* SYNBackButtonControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBackButtonControl.h; sourceTree = "<group>"; };
+		BE7D3550171870780085AB81 /* SYNBackButtonControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBackButtonControl.m; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -3224,6 +3227,15 @@
 			name = "User Profile Panel";
 			sourceTree = "<group>";
 		};
+		BE7D354E1718704C0085AB81 /* Back Button */ = {
+			isa = PBXGroup;
+			children = (
+				BE7D354F171870780085AB81 /* SYNBackButtonControl.h */,
+				BE7D3550171870780085AB81 /* SYNBackButtonControl.m */,
+			);
+			name = "Back Button";
+			sourceTree = "<group>";
+		};
 		BE95B90016CBAAD500EC2E72 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -3269,6 +3281,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE7D354E1718704C0085AB81 /* Back Button */,
 				BE7D3548171866550085AB81 /* User Profile Panel */,
 				BE7D3538171708E20085AB81 /* Refresh Button */,
 				BE03A69016F7457900245314 /* Account Settings */,
@@ -4062,6 +4075,7 @@
 				BE7D35051715CE450085AB81 /* SYNRockpackNotification.m in Sources */,
 				BE7D353B171708F60085AB81 /* SYNRefreshButton.m in Sources */,
 				BE7D354C1718667F0085AB81 /* SYNUserProfileViewController.m in Sources */,
+				BE7D3551171870780085AB81 /* SYNBackButtonControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
