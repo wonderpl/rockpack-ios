@@ -179,7 +179,7 @@
         
         vc.view.frame = currentVCRect;
         
-        [self.scrollView addSubview:vc.view];
+        [self addChildViewController:vc];
         
         currentVCOffset += self.currentScreenOffset;
     }
@@ -190,6 +190,12 @@
     scrollingDirection = ScrollingDirectionNone;
 }
 
+-(void)addChildViewController:(UIViewController *)childController
+{
+    [super addChildViewController:childController];
+    
+    [self.scrollView addSubview:childController.view];
+}
 
 
 -(void)backButtonShow:(NSNotification*)notification
