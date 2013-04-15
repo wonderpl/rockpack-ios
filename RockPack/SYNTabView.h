@@ -23,5 +23,6 @@
 
 -(void)setSelectedWithId:(NSString*)selectedId;
 
+-(void)refreshViewForOrientation:(UIInterfaceOrientation)orientation;
 
 @end

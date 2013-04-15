@@ -30,4 +30,6 @@ typedef enum {
 
 -(void)makeStandard;
 
+-(void)resizeForOrientation:(UIInterfaceOrientation)orientation;
+
 @end
