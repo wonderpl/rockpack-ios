@@ -108,14 +108,14 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear: animated];
+    [super viewWillAppear:animated];
     
     if(!self.tabViewController)
         return;
     
-    SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
-    [userTabViewController setOwner:appDelegate.currentUser];
+    // TODO: Put Owner Data in the Profile Panel
 }
+
 
 
 - (NSFetchedResultsController *) fetchedResultsController
@@ -163,19 +163,6 @@
     [appDelegate logout];
 }
 
-<<<<<<< HEAD
-
-=======
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if(!self.tabViewController)
-        return;
-    
-    // TODO: Put Owner Data in the Profile Panel
-}
->>>>>>> origin/develop
 
 -(void)showAccountSettingsPopover
 {
