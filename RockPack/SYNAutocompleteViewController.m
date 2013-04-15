@@ -22,6 +22,7 @@
 @property (nonatomic, strong) UITextField* searchTextField;
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic) CGRect originalFrame;
 
 
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
@@ -32,6 +33,7 @@
 
 @synthesize searchTextField;
 @synthesize appDelegate;
+@synthesize originalFrame;
 
 
 -(void)loadView
@@ -47,6 +49,7 @@
                                                                 autocompletePanel.frame.size.height - kGrayPanelBorderWidth * 2)];
     
     grayPanel.backgroundColor = [UIColor lightGrayColor];
+    grayPanel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [autocompletePanel addSubview:grayPanel];
     
     
@@ -65,6 +68,7 @@
     
     
 }
+
 
 - (void)viewDidLoad
 {
@@ -188,11 +192,20 @@
 
 -(void)resizeTableView
 {
+    originalFrame = self.view.frame;
+    
     CGRect tableViewFrame = self.autoSuggestionController.tableView.frame;
-    tableViewFrame.size.height = 200.0;
+    tableViewFrame.origin.x = kGrayPanelBorderWidth;
+    if(tableViewFrame.size.height < 180.0) {
+        
+    } else {
+        
+    }
+    tableViewFrame.size.height = tableViewFrame.size.height < 180.0 ? tableViewFrame.size.height : 200.0;
+    tableViewFrame.size.width = self.view.frame.size.width - kGrayPanelBorderWidth;
     self.autoSuggestionController.tableView.frame = tableViewFrame;
     CGRect selfFrame = self.view.frame;
-    selfFrame.size.height = selfFrame.size.height + tableViewFrame.size.height;
+    selfFrame.size.height = selfFrame.size.height + tableViewFrame.origin.y + tableViewFrame.size.height;
     self.view.frame = selfFrame;
 }
 
@@ -202,7 +215,7 @@
     if ([self.searchTextField.text isEqualToString:@""])
         return NO;
     
-    [self.autocompleteTimer invalidate];
+    [self.autocompleteTimer invalidate];    
     self.autocompleteTimer = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kSearchTyped object:self];
@@ -214,11 +227,13 @@
     return YES;
 }
 
--(void)textFieldDidBeginEditing:(UITextField *)textField {
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
     
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField {
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
     
 }
 
@@ -229,6 +244,9 @@
 {
     NSString* wordsSelected = [self.autoSuggestionController getWordAtIndex: indexPath.row];
     self.searchTextField.text = wordsSelected;
+    
+    self.view.frame = originalFrame;
+    self.autoSuggestionController.view.alpha = 0.0;
     
     [self textFieldShouldReturn: self.searchTextField];
 }

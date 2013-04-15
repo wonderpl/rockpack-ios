@@ -91,6 +91,8 @@
         
         cell.contentView.backgroundColor = [UIColor clearColor];
         
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         cell.backgroundColor = [UIColor clearColor];
         
         
