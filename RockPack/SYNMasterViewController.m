@@ -633,7 +633,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if ([keyPath isEqualToString:@"contentOffset"]) {
         
         CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
-        // NSLog(@"Change: %f", newContentOffset.x);
+        
         CGRect addButtonFrame;
         CGFloat diff = newContentOffset.x - self.containerViewController.currentPageOffset.x;
         SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
