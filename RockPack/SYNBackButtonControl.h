@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SYNBackButtonControl : UIControl {
-    UIButton* overButton;
-    UIImageView* arrowImageView;
+    UIButton* button;
     UIView* titleBGView;
     UILabel* titleLabel;
 }

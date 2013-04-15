@@ -26,6 +26,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#define kMovableViewOffX -58
 #define kAutocompleteTime 0.2
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
@@ -124,10 +125,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Refresh button == //
     
+    CGRect movableViewFrame = self.movableButtonsContainer.frame;
+    movableViewFrame.origin.x = kMovableViewOffX;
+    self.movableButtonsContainer.frame = movableViewFrame;
+    
     self.refreshButton = [SYNRefreshButton refreshButton];
     [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = 54.0f;
+    refreshButtonFrame.origin.x = 70.0f;
     self.refreshButton.frame = refreshButtonFrame;
     [self.movableButtonsContainer addSubview:self.refreshButton];
     
@@ -686,13 +691,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (show)
     {
         targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = 30.0;
+        targetFrame.origin.x = 14.0;
         targetAlpha = 1.0;
     }
     else
     {
         targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = -44;
+        targetFrame.origin.x = kMovableViewOffX;
         targetAlpha = 0.0;
     }
     
