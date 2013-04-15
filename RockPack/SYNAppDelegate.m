@@ -35,13 +35,10 @@
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
-<<<<<<< HEAD
 @property (nonatomic, strong) NSString *userAgentString;
-=======
 
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
->>>>>>> origin/develop
 @end
 
 @implementation SYNAppDelegate
@@ -103,11 +100,6 @@
     // == Video Queue View Controller == //
     
     self.videoQueueController = [[SYNVideoQueueViewController alloc] init];
-    
-    
-    
-    
-    
     
     // == Network Engine == //
     
