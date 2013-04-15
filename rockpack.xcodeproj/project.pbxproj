@@ -588,6 +588,10 @@
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
 		BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */; };
+		BE2D213F171C527B00B4B755 /* ButtonBackLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */; };
+		BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */; };
+		BE2D2141171C527B00B4B755 /* ButtonBackLabelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */; };
+		BE2D2142171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */; };
 		BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */; };
 		BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */; };
 		BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */; };
@@ -1389,6 +1393,10 @@
 		BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchRootViewController.m; sourceTree = "<group>"; };
 		BE29A33016DE8CAE00C00F92 /* SYNSearchChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchChannelsViewController.h; sourceTree = "<group>"; };
 		BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchChannelsViewController.m; sourceTree = "<group>"; };
+		BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBackLabel.png; path = Assets/Images/ButtonBackLabel.png; sourceTree = "<group>"; };
+		BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabel@2x.png"; path = "Assets/Images/ButtonBackLabel@2x.png"; sourceTree = "<group>"; };
+		BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBackLabelHighlighted.png; path = Assets/Images/ButtonBackLabelHighlighted.png; sourceTree = "<group>"; };
+		BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabelHighlighted@2x.png"; path = "Assets/Images/ButtonBackLabelHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLargeVideoPanelViewController.h; sourceTree = "<group>"; };
 		BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLargeVideoPanelViewController.m; sourceTree = "<group>"; };
 		BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLargeVideoPanelViewController.xib; sourceTree = "<group>"; };
@@ -3204,6 +3212,10 @@
 				BE7D352F171700010085AB81 /* ButtonAddToChannelInactiveHighlighted@2x.png */,
 				BE7D34EC1715AD060085AB81 /* ButtonNav.png */,
 				BE7D34ED1715AD060085AB81 /* ButtonNav@2x.png */,
+				BE2D213B171C527A00B4B755 /* ButtonBackLabel.png */,
+				BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */,
+				BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */,
+				BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */,
 			);
 			name = "Master Panel";
 			sourceTree = "<group>";
@@ -3888,6 +3900,10 @@
 				BE7D354617170F540085AB81 /* ButtonRefreshSelected.png in Resources */,
 				BE7D354717170F540085AB81 /* ButtonRefreshSelected@2x.png in Resources */,
 				BE7D354D1718667F0085AB81 /* SYNUserProfileViewController.xib in Resources */,
+				BE2D213F171C527B00B4B755 /* ButtonBackLabel.png in Resources */,
+				BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */,
+				BE2D2141171C527B00B4B755 /* ButtonBackLabelHighlighted.png in Resources */,
+				BE2D2142171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

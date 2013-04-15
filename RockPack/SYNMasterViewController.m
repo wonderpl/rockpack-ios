@@ -663,7 +663,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
         [self.backButtonControl addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
-       
+        [self.backButtonControl setBackTitle:self.pageTitleLabel.text];
         [self showBackButton:YES];
     }
     else
@@ -694,7 +694,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (show)
     {
         targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = 14.0;
+        targetFrame.origin.x = 8.0;
         targetAlpha = 1.0;
     }
     else
@@ -713,6 +713,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.dotsView.alpha = !targetAlpha;
+                         self.refreshButton.alpha = !targetAlpha;
                      }
                      completion: ^(BOOL finished)
                      {
