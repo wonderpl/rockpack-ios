@@ -168,6 +168,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
 }
 
 
@@ -218,6 +219,12 @@
 -(void)backButtonShow:(NSNotification*)notification
 {
     self.scrollView.scrollEnabled = NO;
+}
+
+-(void)backButtonHide:(NSNotification*)notification
+{
+    
+    
 }
 
 - (void) createChannelFromVideoQueue

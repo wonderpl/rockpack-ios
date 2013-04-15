@@ -11,16 +11,27 @@
 
 @implementation SYNBackButtonControl
 
+
+
 -(id)init
 {
     if (self = [super init])
     {
         
-        // == Back Button == //
         
         
-        arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ButtonBackHighlighted"]];
-        [self addSubview:arrowImageView];
+        
+        // == Over Button == //
+        
+        UIImage* normalImage = [UIImage imageNamed:@"ButtonBack"];
+        UIImage* highImage = [UIImage imageNamed:@"ButtonBackHighlighted"];
+        
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setImage:normalImage forState:UIControlStateNormal];
+        [button setImage:highImage forState:UIControlStateHighlighted];
+        button.enabled = YES;
+        button.frame = CGRectMake(0.0, 0.0, normalImage.size.width, normalImage.size.height);
+        [self addSubview:button];
         
         
         // == UIView == //
@@ -28,8 +39,8 @@
         titleBGView = [[UIView alloc] init];
         titleBGView.backgroundColor = [UIColor whiteColor];
         CGRect titleBGRect = CGRectZero;
-        titleBGRect.origin.x = arrowImageView.frame.size.width;
-        titleBGRect.size.height = arrowImageView.frame.size.height;
+        titleBGRect.origin.x = button.frame.size.width;
+        titleBGRect.size.height = button.frame.size.height;
         titleBGView.frame = titleBGRect;
         
         // == UILabel == //
@@ -45,11 +56,9 @@
         titleLabel.backgroundColor = [UIColor clearColor];
         [titleBGView addSubview:titleLabel];
         
-        // == Over Button == //
+        self.frame = button.frame;
         
-        overButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        overButton.backgroundColor = [UIColor clearColor];
-        [self addSubview:overButton];
+        
         
     }
     
@@ -61,17 +70,17 @@
 
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
 {
-    [overButton addTarget:target action:action forControlEvents:controlEvents];
+    [button addTarget:target action:action forControlEvents:controlEvents];
 }
 
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
 {
-    [overButton removeTarget:target action:action forControlEvents:controlEvents];
+    [button removeTarget:target action:action forControlEvents:controlEvents];
 }
 
 - (NSArray *)actionsForTarget:(id)target forControlEvent:(UIControlEvents)controlEvent
 {
-    return [overButton actionsForTarget:target forControlEvent:controlEvent];
+    return [button actionsForTarget:target forControlEvent:controlEvent];
 }
 
 #pragma mark - Set the Title Methods
@@ -89,12 +98,12 @@
     titleBGView.frame = titleBGFrame;
     
     CGSize totalSize = CGSizeZero;
-    totalSize.width = arrowImageView.frame.size.width + titleBGView.frame.size.width;
-    totalSize.height = arrowImageView.frame.size.height;
+    totalSize.width = button.frame.size.width + titleBGView.frame.size.width;
+    totalSize.height = button.frame.size.height;
     
     CGRect overButtonFrame = CGRectZero;
     overButtonFrame.size = totalSize;
-    overButton.frame = overButtonFrame;
+    button.frame = overButtonFrame;
 }
 
 
