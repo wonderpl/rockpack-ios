@@ -20,8 +20,6 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabViewController.h"
-#import "SYNUserTabView.h"
-#import "SYNUserTabViewController.h"
 #import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -37,7 +35,7 @@
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
-@property (nonatomic, copy) NSArray *viewControllers;
+
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
@@ -45,8 +43,6 @@
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
 
-
-@property (nonatomic, readonly) UIScrollView* scrollView;
 
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
@@ -68,9 +64,13 @@
 @synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
-@dynamic scrollView;
-@dynamic page;
+@synthesize scrollingDirection;
+@synthesize currentPageOffset;
+@synthesize currentPage;
+
 @dynamic showingViewController;
+@dynamic page;
+@dynamic scrollView;
 
 // Initialise all the elements common to all 4 tabs
 
@@ -81,6 +81,7 @@
 {
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.delegate = self;
     scrollView.pagingEnabled = YES;
@@ -107,11 +108,11 @@
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: @"Channels"];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
+    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     
     // == You Page == //
     
     SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
-    myRockpackViewController.tabViewController = [[SYNUserTabViewController alloc] init];
     
     // == Friends Page == //
     
@@ -132,7 +133,6 @@
     // == Channels User (out of normal controller array)
     
     self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannels"];
-    self.channelsUserViewController.tabViewController = [[SYNUserTabViewController alloc] init];
     self.channelsUserNavigationViewController = [self wrapInNavigationController:self.channelsUserViewController];
     
     
@@ -145,55 +145,88 @@
     
     // == Populate Scroller == //
     
-    NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
+//    NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
     UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
     feedNavController.view.frame = CGRectMake (0.0, 60.0, 1024, 686);
-    [allControllers addObject:feedNavController];
-    [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
-    [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
+    feedNavController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
+//    [allControllers addObject:feedNavController];
+//    [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
+//    [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
+//    
+    [self addChildViewController:feedNavController];
+    [self addChildViewController:[self wrapInNavigationController:channelsRootViewController]];
+    channelsRootViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
+    [self addChildViewController:[self wrapInNavigationController:myRockpackViewController]];
+    myRockpackViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
     
-    self.viewControllers = [NSArray arrayWithArray:allControllers];
     
-    [self packViews];
+    [self packViewControllersForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     
-    self.selectedViewController = self.viewControllers[0];
+    self.selectedViewController = self.childViewControllers[0];
     
     
     // == Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
 }
 
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
+}
 
 #pragma mark - Placement of Views
 
--(void)packViews
+-(void)packViewControllersForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    // TODO: Scan for orientation
-    
-    CGFloat currentVCOffset = 0.0;
-    CGRect currentVCRect;
-    for (UIViewController * vc in self.viewControllers)
+    CGRect newFrame;
+    if(UIInterfaceOrientationIsLandscape(orientation))
     {
-        currentVCRect = vc.view.frame;
-        currentVCRect.origin.x = currentVCOffset;
-        
-        vc.view.frame = currentVCRect;
-        
-        [self.scrollView addSubview:vc.view];
-        
-        currentVCOffset += self.currentScreenOffset;
+        newFrame = CGRectMake(0.0f, 0.0f, 1024.0f, 748.0f);
+    }
+    else
+    {
+        newFrame = CGRectMake(0.0, 0.0f, 768.0f, 1004.0f);
     }
     
-    self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
+    for(UIViewController* controller in self.childViewControllers)
+    {
+        controller.view.frame = newFrame;
+        newFrame.origin.x += newFrame.size.width;
+    }
+    
+    self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
+    self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
+    [self.scrollView setContentOffset:self.currentPageOffset];
+    self.currentPage = self.page;
+    scrollingDirection = ScrollingDirectionNone;
 }
 
+-(void)addChildViewController:(UIViewController *)childController
+{
+    [childController willMoveToParentViewController:self];
+    
+    [super addChildViewController:childController];
+    
+    [self.scrollView addSubview:childController.view];
+    
+    [childController didMoveToParentViewController:self];
+}
 
 
 -(void)backButtonShow:(NSNotification*)notification
 {
     self.scrollView.scrollEnabled = NO;
+}
+
+-(void)backButtonHide:(NSNotification*)notification
+{
+    
+    
 }
 
 - (void) createChannelFromVideoQueue
@@ -202,7 +235,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannel: [self.videoQueueController getChannelFromCurrentQueue]];
+        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
     }
 
@@ -214,7 +247,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child addToChannel: [self.videoQueueController getChannelFromCurrentQueue]];
+        [child addToChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
     }
 }
@@ -249,7 +282,7 @@
 -(void) navigateToPageByName:(NSString*)pageName
 {
     int page = 0;
-    for (UINavigationController* nvc in self.viewControllers)
+    for (UINavigationController* nvc in self.childViewControllers)
     {
         if([pageName isEqualToString:nvc.title]) {
             [self setPage:page];
@@ -332,14 +365,28 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
+    if(self.currentPageOffset.x < self.scrollView.contentOffset.x - 8.0)
+    {
+        
+        scrollingDirection = ScrollingDirectionRight;
+    }
+    else if(self.currentPageOffset.x > self.scrollView.contentOffset.x + 8.0)
+    {
+        
+        scrollingDirection = ScrollingDirectionLeft;
+    }
+    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     
+    scrollingDirection = ScrollingDirectionNone;
     
-    self.selectedViewController = self.viewControllers[self.page];
+    self.selectedViewController = self.childViewControllers[self.page];
     
+    self.currentPageOffset = self.scrollView.contentOffset;
+    self.currentPage = self.page;
     
     [self.showingViewController viewCameToScrollFront];
 }
@@ -369,7 +416,18 @@
     }
     return controllerOnView;
 }
-
+-(SYNAbstractViewController*)nextShowingViewController
+{
+    UINavigationController* navigationController;
+    SYNAbstractViewController* controllerOnView;
+    if(self.scrollingDirection == ScrollingDirectionRight && (self.currentPage+1) < self.childViewControllers.count) {
+        navigationController = self.childViewControllers[(self.currentPage+1)];
+    } else if(self.scrollingDirection == ScrollingDirectionLeft && (self.currentPage-1) >= 0) {
+        navigationController = self.childViewControllers[(self.currentPage-1)];
+    }
+    controllerOnView = (SYNAbstractViewController*)(navigationController.visibleViewController);
+    return controllerOnView;
+}
 -(void)setPage:(NSInteger)page
 {
     if(!self.scrollView.scrollEnabled)
@@ -380,10 +438,11 @@
 }
 
 
+
 -(NSInteger)page
 {
     CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
-    int pageWidth = (int)self.scrollView.contentSize.width / self.viewControllers.count;
+    int pageWidth = (int)self.scrollView.contentSize.width / self.childViewControllers.count;
     NSInteger page = (currentScrollerOffset / pageWidth); // 0 indexed
     return page;
     

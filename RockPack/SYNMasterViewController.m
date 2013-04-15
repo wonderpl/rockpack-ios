@@ -16,6 +16,7 @@
 #import "SYNSoundPlayer.h"
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNContainerViewController.h"
+#import "SYNBackButtonControl.h"
 
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
@@ -25,13 +26,15 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#define kMovableViewOffX -58
 #define kAutocompleteTime 0.2
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
 
-@property (nonatomic, strong) IBOutlet UIButton* backButton;
+@property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
+
 @property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
 @property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
@@ -40,7 +43,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView* topButtonsContainer;
+@property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
+
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
@@ -78,8 +82,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         self.containerViewController = root;
+        [self addChildViewController:root];
 
-        
         
         // == Side Navigation == //
         
@@ -112,12 +116,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
+
 #pragma mark - Life Cycle
 
--(void)sideNavigationSwiped
-{
-    [self hideSideNavigation];
-}
 
 - (void)viewDidLoad
 {
@@ -125,13 +126,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Refresh button == //
     
+    CGRect movableViewFrame = self.movableButtonsContainer.frame;
+    movableViewFrame.origin.x = kMovableViewOffX;
+    self.movableButtonsContainer.frame = movableViewFrame;
+    
     self.refreshButton = [SYNRefreshButton refreshButton];
     [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.y = 10.0;
-    refreshButtonFrame.origin.x = 10.0;
+    refreshButtonFrame.origin.x = 70.0f;
     self.refreshButton.frame = refreshButtonFrame;
-    [self.view addSubview:self.refreshButton];
+    [self.movableButtonsContainer addSubview:self.refreshButton];
     
     self.clearTextButton.alpha = 0.0;
     
@@ -153,17 +157,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.navigatioContainerView.userInteractionEnabled = YES;
     
-    // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
+    
+    // == Add the Root Controller which will contain all others (Tabs in our case) == //
     
     CGRect containerViewFrame = self.containerViewController.view.frame;
     containerViewFrame.origin.y = 32.0;
     self.containerViewController.view.frame = containerViewFrame;
     [self.containerView addSubview:containerViewController.view];
     
-    self.backButton.alpha = 0.0;
     
-    self.topButtonsContainer.userInteractionEnabled = YES;
+    // == Back Button == //
+    
+    self.backButtonControl = [SYNBackButtonControl backButton];
+    [self.movableButtonsContainer addSubview:self.backButtonControl];
+    self.backButtonControl.alpha = 0.0;
+    
+    self.movableButtonsContainer.userInteractionEnabled = YES;
     
     
     
@@ -174,6 +184,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                     alpha:(1.0)];
     
     
+    // == Add to Channel Button == //
+    
+    originalAddButtonX = self.addToChannelButton.frame.origin.x;
     addToChannelFrame = self.addToChannelButton.frame;
     
     
@@ -209,6 +222,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigateToPage:) name:kNavigateToPage object:nil];
+    
+    
+    [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
     
     // Add swipe-away gesture
@@ -254,6 +270,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
         
     }
+    
+    originalAddButtonX = self.addToChannelButton.frame.origin.x;
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
 }
@@ -319,6 +337,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
+-(void)sideNavigationSwiped
+{
+    [self hideSideNavigation];
+}
 
 - (void) hideSideNavigation
 {
@@ -426,6 +448,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.categoryChooserViewController = [[SYNCategoryChooserViewController alloc] init];
     
     [self.overlayView addSubview: self.categoryChooserViewController.view];
+    [originViewController addChildViewController:self.categoryChooserViewController];
     
     self.categoryChooserViewController.view.alpha = 0.0f;
     self.categoryChooserViewController.overlayParent = self;
@@ -607,6 +630,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Notification Handlers
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if ([keyPath isEqualToString:@"contentOffset"]) {
+        
+        CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
+        
+        CGRect addButtonFrame;
+        CGFloat diff = newContentOffset.x - self.containerViewController.currentPageOffset.x;
+        SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
+        
+        if((nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton) ||
+           (!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)) {
+            
+            addButtonFrame = self.addToChannelButton.frame;
+            addButtonFrame.origin.x = originalAddButtonX - diff;
+            self.addToChannelButton.frame = addButtonFrame;
+        }
+    }
+}
+
 -(void)dotTapped:(UIGestureRecognizer*)recogniser
 {
     
@@ -620,15 +663,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
-        [self.backButton addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonControl addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+       
         [self showBackButton:YES];
     }
     else
     {
-        [self.backButton removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonControl removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self showBackButton:NO];
     }
 }
+
 
 
 -(void)navigateToPage:(NSNotification*)notification
@@ -649,24 +694,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (show)
     {
-        targetFrame = self.topButtonsContainer.frame;
-        targetFrame.origin.x = 15;
+        targetFrame = self.movableButtonsContainer.frame;
+        targetFrame.origin.x = 14.0;
         targetAlpha = 1.0;
     }
     else
     {
-        targetFrame = self.topButtonsContainer.frame;
-        targetFrame.origin.x = (-60);
+        targetFrame = self.movableButtonsContainer.frame;
+        targetFrame.origin.x = kMovableViewOffX;
         targetAlpha = 0.0;
     }
     
-    [UIView animateWithDuration: 0.4f
+    [UIView animateWithDuration: 0.6f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
                      {
-                        self.topButtonsContainer.frame = targetFrame;
-                        self.backButton.alpha = targetAlpha;
+                         self.movableButtonsContainer.frame = targetFrame;
+                         self.backButtonControl.alpha = targetAlpha;
+                         self.pageTitleLabel.alpha = !targetAlpha;
+                         self.dotsView.alpha = !targetAlpha;
                      }
                      completion: ^(BOOL finished)
                      {
@@ -773,5 +820,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                addToChannelFrame.size.width,
                                                addToChannelFrame.size.height);
 }
+
+
 
 @end

@@ -63,7 +63,7 @@
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
 
-- (void) toggleVideoStarAtIndex: (NSIndexPath *) indexPath;
+
 - (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath;
 
 

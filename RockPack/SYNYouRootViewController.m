@@ -17,8 +17,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
-#import "SYNUserTabView.h"
-#import "SYNUserTabViewController.h"
+#import "SYNUserProfileViewController.h"
 
 @interface SYNYouRootViewController ()
 
@@ -26,6 +25,8 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
+
+@property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 
 @property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
 
@@ -71,6 +72,14 @@
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
     
     [self.view addSubview:self.channelThumbnailCollectionView];
+    
+    // ==
+    
+    self.userProfileController = [[SYNUserProfileViewController alloc] init];
+    CGRect userProfileFrame = self.userProfileController.view.frame;
+    userProfileFrame.origin.y = 60.0;
+    self.userProfileController.view.frame = userProfileFrame;
+    [self.view addSubview:self.userProfileController.view];
 }
 
 
@@ -154,7 +163,19 @@
     [appDelegate logout];
 }
 
+<<<<<<< HEAD
 
+=======
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if(!self.tabViewController)
+        return;
+    
+    // TODO: Put Owner Data in the Profile Panel
+}
+>>>>>>> origin/develop
 
 -(void)showAccountSettingsPopover
 {

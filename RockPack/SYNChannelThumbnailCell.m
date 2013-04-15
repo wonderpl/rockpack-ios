@@ -20,6 +20,7 @@
 @implementation SYNChannelThumbnailCell
 
 @synthesize viewControllerDelegate = _viewControllerDelegate;
+@synthesize shouldAnimate;
 
 - (void) awakeFromNib
 {
@@ -28,6 +29,8 @@
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: 13.0f];
     self.byLabel.font = [UIFont rockpackFontOfSize: 13.0f];
+    
+    self.shouldAnimate = YES;
 }
 
 
@@ -41,6 +44,7 @@
 - (void) prepareForReuse
 {
     self.imageView.image = nil;
+    
 }
 
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate

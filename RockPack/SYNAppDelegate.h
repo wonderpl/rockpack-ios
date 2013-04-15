@@ -53,12 +53,18 @@
 @property (readonly, nonatomic, strong) SYNMainRegistry* mainRegistry;
 @property (readonly, nonatomic, strong) SYNSearchRegistry* searchRegistry;
 
--(void)deleteDataObject:(NSManagedObject*)managedObject;
+-(void) deleteDataObject:(NSManagedObject*)managedObject;
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
 -(void) saveChannelsContext;
+<<<<<<< HEAD
 -(void)clearUserBoundData;
 -(void)logout;
+=======
+- (void) resetCoreDataStack;
+-(void) clearUserBoundData;
+-(void) logout;
+>>>>>>> origin/develop
 - (void) resetCurrentOAuth2Credentials;
 
 @end

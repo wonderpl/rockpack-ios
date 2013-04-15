@@ -44,6 +44,14 @@ typedef enum _kQueueMoveDirection {
 @synthesize currentlyCreatingChannel;
 @synthesize showingEmptyQueue;
 
+-(id)init
+{
+    if (self = [super init]) {
+        
+    }
+    return self;
+}
+
 -(void)loadView
 {
     SYNVideoQueueView* videoQView = [[SYNVideoQueueView alloc] init];

@@ -191,42 +191,7 @@
 }
 
 
-- (void) toggleVideoStarAtIndex: (NSIndexPath *) indexPath
-{
-    
-    NSString *action = nil;
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (videoInstance.video.starredByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        videoInstance.video.starredByUserValue = FALSE;
-        videoInstance.video.starCountValue -= 1;
-        action = @"unstar";
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        videoInstance.video.starredByUserValue = TRUE;
-        videoInstance.video.starCountValue += 1;
-        action = @"star";
-    }
-    
-    [self saveDB];
-    
-    // Update the star/unstar status on the server
-    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                     action: action
-                                            videoInstanceId: videoInstance.uniqueId
-                                          completionHandler: ^(NSDictionary *responseDictionary)
-     {
-         DebugLog(@"Record action successful");
-     }
-                                               errorHandler: ^(NSDictionary* errorDictionary)
-     {
-         DebugLog(@"Record action failed");
-     }];
-}
+
 
 
 - (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath

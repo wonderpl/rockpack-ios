@@ -12,7 +12,7 @@
 static MKNetworkEngine *DefaultEngine2;
 static char imageFetchOperationKey2;
 
-const float kFromCacheAnimationDuration2 = 0.1f;
+const float kFromCacheAnimationDuration2 = 0.35f;
 const float kFreshLoadAnimationDuration2 = 0.35f;
 
 @interface UIImageView ()
@@ -58,28 +58,33 @@ const float kFreshLoadAnimationDuration2 = 0.35f;
 - (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
                                    placeHolderImage: (UIImage*) image
                                         usingEngine: (MKNetworkEngine*) imageCacheEngine
-                                          animation: (BOOL) yesOrNo
-{
+                                          animation: (BOOL) yesOrNo {
     
-    if (image) self.image = image;
+    if (image)
+        self.image = image; // placeholder
+    
+    
     [self.imageFetchOperation2 cancel];
-    if(!imageCacheEngine) imageCacheEngine = DefaultEngine2;
+    if(!imageCacheEngine)
+        imageCacheEngine = DefaultEngine2;
+    
     
     if(imageCacheEngine)
     {
         self.imageFetchOperation2 = [imageCacheEngine imageAtURL: url
                                                             size: self.frame.size
-                                               completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache)
-                                     {
+                                               completionHandler: ^(UIImage *fetchedImage, NSURL *url, BOOL isInCache) {
                                          if (!isInCache)
                                          {
                                              [UIView transitionWithView: self.superview
                                                                duration: kFromCacheAnimationDuration2
-                                                                options: UIViewAnimationOptionTransitionCrossDissolve animations: ^
-                                              {
-                                                      self.image = fetchedImage;
-                                              }
-                                              completion: nil];
+                                                                options: UIViewAnimationOptionTransitionCrossDissolve
+                                                             animations: ^{
+                                                                 self.image = fetchedImage;
+                                                             }
+                                                             completion: nil];
+                                             
+
                                          }
                                          else
                                          {
