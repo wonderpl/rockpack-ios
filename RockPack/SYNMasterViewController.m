@@ -662,6 +662,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
         [self.backButtonControl addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+       
         [self showBackButton:YES];
     }
     else
@@ -670,6 +671,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self showBackButton:NO];
     }
 }
+
 
 
 -(void)navigateToPage:(NSNotification*)notification
@@ -706,8 +708,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^
                      {
-                        self.movableButtonsContainer.frame = targetFrame;
-                        self.backButtonControl.alpha = targetAlpha;
+                         self.movableButtonsContainer.frame = targetFrame;
+                         self.backButtonControl.alpha = targetAlpha;
+                         self.pageTitleLabel.alpha = !targetAlpha;
+                         self.dotsView.alpha = !targetAlpha;
                      }
                      completion: ^(BOOL finished)
                      {
