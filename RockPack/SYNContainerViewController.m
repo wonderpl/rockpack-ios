@@ -35,7 +35,7 @@
 @property (nonatomic, assign) BOOL didNotSwipeShareMenu;
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
-@property (nonatomic, copy) NSArray *viewControllers;
+
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
@@ -150,11 +150,10 @@
     [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
     [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
     
-    self.viewControllers = [NSArray arrayWithArray:allControllers];
     
-    [self packViews];
+    [self packViewControllers:[NSArray arrayWithArray:allControllers]];
     
-    self.selectedViewController = self.viewControllers[0];
+    self.selectedViewController = self.childViewControllers[0];
     
     
     // == Register Notifications == //
@@ -166,13 +165,13 @@
 
 #pragma mark - Placement of Views
 
--(void)packViews
+-(void)packViewControllers:(NSArray*)controllersToPack
 {
     // TODO: Scan for orientation
     
     CGFloat currentVCOffset = 0.0;
     CGRect currentVCRect;
-    for (UIViewController * vc in self.viewControllers)
+    for (UIViewController * vc in controllersToPack)
     {
         currentVCRect = vc.view.frame;
         currentVCRect.origin.x = currentVCOffset;
@@ -192,9 +191,13 @@
 
 -(void)addChildViewController:(UIViewController *)childController
 {
+    [childController willMoveToParentViewController:self];
+    
     [super addChildViewController:childController];
     
     [self.scrollView addSubview:childController.view];
+    
+    [childController didMoveToParentViewController:self];
 }
 
 
@@ -256,7 +259,7 @@
 -(void) navigateToPageByName:(NSString*)pageName
 {
     int page = 0;
-    for (UINavigationController* nvc in self.viewControllers)
+    for (UINavigationController* nvc in self.childViewControllers)
     {
         if([pageName isEqualToString:nvc.title]) {
             [self setPage:page];
@@ -364,7 +367,7 @@
     
     scrollingDirection = ScrollingDirectionNone;
     
-    self.selectedViewController = self.viewControllers[self.page];
+    self.selectedViewController = self.childViewControllers[self.page];
     
     self.currentPageOffset = self.scrollView.contentOffset;
     self.currentPage = self.page;
@@ -401,10 +404,10 @@
 {
     UINavigationController* navigationController;
     SYNAbstractViewController* controllerOnView;
-    if(self.scrollingDirection == ScrollingDirectionRight && (self.currentPage+1) < self.viewControllers.count) {
-        navigationController = self.viewControllers[(self.currentPage+1)];
+    if(self.scrollingDirection == ScrollingDirectionRight && (self.currentPage+1) < self.childViewControllers.count) {
+        navigationController = self.childViewControllers[(self.currentPage+1)];
     } else if(self.scrollingDirection == ScrollingDirectionLeft && (self.currentPage-1) >= 0) {
-        navigationController = self.viewControllers[(self.currentPage-1)];
+        navigationController = self.childViewControllers[(self.currentPage-1)];
     }
     controllerOnView = (SYNAbstractViewController*)(navigationController.visibleViewController);
     return controllerOnView;
@@ -423,7 +426,7 @@
 -(NSInteger)page
 {
     CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
-    int pageWidth = (int)self.scrollView.contentSize.width / self.viewControllers.count;
+    int pageWidth = (int)self.scrollView.contentSize.width / self.childViewControllers.count;
     NSInteger page = (currentScrollerOffset / pageWidth); // 0 indexed
     return page;
     
