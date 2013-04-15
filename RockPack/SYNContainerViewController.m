@@ -81,6 +81,7 @@
 {
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.delegate = self;
     scrollView.pagingEnabled = YES;
@@ -143,15 +144,22 @@
     
     // == Populate Scroller == //
     
-    NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
+//    NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
     UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
     feedNavController.view.frame = CGRectMake (0.0, 60.0, 1024, 686);
-    [allControllers addObject:feedNavController];
-    [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
-    [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
+    feedNavController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
+//    [allControllers addObject:feedNavController];
+//    [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
+//    [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
+//    
+    [self addChildViewController:feedNavController];
+    [self addChildViewController:[self wrapInNavigationController:channelsRootViewController]];
+    channelsRootViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
+    [self addChildViewController:[self wrapInNavigationController:myRockpackViewController]];
+    myRockpackViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
     
     
-    [self packViewControllers:[NSArray arrayWithArray:allControllers]];
+    [self packViewControllersForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     
     self.selectedViewController = self.childViewControllers[0];
     
@@ -163,28 +171,34 @@
 }
 
 
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
+}
+
 #pragma mark - Placement of Views
 
--(void)packViewControllers:(NSArray*)controllersToPack
+-(void)packViewControllersForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    // TODO: Scan for orientation
-    
-    CGFloat currentVCOffset = 0.0;
-    CGRect currentVCRect;
-    for (UIViewController * vc in controllersToPack)
+    CGRect newFrame;
+    if(UIInterfaceOrientationIsLandscape(orientation))
     {
-        currentVCRect = vc.view.frame;
-        currentVCRect.origin.x = currentVCOffset;
-        
-        vc.view.frame = currentVCRect;
-        
-        [self addChildViewController:vc];
-        
-        currentVCOffset += self.currentScreenOffset;
+        newFrame = CGRectMake(0.0f, 0.0f, 1024.0f, 748.0f);
+    }
+    else
+    {
+        newFrame = CGRectMake(0.0, 0.0f, 768.0f, 1004.0f);
     }
     
-    self.scrollView.contentSize = CGSizeMake(currentVCOffset, 748.0);
-    self.currentPageOffset = self.scrollView.contentOffset;
+    for(UIViewController* controller in self.childViewControllers)
+    {
+        controller.view.frame = newFrame;
+        newFrame.origin.x += newFrame.size.width;
+    }
+    
+    self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
+    self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
+    [self.scrollView setContentOffset:self.currentPageOffset];
     self.currentPage = self.page;
     scrollingDirection = ScrollingDirectionNone;
 }

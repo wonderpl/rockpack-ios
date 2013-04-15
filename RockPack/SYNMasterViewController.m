@@ -81,6 +81,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         self.containerViewController = root;
+        [self addChildViewController:root];
 
         
         // == Side Navigation == //
