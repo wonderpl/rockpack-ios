@@ -300,4 +300,11 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 #define kGoogleAnalyticsId @"UA-38220268-4"
 #endif
 
+// Custom GA Dimensions
+
+#define kGADimensionAge         1
+#define kGADimensionCategory    2
+#define kGADimensionGender      3
+#define kGADimensionLocale      4
+
 #endif

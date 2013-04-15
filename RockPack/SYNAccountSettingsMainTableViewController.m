@@ -389,7 +389,7 @@
     // Now set the age
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
-    [tracker setCustom: 1
+    [tracker setCustom: kGADimensionAge
              dimension: ageString];
 }
 
@@ -406,25 +406,24 @@
     return [dateFormatter stringFromDate:user.dateOfBirth];
 }
 
--(NSString*)getDOBFormattedStringFromCurrentUser
+-(NSString*) getDOBFormattedStringFromCurrentUser
 {
     if(!user.dateOfBirth)
         return @"";
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd"];
     
     return [dateFormatter stringFromDate:user.dateOfBirth];
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    if(popoverController == self.dobPopover)
+    if (popoverController == self.dobPopover)
     {
         self.dobPopover = nil;
     }
-    
 }
 
 @end

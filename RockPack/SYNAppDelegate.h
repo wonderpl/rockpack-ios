@@ -37,6 +37,7 @@
 // Comms support
 @property (readonly, nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (readonly, nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
+@property (readonly, nonatomic, strong) NSString *userAgentString;
 
 @property (readonly, nonatomic, strong) User* currentUser;
 
@@ -56,7 +57,6 @@
 - (void) saveContext: (BOOL) wait;
 -(void) saveSearchContext;
 -(void) saveChannelsContext;
-- (void) resetCoreDataStack;
 -(void)clearUserBoundData;
 -(void)logout;
 - (void) resetCurrentOAuth2Credentials;

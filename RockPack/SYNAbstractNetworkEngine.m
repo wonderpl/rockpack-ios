@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAI.h"
 #import "SYNAbstractNetworkEngine.h"
 #import "SYNAppDelegate.h"
 #import "SYNNetworkOperationJsonObjectParse.h"
@@ -17,15 +18,12 @@
 
 - (id) initWithDefaultSettings
 {
+    SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     
     if ((self = [super initWithHostName: self.hostName
-                     customHeaderFields: @{@"x-client-identifier" : @"Rockpack iPad client"}]))
+                     customHeaderFields: @{@"User-Agent" : appDelegate.userAgentString}]))
     {
-        
-        SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
-        
-        
-        
+
         
         // Cache registries
         self.registry = appDelegate.mainRegistry;
@@ -34,50 +32,31 @@
         // This engine is about requesting JSON objects and uses the appropriate operation type
         [self registerOperationSubclass: [SYNNetworkOperationJsonObject class]];
         
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
-        // We should register here for locale changes
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(localeDidChange)
-                                                     name: NSCurrentLocaleDidChangeNotification
-                                                   object: nil];
+        [tracker setCustom: kGADimensionLocale
+                 dimension: self.localeString];
     }
     
     return self;
 }
 
 
-
-
-- (void) dealloc
+- (NSString*) localeString
 {
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: NSCurrentLocaleDidChangeNotification
-                                                  object: nil];
-}
-
--(NSString*)localeString
-{
-    
     SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
     
-    // Set our local string (i.e. en_GB, en_US or fr_FR)
-    NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
-    
-    if(appDelegate.currentUser) {
+    if (appDelegate.currentUser)
+    {
         return appDelegate.currentUser.locale;
-    } else {
-        return localeFromDevice;
+    } else
+    {
+        return [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
     }
     
     
 }
 
-// If the locale changes, then we need to reset the CoreData DB
-- (void) localeDidChange
-{
-    //SYNAppDelegate* appDelegate = UIApplication.sharedApplication.delegate;
-    //    [appDelegate resetCoreDataStack];
-}
 
 - (NSString *) hostName
 {

@@ -6,27 +6,23 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNCategoriesTabViewController.h"
-#import <CoreData/CoreData.h>
-#import "SYNAppDelegate.h"
-#import "SYNNetworkEngine.h"
-#import "SYNCategoryItemView.h"
 #import "Category.h"
+#import "GAI.h"
+#import "SYNAppDelegate.h"
+#import "SYNCategoriesTabViewController.h"
+#import "SYNCategoryItemView.h"
+#import "SYNNetworkEngine.h"
 #import "Subcategory.h"
+#import <CoreData/CoreData.h>
 
 @interface SYNCategoriesTabViewController ()
 
 @end
 
 
-
-
 @implementation SYNCategoriesTabViewController
 
-
-
-
--(void)loadView
+- (void) loadView
 {
     // Calculate height
     
@@ -43,7 +39,7 @@
 }
 
 
--(void)loadCategories
+- (void) loadCategories
 {
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -83,21 +79,19 @@
 
 }
 
+
 #pragma mark - TabView Delagate methods
 
--(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
 {
-    if(recogniser == nil) {
+    if (recogniser == nil)
+    {
         // home button pressed
-        
-        
         [self.delegate handleMainTap:recogniser];
         
         [self.delegate handleNewTabSelectionWithId:@"all"];
         
-        return;
-        
-        
+        return;   
     }
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -135,24 +129,36 @@
     Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
-    for (Subcategory* subcategory in categoryTapped.subcategories) {
-        if ([subcategory.priority integerValue] < 0) {
+    for (Subcategory* subcategory in categoryTapped.subcategories)
+    {
+        if ([subcategory.priority integerValue] < 0)
+        {
             continue;
         }
         [filteredSet addObject:subcategory];
     }
     
-    if(self.delegate && [self.delegate showSubcategories])
+    if (self.delegate && [self.delegate showSubcategories])
         [self.tabView createSubcategoriesTab:filteredSet];
     
-    [self.delegate handleMainTap:recogniser];
+    [self.delegate handleMainTap: recogniser];
     
-    [self.delegate handleNewTabSelectionWithId:categoryTapped.uniqueId];
+    [self.delegate handleNewTabSelectionWithId: categoryTapped.uniqueId];
     
+    // Log Category in Google Analytics
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"categoryItemClick"
+                         withLabel: categoryTapped.name
+                         withValue: nil];
+    
+    [tracker setCustom: kGADimensionCategory
+             dimension: categoryTapped.name];
 }
 
--(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
+
+- (void) handleSecondaryTap: (UITapGestureRecognizer *) recogniser
 {
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -160,7 +166,7 @@
     SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Subcategory"
-                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
+                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity:categoryEntity];
@@ -175,7 +181,7 @@
     NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                                    error: &error];
     
-    if(matchingCategoryInstanceEntries.count == 0)
+    if (matchingCategoryInstanceEntries.count == 0)
     {
         DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
         return;
@@ -189,10 +195,20 @@
     
     Subcategory* subcategoryTapped = (Subcategory*)matchingCategoryInstanceEntries[0];
     
-    [self.delegate handleSecondaryTap:recogniser];
+    [self.delegate handleSecondaryTap: recogniser];
+    [self.delegate handleNewTabSelectionWithId: subcategoryTapped.uniqueId];
     
-    [self.delegate handleNewTabSelectionWithId:subcategoryTapped.uniqueId];
+    // Log subcategory in Google Analytics
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
+    // TODO: Not sure if we need both of these
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"categoryItemClick"
+                         withLabel: subcategoryTapped.name
+                         withValue: nil];
+    
+    [tracker setCustom: kGADimensionCategory
+             dimension: subcategoryTapped.name];
 }
 
 
