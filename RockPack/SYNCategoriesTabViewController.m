@@ -28,9 +28,9 @@
 
 -(void)loadView
 {
-    // Calculate height
     
-    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize:1024.0];
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]);
+    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize:isLandscape?1024.0f:768.0f];
     categoriesTabView.tapDelegate = self;
     
     self.view = categoriesTabView;
@@ -39,6 +39,7 @@
     self.view.frame = CGRectMake(0.0, 44.0, self.view.frame.size.width, self.view.frame.size.height);
     
     [self loadCategories];
+
     
 }
 
@@ -81,6 +82,13 @@
     
     [self.tabView createCategoriesTab:matchingCategoryInstanceEntries];
 
+}
+
+#pragma mark - Orientation Change
+
+-(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.tabView refreshViewForOrientation:toInterfaceOrientation];
 }
 
 #pragma mark - TabView Delagate methods

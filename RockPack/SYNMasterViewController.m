@@ -444,6 +444,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.categoryChooserViewController = [[SYNCategoryChooserViewController alloc] init];
     
     [self.overlayView addSubview: self.categoryChooserViewController.view];
+    [originViewController addChildViewController:self.categoryChooserViewController];
     
     self.categoryChooserViewController.view.alpha = 0.0f;
     self.categoryChooserViewController.overlayParent = self;

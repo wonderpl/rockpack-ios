@@ -108,6 +108,7 @@
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: @"Channels"];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
+    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     
     // == You Page == //
     
@@ -174,6 +175,7 @@
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
 }
 

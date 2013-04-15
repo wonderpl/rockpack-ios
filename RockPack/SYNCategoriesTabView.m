@@ -20,7 +20,8 @@
 @property (nonatomic, strong) UIView* secondaryTabsView;
 @property (nonatomic, strong) UIView* secondaryTabsBGView;
 @property (nonatomic, strong) UIView* secondaryDividerOverlay;
-
+@property (nonatomic, strong) UIView* dividerOverlayView;
+@property (nonatomic, weak) UIButton* homeButton;
 
 @end
 
@@ -82,23 +83,23 @@
     SYNCategoryItemView* tab = nil;
     
     
-    UIView* dividerOverlayView = [[UIView alloc] initWithFrame:self.mainTabsView.frame];
-    dividerOverlayView.userInteractionEnabled = NO;
+    self.dividerOverlayView = [[UIView alloc] initWithFrame:self.mainTabsView.frame];
+    self.dividerOverlayView.userInteractionEnabled = NO;
     
     
     CGFloat nextOrigin = 0.0;
     
     
-    UIButton* homeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.homeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage* homeButtonImage = [UIImage imageNamed:@"IconCategoryAll"];
-    homeButton.frame = CGRectMake(nextOrigin, 0.0, homeButtonImage.size.width, self.mainTabsView.frame.size.height);
-    [homeButton setImage:homeButtonImage forState:UIControlStateNormal];
-    [homeButton addTarget:self action:@selector(homeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:homeButton];
+    self.homeButton.frame = CGRectMake(nextOrigin, 0.0, homeButtonImage.size.width, self.mainTabsView.frame.size.height);
+    [self.homeButton setImage:homeButtonImage forState:UIControlStateNormal];
+    [self.homeButton addTarget:self action:@selector(homeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.homeButton];
     
-    nextOrigin += homeButton.frame.size.width;
+    nextOrigin += self.homeButton.frame.size.width;
     
-    [dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
+    [self.dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
     
     for (Category* category in categories)
     {
@@ -116,11 +117,11 @@
         nextOrigin += tabFrame.size.width;
         
         
-        [dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
+        [self.dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
         
     }
     
-    [self addSubview:dividerOverlayView];
+    [self addSubview:self.dividerOverlayView];
 }
 
 -(UIImageView*)createDividerAtOffset:(CGFloat)offset
@@ -255,6 +256,26 @@
     [self.tapDelegate handleSecondaryTap:recogniser];
 }
 
+
+-(void)refreshViewForOrientation:(UIInterfaceOrientation)orientation
+{
+    
+    [[self.dividerOverlayView subviews]
+     makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    CGFloat nextOrigin = self.homeButton.frame.size.width;
+    
+    for (SYNCategoryItemView* tab in [self.mainTabsView subviews])
+    {
+        [tab resizeForOrientation:orientation];
+        CGRect tabFrame = tab.frame;
+        tabFrame.origin.x = nextOrigin;
+        tab.frame = tabFrame;        
+        nextOrigin += tabFrame.size.width;
+        [self.dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
+        
+    }
+
+}
 
 
 

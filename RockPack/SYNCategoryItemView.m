@@ -78,10 +78,6 @@
     
     UIColor *color = [UIColor whiteColor];
     label.textColor = color;
-
-    
-    
-    
     
 }
 -(void)makeFaded
@@ -94,6 +90,44 @@
 {
     self.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
+    
+}
+
+#pragma mark - resize for different orientations
+-(void)resizeForOrientation:(UIInterfaceOrientation)orientation
+{
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape(orientation);
+    UIFont* fontToUse;
+    if (type == TabItemTypeMain)
+    {
+        if(isLandscape)
+        {
+            fontToUse = [UIFont rockpackFontOfSize: 15.0f];
+        }
+        else
+        {
+           fontToUse = [UIFont rockpackFontOfSize: 13.0f];
+        }
+    }
+    else if(isLandscape)
+    {
+        fontToUse = [UIFont rockpackFontOfSize: 13.0f];
+    }
+    else
+    {
+        fontToUse = [UIFont rockpackFontOfSize: 11.0f];
+    }
+    label.font = fontToUse;
+    
+    CGSize sizeToUse = [label.text sizeWithFont:fontToUse];
+    
+    CGRect newFrame = label.frame;
+    newFrame.size=CGSizeMake(sizeToUse.width + kCategoriesTabOffsetX, sizeToUse.height + kCategoriesTabOffsetY );
+    label.frame = newFrame;
+    
+    CGRect finalFrame = self.label.frame;
+    finalFrame.size.width += 2.0;
+    self.frame = finalFrame;
     
 }
 

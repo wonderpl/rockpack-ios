@@ -57,4 +57,12 @@
 {
     return YES;
 }
+
+#pragma mark - label resize
+
+-(void)refreshViewForOrientation:(UIInterfaceOrientation)orientation
+{
+    // implement in subclass
+}
+
 @end
