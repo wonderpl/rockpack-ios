@@ -80,15 +80,12 @@
 
 }
 
-<<<<<<< HEAD
-=======
 #pragma mark - Orientation Change
 
 -(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.tabView refreshViewForOrientation:toInterfaceOrientation];
 }
->>>>>>> origin/develop
 
 #pragma mark - TabView Delagate methods
 

@@ -12,18 +12,13 @@
 #import "SYNVideoQueueViewController.h"
 #import <UIKit/UIKit.h>
 
-<<<<<<< HEAD
-@interface SYNContainerViewController : GAITrackedViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
-=======
 typedef enum {
     ScrollingDirectionNone = 0,
     ScrollingDirectionRight,
     ScrollingDirectionLeft
 } ScrollingDirection;
 
-@interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
->>>>>>> origin/develop
-
+@interface SYNContainerViewController : GAITrackedViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) SYNVideoQueueViewController* videoQueueController;
 @property (nonatomic, readonly) SYNAbstractViewController* showingViewController;
