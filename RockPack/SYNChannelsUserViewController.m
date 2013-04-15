@@ -58,23 +58,16 @@
 }
 
 
-- (void) fetchUserChannels: (ChannelOwner *) channelOwner
+-(void)fetchUserChannels:(ChannelOwner *)channelOwner
 {
     
-<<<<<<< HEAD
-    [appDelegate.searchRegistry clearImportContextFromEntityName: @"Channel"];
-=======
     owner = channelOwner;
->>>>>>> origin/develop
     
-    [appDelegate.networkEngine userPublicChannelsByOwner: owner];
+    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
     
-<<<<<<< HEAD
-    SYNUserTabViewController* userTabViewController = (SYNUserTabViewController*)self.tabViewController;
-    [userTabViewController setOwner: owner];
-=======
+    [appDelegate.networkEngine userPublicChannelsByOwner:owner];
+    
     // TODO: Put Owner Data
->>>>>>> origin/develop
 }
 
 
