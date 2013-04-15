@@ -11,9 +11,7 @@
 #import "SYNAppDelegate.h"
 
 @interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
-                                                       UITextFieldDelegate,
-                                                       UIGestureRecognizerDelegate,
-                                                       UITableViewDelegate>
+                                                       UIGestureRecognizerDelegate>
 {
     SYNAppDelegate* appDelegate;
     CGFloat originalAddButtonX;

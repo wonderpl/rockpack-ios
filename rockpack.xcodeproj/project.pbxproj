@@ -519,7 +519,7 @@
 		BE0815D316D6448200ADB1DC /* SYNSideNavigationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D116D6448200ADB1DC /* SYNSideNavigationViewController.xib */; };
 		BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */; };
 		BE0815D816D645F600ADB1DC /* SYNShareOverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */; };
-		BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */; };
+		BE0AAD2916E6534300DA958E /* SYNAutocompleteSuggestionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */; };
 		BE13E38916FB85220098F23C /* SYNAccountSettingsLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13E38816FB85220098F23C /* SYNAccountSettingsLocation.m */; };
 		BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13E38B16FC85E50098F23C /* SYNAccountSettingsAbout.m */; };
 		BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */; };
@@ -592,6 +592,7 @@
 		BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */; };
 		BE2D2141171C527B00B4B755 /* ButtonBackLabelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */; };
 		BE2D2142171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */; };
+		BE2D2145171C5A0600B4B755 /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */; };
 		BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */; };
 		BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */; };
 		BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */; };
@@ -1308,8 +1309,8 @@
 		BE0815D416D645F600ADB1DC /* SYNShareOverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNShareOverlayViewController.h; sourceTree = "<group>"; };
 		BE0815D516D645F600ADB1DC /* SYNShareOverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNShareOverlayViewController.m; sourceTree = "<group>"; };
 		BE0815D616D645F600ADB1DC /* SYNShareOverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNShareOverlayViewController.xib; sourceTree = "<group>"; };
-		BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
-		BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
+		BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteSuggestionsController.h; sourceTree = "<group>"; };
+		BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteSuggestionsController.m; sourceTree = "<group>"; };
 		BE13E38716FB85220098F23C /* SYNAccountSettingsLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsLocation.h; sourceTree = "<group>"; };
 		BE13E38816FB85220098F23C /* SYNAccountSettingsLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsLocation.m; sourceTree = "<group>"; };
 		BE13E38A16FC85E50098F23C /* SYNAccountSettingsAbout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsAbout.h; sourceTree = "<group>"; };
@@ -1397,6 +1398,8 @@
 		BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabel@2x.png"; path = "Assets/Images/ButtonBackLabel@2x.png"; sourceTree = "<group>"; };
 		BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBackLabelHighlighted.png; path = Assets/Images/ButtonBackLabelHighlighted.png; sourceTree = "<group>"; };
 		BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabelHighlighted@2x.png"; path = "Assets/Images/ButtonBackLabelHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE2D2143171C5A0600B4B755 /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
+		BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
 		BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLargeVideoPanelViewController.h; sourceTree = "<group>"; };
 		BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLargeVideoPanelViewController.m; sourceTree = "<group>"; };
 		BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLargeVideoPanelViewController.xib; sourceTree = "<group>"; };
@@ -2987,8 +2990,10 @@
 		BE0AAD2616E6521300DA958E /* Autocomplete Panel */ = {
 			isa = PBXGroup;
 			children = (
-				BE0AAD2716E6534300DA958E /* SYNAutocompleteViewController.h */,
-				BE0AAD2816E6534300DA958E /* SYNAutocompleteViewController.m */,
+				BE2D2143171C5A0600B4B755 /* SYNAutocompleteViewController.h */,
+				BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */,
+				BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */,
+				BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */,
 				BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */,
 				BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */,
 			);
@@ -4044,7 +4049,7 @@
 				0173F70816E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m in Sources */,
 				0173F70B16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m in Sources */,
 				01E2E7E116E11E67009999D2 /* UIImageView+ImageProcessing.m in Sources */,
-				BE0AAD2916E6534300DA958E /* SYNAutocompleteViewController.m in Sources */,
+				BE0AAD2916E6534300DA958E /* SYNAutocompleteSuggestionsController.m in Sources */,
 				BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */,
 				017A9EFA16E77E6600AA5B18 /* UIView+Subviews.m in Sources */,
 				BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */,
@@ -4092,6 +4097,7 @@
 				BE7D353B171708F60085AB81 /* SYNRefreshButton.m in Sources */,
 				BE7D354C1718667F0085AB81 /* SYNUserProfileViewController.m in Sources */,
 				BE7D3551171870780085AB81 /* SYNBackButtonControl.m in Sources */,
+				BE2D2145171C5A0600B4B755 /* SYNAutocompleteViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
