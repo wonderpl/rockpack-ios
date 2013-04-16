@@ -6,12 +6,15 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "SYNContainerViewController.h"
+#import "GAITrackedViewController.h"
 #import "SYNAppDelegate.h"
+#import "SYNContainerViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
+
+@interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
                                                        UIGestureRecognizerDelegate>
+
 {
     SYNAppDelegate* appDelegate;
     CGFloat originalAddButtonX;

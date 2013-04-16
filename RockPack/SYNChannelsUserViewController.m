@@ -15,8 +15,19 @@
 @implementation SYNChannelsUserViewController
 
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Google Analytics support
+    self.trackedViewName = @"Channels - User";
+    
+    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
+                                                             self.channelThumbnailCollectionView.center.y + 70.0);
+}
 
-- (NSFetchedResultsController *)fetchedResultsController
+
+- (NSFetchedResultsController *) fetchedResultsController
 {
     
     if (fetchedResultsController != nil)
@@ -46,6 +57,7 @@
     return fetchedResultsController;
 }
 
+
 -(void)fetchUserChannels:(ChannelOwner *)channelOwner
 {
     
@@ -58,27 +70,19 @@
     // TODO: Put Owner Data
 }
 
--(void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    
-    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
-                                                             self.channelThumbnailCollectionView.center.y + 70.0);
-}
+
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
-    
-    
     [self reloadCollectionViews];
-    
 }
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    // override the data loading
+    [super viewWillAppear: animated];
     
+    // override the data loading
 }
 
 @end

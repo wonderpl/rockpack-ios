@@ -48,6 +48,24 @@
 }
 
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Google Analytics support
+    self.trackedViewName = @"Search - Root";
+}
+
+
+- (void) viewDidAppear: (BOOL) animated
+{
+    [super viewDidAppear: animated];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueShow
+                                                        object: self
+                                                      userInfo: @{@"lock" : @(YES)}];
+}
+
 
 -(void)showSearchResultsForTerm:(NSString*)newSearchTerm
 {
@@ -167,18 +185,5 @@
     
     
 }
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
-                                                        object:self
-                                                      userInfo:@{@"lock" : @(YES)}];
-}
-
-
-
-
 
 @end

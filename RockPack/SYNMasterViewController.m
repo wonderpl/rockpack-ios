@@ -41,6 +41,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
+@property (nonatomic) CGFloat sideNavigationOriginCenterX;
 
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
@@ -66,6 +67,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize pageTitleLabel;
 @synthesize addToChannelFrame;
 @synthesize sideNavigationOn;
+@synthesize sideNavigationOriginCenterX;
 
 #pragma mark - Initialise
 
@@ -90,8 +92,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         UISwipeGestureRecognizer* swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationSwiped)];
         swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.sideNavigationViewController.view addGestureRecognizer:swipeGesture];
+        //[self.sideNavigationViewController.view addGestureRecognizer:swipeGesture];
         
+        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
+        [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
         
         sideNavigationOn = NO;
         
@@ -337,6 +341,50 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [self hideSideNavigation];
 }
+-(void)sideNavigationPanned:(UIPanGestureRecognizer*)recogniser
+{
+    CGFloat translationX = [recogniser translationInView:self.sideNavigationViewController.view].x;
+    
+    if(recogniser.state == UIGestureRecognizerStateBegan)
+    {
+        sideNavigationOriginCenterX = self.sideNavigationViewController.view.center.x;
+        
+        
+    }
+    CGFloat newOriginX = sideNavigationOriginCenterX + translationX;
+    if(newOriginX < sideNavigationOriginCenterX)
+    {
+        newOriginX = sideNavigationOriginCenterX;
+    }
+    
+    self.sideNavigationViewController.view.center = CGPointMake( newOriginX ,
+                                                                self.sideNavigationViewController.view.center.y);
+    
+    
+    if(recogniser.state == UIGestureRecognizerStateEnded)
+    {
+        CGFloat border;
+        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+        {
+            border = [[UIScreen mainScreen] bounds].size.height;
+        }
+        else
+        {
+            border = [[UIScreen mainScreen] bounds].size.width;
+        }
+        
+        if(border - newOriginX < 20.0)
+        {
+            [self hideSideNavigation];
+        }
+        else
+        {
+            [self showSideNavigation];
+        }
+    }
+    
+}
+
 
 - (void) hideSideNavigation
 {

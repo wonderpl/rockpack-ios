@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "ChannelOwner.h"
+#import "GAI.h"
 #import "SYNActivityManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
@@ -34,6 +35,7 @@
 @property (nonatomic, strong) SYNLoginViewController* loginViewController;
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
+@property (nonatomic, strong) NSString *userAgentString;
 
 @property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
@@ -49,28 +51,55 @@
 {
     
     // Install our exception handler (must happen on the next turn through the event loop - as opposed to right now)
-    [self performSelector: @selector(installUncaughtExceptionHandler)
-               withObject: nil
-               afterDelay: 0];
+//    [self performSelector: @selector(installUncaughtExceptionHandler)
+//               withObject: nil
+//               afterDelay: 0];
+    
+    // Interesting trick to get the user agent string (so that we can send (rough) details about what platform and version of the OS
+    // will be similar to... "Mozilla/5.0 (iPad; CPU OS 6_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Mobile/10B141"
+    UIWebView *webView = [[UIWebView alloc]initWithFrame: CGRectZero];
+    NSString *completeUserAgentString = [webView stringByEvaluatingJavaScriptFromString: @"navigator.userAgent"];
+    
+    NSString *bundleAndVersionString = [NSString stringWithFormat:@"%@/%@",
+                                        [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleNameKey],
+                                        [[NSBundle mainBundle] infoDictionary][(NSString *)kCFBundleVersionKey]];
+
+    // We just want the bit in-between the first set of brackets
+    NSCharacterSet *separatorSet = [NSCharacterSet characterSetWithCharactersInString: @"()"];
+    
+    NSArray *agentSubStrings = [completeUserAgentString componentsSeparatedByCharactersInSet: separatorSet];
+    
+    if (agentSubStrings.count > 1)
+    {
+        self.userAgentString = [NSString stringWithFormat: @"%@ (%@)", bundleAndVersionString, agentSubStrings [1]];
+    }
+    else
+    {
+        // Shouldn't happen, but programming defensively
+        self.userAgentString = bundleAndVersionString;
+    }
+    
+    // Automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval 
+    [GAI sharedInstance].dispatchInterval = 30;
+    
+    // Set debug to YES to enable  extra debugging information.
+    [GAI sharedInstance].debug = YES;
+    
+    // Create tracker instance.
+    [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
     
     // Se up core data
     [self initializeCoreDataStack];
-    
-    
-    
+
     // Create default user
     [self createDefaultUser];
-    
-    
     
     // == Video Queue View Controller == //
     
     self.videoQueueController = [[SYNVideoQueueViewController alloc] init];
-    
-    
-    
-    
-    
     
     // == Network Engine == //
     
@@ -333,59 +362,6 @@
     _mainRegistry = [SYNMainRegistry registry];
     _searchRegistry = [SYNSearchRegistry registry];
 }
-
-
-- (void) resetCoreDataStack
-{
-//    NSError * error;
-//    // retrieve the store URL
-//    NSURL * storeURL = [[self.privateManagedObjectContext persistentStoreCoordinator] URLForPersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject]];
-//    
-//    // lock the current context
-//    [self.privateManagedObjectContext lock];
-//
-//    [self.searchManagedObjectContext reset];
-//    [self.mainManagedObjectContext reset];
-//    [self.privateManagedObjectContext reset];
-//    
-//    //delete the store from the current managedObjectContext
-//    if ([[self.privateManagedObjectContext persistentStoreCoordinator] removePersistentStore: [[[self.privateManagedObjectContext persistentStoreCoordinator] persistentStores] lastObject] error: &error])
-//    {
-//        // remove the file containing the data
-//        [[NSFileManager defaultManager] removeItemAtURL: storeURL
-//                                                  error: &error];
-//        
-//        //recreate the store like in the  appDelegate method
-//        [[self.privateManagedObjectContext persistentStoreCoordinator] addPersistentStoreWithType: NSSQLiteStoreType
-//                                                                                    configuration: nil
-//                                                                                              URL: storeURL
-//                                                                                          options: nil
-//                                                                                            error: &error];
-//    }
-//
-//    [self.privateManagedObjectContext unlock];
-//    
-//    [self saveContext: TRUE];
-
-    
-    NSFetchRequest * fetchRequest = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"AbstractCommon"
-                                                         inManagedObjectContext: self.mainManagedObjectContext];
-    [fetchRequest setEntity: entityDescription];
-    
-    NSError* error = nil;
-    NSArray * managedObjects = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
-                                                                         error: &error];
-    
-    for (id managedObject in managedObjects)
-    {
-        [self.mainManagedObjectContext deleteObject: managedObject];
-    }
-    
-    [self saveContext: TRUE];
-}
-
 
 
 // Save the main context first (propagating the changes to the private) and then the private

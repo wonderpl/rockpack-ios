@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsLocation : UIViewController  <UITableViewDataSource, UITableViewDelegate>
+@interface SYNAccountSettingsLocation : GAITrackedViewController  <UITableViewDataSource,
+                                                                   UITableViewDelegate>
 
 @end

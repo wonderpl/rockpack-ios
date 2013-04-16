@@ -6,17 +6,18 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "SYNVideoQueueDelegate.h"
-#import "VideoInstance.h"
-
-#import "Video.h"
 #import "Channel.h"
+#import "GAITrackedViewController.h"
+#import "SYNVideoQueueDelegate.h"
+#import "Video.h"
+#import "VideoInstance.h"
+#import <UIKit/UIKit.h>
 
-@interface SYNVideoQueueViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SYNVideoQueueViewController : GAITrackedViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) id <SYNVideoQueueDelegate> delegate;
 @property (nonatomic) BOOL locked;
+
 - (void) reloadData;
 
 - (void) showVideoQueue: (BOOL) animated;

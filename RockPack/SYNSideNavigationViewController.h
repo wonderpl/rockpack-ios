@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GAITrackedViewController.h"
 #import "User.h"
+#import <UIKit/UIKit.h>
 
-@interface SYNSideNavigationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SYNSideNavigationViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) User* user;
 

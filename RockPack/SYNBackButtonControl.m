@@ -44,6 +44,9 @@
         titleBGView.frame = titleBGRect;
         
         
+        
+        
+        
         // == UILabel == //
         
         titleLabel = [[UILabel alloc] init];
@@ -72,11 +75,14 @@
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
 {
     [button addTarget:target action:action forControlEvents:controlEvents];
+    recogniser = [[UITapGestureRecognizer alloc] initWithTarget:target action:action];
+    [titleBGView addGestureRecognizer:recogniser];
 }
 
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
 {
     [button removeTarget:target action:action forControlEvents:controlEvents];
+    [titleBGView removeGestureRecognizer:recogniser];
 }
 
 - (NSArray *)actionsForTarget:(id)target forControlEvent:(UIControlEvents)controlEvent

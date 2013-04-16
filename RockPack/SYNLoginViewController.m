@@ -101,9 +101,12 @@
 @synthesize labelsToErrorArrows;
 @synthesize faceImageButton, facebookButtonInitialFrame, signUpButtonInitialFrame;
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Google Analytics support
+    self.trackedViewName = @"Login";
     
     // set up controls
     

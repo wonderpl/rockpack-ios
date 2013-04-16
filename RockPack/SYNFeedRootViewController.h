@@ -8,6 +8,6 @@
 
 #import "SYNAbstractViewController.h"
 
-@interface SYNHomeRootViewController : SYNAbstractViewController
+@interface SYNFeedRootViewController : SYNAbstractViewController
 
 @end

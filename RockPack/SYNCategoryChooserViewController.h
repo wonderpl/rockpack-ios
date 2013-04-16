@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
 @class SYNMasterViewController;
 
-@interface SYNCategoryChooserViewController : UIViewController
+@interface SYNCategoryChooserViewController : GAITrackedViewController
 
 @property (nonatomic, strong) SYNMasterViewController *overlayParent;
 

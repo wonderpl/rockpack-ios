@@ -11,7 +11,7 @@
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
 #import "SYNAppDelegate.h"
-#import "SYNHomeRootViewController.h"
+#import "SYNFeedRootViewController.h"
 #import "SYNHomeSectionHeaderView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
@@ -20,7 +20,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 
-@interface SYNHomeRootViewController ()
+@interface SYNFeedRootViewController ()
 
 @property (nonatomic, assign) BOOL refreshing;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
@@ -31,7 +31,7 @@
 @end
 
 
-@implementation SYNHomeRootViewController
+@implementation SYNFeedRootViewController
 
 #pragma mark - View lifecycle
 
@@ -39,7 +39,7 @@
 {
     if(self = [super initWithViewId:vid])
     {
-        self.title = @"Feed";
+        self.title = @"Feed - Root";
     }
     return self;
 }
@@ -72,6 +72,9 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Google Analytics support
+    self.trackedViewName = @"Feed";
     
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     

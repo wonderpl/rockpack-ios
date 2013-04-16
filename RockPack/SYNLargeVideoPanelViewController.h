@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
+#import "GAITrackedViewController.h"
 #import "VideoInstance.h"
+#import <CoreData/CoreData.h>
+#import <UIKit/UIKit.h>
 
-@interface SYNLargeVideoPanelViewController : UIViewController
+@interface SYNLargeVideoPanelViewController : GAITrackedViewController
 
 // Background Image
 @property (nonatomic, strong) IBOutlet UIImageView *backgroundImageView;

@@ -292,4 +292,20 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 // Video view threshold
 #define kPercentageThresholdForView 0.1f
 
+// Google Analytics
+#ifdef DEBUG
+// Id to use for debug
+#define kGoogleAnalyticsId @"UA-39188851-3"
+#else
+// Id to use for production
+#define kGoogleAnalyticsId @"UA-38220268-4"
+#endif
+
+// Custom GA Dimensions
+
+#define kGADimensionAge         1
+#define kGADimensionCategory    2
+#define kGADimensionGender      3
+#define kGADimensionLocale      4
+
 #endif

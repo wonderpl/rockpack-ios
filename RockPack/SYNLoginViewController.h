@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 
-
+#import "GAITrackedViewController.h"
 #import "GKImagePicker.h"
+#import <UIKit/UIKit.h>
 
 typedef enum {
     kLoginScreenStateNull = 0,
@@ -20,7 +20,7 @@ typedef enum {
 
 
 
-@interface SYNLoginViewController : UIViewController <UIPopoverControllerDelegate, GKImagePickerDelegate>
+@interface SYNLoginViewController : GAITrackedViewController <UIPopoverControllerDelegate, GKImagePickerDelegate>
 
 @property (nonatomic) kLoginScreenState state;
 @property (nonatomic) BOOL facebookLoginIsInProcess;

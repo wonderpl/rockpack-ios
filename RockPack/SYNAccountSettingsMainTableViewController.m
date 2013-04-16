@@ -6,23 +6,24 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAccountSettingsMainTableViewController.h"
-#import "UIFont+SYNFont.h"
-#import "SYNAccountSettingTableViewCell.h"
-#import "SYNAccountSettingsGender.h"
-#import "SYNAppDelegate.h"
 #import "AppConstants.h"
-#import "User.h"
-#import "SYNAccountSettingsTextInputController.h"
-#import "SYNAccountSettingsFullNameInput.h"
+#import "GAI.h"
+#import "SYNAccountSettingTableViewCell.h"
+#import "SYNAccountSettingsAbout.h"
 #import "SYNAccountSettingsDOB.h"
+#import "SYNAccountSettingsEmail.h"
+#import "SYNAccountSettingsFullNameInput.h"
+#import "SYNAccountSettingsGender.h"
+#import "SYNAccountSettingsLocation.h"
+#import "SYNAccountSettingsMainTableViewController.h"
+#import "SYNAccountSettingsPassword.h"
 #import "SYNAccountSettingsPushNotifications.h"
 #import "SYNAccountSettingsShareSettings.h"
-#import "SYNAccountSettingsPassword.h"
-#import "SYNAccountSettingsLocation.h"
-#import "SYNAccountSettingsEmail.h"
+#import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsUsername.h"
-#import "SYNAccountSettingsAbout.h"
+#import "SYNAppDelegate.h"
+#import "UIFont+SYNFont.h"
+#import "User.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
@@ -375,8 +376,21 @@
                                            
                                            
                                        }];
+
+    // Calculate age, taking account of leap-years etc. (probably too accurate!)
+    NSDateComponents* ageComponents = [[NSCalendar currentCalendar] components: NSYearCalendarUnit
+                                                                      fromDate: user.dateOfBirth
+                                                                        toDate: NSDate.date
+                                                                       options: 0];
     
+    NSInteger age = [ageComponents year];
+    NSString *ageString = [NSString stringWithFormat: @"%d", age];
     
+    // Now set the age
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker setCustom: kGADimensionAge
+             dimension: ageString];
 }
 
 -(NSString*)getDOBPlainStringFromCurrentUser
@@ -392,25 +406,24 @@
     return [dateFormatter stringFromDate:user.dateOfBirth];
 }
 
--(NSString*)getDOBFormattedStringFromCurrentUser
+-(NSString*) getDOBFormattedStringFromCurrentUser
 {
     if(!user.dateOfBirth)
         return @"";
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    [dateFormatter setDateFormat: @"yyyy-MM-dd"];
     
     return [dateFormatter stringFromDate:user.dateOfBirth];
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    if(popoverController == self.dobPopover)
+    if (popoverController == self.dobPopover)
     {
         self.dobPopover = nil;
     }
-    
 }
 
 @end

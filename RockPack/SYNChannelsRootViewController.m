@@ -123,6 +123,9 @@
 {
     [super viewDidLoad];
     
+    // Google Analytics support
+    self.trackedViewName = @"Channels - Root";
+    
     currentRange = NSMakeRange(0, 50);
     
 

@@ -57,7 +57,6 @@
     if ((self = [super initWithNibName: @"SYNVideosRootViewController"
                                bundle: nil])) {
         viewId = vid;
-        
     }
     
     return self;
@@ -66,7 +65,7 @@
 
 #pragma mark - View lifecycle
 
--(void)loadView
+- (void) loadView
 {
     CGRect videoCollectionViewFrame = CGRectMake(512.0, 87.0, 512.0, 569.0);
     
@@ -77,7 +76,6 @@
     standardFlowLayout.footerReferenceSize = CGSizeMake(videoCollectionViewFrame.size.width, 64.0);
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     standardFlowLayout.sectionInset = UIEdgeInsetsMake(6, 2, 5, 2);
-    
     
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
@@ -96,14 +94,15 @@
 }
 
 
--(void)channelOwnerLabelPressed:(UIButton*)button
+- (void) channelOwnerLabelPressed: (UIButton*) button
 {
     
     VideoInstance* currentlyPlayingVideoInstance = self.largeVideoPanelController.videoInstance;
     [self viewProfileDetails: currentlyPlayingVideoInstance.channel.channelOwner];
 }
 
--(void)setLargeVideoPanelController:(SYNLargeVideoPanelViewController *)largeVideoPanelController
+
+- (void) setLargeVideoPanelController: (SYNLargeVideoPanelViewController *) largeVideoPanelController
 {
     if(!largeVideoPanelController)
         return;
@@ -140,9 +139,13 @@
     
 }
 
--(void)viewDidLoad
+ 
+- (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Google Analytics support
+    self.trackedViewName = @"Videos - Root";
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
@@ -153,16 +156,14 @@
                                withReuseIdentifier:@"SYNChannelFooterMoreView"];
     
     [appDelegate.networkEngine updateVideosScreenForCategory: @"all"];
-    
 }
+
 
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
     
-    
     // Request Video Q to show at all times
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
                                                         object:self
                                                       userInfo:@{@"lock" : @(YES)}];
@@ -203,7 +204,6 @@
 
 
 #pragma mark - Reload
-
 
 - (void) reloadCollectionViews
 {

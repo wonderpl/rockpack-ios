@@ -42,6 +42,8 @@
 {
     [super viewDidLoad];
     
+    self.trackedViewName = @"Friends - Root";
+    
     // Init collection view
     UINib *friendThumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
                                                   bundle: nil];

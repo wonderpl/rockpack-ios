@@ -13,6 +13,7 @@
 #import "SYNTabViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNVideoQueueDelegate.h"
+#import "GAITrackedViewController.h"
 
 //#import "Channel.h"
 #import "SYNNetworkEngine.h"
@@ -20,7 +21,11 @@
 
 @class VideoInstance, Channel, ChannelOwner;
 
-@interface SYNAbstractViewController : UIViewController <NSFetchedResultsControllerDelegate, UICollectionViewDataSource,                                                            UICollectionViewDelegate, SYNTabViewDelegate> {
+@interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
+                                                                 UICollectionViewDataSource,
+                                                                 UICollectionViewDelegate,
+                                                                 SYNTabViewDelegate>
+{
 @protected
     SYNAppDelegate* appDelegate;
     BOOL tabExpanded;

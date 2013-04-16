@@ -74,6 +74,9 @@
 {
     [super viewDidLoad];
     
+    // Google Analytics support
+    self.trackedViewName = @"Video Viewer";
+    
     // Set custom fonts
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
     self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];

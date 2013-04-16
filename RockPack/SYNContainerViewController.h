@@ -6,10 +6,11 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GAITrackedViewController.h"
+#import "SYNAbstractViewController.h"
 #import "SYNVideoQueueDelegate.h"
 #import "SYNVideoQueueViewController.h"
-#import "SYNAbstractViewController.h"
+#import <UIKit/UIKit.h>
 
 typedef enum {
     ScrollingDirectionNone = 0,
@@ -17,8 +18,7 @@ typedef enum {
     ScrollingDirectionLeft
 } ScrollingDirection;
 
-@interface SYNContainerViewController : UIViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
-
+@interface SYNContainerViewController : GAITrackedViewController <SYNVideoQueueDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak) SYNVideoQueueViewController* videoQueueController;
 @property (nonatomic, readonly) SYNAbstractViewController* showingViewController;

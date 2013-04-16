@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
+#import "GAITrackedViewController.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import <UIKit/UIKit.h>
 
 // Forward declaration for
 @class SYNVideoPlaybackViewController;
 @class NSFetchedResultsController;
 
-@interface SYNVideoPlaybackViewController : UIViewController
+@interface SYNVideoPlaybackViewController : GAITrackedViewController
 
 @property (nonatomic, assign, readonly) NSTimeInterval currentTime;
 @property (nonatomic, assign, readonly) NSTimeInterval duration;

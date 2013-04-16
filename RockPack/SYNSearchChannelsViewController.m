@@ -22,7 +22,26 @@
 
 @synthesize itemToUpdate;
 
-- (NSFetchedResultsController *)fetchedResultsController
+#pragma mark - View lifecycle
+
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.trackedViewName = @"Search - Channels";
+    
+    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
+                                                             self.channelThumbnailCollectionView.center.y + 30.0);
+}
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    // override the data loading
+    
+}
+
+- (NSFetchedResultsController *) fetchedResultsController
 {
     
     if (fetchedResultsController != nil)
@@ -53,13 +72,14 @@
 }
 
 
--(void)performSearchWithTerm:(NSString*)term
+- (void) performSearchWithTerm: (NSString*) term
 {
 //    if(self.itemToUpdate)
 //        [self.itemToUpdate hideItem];
     
     [appDelegate.networkEngine searchChannelsForTerm:term];
 }
+
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
@@ -71,33 +91,14 @@
 }
 
 
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    // override the data loading
-    
-}
-
--(void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    
-    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
-                                                             self.channelThumbnailCollectionView.center.y + 30.0);
-}
-
-
-
-
 #pragma mark - Override
 
--(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
 {
     // override with empty functiokn
 }
 
--(void)handleNewTabSelectionWithId:(NSString *)selectionId
+- (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
     // override with emtpy function
 }

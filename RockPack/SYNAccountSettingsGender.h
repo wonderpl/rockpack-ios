@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNAccountSettingsGender : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SYNAccountSettingsGender : GAITrackedViewController <UITableViewDataSource,
+                                                                UITableViewDelegate>
 
 @end

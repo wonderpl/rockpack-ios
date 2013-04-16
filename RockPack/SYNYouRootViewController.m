@@ -36,14 +36,17 @@
 
 #pragma mark - View lifecycle
 
--(id)initWithViewId:(NSString *)vid
+- (id) initWithViewId: (NSString *) vid
 {
-    if(self = [super initWithViewId:vid])
+    if(self = [super initWithViewId: vid])
     {
         self.title = @"My Rockpack";
     }
     return self;
 }
+
+
+#pragma mark - View lifecycle
 
 - (void) loadView
 {
@@ -80,6 +83,40 @@
 }
 
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.trackedViewName = @"You - Root";
+    
+    // Init collection view
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
+                                             bundle: nil];
+    
+    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
+                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
+    
+    UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
+                                                                                             action: @selector(handlePinchGesture:)];
+    
+    [self.view addGestureRecognizer: pinchOnChannelView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsPressed:) name:kAccountSettingsPressed object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout:) name:kAccountSettingsLogout object:nil];
+}
+
+
+- (void) viewWillAppear: (BOOL) animated
+{
+    [super viewWillAppear:animated];
+    
+    if(!self.tabViewController)
+        return;
+    
+    // TODO: Put Owner Data in the Profile Panel
+}
+
+
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
@@ -113,25 +150,6 @@
     return fetchedResultsController;
 }
 
-- (void) viewDidLoad
-{
-    [super viewDidLoad];
-    
-    // Init collection view
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
-                                             bundle: nil];
-    
-    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
-    
-    UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
-                                                                                             action: @selector(handlePinchGesture:)];
-    
-    [self.view addGestureRecognizer: pinchOnChannelView];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsPressed:) name:kAccountSettingsPressed object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout:) name:kAccountSettingsLogout object:nil];
-}
 
 -(void)accountSettingsPressed:(NSNotification*)notification
 {
@@ -145,15 +163,6 @@
     [appDelegate logout];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if(!self.tabViewController)
-        return;
-    
-    // TODO: Put Owner Data in the Profile Panel
-}
 
 -(void)showAccountSettingsPopover
 {

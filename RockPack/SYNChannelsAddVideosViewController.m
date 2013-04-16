@@ -10,4 +10,13 @@
 
 @implementation SYNChannelsAddVideosViewController
 
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Google Analytics support
+    self.trackedViewName = @"Channels - Add Videos";
+}
+
+
 @end
