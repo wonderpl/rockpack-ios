@@ -228,7 +228,7 @@
     
     [[self.dividerOverlayView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     CGFloat nextOrigin = self.homeButton.frame.size.width;
-    
+    [self.dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
     for (SYNCategoryItemView* tab in [self.mainTabsView subviews])
     {
         [tab resizeForOrientation:orientation withHeight:self.mainTabsView.frame.size.height];

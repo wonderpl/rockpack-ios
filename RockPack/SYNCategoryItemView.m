@@ -148,16 +148,16 @@
     CGSize sizeToUse = [label.text sizeWithFont:fontToUse];
     
     CGRect newFrame = label.frame;
-    newFrame.size=CGSizeMake(sizeToUse.width + offsetX, height + labelYOffset);
+    newFrame.size = CGSizeMake(sizeToUse.width + offsetX, height + labelYOffset);
     label.frame = newFrame;
     
     CGRect finalFrame = self.label.frame;
-    finalFrame.size = CGSizeMake(sizeToUse.width + offsetX + 4.0, height );
+    finalFrame.size = CGSizeMake(sizeToUse.width + offsetX , height );
     
     self.frame = finalFrame;
     
     
-    self.label.frame = finalFrame;
+    //self.label.frame = finalFrame;
 }
 
 @end
