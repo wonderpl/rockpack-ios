@@ -73,11 +73,11 @@
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
-    // ==
     
     self.userProfileController = [[SYNUserProfileViewController alloc] init];
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 60.0;
+    self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
 }

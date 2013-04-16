@@ -600,6 +600,8 @@
 		BE2D2153171D5BD500B4B755 /* ButtonCancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214F171D5BD500B4B755 /* ButtonCancel@2x.png */; };
 		BE2D2154171D5BD500B4B755 /* ButtonCancelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2150171D5BD500B4B755 /* ButtonCancelHighlighted.png */; };
 		BE2D2155171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */; };
+		BE2D2158171D8A4500B4B755 /* AvatarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2156171D8A4500B4B755 /* AvatarProfile.png */; };
+		BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */; };
 		BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */; };
 		BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */; };
 		BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */; };
@@ -685,8 +687,6 @@
 		BED4312316F1F12E0051465B /* LoginError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4312116F1F12D0051465B /* LoginError@2x.png */; };
 		BED4312B16F20CD70051465B /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4312A16F20CD70051465B /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */; };
-		BEE4A6A2170339B9008F9D05 /* NotFoundAvatarYou.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6A0170339B9008F9D05 /* NotFoundAvatarYou.png */; };
-		BEE4A6A3170339B9008F9D05 /* NotFoundAvatarYou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6A1170339B9008F9D05 /* NotFoundAvatarYou@2x.png */; };
 		BEE4A6B017035F9A008F9D05 /* ButtonChannelEdit.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6A417035F91008F9D05 /* ButtonChannelEdit.png */; };
 		BEE4A6B117035F9A008F9D05 /* ButtonChannelEdit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6A517035F92008F9D05 /* ButtonChannelEdit@2x.png */; };
 		BEE4A6B217035F9A008F9D05 /* ButtonChannelEditHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BEE4A6A617035F93008F9D05 /* ButtonChannelEditHighlighted.png */; };
@@ -1419,6 +1419,8 @@
 		BE2D214F171D5BD500B4B755 /* ButtonCancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancel@2x.png"; path = "Assets/Images/ButtonCancel@2x.png"; sourceTree = "<group>"; };
 		BE2D2150171D5BD500B4B755 /* ButtonCancelHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCancelHighlighted.png; path = Assets/Images/ButtonCancelHighlighted.png; sourceTree = "<group>"; };
 		BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelHighlighted@2x.png"; path = "Assets/Images/ButtonCancelHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE2D2156171D8A4500B4B755 /* AvatarProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AvatarProfile.png; path = Assets/Images/AvatarProfile.png; sourceTree = "<group>"; };
+		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
 		BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLargeVideoPanelViewController.h; sourceTree = "<group>"; };
 		BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLargeVideoPanelViewController.m; sourceTree = "<group>"; };
 		BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLargeVideoPanelViewController.xib; sourceTree = "<group>"; };
@@ -1531,8 +1533,6 @@
 		BED4312A16F20CD70051465B /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsUserViewController.h; sourceTree = "<group>"; };
 		BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsUserViewController.m; sourceTree = "<group>"; };
-		BEE4A6A0170339B9008F9D05 /* NotFoundAvatarYou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotFoundAvatarYou.png; path = Assets/Images/NotFoundAvatarYou.png; sourceTree = "<group>"; };
-		BEE4A6A1170339B9008F9D05 /* NotFoundAvatarYou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NotFoundAvatarYou@2x.png"; path = "Assets/Images/NotFoundAvatarYou@2x.png"; sourceTree = "<group>"; };
 		BEE4A6A417035F91008F9D05 /* ButtonChannelEdit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonChannelEdit.png; path = Assets/Images/ButtonChannelEdit.png; sourceTree = "<group>"; };
 		BEE4A6A517035F92008F9D05 /* ButtonChannelEdit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChannelEdit@2x.png"; path = "Assets/Images/ButtonChannelEdit@2x.png"; sourceTree = "<group>"; };
 		BEE4A6A617035F93008F9D05 /* ButtonChannelEditHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonChannelEditHighlighted.png; path = Assets/Images/ButtonChannelEditHighlighted.png; sourceTree = "<group>"; };
@@ -1893,10 +1893,10 @@
 		0142ED8D16B1B7FE008694DA /* You */ = {
 			isa = PBXGroup;
 			children = (
-				BEE4A6A0170339B9008F9D05 /* NotFoundAvatarYou.png */,
-				BEE4A6A1170339B9008F9D05 /* NotFoundAvatarYou@2x.png */,
 				0142ED8E16B1B85C008694DA /* HeaderYou.png */,
 				0142ED8F16B1B85C008694DA /* HeaderYou@2x.png */,
+				BE2D2156171D8A4500B4B755 /* AvatarProfile.png */,
+				BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */,
 			);
 			name = You;
 			sourceTree = "<group>";
@@ -3850,8 +3850,6 @@
 				01AEFBF71701AD2E0060467A /* SearchTabHeaderSelected@2x.png in Resources */,
 				01AEFBF81701AD2E0060467A /* SearchTabPanelHeader.png in Resources */,
 				01AEFBF91701AD2E0060467A /* SearchTabPanelHeader@2x.png in Resources */,
-				BEE4A6A2170339B9008F9D05 /* NotFoundAvatarYou.png in Resources */,
-				BEE4A6A3170339B9008F9D05 /* NotFoundAvatarYou@2x.png in Resources */,
 				BEE4A6B017035F9A008F9D05 /* ButtonChannelEdit.png in Resources */,
 				BEE4A6B117035F9A008F9D05 /* ButtonChannelEdit@2x.png in Resources */,
 				BEE4A6B217035F9A008F9D05 /* ButtonChannelEditHighlighted.png in Resources */,
@@ -3955,6 +3953,8 @@
 				BE2D2153171D5BD500B4B755 /* ButtonCancel@2x.png in Resources */,
 				BE2D2154171D5BD500B4B755 /* ButtonCancelHighlighted.png in Resources */,
 				BE2D2155171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png in Resources */,
+				BE2D2158171D8A4500B4B755 /* AvatarProfile.png in Resources */,
+				BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
