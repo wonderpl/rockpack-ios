@@ -10,7 +10,10 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNTabView.h"
 
-@interface SYNCategoriesTabView : SYNTabView 
+@interface SYNCategoriesTabView : SYNTabView {
+    
+    
+}
 
 
 

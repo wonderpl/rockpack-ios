@@ -17,7 +17,7 @@
 
 // These layout offsets and font sizes have been eyeballed to compensate for font offset. May need tweaking.
 
-#define kCategoriesTabOffsetXLandscape 32.0f
+#define kCategoriesTabOffsetXLandscape 34.0f
 #define kCategoriesTabOffsetXPortrait 16.0f
 
 #define kCategoriesTabLabelOffsetYLandscape 4.0f
@@ -53,6 +53,8 @@
         self.backgroundColor = [UIColor clearColor];
         
         
+        grayColor = [UIColor colorWithRed:(40.0/255.0) green:(45.0/255.0) blue:(51.0/255.0) alpha:(1.0)];
+        
         self.tag = [tabItemModel.uniqueId integerValue];
         
         NSString* itemName = tabItemModel.name;
@@ -70,17 +72,15 @@
         label.font = fontToUse;
         label.text = itemName;
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor whiteColor];
+        label.textColor = grayColor;
         label.userInteractionEnabled = NO;
         label.backgroundColor = [UIColor clearColor];
         
         [self addSubview:label];
         
         CGRect finalFrame = self.label.frame;
-        finalFrame.size.width += 2.0;
+        //finalFrame.size.width += 2.0;
         self.frame = finalFrame;
-        
-        
         
     }
     return self;
@@ -100,13 +100,13 @@
 -(void)makeFaded
 {
     self.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor lightGrayColor];
+    label.textColor = grayColor;
     
 }
 -(void)makeStandard
 {
     self.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
+    label.textColor = grayColor;
     
 }
 

@@ -74,7 +74,7 @@
     [self.view addSubview:self.channelThumbnailCollectionView];
     
     
-    self.userProfileController = [[SYNUserProfileViewController alloc] initWithDelegate:self];
+    self.userProfileController = [[SYNUserProfileViewController alloc] init];
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 60.0;
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -213,7 +213,7 @@
                                                                                               forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    channelThumbnailCell.titleLabel.text = channel.title;
+    [channelThumbnailCell setChannelTitle:channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
@@ -374,13 +374,5 @@
 }
 
 
-#pragma mark - UserProfileDelegate
-
--(void)userSpaceTapped:(UITapGestureRecognizer*)recogniser
-{
-    
-    
-    
-}
 
 @end

@@ -21,6 +21,7 @@
 @property (nonatomic, weak) Channel* channel;
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
+- (void) setChannelTitle: (NSString*) titleString;
 
 // This is used to indicate the UIViewController that
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
