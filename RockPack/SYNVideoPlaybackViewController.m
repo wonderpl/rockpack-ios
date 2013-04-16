@@ -84,13 +84,13 @@
     // Create view containing animated subviews for the animated placeholder (displayed whilst video is loading)
     self.videoPlaceholderView = [self createNewVideoPlaceholderView];
     
+    // Start animation
+    [self animateVideoPlaceholder: YES];
+    
     self.shuttleBarView = [self createShuttleBarView];
     
     // Create an UIWebView with exactly the same dimensions and background colour as our view
     self.currentVideoWebView = [self createNewVideoWebView];
-    
-    // Add button that can be used to play video (if not autoplaying)
-//    self.videoPlayButton = [self createVideoPlayButton];
 }
 
 
