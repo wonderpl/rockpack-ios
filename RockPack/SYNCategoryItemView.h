@@ -16,6 +16,8 @@ typedef enum {
 
 @interface SYNCategoryItemView : UIView {
     @private TabItemType type;
+    @private UIColor* grayColor;
+    
     
 }
 

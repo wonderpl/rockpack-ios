@@ -75,10 +75,11 @@
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
-    self.view. autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
@@ -232,7 +233,7 @@
     
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    channelThumbnailCell.titleLabel.text = channel.title;
+    [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
@@ -421,8 +422,6 @@
         imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
         imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
         
-        // Now create a new UIImageView to overlay
-//        UIImage *cellImage = channel.thumbnailImage;
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;

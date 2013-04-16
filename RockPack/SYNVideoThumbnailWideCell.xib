@@ -449,7 +449,10 @@
 						</array>
 						<string key="NSFrameSize">{497, 171}</string>
 						<reference key="NSSuperview" ref="182925985"/>
+<<<<<<< HEAD
+=======
 						<reference key="NSNextKeyView" ref="111552951"/>
+>>>>>>> origin/develop
 						<reference key="IBUIBackgroundColor" ref="67368057"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
