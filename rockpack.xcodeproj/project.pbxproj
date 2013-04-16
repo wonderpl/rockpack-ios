@@ -594,6 +594,12 @@
 		BE2D2141171C527B00B4B755 /* ButtonBackLabelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */; };
 		BE2D2142171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */; };
 		BE2D2145171C5A0600B4B755 /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */; };
+		BE2D214C171D5B9500B4B755 /* IconSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214A171D5B9500B4B755 /* IconSearch.png */; };
+		BE2D214D171D5B9500B4B755 /* IconSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214B171D5B9500B4B755 /* IconSearch@2x.png */; };
+		BE2D2152171D5BD500B4B755 /* ButtonCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214E171D5BD500B4B755 /* ButtonCancel.png */; };
+		BE2D2153171D5BD500B4B755 /* ButtonCancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214F171D5BD500B4B755 /* ButtonCancel@2x.png */; };
+		BE2D2154171D5BD500B4B755 /* ButtonCancelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2150171D5BD500B4B755 /* ButtonCancelHighlighted.png */; };
+		BE2D2155171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */; };
 		BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */; };
 		BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */; };
 		BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */; };
@@ -1407,6 +1413,12 @@
 		BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabelHighlighted@2x.png"; path = "Assets/Images/ButtonBackLabelHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE2D2143171C5A0600B4B755 /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
 		BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
+		BE2D214A171D5B9500B4B755 /* IconSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconSearch.png; path = Assets/Images/IconSearch.png; sourceTree = "<group>"; };
+		BE2D214B171D5B9500B4B755 /* IconSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconSearch@2x.png"; path = "Assets/Images/IconSearch@2x.png"; sourceTree = "<group>"; };
+		BE2D214E171D5BD500B4B755 /* ButtonCancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCancel.png; path = Assets/Images/ButtonCancel.png; sourceTree = "<group>"; };
+		BE2D214F171D5BD500B4B755 /* ButtonCancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancel@2x.png"; path = "Assets/Images/ButtonCancel@2x.png"; sourceTree = "<group>"; };
+		BE2D2150171D5BD500B4B755 /* ButtonCancelHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCancelHighlighted.png; path = Assets/Images/ButtonCancelHighlighted.png; sourceTree = "<group>"; };
+		BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelHighlighted@2x.png"; path = "Assets/Images/ButtonCancelHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLargeVideoPanelViewController.h; sourceTree = "<group>"; };
 		BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLargeVideoPanelViewController.m; sourceTree = "<group>"; };
 		BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLargeVideoPanelViewController.xib; sourceTree = "<group>"; };
@@ -3243,6 +3255,12 @@
 				BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */,
 				BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */,
 				BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */,
+				BE2D214A171D5B9500B4B755 /* IconSearch.png */,
+				BE2D214B171D5B9500B4B755 /* IconSearch@2x.png */,
+				BE2D214E171D5BD500B4B755 /* ButtonCancel.png */,
+				BE2D214F171D5BD500B4B755 /* ButtonCancel@2x.png */,
+				BE2D2150171D5BD500B4B755 /* ButtonCancelHighlighted.png */,
+				BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */,
 			);
 			name = "Master Panel";
 			sourceTree = "<group>";
@@ -3931,6 +3949,12 @@
 				BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */,
 				BE2D2141171C527B00B4B755 /* ButtonBackLabelHighlighted.png in Resources */,
 				BE2D2142171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png in Resources */,
+				BE2D214C171D5B9500B4B755 /* IconSearch.png in Resources */,
+				BE2D214D171D5B9500B4B755 /* IconSearch@2x.png in Resources */,
+				BE2D2152171D5BD500B4B755 /* ButtonCancel.png in Resources */,
+				BE2D2153171D5BD500B4B755 /* ButtonCancel@2x.png in Resources */,
+				BE2D2154171D5BD500B4B755 /* ButtonCancelHighlighted.png in Resources */,
+				BE2D2155171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
