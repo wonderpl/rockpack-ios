@@ -10,6 +10,7 @@
 #import "User.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "AppConstants.h"
 
 @interface SYNUserProfileViewController ()
 
@@ -17,6 +18,14 @@
 
 @implementation SYNUserProfileViewController
 
+-(id)initWithDelegate:(id<SYNUserProfileViewDelegate>)delegate
+{
+    if(self = [super init])
+    {
+        self.delegate = delegate;
+    }
+    return self;
+}
 
 
 - (void)viewDidLoad
@@ -27,6 +36,19 @@
     self.userNameLabel.font = [UIFont rockpackFontOfSize:14.0];
     
     // pack
+    
+    UITapGestureRecognizer* tapGesture;
+    
+    if(self.delegate)
+    {
+        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.delegate action:@selector(userSpaceTapped:)];
+        
+        
+        [self.view addGestureRecognizer:tapGesture];
+        
+    }
+    
+    
     
     [self pack];
   
@@ -49,8 +71,11 @@
     self.userNameLabel.frame = textRect;
 }
 
+
+
 -(void)setChannelOwner:(ChannelOwner*)channelOwner
 {
+    
     if([channelOwner isKindOfClass:[User class]])
     {
         
@@ -63,8 +88,10 @@
     [self.profileImageView setAsynchronousImageFromURL: [NSURL URLWithString: channelOwner.thumbnailURL]
                                       placeHolderImage: [UIImage imageNamed:@"AvatarProfile.png"]];
     
+    
     [self pack];
 }
+
 
 
 

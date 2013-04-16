@@ -1421,6 +1421,7 @@
 		BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelHighlighted@2x.png"; path = "Assets/Images/ButtonCancelHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE2D2156171D8A4500B4B755 /* AvatarProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AvatarProfile.png; path = Assets/Images/AvatarProfile.png; sourceTree = "<group>"; };
 		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
+		BE2D215A171D9C5E00B4B755 /* SYNUserProfileViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNUserProfileViewDelegate.h; sourceTree = "<group>"; };
 		BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLargeVideoPanelViewController.h; sourceTree = "<group>"; };
 		BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLargeVideoPanelViewController.m; sourceTree = "<group>"; };
 		BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLargeVideoPanelViewController.xib; sourceTree = "<group>"; };
@@ -3280,6 +3281,7 @@
 				BE7D35491718667F0085AB81 /* SYNUserProfileViewController.h */,
 				BE7D354A1718667F0085AB81 /* SYNUserProfileViewController.m */,
 				BE7D354B1718667F0085AB81 /* SYNUserProfileViewController.xib */,
+				BE2D215A171D9C5E00B4B755 /* SYNUserProfileViewDelegate.h */,
 			);
 			name = "User Profile Panel";
 			sourceTree = "<group>";

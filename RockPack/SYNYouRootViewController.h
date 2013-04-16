@@ -8,8 +8,9 @@
 
 #import "SYNAbstractViewController.h"
 #import "SYNAbstractViewController.h"
+#import "SYNUserProfileViewDelegate.h"
 
-@interface SYNYouRootViewController : SYNAbstractViewController <UIPopoverControllerDelegate>
+@interface SYNYouRootViewController : SYNAbstractViewController <UIPopoverControllerDelegate, SYNUserProfileViewDelegate>
 
 
 
