@@ -12,6 +12,7 @@
 #import "SYNAppDelegate.h"
 #import "AppConstants.h"
 #import "SYNNetworkEngine.h"
+#import "SYNDeviceManager.h"
 
 #define kGrayPanelBorderWidth 2.0
 
@@ -38,7 +39,9 @@
 
 -(void)loadView
 {
-    UIView* autocompletePanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 700.0, 50.0)];
+    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 160.0;
+    UIView* autocompletePanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
+                                                                         barWidth, 61.0)];
     autocompletePanel.backgroundColor = [UIColor whiteColor];
     
     // == Gray Panel == //
@@ -48,22 +51,58 @@
                                                                 autocompletePanel.frame.size.width - kGrayPanelBorderWidth * 2,
                                                                 autocompletePanel.frame.size.height - kGrayPanelBorderWidth * 2)];
     
-    grayPanel.backgroundColor = [UIColor lightGrayColor];
+    grayPanel.backgroundColor = [UIColor colorWithRed:(249.0/255.0) green:(249.0/255.0) blue:(249.0/255.0) alpha:(1.0)];
     grayPanel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [autocompletePanel addSubview:grayPanel];
     
+    // == Loop == //
+    
+    UIImage* loopImage = [UIImage imageNamed:@"IconSearch"];
+    UIImageView* loopImageView = [[UIImageView alloc] initWithImage:loopImage];
+    loopImageView.frame = CGRectMake(10.0, 14.0, loopImage.size.width, loopImage.size.height);
+    loopImageView.image = loopImage;
+    [grayPanel addSubview:loopImageView];
     
     
     // == Label == //
     
-    self.searchTextField = [[UITextField alloc] initWithFrame:CGRectMake(10.0, 10.0, 500.0, 40.0)];
-    self.searchTextField.font = [UIFont rockpackFontOfSize:18.0];
+    CGRect fieldRect = grayPanel.frame;
+    fieldRect.origin.x += 18.0 + loopImage.size.width;
+    fieldRect.origin.y += 12.0;
+    fieldRect.size.width -= 10.0 * 2;
+    fieldRect.size.height -= 10.0 * 2;
+    self.searchTextField = [[UITextField alloc] initWithFrame:fieldRect];
+    self.searchTextField.font = [UIFont rockpackFontOfSize:26.0];
     self.searchTextField.backgroundColor = [UIColor clearColor];
     self.searchTextField.textAlignment = NSTextAlignmentLeft;
     self.searchTextField.delegate = self;
-    [autocompletePanel addSubview:self.searchTextField];
+    self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
     
-    self.view = autocompletePanel;
+    
+    
+    // == Button == //
+    
+    UIImage* clearButtonImage = [UIImage imageNamed:@"ButtonCancel"];
+    UIButton* clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [clearButton setImage:clearButtonImage forState:UIControlStateNormal];
+    [clearButton setImage:[UIImage imageNamed:@"ButtonCancelHighlighted"] forState:UIControlStateHighlighted];
+    CGFloat buttonX = autocompletePanel.frame.origin.x + autocompletePanel.frame.size.width + 10.0;
+    clearButton.frame = CGRectMake(buttonX, 0.0, clearButtonImage.size.width, clearButtonImage.size.height);
+    
+    [clearButton addTarget:self action:@selector(clearSearchField:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    CGRect finalFrame = autocompletePanel.frame;
+    finalFrame.size.width += clearButton.frame.size.width + 10.0;
+    
+    
+    self.view = [[UIView alloc] initWithFrame:finalFrame];
+    [self.view addSubview:autocompletePanel];
+    [self.view addSubview:clearButton];
+    [self.view addSubview:self.searchTextField];
+    
     self.view.autoresizesSubviews = YES;
     
     
@@ -80,11 +119,18 @@
     self.autoSuggestionController.tableView.delegate = self;
     
     CGRect tableViewFrame = self.autoSuggestionController.tableView.frame;
-    tableViewFrame.origin.y = 50.0;
+    tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
+    tableViewFrame.origin.y = 66.0;
     self.autoSuggestionController.tableView.frame = tableViewFrame;
     self.autoSuggestionController.tableView.alpha = 0.0;
     [self.view addSubview:self.autoSuggestionController.tableView];
     
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.searchTextField becomeFirstResponder];
 }
 
 
@@ -93,8 +139,6 @@
 - (void) clearSearchField: (id) sender
 {
     self.searchTextField.text = @"";
-    
-    //self.clearTextButton.alpha = 0.0;
     
     [self.searchTextField resignFirstResponder];
 }
@@ -120,12 +164,14 @@
         return NO;
     
     
-    //    if(self.searchTextField.text.length < 1)
-    //        return YES;
     
-    if(self.autocompleteTimer) {
+    
+    
+    // == Restart Timer == //
+    
+    if(self.autocompleteTimer)
         [self.autocompleteTimer invalidate];
-    }
+    
     
     self.autocompleteTimer = [NSTimer scheduledTimerWithTimeInterval:kAutocompleteTime
                                                               target:self
@@ -195,12 +241,7 @@
     originalFrame = self.view.frame;
     
     CGRect tableViewFrame = self.autoSuggestionController.tableView.frame;
-    tableViewFrame.origin.x = kGrayPanelBorderWidth;
-    if(tableViewFrame.size.height < 180.0) {
-        
-    } else {
-        
-    }
+    
     tableViewFrame.size.height = tableViewFrame.size.height < 180.0 ? tableViewFrame.size.height : 200.0;
     tableViewFrame.size.width = self.view.frame.size.width - kGrayPanelBorderWidth;
     self.autoSuggestionController.tableView.frame = tableViewFrame;
@@ -243,7 +284,7 @@
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
     NSString* wordsSelected = [self.autoSuggestionController getWordAtIndex: indexPath.row];
-    self.searchTextField.text = wordsSelected;
+    self.searchTextField.text = [wordsSelected uppercaseString];
     
     self.view.frame = originalFrame;
     self.autoSuggestionController.view.alpha = 0.0;

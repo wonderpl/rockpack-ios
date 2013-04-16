@@ -53,12 +53,7 @@
 }
 -(UIDeviceOrientation)orientation
 {
-    UIDeviceOrientation result = [[UIDevice currentDevice] orientation];
-    if(result == UIDeviceOrientationUnknown || result >= UIDeviceOrientationFaceUp)
-    {
-        result = [[UIApplication sharedApplication] statusBarOrientation];
-    }
-    return result;
+    return [[UIDevice currentDevice] orientation];
 }
 
 -(CGFloat)currentScreenWidth

@@ -24,8 +24,8 @@
     if (self) {
         
         wordsArray = [[NSMutableArray alloc] init];
-        rockpackFont = [UIFont rockpackFontOfSize:18.0];
-        textColor = [UIColor rockpacTurcoiseColor];
+        rockpackFont = [UIFont rockpackFontOfSize:26.0];
+        textColor = [UIColor colorWithRed:(187.0f/255.0f) green:(187.0f/255.0f) blue:(187.0f/255.0f) alpha:(1.0f)];
         tableBGColor = [UIColor rockpacLedColor];
         
         self.title = @"Suggestions";
@@ -37,15 +37,16 @@
 {
     [super viewDidLoad];
 
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorColor = [UIColor rockpacLedColor];
     self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.scrollEnabled = NO;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
 }
 
 #pragma mark - Add Words
@@ -79,15 +80,7 @@
     {
         cell = [[UITableViewCell alloc] init];
         
-        // Accesory View
-        
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        // Separator
-        
-        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DividerSearch.png"]];
-        dividerImageView.center = CGPointMake(cell.center.x - 20.0, cell.frame.size.height - 2.0);
-        [cell.contentView addSubview:dividerImageView];
+        cell.accessoryType = UITableViewCellAccessoryNone;
         
         cell.contentView.backgroundColor = [UIColor clearColor];
         
@@ -101,56 +94,18 @@
         cell.textLabel.font = rockpackFont;
         cell.textLabel.textColor = textColor;
         
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ArrowSearch.png"]];
         
     }
     
     
-    cell.textLabel.text = (NSString*)wordsArray[indexPath.row];
+    cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) uppercaseString];
     
     // Configure the cell...
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 -(NSString*)getWordAtIndex:(NSInteger)index
 {
