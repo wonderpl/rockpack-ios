@@ -44,7 +44,7 @@
 
 -(void)loadView
 {
-    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 160.0;
+    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
     self.autocompletePanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
                                                                       barWidth, 61.0)];
     autocompletePanel.backgroundColor = [UIColor whiteColor];
@@ -111,7 +111,6 @@
     [self.view addSubview:clearButton];
     [self.view addSubview:self.searchTextField];
     
-    self.view.autoresizesSubviews = YES;
     
     
 }
@@ -147,6 +146,10 @@
 - (void) clearSearchField: (id) sender
 {
     self.searchTextField.text = @"";
+    
+    [self.autoSuggestionController clearWords];
+    
+    [self resizeTableView];
     
     [self.searchTextField resignFirstResponder];
 }
@@ -250,12 +253,17 @@
     
     
     CGRect panelFrame = self.autocompletePanel.frame;
-    panelFrame.size.height = initialPanelHeight + tableViewHeight + 10.0;
+    panelFrame.size.height = initialPanelHeight + tableViewHeight + (tableViewHeight > 0.0 ? 10.0 : 0.0);
     autocompletePanel.frame = panelFrame;
+    
+    CGRect selfFrame = self.view.frame;
+    selfFrame.size.height = panelFrame.size.height;
+    self.view.frame = selfFrame;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
+    NSString* currentSearchTerm = self.searchTextField.text;
     
     if ([self.searchTextField.text isEqualToString:@""])
         return NO;
@@ -263,7 +271,7 @@
     [self.autocompleteTimer invalidate];    
     self.autocompleteTimer = nil;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kSearchTyped object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSearchTyped object:self userInfo:@{kSearchTerm:currentSearchTerm}];
     
     
     [textField resignFirstResponder];
@@ -290,10 +298,14 @@
     NSString* wordsSelected = [self.autoSuggestionController getWordAtIndex: indexPath.row];
     self.searchTextField.text = [wordsSelected uppercaseString];
     
-    self.view.frame = originalFrame;
-    self.autoSuggestionController.view.alpha = 0.0;
+    [self.autoSuggestionController clearWords];
+    
+    [self resizeTableView];
+    
+    
     
     [self textFieldShouldReturn: self.searchTextField];
+    
 }
 
 

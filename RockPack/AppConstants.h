@@ -214,6 +214,7 @@ typedef enum _Gender {
 #define kNavigateToPage       @"kNavigateToPage"
 
 #define kSearchTyped      @"kSearchTyped"
+#define kSearchTerm      @"kSearchTerm"
 
 #define kCurrentPage        @"kCurrentPage"
 

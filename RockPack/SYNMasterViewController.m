@@ -544,6 +544,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)searchTyped:(NSNotification*)notification
 {
     
+    
+    NSString* termString = [[notification userInfo] objectForKey:kSearchTerm];
+    
+    if(!termString)
+        return;
+    
+    [self.containerViewController showSearchViewControllerWithTerm:termString];
+    
+    
 }
 
 
