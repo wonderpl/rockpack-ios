@@ -10,6 +10,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "AppConstants.h"
+#import "GAI.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -23,47 +24,45 @@ typedef enum {
 
 @interface SYNSideNavigationViewController ()
 
-@property (nonatomic, strong) IBOutlet UILabel* serchLabel;
-@property (nonatomic, strong) IBOutlet UITableView* tableView;
-@property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
-@property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
 @property (nonatomic, strong) IBOutlet UIButton* settingsButton;
-
+@property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
+@property (nonatomic, strong) IBOutlet UILabel* serchLabel;
+@property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
+@property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, strong) IBOutlet UIView* containerView;
-
-@property (nonatomic, strong) UIColor* navItemColor;
-
 @property (nonatomic, strong) NSArray* navigationData;
-
 @property (nonatomic, strong) NSIndexPath* currentlySelectedIndexPath;
-
+@property (nonatomic, strong) UIColor* navItemColor;
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
 
 @end
 
+
 @implementation SYNSideNavigationViewController
 
-@synthesize navigationData;
-@synthesize user;
-@synthesize navItemColor;
-@synthesize currentlySelectedIndexPath;
-@synthesize currentlyLoadedViewController;
+// Only need synthesize for custom setters, use latest ObjC naming convention
+@synthesize user = _user;
+@synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 
--(id)init
+- (id) init
 {
-    self = [super initWithNibName:@"SYNSideNavigationViewController" bundle:nil];
-    if (self) {
-        navigationData = @[
-                           @{kSideNavTitle:@"FEED", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@"Feed"},
-                           @{kSideNavTitle:@"CHANNELS", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@"Channels"},
-                           @{kSideNavTitle:@"MY ROCKPACK", kSideNavType:@(kSideNavigationTypePage), kSideNavAction:@"My Rockpack"},
-                           @{kSideNavTitle:@"NOTIFICATIONS", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@"SYNNotificationsViewController"},
-                           @{kSideNavTitle:@"ACCOUNTS", kSideNavType:@(kSideNavigationTypeLoad), kSideNavAction:@""}
-                           ];
+    if ((self = [super initWithNibName: @"SYNSideNavigationViewController" bundle: nil]))
+    {
+        self.navigationData = @[
+                                @{kSideNavTitle: @"FEED", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: @"Feed"},
+                                @{kSideNavTitle: @"CHANNELS", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: @"Channels"},
+                                @{kSideNavTitle: @"MY ROCKPACK", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: @"My Rockpack"},
+                                @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"},
+                                @{kSideNavTitle: @"ACCOUNTS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @""}
+                                ];
     }
+        
     return self;
 }
 
+
+#pragma mark - View lifecycle
+        
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -73,15 +72,16 @@ typedef enum {
     
     self.userNameLabel.font = [UIFont rockpackFontOfSize: 20.0];
     
-    navItemColor = [UIColor colorWithRed: (40.0/255.0)
-                                   green: (45.0/255.0)
-                                    blue: (51.0/255.0)
-                                   alpha: (1.0)];
+    self.navItemColor = [UIColor colorWithRed: (40.0/255.0)
+                                        green: (45.0/255.0)
+                                         blue: (51.0/255.0)
+                                        alpha: (1.0)];
 }
+
 
 #pragma mark - Button Actions
 
--(IBAction)settingsButtonPressed:(id)sender
+- (IBAction) settingsButtonPressed: (id) sender
 {
     
 }
@@ -89,72 +89,71 @@ typedef enum {
 
 #pragma mark - UITableView Deleagate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView
 {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger) tableView: (UITableView *) tableView
+  numberOfRowsInSection: (NSInteger) section
 {
-    return navigationData.count;
-    
+    return self.navigationData.count;
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *) tableView: (UITableView *) tableView
+          cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
     static NSString *CellIdentifier = @"NavigationCell";
     UITableViewCell *cell;
     
-    
-    if(indexPath.section == 0) {
+    if (indexPath.section == 0)
+    { 
+        cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+                                      reuseIdentifier: CellIdentifier];
         
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
         
-        NSDictionary* navigationElement = (NSDictionary*)[navigationData objectAtIndex:indexPath.row];
+        cell.textLabel.text = [navigationElement objectForKey: kSideNavTitle];
         
-        cell.textLabel.text = [navigationElement objectForKey:kSideNavTitle];
+        kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
         
-        kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey:kSideNavType]) integerValue];
-        
-        
-        
-        if(navigationType == kSideNavigationTypePage) {
+        if(navigationType == kSideNavigationTypePage)
+        {
             cell.accessoryType = UITableViewCellAccessoryNone;
-        } else {
+        }
+        else
+        {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavArrow"]];
+            cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
         }
             
+        cell.textLabel.font = [UIFont rockpackFontOfSize: 15.0];
         
-        cell.textLabel.font = [UIFont rockpackFontOfSize:15.0];
-        
-        cell.textLabel.textColor = navItemColor;
+        cell.textLabel.textColor = self.navItemColor;
         
         UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
-        selectedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavSelected"]];
+        selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
         cell.selectedBackgroundView = selectedView;
-        
-        
     } 
     
     return cell;
 }
 
 
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void) tableView: (UITableView *) tableView
+         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    if([indexPath compare:currentlySelectedIndexPath] == NSOrderedSame)
+    if([indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)
         return;
     
     //self.currentlySelectedIndexPath = indexPath;
     
-    NSDictionary* navigationElement = (NSDictionary*)[navigationData objectAtIndex:indexPath.row];
-    kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey:kSideNavType]) integerValue];
-    NSString* navigationAction = (NSString*)[navigationElement objectForKey:kSideNavAction];
+    NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
+    kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
+    NSString* navigationAction = (NSString*)[navigationElement objectForKey: kSideNavAction];
     
-    if(navigationType == kSideNavigationTypeLoad)
+    if (navigationType == kSideNavigationTypeLoad)
     {
         
         Class theClass = NSClassFromString(navigationAction);
@@ -164,53 +163,60 @@ typedef enum {
     else
     {
         
-        NSNotification* navigationNotification = [NSNotification notificationWithName:kNavigateToPage
-                                                                               object:self
-                                                                             userInfo:@{@"pageName":navigationAction}];
+        NSNotification* navigationNotification = [NSNotification notificationWithName: kNavigateToPage
+                                                                               object: self
+                                                                             userInfo: @{@"pageName":navigationAction}];
         
-        [[NSNotificationCenter defaultCenter] postNotification:navigationNotification];
+        [[NSNotificationCenter defaultCenter] postNotification: navigationNotification];
     }
     
- 
+    // Google analytics
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"mainNavClick"
+                         withLabel: navigationAction
+                         withValue: nil];
 }
 
--(void)setCurrentlyLoadedViewController:(UIViewController *)currentlyLoadedVC
-{
-    
-    
-    if(currentlyLoadedViewController) {
-        [currentlyLoadedViewController.view removeFromSuperview];
-    }
-    
-    
-    currentlyLoadedViewController = currentlyLoadedVC;
-    
-    if(!currentlyLoadedViewController)
-        return;
-    
-    CGSize containerSize = self.containerView.frame.size;
-    CGRect vcRect = currentlyLoadedViewController.view.frame;
-    vcRect.size = containerSize;
-    currentlyLoadedViewController.view.frame = vcRect;
-    
-    [self.containerView addSubview:currentlyLoadedViewController.view];
-    
-    
-}
-
--(void)reset
-{
-    self.currentlySelectedIndexPath = nil;
-}
 
 #pragma mark - Accessor Methods
 
--(void)setUser:(User *)nuser
+- (void) setUser: (User *) user
 {
-    user = nuser;
-    self.userNameLabel.text = [NSString stringWithFormat:@"%@", user.fullName];
-    [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: user.thumbnailURL]
-                                      placeHolderImage: [UIImage imageNamed:@"NotFoundAvatarYou.png"]];
+    _user = user;
+    self.userNameLabel.text = [NSString stringWithFormat: @"%@", self.user.fullName];
+    
+    [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.user.thumbnailURL]
+                                             placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou.png"]];
+}
+
+
+- (void) setCurrentlyLoadedViewController: (UIViewController *) currentlyLoadedVC
+{
+    if (self.currentlyLoadedViewController)
+    {
+        [self.currentlyLoadedViewController.view removeFromSuperview];
+    }
+    
+    _currentlyLoadedViewController = currentlyLoadedVC;
+    
+    // Bail out if setting to nil
+    if(!self.currentlyLoadedViewController)
+        return;
+    
+    CGSize containerSize = self.containerView.frame.size;
+    CGRect vcRect = self.currentlyLoadedViewController.view.frame;
+    vcRect.size = containerSize;
+    self.currentlyLoadedViewController.view.frame = vcRect;
+    
+    [self.containerView addSubview: self.currentlyLoadedViewController.view];
+}
+
+
+- (void) reset
+{
+    self.currentlySelectedIndexPath = nil;
 }
 
 @end

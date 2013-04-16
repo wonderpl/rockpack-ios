@@ -77,12 +77,10 @@
 {
     [super viewDidLoad];
     
-    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    
+    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate]; 
 }
 
--(void)viewCameToScrollFront
+- (void) viewCameToScrollFront
 {
     
 }
@@ -130,8 +128,8 @@
 {
     [super viewDidAppear: animated];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueHide
+                                                        object: self];
 }
 
 #pragma mark - Animation support
@@ -145,20 +143,14 @@
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         vc.view.alpha = 1.0f;
-         
-     }
-     completion: ^(BOOL finished)
-     {
-         
-     }];
+                     animations: ^ {
+                         // Contract thumbnail view
+                         self.view.alpha = 0.0f;
+                         vc.view.alpha = 1.0f;
+                     }
+                     completion: nil];
     
     [self.navigationController pushViewController:vc animated: NO];
-    
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
 }
@@ -182,16 +174,11 @@
          
      }];
     
-    
     [self.navigationController popViewControllerAnimated:NO];
     
     // Hide back button
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
 }
-
-
-
 
 
 - (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath
@@ -206,15 +193,13 @@
         
         // Update the star/unstar status on the server
         [appDelegate.oAuthNetworkEngine channelUnsubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-         channelId: channel.uniqueId
-         completionHandler: ^(NSDictionary *responseDictionary)
-         {
-             DebugLog(@"Unsubscribe action successful");
-         }
-         errorHandler: ^(NSDictionary* errorDictionary)
-         {
-             DebugLog(@"Unsubscribe action failed");
-         }];
+                                                          channelId: channel.uniqueId
+                                                  completionHandler: ^(NSDictionary *responseDictionary) {
+                                                      DebugLog(@"Unsubscribe action successful");
+                                                  }
+                                                       errorHandler: ^(NSDictionary* errorDictionary) {
+                                                           DebugLog(@"Unsubscribe action failed");
+                                                       }];
     }
     else
     {
@@ -278,9 +263,11 @@
 
 // Called by invisible button on video view cell
 
-- (void) displayVideoViewerFromView: (UIGestureRecognizer *) sender
+- (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
+//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
+    UIView *v = videoViewButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
 
     [self displayVideoViewerWithSelectedIndexPath: indexPath];
 }
