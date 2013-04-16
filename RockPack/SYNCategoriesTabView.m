@@ -98,30 +98,16 @@
     [self addSubview:self.homeButton];
     
     nextOrigin += self.homeButton.frame.size.width;
-    
-    [self.dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
-    
     for (Category* category in categories)
     {
-        
-        
         tab = [[SYNCategoryItemView alloc] initWithTabItemModel:category];
-        CGRect tabFrame = tab.frame;
-        tabFrame.origin.x = nextOrigin;
-        tabFrame.size.height = self.mainTabsView.frame.size.height;
-        tab.frame = tabFrame;
         [self.mainTabsView addSubview:tab];
-        
         [tab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
-        
-        nextOrigin += tabFrame.size.width;
-        
-        
-        [self.dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
-        
     }
     
     [self addSubview:self.dividerOverlayView];
+    //Layout tabs according to orientation
+    [self refreshViewForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
 
 -(UIImageView*)createDividerAtOffset:(CGFloat)offset
@@ -137,55 +123,27 @@
 {
     
     // Clean current subviews
-    
-    
     for (UIView* sview in self.secondaryTabsView.subviews)
         [sview removeFromSuperview];
     
     for(SYNCategoryItemView* divider in self.secondaryDividerOverlay.subviews)
         [divider removeFromSuperview];
- 
-    
     
     SYNCategoryItemView* tab = nil;
-    CGFloat nextOrigin = 0.0;
-        
-    
-    
-    CGFloat midSecondaryFrame = self.secondaryTabsView.frame.size.height * 0.5;
-    
+ 
     
     NSSortDescriptor* idSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"priority" ascending:NO];
     NSArray* sortedSubcategories = [subcategories sortedArrayUsingDescriptors:[NSArray arrayWithObject:idSortDescriptor]];
         
     for (Subcategory* subcategory in sortedSubcategories)
     {
-        
-        
-        
         tab = [[SYNCategoryItemView alloc] initWithTabItemModel:subcategory];
-        CGRect tabFrame = tab.frame;
-        tabFrame.origin.x = nextOrigin;
-        tabFrame.size.height = self.mainTabsView.frame.size.height;
-        tab.frame = tabFrame;
         [self.secondaryTabsView addSubview:tab];
-        
-        
-        [tab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSecondaryTap:)]];
-            
-        nextOrigin += tabFrame.size.width;
-        
-        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SubCategoryBarDivider"]];
-        dividerImageView.center = CGPointMake(nextOrigin, midSecondaryFrame);
-        [self.secondaryDividerOverlay addSubview:dividerImageView];
-        
-            
+        [tab addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSecondaryTap:)]];        
     }
-    
-    
     [self showSecondaryTabs];
-    
-        
+    //Layout tabs according to orientation
+    [self refreshViewForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];    
 
 }
 
@@ -259,6 +217,7 @@
 
 -(void)refreshViewForOrientation:(UIInterfaceOrientation)orientation
 {
+    //Layout Main tabs
     
     [[self.dividerOverlayView subviews]
      makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -266,7 +225,7 @@
     
     for (SYNCategoryItemView* tab in [self.mainTabsView subviews])
     {
-        [tab resizeForOrientation:orientation];
+        [tab resizeForOrientation:orientation withHeight:self.mainTabsView.frame.size.height];
         CGRect tabFrame = tab.frame;
         tabFrame.origin.x = nextOrigin;
         tab.frame = tabFrame;        
@@ -274,6 +233,27 @@
         [self.dividerOverlayView addSubview:[self createDividerAtOffset:nextOrigin]];
         
     }
+    
+    //Layout secondary tabs
+    
+    [[self.secondaryDividerOverlay subviews]
+     makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    nextOrigin = 0.0f;
+    CGFloat midSecondaryFrame = self.secondaryTabsView.frame.size.height * 0.5;
+    
+    for (SYNCategoryItemView* tab in [self.secondaryTabsView subviews])
+    {
+        [tab resizeForOrientation:orientation withHeight:self.secondaryTabsView.frame.size.height -2.0f];
+        CGRect tabFrame = tab.frame;
+        tabFrame.origin.x = nextOrigin;
+        tab.frame = tabFrame;
+        nextOrigin += tabFrame.size.width;
+        UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SubCategoryBarDivider"]];
+        dividerImageView.center = CGPointMake(nextOrigin, midSecondaryFrame);
+        [self.secondaryDividerOverlay addSubview:dividerImageView];        
+    }
+    
+    
 
 }
 

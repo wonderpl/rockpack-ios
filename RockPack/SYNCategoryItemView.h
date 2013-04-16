@@ -30,6 +30,13 @@ typedef enum {
 
 -(void)makeStandard;
 
--(void)resizeForOrientation:(UIInterfaceOrientation)orientation;
+/**
+ Helper method for resizing the item view which is assumed to have flexible width depending on orientation and a fixed height.
+ 
+ @param orientation The orientation to adapt to
+ @param height the fixed view height
+ */
+-(void)resizeForOrientation:(UIInterfaceOrientation)orientation withHeight:(CGFloat)height;
+
 
 @end

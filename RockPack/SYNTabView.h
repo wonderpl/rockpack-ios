@@ -23,6 +23,13 @@
 
 -(void)setSelectedWithId:(NSString*)selectedId;
 
+/**
+	triggers a re-layout of the tab view to suit the selected orientation.
+ 
+    Override in subclass with implementation
+	@param orientation orientation to adapt to.
+ */
 -(void)refreshViewForOrientation:(UIInterfaceOrientation)orientation;
+
 
 @end
