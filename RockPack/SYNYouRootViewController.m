@@ -73,11 +73,11 @@
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
-    // ==
     
-    self.userProfileController = [[SYNUserProfileViewController alloc] init];
+    self.userProfileController = [[SYNUserProfileViewController alloc] initWithDelegate:self];
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 60.0;
+    self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
 }
@@ -370,6 +370,16 @@
         
         self.accountSettingsPopover = nil;
     }
+    
+}
+
+
+#pragma mark - UserProfileDelegate
+
+-(void)userSpaceTapped:(UITapGestureRecognizer*)recogniser
+{
+    
+    
     
 }
 

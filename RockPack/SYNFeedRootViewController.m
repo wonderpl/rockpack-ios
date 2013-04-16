@@ -19,6 +19,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNFeedRootViewController ()
 
@@ -51,17 +52,19 @@
     standardFlowLayout.minimumInteritemSpacing = 0.0f;
     standardFlowLayout.minimumLineSpacing = 10.0f;
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 10.0f, 0, 10.0f);
     
-    CGRect videoCollectionViewFrame = CGRectMake(0.0, 44.0, 1024.0, 642.0);
+    CGRect videoCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 44.0, 1024.0, 642.0) : CGRectMake(0.0f, 44.0f, 768.0f, 898.0f);
     
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 0.0, 1024.0, 768.0) : CGRectMake(0.0f, 0.0f, 768.0f, 1024.0f)];
     [self.view addSubview:self.videoThumbnailCollectionView];
+    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    self.view.autoresizingMask =  UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     
     // We should only setup our date formatter once
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -103,6 +106,10 @@
     [self refreshVideoThumbnails];
 }
 
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self reloadCollectionViews];
+}
 
 - (void) reloadCollectionViews
 {
@@ -190,6 +197,18 @@
     
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([[SYNDeviceManager sharedInstance] isLandscape])
+    {
+        return CGSizeMake(497, 174);
+    }
+    else
+    {
+        return CGSizeMake(370, 174);
+    }
+}
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath {
@@ -203,8 +222,9 @@
     
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
     videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
+    videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait];
     videoThumbnailCell.videoTitle.text = videoInstance.title;
-    videoThumbnailCell.channelName.text = videoInstance.channel.title;
+    videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
     
     
