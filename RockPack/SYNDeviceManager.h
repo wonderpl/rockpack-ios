@@ -17,6 +17,10 @@
 
 -(BOOL)isIPad;
 -(BOOL)isIPhone;
+
+-(BOOL)isLandscape;
+-(BOOL)isPortrait;
+
 -(UIDeviceOrientation)orientation;
 
 -(CGFloat)currentScreenWidth;

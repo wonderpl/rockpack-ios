@@ -43,6 +43,14 @@
 {
     return (idiom == UIUserInterfaceIdiomPhone);
 }
+-(BOOL)isLandscape
+{
+    return UIDeviceOrientationIsLandscape([self orientation]);
+}
+-(BOOL)isPortrait
+{
+    return UIDeviceOrientationIsPortrait([self orientation]);
+}
 -(UIDeviceOrientation)orientation
 {
     return [[UIDevice currentDevice] orientation];
