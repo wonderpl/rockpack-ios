@@ -30,6 +30,7 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
 
 @property (nonatomic, weak) NSString* usernameText;
+@property (nonatomic, weak) NSString* channelNameText;
 
 @property (nonatomic) kDisplayMode displayMode;
 
