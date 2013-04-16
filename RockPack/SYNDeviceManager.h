@@ -21,6 +21,8 @@
 -(BOOL)isLandscape;
 -(BOOL)isPortrait;
 
+-(BOOL)isRetina;
+
 -(UIDeviceOrientation)orientation;
 
 -(CGFloat)currentScreenWidth;
