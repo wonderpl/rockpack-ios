@@ -24,7 +24,7 @@
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) CGRect originalFrame;
-@property (nonatomic, strong) UIView* autocompletePanel;
+@property (nonatomic, strong) UIView* backgroundPanel;
 
 
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
@@ -38,29 +38,36 @@
 @synthesize searchTextField;
 @synthesize appDelegate;
 @synthesize originalFrame;
-@synthesize autocompletePanel;
+@synthesize backgroundPanel;
 @synthesize initialPanelHeight;
 
 
 -(void)loadView
 {
-    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
-    self.autocompletePanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
-                                                                      barWidth, 61.0)];
-    autocompletePanel.backgroundColor = [UIColor whiteColor];
     
-    initialPanelHeight = self.autocompletePanel.frame.size.height;
+    
+    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
+    
+    self.backgroundPanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
+                                                                      barWidth, 61.0)];
+    backgroundPanel.backgroundColor = [UIColor whiteColor];
+    
+    backgroundPanel.autoresizesSubviews = YES;
+    
+    initialPanelHeight = self.backgroundPanel.frame.size.height;
     
     // == Gray Panel == //
     
     UIView* grayPanel = [[UIView alloc] initWithFrame:CGRectMake(kGrayPanelBorderWidth,
                                                                 kGrayPanelBorderWidth,
-                                                                autocompletePanel.frame.size.width - kGrayPanelBorderWidth * 2,
-                                                                autocompletePanel.frame.size.height - kGrayPanelBorderWidth * 2)];
+                                                                backgroundPanel.frame.size.width - kGrayPanelBorderWidth * 2,
+                                                                backgroundPanel.frame.size.height - kGrayPanelBorderWidth * 2)];
     
     grayPanel.backgroundColor = [UIColor colorWithRed:(249.0/255.0) green:(249.0/255.0) blue:(249.0/255.0) alpha:(1.0)];
     grayPanel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    [autocompletePanel addSubview:grayPanel];
+    [backgroundPanel addSubview:grayPanel];
+    
+    backgroundPanel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     
     
     // == Loop == //
@@ -69,6 +76,7 @@
     UIImageView* loopImageView = [[UIImageView alloc] initWithImage:loopImage];
     loopImageView.frame = CGRectMake(10.0, 14.0, loopImage.size.width, loopImage.size.height);
     loopImageView.image = loopImage;
+    grayPanel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     [grayPanel addSubview:loopImageView];
     
     
@@ -89,15 +97,16 @@
     
     
     
-    CGRect finalFrame = autocompletePanel.frame;
+    CGRect finalFrame = backgroundPanel.frame;
     
     
     self.view = [[UIView alloc] initWithFrame:finalFrame];
-    [self.view addSubview:autocompletePanel];
+    [self.view addSubview:backgroundPanel];
     [self.view addSubview:self.searchTextField];
     
+    self.view.autoresizesSubviews = YES;
     
-    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
 }
 
 
@@ -122,6 +131,11 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
+    self.backgroundPanel.frame = CGRectMake(0.0, 0.0,
+                                            barWidth, 61.0);
+    
+    
     [self.searchTextField becomeFirstResponder];
 }
 
@@ -237,9 +251,9 @@
     CGFloat tableViewHeight = self.autoSuggestionController.tableHeight;
     
     
-    CGRect panelFrame = self.autocompletePanel.frame;
+    CGRect panelFrame = self.backgroundPanel.frame;
     panelFrame.size.height = initialPanelHeight + tableViewHeight + (tableViewHeight > 0.0 ? 10.0 : 0.0);
-    autocompletePanel.frame = panelFrame;
+    backgroundPanel.frame = panelFrame;
     
     CGRect selfFrame = self.view.frame;
     selfFrame.size.height = panelFrame.size.height;
