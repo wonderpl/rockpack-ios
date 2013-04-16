@@ -24,9 +24,12 @@
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) CGRect originalFrame;
+@property (nonatomic, strong) UIView* autocompletePanel;
 
 
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
+
+@property (nonatomic) CGFloat initialPanelHeight;
 
 @end
 
@@ -35,14 +38,18 @@
 @synthesize searchTextField;
 @synthesize appDelegate;
 @synthesize originalFrame;
+@synthesize autocompletePanel;
+@synthesize initialPanelHeight;
 
 
 -(void)loadView
 {
     CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 160.0;
-    UIView* autocompletePanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
-                                                                         barWidth, 61.0)];
+    self.autocompletePanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
+                                                                      barWidth, 61.0)];
     autocompletePanel.backgroundColor = [UIColor whiteColor];
+    
+    initialPanelHeight = self.autocompletePanel.frame.size.height;
     
     // == Gray Panel == //
     
@@ -54,6 +61,7 @@
     grayPanel.backgroundColor = [UIColor colorWithRed:(249.0/255.0) green:(249.0/255.0) blue:(249.0/255.0) alpha:(1.0)];
     grayPanel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [autocompletePanel addSubview:grayPanel];
+    
     
     // == Loop == //
     
@@ -165,8 +173,6 @@
     
     
     
-    
-    
     // == Restart Timer == //
     
     if(self.autocompleteTimer)
@@ -240,14 +246,12 @@
 {
     originalFrame = self.view.frame;
     
-    CGRect tableViewFrame = self.autoSuggestionController.tableView.frame;
+    CGFloat tableViewHeight = self.autoSuggestionController.tableHeight;
     
-    tableViewFrame.size.height = tableViewFrame.size.height < 180.0 ? tableViewFrame.size.height : 200.0;
-    tableViewFrame.size.width = self.view.frame.size.width - kGrayPanelBorderWidth;
-    self.autoSuggestionController.tableView.frame = tableViewFrame;
-    CGRect selfFrame = self.view.frame;
-    selfFrame.size.height = selfFrame.size.height + tableViewFrame.origin.y + tableViewFrame.size.height;
-    self.view.frame = selfFrame;
+    
+    CGRect panelFrame = self.autocompletePanel.frame;
+    panelFrame.size.height = initialPanelHeight + tableViewHeight + 10.0;
+    autocompletePanel.frame = panelFrame;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

@@ -10,6 +10,8 @@
 #import "UIFont+SYNFont.h"
 #import "UIColor+SYNColor.h"
 
+#define kDataCutOffPoint 8
+
 @interface SYNAutocompleteSuggestionsController ()
 
 @end
@@ -64,11 +66,16 @@
 }
 #pragma mark - Table view data source
 
+-(CGFloat)tableHeight
+{
+    [self.tableView layoutIfNeeded];
+    return [self.tableView contentSize].height;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
-    return wordsArray.count;
+    return (wordsArray.count < kDataCutOffPoint) ? wordsArray.count : kDataCutOffPoint;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -100,7 +107,7 @@
     
     cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) uppercaseString];
     
-    // Configure the cell...
+    
     
     return cell;
 }

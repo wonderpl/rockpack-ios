@@ -20,6 +20,8 @@
 -(void)addWords:(NSArray*)words;
 -(void)clearWords;
 
+-(CGFloat)tableHeight;
+
 -(NSString*)getWordAtIndex:(NSInteger)index;
 
 @end
