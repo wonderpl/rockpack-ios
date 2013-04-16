@@ -25,6 +25,7 @@
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) CGRect originalFrame;
 @property (nonatomic, strong) UIView* backgroundPanel;
+@property (nonatomic, strong) UIView* grayPanel;
 
 
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
@@ -40,6 +41,7 @@
 @synthesize originalFrame;
 @synthesize backgroundPanel;
 @synthesize initialPanelHeight;
+@synthesize grayPanel;
 
 
 -(void)loadView
@@ -58,10 +60,10 @@
     
     // == Gray Panel == //
     
-    UIView* grayPanel = [[UIView alloc] initWithFrame:CGRectMake(kGrayPanelBorderWidth,
-                                                                kGrayPanelBorderWidth,
-                                                                backgroundPanel.frame.size.width - kGrayPanelBorderWidth * 2,
-                                                                backgroundPanel.frame.size.height - kGrayPanelBorderWidth * 2)];
+    self.grayPanel = [[UIView alloc] initWithFrame:CGRectMake(kGrayPanelBorderWidth,
+                                                              kGrayPanelBorderWidth,
+                                                              backgroundPanel.frame.size.width - kGrayPanelBorderWidth * 2,
+                                                              backgroundPanel.frame.size.height - kGrayPanelBorderWidth * 2)];
     
     grayPanel.backgroundColor = [UIColor colorWithRed:(249.0/255.0) green:(249.0/255.0) blue:(249.0/255.0) alpha:(1.0)];
     grayPanel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -254,6 +256,13 @@
     CGRect panelFrame = self.backgroundPanel.frame;
     panelFrame.size.height = initialPanelHeight + tableViewHeight + (tableViewHeight > 0.0 ? 10.0 : 0.0);
     backgroundPanel.frame = panelFrame;
+    
+    panelFrame.origin.x += kGrayPanelBorderWidth;
+    panelFrame.origin.y += kGrayPanelBorderWidth;
+    panelFrame.size.width -= kGrayPanelBorderWidth * 2;
+    panelFrame.size.height -= kGrayPanelBorderWidth * 2;
+    self.grayPanel.frame = panelFrame;
+    
     
     CGRect selfFrame = self.view.frame;
     selfFrame.size.height = panelFrame.size.height;
