@@ -18,14 +18,7 @@
 
 @implementation SYNUserProfileViewController
 
--(id)initWithDelegate:(id<SYNUserProfileViewDelegate>)delegate
-{
-    if(self = [super init])
-    {
-        self.delegate = delegate;
-    }
-    return self;
-}
+
 
 
 - (void)viewDidLoad
@@ -39,14 +32,10 @@
     
     UITapGestureRecognizer* tapGesture;
     
-    if(self.delegate)
-    {
-        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.delegate action:@selector(userSpaceTapped:)];
-        
-        
-        [self.view addGestureRecognizer:tapGesture];
-        
-    }
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userSpaceTapped:)];
+    
+    
+    [self.view addGestureRecognizer:tapGesture];
     
     
     
@@ -76,6 +65,8 @@
 -(void)setChannelOwner:(ChannelOwner*)channelOwner
 {
     
+    self.channelOwner = channelOwner;
+    
     if([channelOwner isKindOfClass:[User class]])
     {
         
@@ -93,7 +84,13 @@
 }
 
 
-
+-(void)userSpaceTapped:(UITapGestureRecognizer*)recognizer
+{
+    if(!self.channelOwner)
+        return;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":self.channelOwner}];
+}
 
 
 @end
