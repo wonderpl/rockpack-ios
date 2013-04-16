@@ -12,6 +12,7 @@
     UIButton* button;
     UIView* titleBGView;
     UILabel* titleLabel;
+    UITapGestureRecognizer* recogniser;
 }
 
 +(id)backButton;

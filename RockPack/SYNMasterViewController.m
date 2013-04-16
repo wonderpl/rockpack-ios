@@ -12,7 +12,6 @@
 #import "SYNSideNavigationViewController.h"
 #import "SYNContainerViewController.h"
 #import "UIFont+SYNFont.h"
-#import "SYNAutocompleteViewController.h"
 #import "SYNSoundPlayer.h"
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNContainerViewController.h"
@@ -22,12 +21,12 @@
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNCategoryChooserViewController.h"
 #import "SYNRefreshButton.h"
-
+#import "SYNAutocompleteViewController.h"
+#import "SYNDeviceManager.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
-#define kAutocompleteTime 0.2
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
@@ -35,20 +34,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 
-@property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
+@property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
-@property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
 @property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
+@property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
+@property (nonatomic) CGFloat sideNavigationOriginCenterX;
+@property (nonatomic) BOOL buttonLocked;
+@property (nonatomic) BOOL isDragging;
 
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
-@property (nonatomic, strong) NSTimer* autocompleteTimer;
 
 @property (nonatomic) CGRect addToChannelFrame;
 
@@ -57,7 +58,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
 @property (nonatomic, strong) SYNCategoryChooserViewController *categoryChooserViewController;
-@property (nonatomic, strong) UIPopoverController* autocompletePopoverController;
 
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
 @property (nonatomic) BOOL sideNavigationOn;
@@ -68,10 +68,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @implementation SYNMasterViewController
 
 @synthesize containerViewController;
-@synthesize autocompleteTimer;
 @synthesize pageTitleLabel;
 @synthesize addToChannelFrame;
 @synthesize sideNavigationOn;
+@synthesize sideNavigationOriginCenterX;
+@synthesize isDragging, buttonLocked;
 
 #pragma mark - Initialise
 
@@ -89,22 +90,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
-        sideNavigationFrame.origin.x = 1024.0;
+        sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth];
         sideNavigationFrame.origin.y = 45.0;
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
         
-        UISwipeGestureRecognizer* swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationSwiped)];
-        swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.sideNavigationViewController.view addGestureRecognizer:swipeGesture];
         
+        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
+        [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
         
         sideNavigationOn = NO;
         
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
-        
-        self.autocompleteController.tableView.delegate = self;
+        CGRect autocompleteControllerFrame = self.autocompleteController.view.frame;
+        autocompleteControllerFrame.origin.x = 10.0;
+        autocompleteControllerFrame.origin.y = 10.0;
+        self.autocompleteController.view.frame = autocompleteControllerFrame;
         
         self.overEverythingView.userInteractionEnabled = NO;
         
@@ -137,7 +139,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.refreshButton.frame = refreshButtonFrame;
     [self.movableButtonsContainer addSubview:self.refreshButton];
     
-    self.clearTextButton.alpha = 0.0;
+    self.closeSearchButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -165,6 +167,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     containerViewFrame.origin.y = 32.0;
     self.containerViewController.view.frame = containerViewFrame;
     [self.containerView addSubview:containerViewController.view];
+    
+    
+    // == Cancel Button == //
+    
+    self.closeSearchButton.hidden = YES;
+    
     
     
     // == Back Button == //
@@ -216,12 +224,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tabPressed:) name:kNoteTabPressed object:nil];
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(navigateToPage:) name:kNavigateToPage object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
     
     [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
@@ -238,7 +246,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)refreshButtonPressed
 {
-    
     [self.refreshButton startRefreshCycle];
     
     [self.containerViewController.showingViewController refresh];
@@ -295,6 +302,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(IBAction)showAndHideSideNavigation:(UIButton*)sender
 {
+    if(buttonLocked)
+        return;
+    
     if(sideNavigationOn) {
         [self hideSideNavigation];
         sender.highlighted = NO;
@@ -310,7 +320,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) showSideNavigation
 {
     
-    if(sideNavigationOn)
+    if(sideNavigationOn && !isDragging)
         return;
     
     self.sideNavigationOn = YES;
@@ -327,7 +337,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
                          
-                         sideNavigationFrame.origin.x = sideNavigationFrame.origin.x -sideNavigationFrame.size.width;
+                         sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - sideNavigationFrame.size.width;
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {
@@ -341,11 +351,58 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [self hideSideNavigation];
 }
+-(void)sideNavigationPanned:(UIPanGestureRecognizer*)recogniser
+{
+    CGFloat translationX = [recogniser translationInView:self.sideNavigationViewController.view].x;
+    
+    if(recogniser.state == UIGestureRecognizerStateBegan)
+    {
+        
+        isDragging = YES;
+        sideNavigationOriginCenterX = self.sideNavigationViewController.view.center.x;
+        
+        
+    }
+    CGFloat newOriginX = sideNavigationOriginCenterX + translationX;
+    if(newOriginX < sideNavigationOriginCenterX)
+    {
+        newOriginX = sideNavigationOriginCenterX;
+    }
+    
+    self.sideNavigationViewController.view.center = CGPointMake( newOriginX ,
+                                                                self.sideNavigationViewController.view.center.y);
+    
+    
+    if(recogniser.state == UIGestureRecognizerStateEnded)
+    {
+        CGFloat border;
+        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+        {
+            border = [[UIScreen mainScreen] bounds].size.height;
+        }
+        else
+        {
+            border = [[UIScreen mainScreen] bounds].size.width;
+        }
+        
+        if(border - newOriginX < 20.0)
+        {
+            [self hideSideNavigation];
+        }
+        else
+        {
+            [self showSideNavigation];
+        }
+        isDragging = NO;
+    }
+    
+}
+
 
 - (void) hideSideNavigation
 {
     
-    if(!sideNavigationOn)
+    if(!sideNavigationOn && !isDragging)
         return;
     
     self.sideNavigationOn = NO;
@@ -484,151 +541,46 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - TextField Delegate Methods
+#pragma mark - Search Box Delegate Methods
 
 -(IBAction)showSearchBoxField:(id)sender
 {
     
+    self.sideNavigationButton.hidden = YES;
+    
+    
+    [self.view addSubview:self.autocompleteController.view];
 }
 
-- (IBAction) clearSearchField: (id) sender
-{
-    self.searchTextField.text = @"";
-    
-    
-    
-    self.clearTextButton.alpha = 0.0;
-    
-    [self.searchTextField resignFirstResponder];
-}
-
-
-- (void) textViewDidChange: (UITextView *) textView
+-(void)searchTyped:(NSNotification*)notification
 {
     
+    
+    NSString* termString = [[notification userInfo] objectForKey:kSearchTerm];
+    
+    if(!termString)
+        return;
+    
+    [self.containerViewController showSearchViewControllerWithTerm:termString];
+    
+    
 }
 
-
-
-- (void) textViewDidBeginEditing: (UITextView *) textView
+-(IBAction)cancelButtonPressed:(id)sender
 {
-    [textView setText: @""];
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newCharacter
-{
-    // 1. Do not accept blank characters at the beggining of the field
-    
-    if([newCharacter isEqualToString:@" "] && self.searchTextField.text.length == 0)
-        return NO;
+    [self.autocompleteController clear];
+    [self.autocompleteController.view removeFromSuperview];
     
     
-//    if(self.searchTextField.text.length < 1)
-//        return YES;
+    self.sideNavigationButton.hidden = NO;
     
-    if(self.autocompleteTimer) {
-        [self.autocompleteTimer invalidate];
-    }
-    
-    self.autocompleteTimer = [NSTimer scheduledTimerWithTimeInterval:kAutocompleteTime
-                                                              target:self
-                                                            selector:@selector(performAutocompleteSearch:)
-                                                            userInfo:nil
-                                                             repeats:NO];
-    return YES;
-}
-
--(void)performAutocompleteSearch:(NSTimeInterval*)interval
-{
-    
-    if(self.searchTextField.text.length == 0) {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.clearTextButton.alpha = 0.0;
-        }];
-        
-    } else {
-        [UIView animateWithDuration:0.1 animations:^{
-            self.clearTextButton.alpha = 1.0;
-        }];
-    }
-        
-    
-    [self.autocompleteTimer invalidate];
-    
-    self.autocompleteTimer = nil;
-    
-    
-    [appDelegate.networkEngine getAutocompleteForHint:self.searchTextField.text
-                                          forResource:EntityTypeVideo
-                                         withComplete:^(NSArray* array) {
-        
-                                             NSArray* suggestionsReturned = [array objectAtIndex:1];
-        
-                                             NSMutableArray* wordsReturned = [NSMutableArray array];
-                                             
-                                             if(suggestionsReturned.count == 0) {
-                                                 
-                                                 [self.autocompleteController clearWords];
-                                                 
-                                                 [self.autocompletePopoverController dismissPopoverAnimated:NO];
-                                                 
-                                                 self.autocompletePopoverController = nil;
-                                                 
-                                                 return;
-                                             }
-        
-                                             for (NSArray* suggestion in suggestionsReturned)
-                                                 [wordsReturned addObject:[suggestion objectAtIndex:0]];
-                                             
-                                             [self.autocompleteController addWords:wordsReturned];
-        
-                                             [self showAutocompletePopover];
-        
-        
-                                         } andError:^(NSError* error) {
-                                             
-                                             
-                                         
-                                         }];
-    
-    
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    
-    
-    if ([self.searchTextField.text isEqualToString:@""])
-        return NO;
-    
-    [self.autocompleteTimer invalidate];
-    self.autocompleteTimer = nil;
-    
-    [((SYNContainerViewController*)self.containerViewController) showSearchViewControllerWithTerm: self.searchTextField.text];
-    
-    [textField resignFirstResponder];
-    
-    
-    
-    if(self.autocompletePopoverController) {
-        [self.autocompletePopoverController dismissPopoverAnimated:NO];
-        self.autocompletePopoverController = nil;
-    }
-        
-    
-    
-    return YES;
-}
-
--(void)textFieldDidBeginEditing:(UITextField *)textField {
-    
-}
-
--(void)textFieldDidEndEditing:(UITextField *)textField {
     
 }
 
 
 #pragma mark - Notification Handlers
+
+
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
@@ -664,7 +616,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
         [self.backButtonControl addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
-       
+        [self.backButtonControl setBackTitle:self.pageTitleLabel.text];
         [self showBackButton:YES];
     }
     else
@@ -695,7 +647,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (show)
     {
         targetFrame = self.movableButtonsContainer.frame;
-        targetFrame.origin.x = 14.0;
+        targetFrame.origin.x = 8.0;
         targetAlpha = 1.0;
     }
     else
@@ -714,6 +666,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.dotsView.alpha = !targetAlpha;
+                         self.refreshButton.alpha = !targetAlpha;
                      }
                      completion: ^(BOOL finished)
                      {
@@ -722,59 +675,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-- (void) tabPressed: (NSNotification*) notification
-{
-    self.searchTextField.text = @"";
-}
-
-
-#pragma mark - Autocomplete Methods
-
-- (void) tableView: (UITableView *) tableView
-         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
-{
-    NSString* wordsSelected = [self.autocompleteController getWordAtIndex: indexPath.row];
-    self.searchTextField.text = wordsSelected;
-    
-    [self textFieldShouldReturn: self.searchTextField];
-}
-
-
--(void)showAutocompletePopover
-{
-    // 1. This only adds the popover and not the data, so if it is on, exit
-    if(self.autocompletePopoverController)
-        return;
-    
-    // 2. Add a UINavigationController to add the title at the top of the Popover.
-    
-    UINavigationController* controllerForTitle = [[UINavigationController alloc] initWithRootViewController:self.autocompleteController];
-    
-    self.autocompletePopoverController = [[UIPopoverController alloc] initWithContentViewController: controllerForTitle];
-    self.autocompletePopoverController.popoverContentSize = CGSizeMake(280, 326);
-    self.autocompletePopoverController.delegate = self;
-    
-    
-    self.autocompletePopoverController.popoverBackgroundViewClass = [SYNAutocompletePopoverBackgroundView class];
-    
-    [self.autocompletePopoverController presentPopoverFromRect: self.searchTextField.frame
-                                                        inView: self.view
-                                      permittedArrowDirections: UIPopoverArrowDirectionUp
-                                                      animated: YES];
-}
-
--(void)hideAutocompletePopover
-{
-    if(!self.autocompletePopoverController)
-        return;
-    
-    [self.autocompletePopoverController dismissPopoverAnimated:YES];
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    
-}
 
 #pragma mark - Helper Methods
 

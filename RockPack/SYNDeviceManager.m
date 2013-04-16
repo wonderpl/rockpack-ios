@@ -8,6 +8,8 @@
 
 #import "SYNDeviceManager.h"
 
+#define UIDeviceIsRetina ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
+
 @interface SYNDeviceManager()
 
 
@@ -26,11 +28,8 @@
     
     
     dispatch_once(&onceQueue, ^{
-        
         deviceManager = [[self alloc] init];
         idiom = UI_USER_INTERFACE_IDIOM();
-        
-        
         
     });
     
@@ -46,10 +45,43 @@
 {
     return (idiom == UIUserInterfaceIdiomPhone);
 }
--(UIDeviceOrientation)orientation
+-(BOOL)isLandscape
 {
-    return [[UIDevice currentDevice] orientation];
+    return UIDeviceOrientationIsLandscape([self orientation]);
+}
+-(BOOL)isPortrait
+{
+    return UIDeviceOrientationIsPortrait([self orientation]);
 }
 
+-(BOOL)isRetina
+{
+    return UIDeviceIsRetina;
+}
+-(UIDeviceOrientation)orientation
+{
+    UIDeviceOrientation result = [[UIDevice currentDevice] orientation];
+    if(result == UIDeviceOrientationUnknown || result >= UIDeviceOrientationFaceUp)
+    {
+        result = [[UIApplication sharedApplication] statusBarOrientation];
+    }
+    return result;
+}
+
+-(CGFloat)currentScreenWidth
+{
+    if(UIDeviceOrientationIsPortrait([self orientation]))
+        return [[UIScreen mainScreen] bounds].size.width;
+    else
+        return [[UIScreen mainScreen] bounds].size.height;
+}
+
+-(CGFloat)currentScreenHeight
+{
+    if(UIDeviceOrientationIsPortrait([self orientation]))
+        return [[UIScreen mainScreen] bounds].size.height;
+    else
+        return [[UIScreen mainScreen] bounds].size.width;
+}
 
 @end

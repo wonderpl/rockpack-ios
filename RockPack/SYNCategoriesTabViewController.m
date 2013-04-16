@@ -14,6 +14,7 @@
 #import "SYNNetworkEngine.h"
 #import "Subcategory.h"
 #import <CoreData/CoreData.h>
+#import "SYNDeviceManager.h"
 
 @interface SYNCategoriesTabViewController ()
 
@@ -25,8 +26,7 @@
 - (void) loadView
 {
     
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]);
-    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize:isLandscape?1024.0f:768.0f];
+    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize:[[SYNDeviceManager sharedInstance] currentScreenWidth]];
     categoriesTabView.tapDelegate = self;
     
     self.view = categoriesTabView;

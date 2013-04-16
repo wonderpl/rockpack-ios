@@ -26,6 +26,7 @@
 #import "SYNChannelsAddVideosViewController.h"
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNDeviceManager.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -184,7 +185,7 @@
 -(void)packViewControllersForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     CGRect newFrame;
-    if(UIInterfaceOrientationIsLandscape(orientation))
+    if([[SYNDeviceManager sharedInstance] isLandscape])
     {
         newFrame = CGRectMake(0.0f, 0.0f, 1024.0f, 748.0f);
     }

@@ -213,6 +213,9 @@ typedef enum _Gender {
 
 #define kNavigateToPage       @"kNavigateToPage"
 
+#define kSearchTyped      @"kSearchTyped"
+#define kSearchTerm      @"kSearchTerm"
+
 #define kCurrentPage        @"kCurrentPage"
 
 
@@ -273,7 +276,6 @@ typedef enum {
 // Notifications
 #define kNoteBackButtonShow @"kNoteBackButtonShow"
 #define kNoteBackButtonHide @"kNoteBackButtonHide"
-#define kNoteTabPressed @"kNoteTabPressed"
 #define kNoteStarButtonPressed @"kNoteStarButtonPressed"
 
 

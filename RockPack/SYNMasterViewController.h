@@ -11,10 +11,10 @@
 #import "SYNContainerViewController.h"
 #import <UIKit/UIKit.h>
 
+
 @interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
-                                                               UITextFieldDelegate,
-                                                               UIGestureRecognizerDelegate,
-                                                               UITableViewDelegate>
+                                                                UIGestureRecognizerDelegate>
+
 {
     SYNAppDelegate* appDelegate;
     CGFloat originalAddButtonX;

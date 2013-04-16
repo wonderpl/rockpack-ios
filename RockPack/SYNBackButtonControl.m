@@ -37,11 +37,15 @@
         // == UIView == //
         
         titleBGView = [[UIView alloc] init];
-        titleBGView.backgroundColor = [UIColor whiteColor];
+        titleBGView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ButtonBackLabel"]];
         CGRect titleBGRect = CGRectZero;
-        titleBGRect.origin.x = button.frame.size.width;
+        titleBGRect.origin.x = button.frame.origin.x + button.frame.size.width;
         titleBGRect.size.height = button.frame.size.height;
         titleBGView.frame = titleBGRect;
+        
+        
+        
+        
         
         // == UILabel == //
         
@@ -50,14 +54,14 @@
         titleRect.origin.x = 10.0;
         titleRect.origin.y = 10.0;
         titleLabel.frame = titleRect;
-        titleLabel.font = [UIFont rockpackFontOfSize:18.0];
+        titleLabel.font = [UIFont rockpackFontOfSize:20.0];
         titleLabel.textColor = [UIColor lightGrayColor];
         titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.backgroundColor = [UIColor clearColor];
         [titleBGView addSubview:titleLabel];
         
         self.frame = button.frame;
-        
+        [self addSubview:titleBGView];
         
         
     }
@@ -71,11 +75,14 @@
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
 {
     [button addTarget:target action:action forControlEvents:controlEvents];
+    recogniser = [[UITapGestureRecognizer alloc] initWithTarget:target action:action];
+    [titleBGView addGestureRecognizer:recogniser];
 }
 
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
 {
     [button removeTarget:target action:action forControlEvents:controlEvents];
+    [titleBGView removeGestureRecognizer:recogniser];
 }
 
 - (NSArray *)actionsForTarget:(id)target forControlEvent:(UIControlEvents)controlEvent
@@ -87,11 +94,14 @@
 
 -(void)setBackTitle:(NSString*)backTitle
 {
-    CGSize titleSize = [backTitle sizeWithFont:titleLabel.font];
+    NSString* upperTitle = [backTitle uppercaseString];
+    CGSize titleSize = [upperTitle sizeWithFont:titleLabel.font];
     CGRect titleLabelRect = titleLabel.frame;
     titleLabelRect.size = titleSize;
     titleLabel.frame = titleLabelRect;
-    titleLabel.text = backTitle;
+    titleLabel.center = CGPointMake(titleLabel.center.x, titleBGView.center.y + 4.0);
+    titleLabel.frame = CGRectIntegral(titleLabel.frame);
+    titleLabel.text = upperTitle;
     
     CGRect titleBGFrame = titleBGView.frame;
     titleBGFrame.size.width = titleLabelRect.size.width + 20.0;
@@ -103,7 +113,8 @@
     
     CGRect overButtonFrame = CGRectZero;
     overButtonFrame.size = totalSize;
-    button.frame = overButtonFrame;
+    
+    self.frame = overButtonFrame;
 }
 
 

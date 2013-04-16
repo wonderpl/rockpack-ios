@@ -58,7 +58,7 @@
     return YES;
 }
 
-#pragma mark - label resize
+#pragma mark - orientation layout update
 
 -(void)refreshViewForOrientation:(UIInterfaceOrientation)orientation
 {
