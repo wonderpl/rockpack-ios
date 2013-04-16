@@ -123,21 +123,37 @@
                  forControlEvents: UIControlEventTouchUpInside];
 }
 
+
 - (void) setUsernameText: (NSString *) text
 {
-    
+    CGSize bySize = [self.byLabel.text sizeWithFont:self.byLabel.font];
+    CGFloat maxWidth = self.channelInfoView.frame.size.width - 19.0f - bySize.width;
     CGSize stringSize = [text sizeWithFont:self.usernameLabel.font];
     CGRect currentFrame = self.usernameLabel.frame;
     currentFrame.size = stringSize;
-    currentFrame.origin.x = self.channelInfoView.frame.size.width - 30.0 - currentFrame.size.width;
+    currentFrame.size.width = MIN(currentFrame.size.width,maxWidth);
+    currentFrame.origin.x = self.channelInfoView.frame.size.width - 15.0 - currentFrame.size.width;
     self.usernameLabel.frame = currentFrame;
     self.usernameLabel.text = text;
     
-    CGSize bySize = [self.byLabel.text sizeWithFont:self.byLabel.font];
     CGRect byFrame = self.byLabel.frame;
     byFrame.size = bySize;
     byFrame.origin.x = currentFrame.origin.x - byFrame.size.width - 4.0;
     self.byLabel.frame = byFrame;
+}
+
+- (void) setChannelNameText:(NSString *)channelNameText
+{
+    CGRect currentFrame = self.channelName.frame;
+    CGFloat defaultWidth = currentFrame.size.width;
+    UIView *referenceView = self.channelImageView.hidden ? self.usernameLabel : self.channelImageView;
+    CGFloat maxHeight = referenceView.frame.origin.y - self.channelName.frame.origin.y;
+    self.channelName.text = channelNameText;
+    [self.channelName sizeToFit];
+    currentFrame = self.channelName.frame;
+    currentFrame.size.width = defaultWidth;
+    currentFrame.size.height = MIN(currentFrame.size.height, maxHeight);
+    self.channelName.frame = currentFrame;
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
