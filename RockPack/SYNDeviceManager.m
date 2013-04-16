@@ -8,6 +8,8 @@
 
 #import "SYNDeviceManager.h"
 
+#define UIDeviceIsRetina ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
+
 @interface SYNDeviceManager()
 
 
@@ -50,6 +52,11 @@
 -(BOOL)isPortrait
 {
     return UIDeviceOrientationIsPortrait([self orientation]);
+}
+
+-(BOOL)isRetina
+{
+    return UIDeviceIsRetina;
 }
 -(UIDeviceOrientation)orientation
 {
