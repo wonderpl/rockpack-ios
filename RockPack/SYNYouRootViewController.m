@@ -75,6 +75,7 @@
     
     
     self.userProfileController = [[SYNUserProfileViewController alloc] init];
+    
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 60.0;
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -110,10 +111,9 @@
 {
     [super viewWillAppear:animated];
     
-    if(!self.tabViewController)
-        return;
     
-    // TODO: Put Owner Data in the Profile Panel
+    
+    [self.userProfileController setChannelOwner:appDelegate.currentUser];
 }
 
 

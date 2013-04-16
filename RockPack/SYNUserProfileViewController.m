@@ -65,7 +65,7 @@
 -(void)setChannelOwner:(ChannelOwner*)channelOwner
 {
     
-    self.channelOwner = channelOwner;
+    _channelOwner = channelOwner;
     
     if([channelOwner isKindOfClass:[User class]])
     {
