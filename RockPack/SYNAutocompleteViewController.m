@@ -89,26 +89,11 @@
     
     
     
-    // == Button == //
-    
-    UIImage* clearButtonImage = [UIImage imageNamed:@"ButtonCancel"];
-    UIButton* clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [clearButton setImage:clearButtonImage forState:UIControlStateNormal];
-    [clearButton setImage:[UIImage imageNamed:@"ButtonCancelHighlighted"] forState:UIControlStateHighlighted];
-    CGFloat buttonX = autocompletePanel.frame.origin.x + autocompletePanel.frame.size.width + 10.0;
-    clearButton.frame = CGRectMake(buttonX, 0.0, clearButtonImage.size.width, clearButtonImage.size.height);
-    
-    [clearButton addTarget:self action:@selector(clearSearchField:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
     CGRect finalFrame = autocompletePanel.frame;
-    finalFrame.size.width += clearButton.frame.size.width + 10.0;
     
     
     self.view = [[UIView alloc] initWithFrame:finalFrame];
     [self.view addSubview:autocompletePanel];
-    [self.view addSubview:clearButton];
     [self.view addSubview:self.searchTextField];
     
     
@@ -143,7 +128,7 @@
 
 #pragma mark - Text Field Delegate
 
-- (void) clearSearchField: (id) sender
+- (void) clear
 {
     self.searchTextField.text = @"";
     

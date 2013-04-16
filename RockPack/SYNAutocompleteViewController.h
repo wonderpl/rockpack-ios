@@ -10,6 +10,6 @@
 
 @interface SYNAutocompleteViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate>
 
-
+- (void) clear;
 
 @end

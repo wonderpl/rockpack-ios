@@ -34,7 +34,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 
-@property (nonatomic, strong) IBOutlet UIButton* clearTextButton;
+@property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
@@ -42,7 +42,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
+@property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 @property (nonatomic) CGFloat sideNavigationOriginCenterX;
+@property (nonatomic) BOOL buttonLocked;
 @property (nonatomic) BOOL isDragging;
 
 
@@ -70,7 +72,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize addToChannelFrame;
 @synthesize sideNavigationOn;
 @synthesize sideNavigationOriginCenterX;
-@synthesize isDragging;
+@synthesize isDragging, buttonLocked;
 
 #pragma mark - Initialise
 
@@ -93,9 +95,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
         
-        UISwipeGestureRecognizer* swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationSwiped)];
-        swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-        //[self.sideNavigationViewController.view addGestureRecognizer:swipeGesture];
         
         UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
         [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
@@ -140,7 +139,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.refreshButton.frame = refreshButtonFrame;
     [self.movableButtonsContainer addSubview:self.refreshButton];
     
-    self.clearTextButton.alpha = 0.0;
+    self.closeSearchButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -168,6 +167,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     containerViewFrame.origin.y = 32.0;
     self.containerViewController.view.frame = containerViewFrame;
     [self.containerView addSubview:containerViewController.view];
+    
+    
+    // == Cancel Button == //
+    
+    self.closeSearchButton.hidden = YES;
+    
     
     
     // == Back Button == //
@@ -241,7 +246,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)refreshButtonPressed
 {
-    
     [self.refreshButton startRefreshCycle];
     
     [self.containerViewController.showingViewController refresh];
@@ -298,6 +302,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(IBAction)showAndHideSideNavigation:(UIButton*)sender
 {
+    if(buttonLocked)
+        return;
+    
     if(sideNavigationOn) {
         [self hideSideNavigation];
         sender.highlighted = NO;
@@ -534,10 +541,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - TextField Delegate Methods
+#pragma mark - Search Box Delegate Methods
 
 -(IBAction)showSearchBoxField:(id)sender
 {
+    
+    self.sideNavigationButton.hidden = YES;
+    
+    
     [self.view addSubview:self.autocompleteController.view];
 }
 
@@ -555,8 +566,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+-(IBAction)cancelButtonPressed:(id)sender
+{
+    [self.autocompleteController clear];
+    [self.autocompleteController.view removeFromSuperview];
+    
+    
+    self.sideNavigationButton.hidden = NO;
+    
+    
+}
+
 
 #pragma mark - Notification Handlers
+
+
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
