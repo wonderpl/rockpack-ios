@@ -184,6 +184,7 @@
 										<int key="NSvFlags">289</int>
 										<string key="NSFrame">{{165, 7}, {49, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -467,6 +468,7 @@
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+				<string key="IBUIReuseIdentifier">SYNVideoThumbnailWideCell</string>
 				<reference key="IBUIContentView" ref="92173708"/>
 			</object>
 		</array>
