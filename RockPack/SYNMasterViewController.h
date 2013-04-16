@@ -13,7 +13,7 @@
 
 
 @interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
-                                                       UIGestureRecognizerDelegate>
+                                                                UIGestureRecognizerDelegate>
 
 {
     SYNAppDelegate* appDelegate;

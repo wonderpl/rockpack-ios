@@ -22,6 +22,7 @@
 #import "SYNCategoryChooserViewController.h"
 #import "SYNRefreshButton.h"
 #import "SYNAutocompleteViewController.h"
+#import "SYNDeviceManager.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -42,6 +43,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic) CGFloat sideNavigationOriginCenterX;
+@property (nonatomic) BOOL isDragging;
 
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
@@ -68,6 +70,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize addToChannelFrame;
 @synthesize sideNavigationOn;
 @synthesize sideNavigationOriginCenterX;
+@synthesize isDragging;
 
 #pragma mark - Initialise
 
@@ -310,7 +313,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) showSideNavigation
 {
     
-    if(sideNavigationOn)
+    if(sideNavigationOn && !isDragging)
         return;
     
     self.sideNavigationOn = YES;
@@ -327,7 +330,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
                          
-                         sideNavigationFrame.origin.x = sideNavigationFrame.origin.x -sideNavigationFrame.size.width;
+                         sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - sideNavigationFrame.size.width;
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {
@@ -347,6 +350,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(recogniser.state == UIGestureRecognizerStateBegan)
     {
+        
+        isDragging = YES;
         sideNavigationOriginCenterX = self.sideNavigationViewController.view.center.x;
         
         
@@ -381,6 +386,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             [self showSideNavigation];
         }
+        isDragging = NO;
     }
     
 }
@@ -389,7 +395,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) hideSideNavigation
 {
     
-    if(!sideNavigationOn)
+    if(!sideNavigationOn && !isDragging)
         return;
     
     self.sideNavigationOn = NO;

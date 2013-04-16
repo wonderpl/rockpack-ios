@@ -19,4 +19,7 @@
 -(BOOL)isIPhone;
 -(UIDeviceOrientation)orientation;
 
+-(CGFloat)currentScreenWidth;
+-(CGFloat)currentScreenHeight;
+
 @end

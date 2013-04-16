@@ -26,11 +26,8 @@
     
     
     dispatch_once(&onceQueue, ^{
-        
         deviceManager = [[self alloc] init];
         idiom = UI_USER_INTERFACE_IDIOM();
-        
-        
         
     });
     
@@ -51,5 +48,20 @@
     return [[UIDevice currentDevice] orientation];
 }
 
+-(CGFloat)currentScreenWidth
+{
+    if(UIDeviceOrientationIsPortrait([self orientation]))
+        return [[UIScreen mainScreen] bounds].size.width;
+    else
+        return [[UIScreen mainScreen] bounds].size.height;
+}
+
+-(CGFloat)currentScreenHeight
+{
+    if(UIDeviceOrientationIsPortrait([self orientation]))
+        return [[UIScreen mainScreen] bounds].size.height;
+    else
+        return [[UIScreen mainScreen] bounds].size.width;
+}
 
 @end
