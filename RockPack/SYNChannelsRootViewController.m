@@ -232,7 +232,7 @@
     
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    channelThumbnailCell.titleLabel.text = channel.title;
+    [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
@@ -421,8 +421,6 @@
         imageViewFrame.origin.x += cellFrame.origin.x + viewFrame.origin.x - offset.x;
         imageViewFrame.origin.y += cellFrame.origin.y + viewFrame.origin.y - offset.y;
         
-        // Now create a new UIImageView to overlay
-//        UIImage *cellImage = channel.thumbnailImage;
         
         self.pinchedView = [[UIImageView alloc] initWithFrame: imageViewFrame];
         self.pinchedView.alpha = 0.7f;

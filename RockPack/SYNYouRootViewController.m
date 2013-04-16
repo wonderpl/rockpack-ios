@@ -213,7 +213,7 @@
                                                                                               forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    channelThumbnailCell.titleLabel.text = channel.title;
+    [channelThumbnailCell setChannelTitle:channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
