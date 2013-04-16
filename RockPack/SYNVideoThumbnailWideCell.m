@@ -19,6 +19,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedBackgroundView;
 @property (nonatomic, strong) IBOutlet UIButton *channelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileButton;
+@property (nonatomic, strong) IBOutlet UIButton *videoButton;
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
 @property (nonatomic, strong) IBOutlet UILabel* fromLabel;
 
@@ -65,6 +66,7 @@
     }
 }
 
+
 #pragma mark - Asynchronous image loading support
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString
@@ -99,12 +101,12 @@
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {
     _viewControllerDelegate = viewControllerDelegate;
-    
-    
-
 
     // Add button targets
     
+    [self.videoButton addTarget: self.viewControllerDelegate
+                         action: @selector(displayVideoViewerFromView:)
+               forControlEvents: UIControlEventTouchUpInside];
     
     [self.addItButton addTarget: self.viewControllerDelegate
                          action: @selector(userTouchedVideoAddItButton:)
@@ -121,27 +123,21 @@
                  forControlEvents: UIControlEventTouchUpInside];
 }
 
--(void)setUsernameText:(NSString *)value
+- (void) setUsernameText: (NSString *) text
 {
     
-    CGSize stringSize = [value sizeWithFont:self.usernameLabel.font];
+    CGSize stringSize = [text sizeWithFont:self.usernameLabel.font];
     CGRect currentFrame = self.usernameLabel.frame;
     currentFrame.size = stringSize;
     currentFrame.origin.x = self.channelInfoView.frame.size.width - 30.0 - currentFrame.size.width;
     self.usernameLabel.frame = currentFrame;
-    self.usernameLabel.text = value;
+    self.usernameLabel.text = text;
     
     CGSize bySize = [self.byLabel.text sizeWithFont:self.byLabel.font];
     CGRect byFrame = self.byLabel.frame;
     byFrame.size = bySize;
     byFrame.origin.x = currentFrame.origin.x - byFrame.size.width - 4.0;
     self.byLabel.frame = byFrame;
-    
-}
-
--(NSString*)usernameText
-{
-    return self.usernameLabel.text;
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
