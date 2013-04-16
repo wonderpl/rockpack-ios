@@ -12,9 +12,26 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Category.h"
 #import "Subcategory.h"
+#import "SYNDeviceManager.h"
 
-#define kCategoriesTabOffsetX 32.0
-#define kCategoriesTabOffsetY 28.0
+
+// These layout offsets and font sizes have been eyeballed to compensate for font offset. May need tweaking.
+
+#define kCategoriesTabOffsetXLandscape 32.0f
+#define kCategoriesTabOffsetXPortrait 16.0f
+
+#define kCategoriesTabLabelOffsetYLandscape 4.0f
+#define kCategoriesTabLabelOffsetYPortrait 8.0f
+#define kCategoriesSubTabLabelOffsetY 10.0f
+
+#define kCategoriesTabFontSizeLandscape 15.0f
+#define kCategoriesTabFontSizePortrait 13.0f
+#define kCategoriesSubTabFontSizeLandscape 13.0f
+#define kCategoriesSubTabFontSizePortrait 11.0f
+
+
+
+
 
 @implementation SYNCategoryItemView
 
@@ -49,7 +66,7 @@
         
         CGSize sizeToUse = [itemName sizeWithFont:fontToUse];
         
-        self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, sizeToUse.width + kCategoriesTabOffsetX, sizeToUse.height + kCategoriesTabOffsetY)];
+        self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, sizeToUse.width + kCategoriesTabOffsetXLandscape, 0.0f)];
         label.font = fontToUse;
         label.text = itemName;
         label.textAlignment = NSTextAlignmentCenter;
@@ -94,39 +111,50 @@
 }
 
 #pragma mark - resize for different orientations
--(void)resizeForOrientation:(UIInterfaceOrientation)orientation
+-(void)resizeForOrientation:(UIInterfaceOrientation)orientation withHeight:(CGFloat)height
 {
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape(orientation);
+    BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
+    CGFloat offsetX;
     UIFont* fontToUse;
+    CGFloat labelYOffset;
     if (type == TabItemTypeMain)
     {
         if(isLandscape)
         {
-            fontToUse = [UIFont rockpackFontOfSize: 15.0f];
+            fontToUse = [UIFont rockpackFontOfSize: kCategoriesTabFontSizeLandscape];
+            offsetX = kCategoriesTabOffsetXLandscape;
+            labelYOffset = kCategoriesTabLabelOffsetYLandscape;
         }
         else
         {
-           fontToUse = [UIFont rockpackFontOfSize: 13.0f];
+            fontToUse = [UIFont rockpackFontOfSize: kCategoriesTabFontSizePortrait];
+            offsetX = kCategoriesTabOffsetXPortrait;
+            labelYOffset = kCategoriesTabLabelOffsetYPortrait;
         }
     }
     else if(isLandscape)
     {
-        fontToUse = [UIFont rockpackFontOfSize: 13.0f];
+        fontToUse = [UIFont rockpackFontOfSize: kCategoriesSubTabFontSizeLandscape];
+        offsetX = kCategoriesTabOffsetXLandscape;
+        labelYOffset = kCategoriesSubTabLabelOffsetY;
     }
     else
     {
-        fontToUse = [UIFont rockpackFontOfSize: 11.0f];
+        fontToUse = [UIFont rockpackFontOfSize: kCategoriesSubTabFontSizePortrait];
+        offsetX = kCategoriesTabOffsetXPortrait;
+        labelYOffset = kCategoriesSubTabLabelOffsetY;
     }
     label.font = fontToUse;
+    
     
     CGSize sizeToUse = [label.text sizeWithFont:fontToUse];
     
     CGRect newFrame = label.frame;
-    newFrame.size=CGSizeMake(sizeToUse.width + kCategoriesTabOffsetX, sizeToUse.height + kCategoriesTabOffsetY );
+    newFrame.size=CGSizeMake(sizeToUse.width + offsetX, height + labelYOffset);
     label.frame = newFrame;
     
     CGRect finalFrame = self.label.frame;
-    finalFrame.size.width += 2.0;
+    finalFrame.size = CGSizeMake(sizeToUse.width + offsetX + 2.0f, height );
     self.frame = finalFrame;
     
 }
