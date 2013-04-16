@@ -78,9 +78,7 @@
         
         [self addSubview:label];
         
-        CGRect finalFrame = self.label.frame;
-        //finalFrame.size.width += 2.0;
-        self.frame = finalFrame;
+        
         
     }
     return self;
@@ -154,9 +152,12 @@
     label.frame = newFrame;
     
     CGRect finalFrame = self.label.frame;
-    finalFrame.size = CGSizeMake(sizeToUse.width + offsetX + 2.0f, height );
+    finalFrame.size = CGSizeMake(sizeToUse.width + offsetX + 4.0, height );
+    
     self.frame = finalFrame;
     
+    
+    self.label.frame = finalFrame;
 }
 
 @end

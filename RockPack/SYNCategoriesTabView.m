@@ -11,6 +11,7 @@
 #import "Subcategory.h"
 #import "SYNCategoryItemView.h"
 #import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kSecondaryTabsOffset 30.0
 
@@ -41,9 +42,15 @@
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
         
+        
+        
         UIView* bgMainTabsView = [[UIView alloc] initWithFrame:mainFrame];
         bgMainTabsView.backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
         
+        bgMainTabsView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
+        bgMainTabsView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+        bgMainTabsView.layer.shadowOpacity = 0.2;
+        bgMainTabsView.layer.shadowRadius = 1.0;
         
         // == Bottom Bar == //
         
@@ -219,8 +226,7 @@
 {
     //Layout Main tabs
     
-    [[self.dividerOverlayView subviews]
-     makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [[self.dividerOverlayView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     CGFloat nextOrigin = self.homeButton.frame.size.width;
     
     for (SYNCategoryItemView* tab in [self.mainTabsView subviews])
