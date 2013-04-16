@@ -14,15 +14,10 @@
 
 @interface SYNLargeVideoPanelViewController ()
 
-
-
-// Share (arrow) Button and Label
 @property (nonatomic, strong) IBOutlet UIButton *shareItButton;
 @property (nonatomic, strong) IBOutlet UILabel *shareItLabel;
-
-@property (nonatomic, strong) VideoInstance* videoInstance;
-
 @property (nonatomic, strong) SYNVideoPlaybackViewController* videoPlaybackViewController;
+@property (nonatomic, strong) VideoInstance* videoInstance;
 
 @end
 
@@ -31,21 +26,18 @@
 
 @synthesize videoInstance;
 
-
-
--(id)init
+- (id) init
 {
-    if(self = [super initWithNibName:@"SYNLargeVideoPanelViewController" bundle:nil])
+    if (self = [super initWithNibName: @"SYNLargeVideoPanelViewController" bundle: nil])
     {
-        
+        // Custom init goes here
     }
+    
     return self;
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
-    
-    
     [super viewDidLoad];
     
     // Set the labels to use the custom font
@@ -58,13 +50,8 @@
     
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(12, 11, 494, 278)];
     
-    [self.view insertSubview:self.videoPlaybackViewController.view aboveSubview:self.backgroundImageView];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self.view insertSubview: self.videoPlaybackViewController.view
+                aboveSubview: self.backgroundImageView];
 }
 
 
@@ -131,7 +118,7 @@
     [self.videoPlaybackViewController playVideoAtIndex:newIndexPath];
 }
 
--(VideoInstance*)videoInstance
+- (VideoInstance*) videoInstance
 {
     return self.videoPlaybackViewController.currentVideoInstance;
 }
