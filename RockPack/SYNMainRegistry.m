@@ -53,6 +53,50 @@
     return YES;
 }
 
+
+-(BOOL)registerSubscriptionsForCurrentUserFromDictionary:(NSDictionary*)dictionary
+{
+    // == Check for Validity == //
+    
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    User* currentUser = appDelegate.currentUser;
+    
+    if(!currentUser)
+        return NO;
+    
+    NSDictionary* channeslDictionary = [dictionary objectForKey:@"channels"];
+    if(!channeslDictionary)
+        return NO;
+    
+    NSArray* itemsArray = [channeslDictionary objectForKey:@"items"];
+    if(!itemsArray)
+        return NO;
+    
+    for (NSDictionary* subscriptionChannel in itemsArray)
+    {
+        Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
+                                 usingManagedObjectContext:appDelegate.mainManagedObjectContext];
+        
+        
+        
+        if(!channel) continue;
+        
+        [currentUser addChannelsObject:channel];
+        
+    }
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
+    [appDelegate saveContext: TRUE];
+    
+    
+    return YES;
+}
+
 -(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary
 {
     

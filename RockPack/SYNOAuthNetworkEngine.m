@@ -257,7 +257,7 @@
 }
 
 
-#pragma mark - User management
+#pragma mark - User Data
 
 
 
@@ -286,11 +286,45 @@
         
         // Register User
         
-        [self.registry registerUserFromDictionary:responseDictionary];
+        BOOL userRegistered = [self.registry registerUserFromDictionary:responseDictionary];
+        if(!userRegistered)
+            return;
+        
+        // Get subscriptions
+        
+        NSString* userId = [responseDictionary objectForKey:@"id"];
+        
+        [self channelSubscriptionsForUserId:userId
+                                      start:0
+                                       size:50
+                          completionHandler:^(id subscriptionsDictionary) {
+                              
+                              
+                              NSString* possibleError = responseDictionary[@"error"];
+                              
+                              if (possibleError)
+                              {
+                                  errorBlock(responseDictionary);
+                                  return;
+                              }
+                              
+                              BOOL userRegistered = [self.registry registerSubscriptionsForCurrentUserFromDictionary:subscriptionsDictionary];
+                              if(!userRegistered)
+                                  return;
+                              
+                              completionBlock(responseDictionary);
+                              
+        
+                            } errorHandler:^(NSError* error) {
+                                
+                                DebugLog(@"API Call failed");
+                                NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code]};
+                                errorBlock(customErrorDictionary);
+        
+                            }];
         
         
         
-        completionBlock(responseDictionary);
      }
      errorHandler: ^(NSError* error)
      {
@@ -795,7 +829,7 @@
 }
 
 
-// Channel subsctiptions
+#pragma mark - Subscriptions
 
 - (void) channelSubscriptionsForUserId: (NSString *) userId
                                  start: (unsigned int) start

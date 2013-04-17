@@ -106,19 +106,66 @@ static NSEntityDescription *channelEntity = nil;
 
 #pragma mark - Without Owner
 
++ (Channel *) instanceFromDictionary: (NSDictionary*)dictionary
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
+    
+    NSError *error = nil;
+    
+    NSString *uniqueId = [dictionary objectForKey: @"id" withDefault: @""];
+    
+    if (channelEntity == nil)
+    {
+        static dispatch_once_t oncePredicate;
+        dispatch_once(&oncePredicate, ^{
+            channelEntity = [NSEntityDescription entityForName: @"Channel"
+                                        inManagedObjectContext: managedObjectContext];
+        });
+        
+    }
+    
+    Channel* instance;
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: channelEntity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                          error: &error];
+    
+    if(matchingChannelEntries.count > 0)
+    {
+        instance = matchingChannelEntries[0];
+    }
+    else
+    {
+        instance = [Channel insertInManagedObjectContext: managedObjectContext];
+        
+        [instance setAttributesFromDictionary: dictionary
+                                       withId: uniqueId
+                    usingManagedObjectContext: managedObjectContext
+                          ignoringObjectTypes: kIgnoreChannelObjects
+                                    andViewId: @""];
+    }
+    
+    
+    return instance;
+}
+
 + (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
-    // DebugLog (@"Creating Channel");
+    
     NSError *error = nil;
     
-    // Get the unique id of this object from the dictionary that has been passed in
+   
     NSString *uniqueId = [dictionary objectForKey: @"id"
                                       withDefault: @"Uninitialized Id"];
     
-    // Only create an entity description once, should increase performance
+    
     if (channelEntity == nil)
     {
         // Do once, and only once
@@ -211,18 +258,15 @@ static NSEntityDescription *channelEntity = nil;
                  ignoringObjectTypes: (IgnoringObjects) ignoringObjects
                            andViewId: (NSString *) viewId
 {
-    // Is we are not actually a dictionary, then bail
+    
     if (![dictionary isKindOfClass: [NSDictionary class]])
     {
         AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
         return;
     }
     
-    // Simple objects
-    self.uniqueId = uniqueId;
     
-    // If we are initially creating Channel objects, then set our viewId of the appropriate vide name
-    // otherwise just set to blank
+    self.uniqueId = uniqueId;
     
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
     {
@@ -322,7 +366,7 @@ static NSEntityDescription *channelEntity = nil;
 - (NSString *) description
 {
     
-    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: \n\tuniqueId(%@), categoryId:%@, lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, coverThumbnailSmallURL: %@, coverThumbnailLargeURL: %@, title: %@", self.uniqueId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.coverThumbnailSmallURL, self.coverThumbnailLargeURL, self.title];
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: id(%@), category:%@, lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, coverThumbnailSmallURL: %@, title: %@", self.uniqueId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.coverThumbnailSmallURL, self.title];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)
     {

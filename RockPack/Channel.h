@@ -14,4 +14,7 @@
                         channelOwner: (ChannelOwner*)owner
                            andViewId: (NSString *) viewId;
 
++ (Channel *) instanceFromDictionary:(NSDictionary*)dictionary
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
+
 @end

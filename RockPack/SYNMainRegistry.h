@@ -16,5 +16,6 @@
 -(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary;
 -(BOOL)registerNewChannelScreensFromDictionary:(NSDictionary *)dictionary byAppending:(BOOL)append;
 -(BOOL)registerUserFromDictionary:(NSDictionary*)dictionary;
+-(BOOL)registerSubscriptionsForCurrentUserFromDictionary:(NSDictionary*)dictionary;
 
 @end
