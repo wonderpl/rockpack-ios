@@ -605,6 +605,9 @@
 		BE7D354C1718667F0085AB81 /* SYNUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D354A1718667F0085AB81 /* SYNUserProfileViewController.m */; };
 		BE7D354D1718667F0085AB81 /* SYNUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D354B1718667F0085AB81 /* SYNUserProfileViewController.xib */; };
 		BE7D3551171870780085AB81 /* SYNBackButtonControl.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3550171870780085AB81 /* SYNBackButtonControl.m */; };
+		BE86BF17171F001E0006DC8A /* SYNSubscriptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */; };
+		BE86BF1A171F07B10006DC8A /* SYNChannelMidCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */; };
+		BE86BF1C171F07C70006DC8A /* SYNChannelMidCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1378,6 +1381,11 @@
 		BE7D354B1718667F0085AB81 /* SYNUserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNUserProfileViewController.xib; sourceTree = "<group>"; };
 		BE7D354F171870780085AB81 /* SYNBackButtonControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNBackButtonControl.h; sourceTree = "<group>"; };
 		BE7D3550171870780085AB81 /* SYNBackButtonControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNBackButtonControl.m; sourceTree = "<group>"; };
+		BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSubscriptionsViewController.h; sourceTree = "<group>"; };
+		BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSubscriptionsViewController.m; sourceTree = "<group>"; };
+		BE86BF18171F07B10006DC8A /* SYNChannelMidCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelMidCell.h; sourceTree = "<group>"; };
+		BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelMidCell.m; sourceTree = "<group>"; };
+		BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelMidCell.xib; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -2202,6 +2210,8 @@
 			children = (
 				0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */,
 				0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */,
+				BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */,
+				BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */,
 			);
 			name = You;
 			sourceTree = "<group>";
@@ -2436,6 +2446,9 @@
 				01E4281816666F09009B941F /* SYNChannelSelectorCell.h */,
 				01E4281916666F09009B941F /* SYNChannelSelectorCell.m */,
 				01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */,
+				BE86BF18171F07B10006DC8A /* SYNChannelMidCell.h */,
+				BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */,
+				BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */,
 			);
 			name = "Channel cells";
 			sourceTree = "<group>";
@@ -3695,6 +3708,7 @@
 				01450AFA171DB4D7009F54CD /* PlaceholderVideoBottom@2x.png in Resources */,
 				01450AFB171DB4D7009F54CD /* PlaceholderVideoMiddle@2x.png in Resources */,
 				01450AFC171DB4D7009F54CD /* PlaceholderVideoTop@2x.png in Resources */,
+				BE86BF1C171F07C70006DC8A /* SYNChannelMidCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3884,6 +3898,8 @@
 				BE7D354C1718667F0085AB81 /* SYNUserProfileViewController.m in Sources */,
 				BE7D3551171870780085AB81 /* SYNBackButtonControl.m in Sources */,
 				BE2D2145171C5A0600B4B755 /* SYNAutocompleteViewController.m in Sources */,
+				BE86BF17171F001E0006DC8A /* SYNSubscriptionsViewController.m in Sources */,
+				BE86BF1A171F07B10006DC8A /* SYNChannelMidCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
