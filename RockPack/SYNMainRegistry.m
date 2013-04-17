@@ -12,9 +12,9 @@
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "VideoInstance.h"
+#import "AppConstants.h"
 #import <CoreData/CoreData.h>
 
-#define kChannelsViewId @"Channels"
 
 @interface SYNMainRegistry ()
 
@@ -76,9 +76,9 @@
     
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
-        Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
-                                 usingManagedObjectContext:appDelegate.mainManagedObjectContext];
-        
+        Channel* channel = [Channel subscriberInstanceFromDictionary:subscriptionChannel
+                                 usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                 andViewId:kProfileViewId];
         
         
         if(!channel) continue;
@@ -87,9 +87,11 @@
         
     }
     
+    
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
+    
     
     [appDelegate saveContext: TRUE];
     
@@ -220,7 +222,7 @@
     [Channel instanceFromDictionary: dictionary
           usingManagedObjectContext: importManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing
-                          andViewId: @"ChannelDetails"];
+                          andViewId: kChannelDetailsViewId];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -256,8 +258,8 @@
     if(!append)
     {
         existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
-                                                                                          andViewId: kChannelsViewId
-                                                                             inManagedObjectContext: importManagedObjectContext];
+                                                                                 andViewId: kChannelsViewId
+                                                                    inManagedObjectContext: importManagedObjectContext];
     }
     
     

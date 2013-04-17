@@ -106,8 +106,9 @@ static NSEntityDescription *channelEntity = nil;
 
 #pragma mark - Without Owner
 
-+ (Channel *) instanceFromDictionary: (NSDictionary*)dictionary
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext {
++ (Channel *) subscriberInstanceFromDictionary: (NSDictionary*)dictionary
+                     usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                                     andViewId: (NSString*)viewId {
     
     NSError *error = nil;
     
@@ -146,7 +147,9 @@ static NSEntityDescription *channelEntity = nil;
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
                           ignoringObjectTypes: kIgnoreChannelObjects
-                                    andViewId: @""];
+                                    andViewId: viewId];
+        
+        instance.subscribedByUser = @(YES);
     }
     
     
@@ -287,6 +290,8 @@ static NSEntityDescription *channelEntity = nil;
     
     self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
                                          withDefault: [NSNumber numberWithBool: FALSE]];
+    
+    self.subscribedByUser = @(NO);
     
     self.coverThumbnailSmallURL = [dictionary objectForKey: @"cover_thumbnail_small_url"
                                                withDefault: @"http://localhost"];

@@ -98,22 +98,22 @@
     
     // == Feed Page == //
     
-    SYNFeedRootViewController *feedRootViewController = [[SYNFeedRootViewController alloc] initWithViewId: @"Home"];
+    SYNFeedRootViewController *feedRootViewController = [[SYNFeedRootViewController alloc] initWithViewId: kFeedViewId];
     
     // == Videos Page == //
     
-    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId: @"Videos"];
+    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId: kVideosViewId ];
     videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     
     // == Channels Page == //
     
-    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: @"Channels"];
+    SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     
     // == You Page == //
     
-    SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: @"You"];
+    SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: kProfileViewId];
     
     // == Friends Page == //
     
@@ -126,14 +126,14 @@
     // == Search (out of normal controller array)
     
     
-    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId:@"Search"];
+    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
     self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     self.seachViewNavigationViewController = [self wrapInNavigationController:self.searchViewController];
     
     
     // == Channels User (out of normal controller array)
     
-    self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId:@"UserChannels"];
+    self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId: kUserChanneslViewId];
     self.channelsUserNavigationViewController = [self wrapInNavigationController:self.channelsUserViewController];
     
     

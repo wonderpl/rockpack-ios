@@ -30,6 +30,17 @@
 
 // OAuth2
 
+
+#define kFeedViewId                 @"Home"
+#define kVideosViewId               @"Videos"
+#define kChannelsViewId             @"Channels"
+#define kProfileViewId              @"You"
+#define kSearchViewId               @"Search"
+#define kUserChanneslViewId         @"UserChannels"
+#define kChannelDetailsViewId       @"ChannelDetails"
+
+
+
 #define kAPIRefreshToken            @"/ws/token"
 
 // Login
