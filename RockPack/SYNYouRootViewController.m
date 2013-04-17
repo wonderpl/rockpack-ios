@@ -12,6 +12,7 @@
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -61,22 +62,26 @@
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(0.0, 158.0, 1024.0, 528.0);
+    CGRect youCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+    CGRectMake(0.0, kYouCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kYouCollectionViewOffsetY) :
+    CGRectMake(0.0f, kYouCollectionViewOffsetY, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kYouCollectionViewOffsetY);
     
-    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: youCollectionViewFrame
                                                              collectionViewLayout: flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
+                 CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
+                 CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
     
     self.userProfileController = [[SYNUserProfileViewController alloc] init];
     CGRect userProfileFrame = self.userProfileController.view.frame;
-    userProfileFrame.origin.y = 60.0;
+    userProfileFrame.origin.y = 80.0;
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];

@@ -54,14 +54,19 @@
     standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 10.0f, 0, 10.0f);
     
-    CGRect videoCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 44.0, 1024.0, 642.0) : CGRectMake(0.0f, 44.0f, 768.0f, 898.0f);
+    CGRect videoCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+                                        CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY) :
+                                        CGRectMake(0.0f, kStandardCollectionViewOffsetY, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY);
     
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
-    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ? CGRectMake(0.0, 0.0, 1024.0, 768.0) : CGRectMake(0.0f, 0.0f, 768.0f, 1024.0f)];
+    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
+                                                CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
+                                                CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
+    
     [self.view addSubview:self.videoThumbnailCollectionView];
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     self.view.autoresizingMask =  UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
