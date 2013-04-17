@@ -157,7 +157,6 @@
     self.frame = finalFrame;
     
     
-    //self.label.frame = finalFrame;
 }
 
 @end

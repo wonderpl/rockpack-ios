@@ -162,7 +162,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
     [self.containerView addSubview:containerViewController.view];
     
     

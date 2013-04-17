@@ -30,6 +30,17 @@
 
 // OAuth2
 
+
+#define kFeedViewId                 @"Home"
+#define kVideosViewId               @"Videos"
+#define kChannelsViewId             @"Channels"
+#define kProfileViewId              @"You"
+#define kSearchViewId               @"Search"
+#define kUserChanneslViewId         @"UserChannels"
+#define kChannelDetailsViewId       @"ChannelDetails"
+
+
+
 #define kAPIRefreshToken            @"/ws/token"
 
 // Login
@@ -192,6 +203,21 @@ typedef enum _Gender {
 //
 // Dimensions
 //
+
+#define kMinorDimension 768.0f
+#define kMajorDimension 1024.0f
+#define kStatusBarHeight 20.0f
+
+#define kFullScreenHeightPortrait kMajorDimension
+#define kFullScreenHeightPortraitMinusStatusBar (kFullScreenHeightPortrait - kStatusBarHeight)
+#define kFullScreenWidthPortrait kMinorDimension
+
+#define kFullScreenHeightLandscape kMinorDimension
+#define kFullScreenHeightLandscapeMinusStatusBar (kFullScreenHeightLandscape - kStatusBarHeight)
+#define kFullScreenWidthLandscape kMajorDimension
+
+#define kStandardCollectionViewOffsetY 80.0f
+#define kYouCollectionViewOffsetY 160.0f
 
 #define kImageUploadWidth 1024
 #define kImageUploadHeight 768

@@ -13,6 +13,7 @@
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -62,22 +63,27 @@
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(0.0, 158.0, 1024.0, 528.0);
+    CGRect youCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+    CGRectMake(0.0, kYouCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kYouCollectionViewOffsetY) :
+    CGRectMake(0.0f, kYouCollectionViewOffsetY, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kYouCollectionViewOffsetY);
     
-    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: youCollectionViewFrame
                                                              collectionViewLayout: flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
+                 CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
+                 CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
     
     [self.view addSubview:self.channelThumbnailCollectionView];
     
     
     self.userProfileController = [[SYNUserProfileViewController alloc] init];
+    
     CGRect userProfileFrame = self.userProfileController.view.frame;
-    userProfileFrame.origin.y = 60.0;
+    userProfileFrame.origin.y = 80.0;
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
@@ -111,10 +117,9 @@
 {
     [super viewWillAppear:animated];
     
-    if(!self.tabViewController)
-        return;
     
-    // TODO: Put Owner Data in the Profile Panel
+    
+    [self.userProfileController setChannelOwner:appDelegate.currentUser];
 }
 
 
@@ -135,18 +140,23 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
+    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
+    NSPredicate* subscribedByUserPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"subscribedByUser == YES"]];
+    NSArray* predicates = @[ownedByUserPredicate, subscribedByUserPredicate];
+    
+                                              
+    fetchRequest.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:predicates];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
     
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
+    
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                         managedObjectContext: appDelegate.mainManagedObjectContext
                                                                           sectionNameKeyPath: nil
                                                                                    cacheName: nil];
     fetchedResultsController.delegate = self;
     
-    ZAssert([fetchedResultsController performFetch: &error], @"YouRootViewController failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    ZAssert([fetchedResultsController performFetch: &error],
+            @"YouRootViewController failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
 }

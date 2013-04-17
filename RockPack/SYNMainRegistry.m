@@ -12,9 +12,9 @@
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "VideoInstance.h"
+#import "AppConstants.h"
 #import <CoreData/CoreData.h>
 
-#define kChannelsViewId @"Channels"
 
 @interface SYNMainRegistry ()
 
@@ -46,6 +46,52 @@
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
+    
+    [appDelegate saveContext: TRUE];
+    
+    
+    return YES;
+}
+
+
+-(BOOL)registerSubscriptionsForCurrentUserFromDictionary:(NSDictionary*)dictionary
+{
+    // == Check for Validity == //
+    
+    if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    User* currentUser = appDelegate.currentUser;
+    
+    if(!currentUser)
+        return NO;
+    
+    NSDictionary* channeslDictionary = [dictionary objectForKey:@"channels"];
+    if(!channeslDictionary)
+        return NO;
+    
+    NSArray* itemsArray = [channeslDictionary objectForKey:@"items"];
+    if(!itemsArray)
+        return NO;
+    
+    for (NSDictionary* subscriptionChannel in itemsArray)
+    {
+        Channel* channel = [Channel subscriberInstanceFromDictionary:subscriptionChannel
+                                 usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                 andViewId:kProfileViewId];
+        
+        
+        if(!channel) continue;
+        
+        [currentUser addChannelsObject:channel];
+        
+    }
+    
+    
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
+    
     
     [appDelegate saveContext: TRUE];
     
@@ -176,7 +222,7 @@
     [Channel instanceFromDictionary: dictionary
           usingManagedObjectContext: importManagedObjectContext
                 ignoringObjectTypes: kIgnoreNothing
-                          andViewId: @"ChannelDetails"];
+                          andViewId: kChannelDetailsViewId];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -212,8 +258,8 @@
     if(!append)
     {
         existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
-                                                                                          andViewId: kChannelsViewId
-                                                                             inManagedObjectContext: importManagedObjectContext];
+                                                                                 andViewId: kChannelsViewId
+                                                                    inManagedObjectContext: importManagedObjectContext];
     }
     
     

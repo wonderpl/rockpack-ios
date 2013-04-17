@@ -32,7 +32,7 @@
     self.view = categoriesTabView;
     
     // align to top
-    self.view.frame = CGRectMake(0.0, 44.0, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = CGRectMake(0.0, kStandardCollectionViewOffsetY, self.view.frame.size.width, self.view.frame.size.height);
     
     [self loadCategories];
 
