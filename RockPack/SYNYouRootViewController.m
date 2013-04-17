@@ -145,7 +145,7 @@
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                         managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
+                                                                          sectionNameKeyPath: @"subscribedByUser"
                                                                                    cacheName: nil];
     fetchedResultsController.delegate = self;
     
@@ -207,7 +207,7 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return 1;
+    return self.fetchedResultsController.sections.count;
 }
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath {
@@ -219,6 +219,7 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];
+    
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     

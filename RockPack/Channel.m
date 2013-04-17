@@ -149,7 +149,7 @@ static NSEntityDescription *channelEntity = nil;
                           ignoringObjectTypes: kIgnoreChannelObjects
                                     andViewId: viewId];
         
-        instance.subscribedByUser = @(YES);
+       instance.subscribedByUser = @(YES);
     }
     
     
