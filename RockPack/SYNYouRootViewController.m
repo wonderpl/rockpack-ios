@@ -88,7 +88,7 @@
     
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor blueColor];
+    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     
     
@@ -280,7 +280,7 @@
 }
 
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
     CGPoint offset;
     if([scrollView isEqual:self.channelThumbnailCollectionView]) {
         offset = self.channelThumbnailCollectionView.contentOffset;

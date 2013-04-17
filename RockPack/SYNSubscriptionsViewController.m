@@ -25,15 +25,25 @@
     [super loadView];
     
     
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor greenColor];
+    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
+    
 }
 
+-(CGSize)itemSize
+{
+    return CGSizeMake(184.0, 138.0);
+}
+
+-(CGSize)footerSize
+{
+    return CGSizeMake(0.0, 0.0);
+}
 
 - (void) viewDidLoad
 {
+
     [super viewDidLoad];
-    
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
