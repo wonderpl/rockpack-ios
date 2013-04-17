@@ -148,7 +148,7 @@
     
 //    NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
     UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
-    feedNavController.view.frame = CGRectMake (0.0, 60.0, 1024, 686);
+    feedNavController.view.frame = CGRectMake (0.0f, 0.0f, 1024.0f, 748.0f);
     feedNavController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
 //    [allControllers addObject:feedNavController];
 //    [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];

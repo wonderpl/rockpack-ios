@@ -12,6 +12,7 @@
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsDetailViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -62,11 +63,6 @@
     
     self.userProfileController = [[SYNUserProfileViewController alloc] init];
     
-    CGRect userProfileFrame = self.userProfileController.view.frame;
-    userProfileFrame.origin.y = 60.0;
-    self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    self.userProfileController.view.frame = userProfileFrame;
-    
     
     
     // Main Collection View
@@ -80,7 +76,11 @@
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(0.0, 158.0, 600.0, 528.0);
+
+    CGRect collectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+    CGRectMake(0.0, kYouCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kYouCollectionViewOffsetY) :
+    CGRectMake(0.0f, kYouCollectionViewOffsetY, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kYouCollectionViewOffsetY);
+
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -102,7 +102,9 @@
     [self.subscriptionsViewController setViewFrame:subColViewFrame];
     
     
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
+                 CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
+                 CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
     
     [self.view addSubview:self.userProfileController.view];
     
@@ -111,6 +113,11 @@
     [self.view addSubview:self.subscriptionsViewController.view];
     
     
+    CGRect userProfileFrame = self.userProfileController.view.frame;
+    userProfileFrame.origin.y = 80.0;
+    self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    self.userProfileController.view.frame = userProfileFrame;
+    [self.view addSubview:self.userProfileController.view];
 }
 
 

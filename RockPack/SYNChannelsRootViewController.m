@@ -19,6 +19,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "SYNChannelFooterMoreView.h"
+#import "SYNDeviceManager.h"
 #import "SYNMainRegistry.h"
 
 #define STANDARD_LENGTH 50
@@ -78,9 +79,14 @@
     flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect collectionViewFrame = CGRectMake(4.0, 86.0, 1016.0, 600.0);
+    // Work out how hight the inital tab bar is
+    CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
-    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
+    CGRect channelCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+    CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
+    CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
+    
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
                                                              collectionViewLayout: flowLayout];
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
@@ -88,7 +94,10 @@
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1024.0, 748.0)];
+    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
+                 CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
+                 CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
+    
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.view addSubview:self.channelThumbnailCollectionView];
