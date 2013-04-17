@@ -83,7 +83,7 @@
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    scrollView.backgroundColor = [UIColor clearColor];
+    scrollView.backgroundColor = [UIColor greenColor];
     scrollView.delegate = self;
     scrollView.pagingEnabled = YES;
     scrollView.showsHorizontalScrollIndicator = NO;
