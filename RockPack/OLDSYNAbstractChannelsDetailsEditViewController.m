@@ -10,7 +10,7 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "HPGrowingTextView.h"
-#import "SYNAbstractChannelsDetailsEditViewController.h"
+#import "OLDSYNAbstractChannelsDetailsEditViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
 #import "SYNChannelHeaderView.h"
@@ -19,11 +19,11 @@
 #import "SYNOAuth2Credential.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 
-@interface SYNAbstractChannelsDetailsEditViewController ()
+@interface OLDSYNAbstractChannelsDetailsEditViewController ()
 
 @end
 
-@implementation SYNAbstractChannelsDetailsEditViewController
+@implementation OLDSYNAbstractChannelsDetailsEditViewController
 
 #pragma mark - UI Helpers
 
