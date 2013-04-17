@@ -115,16 +115,17 @@
     fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
+    
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                               managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                 sectionNameKeyPath: nil
-                                                                                          cacheName: nil];
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
     fetchedResultsController.delegate = self;
     
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    NSError *error;
+    ZAssert([fetchedResultsController performFetch: &error],
+            @"Channels FetchedResultsController Failed: %@\n%@",
+            [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
 }
