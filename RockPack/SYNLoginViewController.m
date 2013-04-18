@@ -69,7 +69,7 @@
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 
-@property (nonatomic, strong) IBOutlet UIView* termsAndConditionsView;
+@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -96,7 +96,7 @@
 @synthesize signUpButton, facebookSignInButton;
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
 @synthesize joingRockpackLabel, facebookLogingInLabel;
-@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsView;
+@synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
 @synthesize activityIndicator, dividerImageView, secondaryFacebookMessage;
 @synthesize isAnimating;
 @synthesize emailInputField, dobView, registerNewUserButton;
@@ -133,7 +133,18 @@
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
     secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
     joingRockpackLabel.font = [UIFont boldRockpackFontOfSize:23];
-    facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];;
+    facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];
+    termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:14.0];
+    
+    NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY USING ROCKPACK, YOU AGREE TO OUR TERMS & SERVICES AND PRIVACY POLICY"];
+    
+    
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(32, 20)];
+    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(57, 14)];
+    
+    // add terms buttons
+    
+    termsAndConditionsLabel.attributedText = termsString;
     
     labelsToErrorArrows = [[NSMutableDictionary alloc] init];
     
@@ -201,8 +212,9 @@
     
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
-                                passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
-                                registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel, sendEmailButton, wellSendYouLabel];
+                                passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
+                                registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel, sendEmailButton,
+                                wellSendYouLabel];
     
     for (UIView* control in controlsToHide) {
        
@@ -302,7 +314,7 @@
         
         passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
         passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
-        termsAndConditionsView.center = CGPointMake(termsAndConditionsView.center.x, termsAndConditionsView.center.y - kOffsetForLoginForm);
+        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
         
         // consequitive fade in animations
         
@@ -315,7 +327,7 @@
             [UIView animateWithDuration:0.2 animations:^{
                 passwordForgottenButton.alpha = 1.0;
                 passwordForgottenLabel.alpha = 1.0;
-                termsAndConditionsView.alpha = 1.0;
+                termsAndConditionsLabel.alpha = 1.0;
                 dividerImageView.alpha = 1.0;
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.2 animations:^{
@@ -400,7 +412,7 @@
             
             joingRockpackLabel.alpha = 0.0;
             
-            termsAndConditionsView.alpha = 1.0;
+            termsAndConditionsLabel.alpha = 1.0;
             
             
             
@@ -440,7 +452,7 @@
             passwordInputField.alpha = 1.0;
             wellSendYouLabel.alpha = 0.0;
             
-            termsAndConditionsView.alpha = 1.0;
+            termsAndConditionsLabel.alpha = 1.0;
             
             
             
@@ -513,7 +525,7 @@
                                                       facebookSignInButton.center.y);
             
             dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - kOffsetForLoginForm);
-            termsAndConditionsView.center = CGPointMake(termsAndConditionsView.center.x, termsAndConditionsView.center.y - kOffsetForLoginForm);
+            termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
             
             [emailInputField becomeFirstResponder];
             
@@ -589,7 +601,7 @@
         registerNewUserButton.alpha = 1.0;
         
         
-        termsAndConditionsView.alpha = 0.0;
+        termsAndConditionsLabel.alpha = 0.0;
     
         
         passwordForgottenButton.alpha = 0.0;
