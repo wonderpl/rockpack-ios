@@ -121,7 +121,7 @@
     
     self.rightPortraitLayout = flowLayout;
     
-    CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 60.0 : 400.0;
+    CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
     
     
     
