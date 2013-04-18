@@ -8,23 +8,29 @@
 
 #import "AppConstants.h"
 #import "Channel.h"
+#import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "SYNChannelHeaderView.h"
-#import "SYNChannelsDetailViewController.h"
+#import "SYNChannelDetailViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNTextField.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
+#import "UIImageView+ImageProcessing.h"
 
-@interface SYNChannelsDetailViewController ()
 
-@property (nonatomic, strong) UIButton *shareButton;
+@interface SYNChannelDetailViewController ()
+
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
+@property (nonatomic, strong) IBOutlet UIButton *buyButton;
+@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
+@property (nonatomic, strong) Channel *channel;
 
 @end
 
-@implementation SYNChannelsDetailViewController
+@implementation SYNChannelDetailViewController
 
 - (void) viewDidLoad
 {
@@ -33,8 +39,9 @@
     // Google Analytics support
     self.trackedViewName = @"Channels - Detail";
     
-    // Show edit and share buttons
-
+    // Set wallpaper
+    [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
+                                     placeHolderImage: nil];
 }
 
 
@@ -47,16 +54,16 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-//    DebugLog(@"URL for channel %@", self.channel.resourceURL);
-//    
-//    NSString* protocol = [self.channel.resourceURL substringWithRange:NSMakeRange(0, 5)];
-//    
-//    if([protocol isEqualToString:@"https"]) {
-//        [appDelegate.oAuthNetworkEngine updateChannel:self.channel.resourceURL];
-//    } else {
-//        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
-//    }
+    if ([self.channel.resourceURL hasPrefix: @"https"])
+    {
+        [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL];
+    }
+    else
+    {
+        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
+    }
 }
+
 
 - (void) viewWillDisappear: (BOOL) animated
 {

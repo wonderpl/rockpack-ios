@@ -16,4 +16,8 @@
 
 - (id) initWithChannel: (Channel *) channel;
 
+// There is no elegant way to make properties only available to subclasses, so delare them here has readonly and re-declare in
+// the subclasses as readwrite in anonymous categories
+@property (nonatomic, strong, readonly) Channel *channel;
+
 @end

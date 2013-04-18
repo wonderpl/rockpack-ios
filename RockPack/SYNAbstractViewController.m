@@ -16,7 +16,7 @@
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
-#import "SYNChannelsDetailViewController.h"
+#import "SYNChannelDetailViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -349,7 +349,7 @@
 
 - (void) viewChannelDetails: (Channel *) channel
 {
-    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelVC];
 }
