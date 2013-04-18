@@ -69,6 +69,7 @@
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -97,7 +98,7 @@
 @synthesize facebookLogingInLabel;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
 @synthesize activityIndicator, dividerImageView, secondaryFacebookMessage;
-@synthesize isAnimating;
+@synthesize isAnimating, termsAndConditionsLabelSide;
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
@@ -133,6 +134,7 @@
     secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
     facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:14.0];
+    termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY USING ROCKPACK, YOU AGREE TO OUR TERMS & SERVICES AND PRIVACY POLICY"];
     
@@ -143,6 +145,7 @@
     // add terms buttons
     
     termsAndConditionsLabel.attributedText = termsString;
+    termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
     
     labelsToErrorArrows = [[NSMutableDictionary alloc] init];
     
@@ -212,7 +215,7 @@
                                 areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
                                 registerNewUserButton, dividerImageView, faceImageButton, sendEmailButton,
-                                wellSendYouLabel];
+                                wellSendYouLabel, termsAndConditionsLabelSide];
     
     for (UIView* control in controlsToHide) {
        
@@ -414,6 +417,9 @@
             memberLabel.alpha = 0.0;
             
             
+            termsAndConditionsLabelSide.alpha = 0.0;
+            
+            
             termsAndConditionsLabel.alpha = 1.0;
             
             
@@ -517,7 +523,6 @@
             
             
             
-            
         } completion:^(BOOL finished) {
             
             finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - kOffsetForLoginForm);
@@ -568,6 +573,7 @@
         [UIView animateWithDuration:0.5 animations:^{
             
             
+            
             emailInputField.alpha = 1.0;
             emailInputField.center = CGPointMake(userNameInputField.center.x,
                                                  emailInputField.center.y);
@@ -603,6 +609,8 @@
         
         registerNewUserButton.alpha = 1.0;
         
+        
+        termsAndConditionsLabelSide.alpha = 1.0;
         
         termsAndConditionsLabel.alpha = 0.0;
     
