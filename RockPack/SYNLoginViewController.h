@@ -15,7 +15,8 @@ typedef enum {
     kLoginScreenStateNull = 0,
     kLoginScreenStateInitial,
     kLoginScreenStateLogin,
-    kLoginScreenStateRegister
+    kLoginScreenStateRegister,
+    kLoginScreenStatePasswordRetrieve
 } kLoginScreenState;
 
 
@@ -28,5 +29,17 @@ typedef enum {
 -(void)showAutologinWithCredentials:(SYNOAuth2Credential*)credentials;
 
 -(void)setUpInitialState;
+
+
+
+-(IBAction)registerPressed:(id)sender;
+-(IBAction)signUp:(id)sender;
+-(IBAction)faceButtonImagePressed:(UIButton*)sender;
+-(IBAction)forgottenPasswordPressed:(id)sender;
+-(IBAction)registerNewUser:(id)sender;
+-(IBAction)goToLoginForm:(id)sender;
+-(IBAction)signInWithFacebook:(id)sender;
+-(IBAction)sendEmailButtonPressed:(id)sender;
+- (IBAction) doLogin: (id) sender;
 
 @end
