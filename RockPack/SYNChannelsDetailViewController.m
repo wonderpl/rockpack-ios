@@ -20,6 +20,8 @@
 
 @interface SYNChannelsDetailViewController ()
 
+@property (nonatomic, strong) UIButton *shareButton;
+
 @end
 
 @implementation SYNChannelsDetailViewController
@@ -77,6 +79,23 @@
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
+}
+
+
+- (void) shareChannelButtonTapped: (id) sender
+{
+    NSString *messageString = kChannelShareMessage;
+    
+//  TODO: Put in cover art image?
+//  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
+    
+    // TODO: Put in real link
+    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
+    
+    [self shareURL: messageURL
+       withMessage: messageString
+          fromRect: self.shareButton.frame
+   arrowDirections: UIPopoverArrowDirectionUp];
 }
 
 @end

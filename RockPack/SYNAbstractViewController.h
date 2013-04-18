@@ -97,4 +97,9 @@
 -(void)viewCameToScrollFront;
 -(BOOL)needsAddButton;
 
+- (void) shareURL: (NSURL *) shareURL
+      withMessage: (NSString *) shareString
+         fromRect: (CGRect) rect
+  arrowDirections: (UIPopoverArrowDirection) arrowDirections;
+
 @end
