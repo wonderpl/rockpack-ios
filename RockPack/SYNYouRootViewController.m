@@ -22,6 +22,7 @@
 #import "SYNUserProfileViewController.h"
 #import "SYNSubscriptionsViewController.h"
 #import "SYNChannelMidCell.h"
+#import "SYNYouHeaderView.h"
 
 @interface SYNYouRootViewController ()
 
@@ -35,6 +36,9 @@
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 
 @property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
+
+@property (nonatomic, strong) SYNYouHeaderView* headerCheannelsView;
+@property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
 
 @end
 
@@ -77,10 +81,18 @@
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-
-    CGRect collectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
-    CGRectMake(0.0, kYouCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kYouCollectionViewOffsetY) :
-    CGRectMake(0.0f, kYouCollectionViewOffsetY, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kYouCollectionViewOffsetY);
+    CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
+    
+    
+    
+    self.headerCheannelsView = [SYNYouHeaderView headerViewForWidth:correctWidth];
+    [self.headerCheannelsView setTitle:@"YOUR CHANNELS" andNumber:2];
+    [self.headerCheannelsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    
+    CGRect collectionViewFrame = CGRectMake(0.0,
+                                            self.headerCheannelsView.frame.origin.y + self.headerCheannelsView.currentHeight + 10.0,
+                                            correctWidth,
+                                            [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0 - kYouCollectionViewOffsetY);
 
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
@@ -100,12 +112,29 @@
     subColViewFrame.origin.x = collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
+    subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
+    
+    
+    
     [self.subscriptionsViewController setViewFrame:subColViewFrame];
     
+    self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth:subColViewFrame.size.width];
+    [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber:2];
+    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    CGRect headerSubFrame = self.headerSubscriptionsView.frame;
+    headerSubFrame.origin.x = subColViewFrame.origin.x;
+    self.headerSubscriptionsView.frame = headerSubFrame;
     
-    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
-                 CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
-                 CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0,
+                                                         0.0,
+                                                         [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                                         [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar])];
+                 
+    
+    
+    
+    [self.view addSubview:self.headerCheannelsView];
+    [self.view addSubview:self.headerSubscriptionsView];
     
     [self.view addSubview:self.userProfileController.view];
     
@@ -119,6 +148,10 @@
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
+    
+     
+    
+    
 }
 
 
@@ -144,7 +177,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout:) name:kAccountSettingsLogout object:nil];
     
     
-    
+    [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    [self.subscriptionsViewController.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 
@@ -155,6 +189,21 @@
     [self.userProfileController setChannelOwner:appDelegate.currentUser];
     
     self.subscriptionsViewController.collectionView.delegate = self;
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    NSLog(@"height1: %f", self.channelThumbnailCollectionView.contentSize.height);
+    NSLog(@"height2: %f", self.subscriptionsViewController.collectionView.contentSize.height);
+    
+    CGSize subSize = self.subscriptionsViewController.collectionView.contentSize;
+    CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;
+    subSize.height = thumbSize.height;
+    self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(subSize.width, 1800.0);
 }
 
 
@@ -442,6 +491,21 @@
     
 }
 
-
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if ([keyPath isEqualToString:@"contentSize"]) {
+        
+        // CGSize newContentSize = [[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue];
+        
+//        CGSize s1Size = self.channelThumbnailCollectionView.contentSize;
+//        CGSize s2Size = self.subscriptionsViewController.collectionView.contentSize;
+//        
+//        if(s1Size.height == s2Size.height)
+//            return;
+//            
+//      
+//        self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(s2Size.width, s1Size.height);
+    }
+}
 
 @end

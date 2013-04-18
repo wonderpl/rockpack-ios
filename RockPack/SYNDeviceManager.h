@@ -27,5 +27,6 @@
 
 -(CGFloat)currentScreenWidth;
 -(CGFloat)currentScreenHeight;
+-(CGFloat)currentScreenHeightWithStatusBar;
 
 @end

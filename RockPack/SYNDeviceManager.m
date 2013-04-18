@@ -84,4 +84,9 @@
         return [[UIScreen mainScreen] bounds].size.width;
 }
 
+-(CGFloat)currentScreenHeightWithStatusBar
+{
+    return [self currentScreenHeight]  - 20.0;
+}
+
 @end

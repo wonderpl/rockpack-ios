@@ -542,6 +542,13 @@
 		BE86BF17171F001E0006DC8A /* SYNSubscriptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */; };
 		BE86BF1A171F07B10006DC8A /* SYNChannelMidCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */; };
 		BE86BF1C171F07C70006DC8A /* SYNChannelMidCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */; };
+		BE86BF1F171FFB980006DC8A /* SYNYouHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE86BF1E171FFB980006DC8A /* SYNYouHeaderView.m */; };
+		BE86BF26172011150006DC8A /* HeaderProfileChannelsLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF20172011150006DC8A /* HeaderProfileChannelsLandscape.png */; };
+		BE86BF27172011150006DC8A /* HeaderProfileChannelsLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF21172011150006DC8A /* HeaderProfileChannelsLandscape@2x.png */; };
+		BE86BF28172011150006DC8A /* HeaderProfilePortraitBoth.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF22172011150006DC8A /* HeaderProfilePortraitBoth.png */; };
+		BE86BF29172011150006DC8A /* HeaderProfilePortraitBoth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF23172011150006DC8A /* HeaderProfilePortraitBoth@2x.png */; };
+		BE86BF2A172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF24172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png */; };
+		BE86BF2B172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF25172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1244,6 +1251,14 @@
 		BE86BF18171F07B10006DC8A /* SYNChannelMidCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelMidCell.h; sourceTree = "<group>"; };
 		BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelMidCell.m; sourceTree = "<group>"; };
 		BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelMidCell.xib; sourceTree = "<group>"; };
+		BE86BF1D171FFB980006DC8A /* SYNYouHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNYouHeaderView.h; sourceTree = "<group>"; };
+		BE86BF1E171FFB980006DC8A /* SYNYouHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNYouHeaderView.m; sourceTree = "<group>"; };
+		BE86BF20172011150006DC8A /* HeaderProfileChannelsLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeaderProfileChannelsLandscape.png; path = Assets/Images/HeaderProfileChannelsLandscape.png; sourceTree = "<group>"; };
+		BE86BF21172011150006DC8A /* HeaderProfileChannelsLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeaderProfileChannelsLandscape@2x.png"; path = "Assets/Images/HeaderProfileChannelsLandscape@2x.png"; sourceTree = "<group>"; };
+		BE86BF22172011150006DC8A /* HeaderProfilePortraitBoth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeaderProfilePortraitBoth.png; path = Assets/Images/HeaderProfilePortraitBoth.png; sourceTree = "<group>"; };
+		BE86BF23172011150006DC8A /* HeaderProfilePortraitBoth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeaderProfilePortraitBoth@2x.png"; path = "Assets/Images/HeaderProfilePortraitBoth@2x.png"; sourceTree = "<group>"; };
+		BE86BF24172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeaderProfileSubscriptionsLandscape.png; path = Assets/Images/HeaderProfileSubscriptionsLandscape.png; sourceTree = "<group>"; };
+		BE86BF25172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeaderProfileSubscriptionsLandscape@2x.png"; path = "Assets/Images/HeaderProfileSubscriptionsLandscape@2x.png"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -1611,6 +1626,12 @@
 		0142ED8D16B1B7FE008694DA /* You */ = {
 			isa = PBXGroup;
 			children = (
+				BE86BF20172011150006DC8A /* HeaderProfileChannelsLandscape.png */,
+				BE86BF21172011150006DC8A /* HeaderProfileChannelsLandscape@2x.png */,
+				BE86BF22172011150006DC8A /* HeaderProfilePortraitBoth.png */,
+				BE86BF23172011150006DC8A /* HeaderProfilePortraitBoth@2x.png */,
+				BE86BF24172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png */,
+				BE86BF25172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png */,
 				0142ED8E16B1B85C008694DA /* HeaderYou.png */,
 				0142ED8F16B1B85C008694DA /* HeaderYou@2x.png */,
 				BE2D2156171D8A4500B4B755 /* AvatarProfile.png */,
@@ -1972,6 +1993,8 @@
 				0142ED8816B19FBE008694DA /* SYNYouRootViewController.m */,
 				BE86BF15171F001E0006DC8A /* SYNSubscriptionsViewController.h */,
 				BE86BF16171F001E0006DC8A /* SYNSubscriptionsViewController.m */,
+				BE86BF1D171FFB980006DC8A /* SYNYouHeaderView.h */,
+				BE86BF1E171FFB980006DC8A /* SYNYouHeaderView.m */,
 			);
 			name = You;
 			sourceTree = "<group>";
@@ -3391,6 +3414,12 @@
 				01450AFB171DB4D7009F54CD /* PlaceholderVideoMiddle@2x.png in Resources */,
 				01450AFC171DB4D7009F54CD /* PlaceholderVideoTop@2x.png in Resources */,
 				BE86BF1C171F07C70006DC8A /* SYNChannelMidCell.xib in Resources */,
+				BE86BF26172011150006DC8A /* HeaderProfileChannelsLandscape.png in Resources */,
+				BE86BF27172011150006DC8A /* HeaderProfileChannelsLandscape@2x.png in Resources */,
+				BE86BF28172011150006DC8A /* HeaderProfilePortraitBoth.png in Resources */,
+				BE86BF29172011150006DC8A /* HeaderProfilePortraitBoth@2x.png in Resources */,
+				BE86BF2A172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png in Resources */,
+				BE86BF2B172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png in Resources */,
 				01ABBAD0171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib in Resources */,
 				01ABBAD6172002E6007E4462 /* ChannelDetailOverlayBackground.png in Resources */,
 				01ABBAD7172002E6007E4462 /* ChannelDetailOverlayBackground@2x.png in Resources */,
@@ -3588,6 +3617,7 @@
 				BE2D2145171C5A0600B4B755 /* SYNAutocompleteViewController.m in Sources */,
 				BE86BF17171F001E0006DC8A /* SYNSubscriptionsViewController.m in Sources */,
 				BE86BF1A171F07B10006DC8A /* SYNChannelMidCell.m in Sources */,
+				BE86BF1F171FFB980006DC8A /* SYNYouHeaderView.m in Sources */,
 				01ABBACE171FF618007E4462 /* OLDSYNAbstractChannelsDetailsEditViewController.m in Sources */,
 				01ABBACF171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.m in Sources */,
 				01ABBAD3171FF638007E4462 /* SYNAbstractChannelsDetailEditViewController.m in Sources */,

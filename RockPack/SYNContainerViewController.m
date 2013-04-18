@@ -446,7 +446,7 @@
     if(!self.scrollView.scrollEnabled)
         return;
     
-    CGPoint newPoint = CGPointMake(page * 1024.0, 0.0);
+    CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
     [self.scrollView setContentOffset:newPoint animated:YES];
 }
 
@@ -490,11 +490,6 @@
     navigationController.view.autoresizesSubviews = YES;
     navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     return navigationController;
-}
-
--(CGFloat)currentScreenOffset
-{
-    return 1024.0;
 }
 
 
