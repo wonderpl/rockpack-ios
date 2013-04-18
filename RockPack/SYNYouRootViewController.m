@@ -39,6 +39,11 @@
 
 @property (nonatomic, strong) SYNYouHeaderView* headerCheannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftPortraitLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightPortraitLayout;
+
 
 @end
 
@@ -77,11 +82,46 @@
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.itemSize = CGSizeMake(184.0, 138.0);
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
-    flowLayout.minimumLineSpacing = 3.0;
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 8.0, 5.0, 25.0);
+    flowLayout.minimumLineSpacing = 8.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
+    self.leftLandscapeLayout = flowLayout;
+    
+    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 25.0, 5.0, 8.0);
+    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    self.rightLandscapeLayout = flowLayout;
+    
+    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
+    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    self.leftPortraitLayout = flowLayout;
+    
+    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
+    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    self.rightPortraitLayout = flowLayout;
+    
+    CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 60.0 : 400.0;
     
     
     
@@ -118,7 +158,7 @@
     
     [self.subscriptionsViewController setViewFrame:subColViewFrame];
     
-    self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth:subColViewFrame.size.width];
+    self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth:384];
     [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber:2];
     [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
     CGRect headerSubFrame = self.headerSubscriptionsView.frame;
@@ -134,6 +174,7 @@
     
     
     [self.view addSubview:self.headerCheannelsView];
+
     [self.view addSubview:self.headerSubscriptionsView];
     
     [self.view addSubview:self.userProfileController.view];
@@ -190,6 +231,7 @@
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
+    [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
     
 }
 
@@ -206,6 +248,76 @@
     self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(subSize.width, 1800.0);
 }
 
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self updateLayoutForOrientation:toInterfaceOrientation];
+}
+
+-(void)updateLayoutForOrientation:(UIDeviceOrientation)orientation
+{
+    CGRect newFrame;
+    CGFloat viewHeight;
+    SYNIntegralCollectionViewFlowLayout* leftLayout;
+    SYNIntegralCollectionViewFlowLayout* rightLayout;
+    if(UIDeviceOrientationIsPortrait(orientation))
+    {
+        
+        newFrame = self.headerCheannelsView.frame;
+        newFrame.size.width = 384.0f;
+        self.headerCheannelsView.frame = newFrame;
+        
+        newFrame = self.headerSubscriptionsView.frame;
+        newFrame.origin.x = 384.0f ;
+        newFrame.size.width = 384.0f;
+        self.headerSubscriptionsView.frame = newFrame;
+        
+        viewHeight = 1024;
+        
+        leftLayout = self.leftPortraitLayout;
+        rightLayout = self.rightPortraitLayout;
+        
+    }
+    else
+    {
+        newFrame = self.headerCheannelsView.frame;
+        newFrame.size.width = 612.0f;
+        self.headerCheannelsView.frame = newFrame;
+        
+        newFrame = self.headerSubscriptionsView.frame;
+        newFrame.origin.x = 612.0f ;
+        newFrame.size.width = 412.0f;
+        self.headerSubscriptionsView.frame = newFrame;
+        
+        viewHeight = 768;
+        
+        leftLayout = self.leftLandscapeLayout;
+        rightLayout = self.rightLandscapeLayout;
+    }
+    
+    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    
+    [self.headerCheannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"]];
+
+    
+    
+    newFrame = self.channelThumbnailCollectionView.frame;
+    newFrame.size.width = self.headerCheannelsView.frame.size.width;
+    newFrame.size.height = viewHeight - newFrame.origin.y;
+    self.channelThumbnailCollectionView.frame = newFrame;
+    self.channelThumbnailCollectionView.collectionViewLayout = leftLayout;
+    [leftLayout invalidateLayout];
+    
+    newFrame = self.subscriptionsViewController.view.frame;
+    newFrame.size.width = self.headerSubscriptionsView.frame.size.width;
+    newFrame.size.height = viewHeight - newFrame.origin.y;
+    newFrame.origin.x = self.headerSubscriptionsView.frame.origin.x;
+    self.subscriptionsViewController.view.frame = newFrame;
+    self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = rightLayout;
+    [rightLayout invalidateLayout];
+    
+    
+}
 
 
 - (NSFetchedResultsController *) fetchedResultsController
