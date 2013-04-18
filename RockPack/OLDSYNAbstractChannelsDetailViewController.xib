@@ -1482,8 +1482,8 @@
 			<string key="ButtonCoverHighlighted.png">{16, 16}</string>
 			<string key="ButtonDone.png">{16, 16}</string>
 			<string key="ButtonDoneHighlighted.png">{16, 16}</string>
-			<string key="ButtonEdit.png">{16, 16}</string>
-			<string key="ButtonEditHighlighted.png">{16, 16}</string>
+			<string key="ButtonEdit.png">{110, 45}</string>
+			<string key="ButtonEditHighlighted.png">{110, 45}</string>
 			<string key="ButtonPrivate.png">{16, 16}</string>
 			<string key="ButtonPrivateHighlighted.png">{16, 16}</string>
 			<string key="ButtonPrivateUnpressable.png">{16, 16}</string>

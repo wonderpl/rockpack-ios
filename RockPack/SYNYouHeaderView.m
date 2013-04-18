@@ -26,10 +26,14 @@
         [self addSubview:label];
         
         backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
+        backgroundImageView.contentMode = UIViewContentModeCenter;
         [self addSubview:backgroundImageView];
+        backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
         
         
         textCompositeView = [[UIView alloc] initWithFrame:frame];
+        textCompositeView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         
         [self addSubview:textCompositeView];
     }
