@@ -1326,4 +1326,22 @@
     }
 }
 
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    {
+        signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
+        passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+        faceImageButton.center = CGPointMake(120.0, faceImageButton.center.y);
+    }
+    else
+    {
+        signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
+        passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
+        faceImageButton.center = CGPointMake(250.0, faceImageButton.center.y);
+    }
+    
+    
+}
 @end
