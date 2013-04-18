@@ -257,6 +257,8 @@
 		01ABBADD17200992007E4462 /* PanelVideoFeedLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBAD917200992007E4462 /* PanelVideoFeedLandscape@2x.png */; };
 		01ABBADE17200992007E4462 /* PanelVideoFeedPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBADA17200992007E4462 /* PanelVideoFeedPortrait.png */; };
 		01ABBADF17200992007E4462 /* PanelVideoFeedPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBADB17200992007E4462 /* PanelVideoFeedPortrait@2x.png */; };
+		01ABBAE2172034EA007E4462 /* LogoRockpack.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBAE0172034EA007E4462 /* LogoRockpack.png */; };
+		01ABBAE3172034EA007E4462 /* LogoRockpack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBAE1172034EA007E4462 /* LogoRockpack@2x.png */; };
 		01AEFBCD1701AC460060467A /* SYNActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01AEFBCC1701AC460060467A /* SYNActivityManager.m */; };
 		01AEFBD01701AC870060467A /* AccountSettingsView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFBCE1701AC870060467A /* AccountSettingsView.png */; };
 		01AEFBD11701AC870060467A /* AccountSettingsView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFBCF1701AC870060467A /* AccountSettingsView@2x.png */; };
@@ -886,6 +888,8 @@
 		01ABBAD917200992007E4462 /* PanelVideoFeedLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoFeedLandscape@2x.png"; path = "Assets/Images/PanelVideoFeedLandscape@2x.png"; sourceTree = "<group>"; };
 		01ABBADA17200992007E4462 /* PanelVideoFeedPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoFeedPortrait.png; path = Assets/Images/PanelVideoFeedPortrait.png; sourceTree = "<group>"; };
 		01ABBADB17200992007E4462 /* PanelVideoFeedPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoFeedPortrait@2x.png"; path = "Assets/Images/PanelVideoFeedPortrait@2x.png"; sourceTree = "<group>"; };
+		01ABBAE0172034EA007E4462 /* LogoRockpack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoRockpack.png; sourceTree = "<group>"; };
+		01ABBAE1172034EA007E4462 /* LogoRockpack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LogoRockpack@2x.png"; sourceTree = "<group>"; };
 		01AEFBCB1701AC460060467A /* SYNActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNActivityManager.h; sourceTree = "<group>"; };
 		01AEFBCC1701AC460060467A /* SYNActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNActivityManager.m; sourceTree = "<group>"; };
 		01AEFBCE1701AC870060467A /* AccountSettingsView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AccountSettingsView.png; path = Assets/Images/AccountSettingsView.png; sourceTree = "<group>"; };
@@ -1656,6 +1660,8 @@
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01ABBAE0172034EA007E4462 /* LogoRockpack.png */,
+				01ABBAE1172034EA007E4462 /* LogoRockpack@2x.png */,
 				01ABBAD4172002E6007E4462 /* ChannelDetailOverlayBackground.png */,
 				01ABBAD5172002E6007E4462 /* ChannelDetailOverlayBackground@2x.png */,
 			);
@@ -3427,6 +3433,8 @@
 				01ABBADD17200992007E4462 /* PanelVideoFeedLandscape@2x.png in Resources */,
 				01ABBADE17200992007E4462 /* PanelVideoFeedPortrait.png in Resources */,
 				01ABBADF17200992007E4462 /* PanelVideoFeedPortrait@2x.png in Resources */,
+				01ABBAE2172034EA007E4462 /* LogoRockpack.png in Resources */,
+				01ABBAE3172034EA007E4462 /* LogoRockpack@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
