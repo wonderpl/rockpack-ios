@@ -11,7 +11,7 @@
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNChannelsDetailViewController.h"
+#import "SYNChannelDetailViewController.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
@@ -337,7 +337,7 @@
         
         Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+        SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
         
         [self animatedPushViewController: channelVC];
     }
@@ -349,7 +349,7 @@
 {
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
     
     channelVC.view.alpha = 0.0f;
     

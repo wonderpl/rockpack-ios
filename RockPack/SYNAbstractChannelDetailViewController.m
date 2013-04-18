@@ -17,8 +17,8 @@
 
 @interface SYNAbstractChannelDetailViewController ()
 
+@property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) UIImageView *channelCoverImageView;
 
 @end
 
@@ -27,8 +27,7 @@
 
 - (id) initWithChannel: (Channel *) channel
 {
-	if ((self = [super initWithNibName: @"SYNAbstractChannelDetailViewController"
-                                bundle: nil]))
+	if ((self = [super init]))
     {
 		self.channel = channel;
 	}
