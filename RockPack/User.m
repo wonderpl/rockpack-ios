@@ -220,7 +220,7 @@
     [userDescription appendFormat:@"\nUser Channels:"];
     for (Channel* channel in self.channels)
     {
-        [userDescription appendFormat:@"\n - %@", channel.title];
+        [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
     }
     
     return userDescription;

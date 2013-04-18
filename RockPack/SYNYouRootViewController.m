@@ -19,6 +19,8 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "SYNUserProfileViewController.h"
+#import "SYNSubscriptionsViewController.h"
+#import "SYNChannelMidCell.h"
 
 @interface SYNYouRootViewController ()
 
@@ -27,6 +29,8 @@
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
+@property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
+
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 
 @property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
@@ -34,6 +38,8 @@
 @end
 
 @implementation SYNYouRootViewController
+
+@synthesize subscriptionsViewController;
 
 #pragma mark - View lifecycle
 
@@ -53,33 +59,59 @@
 {
     //    UIImageView *headerView = [UI]
     
+    // User Profile
+    
+    self.userProfileController = [[SYNUserProfileViewController alloc] init];
+    
+    
+    
+    // Main Collection View
+    
     SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(251.0, 302.0);
+    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
     flowLayout.minimumLineSpacing = 3.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
-    CGRect youCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+
+    CGRect collectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
     CGRectMake(0.0, kYouCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kYouCollectionViewOffsetY) :
     CGRectMake(0.0f, kYouCollectionViewOffsetY, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kYouCollectionViewOffsetY);
+
     
-    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: youCollectionViewFrame
+    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: flowLayout];
+    
+    
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
+    
+    
+    // Subscriptions Collection View
+    
+    self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId:kProfileViewId];
+    CGRect subColViewFrame = self.subscriptionsViewController.view.frame;
+    subColViewFrame.origin.x = collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
+    subColViewFrame.origin.y = collectionViewFrame.origin.y;
+    subColViewFrame.size.height = collectionViewFrame.size.height;
+    [self.subscriptionsViewController setViewFrame:subColViewFrame];
+    
     
     self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
                  CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
                  CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
     
+    [self.view addSubview:self.userProfileController.view];
+    
     [self.view addSubview:self.channelThumbnailCollectionView];
     
+    [self.view addSubview:self.subscriptionsViewController.view];
     
-    self.userProfileController = [[SYNUserProfileViewController alloc] init];
     
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 80.0;
@@ -96,11 +128,11 @@
     self.trackedViewName = @"You - Root";
     
     // Init collection view
-    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
+    UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
                                              bundle: nil];
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
+                          forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
@@ -109,6 +141,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsPressed:) name:kAccountSettingsPressed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout:) name:kAccountSettingsLogout object:nil];
+    
+    
+    
 }
 
 
@@ -116,9 +151,9 @@
 {
     [super viewWillAppear:animated];
     
-    
-    
     [self.userProfileController setChannelOwner:appDelegate.currentUser];
+    
+    self.subscriptionsViewController.collectionView.delegate = self;
 }
 
 
@@ -140,11 +175,9 @@
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
-    NSPredicate* subscribedByUserPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"subscribedByUser == YES"]];
-    NSArray* predicates = @[ownedByUserPredicate, subscribedByUserPredicate];
     
                                               
-    fetchRequest.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:predicates];
+    fetchRequest.predicate = ownedByUserPredicate;
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
     
     
@@ -156,6 +189,7 @@
     
     ZAssert([fetchedResultsController performFetch: &error],
             @"YouRootViewController failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
     
     return fetchedResultsController;
 }
@@ -202,7 +236,7 @@
 }
 
 
-#pragma mark - Collection view support
+#pragma mark - UICollectionView DataSource
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
@@ -212,23 +246,58 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return 1;
+    return self.fetchedResultsController.sections.count;
 }
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
+    SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                               forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];
-    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
-    channelThumbnailCell.viewControllerDelegate = self;
+    
     
     return channelThumbnailCell;
     
+}
+
+
+
+- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    Channel *channel;
+    
+    if(collectionView == self.channelThumbnailCollectionView)
+    {
+        channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+    }
+    else
+    {
+        channel = [self.subscriptionsViewController channelAtIndexPath:indexPath];
+    }
+    
+    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+    
+    [self animatedPushViewController: channelVC];
+    
+}
+
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGPoint offset;
+    if([scrollView isEqual:self.channelThumbnailCollectionView]) {
+        offset = self.channelThumbnailCollectionView.contentOffset;
+        offset.y = self.channelThumbnailCollectionView.contentOffset.y;
+        [self.subscriptionsViewController.collectionView setContentOffset:offset];
+    } else if([scrollView isEqual:self.subscriptionsViewController.collectionView]) {
+        offset = self.subscriptionsViewController.collectionView.contentOffset;
+        offset.y = self.subscriptionsViewController.collectionView.contentOffset.y;
+        [self.channelThumbnailCollectionView setContentOffset:offset];
+    }
 }
 
 -(void)displayNameButtonPressed:(UIButton*)button
@@ -244,17 +313,6 @@
                                                       userInfo:@{@"ChannelOwner":channel.channelOwner}];
     
 }
-
-
-- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: channelVC];
-}
-
 
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath

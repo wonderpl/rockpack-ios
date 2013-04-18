@@ -58,13 +58,23 @@
     return self;
 }
 
+-(CGSize)itemSize
+{
+    return CGSizeMake(251.0, 212.0);
+}
+
+-(CGSize)footerSize
+{
+    return CGSizeMake(1024.0, 64.0);
+}
+
 - (void) loadView
 {
     SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = CGSizeMake(1024.0, 64.0);
-    flowLayout.itemSize = CGSizeMake(251.0, 212.0);
+    flowLayout.footerReferenceSize = [self footerSize];
+    flowLayout.itemSize = [self itemSize];
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
     flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
@@ -95,6 +105,13 @@
     startAnimationDelay = 0.0;
     
     currentCategoryId = @"all";
+    
+    currentRange = NSMakeRange(0, 50);
+    
+    // Google Analytics support
+    self.trackedViewName = @"Channels - Root";
+    
+    self.mainRegistry = appDelegate.mainRegistry;
 }
 
 
@@ -122,10 +139,9 @@
                                                                                    cacheName: nil];
     fetchedResultsController.delegate = self;
     
-    NSError *error;
+    NSError *error = nil;
     ZAssert([fetchedResultsController performFetch: &error],
-            @"Channels FetchedResultsController Failed: %@\n%@",
-            [error localizedDescription], [error userInfo]);
+            @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
 }
@@ -134,10 +150,6 @@
 {
     [super viewDidLoad];
     
-    // Google Analytics support
-    self.trackedViewName = @"Channels - Root";
-    
-    currentRange = NSMakeRange(0, 50);
     
 
     // Register Cells
@@ -161,7 +173,7 @@
     
     [self.view addGestureRecognizer: pinchOnChannelView];
     
-    self.mainRegistry = appDelegate.mainRegistry;
+    
     
     
     [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId

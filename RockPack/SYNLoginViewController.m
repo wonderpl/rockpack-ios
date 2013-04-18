@@ -560,6 +560,8 @@
     
     [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
     
+    DebugLog(@"Registered:\n%@", newUser);
+    
     return YES;
 }
 
