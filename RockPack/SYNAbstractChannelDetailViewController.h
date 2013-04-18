@@ -10,7 +10,7 @@
 
 #import "LXReorderableCollectionViewFlowLayout.h"
 
-@interface SYNAbstractChannelsDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,
+@interface SYNAbstractChannelDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,
                                                                                 UICollectionViewDataSource,
                                                                                 UICollectionViewDelegateFlowLayout>
 

@@ -43,7 +43,6 @@
     self.usernameLabel.font = [UIFont rockpackFontOfSize: 13.0f];
     self.byLabel.font = [UIFont rockpackFontOfSize: 13.0f];
     
-    
     self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.dateAddedLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.durationLabel.font = [UIFont rockpackFontOfSize: 12.0f];
