@@ -253,7 +253,7 @@
         passwordInputField.alpha = 0.0;
         emailInputField.alpha = 0.0;
         finalLoginButton.alpha = 0.0;
-        
+        passwordForgottenLabel.alpha = 0.0;
         loginButton.alpha = 1.0;
         registerButton.alpha = 0.0;
         
@@ -444,7 +444,7 @@
             areYouNewLabel.alpha = 1.0;
             
             loginButton.alpha = 0.0;
-            memberLabel.alpha = 1.0;
+            memberLabel.alpha = 0.0;
             
             sendEmailButton.alpha = 0.0;
             
