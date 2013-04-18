@@ -39,9 +39,10 @@
 					<object class="IBUIImageView" id="788839223">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{-1, 0}, {256, 179}}</string>
+						<string key="NSFrameSize">{256, 170}</string>
 						<reference key="NSSuperview" ref="485139548"/>
-						<reference key="NSNextKeyView" ref="1046021116"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="3438973"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -53,9 +54,10 @@
 					<object class="IBUIImageView" id="3438973">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{3, 2}, {249, 140}}</string>
+						<string key="NSFrame">{{3, 0}, {249, 139}}</string>
 						<reference key="NSSuperview" ref="485139548"/>
-						<reference key="NSNextKeyView" ref="67122024"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="1046021116"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">2</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -64,22 +66,24 @@
 					<object class="IBUIImageView" id="1046021116">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{256, 179}</string>
+						<string key="NSFrame">{{3, 0}, {249, 140}}</string>
 						<reference key="NSSuperview" ref="485139548"/>
-						<reference key="NSNextKeyView" ref="3438973"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="67122024"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">GlossVideoThumbnailRegular.png</string>
+							<string key="NSResourceName">GlossVideo.png</string>
 						</object>
 					</object>
 					<object class="IBUILabel" id="67122024">
 						<reference key="NSNextResponder" ref="485139548"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{15, 147}, {228, 26}}</string>
+						<string key="NSFrame">{{12, 145}, {230, 26}}</string>
 						<reference key="NSSuperview" ref="485139548"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="456240611">
@@ -94,9 +98,14 @@
 						<string key="IBUIText">HARRY POTTER: MAGIC WANDS</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC44OTQxMTc2NDcxIDAuOTQ1MDk4MDM5MiAwLjk2NDcwNTg4MjQAA</bytes>
+							<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuMTI5NDExNzY0NyAwLjEyOTQxMTc2NDcAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
+						<object class="NSColor" key="IBUIShadowColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC45MzMzMzMzMzMzIDAuOTMzMzMzMzMzMyAwLjkzMzMzMzMzMzMAA</bytes>
+						</object>
+						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">0</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">2</int>
@@ -110,8 +119,9 @@
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 				</array>
-				<string key="NSFrameSize">{256, 179}</string>
+				<string key="NSFrameSize">{256, 170}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="788839223"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<reference key="IBUIBackgroundColor" ref="456240611"/>
@@ -161,9 +171,9 @@
 						<reference key="object" ref="485139548"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="3438973"/>
-							<reference ref="1046021116"/>
 							<reference ref="67122024"/>
 							<reference ref="788839223"/>
+							<reference ref="1046021116"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -208,14 +218,55 @@
 			<nil key="sourceID"/>
 			<int key="maxID">21</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNVideoThumbnailRegularCell</string>
+					<string key="superclassName">UICollectionViewCell</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="imageView">UIImageView</string>
+						<string key="titleLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="imageView">
+							<string key="name">imageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="titleLabel">
+							<string key="name">titleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNVideoThumbnailRegularCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICollectionReusableView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICollectionReusableView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICollectionViewCell</string>
+					<string key="superclassName">UICollectionReusableView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICollectionViewCell.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundVideoThumbnailRegular.png">{254, 176}</string>
-			<string key="GlossVideoThumbnailRegular.png">{256, 179}</string>
+			<string key="BackgroundVideoThumbnailRegular.png">{256, 170}</string>
+			<string key="GlossVideo.png">{249, 140}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

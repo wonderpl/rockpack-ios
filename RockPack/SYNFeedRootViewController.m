@@ -40,7 +40,7 @@
 {
     if(self = [super initWithViewId:vid])
     {
-        self.title = @"Feed - Root";
+        self.title = @"Feed";
     }
     return self;
 }
