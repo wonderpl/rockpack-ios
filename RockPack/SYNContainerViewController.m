@@ -82,7 +82,7 @@
 {
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
-    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    scrollView.autoresizingMask = UIViewAutoresizingNone;
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.delegate = self;
     scrollView.pagingEnabled = YES;
@@ -146,22 +146,19 @@
     
     // == Populate Scroller == //
     
-//    NSMutableArray* allControllers = [[NSMutableArray alloc] initWithCapacity:3];
+    
+    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
+    self.scrollView.frame = scrollerFrame;
     UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
     feedNavController.view.frame = CGRectMake (0.0f, 0.0f, 1024.0f, 748.0f);
-    feedNavController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
-//    [allControllers addObject:feedNavController];
-//    [allControllers addObject:[self wrapInNavigationController:channelsRootViewController]];
-//    [allControllers addObject:[self wrapInNavigationController:myRockpackViewController]];
-//    
     [self addChildViewController:feedNavController];
+    
     [self addChildViewController:[self wrapInNavigationController:channelsRootViewController]];
-    channelsRootViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
+    
     [self addChildViewController:[self wrapInNavigationController:myRockpackViewController]];
-    myRockpackViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight| UIViewAutoresizingFlexibleWidth;
     
     
-    [self packViewControllersForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
     self.selectedViewController = self.childViewControllers[0];
     
@@ -173,6 +170,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    [self packViewControllersForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+}
+
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -180,12 +182,17 @@
     [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
 }
 
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    NSLog(@"%@",[self.view description]);
+}
+
 #pragma mark - Placement of Views
 
 -(void)packViewControllersForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     CGRect newFrame;
-    if([[SYNDeviceManager sharedInstance] isLandscape])
+    if(UIDeviceOrientationIsLandscape(orientation))
     {
         newFrame = CGRectMake(0.0f, 0.0f, 1024.0f, 748.0f);
     }
@@ -193,11 +200,16 @@
     {
         newFrame = CGRectMake(0.0, 0.0f, 768.0f, 1004.0f);
     }
-    
+    self.scrollView.frame = newFrame;
     for(UIViewController* controller in self.childViewControllers)
     {
         controller.view.frame = newFrame;
         newFrame.origin.x += newFrame.size.width;
+        if ([controller isKindOfClass:[UINavigationController class]] )
+        {
+            UINavigationController* navController = (UINavigationController*)controller;
+            navController.topViewController.view.frame = controller.view.bounds;
+        }
     }
     
     self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
@@ -476,7 +488,7 @@
     navigationController.title = abstractViewController.title;
     navigationController.navigationBarHidden = YES;
     navigationController.view.autoresizesSubviews = YES;
-    navigationController.view.frame = CGRectMake (0.0, 0.0, 1024, 686);
+    navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     return navigationController;
 }
 
