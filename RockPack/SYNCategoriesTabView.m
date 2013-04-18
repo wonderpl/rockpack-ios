@@ -41,11 +41,13 @@
         UIImage* mainTabsBGImage = [UIImage imageNamed:@"CategoryBar"];
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
+        self.mainTabsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         
         
         UIView* bgMainTabsView = [[UIView alloc] initWithFrame:mainFrame];
         bgMainTabsView.backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
+        bgMainTabsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         bgMainTabsView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
         bgMainTabsView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -57,13 +59,17 @@
         UIImage* secondaryTabsBGImage = [UIImage imageNamed:@"SubCategoryBar"];
         CGRect secondaryFrame = CGRectMake(0.0, 0.0, totalWidth, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame:secondaryFrame];
+        self.secondaryTabsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         self.secondaryDividerOverlay = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryDividerOverlay.userInteractionEnabled = NO;
+        self.secondaryDividerOverlay.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
         
         self.secondaryTabsBGView = [[UIView alloc] initWithFrame:secondaryFrame];
         self.secondaryTabsBGView.backgroundColor = [UIColor colorWithPatternImage:secondaryTabsBGImage];
         self.secondaryTabsBGView.userInteractionEnabled = NO;
+        self.secondaryTabsBGView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         CGRect masterFrame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height + secondaryFrame.size.height);
         self.frame = masterFrame;
@@ -92,6 +98,7 @@
     
     self.dividerOverlayView = [[UIView alloc] initWithFrame:self.mainTabsView.frame];
     self.dividerOverlayView.userInteractionEnabled = NO;
+    self.dividerOverlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     
     CGFloat nextOrigin = 0.0;
