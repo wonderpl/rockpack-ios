@@ -218,6 +218,7 @@ typedef enum _Gender {
 
 #define kStandardCollectionViewOffsetY 80.0f
 #define kYouCollectionViewOffsetY 160.0f
+#define kChannelDetailsCollectionViewOffsetY 540.0f
 
 #define kImageUploadWidth 1024
 #define kImageUploadHeight 768

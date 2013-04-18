@@ -40,7 +40,7 @@
 {
     if(self = [super initWithViewId:vid])
     {
-        self.title = @"Feed - Root";
+        self.title = @"Feed";
     }
     return self;
 }
@@ -204,11 +204,11 @@
 {
     if([[SYNDeviceManager sharedInstance] isLandscape])
     {
-        return CGSizeMake(497, 174);
+        return CGSizeMake(497, 170);
     }
     else
     {
-        return CGSizeMake(370, 174);
+        return CGSizeMake(370, 170);
     }
 }
 

@@ -519,41 +519,10 @@ static NSString * const kLXReorderableCollectionViewFlowLayoutScrollingDirection
 
 #pragma mark - UICollectionViewFlowLayoutDelegate methods
 
-#ifdef USE_DECORATION_VIEWS
-- (UICollectionViewLayoutAttributes *) layoutAttributesForDecorationViewOfKind: (NSString *) decorationViewKind
-                                                                   atIndexPath: (NSIndexPath *) indexPath
-{
-    UICollectionViewLayoutAttributes *layoutAttributes = nil;
-    
-    // Only apply attributes for first section
-    if (indexPath.section == 0)
-    {
-        layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind: decorationViewKind
-                                                                                       withIndexPath: indexPath];
-        
-//        layoutAttributes.frame = CGRectMake(0.0, 0.0, self.collectionViewContentSize.width, self.collectionViewContentSize.height);
-//        layoutAttributes.frame = CGRectMake(0.0f, 372.0f, 1024.0f, self.collectionViewContentSize.height - 372.0f);
-        layoutAttributes.frame = CGRectMake(0.0f, 463.0f, 1024.0f, self.collectionViewContentSize.height - 463.0f);
-        layoutAttributes.zIndex = -1;
-    }
-    
-    return layoutAttributes;
-}
-
-
-#endif
-
-
 - (NSArray *) layoutAttributesForElementsInRect: (CGRect) theRect
 {
     // Convert to mutable array
     NSMutableArray *theLayoutAttributesForElementsInRect = [NSMutableArray arrayWithArray: [super layoutAttributesForElementsInRect: theRect]];
-    
-#ifdef USE_DECORATION_VIEWS
-        [theLayoutAttributesForElementsInRect addObject: [self layoutAttributesForDecorationViewOfKind: @"SemiOpaqueBackground"
-                                                                                           atIndexPath: [NSIndexPath indexPathForItem: 0
-                                                                                                                            inSection: 0]]];
-#endif
     
     for (UICollectionViewLayoutAttributes *theLayoutAttributes in theLayoutAttributesForElementsInRect)
     {
