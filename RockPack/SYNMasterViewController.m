@@ -38,7 +38,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
-@property (nonatomic, strong) IBOutlet UIView* topBarView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
@@ -91,7 +90,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
         sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth];
-        sideNavigationFrame.origin.y = 45.0;
+        sideNavigationFrame.origin.y = 74.0;
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
         
@@ -346,7 +345,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
                          
-                         sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - sideNavigationFrame.size.width;
+                         sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 192.0;
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {
@@ -654,6 +653,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
     [self.containerViewController navigateToPageByName:pageName];
+    
+    
     
 }
 

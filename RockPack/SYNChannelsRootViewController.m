@@ -53,7 +53,7 @@
 {
     if(self = [super initWithViewId:vid])
     {
-        self.title = @"Channels";
+        self.title = kChannelsTitle;
     }
     return self;
 }

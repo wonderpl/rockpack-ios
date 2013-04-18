@@ -52,7 +52,7 @@
 {
     if(self = [super initWithViewId: vid])
     {
-        self.title = @"My Rockpack";
+        self.title = kProfileTitle;
     }
     return self;
 }
