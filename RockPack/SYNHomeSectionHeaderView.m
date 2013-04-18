@@ -13,7 +13,6 @@
 @interface SYNHomeSectionHeaderView ()
 
 @property (nonatomic, strong) IBOutlet UIImageView *highlightedSectionView;
-@property (nonatomic, strong) IBOutlet UIImageView *sectionView;
 
 @end
 

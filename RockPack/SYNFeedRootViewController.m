@@ -319,6 +319,14 @@
         headerSupplementaryView.viewControllerDelegate = self;
         headerSupplementaryView.focus = focus;
         headerSupplementaryView.sectionTitleLabel.text = sectionText;
+        if([[SYNDeviceManager sharedInstance] isLandscape])
+        {
+            headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDay"];
+        }
+        else
+        {
+            headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDayPortrait"];
+        }
         
         sectionSupplementaryView = headerSupplementaryView;
     }

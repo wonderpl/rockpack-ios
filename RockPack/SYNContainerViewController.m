@@ -389,6 +389,20 @@
         scrollingDirection = ScrollingDirectionLeft;
     }
     
+    // Code to handle multipage scroll without paging stop in between.
+    CGFloat width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    CGFloat pageInProgress = self.scrollView.contentOffset.x / width;
+    CGFloat pageDiff = pageInProgress - self.currentPage;
+    if(fabsf(pageDiff) > 1.0f)
+    {
+        self.currentPage = [self page];
+        CGPoint newOffset = self.scrollView.contentOffset;
+        newOffset.x = currentPage * width;
+        self.currentPageOffset = newOffset;
+        self.selectedViewController = self.childViewControllers[self.currentPage];
+        [self.showingViewController viewCameToScrollFront];
+    }
+    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -456,7 +470,7 @@
 {
     CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
     int pageWidth = (int)self.scrollView.contentSize.width / self.childViewControllers.count;
-    NSInteger page = (currentScrollerOffset / pageWidth); // 0 indexed
+    NSInteger page = roundf((currentScrollerOffset / pageWidth)); // 0 indexed
     return page;
     
 }

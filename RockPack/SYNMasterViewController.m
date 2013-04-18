@@ -596,18 +596,27 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if ([keyPath isEqualToString:@"contentOffset"]) {
         
         CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
-        CGFloat diff = abs(newContentOffset.x - self.containerViewController.currentPageOffset.x);
+        CGFloat diff = fabsf(newContentOffset.x - self.containerViewController.currentPageOffset.x);
+        diff = diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
+        if (diff >1.0f)
+        {
+            diff = diff - truncf(diff);
+        }
         SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
         
         if(nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton)
         {
-            self.addToChannelButton.alpha = diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
+            self.addToChannelButton.alpha = diff;
         }
         else if(!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)
         {
-            self.addToChannelButton.alpha = 1.0f - diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
+            self.addToChannelButton.alpha = 1.0f - diff;
         }
-        NSLog(@"DIFF: %f",diff);
+        else
+        {
+            self.addToChannelButton.alpha = self.containerViewController.showingViewController.needsAddButton? 1.0f:0.0f; 
+        }
+
     }
 }
 

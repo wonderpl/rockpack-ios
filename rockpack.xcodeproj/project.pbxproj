@@ -372,6 +372,8 @@
 		1F6D17AD1700A23100B66F09 /* BarHeaderSearchSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F6D17AB1700A23100B66F09 /* BarHeaderSearchSelected@2x.png */; };
 		1FF358FF1704D39900E543F4 /* ComingSoonFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF358FD1704D39900E543F4 /* ComingSoonFriends.png */; };
 		1FF359001704D39900E543F4 /* ComingSoonFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF358FE1704D39900E543F4 /* ComingSoonFriends@2x.png */; };
+		38C3FA7417203D6600F126B1 /* PanelDayPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */; };
+		38C3FA7517203D6600F126B1 /* PanelDayPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B816F7697900245314 /* ButtonFlagDefault.png */; };
 		BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */; };
@@ -1042,6 +1044,8 @@
 		1FF358FE1704D39900E543F4 /* ComingSoonFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ComingSoonFriends@2x.png"; path = "Assets/Images/ComingSoonFriends@2x.png"; sourceTree = "<group>"; };
 		276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelDayPortrait.png; path = Assets/Images/PanelDayPortrait.png; sourceTree = "<group>"; };
+		38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelDayPortrait@2x.png"; path = "Assets/Images/PanelDayPortrait@2x.png"; sourceTree = "<group>"; };
 		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
 		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE03A6B816F7697900245314 /* ButtonFlagDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFlagDefault.png; path = Assets/Images/ButtonFlagDefault.png; sourceTree = "<group>"; };
@@ -1764,6 +1768,8 @@
 		018919F51672235000AB07BB /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */,
+				38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */,
 				01891A3916725A3400AB07BB /* PanelDay.png */,
 				01891A3A16725A3400AB07BB /* PanelDay@2x.png */,
 			);
@@ -3451,6 +3457,8 @@
 				01ABBADF17200992007E4462 /* PanelVideoFeedPortrait@2x.png in Resources */,
 				01ABBAE2172034EA007E4462 /* LogoRockpack.png in Resources */,
 				01ABBAE3172034EA007E4462 /* LogoRockpack@2x.png in Resources */,
+				38C3FA7417203D6600F126B1 /* PanelDayPortrait.png in Resources */,
+				38C3FA7517203D6600F126B1 /* PanelDayPortrait@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

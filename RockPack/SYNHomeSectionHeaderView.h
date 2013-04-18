@@ -13,6 +13,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *sectionTitleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *refreshButton;
 @property (nonatomic, strong) IBOutlet UIView *refreshView;
+@property (nonatomic, strong) IBOutlet UIImageView *sectionView;
 
 // This is used to indicate the UIViewController that
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
