@@ -32,6 +32,8 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
+@property (nonatomic, strong) IBOutlet UIButton* sendEmailButton;
+
 @property (nonatomic, strong) IBOutlet UILabel* joingRockpackLabel;
 
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
@@ -53,6 +55,7 @@
 @property (nonatomic, strong) IBOutlet UITextField* ddInputField;
 @property (nonatomic, strong) IBOutlet UITextField* mmInputField;
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
+@property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
 
@@ -72,6 +75,7 @@
 
 @property (nonatomic) CGRect facebookButtonInitialFrame;
 @property (nonatomic) CGRect signUpButtonInitialFrame;
+@property (nonatomic) CGRect initialUsernameFrame;
 
 @property (nonatomic) BOOL isAnimating;
 
@@ -100,6 +104,8 @@
 @synthesize ddInputField, mmInputField, yyyyInputField;
 @synthesize labelsToErrorArrows;
 @synthesize faceImageButton, facebookButtonInitialFrame, signUpButtonInitialFrame;
+@synthesize sendEmailButton;
+@synthesize wellSendYouLabel;
 
 - (void) viewDidLoad
 {
@@ -119,7 +125,7 @@
     
     // == Setup Fonts for labels (except Input Fields)
     
-    UIFont* rockpackBigLabelFont = [UIFont boldRockpackFontOfSize:24];
+    UIFont* rockpackBigLabelFont = [UIFont rockpackFontOfSize:20];
     
     memberLabel.font = rockpackBigLabelFont;
     areYouNewLabel.font = rockpackBigLabelFont;
@@ -175,6 +181,8 @@
         [self setUpLoginStateFromPreviousState:state];
     else if(newState == kLoginScreenStateRegister)
         [self setUpRegisterStateFromState:state];
+    else if(newState == kLoginScreenStatePasswordRetrieve)
+        [self setUpPasswordState];
     
     state = newState;
 }
@@ -194,7 +202,7 @@
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
                                 passwordForgottenButton, termsAndConditionsView, dobView, emailInputField,
-                                registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel];
+                                registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel, sendEmailButton, wellSendYouLabel];
     
     for (UIView* control in controlsToHide) {
        
@@ -221,6 +229,39 @@
     
 }
 
+-(void)setUpPasswordState
+{
+    self.initialUsernameFrame = userNameInputField.frame;
+    loginButton.frame = registerButton.frame;
+    sendEmailButton.enabled = YES;
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+        facebookSignInButton.alpha = 0.0;
+        CGFloat diff = passwordInputField.frame.origin.y - userNameInputField.frame.origin.y;
+        userNameInputField.frame = passwordInputField.frame;
+        passwordInputField.alpha = 0.0;
+        emailInputField.alpha = 0.0;
+        finalLoginButton.alpha = 0.0;
+        
+        loginButton.alpha = 1.0;
+        registerButton.alpha = 0.0;
+        
+        memberLabel.alpha = 1.0;
+        areYouNewLabel.alpha = 0.0;
+        sendEmailButton.alpha = 1.0;
+        dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y + diff);
+        
+    } completion:^(BOOL finished) {
+        dividerImageView.frame = CGRectIntegral(dividerImageView.frame);
+        [UIView animateWithDuration:0.3 animations:^{
+        
+            wellSendYouLabel.alpha = 1.0;
+        
+        }];
+    
+    }];
+    
+    
+}
 
 
 -(void)setUpLoginStateFromPreviousState:(kLoginScreenState)previousState
@@ -280,7 +321,9 @@
                 [UIView animateWithDuration:0.2 animations:^{
                     areYouNewLabel.alpha = 1.0;
                     registerButton.alpha = 1.0;
+                    
                 } completion:^(BOOL finished) {
+                    
                     isAnimating = NO;
                     
                     
@@ -294,6 +337,13 @@
                     
                     
                     memberLabel.frame = CGRectIntegral(memberLabel.frame);
+                    
+                    sendEmailButton.center = CGPointMake(sendEmailButton.center.x,
+                                                         sendEmailButton.center.y - kOffsetForLoginForm);
+                    
+                    
+                    
+                    sendEmailButton.frame = CGRectIntegral(sendEmailButton.frame);
                     
                     registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x,
                                                                registerNewUserButton.center.y - kOffsetForLoginForm);
@@ -358,6 +408,49 @@
             isAnimating = NO;
             [userNameInputField becomeFirstResponder];
         }];
+    }
+    else if(previousState == kLoginScreenStatePasswordRetrieve)
+    {
+        
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            
+            facebookSignInButton.alpha = 1.0;
+            
+            CGFloat diff = userNameInputField.frame.origin.y - self.initialUsernameFrame.origin.y;
+            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - diff);
+            
+            userNameInputField.frame = self.initialUsernameFrame;
+            
+            finalLoginButton.alpha = 1.0;
+            
+            
+            passwordForgottenButton.alpha = 1.0;
+            passwordForgottenLabel.alpha = 1.0;
+            
+            registerButton.alpha = 1.0;
+            areYouNewLabel.alpha = 1.0;
+            
+            loginButton.alpha = 0.0;
+            memberLabel.alpha = 1.0;
+            
+            sendEmailButton.alpha = 0.0;
+            
+            
+            passwordInputField.alpha = 1.0;
+            wellSendYouLabel.alpha = 0.0;
+            
+            termsAndConditionsView.alpha = 1.0;
+            
+            
+            
+        } completion:^(BOOL finished) {
+            isAnimating = NO;
+            [userNameInputField becomeFirstResponder];
+        }];
+        
+        
+        
     }
     
     
@@ -652,6 +745,13 @@
     self.state = kLoginScreenStateLogin;
 }
 
+-(IBAction)sendEmailButtonPressed:(id)sender
+{
+    
+    
+    
+}
+
 -(void)doFacebookLoginAnimation
 {
     [UIView animateWithDuration:0.3 animations:^{
@@ -769,7 +869,7 @@
 
 -(IBAction)forgottenPasswordPressed:(id)sender
 {
-    
+    self.state = kLoginScreenStatePasswordRetrieve;
 }
 
 

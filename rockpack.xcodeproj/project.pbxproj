@@ -618,6 +618,10 @@
 		BE86BF29172011150006DC8A /* HeaderProfilePortraitBoth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF23172011150006DC8A /* HeaderProfilePortraitBoth@2x.png */; };
 		BE86BF2A172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF24172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png */; };
 		BE86BF2B172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF25172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png */; };
+		BE86BF3017201BA70006DC8A /* ButtonResetPasswordDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2C17201BA70006DC8A /* ButtonResetPasswordDefault.png */; };
+		BE86BF3117201BA70006DC8A /* ButtonResetPasswordDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2D17201BA70006DC8A /* ButtonResetPasswordDefault@2x.png */; };
+		BE86BF3217201BA70006DC8A /* ButtonResetPasswordHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2E17201BA70006DC8A /* ButtonResetPasswordHighlighted.png */; };
+		BE86BF3317201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
 		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
 		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
@@ -1409,6 +1413,10 @@
 		BE86BF23172011150006DC8A /* HeaderProfilePortraitBoth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeaderProfilePortraitBoth@2x.png"; path = "Assets/Images/HeaderProfilePortraitBoth@2x.png"; sourceTree = "<group>"; };
 		BE86BF24172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HeaderProfileSubscriptionsLandscape.png; path = Assets/Images/HeaderProfileSubscriptionsLandscape.png; sourceTree = "<group>"; };
 		BE86BF25172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HeaderProfileSubscriptionsLandscape@2x.png"; path = "Assets/Images/HeaderProfileSubscriptionsLandscape@2x.png"; sourceTree = "<group>"; };
+		BE86BF2C17201BA70006DC8A /* ButtonResetPasswordDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonResetPasswordDefault.png; path = Assets/Images/ButtonResetPasswordDefault.png; sourceTree = "<group>"; };
+		BE86BF2D17201BA70006DC8A /* ButtonResetPasswordDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonResetPasswordDefault@2x.png"; path = "Assets/Images/ButtonResetPasswordDefault@2x.png"; sourceTree = "<group>"; };
+		BE86BF2E17201BA70006DC8A /* ButtonResetPasswordHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonResetPasswordHighlighted.png; path = Assets/Images/ButtonResetPasswordHighlighted.png; sourceTree = "<group>"; };
+		BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonResetPasswordHighlighted@2x.png"; path = "Assets/Images/ButtonResetPasswordHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
 		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
@@ -2997,6 +3005,10 @@
 				BE270BB316EE493800CDDA6D /* ButtonSignupHighlighted@2x.png */,
 				BE270BB416EE493800CDDA6D /* GlossBackgroundSignup.png */,
 				BE270BB516EE493800CDDA6D /* GlossBackgroundSignup@2x.png */,
+				BE86BF2C17201BA70006DC8A /* ButtonResetPasswordDefault.png */,
+				BE86BF2D17201BA70006DC8A /* ButtonResetPasswordDefault@2x.png */,
+				BE86BF2E17201BA70006DC8A /* ButtonResetPasswordHighlighted.png */,
+				BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */,
 				BE270BB616EE493800CDDA6D /* LogoSignup.png */,
 				BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */,
 			);
@@ -3752,6 +3764,10 @@
 				BE86BF2A172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png in Resources */,
 				BE86BF2B172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png in Resources */,
 				01ABBAD0171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib in Resources */,
+				BE86BF3017201BA70006DC8A /* ButtonResetPasswordDefault.png in Resources */,
+				BE86BF3117201BA70006DC8A /* ButtonResetPasswordDefault@2x.png in Resources */,
+				BE86BF3217201BA70006DC8A /* ButtonResetPasswordHighlighted.png in Resources */,
+				BE86BF3317201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
