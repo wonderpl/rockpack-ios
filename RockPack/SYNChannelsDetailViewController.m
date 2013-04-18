@@ -56,14 +56,6 @@
 //    } else {
 //        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
 //    }
-    
-    
-    
-}
-
--(IBAction)tappedOnUserAvatar:(UIButton*)sender
-{
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":self.channel.channelOwner}];
 }
 
 - (void) viewWillDisappear: (BOOL) animated
@@ -79,6 +71,12 @@
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
+}
+
+
+- (BOOL) needsAddButton
+{
+    return YES;
 }
 
 

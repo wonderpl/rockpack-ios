@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractChannelsDetailViewController.h"
+#import "SYNAbstractChannelDetailViewController.h"
 #import "Channel.h"
 #import "Channel.h"
 #import "Video.h"
@@ -15,7 +15,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "SYNVideoThumbnailRegularCell.h"
 
-@interface SYNAbstractChannelsDetailViewController ()
+@interface SYNAbstractChannelDetailViewController ()
 
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) UIImageView *channelCoverImageView;
@@ -23,11 +23,11 @@
 @end
 
 
-@implementation SYNAbstractChannelsDetailViewController
+@implementation SYNAbstractChannelDetailViewController
 
 - (id) initWithChannel: (Channel *) channel
 {
-	if ((self = [super initWithNibName: @"SYNAbstractChannelsDetailViewController"
+	if ((self = [super initWithNibName: @"SYNAbstractChannelDetailViewController"
                                 bundle: nil]))
     {
 		self.channel = channel;
@@ -175,7 +175,7 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        return CGSizeMake(1024.0f, 463.0f);
+        return CGSizeMake(1024.0f, kChannelDetailsCollectionViewOffsetY);
     }
     else
     {
