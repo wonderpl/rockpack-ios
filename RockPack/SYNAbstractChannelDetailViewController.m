@@ -17,7 +17,7 @@
 
 @interface SYNAbstractChannelDetailViewController ()
 
-@property (nonatomic, strong) UIImageView *channelCoverImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) Channel *channel;
 
 @end
