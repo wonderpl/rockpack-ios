@@ -1344,13 +1344,13 @@
     {
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
-        faceImageButton.center = CGPointMake(120.0, faceImageButton.center.y);
+        faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
     }
     else
     {
         signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
-        faceImageButton.center = CGPointMake(250.0, faceImageButton.center.y);
+        faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
     }
     
     

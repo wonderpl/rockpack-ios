@@ -192,9 +192,9 @@
                                                       
                                                       
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
-                                                                                                                         byAppending:NO];
+                                                                                                                             byAppending:NO];
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          DebugLog(@"Registration of Channel Failed");
                                                           return;
                                                       }
         
@@ -403,7 +403,7 @@
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:YES];
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          DebugLog(@"Registration of Channels Failed");
                                                           return;
                                                       }
                                                       
@@ -536,7 +536,7 @@
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          DebugLog(@"Registration of Channel Failed");
                                                           return;
                                                       }
                                                       
