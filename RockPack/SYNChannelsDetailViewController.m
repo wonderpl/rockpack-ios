@@ -20,6 +20,8 @@
 
 @interface SYNChannelsDetailViewController ()
 
+@property (nonatomic, strong) UIButton *shareButton;
+
 @end
 
 @implementation SYNChannelsDetailViewController
@@ -32,34 +34,7 @@
     self.trackedViewName = @"Channels - Detail";
     
     // Show edit and share buttons
-    
-    if (![self.channel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
-    {
-        self.editButton.hidden = YES;
-        self.buyButton.hidden = NO;
-        self.buyEditLabel.text = @"BUY";
-        
-    }
-    else
-    {
-        self.editButton.hidden = NO;
-        self.buyButton.hidden = YES;
-        self.buyEditLabel.text = @"EDIT";
-    }
-    
-    self.shareButton.hidden = FALSE;
-    
-    // Hide save or done buttons and hide cover selection carousel
-    self.saveOrDoneButtonLabel.hidden = NO;
-    self.saveOrDoneButtonLabel.text = @"SHARE";
-    self.coverSelectionView.hidden = YES;
-    
-    // Remove text field highlightes
-    self.channelTitleHighlightImageView.hidden = TRUE;
-    self.channelDescriptionHightlightView.hidden = TRUE;
-    
-    // Disable text fields until edit button selected
-    self.channelTitleTextField.enabled = FALSE;
+
 }
 
 
@@ -72,15 +47,15 @@
                                                  name: kDataUpdated
                                                object: nil];
     
-    DebugLog(@"URL for channel %@", self.channel.resourceURL);
-    
-    NSString* protocol = [self.channel.resourceURL substringWithRange:NSMakeRange(0, 5)];
-    
-    if([protocol isEqualToString:@"https"]) {
-        [appDelegate.oAuthNetworkEngine updateChannel:self.channel.resourceURL];
-    } else {
-        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
-    }
+//    DebugLog(@"URL for channel %@", self.channel.resourceURL);
+//    
+//    NSString* protocol = [self.channel.resourceURL substringWithRange:NSMakeRange(0, 5)];
+//    
+//    if([protocol isEqualToString:@"https"]) {
+//        [appDelegate.oAuthNetworkEngine updateChannel:self.channel.resourceURL];
+//    } else {
+//        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
+//    }
     
     
     
@@ -88,7 +63,7 @@
 
 -(IBAction)tappedOnUserAvatar:(UIButton*)sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":self.channel.channelOwner}];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":self.channel.channelOwner}];
 }
 
 - (void) viewWillDisappear: (BOOL) animated
@@ -104,6 +79,23 @@
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
+}
+
+
+- (void) shareChannelButtonTapped: (id) sender
+{
+    NSString *messageString = kChannelShareMessage;
+    
+//  TODO: Put in cover art image?
+//  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
+    
+    // TODO: Put in real link
+    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
+    
+    [self shareURL: messageURL
+       withMessage: messageString
+          fromRect: self.shareButton.frame
+   arrowDirections: UIPopoverArrowDirectionUp];
 }
 
 @end

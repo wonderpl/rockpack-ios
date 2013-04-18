@@ -100,14 +100,14 @@
 #define kAPICategories              @"ws/categories/"
 
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
-#define kAccountSettingsLogout     @"kAccountSettingsLogout"
-#define kUserDataChanged     @"kUserDataChanged"
+#define kAccountSettingsLogout      @"kAccountSettingsLogout"
+#define kUserDataChanged            @"kUserDataChanged"
 
-#define kRefresheComplete     @"kRefresheComplete"
+#define kRefresheComplete           @"kRefresheComplete"
 
 
 
-#define kShowUserChannels             @"kShowUserChannels"
+#define kShowUserChannels           @"kShowUserChannels"
 
 // Timeout for API calls
 
@@ -334,5 +334,10 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 #define kGADimensionCategory    2
 #define kGADimensionGender      3
 #define kGADimensionLocale      4
+
+// Sharing messages
+
+#define kChannelShareMessage @"Take a look at this great channel I found on Rockpack"
+#define kVideoShareMessage @"Take a look at this great video I found on Rockpack"
 
 #endif

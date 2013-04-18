@@ -7,9 +7,9 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAbstractChannelsDetailViewController.h"
+#import "OLDSYNAbstractChannelsDetailViewController.h"
 
-@interface SYNAbstractChannelsDetailsEditViewController : SYNAbstractChannelsDetailViewController
+@interface OLDSYNAbstractChannelsDetailsEditViewController : OLDSYNAbstractChannelsDetailViewController
 
 - (void) showDoneButton;
 

@@ -162,6 +162,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
+
     [self.containerView addSubview:containerViewController.view];
     //self.containerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
