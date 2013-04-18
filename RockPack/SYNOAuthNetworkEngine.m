@@ -295,6 +295,7 @@
         NSString* userId = [responseDictionary objectForKey:@"id"];
         
         [self channelSubscriptionsForUserId:userId
+                                 credential:credentials
                                       start:0
                                        size:50
                           completionHandler:^(id subscriptionsDictionary) {
@@ -340,6 +341,8 @@
                                       forAuthType: @"Bearer"];
     
     [self enqueueOperation: networkOperation];
+    
+    
 }
 
 
@@ -832,6 +835,7 @@
 #pragma mark - Subscriptions
 
 - (void) channelSubscriptionsForUserId: (NSString *) userId
+                            credential: (SYNOAuth2Credential*)credential
                                  start: (unsigned int) start
                                   size: (unsigned int) size
                      completionHandler: (MKNKUserSuccessBlock) completionBlock
@@ -852,7 +856,13 @@
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
     
-    [self enqueueSignedOperation: networkOperation];
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: kOAuth2ClientSecret];
+    
+    [networkOperation setAuthorizationHeaderValue: credential.accessToken
+                                      forAuthType: @"Bearer"];
+    
+    [self enqueueOperation: networkOperation];
 }
 
 - (void) channelSubscribeForUserId: (NSString *) userId
@@ -955,7 +965,16 @@
      }
      errorHandler: errorBlock];
     
+    
+    
     [self enqueueSignedOperation: networkOperation];
+    
+
+    
+    
+    
+    
+    
 }
 
 

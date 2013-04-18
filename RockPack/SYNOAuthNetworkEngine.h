@@ -127,6 +127,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 // Sunscriptions
 
 - (void) channelSubscriptionsForUserId: (NSString *) userId
+                            credential: (SYNOAuth2Credential*)credential
                                  start: (unsigned int) start
                                   size: (unsigned int) size
                      completionHandler: (MKNKUserSuccessBlock) completionBlock
