@@ -606,21 +606,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         if(nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton)
         {
-            NSLog(@"TOP");
             self.addToChannelButton.alpha = diff;
         }
         else if(!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)
         {
-                        NSLog(@"BOTTOM");
             self.addToChannelButton.alpha = 1.0f - diff;
         }
         else
         {
             self.addToChannelButton.alpha = self.containerViewController.showingViewController.needsAddButton? 1.0f:0.0f; 
         }
-        NSLog(@"%@",[self.containerViewController.showingViewController description]);
-        NSLog(@"%@",[nextViewController description]);
-        NSLog(@"DIFF: %f",diff);
+
     }
 }
 

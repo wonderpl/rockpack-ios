@@ -388,6 +388,8 @@
         
         scrollingDirection = ScrollingDirectionLeft;
     }
+    
+    // Code to handle multipage scroll without paging stop in between.
     CGFloat width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
     CGFloat pageInProgress = self.scrollView.contentOffset.x / width;
     CGFloat pageDiff = pageInProgress - self.currentPage;
