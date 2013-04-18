@@ -49,15 +49,6 @@
     self.highlightedBackgroundView.hidden = TRUE;
     
     self.displayMode = kDisplayModeChannel; // default is channel
-    
-//    UIColor *shadowColor = [UIColor colorWithWhite: 232.0f/ 255.0f
-//                                       alpha: 1.0f];
-//    
-//    self.channelImageView.layer.shadowColor = [shadowColor CGColor];
-//    self.channelImageView.layer.shadowRadius = 1.0f;
-//    self.channelImageView.layer.shadowOpacity = 1.0f;
-//    self.channelImageView.layer.shadowOffset = CGSizeMake(0.0f, 1.0f);
-//    self.channelImageView.layer.masksToBounds = NO;
 }
 
 
