@@ -8,6 +8,7 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "SYNAbstractChannelsDetailViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNChannelThumbnailCell.h"

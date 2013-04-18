@@ -150,7 +150,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{25, 192}, {212, 21}}</string>
 								<reference key="NSSuperview" ref="915651722"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="82930119"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -369,7 +368,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="NS.key.0">GlossChannelThumbnail.png</string>
-			<string key="NS.object.0">{191, 177}</string>
+			<string key="NS.object.0">{16, 16}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

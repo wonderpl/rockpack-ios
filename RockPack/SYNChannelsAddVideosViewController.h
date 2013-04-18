@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SYNAbstractChannelsDetailViewController.h"
+#import "OLDSYNAbstractChannelsDetailViewController.h"
 
-@interface SYNChannelsAddVideosViewController : SYNAbstractChannelsDetailViewController
+@interface SYNChannelsAddVideosViewController : OLDSYNAbstractChannelsDetailViewController
 
 @end

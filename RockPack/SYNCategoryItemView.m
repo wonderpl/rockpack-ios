@@ -27,7 +27,7 @@
 #define kCategoriesTabFontSizeLandscape 15.0f
 #define kCategoriesTabFontSizePortrait 13.0f
 #define kCategoriesSubTabFontSizeLandscape 13.0f
-#define kCategoriesSubTabFontSizePortrait 11.0f
+#define kCategoriesSubTabFontSizePortrait 12.0f
 
 
 

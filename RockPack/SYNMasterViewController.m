@@ -162,7 +162,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
+
     [self.containerView addSubview:containerViewController.view];
+    //self.containerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     
     // == Cancel Button == //
@@ -238,6 +240,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.navigatioContainerView addGestureRecognizer: inboxLeftSwipeGesture];
     
     
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    originalAddButtonX = self.addToChannelButton.frame.origin.x;
 }
 
 -(void)refreshButtonPressed
@@ -583,18 +596,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if ([keyPath isEqualToString:@"contentOffset"]) {
         
         CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
-        
-        CGRect addButtonFrame;
-        CGFloat diff = newContentOffset.x - self.containerViewController.currentPageOffset.x;
+        CGFloat diff = abs(newContentOffset.x - self.containerViewController.currentPageOffset.x);
         SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
         
-        if((nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton) ||
-           (!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)) {
-            
-            addButtonFrame = self.addToChannelButton.frame;
-            addButtonFrame.origin.x = originalAddButtonX - diff;
-            self.addToChannelButton.frame = addButtonFrame;
+        if(nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton)
+        {
+            self.addToChannelButton.alpha = diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
         }
+        else if(!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)
+        {
+            self.addToChannelButton.alpha = 1.0f - diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
+        }
+        NSLog(@"DIFF: %f",diff);
     }
 }
 

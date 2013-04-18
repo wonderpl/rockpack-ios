@@ -464,4 +464,39 @@
     return NO;
 }
 
+#pragma mark - Social network sharing
+
+- (void) shareURL: (NSURL *) shareURL
+      withMessage: (NSString *) shareString
+         fromRect: (CGRect) rect
+  arrowDirections: (UIPopoverArrowDirection) arrowDirections
+{
+    NSArray *activityItems = @[shareString, shareURL];
+    
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems: activityItems
+                                                                                         applicationActivities: nil];
+    
+    activityViewController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
+                                                     UIActivityTypePrint,
+                                                     UIActivityTypeCopyToPasteboard,
+                                                     UIActivityTypeSaveToCameraRoll];
+    
+    // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        UIPopoverController *activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+        
+        [activityPopoverController presentPopoverFromRect: rect
+                                                   inView: self.view
+                                 permittedArrowDirections: arrowDirections
+                                                 animated: YES];
+    }
+    else
+    {
+        [self presentViewController: activityViewController
+                           animated: YES
+                         completion: nil];
+    }
+}
+
 @end
