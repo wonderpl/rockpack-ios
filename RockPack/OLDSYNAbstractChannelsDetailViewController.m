@@ -19,7 +19,6 @@
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
 #import "SYNCategoryChooserViewController.h"
-#import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNNetworkEngine.h"
