@@ -16,8 +16,8 @@
 {
     if (self = [super init])
     {
-        backgroundImageOn = [UIImage imageNamed:@"SearchTab"];
-        backgroundImageOff = [UIImage imageNamed:@"SearchTabHighlighted"];
+        backgroundImageOff = [UIImage imageNamed:@"SearchTab"];
+        backgroundImageOn = [UIImage imageNamed:@"SearchTabHighlighted"];
         
         self.frame = CGRectMake(0.0, 0.0, backgroundImageOn.size.width, backgroundImageOn.size.height);
         
@@ -31,21 +31,24 @@
                 break;
         }
         
+        
+        
         onColor = [UIColor whiteColor];
         offColor = [UIColor darkGrayColor];
         
-        bgImageView = [[UIImageView alloc] initWithImage:backgroundImageOn];
+        bgImageView = [[UIImageView alloc] initWithImage:backgroundImageOff];
         
         [self addSubview:bgImageView];
         
-        
-        
-        
-        titleLabel = [[UILabel alloc] initWithFrame:self.frame];
-        titleLabel.font = [UIFont rockpackFontOfSize:20.0];
-        titleLabel.textColor = onColor;
+        CGRect labelFrame = self.frame;
+        //labelFrame.size.height -= 8.0;
+        labelFrame.origin.y += 2.0f;
+        titleLabel = [[UILabel alloc] initWithFrame:labelFrame];
+        titleLabel.font = [UIFont rockpackFontOfSize:18.0];
+        titleLabel.textColor = offColor;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.text = typeTitle;
         
         [self addSubview:titleLabel];
         
@@ -87,11 +90,13 @@
 {
     if(selected)
     {
-        bgImageView.image = backgroundImageOff;
+        bgImageView.image = backgroundImageOn;
+        titleLabel.textColor = onColor;
     }
     else
     {
-        bgImageView.image = backgroundImageOn;
+        bgImageView.image = backgroundImageOff;
+        titleLabel.textColor = offColor;
     }
 }
 

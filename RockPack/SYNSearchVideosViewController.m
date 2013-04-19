@@ -29,12 +29,16 @@
 {
     [super viewDidLoad];
     
+    
+    
     self.trackedViewName = @"Search - Videos";
     
     // override the data loading
     
-    self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
-                                                           self.videoThumbnailCollectionView.center.y + 30.0);
+    CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
+    collectionFrame.origin.y += 30.0;
+    collectionFrame.size.height -= 60.0;
+    self.videoThumbnailCollectionView.frame = collectionFrame;
     
 }
 
@@ -74,6 +78,7 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
+    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     [appDelegate.networkEngine searchVideosForTerm:term];
     
@@ -87,7 +92,7 @@
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
 
-    // DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
+    DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
     
     if(self.itemToUpdate)
         [self.itemToUpdate setNumberOfItems:[controller.fetchedObjects count] animated:YES];
@@ -157,6 +162,26 @@
     }
     
     return cell;
+}
+
+
+#pragma mark - Override Header Related Methods
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+referenceSizeForHeaderInSection: (NSInteger) section
+{
+    return CGSizeZero;
+}
+
+
+// Used for the collection view header
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    return nil;
+    
 }
 
 @end

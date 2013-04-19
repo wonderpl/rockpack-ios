@@ -54,7 +54,7 @@
                               [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame:frame];
-    self.view.backgroundColor = [UIColor greenColor];
+    self.view.backgroundColor = [UIColor clearColor];
 }
 
 
@@ -81,7 +81,7 @@
     [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    tabsContainer.center = CGPointMake(self.view.center.x, 100.0);
+    tabsContainer.center = CGPointMake(self.view.center.x, 84.0);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
     
@@ -97,8 +97,22 @@
     self.channelsSearchTabView.selected = NO;
     self.videoSearchTabView.selected = YES;
     
+    [self showVideoSearchResults];
+    
+}
+
+-(void)channelTabPressed:(UIControl*)control
+{
+    self.channelsSearchTabView.selected = YES;
+    self.videoSearchTabView.selected = NO;
+    
+    [self showChannelsSearchResult];
+}
+
+-(void)showVideoSearchResults
+{
     SYNAbstractViewController* newController;
-    [self.view addSubview:self.searchVideosController.view];
+    [self.view insertSubview:self.searchVideosController.view belowSubview:tabsContainer];
     newController = self.searchVideosController;
     
     
@@ -108,13 +122,10 @@
     self.currentController = newController;
     
 }
-
--(void)channelTabPressed:(UIControl*)control
+-(void)showChannelsSearchResult
 {
-    self.channelsSearchTabView.selected = YES;
-    self.videoSearchTabView.selected = NO;
     SYNAbstractViewController* newController;
-    [self.view addSubview:self.searchChannelsController.view];
+    [self.view insertSubview:self.searchChannelsController.view belowSubview:tabsContainer];
     newController = self.searchChannelsController;
     
     if(self.currentController)
@@ -123,14 +134,7 @@
     self.currentController = newController;
 }
 
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear: animated];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueShow
-                                                        object: self
-                                                      userInfo: @{@"lock" : @(YES)}];
-}
+
 
 
 -(void)showSearchResultsForTerm:(NSString*)newSearchTerm
@@ -185,7 +189,7 @@
     [self clearOldSearchData];
     
     if(!self.currentController)
-        [self.tabViewController handleNewTabSelectionWithId:@"0"];
+        [self videoTabPressed:nil];
     
     
     [self.searchVideosController performSearchWithTerm:searchTerm];
@@ -225,31 +229,6 @@
     self.searchChannelsController = nil;
 }
 
--(void)handleNewTabSelectionWithId:(NSString *)selectionId
-{
-    
-    SYNAbstractViewController* newController;
-    
-    if ([selectionId isEqualToString:@"0"])
-    {
-        
-        [self.view insertSubview:self.searchVideosController.view belowSubview:self.tabViewController.view];
-        newController = self.searchVideosController;
-        
-    }
-    else
-    {
-        [self.view insertSubview:self.searchChannelsController.view belowSubview:self.tabViewController.view];
-        newController = self.searchChannelsController;
-    }
-    
-    
-    if(self.currentController)
-        [self.currentController.view removeFromSuperview];
-    
-    self.currentController = newController;
-    
-    
-}
+
 
 @end
