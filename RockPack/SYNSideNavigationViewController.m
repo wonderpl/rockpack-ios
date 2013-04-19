@@ -199,7 +199,7 @@ typedef enum {
                              
                              CGRect sideNavigationFrame = self.view.frame;
                              
-                             sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - self.view.frame.size.width;
+                             sideNavigationFrame.origin.x = 1024.0 - self.view.frame.size.width;
                              self.view.frame =  sideNavigationFrame;
                              
                          } completion: ^(BOOL finished) {
@@ -308,6 +308,7 @@ typedef enum {
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
     if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         
