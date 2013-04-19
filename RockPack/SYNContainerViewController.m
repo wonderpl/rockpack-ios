@@ -194,7 +194,7 @@
     CGRect newFrame;
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        newFrame = CGRectMake(0, 0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+        newFrame = CGRectMake(0, 0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
     }
     else if(UIDeviceOrientationIsLandscape(orientation))
     {

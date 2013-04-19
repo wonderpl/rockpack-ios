@@ -47,8 +47,9 @@
 
 - (void) loadView
 {
+    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     UIEdgeInsets insets;
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if(isIPhone)
     {
         insets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
     }
@@ -64,15 +65,24 @@
         scrollDirection:UICollectionViewScrollDirectionVertical
         sectionInset:insets];
     
-    CGRect videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
-    
+    CGRect videoCollectionViewFrame, selfFrame;
+    if(isIPhone)
+    {
+        CGSize screenSize= CGSizeMake([[SYNDeviceManager sharedInstance]currentScreenWidth],[[SYNDeviceManager sharedInstance]currentScreenHeight]);
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetY);
+        selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
+    }
+    else
+    {
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        selfFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+    }
     self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
-    self.view = [[UIView alloc] initWithFrame:
-                                                CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar)];
+    self.view = [[UIView alloc] initWithFrame:selfFrame];
     
     [self.view addSubview:self.videoThumbnailCollectionView];
     self.view.backgroundColor = [UIColor clearColor];
