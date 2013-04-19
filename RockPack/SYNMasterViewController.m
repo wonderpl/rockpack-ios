@@ -88,11 +88,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
-        sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth];
+        sideNavigationFrame.origin.x = 1024.0;
+        NSLog(@"Current width: %f", sideNavigationFrame.origin.x);
         sideNavigationFrame.origin.y = 74.0;
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
-        
+        self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         
         
 //        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
@@ -231,9 +232,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
     
-   
-    
-    
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
     
     
@@ -353,7 +351,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
                          
-                         sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 192.0;
+                         sideNavigationFrame.origin.x = 1024.0 - 192.0;
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {
@@ -437,6 +435,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion: ^(BOOL finished) {
                          
                          [self.sideNavigationViewController reset];
+                         [self.sideNavigationViewController deselectAllCells];
                          self.sideNavigationViewController.state = SideNavigationStateHidden;
                          
                      }];
