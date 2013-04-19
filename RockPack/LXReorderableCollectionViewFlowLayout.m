@@ -124,37 +124,67 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
     return (id<LXReorderableCollectionViewDelegateFlowLayout>)self.collectionView.delegate;
 }
 
-- (void)invalidateLayoutIfNecessary {
-    NSIndexPath *newIndexPath = [self.collectionView indexPathForItemAtPoint:self.currentView.center];
-    NSIndexPath *previousIndexPath = self.selectedItemIndexPath;
+//- (void)invalidateLayoutIfNecessary {
+//    NSIndexPath *newIndexPath = [self.collectionView indexPathForItemAtPoint:self.currentView.center];
+//    NSIndexPath *previousIndexPath = self.selectedItemIndexPath;
+//    
+//    if ((newIndexPath == nil) || [newIndexPath isEqual:previousIndexPath]) {
+//        return;
+//    }
+//    
+//    if ([self.dataSource respondsToSelector:@selector(collectionView:itemAtIndexPath:canMoveToIndexPath:)] &&
+//        ![self.dataSource collectionView:self.collectionView itemAtIndexPath:previousIndexPath canMoveToIndexPath:newIndexPath]) {
+//        return;
+//    }
+//    
+//    self.selectedItemIndexPath = newIndexPath;
+//    
+//    [self.dataSource collectionView:self.collectionView itemAtIndexPath:previousIndexPath willMoveToIndexPath:newIndexPath];
+//    
+//    __weak typeof(self) weakSelf = self;
+//    [self.collectionView performBatchUpdates:^{
+//        __strong typeof(self) strongSelf = weakSelf;
+//        if (strongSelf) {
+//            [strongSelf.collectionView deleteItemsAtIndexPaths:@[ previousIndexPath ]];
+//            [strongSelf.collectionView insertItemsAtIndexPaths:@[ newIndexPath ]];
+//        }
+//    } completion: ^(BOOL finished)
+//     {
+//         NSLog(@"Finished");
+//     }];
+//}
+
+- (void) invalidateLayoutIfNecessary
+{
+    NSIndexPath *theIndexPathOfSelectedItem = [self.collectionView indexPathForItemAtPoint: self.currentView.center];
     
-    if ((newIndexPath == nil) || [newIndexPath isEqual:previousIndexPath]) {
-        return;
-    }
-    
-    if ([self.dataSource respondsToSelector:@selector(collectionView:itemAtIndexPath:canMoveToIndexPath:)] &&
-        ![self.dataSource collectionView:self.collectionView itemAtIndexPath:previousIndexPath canMoveToIndexPath:newIndexPath]) {
-        return;
-    }
-    
-    self.selectedItemIndexPath = newIndexPath;
-    
-    [self.dataSource collectionView:self.collectionView itemAtIndexPath:previousIndexPath willMoveToIndexPath:newIndexPath];
-    
-    [self.collectionView moveItemAtIndexPath: previousIndexPath
-                                 toIndexPath:newIndexPath];
-    
-    __weak typeof(self) weakSelf = self;
-    [self.collectionView performBatchUpdates:^{
-        __strong typeof(self) strongSelf = weakSelf;
-        if (strongSelf) {
-            [strongSelf.collectionView deleteItemsAtIndexPaths:@[ previousIndexPath ]];
-            [strongSelf.collectionView insertItemsAtIndexPaths:@[ newIndexPath ]];
+    if ((![theIndexPathOfSelectedItem isEqual: self.selectedItemIndexPath]) &&(theIndexPathOfSelectedItem))
+    {
+        NSIndexPath *thePreviousSelectedIndexPath = self.selectedItemIndexPath;
+        self.selectedItemIndexPath = theIndexPathOfSelectedItem;
+        
+        if ([self.collectionView.delegate conformsToProtocol: @protocol(LXReorderableCollectionViewDelegateFlowLayout)])
+        {
+            id<LXReorderableCollectionViewDelegateFlowLayout> theDelegate = (id<LXReorderableCollectionViewDelegateFlowLayout>)self.collectionView.delegate;
+            
+//            [theDelegate collectionView: self.collectionView
+//                        itemAtIndexPath: thePreviousSelectedIndexPath
+//                    willMoveToIndexPath: theIndexPathOfSelectedItem];
+            [self.dataSource collectionView: self.collectionView
+                            itemAtIndexPath: thePreviousSelectedIndexPath
+                        willMoveToIndexPath: theIndexPathOfSelectedItem];
         }
-    } completion: ^(BOOL finished)
-     {
-         NSLog(@"Finished");
-     }];
+        
+        [self.collectionView performBatchUpdates: ^
+         {
+             //[self.collectionView moveItemAtIndexPath:thePreviousSelectedIndexPath toIndexPath:theIndexPathOfSelectedItem];
+             [self.collectionView deleteItemsAtIndexPaths: @[thePreviousSelectedIndexPath]];
+             [self.collectionView insertItemsAtIndexPaths: @[theIndexPathOfSelectedItem]];
+         }
+                                      completion: ^(BOOL finished)
+         {
+         }];
+    }
 }
 
 - (void)invalidatesScrollTimer {

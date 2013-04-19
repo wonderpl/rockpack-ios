@@ -163,7 +163,6 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    
     [self saveDB];
 }
 
@@ -171,7 +170,7 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *)toIndexPath
 {
-    
+    [self saveDB];
 }
 
 
