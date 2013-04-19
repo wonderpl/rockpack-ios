@@ -69,7 +69,7 @@
     if(isIPhone)
     {
         CGSize screenSize= CGSizeMake([[SYNDeviceManager sharedInstance]currentScreenWidth],[[SYNDeviceManager sharedInstance]currentScreenHeight]);
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetY);
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
     }
     else
@@ -224,7 +224,7 @@
 {
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        return CGSizeMake(310,240);
+        return CGSizeMake(310,251);
     }
     else if([[SYNDeviceManager sharedInstance] isLandscape])
     {
@@ -249,7 +249,7 @@
     
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
     videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
-    videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait];
+    videoThumbnailCell.channelImageView.hidden =[[SYNDeviceManager sharedInstance] isPortrait] && [[SYNDeviceManager sharedInstance] isIPad];
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
@@ -270,7 +270,11 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        return CGSizeMake(1024, 65);
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            return CGSizeMake(1024, 65);   
+        }
+        return CGSizeMake(320, 34);
     }
     else
     {

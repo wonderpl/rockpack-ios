@@ -217,6 +217,7 @@ typedef enum _Gender {
 #define kFullScreenWidthLandscape kMajorDimension
 
 #define kStandardCollectionViewOffsetY 80.0f
+#define kStandardCollectionViewOffsetYiPhone 60.0f
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 540.0f
 

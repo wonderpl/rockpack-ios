@@ -13,6 +13,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNDeviceManager.h"
 
 @interface SYNVideoThumbnailWideCell ()
 
@@ -35,17 +36,17 @@
 {
     [super awakeFromNib];
     
-    self.videoTitle.font = [UIFont boldRockpackFontOfSize: 15.0f];
+    self.videoTitle.font = [UIFont boldRockpackFontOfSize: self.videoTitle.font.pointSize];
     
-    self.fromLabel.font = [UIFont rockpackFontOfSize: 13.0f];
-    self.channelName.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.fromLabel.font = [UIFont rockpackFontOfSize: self.fromLabel.font.pointSize];
+    self.channelName.font = [UIFont rockpackFontOfSize: self.channelName.font.pointSize];
     
-    self.usernameLabel.font = [UIFont rockpackFontOfSize: 13.0f];
-    self.byLabel.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.usernameLabel.font = [UIFont rockpackFontOfSize: self.usernameLabel.font.pointSize];
+    self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     
-    self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.dateAddedLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.durationLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: self.numberOfViewLabel.font.pointSize];
+    self.dateAddedLabel.font = [UIFont rockpackFontOfSize: self.dateAddedLabel.font.pointSize];
+    self.durationLabel.font = [UIFont rockpackFontOfSize: self.durationLabel.font.pointSize];
     self.highlightedBackgroundView.hidden = TRUE;
     
     self.displayMode = kDisplayModeChannel; // default is channel
@@ -125,34 +126,48 @@
 
 - (void) setUsernameText: (NSString *) text
 {
-    CGSize bySize = [self.byLabel.text sizeWithFont:self.byLabel.font];
-    CGFloat maxWidth = self.channelInfoView.frame.size.width - 19.0f - bySize.width;
-    CGSize stringSize = [text sizeWithFont:self.usernameLabel.font];
-    CGRect currentFrame = self.usernameLabel.frame;
-    currentFrame.size = stringSize;
-    currentFrame.size.width = MIN(currentFrame.size.width,maxWidth);
-    currentFrame.origin.x = self.channelInfoView.frame.size.width - 15.0 - currentFrame.size.width;
-    self.usernameLabel.frame = currentFrame;
-    self.usernameLabel.text = text;
-    
-    CGRect byFrame = self.byLabel.frame;
-    byFrame.size = bySize;
-    byFrame.origin.x = currentFrame.origin.x - byFrame.size.width - 4.0;
-    self.byLabel.frame = byFrame;
+    if([[SYNDeviceManager sharedInstance]isIPad])
+    {
+        CGSize bySize = [self.byLabel.text sizeWithFont:self.byLabel.font];
+        CGFloat maxWidth = self.channelInfoView.frame.size.width - 19.0f - bySize.width;
+        CGSize stringSize = [text sizeWithFont:self.usernameLabel.font];
+        CGRect currentFrame = self.usernameLabel.frame;
+        currentFrame.size = stringSize;
+        currentFrame.size.width = MIN(currentFrame.size.width,maxWidth);
+        currentFrame.origin.x = self.channelInfoView.frame.size.width - 15.0 - currentFrame.size.width;
+        self.usernameLabel.frame = currentFrame;
+        self.usernameLabel.text = text;
+        
+        CGRect byFrame = self.byLabel.frame;
+        byFrame.size = bySize;
+        byFrame.origin.x = currentFrame.origin.x - byFrame.size.width - 4.0;
+        self.byLabel.frame = byFrame;
+    }
+    else
+    {
+        self.usernameLabel.text = text;
+    }
 }
 
 - (void) setChannelNameText:(NSString *)channelNameText
 {
-    CGRect currentFrame = self.channelName.frame;
-    CGFloat defaultWidth = currentFrame.size.width;
-    UIView *referenceView = self.channelImageView.hidden ? self.usernameLabel : self.channelImageView;
-    CGFloat maxHeight = referenceView.frame.origin.y - self.channelName.frame.origin.y;
-    self.channelName.text = channelNameText;
-    [self.channelName sizeToFit];
-    currentFrame = self.channelName.frame;
-    currentFrame.size.width = defaultWidth;
-    currentFrame.size.height = MIN(currentFrame.size.height, maxHeight);
-    self.channelName.frame = currentFrame;
+    if([[SYNDeviceManager sharedInstance]isIPad])
+    {
+        CGRect currentFrame = self.channelName.frame;
+        CGFloat defaultWidth = currentFrame.size.width;
+        UIView *referenceView = self.channelImageView.hidden ? self.usernameLabel : self.channelImageView;
+        CGFloat maxHeight = referenceView.frame.origin.y - self.channelName.frame.origin.y;
+        self.channelName.text = channelNameText;
+        [self.channelName sizeToFit];
+        currentFrame = self.channelName.frame;
+        currentFrame.size.width = defaultWidth;
+        currentFrame.size.height = MIN(currentFrame.size.height, maxHeight);
+        self.channelName.frame = currentFrame;
+    }
+    else
+    {
+        self.channelName.text = channelNameText;
+    }
 }
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations

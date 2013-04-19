@@ -197,13 +197,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Set up Dots View == //
     
     self.dotsView.backgroundColor = [UIColor clearColor];
-    
-    
-    for(int i = 0; i < 3; i++)
+    int numberOfDots = [self.containerViewController.childViewControllers count];
+    UIImage* dotImage = [UIImage imageNamed:@"NavigationDot"];
+    CGPoint center = self.dotsView.center;
+    CGRect newFrame = self.dotsView.frame;
+    newFrame.size.width = (2*numberOfDots - 1) * dotImage.size.width;
+    newFrame.origin.x = round(center.x - newFrame.size.width/2.0f);
+    self.dotsView.frame = newFrame;
+    CGFloat dotSpacing = 2*dotImage.size.width;
+    for(int i = 0; i < numberOfDots; i++)
     {
-        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavigationDot"]];
+        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:dotImage];
         CGRect dotImageViewFrame = dotImageView.frame;
-        dotImageViewFrame.origin.x = i * 30.0;
+        dotImageViewFrame.origin.x = i * dotSpacing;
         dotImageView.frame = dotImageViewFrame;
         [self.dotsView addSubview:dotImageView];
         
