@@ -47,10 +47,12 @@
 
 -(void)setTitle:(NSString *)title andNumber:(NSInteger)number
 {
-    NSString* completeString = [NSString stringWithFormat:@"%@ (%i)", title, number];
+    NSString* numberString = [NSString stringWithFormat:@"%i", number];
+    NSInteger numberStringLength = [numberString length];
+    NSString* completeString = [NSString stringWithFormat:@"%@ (%@)", title, numberString];
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:completeString];
     NSRange rangeOfParen = [completeString rangeOfString:@"("];
-    [attrString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(rangeOfParen.location + 1, 1)];
+    [attrString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(rangeOfParen.location + 1, numberStringLength)];
     
     
     CGSize titleSize = [completeString sizeWithFont:label.font];

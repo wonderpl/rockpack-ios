@@ -19,6 +19,7 @@
 @implementation SYNSubscriptionsViewController
 
 @synthesize collectionView;
+@synthesize headerView;
 
 - (void) loadView
 {
@@ -103,6 +104,19 @@
     
     
     return channelThumbnailCell;
+    
+}
+
+-(void)reloadCollectionViews
+{
+    [super reloadCollectionViews];
+    
+    
+    if(self.headerView)
+    {
+        NSInteger totalChannels = self.fetchedResultsController.fetchedObjects.count;
+        [self.headerView setTitle:@"YOUR CHANNELS" andNumber:totalChannels];
+    }
     
 }
 

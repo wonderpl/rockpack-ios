@@ -77,8 +77,8 @@
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = [self footerSize];
     flowLayout.itemSize = [self itemSize];
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
-    flowLayout.minimumLineSpacing = 10.0;
+    flowLayout.sectionInset = UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0);
+    flowLayout.minimumLineSpacing = 30.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     // Work out how hight the inital tab bar is
@@ -162,10 +162,12 @@
                                                       currentTotal = [totalNumber integerValue];
                                                     
                                                       
-                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                  
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Registration of Channel Failed");
+                                                          DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
         
@@ -526,15 +528,16 @@
 {
     currentCategoryId = selectionId;
     currentRange = NSMakeRange(0, 50);
-    __weak SYNChannelsRootViewController* weakSelf = self;
     [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
                                                       forRange:currentRange
                                                   onCompletion:^(NSDictionary* response) {
                                                       
                                                       
-                                                      
-                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
+
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
+                                                      
+                                                      
                                                       if (!registryResultOk) {
                                                           DebugLog(@"Registration of Channel Failed");
                                                           return;
