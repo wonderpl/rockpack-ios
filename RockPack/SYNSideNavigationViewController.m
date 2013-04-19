@@ -11,6 +11,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "AppConstants.h"
 #import "GAI.h"
+#import "SYNDeviceManager.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -34,6 +35,9 @@ typedef enum {
 @property (nonatomic, strong) NSIndexPath* currentlySelectedIndexPath;
 @property (nonatomic, strong) UIColor* navItemColor;
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
+@property (nonatomic, strong) NSMutableDictionary* cellByPageName;
+
+@property (nonatomic, strong) UIView* bottomExtraView;
 
 @end
 
@@ -43,18 +47,26 @@ typedef enum {
 // Only need synthesize for custom setters, use latest ObjC naming convention
 @synthesize user = _user;
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
+@synthesize keyForSelectedPage;
 
 - (id) init
 {
     if ((self = [super initWithNibName: @"SYNSideNavigationViewController" bundle: nil]))
     {
         self.navigationData = @[
-                                @{kSideNavTitle: @"FEED", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: @"Feed"},
-                                @{kSideNavTitle: @"CHANNELS", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: @"Channels"},
-                                @{kSideNavTitle: @"MY ROCKPACK", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: @"My Rockpack"},
+                                @{kSideNavTitle: @"FEED", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kFeedTitle},
+                                @{kSideNavTitle: @"CHANNELS", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kChannelsTitle},
+                                @{kSideNavTitle: @"MY ROCKPACK", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kProfileTitle},
                                 @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"},
                                 @{kSideNavTitle: @"ACCOUNTS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @""}
                                 ];
+        
+        self.state = SideNavigationStateHidden;
+        
+        self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.origin.y + self.view.frame.size.height, self.view.frame.size.width, 300.0)];
+        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        [self.view addSubview:self.bottomExtraView];
+        
     }
         
     return self;
@@ -76,6 +88,8 @@ typedef enum {
                                         green: (45.0/255.0)
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
+    
+    self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
 }
 
 
@@ -118,9 +132,18 @@ typedef enum {
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
         
+        
+        UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
+        selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
+        cell.selectedBackgroundView = selectedView;
+        
+        
         if(navigationType == kSideNavigationTypePage)
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
+            NSString* pageName = [navigationElement objectForKey: kSideNavAction];
+            
+            [self.cellByPageName setObject:cell forKey:pageName];
         }
         else
         {
@@ -132,22 +155,32 @@ typedef enum {
         
         cell.textLabel.textColor = self.navItemColor;
         
-        UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
-        selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
-        cell.selectedBackgroundView = selectedView;
+        
     } 
     
     return cell;
 }
 
 
-- (void) tableView: (UITableView *) tableView
-         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
-{
-    if([indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)
+- (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
+    
+    
+    if([indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
         return;
     
-    //self.currentlySelectedIndexPath = indexPath;
+    UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath:self.currentlySelectedIndexPath];
+    [previousSelectedCell setSelected:NO];
+    
+    if(self.currentlySelectedIndexPath.row > 3)
+    {
+        
+    }
+    
+    self.currentlySelectedIndexPath = indexPath;
+    
+    
+    
+    
     
     NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
     kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
@@ -158,6 +191,22 @@ typedef enum {
         
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations: ^{
+                             
+                             CGRect sideNavigationFrame = self.view.frame;
+                             
+                             sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - self.view.frame.size.width;
+                             self.view.frame =  sideNavigationFrame;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             self.state = SideNavigationStateFull;
+                             
+                         }];
         
     }
     else
@@ -192,6 +241,39 @@ typedef enum {
 }
 
 
+-(void)setSelectedCellByPageName:(NSString*)pageName
+{
+    self.keyForSelectedPage = pageName;
+    UITableViewCell* cellSelected = (UITableViewCell*)[self.cellByPageName objectForKey:pageName];
+    if(!cellSelected)
+        return;
+    
+    for (UITableViewCell* cell in [self.cellByPageName allValues]) {
+        if(cellSelected == cell)
+            [cell setSelected:YES];
+        else
+            [cell setSelected:NO];
+    }
+    
+    NSIndexPath* selectedIndexPath = [NSIndexPath indexPathForItem:([[self.cellByPageName allValues] indexOfObject:cellSelected] - 1) inSection:0];
+
+    self.currentlySelectedIndexPath = selectedIndexPath;
+    
+}
+
+-(void)deselectAllCells
+{
+    for (int section = 0; section < [self.tableView numberOfSections]; section++)
+    {
+        for (int row = 0; row < [self.tableView numberOfRowsInSection:section]; row++)
+        {
+            NSIndexPath* cellPath = [NSIndexPath indexPathForRow:row inSection:section];
+            UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:cellPath];
+            [cell setSelected:NO];
+        }
+    }
+}
+
 - (void) setCurrentlyLoadedViewController: (UIViewController *) currentlyLoadedVC
 {
     if (self.currentlyLoadedViewController)
@@ -217,6 +299,25 @@ typedef enum {
 - (void) reset
 {
     self.currentlySelectedIndexPath = nil;
+    
+}
+
+
+#pragma mark - Orientation Change
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    {
+        
+    }
+    else
+    {
+        
+    }
+    
+    
 }
 
 @end

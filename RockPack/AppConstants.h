@@ -32,12 +32,18 @@
 
 
 #define kFeedViewId                 @"Home"
-#define kVideosViewId               @"Videos"
 #define kChannelsViewId             @"Channels"
 #define kProfileViewId              @"You"
 #define kSearchViewId               @"Search"
 #define kUserChanneslViewId         @"UserChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
+
+#define kFeedTitle                  @"Feed"
+#define kChannelsTitle              @"Channels"
+#define kProfileTitle               @"My Rockpack"
+#define kSearchTitle                @"Search"
+#define kUserChanneslTitle          @"UserChannels"
+#define kChannelDetailsTitle        @"ChannelDetails"
 
 
 

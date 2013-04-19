@@ -46,14 +46,15 @@
 @synthesize currentCategoryId;
 @synthesize currentRange;
 @synthesize currentTotal;
+@synthesize mainRegistry;
 
 #pragma mark - View lifecycle
 
 -(id)initWithViewId:(NSString *)vid
 {
-    if(self = [super initWithViewId:vid])
+    if ((self = [super initWithViewId:vid]))
     {
-        self.title = @"Channels";
+        self.title = kChannelsTitle;
     }
     return self;
 }
@@ -75,8 +76,8 @@
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = [self footerSize];
     flowLayout.itemSize = [self itemSize];
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
-    flowLayout.minimumLineSpacing = 10.0;
+    flowLayout.sectionInset = UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0);
+    flowLayout.minimumLineSpacing = 30.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     // Work out how hight the inital tab bar is
@@ -111,47 +112,18 @@
     // Google Analytics support
     self.trackedViewName = @"Channels - Root";
     
-    self.mainRegistry = appDelegate.mainRegistry;
+    
+    
+    
 }
 
-
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    
-    
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
+    self.mainRegistry = appDelegate.mainRegistry;
     
-
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
@@ -167,14 +139,12 @@
                           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                                  withReuseIdentifier:@"SYNChannelFooterMoreView"];
     
-
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
     
-    
-    
+    __weak SYNChannelsRootViewController *weakSelf = self;
     
     [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
                                                       forRange:currentRange
@@ -189,12 +159,14 @@
                                                           return;
                                                       
                                                       currentTotal = [totalNumber integerValue];
+                                                    
                                                       
+                                                  
                                                       
-                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
-                                                                                                                         byAppending:NO];
+                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                             byAppending:NO];
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
         
@@ -227,6 +199,38 @@
     {
         [self.channelThumbnailCollectionView reloadData];
     }
+}
+
+
+#pragma mark - Fetched Results Controller
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Edit the entity name as appropriate.
+    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error],
+            @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
 }
 
 
@@ -396,14 +400,10 @@
     [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
                                                       forRange:currentRange
                                                   onCompletion:^(NSDictionary* response) {
-                                                      
-                                                       
-                                                      
-                                                      
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:YES];
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          DebugLog(@"Registration of Channels Failed");
                                                           return;
                                                       }
                                                       
@@ -532,11 +532,13 @@
                                                   onCompletion:^(NSDictionary* response) {
                                                       
                                                       
-                                                      
+
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
+                                                      
+                                                      
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Update Channel Screens Request Failed");
+                                                          DebugLog(@"Registration of Channel Failed");
                                                           return;
                                                       }
                                                       

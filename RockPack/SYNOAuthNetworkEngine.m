@@ -69,7 +69,7 @@
 	}
 	else
     {
-		DLog(@"enqueueSignedOperation - Authenticated");
+//		DLog(@"enqueueSignedOperation - Authenticated");
         
         // We need to make a copy of the request first, so that we can re-submit on authentication error
 //        [request addCommonHandlerToNetworkOperation: networkOperation
@@ -685,7 +685,7 @@
         
         BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
         if (!registryResultOk) {
-            DebugLog(@"Update Channel Screens Request Failed");
+            DebugLog(@"Registration of Channel Failed at NetworkEngine");
             return;
         }
         

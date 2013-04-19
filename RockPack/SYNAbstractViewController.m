@@ -412,7 +412,7 @@
 
 #pragma mark - Trace
 
--(NSString*)description
+-(NSString*) description
 {
     return [NSString stringWithFormat:@"ViewController: %@", viewId];
 }

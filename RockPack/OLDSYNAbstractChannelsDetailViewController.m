@@ -19,7 +19,6 @@
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
 #import "SYNCategoryChooserViewController.h"
-#import "SYNChannelCollectionBackgroundView.h"
 #import "SYNChannelHeaderView.h"
 #import "SYNChannelSelectorCell.h"
 #import "SYNNetworkEngine.h"
@@ -137,11 +136,7 @@
     
     [self.videoThumbnailCollectionView registerNib: headerViewNib
                         forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
-                               withReuseIdentifier: @"SYNChannelHeaderView"];
-    
-    // Now add the long-press gesture recognizers to the custom flow layout
-    [layout setUpGestureRecognizersOnCollectionView];
-    
+                               withReuseIdentifier: @"SYNChannelHeaderView"];    
     
     // Carousel collection view
     // Register our coverview style cell
@@ -520,7 +515,7 @@
 
 
 - (void) collectionView: (UICollectionView *) collectionView
-                 layout: (UICollectionViewLayout *) layout
+//                 layout: (UICollectionViewLayout *) layout
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath {
 

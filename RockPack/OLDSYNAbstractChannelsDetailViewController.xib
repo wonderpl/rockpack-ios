@@ -1475,15 +1475,15 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonCamera.png">{65, 66}</string>
-			<string key="ButtonCameraHighlighted.png">{65, 66}</string>
-			<string key="ButtonCameraSelected.png">{65, 66}</string>
+			<string key="ButtonCamera.png">{16, 16}</string>
+			<string key="ButtonCameraHighlighted.png">{16, 16}</string>
+			<string key="ButtonCameraSelected.png">{16, 16}</string>
 			<string key="ButtonCover.png">{16, 16}</string>
 			<string key="ButtonCoverHighlighted.png">{16, 16}</string>
 			<string key="ButtonDone.png">{16, 16}</string>
 			<string key="ButtonDoneHighlighted.png">{16, 16}</string>
-			<string key="ButtonEdit.png">{110, 45}</string>
-			<string key="ButtonEditHighlighted.png">{110, 45}</string>
+			<string key="ButtonEdit.png">{16, 16}</string>
+			<string key="ButtonEditHighlighted.png">{16, 16}</string>
 			<string key="ButtonPrivate.png">{16, 16}</string>
 			<string key="ButtonPrivateHighlighted.png">{16, 16}</string>
 			<string key="ButtonPrivateUnpressable.png">{16, 16}</string>

@@ -23,12 +23,8 @@
 
 @interface SYNChannelDetailViewController ()
 
-@property (nonatomic, strong) IBOutlet UIButton *shareButton;
-@property (nonatomic, strong) IBOutlet UIButton *buyButton;
-@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
-@property (nonatomic, strong) Channel *channel;
-
 @end
+
 
 @implementation SYNChannelDetailViewController
 

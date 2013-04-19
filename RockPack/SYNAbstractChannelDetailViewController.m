@@ -19,6 +19,9 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
+@property (nonatomic, strong) IBOutlet UIButton *buyButton;
+@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 
 @end
 
@@ -27,7 +30,11 @@
 
 - (id) initWithChannel: (Channel *) channel
 {
-	if ((self = [super init]))
+	if ((self = [super initWithNibName: @"SYNAbstractChannelDetailViewController"
+                                bundle: nil]))
+    {
+		self.channel = channel;
+	}
     {
 		self.channel = channel;
 	}
@@ -58,7 +65,7 @@
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
     // Now add the long-press gesture recognizers to the custom flow layout
-    [layout setUpGestureRecognizersOnCollectionView];
+//    [layout setUpGestureRecognizersOnCollectionView];
     
     // Set wallpaper
     [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
@@ -110,7 +117,7 @@
     NSError *error = nil;
     ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
-    NSLog (@"Objects = %@", fetchedResultsController.fetchedObjects);
+//    NSLog (@"Objects = %@", fetchedResultsController.fetchedObjects);
     return fetchedResultsController;
 }
 
@@ -163,24 +170,30 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    
+    [self saveDB];
+}
+
+- (void) collectionView: (UICollectionView *) collectionView
+        itemAtIndexPath: (NSIndexPath *) fromIndexPath
+    willMoveToIndexPath: (NSIndexPath *)toIndexPath
+{
     [self saveDB];
 }
 
 
-- (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-           referenceSizeForHeaderInSection: (NSInteger) section
-{
-    if (collectionView == self.videoThumbnailCollectionView)
-    {
-        return CGSizeMake(1024.0f, kChannelDetailsCollectionViewOffsetY);
-    }
-    else
-    {
-        return CGSizeMake(0, 0);
-    }
-}
+//- (CGSize) collectionView: (UICollectionView *) collectionView
+//                   layout: (UICollectionViewLayout*) collectionViewLayout
+//           referenceSizeForHeaderInSection: (NSInteger) section
+//{
+//    if (collectionView == self.videoThumbnailCollectionView)
+//    {
+//        return CGSizeMake(1024.0f, kChannelDetailsCollectionViewOffsetY);
+//    }
+//    else
+//    {
+//        return CGSizeMake(0, 0);
+//    }
+//}
 
 
 @end

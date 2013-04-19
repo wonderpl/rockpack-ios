@@ -2,177 +2,102 @@
 //  SYNSearchTabView.m
 //  rockpack
 //
-//  Created by Michael Michailidis on 20/02/2013.
+//  Created by Michael Michailidis on 19/04/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
 #import "SYNSearchTabView.h"
-#import "SYNSwitch.h"
-#import "AppConstants.h"
-
-@interface SYNSearchTabView ()
-
-@property (nonatomic, strong) UIView* mainTabsView;
-
-@property (nonatomic, weak) SYNSearchItemView* currentItemView;
-
-@property (nonatomic, strong) SYNSwitch* popularSwitch;
-@property (nonatomic, strong) SYNSearchItemView* searchVideosItemView;
-@property (nonatomic, strong) SYNSearchItemView* searchChannelsItemView;
-
-@end
+#import "UIFont+SYNFont.h"
 
 @implementation SYNSearchTabView
+@synthesize selected;
 
--(id)initWithSize:(CGFloat)totalWidth
+-(id)initWithSearchType:(SearchTabType)itsType
 {
-    
-    if (self = [super init]) {
+    if (self = [super init])
+    {
+        backgroundImageOff = [UIImage imageNamed:@"SearchTab"];
+        backgroundImageOn = [UIImage imageNamed:@"SearchTabHighlighted"];
         
-        // Main Bar //
+        self.frame = CGRectMake(0.0, 0.0, backgroundImageOn.size.width, backgroundImageOn.size.height);
         
-        UIImage* mainTabsBGImage = [UIImage imageNamed:@"SearchTabPanelHeader.png"];
-        CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height - 0.0);
-        
-        self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
-        self.mainTabsView. backgroundColor = [UIColor colorWithPatternImage:mainTabsBGImage];
-        
-        self.frame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height);
-        
-        CGFloat midBar = self.frame.size.width * 0.5;
-        
-        
-        UIView* dividerView = [[UIView alloc] initWithFrame:self.frame];
-        dividerView.userInteractionEnabled = NO;
-        
-        
-        NSArray* itemsX = @[[NSNumber numberWithFloat:(midBar - kSearchBarItemWidth)],
-                            [NSNumber numberWithFloat:midBar],
-                            [NSNumber numberWithFloat:(midBar + kSearchBarItemWidth)]];
-        
-        // Create dividers
-        
-        for (NSNumber* itemX in itemsX)
-        {
-            UIImageView* dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchTabDividerHeader.png"]];
-            dividerImageView.center = CGPointMake([itemX floatValue], self.center.y);
-            [dividerView addSubview:dividerImageView];
-            
+        switch (itsType) {
+            case SearchTabTypeVideos:
+                typeTitle = @"VIDEOS";
+                break;
+                
+            case SearchTabTypeChannels:
+                typeTitle = @"CHANNELS";
+                break;
         }
         
         
-        // == Create Search Tab == //
         
-        self.searchVideosItemView = [[SYNSearchItemView alloc] initWithTitle:@"VIDEOS"
-                                                                    andFrame:CGRectMake(midBar - kSearchBarItemWidth + 1.0,
-                                                                                        0.0,
-                                                                                        kSearchBarItemWidth - 1.0,
-                                                                                        self.frame.size.height)];
+        onColor = [UIColor whiteColor];
+        offColor = [UIColor darkGrayColor];
         
-        [self.searchVideosItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+        bgImageView = [[UIImageView alloc] initWithImage:backgroundImageOff];
         
-        [self.mainTabsView addSubview:self.searchVideosItemView];
+        [self addSubview:bgImageView];
         
+        CGRect labelFrame = self.frame;
+        labelFrame.origin.y += 2.0f;
+        titleLabel = [[UILabel alloc] initWithFrame:labelFrame];
+        titleLabel.font = [UIFont rockpackFontOfSize:18.0];
+        titleLabel.textColor = offColor;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        [self setNumberOfItems:0 animated:NO];
         
-        // == Create Channels Tab == //
+        [self addSubview:titleLabel];
         
-        self.searchChannelsItemView = [[SYNSearchItemView alloc] initWithTitle:@"CHANNELS"
-                                                                      andFrame:CGRectMake(midBar + 1.0, 0.0, kSearchBarItemWidth - 1.0, self.frame.size.height)];
+        overButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        overButton.frame = self.frame;
+        overButton.backgroundColor = [UIColor clearColor];
         
-        [self.searchChannelsItemView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMainTap:)]];
+        [self addSubview:overButton];
         
-        
-        [self.mainTabsView addSubview:self.searchChannelsItemView];
-        
-        
-        // == Create Switch
-        
-        self.popularSwitch = [[SYNSwitch alloc] initWithLeftText:@"POPULAR" andRightText:@"LATEST"];
-        self.popularSwitch.center = CGPointMake(850.0, 38.0);
-        
-        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPerformed:)];
-        [self.popularSwitch addGestureRecognizer:tapGesture];
-        
-        UISwipeGestureRecognizer* leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(switchSwiped:)];
-        leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-        [self.popularSwitch addGestureRecognizer:leftSwipeGesture];
-        
-        UISwipeGestureRecognizer* rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(switchSwiped:)];
-        leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-        [self.popularSwitch addGestureRecognizer:rightSwipeGesture];
-        
-        [self addSubview:self.mainTabsView];
-        [self addSubview:dividerView];
-        
-        
-        [self addSubview:self.popularSwitch];
         
     }
     return self;
 }
 
--(void)switchSwiped:(UISwipeGestureRecognizer*)recogniser
++(id)tabViewWithSearchType:(SearchTabType)itsType
 {
-    if(recogniser.direction == UISwipeGestureRecognizerDirectionLeft)
+    return [[self alloc] initWithSearchType:itsType];
+}
+
+-(void)setNumberOfItems:(NSInteger)numberOfItems animated:(BOOL)animated
+{
+    
+    titleLabel.text = [NSString stringWithFormat:@"%@ (%i)", typeTitle, numberOfItems];
+}
+
+#pragma mark - Control Methods
+
+-(void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
+{
+    [overButton addTarget:target action:action forControlEvents:controlEvents];
+}
+
+-(void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
+{
+    [overButton removeTarget:target action:action forControlEvents:controlEvents];
+}
+
+-(void)setSelected:(BOOL)value
+{
+    selected = value;
+    if(value)
     {
-        [self.popularSwitch setOn:NO];
+        bgImageView.image = backgroundImageOn;
+        titleLabel.textColor = onColor;
     }
-    else if(recogniser.direction == UISwipeGestureRecognizerDirectionRight)
+    else
     {
-        [self.popularSwitch setOn:YES];
+        bgImageView.image = backgroundImageOff;
+        titleLabel.textColor = offColor;
     }
 }
-
-
--(void)tapPerformed:(UITapGestureRecognizer*)recogniser
-{
-    BOOL currentState = self.popularSwitch.on;
-    [self.popularSwitch setOn:!currentState];
-    
-    
-}
-
-#pragma mark - Delegate Methods
-
--(void)handleMainTap:(UITapGestureRecognizer*)recogniser
-{
-    // Set as pressed
-    
-    
-    
-    SYNSearchItemView* viewClicked = (SYNSearchItemView*)recogniser.view;
-    if (self.currentItemView == viewClicked) 
-        return;
-    
-    self.currentItemView = viewClicked;
-    
-    
-    NSString* tabTappedId;
-    
-    if(self.currentItemView == self.searchVideosItemView)
-        tabTappedId = @"0";
-    else
-        tabTappedId = @"1";
-    
-    [self setSelectedWithId:tabTappedId];
-    
-}
-
-
--(void)setSelectedWithId:(NSString*)selectedId
-{
-    
-    for(SYNSearchItemView* itemViewS in self.mainTabsView.subviews)
-        [itemViewS makeFaded];
-    
-    if([selectedId isEqualToString:@"0"])
-        [self.searchVideosItemView makeHighlightedWithImage:YES];
-    else
-        [self.searchChannelsItemView makeHighlightedWithImage:YES];
-    
-    
-    [self.tapDelegate handleNewTabSelectionWithId:selectedId];
-}
-
 
 @end

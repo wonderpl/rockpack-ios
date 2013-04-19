@@ -40,7 +40,7 @@
 {
     if(self = [super initWithViewId:vid])
     {
-        self.title = @"Feed";
+        self.title = kFeedTitle;
     }
     return self;
 }
@@ -151,7 +151,7 @@
                                                             start: 0
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
-                                                    DebugLog(@"Refresh subscription updates successful");
+                                                    //DebugLog(@"Refresh subscription updates successful");
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kRefresheComplete
                                                                                                         object:self];
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {

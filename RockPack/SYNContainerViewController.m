@@ -19,7 +19,6 @@
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
-#import "SYNSearchTabViewController.h"
 #import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -100,16 +99,12 @@
     
     SYNFeedRootViewController *feedRootViewController = [[SYNFeedRootViewController alloc] initWithViewId: kFeedViewId];
     
-    // == Videos Page == //
-    
-    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId: kVideosViewId ];
-    videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     
     // == Channels Page == //
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    //[channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     
     // == You Page == //
     
@@ -121,13 +116,10 @@
     //SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
     
     
-    
-    
     // == Search (out of normal controller array)
     
     
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-    self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     self.seachViewNavigationViewController = [self wrapInNavigationController:self.searchViewController];
     
     
@@ -314,11 +306,9 @@
 
 - (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
 {
-     
-    
+
     [self replaceShowingNavigationController:self.seachViewNavigationViewController];
     
-
     [self.searchViewController showSearchResultsForTerm: searchTerm];
     
     
@@ -341,20 +331,21 @@
 }
 
 
-- (void) replaceShowingNavigationController:(UIViewController*)viewController
+- (void) replaceShowingNavigationController:(UINavigationController*)navigationController
 {
     UINavigationController* showingNavController = [self showingViewController].navigationController;
 
     
-    CGFloat showingOffset = showingNavController.view.frame.origin.x;
+
     
-    CGRect vcFrame = viewController.view.frame;
-    vcFrame.origin.x = showingOffset;
-    viewController.view.frame = vcFrame;
+    CGRect vcFrame = navigationController.view.frame;
+    vcFrame.origin.x = showingNavController.view.frame.origin.x;
+    navigationController.view.frame = vcFrame;
     
-    viewController.view.alpha = 0.0;
     
-    [self.scrollView addSubview:viewController.view];
+    navigationController.view.alpha = 0.0;
+    
+    [self.scrollView addSubview:navigationController.view];
     
     self.scrollView.scrollEnabled = NO;
     
@@ -371,7 +362,7 @@
                                                delay: 0.2f
                                              options: UIViewAnimationOptionCurveEaseOut
                                           animations: ^{
-                                              viewController.view.alpha = 1.0;
+                                              navigationController.view.alpha = 1.0;
                                           }
                                           completion: nil];
                      }];
@@ -407,6 +398,11 @@
         [self.showingViewController viewCameToScrollFront];
     }
     
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self scrollViewDidEndDecelerating:scrollView];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -466,6 +462,7 @@
     
     CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
     [self.scrollView setContentOffset:newPoint animated:YES];
+    
 }
 
 
@@ -504,6 +501,7 @@
     
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:abstractViewController];
     navigationController.title = abstractViewController.title;
+    navigationController.view.frame = abstractViewController.view.frame;
     navigationController.navigationBarHidden = YES;
     navigationController.view.autoresizesSubviews = YES;
     navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
