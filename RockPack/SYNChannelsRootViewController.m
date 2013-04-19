@@ -162,10 +162,12 @@
                                                       
                                                       NSLog (@"%@", weakSelf);
                                                       
-                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                  
+                                                      
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
                                                       if (!registryResultOk) {
-                                                          DebugLog(@"Registration of Channel Failed");
+                                                          DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
         
@@ -526,15 +528,16 @@
 {
     currentCategoryId = selectionId;
     currentRange = NSMakeRange(0, 50);
-    __weak SYNChannelsRootViewController* weakSelf = self;
     [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
                                                       forRange:currentRange
                                                   onCompletion:^(NSDictionary* response) {
                                                       
                                                       
-                                                      
-                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
+
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
+                                                      
+                                                      
                                                       if (!registryResultOk) {
                                                           DebugLog(@"Registration of Channel Failed");
                                                           return;
