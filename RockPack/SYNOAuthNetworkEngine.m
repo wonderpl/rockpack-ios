@@ -69,7 +69,7 @@
 	}
 	else
     {
-		DLog(@"enqueueSignedOperation - Authenticated");
+//		DLog(@"enqueueSignedOperation - Authenticated");
         
         // We need to make a copy of the request first, so that we can re-submit on authentication error
 //        [request addCommonHandlerToNetworkOperation: networkOperation

@@ -131,7 +131,7 @@
                                                             start: 0
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
-                                                    DebugLog(@"Refresh subscription updates successful");
+                                                    //DebugLog(@"Refresh subscription updates successful");
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:kRefresheComplete
                                                                                                         object:self];
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {

@@ -70,7 +70,6 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                                                 action:@selector(handleLongPressGesture:)];
     _longPressGestureRecognizer.delegate = self;
-    [self.collectionView addGestureRecognizer:_longPressGestureRecognizer];
     
     // Links the default long press gesture recognizer to the custom long press gesture recognizer we are creating now
     // by enforcing failure dependency so that they doesn't clash.
@@ -79,6 +78,8 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
             [gestureRecognizer requireGestureRecognizerToFail:_longPressGestureRecognizer];
         }
     }
+    
+    [self.collectionView addGestureRecognizer:_longPressGestureRecognizer];
     
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                     action:@selector(handlePanGesture:)];
@@ -140,6 +141,9 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
     
     [self.dataSource collectionView:self.collectionView itemAtIndexPath:previousIndexPath willMoveToIndexPath:newIndexPath];
     
+    [self.collectionView moveItemAtIndexPath: previousIndexPath
+                                 toIndexPath:newIndexPath];
+    
     __weak typeof(self) weakSelf = self;
     [self.collectionView performBatchUpdates:^{
         __strong typeof(self) strongSelf = weakSelf;
@@ -147,7 +151,10 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
             [strongSelf.collectionView deleteItemsAtIndexPaths:@[ previousIndexPath ]];
             [strongSelf.collectionView insertItemsAtIndexPaths:@[ newIndexPath ]];
         }
-    } completion:nil];
+    } completion: ^(BOOL finished)
+     {
+         NSLog(@"Finished");
+     }];
 }
 
 - (void)invalidatesScrollTimer {

@@ -99,7 +99,7 @@
     NSError *error = nil;
     ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
-    NSLog (@"Objects = %@", fetchedResultsController.fetchedObjects);
+//    NSLog (@"Objects = %@", fetchedResultsController.fetchedObjects);
     return fetchedResultsController;
 }
 

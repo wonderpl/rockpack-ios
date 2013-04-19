@@ -58,7 +58,7 @@
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
     // Now add the long-press gesture recognizers to the custom flow layout
-    [layout setUpGestureRecognizersOnCollectionView];
+//    [layout setUpGestureRecognizersOnCollectionView];
     
     // Set wallpaper
     [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
@@ -110,7 +110,7 @@
     NSError *error = nil;
     ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
-    NSLog (@"Objects = %@", fetchedResultsController.fetchedObjects);
+//    NSLog (@"Objects = %@", fetchedResultsController.fetchedObjects);
     return fetchedResultsController;
 }
 
@@ -165,6 +165,13 @@
 {
     
     [self saveDB];
+}
+
+- (void) collectionView: (UICollectionView *) collectionView
+        itemAtIndexPath: (NSIndexPath *) fromIndexPath
+    willMoveToIndexPath: (NSIndexPath *)toIndexPath
+{
+    
 }
 
 

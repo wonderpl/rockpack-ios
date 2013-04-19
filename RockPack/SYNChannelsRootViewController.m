@@ -159,8 +159,7 @@
                                                           return;
                                                       
                                                       currentTotal = [totalNumber integerValue];
-                                                      
-                                                      NSLog (@"%@", weakSelf);
+                                                    
                                                       
                                                       BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
