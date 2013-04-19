@@ -340,7 +340,7 @@
         
         Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNChannelsDetailViewController *channelVC = [[SYNChannelsDetailViewController alloc] initWithChannel: channel];
+        SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
         
         [self animatedPushViewController: channelVC];
     }

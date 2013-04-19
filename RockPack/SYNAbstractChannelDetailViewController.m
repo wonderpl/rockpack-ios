@@ -181,19 +181,19 @@
 }
 
 
-- (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-           referenceSizeForHeaderInSection: (NSInteger) section
-{
-    if (collectionView == self.videoThumbnailCollectionView)
-    {
-        return CGSizeMake(1024.0f, kChannelDetailsCollectionViewOffsetY);
-    }
-    else
-    {
-        return CGSizeMake(0, 0);
-    }
-}
+//- (CGSize) collectionView: (UICollectionView *) collectionView
+//                   layout: (UICollectionViewLayout*) collectionViewLayout
+//           referenceSizeForHeaderInSection: (NSInteger) section
+//{
+//    if (collectionView == self.videoThumbnailCollectionView)
+//    {
+//        return CGSizeMake(1024.0f, kChannelDetailsCollectionViewOffsetY);
+//    }
+//    else
+//    {
+//        return CGSizeMake(0, 0);
+//    }
+//}
 
 
 @end
