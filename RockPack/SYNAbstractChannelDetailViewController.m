@@ -70,6 +70,13 @@
     // Set wallpaper
     [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
                                            placeHolderImage: nil];
+    
+    // Add shadow to UITextView
+//    CALayer *textLayer = ((CALayer *)[textView.layer.sublayers objectAtIndex:0]);
+//    textLayer.shadowColor = [UIColor whiteColor].CGColor;
+//    textLayer.shadowOffset = CGSizeMake(0.0f, 1.0f);
+//    textLayer.shadowOpacity = 1.0f;
+//    textLayer.shadowRadius = 1.0f;
 }
 
 
