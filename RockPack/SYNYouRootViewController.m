@@ -39,6 +39,11 @@
 
 @property (nonatomic, strong) SYNYouHeaderView* headerCheannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftPortraitLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightPortraitLayout;
+
 
 @end
 
@@ -52,7 +57,7 @@
 {
     if(self = [super initWithViewId: vid])
     {
-        self.title = @"My Rockpack";
+        self.title = kProfileTitle;
     }
     return self;
 }
@@ -77,9 +82,44 @@
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.itemSize = CGSizeMake(184.0, 138.0);
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 3.0, 5.0, 3.0);
-    flowLayout.minimumLineSpacing = 3.0;
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 8.0, 5.0, 25.0);
+    flowLayout.minimumLineSpacing = 8.0;
     flowLayout.minimumInteritemSpacing = 0.0;
+    
+    self.leftLandscapeLayout = flowLayout;
+    
+    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 25.0, 5.0, 8.0);
+    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    self.rightLandscapeLayout = flowLayout;
+    
+    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
+    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    self.leftPortraitLayout = flowLayout;
+    
+    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
+    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
+    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumInteritemSpacing = 0.0;
+    
+    self.rightPortraitLayout = flowLayout;
     
     CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
     
@@ -93,7 +133,7 @@
                                             self.headerCheannelsView.frame.origin.y + self.headerCheannelsView.currentHeight + 10.0,
                                             correctWidth,
                                             [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0 - kYouCollectionViewOffsetY);
-
+    
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -118,7 +158,7 @@
     
     [self.subscriptionsViewController setViewFrame:subColViewFrame];
     
-    self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth:subColViewFrame.size.width];
+    self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth:384];
     [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber:2];
     [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
     CGRect headerSubFrame = self.headerSubscriptionsView.frame;
@@ -129,11 +169,12 @@
                                                          0.0,
                                                          [[SYNDeviceManager sharedInstance] currentScreenWidth],
                                                          [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar])];
-                 
+    
     
     
     
     [self.view addSubview:self.headerCheannelsView];
+    
     [self.view addSubview:self.headerSubscriptionsView];
     
     [self.view addSubview:self.userProfileController.view];
@@ -149,7 +190,7 @@
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
     
-     
+    
     
     
 }
@@ -190,6 +231,7 @@
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
+    [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
     
 }
 
@@ -206,6 +248,110 @@
     self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(subSize.width, 1800.0);
 }
 
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self updateLayoutForOrientation:toInterfaceOrientation];
+}
+
+-(void)updateLayoutForOrientation:(UIDeviceOrientation)orientation
+{
+    CGRect newFrame;
+    CGFloat viewHeight;
+    SYNIntegralCollectionViewFlowLayout* leftLayout;
+    SYNIntegralCollectionViewFlowLayout* rightLayout;
+    
+    //Setup the headers
+    if(UIDeviceOrientationIsPortrait(orientation))
+    {
+        
+        newFrame = self.headerCheannelsView.frame;
+        newFrame.size.width = 384.0f;
+        self.headerCheannelsView.frame = newFrame;
+        
+        newFrame = self.headerSubscriptionsView.frame;
+        newFrame.origin.x = 384.0f ;
+        newFrame.size.width = 384.0f;
+        self.headerSubscriptionsView.frame = newFrame;
+        
+        viewHeight = 1004;
+        
+        leftLayout = self.leftPortraitLayout;
+        rightLayout = self.rightPortraitLayout;
+        
+    }
+    else
+    {
+        newFrame = self.headerCheannelsView.frame;
+        newFrame.size.width = 612.0f;
+        self.headerCheannelsView.frame = newFrame;
+        
+        newFrame = self.headerSubscriptionsView.frame;
+        newFrame.origin.x = 612.0f ;
+        newFrame.size.width = 412.0f;
+        self.headerSubscriptionsView.frame = newFrame;
+        
+        viewHeight = 748;
+        
+        leftLayout = self.leftLandscapeLayout;
+        rightLayout = self.rightLandscapeLayout;
+    }
+    
+    //Apply correct backgorund images
+    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    
+    [self.headerCheannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"]];
+    
+    
+    
+    NSIndexPath* indexPath = nil;
+    if(self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
+    {
+        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells]count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
+        if(visibleCell != nil){
+            indexPath = [self.channelThumbnailCollectionView indexPathForCell:visibleCell];
+        }
+    }
+    
+    // Setup Channel feed collection view
+    newFrame = self.channelThumbnailCollectionView.frame;
+    newFrame.size.width = self.headerCheannelsView.frame.size.width;
+    newFrame.size.height = viewHeight - newFrame.origin.y;
+    self.channelThumbnailCollectionView.frame = newFrame;
+    self.channelThumbnailCollectionView.collectionViewLayout = leftLayout;
+    [leftLayout invalidateLayout];
+    if(indexPath)
+    {
+        [self.channelThumbnailCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+    }
+    
+    
+    
+    if(!indexPath)
+    {
+        UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells]count] > 0) ? [[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
+        if(visibleCell != nil){
+            indexPath = [self.subscriptionsViewController.channelThumbnailCollectionView indexPathForCell:visibleCell];
+        }
+    }
+    else{
+        indexPath = nil;
+    }
+    
+    //Setup subscription feed collection view
+    newFrame = self.subscriptionsViewController.view.frame;
+    newFrame.size.width = self.headerSubscriptionsView.frame.size.width;
+    newFrame.size.height = viewHeight - newFrame.origin.y;
+    newFrame.origin.x = self.headerSubscriptionsView.frame.origin.x;
+    self.subscriptionsViewController.view.frame = newFrame;
+    self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = rightLayout;
+    [rightLayout invalidateLayout];
+    if(indexPath)
+    {
+        [self.subscriptionsViewController.channelThumbnailCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+    }
+    
+}
 
 
 - (NSFetchedResultsController *) fetchedResultsController
@@ -226,7 +372,7 @@
     
     NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
     
-                                              
+    
     fetchRequest.predicate = ownedByUserPredicate;
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
     
@@ -304,7 +450,7 @@
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
-                                                                                              forIndexPath: indexPath];
+                                                                                        forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];
@@ -497,14 +643,14 @@
         
         // CGSize newContentSize = [[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue];
         
-//        CGSize s1Size = self.channelThumbnailCollectionView.contentSize;
-//        CGSize s2Size = self.subscriptionsViewController.collectionView.contentSize;
-//        
-//        if(s1Size.height == s2Size.height)
-//            return;
-//            
-//      
-//        self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(s2Size.width, s1Size.height);
+        //        CGSize s1Size = self.channelThumbnailCollectionView.contentSize;
+        //        CGSize s2Size = self.subscriptionsViewController.collectionView.contentSize;
+        //
+        //        if(s1Size.height == s2Size.height)
+        //            return;
+        //
+        //
+        //        self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(s2Size.width, s1Size.height);
     }
 }
 

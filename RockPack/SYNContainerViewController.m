@@ -100,16 +100,12 @@
     
     SYNFeedRootViewController *feedRootViewController = [[SYNFeedRootViewController alloc] initWithViewId: kFeedViewId];
     
-    // == Videos Page == //
-    
-    SYNVideosRootViewController *videosRootViewController = [[SYNVideosRootViewController alloc] initWithViewId: kVideosViewId ];
-    videosRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
     
     // == Channels Page == //
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    //[channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     
     // == You Page == //
     
@@ -405,6 +401,11 @@
     
 }
 
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self scrollViewDidEndDecelerating:scrollView];
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     
@@ -462,6 +463,7 @@
     
     CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
     [self.scrollView setContentOffset:newPoint animated:YES];
+    
 }
 
 

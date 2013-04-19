@@ -34,7 +34,6 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* sendEmailButton;
 
-@property (nonatomic, strong) IBOutlet UILabel* joingRockpackLabel;
 
 @property (nonatomic, strong) IBOutlet UIButton* registerButton;
 
@@ -70,6 +69,7 @@
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 
@@ -86,7 +86,7 @@
 @end
 
 
-#define kOffsetForLoginForm 280.0
+#define kOffsetForLoginForm 285.0
 #define kOffsetForRegisterForm 100.0
 
 @implementation SYNLoginViewController
@@ -95,10 +95,10 @@
 @synthesize appDelegate;
 @synthesize signUpButton, facebookSignInButton;
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
-@synthesize joingRockpackLabel, facebookLogingInLabel;
+@synthesize facebookLogingInLabel;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
 @synthesize activityIndicator, dividerImageView, secondaryFacebookMessage;
-@synthesize isAnimating;
+@synthesize isAnimating, termsAndConditionsLabelSide;
 @synthesize emailInputField, dobView, registerNewUserButton;
 @synthesize titleImageView;
 @synthesize ddInputField, mmInputField, yyyyInputField;
@@ -132,9 +132,9 @@
     
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
     secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
-    joingRockpackLabel.font = [UIFont boldRockpackFontOfSize:23];
     facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:14.0];
+    termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY USING ROCKPACK, YOU AGREE TO OUR TERMS & SERVICES AND PRIVACY POLICY"];
     
@@ -145,6 +145,7 @@
     // add terms buttons
     
     termsAndConditionsLabel.attributedText = termsString;
+    termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
     
     labelsToErrorArrows = [[NSMutableDictionary alloc] init];
     
@@ -213,8 +214,8 @@
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
-                                registerNewUserButton, dividerImageView, faceImageButton, joingRockpackLabel, sendEmailButton,
-                                wellSendYouLabel];
+                                registerNewUserButton, dividerImageView, faceImageButton, sendEmailButton,
+                                wellSendYouLabel, termsAndConditionsLabelSide];
     
     for (UIView* control in controlsToHide) {
        
@@ -246,6 +247,11 @@
     self.initialUsernameFrame = userNameInputField.frame;
     loginButton.frame = registerButton.frame;
     sendEmailButton.enabled = YES;
+    memberLabel.center = CGPointMake(loginButton.center.x,
+                                     registerButton.center.y - 57.0);
+    
+    
+    memberLabel.frame = CGRectIntegral(memberLabel.frame);
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
         facebookSignInButton.alpha = 0.0;
         CGFloat diff = passwordInputField.frame.origin.y - userNameInputField.frame.origin.y;
@@ -344,8 +350,8 @@
                     dobView.center = CGPointMake(dobView.center.x,
                                                  dobView.center.y - kOffsetForLoginForm);
                     
-                    memberLabel.center = CGPointMake(loginButton.center.x + 5.0,
-                                                     loginButton.frame.origin.y - 17.0);
+                    memberLabel.center = CGPointMake(memberLabel.center.x,
+                                                     registerButton.center.y - 57.0);
                     
                     
                     memberLabel.frame = CGRectIntegral(memberLabel.frame);
@@ -410,7 +416,9 @@
             loginButton.alpha = 0.0;
             memberLabel.alpha = 0.0;
             
-            joingRockpackLabel.alpha = 0.0;
+            
+            termsAndConditionsLabelSide.alpha = 0.0;
+            
             
             termsAndConditionsLabel.alpha = 1.0;
             
@@ -515,7 +523,6 @@
             
             
             
-            
         } completion:^(BOOL finished) {
             
             finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - kOffsetForLoginForm);
@@ -529,9 +536,11 @@
             
             [emailInputField becomeFirstResponder];
             
-            loginButton.center = CGPointMake(registerButton.center.x, registerButton.center.y);
+            loginButton.center = CGPointMake(registerButton.center.x,
+                                             registerButton.center.y);
             
-            memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+            memberLabel.center = CGPointMake(loginButton.center.x,
+                                             registerButton.center.y - 57.0);
             memberLabel.frame = CGRectIntegral(memberLabel.frame);
             
             
@@ -547,7 +556,6 @@
                 loginButton.alpha = 1.0;
                 faceImageButton.alpha = 1.0;
                 
-                joingRockpackLabel.alpha = 1.0;
             }];
         }];
     }
@@ -558,10 +566,12 @@
         // prepare in the correct place
         
         loginButton.center = CGPointMake(registerButton.center.x, registerButton.center.y);
-        memberLabel.center = CGPointMake(loginButton.center.x + 5.0, loginButton.frame.origin.y - 17.0);
+        memberLabel.center = CGPointMake(loginButton.center.x,
+                                         registerButton.center.y - 57.0);
         memberLabel.frame = CGRectIntegral(memberLabel.frame);
         
         [UIView animateWithDuration:0.5 animations:^{
+            
             
             
             emailInputField.alpha = 1.0;
@@ -584,8 +594,7 @@
                                                       facebookSignInButton.center.y);
             
             
-            
-            joingRockpackLabel.alpha = 1.0;
+        
         }];
     }
 
@@ -600,6 +609,8 @@
         
         registerNewUserButton.alpha = 1.0;
         
+        
+        termsAndConditionsLabelSide.alpha = 1.0;
         
         termsAndConditionsLabel.alpha = 0.0;
     
@@ -1333,13 +1344,17 @@
     {
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
-        faceImageButton.center = CGPointMake(120.0, faceImageButton.center.y);
+        faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
+        memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 56.0);
+        areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     }
     else
     {
         signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
-        faceImageButton.center = CGPointMake(250.0, faceImageButton.center.y);
+        faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
+        memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 58.0);
+        areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 46.0);
     }
     
     

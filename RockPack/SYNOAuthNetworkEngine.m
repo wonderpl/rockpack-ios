@@ -685,7 +685,7 @@
         
         BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
         if (!registryResultOk) {
-            DebugLog(@"Update Channel Screens Request Failed");
+            DebugLog(@"Registration of Channel Failed at NetworkEngine");
             return;
         }
         

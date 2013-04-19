@@ -60,7 +60,6 @@
 								<string key="NSFrame">{{8, 81}, {168, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="427251072">
 									<int key="NSColorSpace">3</int>
@@ -122,6 +121,7 @@
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+				<string key="IBUIReuseIdentifier">SYNChannelMidCell</string>
 				<reference key="IBUIContentView" ref="582525683"/>
 			</object>
 		</array>

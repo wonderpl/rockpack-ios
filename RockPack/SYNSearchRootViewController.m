@@ -34,7 +34,7 @@
 -(id)initWithViewId:(NSString *)vid
 {
     if (self = [super initWithViewId:vid]) {
-        self.title = @"Search";
+        self.title = kSearchTitle;
     }
     return self;
 }
