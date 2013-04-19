@@ -10,7 +10,7 @@
 #import "UIFont+SYNFont.h"
 
 @implementation SYNSearchTabView
-
+@synthesize selected;
 
 -(id)initWithSearchType:(SearchTabType)itsType
 {
@@ -41,14 +41,13 @@
         [self addSubview:bgImageView];
         
         CGRect labelFrame = self.frame;
-        //labelFrame.size.height -= 8.0;
         labelFrame.origin.y += 2.0f;
         titleLabel = [[UILabel alloc] initWithFrame:labelFrame];
         titleLabel.font = [UIFont rockpackFontOfSize:18.0];
         titleLabel.textColor = offColor;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.text = typeTitle;
+        [self setNumberOfItems:0 animated:NO];
         
         [self addSubview:titleLabel];
         
@@ -86,9 +85,10 @@
     [overButton removeTarget:target action:action forControlEvents:controlEvents];
 }
 
--(void)setSelected:(BOOL)selected
+-(void)setSelected:(BOOL)value
 {
-    if(selected)
+    selected = value;
+    if(value)
     {
         bgImageView.image = backgroundImageOn;
         titleLabel.textColor = onColor;

@@ -25,6 +25,7 @@ typedef enum {
     UIColor* onColor;
     UIColor* offColor;
     UIButton* overButton;
+    BOOL selected;
 }
 
 

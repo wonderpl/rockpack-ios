@@ -93,9 +93,14 @@
 
 -(void)videoTabPressed:(UIControl*)control
 {
-   
-    self.channelsSearchTabView.selected = NO;
+    
+    
+   if(self.videoSearchTabView.selected)
+       return;
+    
     self.videoSearchTabView.selected = YES;
+    self.channelsSearchTabView.selected = NO;
+    
     
     [self showVideoSearchResults];
     
@@ -103,6 +108,11 @@
 
 -(void)channelTabPressed:(UIControl*)control
 {
+    
+    
+    if(self.channelsSearchTabView.selected)
+        return;
+    
     self.channelsSearchTabView.selected = YES;
     self.videoSearchTabView.selected = NO;
     
@@ -167,11 +177,11 @@
     // TODO: Check why we have to invert
     
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
-    self.searchVideosController.itemToUpdate = nil;
+    self.searchVideosController.itemToUpdate = self.videoSearchTabView;
     self.searchVideosController.parent = self;
     
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
-    self.searchChannelsController.itemToUpdate = nil;
+    self.searchChannelsController.itemToUpdate = self.channelsSearchTabView;
     self.searchChannelsController.parent = self;
     
     
