@@ -236,9 +236,9 @@
 
 
 
--(BOOL)registerNewChannelScreensFromDictionary:(NSDictionary *)dictionary
-                                   byAppending:(BOOL)append {
-    
+- (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
+                                     byAppending: (BOOL)append
+{ 
     // == Check for Validity == //
     
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
