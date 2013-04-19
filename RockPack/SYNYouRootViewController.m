@@ -173,6 +173,8 @@
     
     
     
+    self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
+    
     [self.view addSubview:self.headerCheannelsView];
     
     [self.view addSubview:self.headerSubscriptionsView];
@@ -189,7 +191,6 @@
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
-    
     
     
     
@@ -246,6 +247,8 @@
     CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;
     subSize.height = thumbSize.height;
     self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(subSize.width, 1800.0);
+    
+    [self reloadCollectionViews];
 }
 
 
@@ -394,6 +397,17 @@
 -(void)accountSettingsPressed:(NSNotification*)notification
 {
     [self showAccountSettingsPopover];
+}
+
+-(void)reloadCollectionViews
+{
+    [super reloadCollectionViews];
+    
+    NSInteger totalChannels = self.fetchedResultsController.fetchedObjects.count;
+    
+    [self.headerCheannelsView setTitle:@"YOUR CHANNELS" andNumber:totalChannels];
+    
+    [self.subscriptionsViewController reloadCollectionViews];
 }
 
 -(void)accountSettingsLogout:(NSNotification*)notification

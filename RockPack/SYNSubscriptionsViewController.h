@@ -8,10 +8,12 @@
 
 #import "SYNChannelsRootViewController.h"
 #import "Channel.h"
+#import "SYNYouHeaderView.h"
 
 @interface SYNSubscriptionsViewController : SYNChannelsRootViewController
 
 @property (nonatomic, readonly) UICollectionView* collectionView;
+@property (nonatomic, weak) SYNYouHeaderView* headerView;
 
 -(void)setViewFrame:(CGRect)frame;
 -(Channel*)channelAtIndexPath:(NSIndexPath*)indexPath;
