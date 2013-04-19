@@ -12,12 +12,14 @@
 
 #ifndef CGGEOMETRY_LXSUPPORT_H_
 CG_INLINE CGPoint
-LXS_CGPointAdd(CGPoint point1, CGPoint point2) {
+LXS_CGPointAdd(CGPoint point1, CGPoint point2)
+{
     return CGPointMake(point1.x + point2.x, point1.y + point2.y);
 }
+
 #endif
 
-typedef NS_ENUM(NSInteger, LXScrollingDirection) {
+typedef NS_ENUM (NSInteger, LXScrollingDirection) {
     LXScrollingDirectionUnknown = 0,
     LXScrollingDirectionUp,
     LXScrollingDirectionDown,
@@ -25,20 +27,21 @@ typedef NS_ENUM(NSInteger, LXScrollingDirection) {
     LXScrollingDirectionRight
 };
 
-static NSString * const kLXScrollingDirectionKey = @"LXScrollingDirection";
-static NSString * const kLXCollectionViewKeyPath = @"collectionView";
+static NSString *const kLXScrollingDirectionKey = @"LXScrollingDirection";
+static NSString *const kLXCollectionViewKeyPath = @"collectionView";
 
 @interface UICollectionViewCell (LXReorderableCollectionViewFlowLayout)
 
-- (UIImage *)LX_rasterizedImage;
+- (UIImage *) LX_rasterizedImage;
 
 @end
 
 @implementation UICollectionViewCell (LXReorderableCollectionViewFlowLayout)
 
-- (UIImage *)LX_rasterizedImage {
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.isOpaque, 0.0f);
-    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+- (UIImage *) LX_rasterizedImage
+{
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0.0f);
+    [self.layer renderInContext: UIGraphicsGetCurrentContext()];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
@@ -61,163 +64,164 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 
 @implementation LXReorderableCollectionViewFlowLayout
 
-- (void)setDefaults {
+- (void) setDefaults
+{
     _scrollingSpeed = 300.0f;
     _scrollingTriggerEdgeInsets = UIEdgeInsetsMake(50.0f, 50.0f, 50.0f, 50.0f);
 }
 
-- (void)setupCollectionView {
-    _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                action:@selector(handleLongPressGesture:)];
+- (void) setupCollectionView
+{
+    _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                action: @selector(handleLongPressGesture:)];
     _longPressGestureRecognizer.delegate = self;
     
     // Links the default long press gesture recognizer to the custom long press gesture recognizer we are creating now
     // by enforcing failure dependency so that they doesn't clash.
-    for (UIGestureRecognizer *gestureRecognizer in self.collectionView.gestureRecognizers) {
-        if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
-            [gestureRecognizer requireGestureRecognizerToFail:_longPressGestureRecognizer];
+    for (UIGestureRecognizer *gestureRecognizer in self.collectionView.gestureRecognizers)
+    {
+        if ([gestureRecognizer isKindOfClass: [UILongPressGestureRecognizer class]])
+        {
+            [gestureRecognizer requireGestureRecognizerToFail: _longPressGestureRecognizer];
         }
     }
     
-    [self.collectionView addGestureRecognizer:_longPressGestureRecognizer];
+    [self.collectionView addGestureRecognizer: _longPressGestureRecognizer];
     
-    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                    action:@selector(handlePanGesture:)];
+    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget: self
+                                                                    action: @selector(handlePanGesture:)];
     _panGestureRecognizer.delegate = self;
-    [self.collectionView addGestureRecognizer:_panGestureRecognizer];
+    [self.collectionView addGestureRecognizer: _panGestureRecognizer];
 }
 
-- (id)init {
+- (id) init
+{
     self = [super init];
-    if (self) {
+    
+    if (self)
+    {
         [self setDefaults];
-        [self addObserver:self forKeyPath:kLXCollectionViewKeyPath options:NSKeyValueObservingOptionNew context:nil];
+        [self addObserver: self forKeyPath: kLXCollectionViewKeyPath options: NSKeyValueObservingOptionNew context: nil];
     }
+    
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
+- (id) initWithCoder: (NSCoder *) aDecoder
+{
+    self = [super initWithCoder: aDecoder];
+    
+    if (self)
+    {
         [self setDefaults];
-        [self addObserver:self forKeyPath:kLXCollectionViewKeyPath options:NSKeyValueObservingOptionNew context:nil];
+        [self addObserver: self forKeyPath: kLXCollectionViewKeyPath options: NSKeyValueObservingOptionNew context: nil];
     }
+    
     return self;
 }
 
-- (void)dealloc {
+- (void) dealloc
+{
     [self invalidatesScrollTimer];
-    [self removeObserver:self forKeyPath:kLXCollectionViewKeyPath];
+    [self removeObserver: self forKeyPath: kLXCollectionViewKeyPath];
 }
 
-- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-    if ([layoutAttributes.indexPath isEqual:self.selectedItemIndexPath]) {
+- (void) applyLayoutAttributes: (UICollectionViewLayoutAttributes *) layoutAttributes
+{
+    if ([layoutAttributes.indexPath isEqual: self.selectedItemIndexPath])
+    {
         layoutAttributes.hidden = YES;
     }
 }
 
-- (id<LXReorderableCollectionViewDataSource>)dataSource {
+- (id<LXReorderableCollectionViewDataSource>) dataSource
+{
     return (id<LXReorderableCollectionViewDataSource>)self.collectionView.dataSource;
 }
 
-- (id<LXReorderableCollectionViewDelegateFlowLayout>)delegate {
+- (id<LXReorderableCollectionViewDelegateFlowLayout>) delegate
+{
     return (id<LXReorderableCollectionViewDelegateFlowLayout>)self.collectionView.delegate;
 }
 
-//- (void)invalidateLayoutIfNecessary {
-//    NSIndexPath *newIndexPath = [self.collectionView indexPathForItemAtPoint:self.currentView.center];
-//    NSIndexPath *previousIndexPath = self.selectedItemIndexPath;
-//    
-//    if ((newIndexPath == nil) || [newIndexPath isEqual:previousIndexPath]) {
-//        return;
-//    }
-//    
-//    if ([self.dataSource respondsToSelector:@selector(collectionView:itemAtIndexPath:canMoveToIndexPath:)] &&
-//        ![self.dataSource collectionView:self.collectionView itemAtIndexPath:previousIndexPath canMoveToIndexPath:newIndexPath]) {
-//        return;
-//    }
-//    
-//    self.selectedItemIndexPath = newIndexPath;
-//    
-//    [self.dataSource collectionView:self.collectionView itemAtIndexPath:previousIndexPath willMoveToIndexPath:newIndexPath];
-//    
-//    __weak typeof(self) weakSelf = self;
-//    [self.collectionView performBatchUpdates:^{
-//        __strong typeof(self) strongSelf = weakSelf;
-//        if (strongSelf) {
-//            [strongSelf.collectionView deleteItemsAtIndexPaths:@[ previousIndexPath ]];
-//            [strongSelf.collectionView insertItemsAtIndexPaths:@[ newIndexPath ]];
-//        }
-//    } completion: ^(BOOL finished)
-//     {
-//         NSLog(@"Finished");
-//     }];
-//}
-
 - (void) invalidateLayoutIfNecessary
 {
-    NSIndexPath *theIndexPathOfSelectedItem = [self.collectionView indexPathForItemAtPoint: self.currentView.center];
+    NSIndexPath *newIndexPath = [self.collectionView indexPathForItemAtPoint: self.currentView.center];
+    NSIndexPath *previousIndexPath = self.selectedItemIndexPath;
     
-    if ((![theIndexPathOfSelectedItem isEqual: self.selectedItemIndexPath]) &&(theIndexPathOfSelectedItem))
+    if ((newIndexPath == nil) || [newIndexPath isEqual: previousIndexPath])
     {
-        NSIndexPath *thePreviousSelectedIndexPath = self.selectedItemIndexPath;
-        self.selectedItemIndexPath = theIndexPathOfSelectedItem;
-        
-        if ([self.collectionView.delegate conformsToProtocol: @protocol(LXReorderableCollectionViewDelegateFlowLayout)])
-        {
-            id<LXReorderableCollectionViewDelegateFlowLayout> theDelegate = (id<LXReorderableCollectionViewDelegateFlowLayout>)self.collectionView.delegate;
-            
-//            [theDelegate collectionView: self.collectionView
-//                        itemAtIndexPath: thePreviousSelectedIndexPath
-//                    willMoveToIndexPath: theIndexPathOfSelectedItem];
-            [self.dataSource collectionView: self.collectionView
-                            itemAtIndexPath: thePreviousSelectedIndexPath
-                        willMoveToIndexPath: theIndexPathOfSelectedItem];
-        }
-        
-        [self.collectionView performBatchUpdates: ^
-         {
-             //[self.collectionView moveItemAtIndexPath:thePreviousSelectedIndexPath toIndexPath:theIndexPathOfSelectedItem];
-             [self.collectionView deleteItemsAtIndexPaths: @[thePreviousSelectedIndexPath]];
-             [self.collectionView insertItemsAtIndexPaths: @[theIndexPathOfSelectedItem]];
-         }
-                                      completion: ^(BOOL finished)
-         {
-         }];
+        return;
     }
+    
+    if ([self.dataSource respondsToSelector: @selector(collectionView:itemAtIndexPath:canMoveToIndexPath:)] &&
+        ![self.dataSource collectionView: self.collectionView itemAtIndexPath: previousIndexPath canMoveToIndexPath: newIndexPath])
+    {
+        return;
+    }
+    
+    self.selectedItemIndexPath = newIndexPath;
+    
+    [self.dataSource collectionView: self.collectionView itemAtIndexPath: previousIndexPath willMoveToIndexPath: newIndexPath];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.collectionView
+     performBatchUpdates: ^{
+         __strong typeof(self) strongSelf = weakSelf;
+         
+         if (strongSelf)
+         {
+             [strongSelf.collectionView
+              deleteItemsAtIndexPaths: @[ previousIndexPath ]];
+             [strongSelf.collectionView
+              insertItemsAtIndexPaths: @[ newIndexPath ]];
+         }
+     }
+     
+     completion: nil];
 }
 
-- (void)invalidatesScrollTimer {
-    if (self.scrollingTimer.isValid) {
+
+- (void) invalidatesScrollTimer
+{
+    if (self.scrollingTimer.isValid)
+    {
         [self.scrollingTimer invalidate];
     }
+    
     self.scrollingTimer = nil;
 }
 
-- (void)setupScrollTimerInDirection:(LXScrollingDirection)direction {
-    if (self.scrollingTimer.isValid) {
+- (void) setupScrollTimerInDirection: (LXScrollingDirection) direction
+{
+    if (self.scrollingTimer.isValid)
+    {
         LXScrollingDirection oldDirection = [self.scrollingTimer.userInfo[kLXScrollingDirectionKey] integerValue];
         
-        if (direction == oldDirection) {
+        if (direction == oldDirection)
+        {
             return;
         }
     }
     
     [self invalidatesScrollTimer];
     
-    self.scrollingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 / LX_FRAMES_PER_SECOND
-                                                           target:self
-                                                         selector:@selector(handleScroll:)
-                                                         userInfo:@{ kLXScrollingDirectionKey : @(direction) }
-                                                          repeats:YES];
+    self.scrollingTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0 / LX_FRAMES_PER_SECOND
+                                                           target: self
+                                                         selector: @selector(handleScroll:)
+                                                         userInfo: @{kLXScrollingDirectionKey: @(direction)}
+                                                          repeats: YES];
 }
 
 #pragma mark - Target/Action methods
 
 // Tight loop, allocate memory sparely, even if they are stack allocation.
-- (void)handleScroll:(NSTimer *)timer {
+- (void) handleScroll: (NSTimer *) timer
+{
     LXScrollingDirection direction = (LXScrollingDirection)[timer.userInfo[kLXScrollingDirectionKey] integerValue];
-    if (direction == LXScrollingDirectionUnknown) {
+    
+    if (direction == LXScrollingDirectionUnknown)
+    {
         return;
     }
     
@@ -227,46 +231,60 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
     CGFloat distance = self.scrollingSpeed / LX_FRAMES_PER_SECOND;
     CGPoint translation = CGPointZero;
     
-    switch(direction) {
-        case LXScrollingDirectionUp: {
+    switch (direction)
+    {
+        case LXScrollingDirectionUp:
+        {
             distance = -distance;
             CGFloat minY = 0.0f;
             
-            if ((contentOffset.y + distance) <= minY) {
+            if ((contentOffset.y + distance) <= minY)
+            {
                 distance = -contentOffset.y;
             }
             
             translation = CGPointMake(0.0f, distance);
         } break;
-        case LXScrollingDirectionDown: {
+            
+        case LXScrollingDirectionDown:
+        {
             CGFloat maxY = MAX(contentSize.height, frameSize.height) - frameSize.height;
             
-            if ((contentOffset.y + distance) >= maxY) {
+            if ((contentOffset.y + distance) >= maxY)
+            {
                 distance = maxY - contentOffset.y;
             }
             
             translation = CGPointMake(0.0f, distance);
         } break;
-        case LXScrollingDirectionLeft: {
+            
+        case LXScrollingDirectionLeft:
+        {
             distance = -distance;
             CGFloat minX = 0.0f;
             
-            if ((contentOffset.x + distance) <= minX) {
+            if ((contentOffset.x + distance) <= minX)
+            {
                 distance = -contentOffset.x;
             }
             
             translation = CGPointMake(distance, 0.0f);
         } break;
-        case LXScrollingDirectionRight: {
+            
+        case LXScrollingDirectionRight:
+        {
             CGFloat maxX = MAX(contentSize.width, frameSize.width) - frameSize.width;
             
-            if ((contentOffset.x + distance) >= maxX) {
+            if ((contentOffset.x + distance) >= maxX)
+            {
                 distance = maxX - contentOffset.x;
             }
             
             translation = CGPointMake(distance, 0.0f);
         } break;
-        default: {
+            
+        default:
+        {
             // Do nothing...
         } break;
     }
@@ -276,103 +294,131 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
     self.collectionView.contentOffset = LXS_CGPointAdd(contentOffset, translation);
 }
 
-
-- (void)handleLongPressGesture:(UILongPressGestureRecognizer *)gestureRecognizer {
-    switch(gestureRecognizer.state) {
-        case UIGestureRecognizerStateBegan: {
-            NSIndexPath *currentIndexPath = [self.collectionView indexPathForItemAtPoint:[gestureRecognizer locationInView:self.collectionView]];
+- (void) handleLongPressGesture: (UILongPressGestureRecognizer *) gestureRecognizer
+{
+    switch (gestureRecognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            NSIndexPath *currentIndexPath = [self.collectionView indexPathForItemAtPoint: [gestureRecognizer locationInView: self.collectionView]];
             
-            if ([self.dataSource respondsToSelector:@selector(collectionView:canMoveItemAtIndexPath:)] &&
-                ![self.dataSource collectionView:self.collectionView canMoveItemAtIndexPath:currentIndexPath]) {
+            if ([self.dataSource respondsToSelector: @selector(collectionView:canMoveItemAtIndexPath:)] &&
+                ![self.dataSource collectionView: self.collectionView canMoveItemAtIndexPath: currentIndexPath])
+            {
                 return;
             }
             
             self.selectedItemIndexPath = currentIndexPath;
             
-            if ([self.delegate respondsToSelector:@selector(collectionView:layout:willBeginDraggingItemAtIndexPath:)]) {
-                [self.delegate collectionView:self.collectionView layout:self willBeginDraggingItemAtIndexPath:self.selectedItemIndexPath];
+            if ([self.delegate respondsToSelector: @selector(collectionView:layout:willBeginDraggingItemAtIndexPath:)])
+            {
+                [self.delegate collectionView: self.collectionView layout: self willBeginDraggingItemAtIndexPath: self.selectedItemIndexPath];
             }
             
-            UICollectionViewCell *collectionViewCell = [self.collectionView cellForItemAtIndexPath:self.selectedItemIndexPath];
+            UICollectionViewCell *collectionViewCell = [self.collectionView cellForItemAtIndexPath: self.selectedItemIndexPath];
             
-            self.currentView = [[UIView alloc] initWithFrame:collectionViewCell.frame];
+            self.currentView = [[UIView alloc] initWithFrame: collectionViewCell.frame];
             
             collectionViewCell.highlighted = YES;
-            UIImageView *highlightedImageView = [[UIImageView alloc] initWithImage:[collectionViewCell LX_rasterizedImage]];
+            UIImageView *highlightedImageView = [[UIImageView alloc] initWithImage: [collectionViewCell LX_rasterizedImage]];
             highlightedImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             highlightedImageView.alpha = 1.0f;
             
             collectionViewCell.highlighted = NO;
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[collectionViewCell LX_rasterizedImage]];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage: [collectionViewCell LX_rasterizedImage]];
             imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             imageView.alpha = 0.0f;
             
-            [self.currentView addSubview:imageView];
-            [self.currentView addSubview:highlightedImageView];
-            [self.collectionView addSubview:self.currentView];
+            [self.currentView addSubview: imageView];
+            [self.currentView addSubview: highlightedImageView];
+            [self.collectionView addSubview: self.currentView];
             
             self.currentViewCenter = self.currentView.center;
             
             __weak typeof(self) weakSelf = self;
             [UIView
-             animateWithDuration:0.3
-             delay:0.0
-             options:UIViewAnimationOptionBeginFromCurrentState
-             animations:^{
+             animateWithDuration: 0.3
+             delay: 0.0
+             options: UIViewAnimationOptionBeginFromCurrentState
+             animations: ^{
                  __strong typeof(self) strongSelf = weakSelf;
-                 if (strongSelf) {
+                 
+                 if (strongSelf)
+                 {
                      strongSelf.currentView.transform = CGAffineTransformMakeScale(1.1f, 1.1f);
                      highlightedImageView.alpha = 0.0f;
                      imageView.alpha = 1.0f;
                  }
              }
-             completion:^(BOOL finished) {
+             
+             completion: ^(BOOL finished) {
                  __strong typeof(self) strongSelf = weakSelf;
-                 if (strongSelf) {
+                 
+                 if (strongSelf)
+                 {
                      [highlightedImageView removeFromSuperview];
                      
-                     if ([strongSelf.delegate respondsToSelector:@selector(collectionView:layout:didBeginDraggingItemAtIndexPath:)]) {
-                         [strongSelf.delegate collectionView:strongSelf.collectionView layout:strongSelf didBeginDraggingItemAtIndexPath:strongSelf.selectedItemIndexPath];
+                     if ([strongSelf.delegate
+                          respondsToSelector: @selector(collectionView:layout:didBeginDraggingItemAtIndexPath:)])
+                     {
+                         [strongSelf.delegate
+                          collectionView: strongSelf.collectionView
+                          layout: strongSelf
+                          didBeginDraggingItemAtIndexPath: strongSelf.selectedItemIndexPath];
                      }
                  }
              }];
             
             [self invalidateLayout];
         } break;
-        case UIGestureRecognizerStateEnded: {
+            
+        case UIGestureRecognizerStateEnded:
+        {
             NSIndexPath *currentIndexPath = self.selectedItemIndexPath;
             
-            if (currentIndexPath) {
-                if ([self.delegate respondsToSelector:@selector(collectionView:layout:willEndDraggingItemAtIndexPath:)]) {
-                    [self.delegate collectionView:self.collectionView layout:self willEndDraggingItemAtIndexPath:currentIndexPath];
+            if (currentIndexPath)
+            {
+                if ([self.delegate respondsToSelector: @selector(collectionView:layout:willEndDraggingItemAtIndexPath:)])
+                {
+                    [self.delegate collectionView: self.collectionView layout: self willEndDraggingItemAtIndexPath: currentIndexPath];
                 }
                 
                 self.selectedItemIndexPath = nil;
                 self.currentViewCenter = CGPointZero;
                 
-                UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForItemAtIndexPath:currentIndexPath];
+                UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForItemAtIndexPath: currentIndexPath];
                 
                 __weak typeof(self) weakSelf = self;
                 [UIView
-                 animateWithDuration:0.3
-                 delay:0.0
-                 options:UIViewAnimationOptionBeginFromCurrentState
-                 animations:^{
+                 animateWithDuration: 0.3
+                 delay: 0.0
+                 options: UIViewAnimationOptionBeginFromCurrentState
+                 animations: ^{
                      __strong typeof(self) strongSelf = weakSelf;
-                     if (strongSelf) {
+                     
+                     if (strongSelf)
+                     {
                          strongSelf.currentView.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
                          strongSelf.currentView.center = layoutAttributes.center;
                      }
                  }
-                 completion:^(BOOL finished) {
+                 
+                 completion: ^(BOOL finished) {
                      __strong typeof(self) strongSelf = weakSelf;
-                     if (strongSelf) {
+                     
+                     if (strongSelf)
+                     {
                          [strongSelf.currentView removeFromSuperview];
                          strongSelf.currentView = nil;
                          [strongSelf invalidateLayout];
                          
-                         if ([strongSelf.delegate respondsToSelector:@selector(collectionView:layout:didEndDraggingItemAtIndexPath:)]) {
-                             [strongSelf.delegate collectionView:strongSelf.collectionView layout:strongSelf didEndDraggingItemAtIndexPath:currentIndexPath];
+                         if ([strongSelf.delegate
+                              respondsToSelector: @selector(collectionView:layout:didEndDraggingItemAtIndexPath:)])
+                         {
+                             [strongSelf.delegate
+                              collectionView: strongSelf.collectionView
+                              layout: strongSelf
+                              didEndDraggingItemAtIndexPath: currentIndexPath];
                          }
                      }
                  }];
@@ -383,44 +429,67 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
     }
 }
 
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer {
-    switch (gestureRecognizer.state) {
+- (void) handlePanGesture: (UIPanGestureRecognizer *) gestureRecognizer
+{
+    switch (gestureRecognizer.state)
+    {
         case UIGestureRecognizerStateBegan:
-        case UIGestureRecognizerStateChanged: {
-            self.panTranslationInCollectionView = [gestureRecognizer translationInView:self.collectionView];
+        case UIGestureRecognizerStateChanged:
+        {
+            self.panTranslationInCollectionView = [gestureRecognizer translationInView: self.collectionView];
             CGPoint viewCenter = self.currentView.center = LXS_CGPointAdd(self.currentViewCenter, self.panTranslationInCollectionView);
             
             [self invalidateLayoutIfNecessary];
             
-            switch (self.scrollDirection) {
-                case UICollectionViewScrollDirectionVertical: {
-                    if (viewCenter.y < (CGRectGetMinY(self.collectionView.bounds) + self.scrollingTriggerEdgeInsets.top)) {
-                        [self setupScrollTimerInDirection:LXScrollingDirectionUp];
-                    } else {
-                        if (viewCenter.y > (CGRectGetMaxY(self.collectionView.bounds) - self.scrollingTriggerEdgeInsets.bottom)) {
-                            [self setupScrollTimerInDirection:LXScrollingDirectionDown];
-                        } else {
+            switch (self.scrollDirection)
+            {
+                case UICollectionViewScrollDirectionVertical:
+                {
+                    if (viewCenter.y < (CGRectGetMinY(self.collectionView.bounds) + self.scrollingTriggerEdgeInsets.top))
+                    {
+                        [self setupScrollTimerInDirection: LXScrollingDirectionUp];
+                    }
+                    else
+                    {
+                        if (viewCenter.y > (CGRectGetMaxY(self.collectionView.bounds) - self.scrollingTriggerEdgeInsets.bottom))
+                        {
+                            [self setupScrollTimerInDirection: LXScrollingDirectionDown];
+                        }
+                        else
+                        {
                             [self invalidatesScrollTimer];
                         }
                     }
                 } break;
-                case UICollectionViewScrollDirectionHorizontal: {
-                    if (viewCenter.x < (CGRectGetMinX(self.collectionView.bounds) + self.scrollingTriggerEdgeInsets.left)) {
-                        [self setupScrollTimerInDirection:LXScrollingDirectionLeft];
-                    } else {
-                        if (viewCenter.x > (CGRectGetMaxX(self.collectionView.bounds) - self.scrollingTriggerEdgeInsets.right)) {
-                            [self setupScrollTimerInDirection:LXScrollingDirectionRight];
-                        } else {
+                    
+                case UICollectionViewScrollDirectionHorizontal:
+                {
+                    if (viewCenter.x < (CGRectGetMinX(self.collectionView.bounds) + self.scrollingTriggerEdgeInsets.left))
+                    {
+                        [self setupScrollTimerInDirection: LXScrollingDirectionLeft];
+                    }
+                    else
+                    {
+                        if (viewCenter.x > (CGRectGetMaxX(self.collectionView.bounds) - self.scrollingTriggerEdgeInsets.right))
+                        {
+                            [self setupScrollTimerInDirection: LXScrollingDirectionRight];
+                        }
+                        else
+                        {
                             [self invalidatesScrollTimer];
                         }
                     }
                 } break;
             }
         } break;
-        case UIGestureRecognizerStateEnded: {
+            
+        case UIGestureRecognizerStateEnded:
+        {
             [self invalidatesScrollTimer];
         } break;
-        default: {
+            
+        default:
+        {
             // Do nothing...
         } break;
     }
@@ -428,15 +497,21 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 
 #pragma mark - UICollectionViewLayout overridden methods
 
-- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
-    NSArray *layoutAttributesForElementsInRect = [super layoutAttributesForElementsInRect:rect];
+- (NSArray *) layoutAttributesForElementsInRect: (CGRect) rect
+{
+    NSArray *layoutAttributesForElementsInRect = [super layoutAttributesForElementsInRect: rect];
     
-    for (UICollectionViewLayoutAttributes *layoutAttributes in layoutAttributesForElementsInRect) {
-        switch (layoutAttributes.representedElementCategory) {
-            case UICollectionElementCategoryCell: {
-                [self applyLayoutAttributes:layoutAttributes];
+    for (UICollectionViewLayoutAttributes *layoutAttributes in layoutAttributesForElementsInRect)
+    {
+        switch (layoutAttributes.representedElementCategory)
+        {
+            case UICollectionElementCategoryCell:
+            {
+                [self applyLayoutAttributes: layoutAttributes];
             } break;
-            default: {
+                
+            default:
+            {
                 // Do nothing...
             } break;
         }
@@ -445,14 +520,19 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
     return layoutAttributesForElementsInRect;
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewLayoutAttributes *layoutAttributes = [super layoutAttributesForItemAtIndexPath:indexPath];
+- (UICollectionViewLayoutAttributes *) layoutAttributesForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionViewLayoutAttributes *layoutAttributes = [super layoutAttributesForItemAtIndexPath: indexPath];
     
-    switch (layoutAttributes.representedElementCategory) {
-        case UICollectionElementCategoryCell: {
-            [self applyLayoutAttributes:layoutAttributes];
+    switch (layoutAttributes.representedElementCategory)
+    {
+        case UICollectionElementCategoryCell:
+        {
+            [self applyLayoutAttributes: layoutAttributes];
         } break;
-        default: {
+            
+        default:
+        {
             // Do nothing...
         } break;
     }
@@ -462,20 +542,26 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 
 #pragma mark - UIGestureRecognizerDelegate methods
 
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    if ([self.panGestureRecognizer isEqual:gestureRecognizer]) {
-        return (self.selectedItemIndexPath != nil);
+- (BOOL) gestureRecognizerShouldBegin: (UIGestureRecognizer *) gestureRecognizer
+{
+    if ([self.panGestureRecognizer isEqual: gestureRecognizer])
+    {
+        return self.selectedItemIndexPath != nil;
     }
+    
     return YES;
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    if ([self.longPressGestureRecognizer isEqual:gestureRecognizer]) {
-        return [self.panGestureRecognizer isEqual:otherGestureRecognizer];
+- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer: (UIGestureRecognizer *) otherGestureRecognizer
+{
+    if ([self.longPressGestureRecognizer isEqual: gestureRecognizer])
+    {
+        return [self.panGestureRecognizer isEqual: otherGestureRecognizer];
     }
     
-    if ([self.panGestureRecognizer isEqual:gestureRecognizer]) {
-        return [self.longPressGestureRecognizer isEqual:otherGestureRecognizer];
+    if ([self.panGestureRecognizer isEqual: gestureRecognizer])
+    {
+        return [self.longPressGestureRecognizer isEqual: otherGestureRecognizer];
     }
     
     return NO;
@@ -483,11 +569,16 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 
 #pragma mark - Key-Value Observing methods
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:kLXCollectionViewKeyPath]) {
-        if (self.collectionView != nil) {
+- (void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object change: (NSDictionary *) change context: (void *) context
+{
+    if ([keyPath isEqualToString: kLXCollectionViewKeyPath])
+    {
+        if (self.collectionView != nil)
+        {
             [self setupCollectionView];
-        } else {
+        }
+        else
+        {
             [self invalidatesScrollTimer];
         }
     }
@@ -496,7 +587,8 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 #pragma mark - Depreciated methods
 
 #pragma mark Starting from 0.1.0
-- (void)setUpGestureRecognizersOnCollectionView {
+- (void) setUpGestureRecognizersOnCollectionView
+{
     // Do nothing...
 }
 
