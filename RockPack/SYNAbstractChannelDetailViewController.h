@@ -19,5 +19,8 @@
 // There is no elegant way to make properties only available to subclasses, so delare them here has readonly and re-declare in
 // the subclasses as readwrite in anonymous categories
 @property (nonatomic, strong, readonly) Channel *channel;
+@property (nonatomic, strong, readonly) UIButton *shareButton;
+@property (nonatomic, strong, readonly) UIButton *buyButton;
+@property (nonatomic, strong, readonly) UIImageView *avatarImageView;
 
 @end

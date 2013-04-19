@@ -19,6 +19,9 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
+@property (nonatomic, strong) IBOutlet UIButton *buyButton;
+@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 
 @end
 
@@ -27,7 +30,11 @@
 
 - (id) initWithChannel: (Channel *) channel
 {
-	if ((self = [super init]))
+	if ((self = [super initWithNibName: @"SYNAbstractChannelDetailViewController"
+                                bundle: nil]))
+    {
+		self.channel = channel;
+	}
     {
 		self.channel = channel;
 	}
