@@ -12,7 +12,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelsDetailViewController.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNNetworkEngine.h"
@@ -164,7 +163,7 @@
                                                       
                                                   
                                                       
-                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
                                                       if (!registryResultOk) {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
