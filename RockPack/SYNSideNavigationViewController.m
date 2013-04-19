@@ -11,6 +11,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "AppConstants.h"
 #import "GAI.h"
+#import "SYNDeviceManager.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -57,6 +58,8 @@ typedef enum {
                                 @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"},
                                 @{kSideNavTitle: @"ACCOUNTS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @""}
                                 ];
+        
+        self.state = SideNavigationStateHidden;
     }
         
     return self;
@@ -152,13 +155,25 @@ typedef enum {
 }
 
 
-- (void) tableView: (UITableView *) tableView
-         didSelectRowAtIndexPath: (NSIndexPath *) indexPath
-{
-    if([indexPath compare: self.currentlySelectedIndexPath] == NSOrderedSame)
+- (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
+    
+    
+    if([indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
         return;
     
-    //self.currentlySelectedIndexPath = indexPath;
+    UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath:self.currentlySelectedIndexPath];
+    [previousSelectedCell setSelected:NO];
+    
+    if(self.currentlySelectedIndexPath.row > 3)
+    {
+        
+    }
+    
+    self.currentlySelectedIndexPath = indexPath;
+    
+    
+    
+    
     
     NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
     kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
@@ -169,6 +184,22 @@ typedef enum {
         
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations: ^{
+                             
+                             CGRect sideNavigationFrame = self.view.frame;
+                             
+                             sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - self.view.frame.size.width;
+                             self.view.frame =  sideNavigationFrame;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             self.state = SideNavigationStateFull;
+                             
+                         }];
         
     }
     else
@@ -217,7 +248,23 @@ typedef enum {
             [cell setSelected:NO];
     }
     
+    NSIndexPath* selectedIndexPath = [NSIndexPath indexPathForItem:([[self.cellByPageName allValues] indexOfObject:cellSelected] - 1) inSection:0];
+
+    self.currentlySelectedIndexPath = selectedIndexPath;
     
+}
+
+-(void)deselectAllCells
+{
+    for (int section = 0; section < [self.tableView numberOfSections]; section++)
+    {
+        for (int row = 0; row < [self.tableView numberOfRowsInSection:section]; row++)
+        {
+            NSIndexPath* cellPath = [NSIndexPath indexPathForRow:row inSection:section];
+            UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:cellPath];
+            [cell setSelected:NO];
+        }
+    }
 }
 
 - (void) setCurrentlyLoadedViewController: (UIViewController *) currentlyLoadedVC

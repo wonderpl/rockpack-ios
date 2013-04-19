@@ -59,7 +59,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNCategoryChooserViewController *categoryChooserViewController;
 
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
-@property (nonatomic) BOOL sideNavigationOn;
+
 
 
 @end
@@ -69,7 +69,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize containerViewController;
 @synthesize pageTitleLabel;
 @synthesize addToChannelFrame;
-@synthesize sideNavigationOn;
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
 
@@ -96,12 +95,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         
         
-        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
-        [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
+//        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
+//        [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
         
-        sideNavigationOn = NO;
-        
-        
+    
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
         CGRect autocompleteControllerFrame = self.autocompleteController.view.frame;
@@ -234,11 +231,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
     
-    // Add swipe-away gesture
-    UISwipeGestureRecognizer* inboxLeftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                                action: @selector(panelSwipedAway)];
-    inboxLeftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.navigatioContainerView addGestureRecognizer: inboxLeftSwipeGesture];
+   
     
     
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
@@ -295,17 +288,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
-    NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
-    [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
+    
+    if(self.sideNavigationViewController.state == SideNavigationStateFull)
+    {
+        [self.sideNavigationViewController deselectAllCells];
+        [self showSideNavigation];
+    }
+    else
+    {
+        NSString* controllerTitle = self.containerViewController.showingViewController.title;
+        
+        [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
+    }
 }
 
 
 
--(void)panelSwipedAway
-{
-    [self hideSideNavigation];
-}
 
 -(IBAction)addToChannelPressed:(id)sender
 {
@@ -322,7 +321,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(buttonLocked)
         return;
     
-    if(sideNavigationOn) {
+    if(self.sideNavigationViewController.state == SideNavigationStateFull
+       || self.sideNavigationViewController.state == SideNavigationStateHalf) {
         [self hideSideNavigation];
         sender.highlighted = NO;
     }
@@ -337,14 +337,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) showSideNavigation
 {
     
-    if(sideNavigationOn && !isDragging)
-        return;
     
     NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
     [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
-    
-    self.sideNavigationOn = YES;
     
     
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
@@ -361,6 +357,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {
+                         
+                         self.sideNavigationViewController.state = SideNavigationStateHalf;
                          
                      }];
     
@@ -423,17 +421,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) hideSideNavigation
 {
-    
-    if(!sideNavigationOn && !isDragging)
-        return;
-    
-    
-    
-    self.sideNavigationOn = NO;
+
     
     [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
     
-    [UIView animateWithDuration: kRockieTalkieAnimationDuration
+    [UIView animateWithDuration: 0.2f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                      animations: ^ {
@@ -445,7 +437,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion: ^(BOOL finished) {
                          
                          [self.sideNavigationViewController reset];
-                         
+                         self.sideNavigationViewController.state = SideNavigationStateHidden;
                          
                      }];
 }
@@ -670,7 +662,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.containerViewController navigateToPageByName:pageName];
     
-    [self hideSideNavigation];
+    if(self.sideNavigationViewController.state != SideNavigationStateHidden)
+        [self hideSideNavigation];
     
     
     

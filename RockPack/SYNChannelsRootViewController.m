@@ -77,7 +77,7 @@
     flowLayout.footerReferenceSize = [self footerSize];
     flowLayout.itemSize = [self itemSize];
     flowLayout.sectionInset = UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0);
-    flowLayout.minimumLineSpacing = 50.0;
+    flowLayout.minimumLineSpacing = 30.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     // Work out how hight the inital tab bar is

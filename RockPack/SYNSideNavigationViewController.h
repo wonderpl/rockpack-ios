@@ -10,13 +10,22 @@
 #import "User.h"
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    SideNavigationStateHidden = 0,
+    SideNavigationStateHalf,
+    SideNavigationStateFull
+
+} SideNavigationState;
+
 @interface SYNSideNavigationViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate> {
    
 }
 
+@property (nonatomic) SideNavigationState state;
 @property (nonatomic, weak) User* user;
 @property (nonatomic, strong) NSString* keyForSelectedPage;
 
 -(void)reset;
+-(void)deselectAllCells;
 -(void)setSelectedCellByPageName:(NSString*)pageName;
 @end
