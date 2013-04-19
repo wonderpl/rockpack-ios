@@ -95,10 +95,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationViewController.user = appDelegate.currentUser;
         
         
+        
         UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
         [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
         
         sideNavigationOn = NO;
+        
         
         
         self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
@@ -239,6 +241,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.navigatioContainerView addGestureRecognizer: inboxLeftSwipeGesture];
     
     
+    [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
+    
+    
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -289,6 +294,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     originalAddButtonX = self.addToChannelButton.frame.origin.x;
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
+    
+    NSString* controllerTitle = self.containerViewController.showingViewController.title;
+    
+    [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
 }
 
 
@@ -331,15 +340,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(sideNavigationOn && !isDragging)
         return;
     
-    
-    
-    self.sideNavigationOn = YES;
-    
-    [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
-    
     NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
     [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
+    
+    self.sideNavigationOn = YES;
+    
     
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
     
@@ -439,7 +445,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion: ^(BOOL finished) {
                          
                          [self.sideNavigationViewController reset];
-                         [self.sideNavigationViewController.view removeFromSuperview];
                          
                          
                      }];

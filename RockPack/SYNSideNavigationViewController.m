@@ -44,6 +44,7 @@ typedef enum {
 // Only need synthesize for custom setters, use latest ObjC naming convention
 @synthesize user = _user;
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
+@synthesize keyForSelectedPage;
 
 - (id) init
 {
@@ -121,10 +122,17 @@ typedef enum {
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
         
+        
+        UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
+        selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
+        cell.selectedBackgroundView = selectedView;
+        
+        
         if(navigationType == kSideNavigationTypePage)
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
             NSString* pageName = [navigationElement objectForKey: kSideNavAction];
+            
             [self.cellByPageName setObject:cell forKey:pageName];
         }
         else
@@ -137,9 +145,7 @@ typedef enum {
         
         cell.textLabel.textColor = self.navItemColor;
         
-        UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
-        selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
-        cell.selectedBackgroundView = selectedView;
+        
     } 
     
     return cell;
@@ -199,11 +205,19 @@ typedef enum {
 
 -(void)setSelectedCellByPageName:(NSString*)pageName
 {
-    UITableViewCell* cell = (UITableViewCell*)[self.cellByPageName objectForKey:pageName];
-    if(!cell)
+    self.keyForSelectedPage = pageName;
+    UITableViewCell* cellSelected = (UITableViewCell*)[self.cellByPageName objectForKey:pageName];
+    if(!cellSelected)
         return;
     
-    [cell setSelected:YES];
+    for (UITableViewCell* cell in [self.cellByPageName allValues]) {
+        if(cellSelected == cell)
+            [cell setSelected:YES];
+        else
+            [cell setSelected:NO];
+    }
+    
+    
 }
 
 - (void) setCurrentlyLoadedViewController: (UIViewController *) currentlyLoadedVC
@@ -231,9 +245,7 @@ typedef enum {
 - (void) reset
 {
     self.currentlySelectedIndexPath = nil;
-    for (UITableViewCell* cell in [self.cellByPageName allValues]) {
-        [cell setSelected:NO];
-    }
+    
 }
 
 @end

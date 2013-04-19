@@ -10,10 +10,12 @@
 #import "User.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNSideNavigationViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SYNSideNavigationViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate> {
+   
+}
 
 @property (nonatomic, weak) User* user;
-
+@property (nonatomic, strong) NSString* keyForSelectedPage;
 
 -(void)reset;
 -(void)setSelectedCellByPageName:(NSString*)pageName;
