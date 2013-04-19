@@ -7,9 +7,8 @@
 //
 
 #import "SYNSearchChannelsViewController.h"
-
+#import "SYNSearchTabView.h"
 #import "SYNSearchRootViewController.h"
-#import "SYNSearchItemView.h"
 
 @interface SYNSearchChannelsViewController ()
 

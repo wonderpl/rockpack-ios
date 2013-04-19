@@ -8,10 +8,10 @@
 
 #import "SYNSearchVideosViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNSearchItemView.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "VideoInstance.h"
+#import "SYNSearchTabView.h"
 #import "Video.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
@@ -36,21 +36,8 @@
     self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
                                                            self.videoThumbnailCollectionView.center.y + 30.0);
     
-    self.largeVideoPanelView.center = CGPointMake(self.largeVideoPanelView.center.x,
-                                                  self.largeVideoPanelView.center.y + 30.0);
 }
 
-// FIXME: Should there be a call to super in these methods?
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    //override with empty function
-}
-
-- (void) viewWillAppear:(BOOL)animated
-{
-    // override with empty function
-}
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -87,14 +74,10 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
-//    if(self.itemToUpdate)
-//        [self.itemToUpdate hideItem];
-    
+
     [appDelegate.networkEngine searchVideosForTerm:term];
     
-    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
     
-    self.currentIndexPath = firstIndexPath;
     
     
 }

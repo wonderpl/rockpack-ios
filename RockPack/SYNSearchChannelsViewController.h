@@ -8,14 +8,14 @@
 
 #import "SYNChannelsRootViewController.h"
 
-@class SYNSearchItemView;
+@class SYNSearchTabView;
 @class SYNSearchRootViewController;
 
 @interface SYNSearchChannelsViewController : SYNChannelsRootViewController
 
 
 @property (nonatomic, weak) SYNSearchRootViewController* parent;
-@property (nonatomic, weak) SYNSearchItemView* itemToUpdate;
+@property (nonatomic, weak) SYNSearchTabView* itemToUpdate;
 
 -(void)performSearchWithTerm:(NSString*)term;
 

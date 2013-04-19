@@ -11,7 +11,8 @@
 #import "SYNSearchVideosViewController.h"
 #import "SYNSearchChannelsViewController.h"
 #import "AppConstants.h"
-#import "SYNSearchTabViewController.h"
+#import "SYNDeviceManager.h"
+#import "SYNSearchTabView.h"
 
 @interface SYNSearchRootViewController ()
 
@@ -26,10 +27,16 @@
 
 @property (nonatomic, strong) NSString* currentSelectionId;
 
+@property (nonatomic, strong) SYNSearchTabView* videoSearchTabView;
+@property (nonatomic, strong) SYNSearchTabView* channelsSearchTabView;
+@property (nonatomic, strong) UIView* tabsContainer;
+
 
 @end
 
 @implementation SYNSearchRootViewController
+@synthesize tabsContainer;
+@synthesize videoSearchTabView, channelsSearchTabView;
 
 -(id)initWithViewId:(NSString *)vid
 {
@@ -41,10 +48,13 @@
 
 -(void)loadView
 {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGRect frame = CGRectMake(0.0, 0.0, screenBounds.size.width, screenBounds.size.height);
+    
+    CGRect frame = CGRectMake(0.0, 0.0,
+                              [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                              [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    
     self.view = [[UIView alloc] initWithFrame:frame];
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor greenColor];
 }
 
 
@@ -52,10 +62,66 @@
 {
     [super viewDidLoad];
     
+    
+    
+    self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
+    self.channelsSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeChannels];
+    
+    CGRect channelTabRect = self.channelsSearchTabView.frame;
+    channelTabRect.origin.x = self.videoSearchTabView.frame.size.width;
+    self.channelsSearchTabView.frame = channelTabRect;
+    
+    tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
+                                                            self.channelsSearchTabView.frame.size.width * 2.0,
+                                                            self.channelsSearchTabView.frame.size.height)];
+    
+    [tabsContainer addSubview:self.channelsSearchTabView];
+    [tabsContainer addSubview:self.videoSearchTabView];
+    
+    [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    tabsContainer.center = CGPointMake(self.view.center.x, 100.0);
+    tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
+    
+    
+    [self.view addSubview:tabsContainer];
+    
     // Google Analytics support
     self.trackedViewName = @"Search - Root";
 }
 
+-(void)videoTabPressed:(UIControl*)control
+{
+   
+    self.channelsSearchTabView.selected = NO;
+    self.videoSearchTabView.selected = YES;
+    
+    SYNAbstractViewController* newController;
+    [self.view addSubview:self.searchVideosController.view];
+    newController = self.searchVideosController;
+    
+    
+    if(self.currentController)
+        [self.currentController.view removeFromSuperview];
+    
+    self.currentController = newController;
+    
+}
+
+-(void)channelTabPressed:(UIControl*)control
+{
+    self.channelsSearchTabView.selected = YES;
+    self.videoSearchTabView.selected = NO;
+    SYNAbstractViewController* newController;
+    [self.view addSubview:self.searchChannelsController.view];
+    newController = self.searchChannelsController;
+    
+    if(self.currentController)
+        [self.currentController.view removeFromSuperview];
+    
+    self.currentController = newController;
+}
 
 - (void) viewDidAppear: (BOOL) animated
 {
@@ -97,11 +163,11 @@
     // TODO: Check why we have to invert
     
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
-    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchVideosItemView;
+    self.searchVideosController.itemToUpdate = nil;
     self.searchVideosController.parent = self;
     
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
-    self.searchChannelsController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchChannelsItemView;
+    self.searchChannelsController.itemToUpdate = nil;
     self.searchChannelsController.parent = self;
     
     
@@ -119,7 +185,7 @@
     [self clearOldSearchData];
     
     if(!self.currentController)
-        [self.tabViewController setSelectedWithId:@"0"];
+        [self.tabViewController handleNewTabSelectionWithId:@"0"];
     
     
     [self.searchVideosController performSearchWithTerm:searchTerm];
