@@ -16,5 +16,5 @@
 
 
 -(void)reset;
-
+-(void)setSelectedCellByPageName:(NSString*)pageName;
 @end

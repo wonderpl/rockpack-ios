@@ -331,9 +331,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(sideNavigationOn && !isDragging)
         return;
     
+    
+    
     self.sideNavigationOn = YES;
     
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
+    
+    NSString* controllerTitle = self.containerViewController.showingViewController.title;
+    
+    [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
     
     [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
     
@@ -351,6 +357,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion: ^(BOOL finished) {
                          
                      }];
+    
+    
 }
 
 
@@ -412,6 +420,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(!sideNavigationOn && !isDragging)
         return;
+    
+    
     
     self.sideNavigationOn = NO;
     
@@ -652,7 +662,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
+    
     [self.containerViewController navigateToPageByName:pageName];
+    
+    [self hideSideNavigation];
     
     
     

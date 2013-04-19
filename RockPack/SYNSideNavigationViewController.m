@@ -34,6 +34,7 @@ typedef enum {
 @property (nonatomic, strong) NSIndexPath* currentlySelectedIndexPath;
 @property (nonatomic, strong) UIColor* navItemColor;
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
+@property (nonatomic, strong) NSMutableDictionary* cellByPageName;
 
 @end
 
@@ -76,6 +77,8 @@ typedef enum {
                                         green: (45.0/255.0)
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
+    
+    self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
 }
 
 
@@ -121,6 +124,8 @@ typedef enum {
         if(navigationType == kSideNavigationTypePage)
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
+            NSString* pageName = [navigationElement objectForKey: kSideNavAction];
+            [self.cellByPageName setObject:cell forKey:pageName];
         }
         else
         {
@@ -192,6 +197,15 @@ typedef enum {
 }
 
 
+-(void)setSelectedCellByPageName:(NSString*)pageName
+{
+    UITableViewCell* cell = (UITableViewCell*)[self.cellByPageName objectForKey:pageName];
+    if(!cell)
+        return;
+    
+    [cell setSelected:YES];
+}
+
 - (void) setCurrentlyLoadedViewController: (UIViewController *) currentlyLoadedVC
 {
     if (self.currentlyLoadedViewController)
@@ -217,6 +231,9 @@ typedef enum {
 - (void) reset
 {
     self.currentlySelectedIndexPath = nil;
+    for (UITableViewCell* cell in [self.cellByPageName allValues]) {
+        [cell setSelected:NO];
+    }
 }
 
 @end
