@@ -23,7 +23,6 @@
 #import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
-#import "SYNChannelsAddVideosViewController.h"
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"

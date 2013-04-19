@@ -27,7 +27,6 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNChannelsAddVideosViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -325,9 +324,9 @@
 
 - (void) addToChannel:(Channel*)channel
 {
-    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: channelCreationVC];
+//    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
+//    
+//    [self animatedPushViewController: channelCreationVC];
 }
 
 // User touched the channel thumbnail in a video cell

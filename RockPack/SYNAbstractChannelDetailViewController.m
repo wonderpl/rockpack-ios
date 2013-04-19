@@ -166,34 +166,11 @@
 
 
 - (void) collectionView: (UICollectionView *) collectionView
-                 layout: (UICollectionViewLayout *) layout
-        itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *) toIndexPath
-{
-    [self saveDB];
-}
-
-- (void) collectionView: (UICollectionView *) collectionView
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *)toIndexPath
 {
     [self saveDB];
 }
-
-
-//- (CGSize) collectionView: (UICollectionView *) collectionView
-//                   layout: (UICollectionViewLayout*) collectionViewLayout
-//           referenceSizeForHeaderInSection: (NSInteger) section
-//{
-//    if (collectionView == self.videoThumbnailCollectionView)
-//    {
-//        return CGSizeMake(1024.0f, kChannelDetailsCollectionViewOffsetY);
-//    }
-//    else
-//    {
-//        return CGSizeMake(0, 0);
-//    }
-//}
 
 
 @end
