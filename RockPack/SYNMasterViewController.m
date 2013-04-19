@@ -27,6 +27,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
+#define kMovableViewReloadButtonX 70
+#define kMovableViewReloadButtonXIPhone 63
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
@@ -108,7 +110,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         autocompleteControllerFrame.origin.y = 10.0;
         self.autocompleteController.view.frame = autocompleteControllerFrame;
         
-        self.overEverythingView.userInteractionEnabled = NO;
         
         
         
@@ -135,14 +136,33 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.refreshButton = [SYNRefreshButton refreshButton];
     [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = 70.0f;
+    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]?kMovableViewReloadButtonX:kMovableViewReloadButtonXIPhone;
     self.refreshButton.frame = refreshButtonFrame;
     [self.movableButtonsContainer addSubview:self.refreshButton];
     
     self.closeSearchButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
-    UIImageView *splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
+    
+    UIImageView *splashView;
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        if([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
+        {
+            splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default-568h"]];
+        }
+        else
+        {
+            splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
+        }
+        splashView.center = CGPointMake(splashView.center.x, splashView.center.y-20.0f);
+
+    }
+    else
+    {
+        splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
+    }
+    
 	[self.view addSubview: splashView];
     
     [UIView animateWithDuration: kSplashAnimationDuration
