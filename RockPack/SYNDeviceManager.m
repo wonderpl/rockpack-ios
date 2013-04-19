@@ -24,18 +24,24 @@
 {
     static dispatch_once_t onceQueue;
     static SYNDeviceManager *deviceManager = nil;
-    static UIUserInterfaceIdiom idiom;
     
     
     dispatch_once(&onceQueue, ^{
         deviceManager = [[self alloc] init];
-        idiom = UI_USER_INTERFACE_IDIOM();
-        
     });
     
     return deviceManager;
 }
 
+-(id)init
+{
+    self = [super init];
+    if(self)
+    {
+        idiom = UI_USER_INTERFACE_IDIOM();
+    }
+    return self;
+}
 
 -(BOOL)isIPad
 {
