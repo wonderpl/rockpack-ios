@@ -600,6 +600,8 @@
 		BEE4A69F17021DB4008F9D05 /* SYNChannelsUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */; };
 		BEE4A6C2170B5640008F9D05 /* SYNAccountSettingsEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C1170B563E008F9D05 /* SYNAccountSettingsEmail.m */; };
 		BEE4A6C5170B56B5008F9D05 /* SYNAccountSettingsUsername.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C4170B56B4008F9D05 /* SYNAccountSettingsUsername.m */; };
+		BEEB6F1C1721713500FEFA43 /* PanelMenuBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F1A1721713500FEFA43 /* PanelMenuBottom.png */; };
+		BEEB6F1D1721713500FEFA43 /* PanelMenuBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F1B1721713500FEFA43 /* PanelMenuBottom@2x.png */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
@@ -1353,6 +1355,8 @@
 		BEE4A6C1170B563E008F9D05 /* SYNAccountSettingsEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsEmail.m; sourceTree = "<group>"; };
 		BEE4A6C3170B56B3008F9D05 /* SYNAccountSettingsUsername.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsUsername.h; sourceTree = "<group>"; };
 		BEE4A6C4170B56B4008F9D05 /* SYNAccountSettingsUsername.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsUsername.m; sourceTree = "<group>"; };
+		BEEB6F1A1721713500FEFA43 /* PanelMenuBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelMenuBottom.png; path = Assets/Images/PanelMenuBottom.png; sourceTree = "<group>"; };
+		BEEB6F1B1721713500FEFA43 /* PanelMenuBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelMenuBottom@2x.png"; path = "Assets/Images/PanelMenuBottom@2x.png"; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
@@ -2899,6 +2903,8 @@
 				BE7D34DB1715A9560085AB81 /* ButtonSettingsHighlighted@2x.png */,
 				BE7D34E01715A9BE0085AB81 /* PanelMenu.png */,
 				BE7D34E11715A9BE0085AB81 /* PanelMenu@2x.png */,
+				BEEB6F1A1721713500FEFA43 /* PanelMenuBottom.png */,
+				BEEB6F1B1721713500FEFA43 /* PanelMenuBottom@2x.png */,
 				BE7D34E61715AC890085AB81 /* ButtonSearchHighlighted.png */,
 				BE7D34E71715AC890085AB81 /* ButtonSearchHighlighted@2x.png */,
 				BE7D34EE1715AD060085AB81 /* ButtonNavHighlighted.png */,
@@ -3529,6 +3535,8 @@
 				01ABBB2517205541007E4462 /* ButtonBuy@2x.png in Resources */,
 				01ABBB2617205541007E4462 /* ButtonBuyHighlighted.png in Resources */,
 				01ABBB2717205541007E4462 /* ButtonBuyHighlighted@2x.png in Resources */,
+				BEEB6F1C1721713500FEFA43 /* PanelMenuBottom.png in Resources */,
+				BEEB6F1D1721713500FEFA43 /* PanelMenuBottom@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

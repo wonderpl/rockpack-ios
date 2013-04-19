@@ -37,6 +37,8 @@ typedef enum {
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
 @property (nonatomic, strong) NSMutableDictionary* cellByPageName;
 
+@property (nonatomic, strong) UIView* bottomExtraView;
+
 @end
 
 
@@ -60,6 +62,11 @@ typedef enum {
                                 ];
         
         self.state = SideNavigationStateHidden;
+        
+        self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.origin.y + self.view.frame.size.height, self.view.frame.size.width, 300.0)];
+        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        [self.view addSubview:self.bottomExtraView];
+        
     }
         
     return self;
@@ -292,6 +299,24 @@ typedef enum {
 - (void) reset
 {
     self.currentlySelectedIndexPath = nil;
+    
+}
+
+
+#pragma mark - Orientation Change
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    {
+        
+    }
+    else
+    {
+        
+    }
+    
     
 }
 
