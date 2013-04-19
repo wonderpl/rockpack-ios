@@ -142,9 +142,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.closeSearchButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
-    
-    UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
-    splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];
+    NSString* imageName;
+    if ([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        imageName = @"Default-Landscape.png";
+    }
+    else
+    {
+        imageName = @"Default.png";
+    }
+    UIImageView *splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: imageName]];
 	[self.view addSubview: splashView];
     
     [UIView animateWithDuration: kSplashAnimationDuration

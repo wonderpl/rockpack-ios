@@ -80,7 +80,7 @@
 
 -(void)loadView
 {
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
+    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenWidth]);
     UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
     scrollView.autoresizingMask = UIViewAutoresizingNone;
     scrollView.backgroundColor = [UIColor clearColor];
@@ -147,10 +147,10 @@
     // == Populate Scroller == //
     
     
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
-    self.scrollView.frame = scrollerFrame;
+    //CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
+//    self.scrollView.frame = scrollerFrame;
     UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
-    feedNavController.view.frame = CGRectMake (0.0f, 0.0f, 1024.0f, 748.0f);
+//    feedNavController.view.frame = CGRectMake (0.0f, 0.0f, 1024.0f, 748.0f);
     [self addChildViewController:feedNavController];
     
     [self addChildViewController:[self wrapInNavigationController:channelsRootViewController]];
@@ -192,7 +192,11 @@
 -(void)packViewControllersForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     CGRect newFrame;
-    if(UIDeviceOrientationIsLandscape(orientation))
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        newFrame = CGRectMake(0, 0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    }
+    else if(UIDeviceOrientationIsLandscape(orientation))
     {
         newFrame = CGRectMake(0.0f, 0.0f, 1024.0f, 748.0f);
     }

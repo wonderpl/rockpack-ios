@@ -47,12 +47,22 @@
 
 - (void) loadView
 {
-    SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
-    standardFlowLayout.minimumInteritemSpacing = 0.0f;
-    standardFlowLayout.minimumLineSpacing = 10.0f;
-    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 10.0f, 0, 10.0f);
+    UIEdgeInsets insets;
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        insets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+    }
+    else
+    {
+        insets = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
+    }
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout =
+    [SYNIntegralCollectionViewFlowLayout
+        layoutWithItemSize:CGSizeMake(507.0f , 182.0f)
+        minimumInterItemSpacing:0.0f
+        minimumLineSpacing:10.0f
+        scrollDirection:UICollectionViewScrollDirectionVertical
+        sectionInset:insets];
     
     CGRect videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
     
@@ -202,7 +212,11 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([[SYNDeviceManager sharedInstance] isLandscape])
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        return CGSizeMake(310,240);
+    }
+    else if([[SYNDeviceManager sharedInstance] isLandscape])
     {
         return CGSizeMake(497, 170);
     }

@@ -10,4 +10,7 @@
 
 @interface SYNIntegralCollectionViewFlowLayout : UICollectionViewFlowLayout
 
++(SYNIntegralCollectionViewFlowLayout*)layoutWithItemSize:(CGSize)itemSize minimumInterItemSpacing:(CGFloat)minSpace minimumLineSpacing:(CGFloat)lineSpace scrollDirection:(UICollectionViewScrollDirection)scrollDirection sectionInset:(UIEdgeInsets)insets;
+
+
 @end

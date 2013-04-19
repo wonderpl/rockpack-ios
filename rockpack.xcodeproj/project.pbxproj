@@ -392,6 +392,10 @@
 		1FF359001704D39900E543F4 /* ComingSoonFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF358FE1704D39900E543F4 /* ComingSoonFriends@2x.png */; };
 		38C3FA7417203D6600F126B1 /* PanelDayPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */; };
 		38C3FA7517203D6600F126B1 /* PanelDayPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */; };
+		38C3FA7917213D1500F126B1 /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7617213D1500F126B1 /* Default-568h@2x~iphone.png */; };
+		38C3FA7A17213D1500F126B1 /* Default@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7717213D1500F126B1 /* Default@2x~iphone.png */; };
+		38C3FA7B17213D1500F126B1 /* Default~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7817213D1500F126B1 /* Default~iphone.png */; };
+		38C3FA7D17213D6700F126B1 /* SYNMasterViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7C17213D6700F126B1 /* SYNMasterViewController~iphone.xib */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B816F7697900245314 /* ButtonFlagDefault.png */; };
 		BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */; };
@@ -1082,6 +1086,10 @@
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelDayPortrait.png; path = Assets/Images/PanelDayPortrait.png; sourceTree = "<group>"; };
 		38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelDayPortrait@2x.png"; path = "Assets/Images/PanelDayPortrait@2x.png"; sourceTree = "<group>"; };
+		38C3FA7617213D1500F126B1 /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x~iphone.png"; path = "Assets/Images/Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
+		38C3FA7717213D1500F126B1 /* Default@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iphone.png"; path = "Assets/Images/Default@2x~iphone.png"; sourceTree = "<group>"; };
+		38C3FA7817213D1500F126B1 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iphone.png"; path = "Assets/Images/Default~iphone.png"; sourceTree = "<group>"; };
+		38C3FA7C17213D6700F126B1 /* SYNMasterViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNMasterViewController~iphone.xib"; sourceTree = "<group>"; };
 		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
 		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE03A6B816F7697900245314 /* ButtonFlagDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFlagDefault.png; path = Assets/Images/ButtonFlagDefault.png; sourceTree = "<group>"; };
@@ -1988,6 +1996,9 @@
 		019824F31629CE9900216900 /* Launch Images */ = {
 			isa = PBXGroup;
 			children = (
+				38C3FA7617213D1500F126B1 /* Default-568h@2x~iphone.png */,
+				38C3FA7717213D1500F126B1 /* Default@2x~iphone.png */,
+				38C3FA7817213D1500F126B1 /* Default~iphone.png */,
 				01677F0E16554CEE00B1B1D8 /* Default-Landscape.png */,
 				01677F0F16554CEE00B1B1D8 /* Default-Landscape@2x.png */,
 			);
@@ -2685,6 +2696,7 @@
 				BE0815C316D5389C00ADB1DC /* SYNMasterViewController.h */,
 				BE0815C416D5389C00ADB1DC /* SYNMasterViewController.m */,
 				BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */,
+				38C3FA7C17213D6700F126B1 /* SYNMasterViewController~iphone.xib */,
 			);
 			name = "Master View Controller";
 			sourceTree = "<group>";
@@ -3531,6 +3543,10 @@
 				01ABBB2517205541007E4462 /* ButtonBuy@2x.png in Resources */,
 				01ABBB2617205541007E4462 /* ButtonBuyHighlighted.png in Resources */,
 				01ABBB2717205541007E4462 /* ButtonBuyHighlighted@2x.png in Resources */,
+				38C3FA7917213D1500F126B1 /* Default-568h@2x~iphone.png in Resources */,
+				38C3FA7A17213D1500F126B1 /* Default@2x~iphone.png in Resources */,
+				38C3FA7B17213D1500F126B1 /* Default~iphone.png in Resources */,
+				38C3FA7D17213D6700F126B1 /* SYNMasterViewController~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3827,6 +3843,7 @@
 				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3855,6 +3872,7 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = rockpack;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3912,6 +3930,7 @@
 				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;

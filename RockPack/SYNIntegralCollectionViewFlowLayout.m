@@ -13,7 +13,16 @@
 
 @implementation SYNIntegralCollectionViewFlowLayout
 
-
++(SYNIntegralCollectionViewFlowLayout*)layoutWithItemSize:(CGSize)itemSize minimumInterItemSpacing:(CGFloat)minSpace minimumLineSpacing:(CGFloat)lineSpace scrollDirection:(UICollectionViewScrollDirection)scrollDirection sectionInset:(UIEdgeInsets)insets
+{
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
+    standardFlowLayout.itemSize = itemSize;
+    standardFlowLayout.minimumInteritemSpacing = minSpace;
+    standardFlowLayout.minimumLineSpacing = lineSpace;
+    standardFlowLayout.scrollDirection = scrollDirection;
+    standardFlowLayout.sectionInset = insets;
+    return standardFlowLayout;
+}
 
 
 //  Solution #2 Inspired by...
