@@ -58,10 +58,16 @@ const float kFreshLoadAnimationDuration2 = 0.35f;
 - (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
                                    placeHolderImage: (UIImage*) image
                                         usingEngine: (MKNetworkEngine*) imageCacheEngine
-                                          animation: (BOOL) yesOrNo {
-    
+                                          animation: (BOOL) yesOrNo
+{
     if (image)
         self.image = image; // placeholder
+    
+    // Bail if invalid url
+    if ([url.description isEqualToString: @""])
+    {
+        return nil;
+    }
     
     
     [self.imageFetchOperation2 cancel];

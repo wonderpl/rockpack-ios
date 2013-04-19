@@ -23,6 +23,9 @@
 #import "SYNVideoQueueViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <XRay/XRay.h>
+#import <objc/runtime.h>
+
+extern void instrumentObjcMessageSends(BOOL);
 
 
 @interface SYNAppDelegate ()
@@ -80,7 +83,7 @@
     }
     
     // Automatically send uncaught exceptions to Google Analytics.
-    [GAI sharedInstance].trackUncaughtExceptions = YES;
+//    [GAI sharedInstance].trackUncaughtExceptions = YES;
     
     // Optional: set Google Analytics dispatch interval 
     [GAI sharedInstance].dispatchInterval = 30;
@@ -147,7 +150,7 @@
         self.window.rootViewController = [self createAndReturnLoginViewController];
     }
     
-    
+//    instrumentObjcMessageSends(YES); //to start
     
     
     return YES;

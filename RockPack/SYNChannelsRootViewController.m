@@ -159,12 +159,11 @@
                                                           return;
                                                       
                                                       currentTotal = [totalNumber integerValue];
-                                                      
-                                                      NSLog (@"%@", weakSelf);
+                                                    
                                                       
                                                   
                                                       
-                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:NO];
                                                       if (!registryResultOk) {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);

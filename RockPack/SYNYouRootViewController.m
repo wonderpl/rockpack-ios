@@ -240,8 +240,8 @@
 {
     [super viewDidAppear:animated];
     
-    NSLog(@"height1: %f", self.channelThumbnailCollectionView.contentSize.height);
-    NSLog(@"height2: %f", self.subscriptionsViewController.collectionView.contentSize.height);
+//    NSLog(@"height1: %f", self.channelThumbnailCollectionView.contentSize.height);
+//    NSLog(@"height2: %f", self.subscriptionsViewController.collectionView.contentSize.height);
     
     CGSize subSize = self.subscriptionsViewController.collectionView.contentSize;
     CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;
