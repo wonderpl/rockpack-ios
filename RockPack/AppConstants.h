@@ -40,7 +40,7 @@
 
 #define kFeedTitle                  @"Feed"
 #define kChannelsTitle              @"Channels"
-#define kProfileTitle               @"My Rockpack"
+#define kProfileTitle               @"Profile"
 #define kSearchTitle                @"Search"
 #define kUserChanneslTitle          @"UserChannels"
 #define kChannelDetailsTitle        @"ChannelDetails"

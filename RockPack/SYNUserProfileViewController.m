@@ -26,7 +26,7 @@
     [super viewDidLoad];
     
     self.fullNameLabel.font = [UIFont boldRockpackFontOfSize:30];
-    self.userNameLabel.font = [UIFont rockpackFontOfSize:14.0];
+    self.userNameLabel.font = [UIFont rockpackFontOfSize:12.0];
     
     // pack
     
@@ -70,7 +70,7 @@
     if([channelOwner isKindOfClass:[User class]])
     {
         
-        self.fullNameLabel.text = ((User*)channelOwner).fullName;
+        self.fullNameLabel.text = [((User*)channelOwner).fullName uppercaseString];
         
     }
     

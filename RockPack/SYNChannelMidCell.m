@@ -18,7 +18,7 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     
 }
 
