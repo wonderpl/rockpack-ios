@@ -486,7 +486,7 @@
 		BE2D2140171C527B00B4B755 /* ButtonBackLabel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */; };
 		BE2D2141171C527B00B4B755 /* ButtonBackLabelHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */; };
 		BE2D2142171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */; };
-		BE2D2145171C5A0600B4B755 /* SYNAutocompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */; };
+		BE2D2145171C5A0600B4B755 /* SYNSearchBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */; };
 		BE2D214C171D5B9500B4B755 /* IconSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214A171D5B9500B4B755 /* IconSearch.png */; };
 		BE2D214D171D5B9500B4B755 /* IconSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214B171D5B9500B4B755 /* IconSearch@2x.png */; };
 		BE2D2152171D5BD500B4B755 /* ButtonCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D214E171D5BD500B4B755 /* ButtonCancel.png */; };
@@ -1205,8 +1205,8 @@
 		BE2D213C171C527B00B4B755 /* ButtonBackLabel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabel@2x.png"; path = "Assets/Images/ButtonBackLabel@2x.png"; sourceTree = "<group>"; };
 		BE2D213D171C527B00B4B755 /* ButtonBackLabelHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBackLabelHighlighted.png; path = Assets/Images/ButtonBackLabelHighlighted.png; sourceTree = "<group>"; };
 		BE2D213E171C527B00B4B755 /* ButtonBackLabelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBackLabelHighlighted@2x.png"; path = "Assets/Images/ButtonBackLabelHighlighted@2x.png"; sourceTree = "<group>"; };
-		BE2D2143171C5A0600B4B755 /* SYNAutocompleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteViewController.h; sourceTree = "<group>"; };
-		BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteViewController.m; sourceTree = "<group>"; };
+		BE2D2143171C5A0600B4B755 /* SYNSearchBoxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchBoxViewController.h; sourceTree = "<group>"; };
+		BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchBoxViewController.m; sourceTree = "<group>"; };
 		BE2D214A171D5B9500B4B755 /* IconSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconSearch.png; path = Assets/Images/IconSearch.png; sourceTree = "<group>"; };
 		BE2D214B171D5B9500B4B755 /* IconSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconSearch@2x.png"; path = "Assets/Images/IconSearch@2x.png"; sourceTree = "<group>"; };
 		BE2D214E171D5BD500B4B755 /* ButtonCancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCancel.png; path = Assets/Images/ButtonCancel.png; sourceTree = "<group>"; };
@@ -2691,17 +2691,17 @@
 			name = Overlays;
 			sourceTree = "<group>";
 		};
-		BE0AAD2616E6521300DA958E /* Autocomplete Panel */ = {
+		BE0AAD2616E6521300DA958E /* Search Box */ = {
 			isa = PBXGroup;
 			children = (
-				BE2D2143171C5A0600B4B755 /* SYNAutocompleteViewController.h */,
-				BE2D2144171C5A0600B4B755 /* SYNAutocompleteViewController.m */,
+				BE2D2143171C5A0600B4B755 /* SYNSearchBoxViewController.h */,
+				BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */,
 				BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */,
 				BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */,
 				BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */,
 				BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */,
 			);
-			name = "Autocomplete Panel";
+			name = "Search Box";
 			sourceTree = "<group>";
 		};
 		BE21EE8416FA200C0067223B /* Specific Fields */ = {
@@ -3023,7 +3023,7 @@
 				BE7D3538171708E20085AB81 /* Refresh Button */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				BE7C12A116EA68DE0015789B /* Large Video Player */,
-				BE0AAD2616E6521300DA958E /* Autocomplete Panel */,
+				BE0AAD2616E6521300DA958E /* Search Box */,
 				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				BE0815CE16D6444200ADB1DC /* Overlays */,
@@ -3717,7 +3717,7 @@
 				BE7D353B171708F60085AB81 /* SYNRefreshButton.m in Sources */,
 				BE7D354C1718667F0085AB81 /* SYNUserProfileViewController.m in Sources */,
 				BE7D3551171870780085AB81 /* SYNBackButtonControl.m in Sources */,
-				BE2D2145171C5A0600B4B755 /* SYNAutocompleteViewController.m in Sources */,
+				BE2D2145171C5A0600B4B755 /* SYNSearchBoxViewController.m in Sources */,
 				BE86BF17171F001E0006DC8A /* SYNSubscriptionsViewController.m in Sources */,
 				BE86BF1A171F07B10006DC8A /* SYNChannelMidCell.m in Sources */,
 				BE86BF1F171FFB980006DC8A /* SYNYouHeaderView.m in Sources */,

@@ -36,13 +36,16 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 
+@property (nonatomic) BOOL hasReplacedNavigationController;
+
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
-
+@property (nonatomic, weak) UINavigationController* replacementNavigationController;
+@property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
@@ -60,6 +63,7 @@
 @implementation SYNContainerViewController
 
 @synthesize selectedViewController;
+@synthesize hasReplacedNavigationController;
 @synthesize currentScreenOffset;
 @synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
@@ -272,11 +276,57 @@
 - (void) popCurrentViewController: (id) sender
 {
 
-    UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
+    // two functions for pop.
     
-    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+    if(hasReplacedNavigationController)
+    {
+        
+        
+        hasReplacedNavigationController = NO;
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
+        
+        
+        
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseIn
+                         animations: ^{
+                             self.replacementNavigationController.view.alpha = 0.0;
+                             
+                         }
+                         completion: ^(BOOL finished) {
+                             self.selectedViewController = self.seachViewNavigationViewController;
+                             
+                             [UIView animateWithDuration: 0.7f
+                                                   delay: 0.2f
+                                                 options: UIViewAnimationOptionCurveEaseOut
+                                              animations: ^{
+                                                  self.replacedNavigationController.view.alpha = 1.0;
+                                              }
+                                              completion: ^(BOOL finished) {
+                                                  
+                                                  self.replacementNavigationController = nil;
+                                                  [self.replacementNavigationController.view removeFromSuperview];
+                                              }];
+                         }];
+        
+        hasReplacedNavigationController = NO;
+    }
+    else
+    {
     
-    [abstractVC animatedPopViewController];
+        UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
+        
+        SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+        
+        [abstractVC animatedPopViewController];
+    
+    }
+    
+    
     
     self.scrollView.scrollEnabled = YES;
     
@@ -305,7 +355,9 @@
 
     [self replaceShowingNavigationController:self.seachViewNavigationViewController];
     
+    
     [self.searchViewController showSearchResultsForTerm: searchTerm];
+    
     
     
 }
@@ -330,9 +382,14 @@
 - (void) replaceShowingNavigationController:(UINavigationController*)navigationController
 {
     UINavigationController* showingNavController = [self showingViewController].navigationController;
-
     
+    self.replacedNavigationController = showingNavController;
 
+    hasReplacedNavigationController = YES;
+    
+    self.replacementNavigationController = navigationController;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
     
     CGRect vcFrame = navigationController.view.frame;
     vcFrame.origin.x = showingNavController.view.frame.origin.x;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAutocompleteViewController.h"
+#import "SYNSearchBoxViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNAutocompleteSuggestionsController.h"
 #import "SYNAppDelegate.h"
@@ -18,7 +18,7 @@
 
 #define kAutocompleteTime 0.2
 
-@interface SYNAutocompleteViewController ()
+@interface SYNSearchBoxViewController ()
 
 @property (nonatomic, strong) UITextField* searchTextField;
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
@@ -34,7 +34,7 @@
 
 @end
 
-@implementation SYNAutocompleteViewController
+@implementation SYNSearchBoxViewController
 
 @synthesize searchTextField;
 @synthesize appDelegate;
@@ -42,7 +42,7 @@
 @synthesize backgroundPanel;
 @synthesize initialPanelHeight;
 @synthesize grayPanel;
-
+@synthesize isOnScreen;
 
 -(void)loadView
 {
@@ -137,10 +137,18 @@
     self.backgroundPanel.frame = CGRectMake(0.0, 0.0,
                                             barWidth, 61.0);
     
+    isOnScreen = YES;
+    
     
     [self.searchTextField becomeFirstResponder];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    isOnScreen = NO;
+}
 
 #pragma mark - Text Field Delegate
 
