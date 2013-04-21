@@ -288,8 +288,6 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
         
         
-        
-        
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseIn

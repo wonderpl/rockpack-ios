@@ -41,6 +41,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
+@property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 @property (nonatomic) CGFloat sideNavigationOriginCenterX;
@@ -49,6 +50,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
+
+@property (nonatomic) BOOL showingBackButton;
 
 
 @property (nonatomic) CGRect addToChannelFrame;
@@ -69,6 +72,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @synthesize containerViewController;
 @synthesize pageTitleLabel;
+@synthesize showingBackButton;
 @synthesize addToChannelFrame;
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
@@ -564,7 +568,24 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     self.sideNavigationButton.hidden = YES;
+    CGRect sboxFrame;
+    if(showingBackButton)
+    {
+        sboxFrame = self.searchBoxController.view.frame;
+        
+        sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
+        
+        
+    }
+    else
+    {
+        
+        sboxFrame.origin.x = 10.0;
+    }
     
+    sboxFrame.size.width = self.searchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+    sboxFrame.origin.y = 10.0;
+    self.searchBoxController.view.frame = sboxFrame;
     
     [self.view addSubview:self.searchBoxController.view];
 }
@@ -647,8 +668,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             [UIView animateWithDuration:0.5 animations:^{
                 CGRect sboxFrame = self.searchBoxController.view.frame;
-                sboxFrame.size.width -= kSearchBoxShrinkFactor;
-                sboxFrame.origin.x += kSearchBoxShrinkFactor;
+                sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
+                sboxFrame.size.width = self.searchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
                 self.searchBoxController.view.frame = sboxFrame;
             }];
         }
@@ -659,12 +680,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.backButtonControl removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         if(self.searchBoxController.isOnScreen)
         {
-            [UIView animateWithDuration:0.5 animations:^{
+            [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 CGRect sboxFrame = self.searchBoxController.view.frame;
-                sboxFrame.size.width += kSearchBoxShrinkFactor;
-                sboxFrame.origin.x -= kSearchBoxShrinkFactor;
+                sboxFrame.origin.x = 10.0;
+                sboxFrame.size.width = self.searchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                
                 self.searchBoxController.view.frame = sboxFrame;
-            }];
+            } completion:nil];
+            
         }
         [self showBackButton:NO];
     }
@@ -696,12 +719,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (show)
     {
+        showingBackButton = YES;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = 8.0;
         targetAlpha = 1.0;
     }
     else
     {
+        showingBackButton = NO;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
         targetAlpha = 0.0;

@@ -133,9 +133,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
-    self.backgroundPanel.frame = CGRectMake(0.0, 0.0,
-                                            barWidth, 61.0);
+    
     
     isOnScreen = YES;
     
