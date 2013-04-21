@@ -608,6 +608,8 @@
 		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
 		BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
+		BEFAE89817241FD5009B2F66 /* SearchTabSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */; };
+		BEFAE89917241FD5009B2F66 /* SearchTabSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */; };
 		C76BF297AD0F44ABBFCB5A85 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3685246F69AA4C9B93DDEDAC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -1369,6 +1371,8 @@
 		BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueViewController.m; sourceTree = "<group>"; };
 		BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSoundPlayer.h; sourceTree = "<group>"; };
 		BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSoundPlayer.m; sourceTree = "<group>"; };
+		BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchTabSelected.png; path = Assets/Images/SearchTabSelected.png; sourceTree = "<group>"; };
+		BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTabSelected@2x.png"; path = "Assets/Images/SearchTabSelected@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2840,6 +2844,8 @@
 				01AEFBE71701AD150060467A /* GlowSearch@2x.png */,
 				1F6D17AA1700A23100B66F09 /* BarHeaderSearchSelected.png */,
 				1F6D17AB1700A23100B66F09 /* BarHeaderSearchSelected@2x.png */,
+				BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */,
+				BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -3534,6 +3540,8 @@
 				BEEB6F27172181FD00FEFA43 /* SearchTabHighlighted.png in Resources */,
 				BEEB6F28172181FD00FEFA43 /* SearchTabHighlighted@2x.png in Resources */,
 				01ABBB3417218A60007E4462 /* SYNAbstractChannelDetailViewController.xib in Resources */,
+				BEFAE89817241FD5009B2F66 /* SearchTabSelected.png in Resources */,
+				BEFAE89917241FD5009B2F66 /* SearchTabSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

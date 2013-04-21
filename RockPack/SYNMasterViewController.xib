@@ -384,6 +384,14 @@
 					<int key="connectionID">124</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">closeSearchButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="166375579"/>
+					</object>
+					<int key="connectionID">127</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">showAndHideSideNavigation:</string>
 						<reference key="source" ref="289097721"/>
@@ -555,7 +563,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">124</int>
+			<int key="maxID">127</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -570,30 +578,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">GAITrackedViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addToChannelPressed:">id</string>
-						<string key="cancelButtonPressed:">id</string>
-						<string key="showAndHideSideNavigation:">UIButton</string>
-						<string key="showSearchBoxField:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addToChannelPressed:">
-							<string key="name">addToChannelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelButtonPressed:">
-							<string key="name">cancelButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showAndHideSideNavigation:">
-							<string key="name">showAndHideSideNavigation:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="showSearchBoxField:">
-							<string key="name">showSearchBoxField:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addToChannelButton">UIButton</string>
 						<string key="closeSearchButton">UIButton</string>

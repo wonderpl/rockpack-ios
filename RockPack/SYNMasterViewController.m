@@ -145,7 +145,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.refreshButton.frame = refreshButtonFrame;
     [self.movableButtonsContainer addSubview:self.refreshButton];
     
-    self.closeSearchButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -175,7 +174,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Cancel Button == //
     
-    self.closeSearchButton.hidden = YES;
+    //self.closeSearchButton.hidden = YES;
     
     
     
@@ -583,7 +582,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         sboxFrame.origin.x = 10.0;
     }
     
-    sboxFrame.size.width = self.searchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+    sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
@@ -598,6 +597,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(!termString)
         return;
+    
+    self.closeSearchButton.hidden = YES;
+    self.sideNavigationButton.hidden = NO;
     
     [self.containerViewController showSearchViewControllerWithTerm:termString];
     
@@ -669,7 +671,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             [UIView animateWithDuration:0.5 animations:^{
                 CGRect sboxFrame = self.searchBoxController.view.frame;
                 sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
-                sboxFrame.size.width = self.searchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
                 self.searchBoxController.view.frame = sboxFrame;
             }];
         }
@@ -683,8 +685,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 CGRect sboxFrame = self.searchBoxController.view.frame;
                 sboxFrame.origin.x = 10.0;
-                sboxFrame.size.width = self.searchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-                
+                sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                self.sideNavigationButton.hidden = YES;
+                self.closeSearchButton.hidden = NO;
                 self.searchBoxController.view.frame = sboxFrame;
             } completion:nil];
             

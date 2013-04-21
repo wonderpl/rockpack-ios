@@ -31,8 +31,8 @@
     
     
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
-    collectionFrame.origin.y += 30.0;
-    collectionFrame.size.height -= 30.0;
+    collectionFrame.origin.y += 60.0;
+    collectionFrame.size.height -= 60.0;
     self.channelThumbnailCollectionView.frame = collectionFrame;
 }
 

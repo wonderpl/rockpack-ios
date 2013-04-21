@@ -36,8 +36,8 @@
     // override the data loading
     
     CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
-    collectionFrame.origin.y += 30.0;
-    collectionFrame.size.height -= 60.0;
+    collectionFrame.origin.y += 60.0;
+    collectionFrame.size.height -= 90.0;
     self.videoThumbnailCollectionView.frame = collectionFrame;
     
 }
@@ -129,7 +129,7 @@
         [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         NSString* viewsNumberString = [numberFormatter stringFromNumber:video.viewCount];
         
-        videoThumbnailCell.numberOfViewLabel.text = [NSString stringWithFormat:@"%@ views", viewsNumberString];
+        videoThumbnailCell.numberOfViewLabel.text = [[NSString stringWithFormat:@"%@ views", viewsNumberString] uppercaseString];
         
         
         NSCalendar* currentCalendar = [NSCalendar currentCalendar];
@@ -149,7 +149,7 @@
         
         
         
-        videoThumbnailCell.dateAddedLabel.text = format;
+        videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
         
         NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
         NSUInteger seconds = [video.duration integerValue] % 60;

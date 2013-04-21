@@ -17,7 +17,7 @@
     if (self = [super init])
     {
         backgroundImageOff = [UIImage imageNamed:@"SearchTab"];
-        backgroundImageOn = [UIImage imageNamed:@"SearchTabHighlighted"];
+        backgroundImageOn = [UIImage imageNamed:@"SearchTabSelected"];
         
         self.frame = CGRectMake(0.0, 0.0, backgroundImageOn.size.width, backgroundImageOn.size.height);
         
@@ -41,9 +41,9 @@
         [self addSubview:bgImageView];
         
         CGRect labelFrame = self.frame;
-        labelFrame.origin.y += 2.0f;
+        labelFrame.origin.y += 4.0f;
         titleLabel = [[UILabel alloc] initWithFrame:labelFrame];
-        titleLabel.font = [UIFont rockpackFontOfSize:18.0];
+        titleLabel.font = [UIFont rockpackFontOfSize:16.0];
         titleLabel.textColor = offColor;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
