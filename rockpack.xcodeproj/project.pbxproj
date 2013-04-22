@@ -2072,7 +2072,6 @@
 		01982563162ADEAD00216900 /* Abstract */ = {
 			isa = PBXGroup;
 			children = (
-				01ABBB3317218A60007E4462 /* SYNAbstractChannelDetailViewController.xib */,
 				01ABBACB171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.h */,
 				01ABBACC171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.m */,
 				01ABBACD171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib */,
@@ -2080,6 +2079,7 @@
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
 				01EC6234166EAAA5003154B1 /* SYNAbstractChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNAbstractChannelDetailViewController.m */,
+				01ABBB3317218A60007E4462 /* SYNAbstractChannelDetailViewController.xib */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
