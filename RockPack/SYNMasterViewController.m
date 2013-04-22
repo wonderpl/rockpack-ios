@@ -269,6 +269,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+-(NSUInteger)supportedInterfaceOrientations
+{
+    if([[SYNDeviceManager sharedInstance]isIPhone])
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    else
+    {
+        return UIInterfaceOrientationMaskAll;
+    }
+}
+
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
