@@ -274,7 +274,7 @@
 		01ABBB2517205541007E4462 /* ButtonBuy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBB1117205541007E4462 /* ButtonBuy@2x.png */; };
 		01ABBB2617205541007E4462 /* ButtonBuyHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBB1217205541007E4462 /* ButtonBuyHighlighted.png */; };
 		01ABBB2717205541007E4462 /* ButtonBuyHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBB1317205541007E4462 /* ButtonBuyHighlighted@2x.png */; };
-		01ABBB3417218A60007E4462 /* SYNAbstractChannelDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBB3317218A60007E4462 /* SYNAbstractChannelDetailViewController.xib */; };
+		01ABBB3417218A60007E4462 /* SYNChannelDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */; };
 		01AEFBCD1701AC460060467A /* SYNActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01AEFBCC1701AC460060467A /* SYNActivityManager.m */; };
 		01AEFBD01701AC870060467A /* AccountSettingsView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFBCE1701AC870060467A /* AccountSettingsView.png */; };
 		01AEFBD11701AC870060467A /* AccountSettingsView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01AEFBCF1701AC870060467A /* AccountSettingsView@2x.png */; };
@@ -318,6 +318,14 @@
 		01B7CDA7166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B7CDA4166E1CF7001F4AF0 /* PanelChannelDetailsHeader@2x.png */; };
 		01B7F763164FC88A009C5CCD /* SYNChannelThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */; };
 		01B7F765164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */; };
+		01BCD1D7172560FB00F459BF /* ButtonCategory.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1CF172560FB00F459BF /* ButtonCategory.png */; };
+		01BCD1D8172560FB00F459BF /* ButtonCategory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1D0172560FB00F459BF /* ButtonCategory@2x.png */; };
+		01BCD1D9172560FB00F459BF /* ButtonCategoryHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1D1172560FB00F459BF /* ButtonCategoryHighlighted.png */; };
+		01BCD1DA172560FB00F459BF /* ButtonCategoryHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1D2172560FB00F459BF /* ButtonCategoryHighlighted@2x.png */; };
+		01BCD1DB172560FB00F459BF /* ButtonCover.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1D3172560FB00F459BF /* ButtonCover.png */; };
+		01BCD1DC172560FB00F459BF /* ButtonCover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1D4172560FB00F459BF /* ButtonCover@2x.png */; };
+		01BCD1DD172560FB00F459BF /* ButtonCoverHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1D5172560FB00F459BF /* ButtonCoverHighlighted.png */; };
+		01BCD1DE172560FB00F459BF /* ButtonCoverHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BCD1D6172560FB00F459BF /* ButtonCoverHighlighted@2x.png */; };
 		01C6FD0F169DDEDB00E01AA3 /* NSDictionary+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */; };
 		01C6FD14169E11B000E01AA3 /* _AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD11169E11B000E01AA3 /* _AbstractCommon.m */; };
 		01C6FD15169E11B000E01AA3 /* AbstractCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C6FD13169E11B000E01AA3 /* AbstractCommon.m */; };
@@ -350,8 +358,7 @@
 		01E98D8F165C146B0079FD7A /* SliderThumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D8B165C146B0079FD7A /* SliderThumb@2x.png */; };
 		01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */; };
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
-		01EA81D416B9773E0069AFF9 /* SYNChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EA81D316B9773E0069AFF9 /* SYNChannelDetailViewController.m */; };
-		01EC6237166EAAA6003154B1 /* SYNAbstractChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNAbstractChannelDetailViewController.m */; };
+		01EC6237166EAAA6003154B1 /* SYNChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */; };
 		01F014FE167F22E800A85774 /* MessageDragAndDrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F014FD167F22E800A85774 /* MessageDragAndDrop.png */; };
 		01F6D5B516AEADCE003F016D /* ButtonStarFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F6D5B116AEADCE003F016D /* ButtonStarFriends.png */; };
 		01F6D5B616AEADCE003F016D /* ButtonStarFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F6D5B216AEADCE003F016D /* ButtonStarFriends@2x.png */; };
@@ -925,7 +932,7 @@
 		01ABBB1117205541007E4462 /* ButtonBuy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBuy@2x.png"; path = "Assets/Images/ButtonBuy@2x.png"; sourceTree = "<group>"; };
 		01ABBB1217205541007E4462 /* ButtonBuyHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonBuyHighlighted.png; path = Assets/Images/ButtonBuyHighlighted.png; sourceTree = "<group>"; };
 		01ABBB1317205541007E4462 /* ButtonBuyHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonBuyHighlighted@2x.png"; path = "Assets/Images/ButtonBuyHighlighted@2x.png"; sourceTree = "<group>"; };
-		01ABBB3317218A60007E4462 /* SYNAbstractChannelDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNAbstractChannelDetailViewController.xib; sourceTree = "<group>"; };
+		01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelDetailViewController.xib; sourceTree = "<group>"; };
 		01AEFBCB1701AC460060467A /* SYNActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNActivityManager.h; sourceTree = "<group>"; };
 		01AEFBCC1701AC460060467A /* SYNActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNActivityManager.m; sourceTree = "<group>"; };
 		01AEFBCE1701AC870060467A /* AccountSettingsView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AccountSettingsView.png; path = Assets/Images/AccountSettingsView.png; sourceTree = "<group>"; };
@@ -977,6 +984,14 @@
 		01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelThumbnailCell.h; sourceTree = "<group>"; };
 		01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelThumbnailCell.m; sourceTree = "<group>"; };
 		01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelThumbnailCell.xib; sourceTree = "<group>"; };
+		01BCD1CF172560FB00F459BF /* ButtonCategory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCategory.png; path = Assets/Images/ButtonCategory.png; sourceTree = "<group>"; };
+		01BCD1D0172560FB00F459BF /* ButtonCategory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCategory@2x.png"; path = "Assets/Images/ButtonCategory@2x.png"; sourceTree = "<group>"; };
+		01BCD1D1172560FB00F459BF /* ButtonCategoryHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCategoryHighlighted.png; path = Assets/Images/ButtonCategoryHighlighted.png; sourceTree = "<group>"; };
+		01BCD1D2172560FB00F459BF /* ButtonCategoryHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCategoryHighlighted@2x.png"; path = "Assets/Images/ButtonCategoryHighlighted@2x.png"; sourceTree = "<group>"; };
+		01BCD1D3172560FB00F459BF /* ButtonCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCover.png; path = Assets/Images/ButtonCover.png; sourceTree = "<group>"; };
+		01BCD1D4172560FB00F459BF /* ButtonCover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCover@2x.png"; path = "Assets/Images/ButtonCover@2x.png"; sourceTree = "<group>"; };
+		01BCD1D5172560FB00F459BF /* ButtonCoverHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCoverHighlighted.png; path = Assets/Images/ButtonCoverHighlighted.png; sourceTree = "<group>"; };
+		01BCD1D6172560FB00F459BF /* ButtonCoverHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCoverHighlighted@2x.png"; path = "Assets/Images/ButtonCoverHighlighted@2x.png"; sourceTree = "<group>"; };
 		01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Validation.h"; sourceTree = "<group>"; };
 		01C6FD0E169DDEDB00E01AA3 /* NSDictionary+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Validation.m"; sourceTree = "<group>"; };
 		01C6FD10169E11B000E01AA3 /* _AbstractCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _AbstractCommon.h; sourceTree = "<group>"; };
@@ -1031,10 +1046,8 @@
 		01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoThumbnailSmallCell.h; sourceTree = "<group>"; };
 		01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoThumbnailSmallCell.m; sourceTree = "<group>"; };
 		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
-		01EA81D216B9773E0069AFF9 /* SYNChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelDetailViewController.h; sourceTree = "<group>"; };
-		01EA81D316B9773E0069AFF9 /* SYNChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelDetailViewController.m; sourceTree = "<group>"; };
-		01EC6234166EAAA5003154B1 /* SYNAbstractChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractChannelDetailViewController.h; sourceTree = "<group>"; };
-		01EC6235166EAAA6003154B1 /* SYNAbstractChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAbstractChannelDetailViewController.m; sourceTree = "<group>"; };
+		01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelDetailViewController.h; sourceTree = "<group>"; };
+		01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelDetailViewController.m; sourceTree = "<group>"; };
 		01F014FD167F22E800A85774 /* MessageDragAndDrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MessageDragAndDrop.png; path = Assets/Images/MessageDragAndDrop.png; sourceTree = "<group>"; };
 		01F6D5B116AEADCE003F016D /* ButtonStarFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonStarFriends.png; path = Assets/Images/ButtonStarFriends.png; sourceTree = "<group>"; };
 		01F6D5B216AEADCE003F016D /* ButtonStarFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonStarFriends@2x.png"; path = "Assets/Images/ButtonStarFriends@2x.png"; sourceTree = "<group>"; };
@@ -1695,6 +1708,14 @@
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
 			isa = PBXGroup;
 			children = (
+				01BCD1CF172560FB00F459BF /* ButtonCategory.png */,
+				01BCD1D0172560FB00F459BF /* ButtonCategory@2x.png */,
+				01BCD1D1172560FB00F459BF /* ButtonCategoryHighlighted.png */,
+				01BCD1D2172560FB00F459BF /* ButtonCategoryHighlighted@2x.png */,
+				01BCD1D3172560FB00F459BF /* ButtonCover.png */,
+				01BCD1D4172560FB00F459BF /* ButtonCover@2x.png */,
+				01BCD1D5172560FB00F459BF /* ButtonCoverHighlighted.png */,
+				01BCD1D6172560FB00F459BF /* ButtonCoverHighlighted@2x.png */,
 				01ABBB0017205541007E4462 /* ButtonEdit.png */,
 				01ABBB0117205541007E4462 /* ButtonEdit@2x.png */,
 				01ABBB0217205541007E4462 /* ButtonEditHighlighted.png */,
@@ -2077,9 +2098,6 @@
 				01ABBACD171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib */,
 				01E427D71664CDA5009B941F /* SYNAbstractViewController.h */,
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
-				01EC6234166EAAA5003154B1 /* SYNAbstractChannelDetailViewController.h */,
-				01EC6235166EAAA6003154B1 /* SYNAbstractChannelDetailViewController.m */,
-				01ABBB3317218A60007E4462 /* SYNAbstractChannelDetailViewController.xib */,
 			);
 			name = Abstract;
 			sourceTree = "<group>";
@@ -2305,8 +2323,9 @@
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
 				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
 				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
-				01EA81D216B9773E0069AFF9 /* SYNChannelDetailViewController.h */,
-				01EA81D316B9773E0069AFF9 /* SYNChannelDetailViewController.m */,
+				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
+				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
+				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -3487,9 +3506,17 @@
 				BEEB6F26172181FD00FEFA43 /* SearchTab@2x.png in Resources */,
 				BEEB6F27172181FD00FEFA43 /* SearchTabHighlighted.png in Resources */,
 				BEEB6F28172181FD00FEFA43 /* SearchTabHighlighted@2x.png in Resources */,
-				01ABBB3417218A60007E4462 /* SYNAbstractChannelDetailViewController.xib in Resources */,
+				01ABBB3417218A60007E4462 /* SYNChannelDetailViewController.xib in Resources */,
 				BEFAE89817241FD5009B2F66 /* SearchTabSelected.png in Resources */,
 				BEFAE89917241FD5009B2F66 /* SearchTabSelected@2x.png in Resources */,
+				01BCD1D7172560FB00F459BF /* ButtonCategory.png in Resources */,
+				01BCD1D8172560FB00F459BF /* ButtonCategory@2x.png in Resources */,
+				01BCD1D9172560FB00F459BF /* ButtonCategoryHighlighted.png in Resources */,
+				01BCD1DA172560FB00F459BF /* ButtonCategoryHighlighted@2x.png in Resources */,
+				01BCD1DB172560FB00F459BF /* ButtonCover.png in Resources */,
+				01BCD1DC172560FB00F459BF /* ButtonCover@2x.png in Resources */,
+				01BCD1DD172560FB00F459BF /* ButtonCoverHighlighted.png in Resources */,
+				01BCD1DE172560FB00F459BF /* ButtonCoverHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3569,7 +3596,7 @@
 				014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */,
 				01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */,
 				01B7CD97166E0FD6001F4AF0 /* SYNChannelHeaderView.m in Sources */,
-				01EC6237166EAAA6003154B1 /* SYNAbstractChannelDetailViewController.m in Sources */,
+				01EC6237166EAAA6003154B1 /* SYNChannelDetailViewController.m in Sources */,
 				0199F13B16721A4500E479C6 /* SYNFeedRootViewController.m in Sources */,
 				018919FC1672253E00AB07BB /* SYNHomeSectionHeaderView.m in Sources */,
 				01946B911683335400354601 /* _ChannelOwner.m in Sources */,
@@ -3592,7 +3619,6 @@
 				01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */,
 				01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */,
 				0140F1FA16B6D12D0094B069 /* SYNTextField.m in Sources */,
-				01EA81D416B9773E0069AFF9 /* SYNChannelDetailViewController.m in Sources */,
 				015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */,
 				01B3DCE516C5597900ED54D3 /* SYNChannelsDetailsCreationViewController.m in Sources */,
 				012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */,
