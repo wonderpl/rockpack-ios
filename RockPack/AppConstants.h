@@ -14,22 +14,12 @@
 // API
 //
 
-// Host for API
-
-
-//#define kAPIHostName @"dev.rockpack.com"
-//#define kAPIHostName @"demo.rockpack.com"
-//#define kAPIProductionHostName @"api.rockpack.com"
-//#define kAPISecureHostName @"secure.demo.rockpack.com"
-//#define kAPISecureProductionHostName @"secure.rockpack.com"
-
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
 // Main RestFul API
 
 // OAuth2
-
 
 #define kFeedViewId                 @"Home"
 #define kChannelsViewId             @"Channels"
@@ -44,8 +34,6 @@
 #define kSearchTitle                @"Search"
 #define kUserChanneslTitle          @"UserChannels"
 #define kChannelDetailsTitle        @"ChannelDetails"
-
-
 
 #define kAPIRefreshToken            @"/ws/token"
 
@@ -139,6 +127,9 @@
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"
 
+// Observers
+#define kCollectionViewContentOffsetKey @"contentOffset"
+
 // Settings
 
 #define kDownloadedVideoContentBool @"kDownloadedVideoContentBool"
@@ -228,6 +219,7 @@ typedef enum _Gender {
 #define kStandardCollectionViewOffsetY 80.0f
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 540.0f
+#define kChannelDetailsFadeSpan 15.0f
 
 #define kImageUploadWidth 1024
 #define kImageUploadHeight 768

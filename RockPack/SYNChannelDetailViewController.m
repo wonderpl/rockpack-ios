@@ -26,8 +26,10 @@
 @property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
+@property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
+@property (nonatomic, assign)  CGPoint originalContentOffset;
 
 @end
 
@@ -92,6 +94,9 @@
     // Set wallpaper
     [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                                      placeHolderImage: nil];
+    
+    // Store the initial content offset, so that we can fade out the control if the user scrolls away from this
+    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
 }
 
 
@@ -118,16 +123,23 @@
     {
         [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
     }
+    
+    [self.videoThumbnailCollectionView addObserver: self
+                                        forKeyPath: kCollectionViewContentOffsetKey
+                                           options: NSKeyValueObservingOptionNew
+                                           context: nil];
 }
 
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    [super viewWillDisappear: animated];
+    [self.videoThumbnailCollectionView removeObserver: self
+                                           forKeyPath: kCollectionViewContentOffsetKey];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kDataUpdated
                                                   object: nil];
+    [super viewWillDisappear: animated];
 }
 
 
@@ -266,16 +278,29 @@
 {
     if ([keyPath isEqualToString: @"contentOffset"])
     {
-        // CGSize newContentSize = [[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue];
+        CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
+        CGFloat normalisedOffsetY = - (newContentOffset.y);
         
-        //        CGSize s1Size = self.channelThumbnailCollectionView.contentSize;
-        //        CGSize s2Size = self.subscriptionsViewController.collectionView.contentSize;
-        //
-        //        if(s1Size.height == s2Size.height)
-        //            return;
-        //
-        //
-        //        self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(s2Size.width, s1Size.height);
+//        originalContentOffset
+        NSLog (@"change =  %f", normalisedOffsetY);
+        
+        if (newContentOffset.y <= self.originalContentOffset.y)
+        {
+            self.masterControlsView.alpha = 1.0f;
+        }
+        else
+        {
+            CGFloat differenceInY = - (self.originalContentOffset.y - newContentOffset.y);
+            // kChannelDetailsFadeSpan
+            if (differenceInY < kChannelDetailsFadeSpan)
+            {
+                self.masterControlsView.alpha = 1 - (differenceInY / kChannelDetailsFadeSpan);
+            }
+            else
+            {
+                self.masterControlsView.alpha = 0.0f;
+            }
+        }
     }
 }
 
