@@ -37,12 +37,8 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, assign) NSUInteger selectedIndex;
-<<<<<<< HEAD
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
-
-=======
 @property (nonatomic, strong) SYNNetworkErrorView* errorView;
->>>>>>> origin/develop
 
 @property (nonatomic, strong) UIView *dropZoneView;
 
