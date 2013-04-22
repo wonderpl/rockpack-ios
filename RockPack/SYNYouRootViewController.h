@@ -7,10 +7,7 @@
 //
 
 #import "SYNAbstractViewController.h"
-#import "SYNAbstractViewController.h"
 
 @interface SYNYouRootViewController : SYNAbstractViewController <UIPopoverControllerDelegate>
-
-
 
 @end
