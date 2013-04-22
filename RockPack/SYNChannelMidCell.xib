@@ -43,10 +43,10 @@
 							<object class="IBUIImageView" id="308581837">
 								<reference key="NSNextResponder" ref="582525683"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{184, 138}</string>
+								<string key="NSFrame">{{0, 2}, {184, 136}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="850193333"/>
+								<reference key="NSNextKeyView" ref="1069176426"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -58,10 +58,10 @@
 									<string key="NSResourceName">ChannelCreationCoverNone.png</string>
 								</object>
 							</object>
-							<object class="IBUIImageView" id="850193333">
+							<object class="IBUIImageView" id="1069176426">
 								<reference key="NSNextResponder" ref="582525683"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{184, 138}</string>
+								<string key="NSFrameSize">{184, 140}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="933051206"/>
@@ -79,6 +79,7 @@
 								<string key="NSFrame">{{8, 84}, {168, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="427251072">
 									<int key="NSColorSpace">3</int>
@@ -166,7 +167,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">panelSelectedImageView</string>
 						<reference key="source" ref="411706856"/>
-						<reference key="destination" ref="850193333"/>
+						<reference key="destination" ref="1069176426"/>
 					</object>
 					<int key="connectionID">42</int>
 				</object>
@@ -196,7 +197,7 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="933051206"/>
 							<reference ref="308581837"/>
-							<reference ref="850193333"/>
+							<reference ref="1069176426"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -216,7 +217,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">41</int>
-						<reference key="object" ref="850193333"/>
+						<reference key="object" ref="1069176426"/>
 						<reference key="parent" ref="411706856"/>
 					</object>
 				</array>

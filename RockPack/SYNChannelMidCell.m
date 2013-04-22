@@ -54,11 +54,11 @@
     
     if(value)
     {
-        self.panelSelectedImageView.hidden = YES;
+        self.panelSelectedImageView.hidden = NO;
     }
     else
     {
-        self.panelSelectedImageView.hidden = NO;
+        self.panelSelectedImageView.hidden = YES;
     }
 }
 

@@ -51,6 +51,9 @@
 {
     [super viewWillAppear:animated];
     
+    self.closeButton.enabled = YES;
+    self.confirmButtom.enabled = YES;
+    
     [self.channelThumbnailCollectionView reloadData];
 }
 
@@ -141,8 +144,9 @@
 
 -(IBAction)closeButtonPressed:(id)sender
 {
-    
-    [UIView animateWithDuration:0.3 animations:^{
+    self.closeButton.enabled = NO;
+    self.confirmButtom.enabled = NO;
+    [UIView animateWithDuration:0.2 animations:^{
         self.view.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self.view removeFromSuperview];
@@ -155,9 +159,9 @@
 -(IBAction)confirmButtonPressed:(id)sender
 {
     
-    
-    
-    [UIView animateWithDuration:0.3 animations:^{
+    self.confirmButtom.enabled = NO;
+    self.closeButton.enabled = NO;
+    [UIView animateWithDuration:0.2 animations:^{
         self.view.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self.view removeFromSuperview];
@@ -185,6 +189,9 @@
         
         return;
     }
+    
+    SYNChannelMidCell* cell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+    cell.selected = YES;
     
     self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
     
