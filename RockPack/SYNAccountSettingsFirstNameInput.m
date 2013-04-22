@@ -41,7 +41,10 @@
     self.saveButton.frame = saveButtonRect;
     
     
-    [self.spinner startAnimating];
+    self.errorTextField.center = CGPointMake(self.errorTextField.center.x, self.saveButton.center.y + 60.0);
+    self.errorTextField.frame = CGRectIntegral(self.errorTextField.frame);
+    
+    
     
 }
 
@@ -87,6 +90,8 @@
     
     if(![self formIsValid]) {
         self.errorTextField.text = @"You Have Entered Invalid Characters";
+        [self.spinner stopAnimating];
+        self.saveButton.hidden = NO;
         return;
     }
     
