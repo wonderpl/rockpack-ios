@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNVideosRootViewController.h"
+
 #import "SYNFeedRootViewController.h"
 
 @class SYNSearchTabView;

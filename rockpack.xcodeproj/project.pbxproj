@@ -495,9 +495,6 @@
 		BE2D2155171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */; };
 		BE2D2158171D8A4500B4B755 /* AvatarProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2156171D8A4500B4B755 /* AvatarProfile.png */; };
 		BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */; };
-		BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */; };
-		BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */; };
-		BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */; };
 		BE7D340E170C9F300085AB81 /* SYNChannelsAddVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D340D170C9F300085AB81 /* SYNChannelsAddVideosViewController.m */; };
 		BE7D342E170DD8C90085AB81 /* SYNChannelFooterMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */; };
 		BE7D3431170DDB310085AB81 /* SYNChannelFooterMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D3430170DDB310085AB81 /* SYNChannelFooterMoreView.m */; };
@@ -1216,11 +1213,6 @@
 		BE2D2151171D5BD500B4B755 /* ButtonCancelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelHighlighted@2x.png"; path = "Assets/Images/ButtonCancelHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE2D2156171D8A4500B4B755 /* AvatarProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AvatarProfile.png; path = Assets/Images/AvatarProfile.png; sourceTree = "<group>"; };
 		BE2D2157171D8A4500B4B755 /* AvatarProfile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarProfile@2x.png"; path = "Assets/Images/AvatarProfile@2x.png"; sourceTree = "<group>"; };
-		BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLargeVideoPanelViewController.h; sourceTree = "<group>"; };
-		BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLargeVideoPanelViewController.m; sourceTree = "<group>"; };
-		BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLargeVideoPanelViewController.xib; sourceTree = "<group>"; };
-		BE7C12A716EA69710015789B /* SYNVideosRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideosRootViewController.h; sourceTree = "<group>"; };
-		BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideosRootViewController.m; sourceTree = "<group>"; };
 		BE7D340C170C9F300085AB81 /* SYNChannelsAddVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelsAddVideosViewController.h; sourceTree = "<group>"; };
 		BE7D340D170C9F300085AB81 /* SYNChannelsAddVideosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelsAddVideosViewController.m; sourceTree = "<group>"; };
 		BE7D342D170DD8C90085AB81 /* SYNChannelFooterMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelFooterMoreView.xib; sourceTree = "<group>"; };
@@ -1910,7 +1902,6 @@
 				01F8E77B16B039E6000D44B9 /* Video viewer */,
 				0199F1371672199F00E479C6 /* Feed */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
-				0198255F162ADE2900216900 /* Videos */,
 				BE08158F16D3C46800ADB1DC /* Search */,
 				01982560162ADE3300216900 /* You */,
 				01982561162ADE4000216900 /* Friends */,
@@ -2053,15 +2044,6 @@
 				01677EB516554C5800B1B1D8 /* PanelMainTitle@2x.png */,
 			);
 			name = Panels;
-			sourceTree = "<group>";
-		};
-		0198255F162ADE2900216900 /* Videos */ = {
-			isa = PBXGroup;
-			children = (
-				BE7C12A716EA69710015789B /* SYNVideosRootViewController.h */,
-				BE7C12A816EA69710015789B /* SYNVideosRootViewController.m */,
-			);
-			name = Videos;
 			sourceTree = "<group>";
 		};
 		01982560162ADE3300216900 /* You */ = {
@@ -2846,16 +2828,6 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
-		BE7C12A116EA68DE0015789B /* Large Video Player */ = {
-			isa = PBXGroup;
-			children = (
-				BE7C12A216EA68F60015789B /* SYNLargeVideoPanelViewController.h */,
-				BE7C12A316EA68F60015789B /* SYNLargeVideoPanelViewController.m */,
-				BE7C12A416EA68F60015789B /* SYNLargeVideoPanelViewController.xib */,
-			);
-			name = "Large Video Player";
-			sourceTree = "<group>";
-		};
 		BE7D3496171412EC0085AB81 /* Side Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3024,7 +2996,6 @@
 				BE7D3548171866550085AB81 /* User Profile Panel */,
 				BE7D3538171708E20085AB81 /* Refresh Button */,
 				BE03A69016F7457900245314 /* Account Settings */,
-				BE7C12A116EA68DE0015789B /* Large Video Player */,
 				BE0AAD2616E6521300DA958E /* Search Box */,
 				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
@@ -3279,7 +3250,6 @@
 				01F90E1816E7568F00F1D924 /* VideoDurationBackground@2x.png in Resources */,
 				019E6A8F16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png in Resources */,
 				019E6A9016E9081D00647002 /* GlossVideoThumbnailSmallPlaying@2x.png in Resources */,
-				BE7C12A616EA68F60015789B /* SYNLargeVideoPanelViewController.xib in Resources */,
 				011A15E116EE2F46008CF25E /* popover-black-right-arrow-image@2x.png in Resources */,
 				011A15E216EE2F46008CF25E /* popover-black-right-arrow-image.png in Resources */,
 				011A15F916EE3F05008CF25E /* SYNCameraPopoverViewController.xib in Resources */,
@@ -3672,8 +3642,6 @@
 				BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */,
 				017A9EFA16E77E6600AA5B18 /* UIView+Subviews.m in Sources */,
 				BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */,
-				BE7C12A516EA68F60015789B /* SYNLargeVideoPanelViewController.m in Sources */,
-				BE7C12A916EA69710015789B /* SYNVideosRootViewController.m in Sources */,
 				011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */,
 				011A160E16EE53A0008CF25E /* UIImage+Resize.m in Sources */,
 				011A162D16EF5EC5008CF25E /* GKCropBorderView.m in Sources */,

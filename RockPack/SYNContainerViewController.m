@@ -19,7 +19,6 @@
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
-#import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNChannelsAddVideosViewController.h"
