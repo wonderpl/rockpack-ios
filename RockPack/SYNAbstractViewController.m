@@ -36,6 +36,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nonatomic, strong) UIPopoverController *activityPopoverController;
 
 
 @property (nonatomic, strong) UIView *dropZoneView;
@@ -470,12 +471,12 @@
     // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
-        UIPopoverController *activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+        self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
         
-        [activityPopoverController presentPopoverFromRect: rect
-                                                   inView: self.view
-                                 permittedArrowDirections: arrowDirections
-                                                 animated: YES];
+        [self.activityPopoverController presentPopoverFromRect: rect
+                                                        inView: self.view
+                                      permittedArrowDirections: arrowDirections
+                                                      animated: YES];
     }
     else
     {
@@ -484,5 +485,17 @@
                          completion: nil];
     }
 }
+
+
+#pragma mark - Purchase
+
+- (void) initiatePurchaseAtURL: (NSURL *) purchaseURL
+{
+    if ([[UIApplication sharedApplication] canOpenURL: purchaseURL])
+	{
+		[[UIApplication sharedApplication] openURL: purchaseURL];
+	}
+}
+
 
 @end

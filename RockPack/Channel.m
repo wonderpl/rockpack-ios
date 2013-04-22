@@ -50,6 +50,7 @@ static NSEntityDescription *channelEntity = nil;
     
 }
 
+
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -98,7 +99,8 @@ static NSEntityDescription *channelEntity = nil;
     self.channelDescription = [dictionary objectForKey: @"description"
                                            withDefault: @"Description of channel goes here"];
     
-    
+    self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
+                                     withDefault: @""];
     
     self.channelOwner = owner;
 }
@@ -138,6 +140,12 @@ static NSEntityDescription *channelEntity = nil;
     if(matchingChannelEntries.count > 0)
     {
         instance = matchingChannelEntries[0];
+        
+        if ([instance.eCommerceURL isEqualToString: @""])
+        {
+            instance.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
+                                                 withDefault: @""];
+        }  
     }
     else
     {
@@ -198,6 +206,12 @@ static NSEntityDescription *channelEntity = nil;
         instance = matchingChannelEntries[0];
         // Mark this object so that it is not deleted in the post-import step
         instance.markedForDeletionValue = FALSE;
+        
+        if ([instance.eCommerceURL isEqualToString: @""])
+        {
+            instance.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
+                                                 withDefault: @""];
+        }
         
         // NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
         
@@ -307,6 +321,9 @@ static NSEntityDescription *channelEntity = nil;
     
     self.channelDescription = [dictionary objectForKey: @"description"
                                            withDefault: @"Description of channel goes here"];
+    
+    self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
+                                     withDefault: @""];
     
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {

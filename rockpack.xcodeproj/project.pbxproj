@@ -839,8 +839,6 @@
 		019825F0162C94A300216900 /* UIColor+SYNColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SYNColor.m"; sourceTree = "<group>"; };
 		019825F2162C94B500216900 /* UIFont+SYNFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+SYNFont.h"; sourceTree = "<group>"; };
 		019825F3162C94B500216900 /* UIFont+SYNFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+SYNFont.m"; sourceTree = "<group>"; };
-		0199F12F166F997C00E479C6 /* SYNChannelCollectionBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCollectionBackgroundView.h; sourceTree = "<group>"; };
-		0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCollectionBackgroundView.m; sourceTree = "<group>"; };
 		0199F13816721A4500E479C6 /* SYNFeedRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNFeedRootViewController.h; sourceTree = "<group>"; };
 		0199F13916721A4500E479C6 /* SYNFeedRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNFeedRootViewController.m; sourceTree = "<group>"; };
 		019E6A5F165FD99A002B312A /* SYNOAuth2Credential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOAuth2Credential.h; sourceTree = "<group>"; };
@@ -1448,7 +1446,7 @@
 		010DEFDA1629BDC40080F26B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				01982525162A02DD00216900 /* Contstants */,
+				01982525162A02DD00216900 /* Constants */,
 				019825EE162C948000216900 /* Categories */,
 				019824E21629CAC000216900 /* App Delegate */,
 				012632CC162DF7B30009FF9C /* Collection Cells */,
@@ -2035,12 +2033,12 @@
 			name = Backgrounds;
 			sourceTree = "<group>";
 		};
-		01982525162A02DD00216900 /* Contstants */ = {
+		01982525162A02DD00216900 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
 				01982526162A02F700216900 /* AppConstants.h */,
 			);
-			name = Contstants;
+			name = Constants;
 			sourceTree = "<group>";
 		};
 		01982550162A2AAC00216900 /* Panels */ = {
@@ -2162,19 +2160,9 @@
 			name = Supplementary;
 			sourceTree = "<group>";
 		};
-		0199F12C166F95AC00E479C6 /* Decoration */ = {
-			isa = PBXGroup;
-			children = (
-				0199F12F166F997C00E479C6 /* SYNChannelCollectionBackgroundView.h */,
-				0199F130166F997C00E479C6 /* SYNChannelCollectionBackgroundView.m */,
-			);
-			name = Decoration;
-			sourceTree = "<group>";
-		};
 		0199F12D166F95C000E479C6 /* Collections */ = {
 			isa = PBXGroup;
 			children = (
-				0199F12C166F95AC00E479C6 /* Decoration */,
 				0199F12B166F95A200E479C6 /* Supplementary */,
 			);
 			name = Collections;

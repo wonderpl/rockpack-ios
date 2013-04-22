@@ -95,9 +95,15 @@
 -(void)viewCameToScrollFront;
 -(BOOL)needsAddButton;
 
+// Share
+
 - (void) shareURL: (NSURL *) shareURL
       withMessage: (NSString *) shareString
          fromRect: (CGRect) rect
   arrowDirections: (UIPopoverArrowDirection) arrowDirections;
+
+// Purchase
+
+- (void) initiatePurchaseAtURL: (NSURL *) purchaseURL;
 
 @end

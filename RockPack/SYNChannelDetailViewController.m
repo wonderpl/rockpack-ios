@@ -141,6 +141,13 @@
     {
         [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
     }
+    
+    
+    // If we have a valid ecommerce URL, then display the button
+    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
+    {
+        self.buyButton.hidden = FALSE;
+    }
 }
 
 
@@ -161,6 +168,12 @@
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
+    
+    // If we have a valid ecommerce URL, then display the button
+    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
+    {
+        self.buyButton.hidden = FALSE;
+    }
 }
 
 
@@ -315,7 +328,6 @@
     if ([keyPath isEqualToString: @"contentOffset"])
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
-        CGFloat normalisedOffsetY = - (newContentOffset.y);
 
         if (newContentOffset.y <= self.originalContentOffset.y)
         {
@@ -340,7 +352,7 @@
 
 #pragma mark - Share
 
-- (void) shareChannelButtonTapped: (id) sender
+- (IBAction) shareChannelButtonTapped: (id) sender
 {
     NSString *messageString = kChannelShareMessage;
     
@@ -353,7 +365,15 @@
     [self shareURL: messageURL
        withMessage: messageString
           fromRect: self.shareButton.frame
-   arrowDirections: UIPopoverArrowDirectionUp];
+   arrowDirections: UIPopoverArrowDirectionDown];
+}
+
+
+// If the buy button is visible, then (hopefully) we have a valid URL
+// But check to see that it should open anyway
+- (IBAction) buyButtonTapped: (id) sender
+{
+    [self initiatePurchaseAtURL: [NSURL URLWithString: self.channel.eCommerceURL]];
 }
 
 
