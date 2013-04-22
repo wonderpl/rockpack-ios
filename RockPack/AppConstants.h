@@ -184,6 +184,9 @@ typedef enum _Gender {
 #define kSplashViewDuration 2.0f
 #define kSplashAnimationDuration  0.75f
 
+// Edit mode
+#define kChannelEditModeAnimationDuration 0.3f
+
 // Tabs
 #define kTabAnimationDuration 0.3f
 
