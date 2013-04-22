@@ -37,10 +37,22 @@
     
     [self.view addGestureRecognizer:tapGesture];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDataChanged:) name:kUserDataChanged object:nil];
+    
     
     
     [self pack];
   
+}
+
+
+-(void)userDataChanged:(NSNotification*)notification
+{
+    User* currentUser = (User*)[[notification userInfo] objectForKey:@"user"];
+    if(!currentUser)
+        return;
+    
+    [self setChannelOwner:currentUser];
 }
 
 -(void)pack
@@ -72,7 +84,16 @@
         
         self.fullNameLabel.text = [((User*)channelOwner).fullName uppercaseString];
         
+        CGSize maxSize = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
+        CGRect selfFrame = self.view.frame;
+        if (maxSize.width + self.fullNameLabel.frame.origin.x > selfFrame.size.width) {
+            selfFrame.size.width = maxSize.width + self.fullNameLabel.frame.origin.x + 30.0;
+            self.view.frame = selfFrame;
+        }
+        
     }
+    
+    
     
     self.userNameLabel.text = channelOwner.displayName;
     

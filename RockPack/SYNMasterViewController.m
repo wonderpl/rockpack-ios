@@ -260,7 +260,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillAppear:animated];
     
-    [self.view addSubview:self.existingChannelsController.view];
+    // [self.view addSubview:self.existingChannelsController.view];
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
