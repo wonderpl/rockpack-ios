@@ -10,11 +10,11 @@ build/
 !default.perspectivev3
 xcuserdata
 profile
+*.orig
 *.moved-aside
 DerivedData
 .idea/
 
-RockPack/SYNAbstractViewController.h.orig
 MBProgressHUD/
 
 MKNetworkKit/
@@ -25,5 +25,4 @@ NSDate-Extensions/
 
 sskeychain/
 
-/RockPack/Rockpack.xcdatamodeld/Rockpack.xcdatamodel/contents.orig
 Assets/Images/Icon\r
