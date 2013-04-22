@@ -441,6 +441,12 @@
     {
         controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
     }
+    
+    if(![controllerOnView respondsToSelector:@selector(needsAddButton)])
+    {
+        controllerOnView = nil;
+    }
+    
     return controllerOnView;
 }
 -(SYNAbstractViewController*)nextShowingViewController

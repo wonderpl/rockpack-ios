@@ -23,6 +23,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "SYNDeviceManager.h"
 
 #define kThumbnailContentOffset 438
 #define kThumbnailCellWidth 147
@@ -77,6 +78,8 @@
     // Google Analytics support
     self.trackedViewName = @"Video Viewer";
     
+    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    
     // Set custom fonts
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
     self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
@@ -113,7 +116,7 @@
                 aboveSubview: self.panelImageView];
     
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: CGRectMake(142, 71, 739, 416)];
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: isIPhone?self.swipeView.frame:CGRectMake(142, 71, 739, 416)];
 
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.blackPanelView];
