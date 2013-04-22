@@ -248,6 +248,8 @@
     memberLabel.center = CGPointMake(loginButton.center.x,
                                      registerButton.center.y - 57.0);
     
+    userNameInputField.placeholder = @"USERNAME OR PASSWORD";
+    
     
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
@@ -259,6 +261,7 @@
         finalLoginButton.alpha = 0.0;
         passwordForgottenLabel.alpha = 0.0;
         loginButton.alpha = 1.0;
+        
         registerButton.alpha = 0.0;
         
         memberLabel.alpha = 1.0;
@@ -285,7 +288,7 @@
     secondaryFacebookMessage.alpha = 0.0;
     [self clearAllErrorArrows];
     isAnimating = YES;
-    
+    userNameInputField.placeholder = @"USERNAME";
     if(previousState == kLoginScreenStateInitial)
     {
         
@@ -333,6 +336,7 @@
                 passwordForgottenLabel.alpha = 1.0;
                 termsAndConditionsLabel.alpha = 1.0;
                 dividerImageView.alpha = 1.0;
+                
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.2 animations:^{
                     areYouNewLabel.alpha = 1.0;
@@ -354,8 +358,6 @@
                     
                     memberLabel.frame = CGRectIntegral(memberLabel.frame);
                     
-                    sendEmailButton.center = CGPointMake(sendEmailButton.center.x,
-                                                         sendEmailButton.center.y - kOffsetForLoginForm);
                     
                     
                     
@@ -484,6 +486,7 @@
     secondaryFacebookMessage.alpha = 0.0;
     [self clearAllErrorArrows];
     isAnimating = YES;
+    userNameInputField.placeholder = @"USERNAME";
     if(previousState == kLoginScreenStateInitial)
     {
         
