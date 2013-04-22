@@ -163,24 +163,32 @@
 
 -(void)showSecondaryTabs
 {
-    [UIView animateWithDuration:0.6 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.3 delay:0.0
+                        options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
         CGRect secondaryFrame = self.secondaryTabsView.frame;
         secondaryFrame.origin.y = self.mainTabsView.frame.size.height - 6.0;
         self.secondaryTabsView.frame = secondaryFrame;
         self.secondaryTabsBGView.frame = secondaryFrame;
         self.secondaryDividerOverlay.frame = secondaryFrame;
-    } completion:^(BOOL result){}];
+    } completion:^(BOOL result){
+    
+    }];
 }
 
 -(void)hideSecondaryTabs
 {
-    [UIView animateWithDuration:0.6 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.3 delay:0.0
+                        options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
         CGRect secondaryFrame = self.secondaryTabsView.frame;
         secondaryFrame.origin.y = 0.0;
         self.secondaryTabsView.frame = secondaryFrame;
         self.secondaryTabsBGView.frame = secondaryFrame;
         self.secondaryDividerOverlay.frame = secondaryFrame;
-    } completion:^(BOOL result){}];
+    } completion:^(BOOL result){
+    
+    }];
 }
 
 

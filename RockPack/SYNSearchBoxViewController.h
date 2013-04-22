@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNAutocompleteViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate>
+@interface SYNSearchBoxViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate>
+
+@property (nonatomic, readonly) BOOL isOnScreen;
 
 - (void) clear;
 

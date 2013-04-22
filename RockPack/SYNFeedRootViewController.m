@@ -81,7 +81,7 @@
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    
+
     self.view = [[UIView alloc] initWithFrame:selfFrame];
     
     [self.view addSubview:self.videoThumbnailCollectionView];

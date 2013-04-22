@@ -19,10 +19,8 @@
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
-#import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
-#import "SYNChannelsAddVideosViewController.h"
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
@@ -36,13 +34,16 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 
+@property (nonatomic) BOOL hasReplacedNavigationController;
+
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
-
+@property (nonatomic, weak) UINavigationController* replacementNavigationController;
+@property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
@@ -60,8 +61,8 @@
 @implementation SYNContainerViewController
 
 @synthesize selectedViewController;
+@synthesize hasReplacedNavigationController;
 @synthesize currentScreenOffset;
-@synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
 @synthesize scrollingDirection;
@@ -167,16 +168,34 @@
     [self packViewControllersForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
 }
 
+#pragma mark - Rotation Callbacks
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
+    if(self.replacementNavigationController)
+    {
+        [self.replacementNavigationController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    }
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    NSLog(@"%@",[self.view description]);
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    if(self.replacementNavigationController)
+    {
+        [self.replacementNavigationController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    }
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if(self.replacementNavigationController)
+    {
+        [self.replacementNavigationController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    }
 }
 
 #pragma mark - Placement of Views
@@ -200,13 +219,25 @@
     for(UIViewController* controller in self.childViewControllers)
     {
         controller.view.frame = newFrame;
-        newFrame.origin.x += newFrame.size.width;
+        
         if ([controller isKindOfClass:[UINavigationController class]] )
         {
             UINavigationController* navController = (UINavigationController*)controller;
             navController.topViewController.view.frame = controller.view.bounds;
         }
+        
+        
+        if(controller == self.replacedNavigationController)
+        {
+            self.replacementNavigationController.view.frame = newFrame;
+        }
+        
+        newFrame.origin.x += newFrame.size.width;
     }
+    
+    // pack replacement
+    
+    
     
     self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
     self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
@@ -244,7 +275,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        //[child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
     }
 
@@ -256,7 +287,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child addToChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        
         
     }
 }
@@ -272,19 +303,6 @@
 }
 
 
-
-- (void) popCurrentViewController: (id) sender
-{
-
-    UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
-    
-    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
-    
-    [abstractVC animatedPopViewController];
-    
-    self.scrollView.scrollEnabled = YES;
-    
-}
 
 #pragma mark - Navigate To Views
 
@@ -309,7 +327,9 @@
 
     [self replaceShowingNavigationController:self.seachViewNavigationViewController];
     
+    
     [self.searchViewController showSearchResultsForTerm: searchTerm];
+    
     
     
 }
@@ -331,12 +351,81 @@
 }
 
 
+#pragma mark - Navigation View Controllers
+
+- (void) popCurrentViewController: (id) sender
+{
+    
+    // two functions for pop.
+    
+    if(hasReplacedNavigationController)
+    {
+        
+        
+        hasReplacedNavigationController = NO;
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
+        
+        
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseIn
+                         animations: ^{
+                             self.replacementNavigationController.view.alpha = 0.0;
+                             
+                         }
+                         completion: ^(BOOL finished) {
+                             self.selectedViewController = self.seachViewNavigationViewController;
+                             
+                             [UIView animateWithDuration: 0.7f
+                                                   delay: 0.2f
+                                                 options: UIViewAnimationOptionCurveEaseOut
+                                              animations: ^{
+                                                  self.replacedNavigationController.view.alpha = 1.0;
+                                              }
+                                              completion: ^(BOOL finished) {
+                                                  
+                                                  [self.replacementNavigationController.view removeFromSuperview];
+                                                  
+                                                  
+                                                  self.replacementNavigationController = nil;
+                                                  
+                                              }];
+                         }];
+        
+    }
+    else
+    {
+        
+        UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
+        
+        SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+        
+        [abstractVC animatedPopViewController];
+        
+    }
+    
+    
+    
+    self.scrollView.scrollEnabled = YES;
+    
+}
+
+
 - (void) replaceShowingNavigationController:(UINavigationController*)navigationController
 {
     UINavigationController* showingNavController = [self showingViewController].navigationController;
-
     
-
+    self.replacedNavigationController = showingNavController;
+    
+    
+    hasReplacedNavigationController = YES;
+    
+    self.replacementNavigationController = navigationController;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
     
     CGRect vcFrame = navigationController.view.frame;
     vcFrame.origin.x = showingNavController.view.frame.origin.x;
@@ -356,6 +445,8 @@
                          showingNavController.view.alpha = 0.0;
                      }
                      completion: ^(BOOL finished) {
+                         
+                         
                          self.selectedViewController = self.seachViewNavigationViewController;
                          
                          [UIView animateWithDuration: 0.7f

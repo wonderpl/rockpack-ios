@@ -164,11 +164,7 @@
     [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
                                               atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
                                                       animated: NO];
-    // Look out for the user creating a channel
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(userCreatedNewChannel)
-                                                 name: kVideoQueueCreateChannel
-                                               object: nil];
+    
 }
 
 
@@ -327,8 +323,6 @@
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
-                                                        object:self];
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
     [self animateVideoAdditionToVideoQueue: videoInstance];

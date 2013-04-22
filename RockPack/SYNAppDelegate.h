@@ -13,7 +13,7 @@
 #import "SYNRegistry.h"
 #import "User.h"
 #import "SYNOAuth2Credential.h"
-
+#import "SYNVideoQueue.h"
 
 #define kShowLoginPhase YES
 #define kUsingProductionAPI YES
@@ -26,6 +26,8 @@
 
 // Main app window
 @property (strong, nonatomic) UIWindow *window;
+
+@property (nonatomic, readonly) SYNVideoQueue* videoQueue;
 
 // Support for Core Data
 @property (nonatomic, readonly) NSManagedObjectContext *mainManagedObjectContext;

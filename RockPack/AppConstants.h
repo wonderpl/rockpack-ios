@@ -40,7 +40,7 @@
 
 #define kFeedTitle                  @"Feed"
 #define kChannelsTitle              @"Channels"
-#define kProfileTitle               @"My Rockpack"
+#define kProfileTitle               @"Profile"
 #define kSearchTitle                @"Search"
 #define kUserChanneslTitle          @"UserChannels"
 #define kChannelDetailsTitle        @"ChannelDetails"
@@ -184,6 +184,9 @@ typedef enum _Gender {
 #define kSplashViewDuration 2.0f
 #define kSplashAnimationDuration  0.75f
 
+// Edit mode
+#define kChannelEditModeAnimationDuration 0.3f
+
 // Tabs
 #define kTabAnimationDuration 0.3f
 
@@ -237,11 +240,9 @@ typedef enum _Gender {
 //#define kVideoQueueWidth 475
 #define kVideoQueueOffsetX 10
 
-#define kVideoQueueShow             @"kVideoQueueShow"
-#define kVideoQueueHide             @"kVideoQueueHide"
 #define kVideoQueueAdd              @"kVideoQueueAdd"
-#define kVideoQueueCreateChannel    @"kVideoQueueCreateChannel"
-#define kVideoQueueChannelCreated   @"kVideoQueueChannelCreated"
+#define kVideoQueueRemove           @"kVideoQueueRemove"
+#define kVideoQueueClear           @"kVideoQueueClear"
 
 #define kScrollerPageChanged        @"kScrollerPageChanged"
 

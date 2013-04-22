@@ -24,6 +24,8 @@
 #import "SYNChannelMidCell.h"
 #import "SYNYouHeaderView.h"
 
+#define kInterChannelSpacing 138.0
+
 @interface SYNYouRootViewController ()
 
 @property (nonatomic, assign) BOOL userPinchedOut;
@@ -81,9 +83,9 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 8.0, 5.0, 25.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.leftLandscapeLayout = flowLayout;
@@ -92,9 +94,9 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 25.0, 5.0, 8.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.rightLandscapeLayout = flowLayout;
@@ -103,9 +105,9 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.leftPortraitLayout = flowLayout;
@@ -114,9 +116,9 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.rightPortraitLayout = flowLayout;
@@ -130,7 +132,7 @@
     [self.headerCheannelsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
     
     CGRect collectionViewFrame = CGRectMake(0.0,
-                                            self.headerCheannelsView.frame.origin.y + self.headerCheannelsView.currentHeight + 10.0,
+                                            self.headerCheannelsView.frame.origin.y + self.headerCheannelsView.currentHeight,
                                             correctWidth,
                                             [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0 - kYouCollectionViewOffsetY);
     
@@ -239,9 +241,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-//    NSLog(@"height1: %f", self.channelThumbnailCollectionView.contentSize.height);
-//    NSLog(@"height2: %f", self.subscriptionsViewController.collectionView.contentSize.height);
     
     CGSize subSize = self.subscriptionsViewController.collectionView.contentSize;
     CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;
@@ -398,6 +397,7 @@
 {
     [self showAccountSettingsPopover];
 }
+
 
 -(void)reloadCollectionViews
 {
