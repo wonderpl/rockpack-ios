@@ -605,11 +605,10 @@
 		BEEB6F28172181FD00FEFA43 /* SearchTabHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F24172181FD00FEFA43 /* SearchTabHighlighted@2x.png */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
-		BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */; };
-		BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
 		BEFAE89817241FD5009B2F66 /* SearchTabSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */; };
 		BEFAE89917241FD5009B2F66 /* SearchTabSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */; };
+		BEFAE89C1725485B009B2F66 /* SYNVideoQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFAE89B1725485B009B2F66 /* SYNVideoQueue.m */; };
 		C76BF297AD0F44ABBFCB5A85 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3685246F69AA4C9B93DDEDAC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -1364,15 +1363,12 @@
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
 		BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompletePopoverBackgroundView.m; sourceTree = "<group>"; };
-		BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueView.h; sourceTree = "<group>"; };
-		BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueView.m; sourceTree = "<group>"; };
-		BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueDelegate.h; sourceTree = "<group>"; };
-		BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueueViewController.h; sourceTree = "<group>"; };
-		BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueueViewController.m; sourceTree = "<group>"; };
 		BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSoundPlayer.h; sourceTree = "<group>"; };
 		BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSoundPlayer.m; sourceTree = "<group>"; };
 		BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchTabSelected.png; path = Assets/Images/SearchTabSelected.png; sourceTree = "<group>"; };
 		BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTabSelected@2x.png"; path = "Assets/Images/SearchTabSelected@2x.png"; sourceTree = "<group>"; };
+		BEFAE89A1725485B009B2F66 /* SYNVideoQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNVideoQueue.h; sourceTree = "<group>"; };
+		BEFAE89B1725485B009B2F66 /* SYNVideoQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoQueue.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3051,11 +3047,8 @@
 		BEF9E5B416DD23F000286113 /* VideoQueue */ = {
 			isa = PBXGroup;
 			children = (
-				BEF9E5AA16DBDCB900286113 /* SYNVideoQueueViewController.h */,
-				BEF9E5AB16DBDCB900286113 /* SYNVideoQueueViewController.m */,
-				BEF9E5A616DBCE3600286113 /* SYNVideoQueueView.h */,
-				BEF9E5A716DBCE3600286113 /* SYNVideoQueueView.m */,
-				BEF9E5A916DBCEB800286113 /* SYNVideoQueueDelegate.h */,
+				BEFAE89A1725485B009B2F66 /* SYNVideoQueue.h */,
+				BEFAE89B1725485B009B2F66 /* SYNVideoQueue.m */,
 			);
 			name = VideoQueue;
 			sourceTree = "<group>";
@@ -3665,8 +3658,6 @@
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
 				BE0815D216D6448200ADB1DC /* SYNSideNavigationViewController.m in Sources */,
 				BE0815D716D645F600ADB1DC /* SYNShareOverlayViewController.m in Sources */,
-				BEF9E5A816DBCE3600286113 /* SYNVideoQueueView.m in Sources */,
-				BEF9E5AC16DBDCB900286113 /* SYNVideoQueueViewController.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
 				0194FD2316DE6FE90058A7C2 /* SYNVideoThumbnailSmallCell.m in Sources */,
@@ -3733,6 +3724,7 @@
 				01ABBACF171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.m in Sources */,
 				01ABBAD3171FF638007E4462 /* SYNAbstractChannelsDetailEditViewController.m in Sources */,
 				BEEB6F201721807200FEFA43 /* SYNSearchTabView.m in Sources */,
+				BEFAE89C1725485B009B2F66 /* SYNVideoQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

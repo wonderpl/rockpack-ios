@@ -21,13 +21,13 @@
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
-#import "SYNVideoQueueViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "SYNChannelsAddVideosViewController.h"
+#import "Channel.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -40,7 +40,6 @@
 
 
 @property (nonatomic, strong) UIView *dropZoneView;
-@property (nonatomic, strong) SYNVideoQueueViewController* videoQVC;
 @end
 
 
@@ -124,13 +123,7 @@
 }
 
 
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear: animated];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueHide
-                                                        object: self];
-}
 
 #pragma mark - Animation support
 

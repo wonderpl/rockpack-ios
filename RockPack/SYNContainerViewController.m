@@ -65,7 +65,6 @@
 @synthesize selectedViewController;
 @synthesize hasReplacedNavigationController;
 @synthesize currentScreenOffset;
-@synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
 @synthesize scrollingDirection;
@@ -274,7 +273,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        //[child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
         
     }
 
@@ -286,7 +285,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child addToChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        
         
     }
 }

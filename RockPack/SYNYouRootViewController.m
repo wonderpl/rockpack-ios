@@ -132,7 +132,7 @@
     [self.headerCheannelsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
     
     CGRect collectionViewFrame = CGRectMake(0.0,
-                                            self.headerCheannelsView.frame.origin.y + self.headerCheannelsView.currentHeight + 10.0,
+                                            self.headerCheannelsView.frame.origin.y + self.headerCheannelsView.currentHeight,
                                             correctWidth,
                                             [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0 - kYouCollectionViewOffsetY);
     

@@ -298,8 +298,6 @@
                                                                 videoInstanceSet: self.channel.videoInstancesSet
                                                                completionHandler: ^(NSDictionary *responseDictionary) {
                                                                    
-                                                                   [[NSNotificationCenter defaultCenter]
-                                                                    postNotificationName:kVideoQueueChannelCreated object:self];
                                                                    
                                                                    DebugLog(@"Channel video array update successful");
                                                                    
@@ -348,8 +346,6 @@
                                                                
                                                                DebugLog(@"Channel video array update successful");
                                                                
-                                                               [[NSNotificationCenter defaultCenter]
-                                                                postNotificationName:kVideoQueueChannelCreated object:self];
                                                            
                                                            } errorHandler: ^(NSDictionary* errorDictionary) {
                                                                     DebugLog(@"Channel video array update failed");

@@ -461,8 +461,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // Remember the view controller that we came from
     self.originViewController = originViewController;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueHide
-                                                        object:self];
     
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
@@ -482,26 +480,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
      {
         self.overlayView.userInteractionEnabled = YES;
          
-         // == Add video queue == //
          
-         UIView* queueView = self.containerViewController.videoQueueController.view;
-         
-         [queueView removeFromSuperview];
-         
-         queueView.center = CGPointMake(queueView.center.x, queueView.center.y + queueView.frame.size.height * 0.5);
-         
-         [self.view insertSubview:queueView aboveSubview:self.overlayView];
      }];
 }
 
 - (void) removeVideoOverlayController
 {
-    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.containerViewController;
+    
     
     UIView* child = self.overlayView.subviews[0];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueHide
-                                                        object: self];
     
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
@@ -512,7 +500,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.overlayView.userInteractionEnabled = NO;
                          self.videoViewerViewController = nil;
                          [child removeFromSuperview];
-                         [bottomTabViewController.videoQueueController.view removeFromSuperview];
+                         
                      }];
 
 }
@@ -555,7 +543,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.overlayView.userInteractionEnabled = NO;
                          self.videoViewerViewController = nil;
                          [child removeFromSuperview];
-                         [bottomTabViewController.videoQueueController.view removeFromSuperview];
+                         
                      }];
 
 }

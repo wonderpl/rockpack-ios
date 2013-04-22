@@ -163,10 +163,7 @@
 {
     [super viewDidAppear: animated];
     
-    // Request Video Q to show at all times
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueShow
-                                                        object:self
-                                                      userInfo:@{@"lock" : @(YES)}];
+    
     
     [self reloadCollectionViews];
 }
