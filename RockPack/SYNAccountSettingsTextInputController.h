@@ -14,7 +14,8 @@
 
 typedef enum
 {
-    UserFieldTypeFullname = 0,
+    UserFieldTypeFirstName = 0,
+    UserFieldTypeLastName,
     UserFieldTypeUsername,
     UserFieldTypeEmail,
     UserFieldPassword
