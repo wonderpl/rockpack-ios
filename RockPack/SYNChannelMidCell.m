@@ -20,6 +20,8 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     
+    self.selected = NO;
+    
 }
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
@@ -45,6 +47,19 @@
     
     self.titleLabel.text = titleString;
     
+}
+
+-(void)setSelected:(BOOL)value
+{
+    
+    if(value)
+    {
+        self.panelSelectedImageView.hidden = YES;
+    }
+    else
+    {
+        self.panelSelectedImageView.hidden = NO;
+    }
 }
 
 @end
