@@ -30,7 +30,7 @@
 {
     [super awakeFromNib];
 
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 10.0f];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
     self.imageView.image = nil;
     self.mainView.alpha = 0.6f;

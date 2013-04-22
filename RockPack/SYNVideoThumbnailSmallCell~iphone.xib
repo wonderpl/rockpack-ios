@@ -43,51 +43,7 @@
 							<object class="IBUIImageView" id="347177835">
 								<reference key="NSNextResponder" ref="620335623"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 20}, {147, 106}}</string>
-								<reference key="NSSuperview" ref="620335623"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="107080354"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<int key="IBUIContentMode">5</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">BackgroundVideoThumbnailSmall.png</string>
-								</object>
-							</object>
-							<object class="IBUIImageView" id="504887748">
-								<reference key="NSNextResponder" ref="620335623"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{25, 22}, {137, 77}}</string>
-								<reference key="NSSuperview" ref="620335623"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="2711678"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<int key="IBUIContentMode">2</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-							</object>
-							<object class="IBUIImageView" id="107080354">
-								<reference key="NSNextResponder" ref="620335623"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 20}, {147, 106}}</string>
-								<reference key="NSSuperview" ref="620335623"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="286087780"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<int key="IBUIContentMode">5</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">GlossVideoThumbnailSmall.png</string>
-								</object>
-							</object>
-							<object class="IBUIImageView" id="286087780">
-								<reference key="NSNextResponder" ref="620335623"/>
-								<int key="NSvFlags">-2147483356</int>
-								<string key="NSFrame">{{20, 20}, {147, 106}}</string>
+								<string key="NSFrameSize">{162, 114}</string>
 								<reference key="NSSuperview" ref="620335623"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="504887748"/>
@@ -97,13 +53,57 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">GlossVideoThumbnailSmallPlaying.png</string>
+									<string key="NSResourceName">BackgroundVideoThumbnailSmall~iphone.png</string>
+								</object>
+							</object>
+							<object class="IBUIImageView" id="504887748">
+								<reference key="NSNextResponder" ref="620335623"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{5, 3}, {152, 86}}</string>
+								<reference key="NSSuperview" ref="620335623"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="107080354"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<int key="IBUIContentMode">2</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+							</object>
+							<object class="IBUIImageView" id="107080354">
+								<reference key="NSNextResponder" ref="620335623"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{162, 114}</string>
+								<reference key="NSSuperview" ref="620335623"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="286087780"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<int key="IBUIContentMode">5</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossVideoThumbnailSmall~iphone.png</string>
+								</object>
+							</object>
+							<object class="IBUIImageView" id="286087780">
+								<reference key="NSNextResponder" ref="620335623"/>
+								<int key="NSvFlags">-2147483356</int>
+								<string key="NSFrameSize">{162, 114}</string>
+								<reference key="NSSuperview" ref="620335623"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="2711678"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<int key="IBUIContentMode">5</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossVideoThumbnailSmallPlaying~iphone.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="2711678">
 								<reference key="NSNextResponder" ref="620335623"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{28, 97}, {132, 26}}</string>
+								<string key="NSFrame">{{5, 88}, {152, 18}}</string>
 								<reference key="NSSuperview" ref="620335623"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -118,8 +118,8 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText"/>
 								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC44OTQxMTc2NDcxIDAuOTQ1MDk4MDM5MiAwLjk2NDcwNTg4MjQAA</bytes>
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
@@ -136,7 +136,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 						</array>
-						<string key="NSFrame">{{-20, -20}, {187, 146}}</string>
+						<string key="NSFrameSize">{162, 114}</string>
 						<reference key="NSSuperview" ref="630143403"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="347177835"/>
@@ -145,7 +145,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{147, 106}</string>
+				<string key="NSFrameSize">{162, 114}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="620335623"/>
@@ -233,11 +233,11 @@
 						<int key="objectID">94</int>
 						<reference key="object" ref="620335623"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="2711678"/>
 							<reference ref="107080354"/>
 							<reference ref="504887748"/>
 							<reference ref="347177835"/>
 							<reference ref="286087780"/>
+							<reference ref="2711678"/>
 						</array>
 						<reference key="parent" ref="630143403"/>
 					</object>
@@ -362,9 +362,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundVideoThumbnailSmall.png">{147, 106}</string>
-			<string key="GlossVideoThumbnailSmall.png">{147, 106}</string>
-			<string key="GlossVideoThumbnailSmallPlaying.png">{147, 106}</string>
+			<string key="BackgroundVideoThumbnailSmall~iphone.png">{162, 114}</string>
+			<string key="GlossVideoThumbnailSmallPlaying~iphone.png">{162, 114}</string>
+			<string key="GlossVideoThumbnailSmall~iphone.png">{162, 114}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

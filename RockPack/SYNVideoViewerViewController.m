@@ -49,6 +49,7 @@
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
+@property (nonatomic, assign) CGRect originalFrame;
 
 @end
 
@@ -81,12 +82,12 @@
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     
     // Set custom fonts
-    self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
-    self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-    self.followLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
-    self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 25.0f];
-    self.numberOfStarsLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
+    self.channelTitleLabel.font = [UIFont rockpackFontOfSize: self.channelTitleLabel.font.pointSize];
+    self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: self.channelCreatorLabel.font.pointSize];
+    self.followLabel.font = [UIFont boldRockpackFontOfSize: self.followLabel.font.pointSize];
+    self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: self.videoTitleLabel.font.pointSize];
+    self.numberOfStarsLabel.font = [UIFont boldRockpackFontOfSize: self.numberOfStarsLabel.font.pointSize];
+    self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: self.numberOfSharesLabel.font.pointSize];
 
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
@@ -99,8 +100,8 @@
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     self.layout = [[SYNVideoViewerThumbnailLayout alloc] init];
-    self.layout.itemSize = CGSizeMake(147.0f , 106.0f);
-    self.layout.minimumInteritemSpacing = 0.0f;
+    self.layout.itemSize = isIPhone?CGSizeMake(162.0f , 114.0f):CGSizeMake(147.0f , 106.0f);
+    self.layout.minimumInteritemSpacing = 2.0f;
     self.layout.minimumLineSpacing = 0.0f;
     self.layout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
     self.layout.selectedItemIndexPath = self.currentSelectedIndexPath;
@@ -116,7 +117,18 @@
                 aboveSubview: self.panelImageView];
     
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
-    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: isIPhone?self.swipeView.frame:CGRectMake(142, 71, 739, 416)];
+    CGRect videoFrame;
+    if(isIPhone)
+    {
+        videoFrame = self.swipeView.frame;
+        videoFrame.size.height = 180.0f;
+            
+    }
+    else
+    {
+        videoFrame = CGRectMake(142, 71, 739, 416);
+    }
+    self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
 
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.blackPanelView];
@@ -434,37 +446,88 @@
 
 - (void) userTappedVideo
 {
-    if (self.isVideoExpanded)
+    if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        [UIView transitionWithView: self.view
-                          duration: 0.5f
-                           options: UIViewAnimationOptionCurveEaseInOut
-                        animations: ^ {
-                            self.blackPanelView.alpha = 0.0f;
-                            self.chromeView.alpha = 1.0f;
-                            self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
-                            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
-                            self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
-                            self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
-                        }
-                        completion: nil];
+        if (self.isVideoExpanded)
+        {
+            [UIView transitionWithView: self.view
+                              duration: 0.5f
+                               options: UIViewAnimationOptionCurveEaseInOut
+                            animations: ^ {
+                                self.blackPanelView.alpha = 0.0f;
+                                self.chromeView.alpha = 1.0f;
+                                self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
+                                self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                                self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
+                                self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                            }
+                            completion: nil];
+        }
+        else
+        {
+            [UIView transitionWithView: self.view
+                              duration: 0.5f
+                               options: UIViewAnimationOptionCurveEaseInOut
+                            animations: ^ {
+                                self.blackPanelView.alpha = 1.0f;
+                                self.chromeView.alpha = 0.0f;
+                                self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
+                                self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
+                                self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+                                self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                            }
+                            completion: nil];
+        }
     }
     else
     {
-        [UIView transitionWithView: self.view
-                          duration: 0.5f
-                           options: UIViewAnimationOptionCurveEaseInOut
-                        animations: ^ {
-                            self.blackPanelView.alpha = 1.0f;
-                            self.chromeView.alpha = 0.0f;
-                            self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
-                            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
-                            self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
-                            self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
-                        }
-                        completion: nil];
-    }
+        
+        if (self.isVideoExpanded)
+        {
+            [UIView transitionWithView: self.view
+                              duration: 0.5f
+                               options: UIViewAnimationOptionCurveEaseInOut
+                            animations: ^ {
+                                self.blackPanelView.alpha = 0.0f;
+                                self.chromeView.alpha = 1.0f;
+                                self.swipeView.transform = CGAffineTransformIdentity;
+                                self.videoPlaybackViewController.view.transform = self.swipeView.transform;
+                                self.swipeView.frame = self.originalFrame;
+                                CGRect videoFrame = self.videoPlaybackViewController.view.frame;
+                                videoFrame.origin = self.originalFrame.origin;
+                                self.videoPlaybackViewController.view.frame = videoFrame;
+                                self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                            }
+                            completion: nil];
+        }
+        else
+        {
+            self.originalFrame = self.swipeView.frame;
+            [UIView transitionWithView: self.view
+                              duration: 0.5f
+                               options: UIViewAnimationOptionCurveEaseInOut
+                            animations: ^ {
+                                CGRect fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenHeight]-20.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth]);
+                                if(fullScreenFrame.size.width < fullScreenFrame.size.height)
+                                {
+                                    //Device orientation may confuse screen dimensions. Ensure the width is always the larger dimension.
+                                    fullScreenFrame = CGRectMake(0,0,[[SYNDeviceManager sharedInstance] currentScreenWidth]-20.0f, [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+                                }
+                                self.blackPanelView.alpha = 1.0f;
+                                self.chromeView.alpha = 0.0f;
+                                self.swipeView.frame =  fullScreenFrame;
+                                self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f);
+                                self.videoPlaybackViewController.view.center =self.swipeView.center;
+                                self.swipeView.transform = CGAffineTransformMakeRotation(M_PI_2);
+                                CGFloat scaleFactor = fullScreenFrame.size.width/self.videoPlaybackViewController.view.frame.size.width;
+                                self.videoPlaybackViewController.view.transform = CGAffineTransformScale(self.swipeView.transform,scaleFactor,scaleFactor);
+                                self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                            }
+                            completion: nil];
+        }
 
+    }
+    
     self.videoExpanded = !self.videoExpanded;
 }
 
