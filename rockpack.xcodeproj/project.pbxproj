@@ -493,6 +493,7 @@
 		BE285DA817258A0A00D995AB /* ButtonConfirmHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */; };
 		BE285DA917258A0A00D995AB /* ButtonConfirmHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */; };
 		BE285DAC1725978F00D995AB /* SYNAccountSettingsLastNameInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DAB1725978F00D995AB /* SYNAccountSettingsLastNameInput.m */; };
+		BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */; };
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
 		BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */; };
@@ -1220,6 +1221,8 @@
 		BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirmHighlighted@2x.png"; path = "Assets/Images/ButtonConfirmHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE285DAA1725978F00D995AB /* SYNAccountSettingsLastNameInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsLastNameInput.h; sourceTree = "<group>"; };
 		BE285DAB1725978F00D995AB /* SYNAccountSettingsLastNameInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsLastNameInput.m; sourceTree = "<group>"; };
+		BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkErrorView.h; sourceTree = "<group>"; };
+		BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkErrorView.m; sourceTree = "<group>"; };
 		BE29A32A16DE56AB00C00F92 /* SYNSearchVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchVideosViewController.h; sourceTree = "<group>"; };
 		BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchVideosViewController.m; sourceTree = "<group>"; };
 		BE29A32D16DE8C8600C00F92 /* SYNSearchRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRootViewController.h; sourceTree = "<group>"; };
@@ -2856,6 +2859,15 @@
 			name = "Existing Channels";
 			sourceTree = "<group>";
 		};
+		BE285DAD1725A20B00D995AB /* Network Error View */ = {
+			isa = PBXGroup;
+			children = (
+				BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */,
+				BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */,
+			);
+			name = "Network Error View";
+			sourceTree = "<group>";
+		};
 		BE7C129C16EA4EF60015789B /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -3037,6 +3049,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE285DAD1725A20B00D995AB /* Network Error View */,
 				BE7D354E1718704C0085AB81 /* Back Button */,
 				BE7D3548171866550085AB81 /* User Profile Panel */,
 				BE7D3538171708E20085AB81 /* Refresh Button */,
@@ -3751,6 +3764,7 @@
 				BE285D9B1725726300D995AB /* SYNExistingChannelsViewController.m in Sources */,
 				BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */,
 				BE285DAC1725978F00D995AB /* SYNAccountSettingsLastNameInput.m in Sources */,
+				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
