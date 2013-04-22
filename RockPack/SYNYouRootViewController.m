@@ -398,6 +398,7 @@
     [self showAccountSettingsPopover];
 }
 
+
 -(void)reloadCollectionViews
 {
     [super reloadCollectionViews];

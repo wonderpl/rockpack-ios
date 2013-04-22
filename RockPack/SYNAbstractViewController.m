@@ -26,7 +26,6 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNChannelsAddVideosViewController.h"
 #import "Channel.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -319,9 +318,9 @@
 
 - (void) addToChannel:(Channel*)channel
 {
-    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: channelCreationVC];
+//    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
+//    
+//    [self animatedPushViewController: channelCreationVC];
 }
 
 // User touched the channel thumbnail in a video cell

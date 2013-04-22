@@ -37,7 +37,7 @@
     self.categoryLabel.frame = labelFrame;
     self.categoryLabel.textAlignment = NSTextAlignmentCenter;
     
-    [self showDoneButton];
+//    [self showDoneButton];
     
     self.channelCoverCarouselCollectionView.hidden = TRUE;
 
