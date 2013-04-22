@@ -77,7 +77,6 @@
 
 - (void) highlightVideoQueue: (BOOL) showHighlight;
 
-- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance;
 
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
 - (void) displayCategoryChooser;

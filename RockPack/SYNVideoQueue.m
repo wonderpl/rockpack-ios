@@ -90,7 +90,7 @@
         return;
     }
     
-    if(self.currentlyCreatingChannel) // create channel if there is none
+    if(!self.currentlyCreatingChannel) // create channel if there is none
     {
         self.currentlyCreatingChannel = [Channel insertInManagedObjectContext: self.appDelegate.channelsManagedObjectContext];
         
