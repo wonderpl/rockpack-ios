@@ -8,7 +8,6 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
-#import "SYNAbstractChannelDetailViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNChannelThumbnailCell.h"
@@ -490,7 +489,7 @@
         channel = [self.subscriptionsViewController channelAtIndexPath:indexPath];
     }
     
-    SYNChannelDetailViewController*channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
     
     [self animatedPushViewController: channelVC];
     
@@ -529,7 +528,7 @@
 {
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNAbstractChannelDetailViewController *channelVC = [[SYNAbstractChannelDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
     
     channelVC.view.alpha = 0.0f;
     
