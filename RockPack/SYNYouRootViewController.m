@@ -29,21 +29,17 @@
 
 @property (nonatomic, assign) BOOL userPinchedOut;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
-@property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
-@property (nonatomic, strong) UIImageView *pinchedView;
-
-@property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
-
-@property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
-
 @property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
-
+@property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftPortraitLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightPortraitLayout;
+@property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
+@property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView* headerCheannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftLandscapeLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightLandscapeLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftPortraitLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightPortraitLayout;
+@property (nonatomic, strong) UIImageView *pinchedView;
 
 
 @end
@@ -73,9 +69,7 @@
     // User Profile
     
     self.userProfileController = [[SYNUserProfileViewController alloc] init];
-    
-    
-    
+
     // Main Collection View
     
     SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
@@ -124,8 +118,6 @@
     
     CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
     
-    
-    
     self.headerCheannelsView = [SYNYouHeaderView headerViewForWidth:correctWidth];
     [self.headerCheannelsView setTitle:@"YOUR CHANNELS" andNumber:2];
     [self.headerCheannelsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
@@ -135,33 +127,28 @@
                                             correctWidth,
                                             [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0 - kYouCollectionViewOffsetY);
     
-    
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: flowLayout];
-    
     
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
-    
-    
+
     // Subscriptions Collection View
     
-    self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId:kProfileViewId];
+    self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
     CGRect subColViewFrame = self.subscriptionsViewController.view.frame;
     subColViewFrame.origin.x = collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     
-    
-    
     [self.subscriptionsViewController setViewFrame:subColViewFrame];
     
-    self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth:384];
-    [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber:2];
-    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
+    [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber: 2];
+    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     CGRect headerSubFrame = self.headerSubscriptionsView.frame;
     headerSubFrame.origin.x = subColViewFrame.origin.x;
     self.headerSubscriptionsView.frame = headerSubFrame;
@@ -170,9 +157,6 @@
                                                          0.0,
                                                          [[SYNDeviceManager sharedInstance] currentScreenWidth],
                                                          [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar])];
-    
-    
-    
     
     self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
     
@@ -186,15 +170,11 @@
     
     [self.view addSubview:self.subscriptionsViewController.view];
     
-    
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 80.0;
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
-    
-    
-    
 }
 
 
@@ -227,7 +207,7 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear: animated];
     
     [self.userProfileController setChannelOwner:appDelegate.currentUser];
     
@@ -237,9 +217,10 @@
     
 }
 
--(void)viewDidAppear:(BOOL)animated
+
+- (void) viewDidAppear: (BOOL) animated
 {
-    [super viewDidAppear:animated];
+    [super viewDidAppear: animated];
     
     CGSize subSize = self.subscriptionsViewController.collectionView.contentSize;
     CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;
@@ -250,12 +231,14 @@
 }
 
 
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
     [self updateLayoutForOrientation:toInterfaceOrientation];
 }
 
--(void)updateLayoutForOrientation:(UIDeviceOrientation)orientation
+
+- (void) updateLayoutForOrientation: (UIDeviceOrientation )orientation
 {
     CGRect newFrame;
     CGFloat viewHeight;
@@ -263,7 +246,7 @@
     SYNIntegralCollectionViewFlowLayout* rightLayout;
     
     //Setup the headers
-    if(UIDeviceOrientationIsPortrait(orientation))
+    if (UIDeviceOrientationIsPortrait(orientation))
     {
         
         newFrame = self.headerCheannelsView.frame;
@@ -299,16 +282,14 @@
     }
     
     //Apply correct backgorund images
-    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     
-    [self.headerCheannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"]];
-    
-    
+    [self.headerCheannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
     
     NSIndexPath* indexPath = nil;
     if(self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
     {
-        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells]count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
+        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
         if(visibleCell != nil){
             indexPath = [self.channelThumbnailCollectionView indexPathForCell:visibleCell];
         }
@@ -321,21 +302,24 @@
     self.channelThumbnailCollectionView.frame = newFrame;
     self.channelThumbnailCollectionView.collectionViewLayout = leftLayout;
     [leftLayout invalidateLayout];
-    if(indexPath)
+    
+    if (indexPath)
     {
-        [self.channelThumbnailCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+        [self.channelThumbnailCollectionView scrollToItemAtIndexPath: indexPath
+                                                    atScrollPosition: UICollectionViewScrollPositionTop
+                                                            animated: NO];
     }
     
-    
-    
-    if(!indexPath)
+    if (!indexPath)
     {
-        UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells]count] > 0) ? [[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
-        if(visibleCell != nil){
-            indexPath = [self.subscriptionsViewController.channelThumbnailCollectionView indexPathForCell:visibleCell];
+        UICollectionViewCell* visibleCell = ([[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.subscriptionsViewController.channelThumbnailCollectionView visibleCells] objectAtIndex: 0] : nil;
+        if(visibleCell != nil)
+        {
+            indexPath = [self.subscriptionsViewController.channelThumbnailCollectionView indexPathForCell: visibleCell];
         }
     }
-    else{
+    else
+    {
         indexPath = nil;
     }
     
@@ -347,11 +331,13 @@
     self.subscriptionsViewController.view.frame = newFrame;
     self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = rightLayout;
     [rightLayout invalidateLayout];
-    if(indexPath)
-    {
-        [self.subscriptionsViewController.channelThumbnailCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-    }
     
+    if (indexPath)
+    {
+        [self.subscriptionsViewController.channelThumbnailCollectionView scrollToItemAtIndexPath: indexPath
+                                                                                atScrollPosition: UICollectionViewScrollPositionTop
+                                                                                        animated: NO];
+    }
 }
 
 
@@ -375,7 +361,8 @@
     
     
     fetchRequest.predicate = ownedByUserPredicate;
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title"
+                                                                 ascending: YES]];
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -392,39 +379,39 @@
 }
 
 
--(void)accountSettingsPressed:(NSNotification*)notification
+- (void) accountSettingsPressed: (NSNotification*) notification
 {
     [self showAccountSettingsPopover];
 }
 
 
--(void)reloadCollectionViews
+- (void) reloadCollectionViews
 {
     [super reloadCollectionViews];
     
     NSInteger totalChannels = self.fetchedResultsController.fetchedObjects.count;
     
-    [self.headerCheannelsView setTitle:@"YOUR CHANNELS" andNumber:totalChannels];
+    [self.headerCheannelsView setTitle: @"YOUR CHANNELS"
+                             andNumber: totalChannels];
     
     [self.subscriptionsViewController reloadCollectionViews];
 }
 
--(void)accountSettingsLogout:(NSNotification*)notification
+- (void) accountSettingsLogout: (NSNotification*) notification
 {
-    [self.accountSettingsPopover dismissPopoverAnimated:NO];
+    [self.accountSettingsPopover dismissPopoverAnimated: NO];
     self.accountSettingsPopover = nil;
     [appDelegate logout];
 }
 
 
--(void)showAccountSettingsPopover
+- (void) showAccountSettingsPopover
 {
     if(self.accountSettingsPopover)
         return;
     
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:mainTable];
-    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
     
     self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
     self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
@@ -432,16 +419,13 @@
     
     self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
     
-    CGRect rect = CGRectMake(self.view.frame.size.width*0.5,
-                             self.view.frame.size.height*0.5 + 30.0, 1, 1);
-    
+    CGRect rect = CGRectMake(self.view.frame.size.width * 0.5,
+                             self.view.frame.size.height * 0.5 + 30.0, 1, 1);
     
     [self.accountSettingsPopover presentPopoverFromRect: rect
                                                  inView: self.view
                                permittedArrowDirections: 0
                                                animated: YES];
-    
-    
 }
 
 
@@ -453,12 +437,16 @@
     return sectionInfo.numberOfObjects;
 }
 
+
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return self.fetchedResultsController.sections.count;
 }
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath {
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
     
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
@@ -474,8 +462,8 @@
 }
 
 
-
-- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) collectionView: (UICollectionView *) collectionView
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel;
     
@@ -496,32 +484,37 @@
 }
 
 
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void) scrollViewDidScroll: (UIScrollView *) scrollView
+{
     CGPoint offset;
-    if([scrollView isEqual:self.channelThumbnailCollectionView]) {
+    if ([scrollView isEqual: self.channelThumbnailCollectionView])
+    {
         offset = self.channelThumbnailCollectionView.contentOffset;
         offset.y = self.channelThumbnailCollectionView.contentOffset.y;
-        [self.subscriptionsViewController.collectionView setContentOffset:offset];
-    } else if([scrollView isEqual:self.subscriptionsViewController.collectionView]) {
+        [self.subscriptionsViewController.collectionView setContentOffset: offset];
+    }
+    else if ([scrollView isEqual:self.subscriptionsViewController.collectionView])
+    {
         offset = self.subscriptionsViewController.collectionView.contentOffset;
         offset.y = self.subscriptionsViewController.collectionView.contentOffset.y;
-        [self.channelThumbnailCollectionView setContentOffset:offset];
+        [self.channelThumbnailCollectionView setContentOffset: offset];
     }
 }
 
--(void)displayNameButtonPressed:(UIButton*)button
+
+- (void) displayNameButtonPressed: (UIButton*) button
 {
     SYNChannelThumbnailCell* parent = (SYNChannelThumbnailCell*)[[button superview] superview];
     
-    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell:parent];
+    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
     
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels
-                                                        object:self
-                                                      userInfo:@{@"ChannelOwner":channel.channelOwner}];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
+                                                        object: self
+                                                      userInfo: @{@"ChannelOwner" : channel.channelOwner}];
 }
+
 
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
@@ -555,8 +548,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
                                                         object: self];
 }
-
-
 
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
@@ -632,17 +623,17 @@
 }
 
 
--(void)hideAutocompletePopover
+- (void) hideAutocompletePopover
 {
-    if(!self.accountSettingsPopover)
+    if (!self.accountSettingsPopover)
         return;
     
-    [self.accountSettingsPopover dismissPopoverAnimated:YES];
+    [self.accountSettingsPopover dismissPopoverAnimated: YES];
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    if(popoverController == self.accountSettingsPopover)
+    if (popoverController == self.accountSettingsPopover)
     {
         
         self.accountSettingsPopover = nil;
@@ -650,10 +641,13 @@
     
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-    if ([keyPath isEqualToString:@"contentSize"]) {
-        
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) change
+                        context: (void *)context
+{
+    if ([keyPath isEqualToString: @"contentSize"])
+    {
         // CGSize newContentSize = [[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue];
         
         //        CGSize s1Size = self.channelThumbnailCollectionView.contentSize;

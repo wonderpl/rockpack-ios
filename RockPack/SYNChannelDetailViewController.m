@@ -257,6 +257,29 @@
                      completion: nil];
 }
 
+#pragma mark - KVO fading
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) change
+                        context: (void *) context
+{
+    if ([keyPath isEqualToString: @"contentOffset"])
+    {
+        // CGSize newContentSize = [[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue];
+        
+        //        CGSize s1Size = self.channelThumbnailCollectionView.contentSize;
+        //        CGSize s2Size = self.subscriptionsViewController.collectionView.contentSize;
+        //
+        //        if(s1Size.height == s2Size.height)
+        //            return;
+        //
+        //
+        //        self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(s2Size.width, s1Size.height);
+    }
+}
+
+
 #pragma mark - Share
 
 - (void) shareChannelButtonTapped: (id) sender
