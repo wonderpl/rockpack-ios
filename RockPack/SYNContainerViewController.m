@@ -205,7 +205,10 @@
     CGRect newFrame;
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        newFrame = CGRectMake(0, 0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
+        // The full screen video player can interfere with reading the screen dimensions on viewWillAppear.
+        // Use MAX and MIN to determine which one is width and which one is height
+        CGSize screenSize = CGSizeMake([[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight]);
+        newFrame = CGRectMake(0, 0, MIN(screenSize.width, screenSize.height), MAX(screenSize.width, screenSize.height) - 20.0f);
     }
     else if(UIDeviceOrientationIsLandscape(orientation))
     {

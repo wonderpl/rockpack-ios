@@ -250,6 +250,7 @@
     
     // Enable airplay button on webview player
     newVideoWebView.mediaPlaybackAllowsAirPlay = YES;
+    newVideoWebView.allowsInlineMediaPlayback = YES;
     
     [self.view insertSubview: newVideoWebView
                 belowSubview: self.shuttleBarView];

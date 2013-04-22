@@ -503,6 +503,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
+    self.videoViewerViewController.view.frame = self.overlayView.bounds;
     [self.overlayView addSubview:self.videoViewerViewController.view];
     
     self.videoViewerViewController.view.alpha = 0.0f;
