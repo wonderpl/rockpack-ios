@@ -24,6 +24,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "SYNNetworkErrorView.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "Channel.h"
@@ -36,10 +37,16 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, assign) NSUInteger selectedIndex;
+<<<<<<< HEAD
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 
+=======
+@property (nonatomic, strong) SYNNetworkErrorView* errorView;
+>>>>>>> origin/develop
 
 @property (nonatomic, strong) UIView *dropZoneView;
+
+
 @end
 
 

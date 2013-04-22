@@ -8,8 +8,6 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
-#import "SYNAccountSettingsMainTableViewController.h"
-#import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNDeviceManager.h"
@@ -29,7 +27,6 @@
 
 @property (nonatomic, assign) BOOL userPinchedOut;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
-@property (nonatomic, strong) IBOutlet UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftLandscapeLayout;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftPortraitLayout;
@@ -197,8 +194,6 @@
     
     [self.view addGestureRecognizer: pinchOnChannelView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsPressed:) name:kAccountSettingsPressed object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout:) name:kAccountSettingsLogout object:nil];
     
     
     [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
@@ -380,10 +375,6 @@
 }
 
 
-- (void) accountSettingsPressed: (NSNotification*) notification
-{
-    [self showAccountSettingsPopover];
-}
 
 
 - (void) reloadCollectionViews
@@ -398,36 +389,7 @@
     [self.subscriptionsViewController reloadCollectionViews];
 }
 
-- (void) accountSettingsLogout: (NSNotification*) notification
-{
-    [self.accountSettingsPopover dismissPopoverAnimated: NO];
-    self.accountSettingsPopover = nil;
-    [appDelegate logout];
-}
 
-
-- (void) showAccountSettingsPopover
-{
-    if(self.accountSettingsPopover)
-        return;
-    
-    SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
-    
-    self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-    self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
-    self.accountSettingsPopover.delegate = self;
-    
-    self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-    
-    CGRect rect = CGRectMake(self.view.frame.size.width * 0.5,
-                             self.view.frame.size.height * 0.5 + 30.0, 1, 1);
-    
-    [self.accountSettingsPopover presentPopoverFromRect: rect
-                                                 inView: self.view
-                               permittedArrowDirections: 0
-                                               animated: YES];
-}
 
 
 #pragma mark - UICollectionView DataSource
@@ -624,23 +586,6 @@
 }
 
 
-- (void) hideAutocompletePopover
-{
-    if (!self.accountSettingsPopover)
-        return;
-    
-    [self.accountSettingsPopover dismissPopoverAnimated: YES];
-}
-
-- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-{
-    if (popoverController == self.accountSettingsPopover)
-    {
-        
-        self.accountSettingsPopover = nil;
-    }
-    
-}
 
 - (void) observeValueForKeyPath: (NSString *) keyPath
                        ofObject: (id) object

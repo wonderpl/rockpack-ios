@@ -8,6 +8,6 @@
 
 #import "SYNAccountSettingsTextInputController.h"
 
-@interface SYNAccountSettingsFullNameInput : SYNAccountSettingsTextInputController <UITableViewDataSource, UITableViewDelegate>
+@interface SYNAccountSettingsFirstNameInput : SYNAccountSettingsTextInputController <UITableViewDataSource, UITableViewDelegate>
 
 @end
