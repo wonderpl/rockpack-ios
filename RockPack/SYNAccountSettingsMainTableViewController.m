@@ -99,7 +99,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0) { // first section
-        return 6;
+        return 7;
     } else { // second section
         return dataItems2ndSection.count;
     }
@@ -133,6 +133,13 @@
                 break;
                 
             case 2:
+                cell.imageView.image = [UIImage imageNamed:@"IconUsername.png"];
+                cell.textLabel.text = user.username;
+                cell.detailTextLabel.text = @"Public";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+                
+            case 3:
                 if([user.emailAddress isEqualToString:@""]) {
                     cell.textLabel.text = @"Email Address";
                 } else {
@@ -143,7 +150,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 3:
+            case 4:
                 if([user.locale isEqualToString:@"en-gb"]) {
                     cell.textLabel.text = @"United Kingdom";
                 } else {
@@ -155,7 +162,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 4:
+            case 5:
                 if([user.gender isEqual:@(GenderUndecided)]) {
                     cell.textLabel.text = @"Gender";
                 } else {
@@ -167,7 +174,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 5:
+            case 6:
                 if(!user.dateOfBirth)
                     cell.textLabel.text = @"Date of Birth";
                 else

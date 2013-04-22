@@ -21,6 +21,7 @@
 
 
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,6 +71,8 @@
     textRect.size = [self.userNameLabel.text sizeWithFont:self.userNameLabel.font];
     
     self.userNameLabel.frame = textRect;
+    
+    
 }
 
 
