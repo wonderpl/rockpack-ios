@@ -131,7 +131,7 @@
 									<object class="IBUILabel" id="272361376">
 										<reference key="NSNextResponder" ref="239537915"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{0, 11}, {153, 21}}</string>
+										<string key="NSFrame">{{0, 11}, {231, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="487122063"/>
@@ -143,7 +143,7 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<string key="IBUIText">BASEMENT JAXX</string>
-										<object class="NSColor" key="IBUITextColor" id="679805213">
+										<object class="NSColor" key="IBUITextColor" id="111104861">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MC43MzMzMzMzNDkyIDAuNzMzMzMzMzQ5MiAwLjczMzMzMzM0OTIAA</bytes>
 										</object>
@@ -163,7 +163,7 @@
 									<object class="IBUILabel" id="487122063">
 										<reference key="NSNextResponder" ref="239537915"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{0, 27}, {153, 21}}</string>
+										<string key="NSFrame">{{0, 27}, {231, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="820602389"/>
@@ -175,7 +175,7 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<string key="IBUIText">BASEMENT JAXX</string>
-										<reference key="IBUITextColor" ref="679805213"/>
+										<reference key="IBUITextColor" ref="111104861"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
 										<reference key="IBUIFontDescription" ref="909412018"/>
@@ -184,8 +184,8 @@
 									</object>
 									<object class="IBUILabel" id="820602389">
 										<reference key="NSNextResponder" ref="239537915"/>
-										<int key="NSvFlags">297</int>
-										<string key="NSFrame">{{182, 145}, {49, 21}}</string>
+										<int key="NSvFlags">299</int>
+										<string key="NSFrame">{{115, 145}, {116, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
 										<reference key="NSWindow"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -196,7 +196,7 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<string key="IBUIText">32:00</string>
-										<reference key="IBUITextColor" ref="679805213"/>
+										<reference key="IBUITextColor" ref="111104861"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
 										<int key="IBUITextAlignment">2</int>

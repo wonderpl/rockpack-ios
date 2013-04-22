@@ -55,6 +55,8 @@
     
     self.view = [[UIView alloc] initWithFrame:frame];
     self.view.backgroundColor = [UIColor clearColor];
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    
 }
 
 
@@ -74,6 +76,8 @@
     tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
                                                             self.channelsSearchTabView.frame.size.width * 2.0,
                                                             self.channelsSearchTabView.frame.size.height)];
+    
+    
     
     [tabsContainer addSubview:self.channelsSearchTabView];
     [tabsContainer addSubview:self.videoSearchTabView];
@@ -179,10 +183,12 @@
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
     self.searchVideosController.itemToUpdate = self.videoSearchTabView;
     self.searchVideosController.parent = self;
+    [self addChildViewController:self.searchVideosController];
     
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
     self.searchChannelsController.itemToUpdate = self.channelsSearchTabView;
     self.searchChannelsController.parent = self;
+    [self addChildViewController:self.searchChannelsController];
     
     
     viewIsOnScreen = YES;
@@ -240,5 +246,29 @@
 }
 
 
+
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    CGFloat newWidth = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? 1024.0 : 768.0;
+    tabsContainer.center = CGPointMake(newWidth * 0.5, tabsContainer.center.y);
+    [self.searchChannelsController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.searchVideosController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.searchVideosController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.searchChannelsController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self.searchVideosController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self.searchChannelsController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
 
 @end
