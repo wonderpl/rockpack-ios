@@ -23,6 +23,7 @@
 #import "SYNRefreshButton.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNDeviceManager.h"
+#import "SYNExistingChannelsViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -52,6 +53,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
 @property (nonatomic) BOOL showingBackButton;
+
+
+@property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
 
 
 @property (nonatomic) CGRect addToChannelFrame;
@@ -118,6 +122,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         
         
+        
+        
+        
     }
     return self;
 }
@@ -172,9 +179,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     //self.containerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     
-    // == Cancel Button == //
+    self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
     
-    //self.closeSearchButton.hidden = YES;
     
     
     
@@ -241,6 +247,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
     
     
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //[self.view addSubview:self.existingChannelsController.view];
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

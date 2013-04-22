@@ -24,6 +24,7 @@
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
+#import "SYNExistingChannelsViewController.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -54,6 +55,7 @@
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 
 @property (nonatomic, readonly) CGFloat currentScreenOffset;
+
 
 
 
@@ -113,11 +115,7 @@
     // == You Page == //
     
     SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: kProfileViewId];
-    
-    // == Friends Page == //
-    
-    // TODO: Implement Friends Section
-    //SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
+
     
     
     // == Search (out of normal controller array)
@@ -159,6 +157,7 @@
     self.selectedViewController = self.childViewControllers[0];
     
     
+    
     // == Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
@@ -169,6 +168,8 @@
 -(void) viewWillAppear:(BOOL)animated
 {
     [self packViewControllersForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+    
+    
 }
 
 #pragma mark - Rotation Callbacks
@@ -405,6 +406,8 @@
     self.scrollView.scrollEnabled = YES;
     
 }
+
+
 
 
 - (void) replaceShowingNavigationController:(UINavigationController*)navigationController

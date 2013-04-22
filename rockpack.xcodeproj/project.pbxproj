@@ -484,6 +484,10 @@
 		BE270BE916EF3A7400CDDA6D /* ButtonForgotDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BE516EF3A7400CDDA6D /* ButtonForgotDefault@2x.png */; };
 		BE270BEA16EF3A7400CDDA6D /* ButtonForgotHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BE616EF3A7400CDDA6D /* ButtonForgotHighlighted.png */; };
 		BE270BEB16EF3A7400CDDA6D /* ButtonForgotHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE270BE716EF3A7400CDDA6D /* ButtonForgotHighlighted@2x.png */; };
+		BE285D9B1725726300D995AB /* SYNExistingChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */; };
+		BE285D9C1725726300D995AB /* SYNExistingChannelsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */; };
+		BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */; };
+		BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */; };
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
 		BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */; };
@@ -1199,6 +1203,12 @@
 		BE270BE516EF3A7400CDDA6D /* ButtonForgotDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonForgotDefault@2x.png"; path = "Assets/Images/ButtonForgotDefault@2x.png"; sourceTree = "<group>"; };
 		BE270BE616EF3A7400CDDA6D /* ButtonForgotHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonForgotHighlighted.png; path = Assets/Images/ButtonForgotHighlighted.png; sourceTree = "<group>"; };
 		BE270BE716EF3A7400CDDA6D /* ButtonForgotHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonForgotHighlighted@2x.png"; path = "Assets/Images/ButtonForgotHighlighted@2x.png"; sourceTree = "<group>"; };
+		BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNExistingChannelsViewController.h; sourceTree = "<group>"; };
+		BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNExistingChannelsViewController.m; sourceTree = "<group>"; };
+		BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNExistingChannelsViewController.xib; sourceTree = "<group>"; };
+		BE285D9D172584E200D995AB /* SYNChannelCreateNewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCreateNewCell.h; sourceTree = "<group>"; };
+		BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCreateNewCell.m; sourceTree = "<group>"; };
+		BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCreateNewCell.xib; sourceTree = "<group>"; };
 		BE29A32A16DE56AB00C00F92 /* SYNSearchVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchVideosViewController.h; sourceTree = "<group>"; };
 		BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchVideosViewController.m; sourceTree = "<group>"; };
 		BE29A32D16DE8C8600C00F92 /* SYNSearchRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRootViewController.h; sourceTree = "<group>"; };
@@ -1915,6 +1925,7 @@
 				0199F1371672199F00E479C6 /* Feed */,
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				BE08158F16D3C46800ADB1DC /* Search */,
+				BE285D971725722400D995AB /* Existing Channels */,
 				01982560162ADE3300216900 /* You */,
 				01982561162ADE4000216900 /* Friends */,
 			);
@@ -2302,6 +2313,9 @@
 				BE86BF18171F07B10006DC8A /* SYNChannelMidCell.h */,
 				BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */,
 				BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */,
+				BE285D9D172584E200D995AB /* SYNChannelCreateNewCell.h */,
+				BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */,
+				BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */,
 			);
 			name = "Channel cells";
 			sourceTree = "<group>";
@@ -2813,6 +2827,16 @@
 				BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		BE285D971725722400D995AB /* Existing Channels */ = {
+			isa = PBXGroup;
+			children = (
+				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
+				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
+				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
+			);
+			name = "Existing Channels";
 			sourceTree = "<group>";
 		};
 		BE7C129C16EA4EF60015789B /* Search */ = {
@@ -3517,6 +3541,8 @@
 				01BCD1DC172560FB00F459BF /* ButtonCover@2x.png in Resources */,
 				01BCD1DD172560FB00F459BF /* ButtonCoverHighlighted.png in Resources */,
 				01BCD1DE172560FB00F459BF /* ButtonCoverHighlighted@2x.png in Resources */,
+				BE285D9C1725726300D995AB /* SYNExistingChannelsViewController.xib in Resources */,
+				BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3701,6 +3727,8 @@
 				01ABBACF171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.m in Sources */,
 				BEEB6F201721807200FEFA43 /* SYNSearchTabView.m in Sources */,
 				BEFAE89C1725485B009B2F66 /* SYNVideoQueue.m in Sources */,
+				BE285D9B1725726300D995AB /* SYNExistingChannelsViewController.m in Sources */,
+				BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

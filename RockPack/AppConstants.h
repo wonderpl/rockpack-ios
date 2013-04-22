@@ -36,6 +36,7 @@
 #define kProfileViewId              @"You"
 #define kSearchViewId               @"Search"
 #define kUserChanneslViewId         @"UserChannels"
+#define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
 
 #define kFeedTitle                  @"Feed"
