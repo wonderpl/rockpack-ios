@@ -11,11 +11,10 @@
 #import "VideoInstance.h"
 #import "Video.h"
 #import "SYNAppDelegate.h"
-#import "Channel.h"
 
 @interface SYNVideoQueue ()
 
-@property (nonatomic, strong) Channel* currentlyCreatingChannel;
+
 
 @property (nonatomic, strong) NSTimer *videoQueueAnimationTimer;
 

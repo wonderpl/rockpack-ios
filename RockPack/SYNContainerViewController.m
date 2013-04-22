@@ -45,6 +45,8 @@
 @property (nonatomic, weak) UINavigationController* replacementNavigationController;
 @property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
+
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
@@ -67,6 +69,7 @@
 @synthesize channelsUserViewController, searchViewController;
 @synthesize scrollingDirection;
 @synthesize currentPageOffset;
+@synthesize appDelegate;
 @synthesize currentPage;
 
 @dynamic showingViewController;
@@ -271,7 +274,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        //[child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        [child createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
         
     }
 
@@ -279,13 +282,7 @@
 
 -(void)addVideosToExistingChannel
 {
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        
-        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        
-        
-    }
+    
 }
 
 
