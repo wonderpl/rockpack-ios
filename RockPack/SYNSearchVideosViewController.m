@@ -16,6 +16,7 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNSearchVideosViewController ()
 
@@ -40,6 +41,10 @@
     collectionFrame.size.height -= 90.0;
     self.videoThumbnailCollectionView.frame = collectionFrame;
     
+    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
 }
 
 
@@ -175,6 +180,19 @@ referenceSizeForHeaderInSection: (NSInteger) section
 }
 
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([[SYNDeviceManager sharedInstance] isLandscape])
+    {
+        return CGSizeMake(497, 170);
+    }
+    else
+    {
+        return CGSizeMake(370, 170);
+    }
+}
+
+
 // Used for the collection view header
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
@@ -182,6 +200,24 @@ referenceSizeForHeaderInSection: (NSInteger) section
 {
     return nil;
     
+}
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self reloadCollectionViews];
 }
 
 @end

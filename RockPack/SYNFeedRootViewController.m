@@ -61,8 +61,7 @@
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
-    self.view = [[UIView alloc] initWithFrame:
-                                                CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar)];
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar)];
     
     [self.view addSubview:self.videoThumbnailCollectionView];
     self.view.backgroundColor = [UIColor clearColor];

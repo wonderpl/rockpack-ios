@@ -12,7 +12,6 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNTabViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNVideoQueueDelegate.h"
 #import "GAITrackedViewController.h"
 
 //#import "Channel.h"

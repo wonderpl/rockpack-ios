@@ -20,7 +20,6 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
-#import "SYNVideoQueueViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <XRay/XRay.h>
 #import <objc/runtime.h>
@@ -39,8 +38,8 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNNetworkEngine *networkEngine;
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 @property (nonatomic, strong) NSString *userAgentString;
+@property (nonatomic, strong) SYNVideoQueue* videoQueue;
 
-@property (nonatomic, strong) SYNVideoQueueViewController* videoQueueController;
 
 @end
 
@@ -102,7 +101,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     // == Video Queue View Controller == //
     
-    self.videoQueueController = [[SYNVideoQueueViewController alloc] init];
+    self.videoQueue = [SYNVideoQueue queue];
     
     // == Network Engine == //
     
