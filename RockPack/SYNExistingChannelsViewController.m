@@ -19,6 +19,8 @@
 @property (nonatomic, strong) IBOutlet UIButton* closeButton;
 @property (nonatomic, strong) IBOutlet UIButton* confirmButtom;
 
+@property (nonatomic, weak) Channel* selectedChannel;
+
 @end
 
 @implementation SYNExistingChannelsViewController
@@ -140,7 +142,11 @@
 -(IBAction)closeButtonPressed:(id)sender
 {
     
-    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [self.view removeFromSuperview];
+    }];
     
     
     
@@ -151,6 +157,15 @@
     
     
     
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [self.view removeFromSuperview];
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannel
+                                                            object: self
+                                                          userInfo: @{@"SelectedChannel":self.selectedChannel}];
+    }];
+    
     
     
 }
@@ -158,7 +173,7 @@
 
 - (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel;
+    
     
     if(indexPath.row == 0)
     {
@@ -166,17 +181,14 @@
         
         
         
-        
-        
+        self.selectedChannel = nil;
         
         return;
     }
     
-    channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
     
-    [self animatedPushViewController: channelVC];
     
 }
 

@@ -9,6 +9,9 @@
 #import "GAITrackedViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
+
+#import "SYNAccountSettingsMainTableViewController.h"
+#import "SYNAccountSettingsPopoverBackgroundView.h"
 #import <UIKit/UIKit.h>
 
 

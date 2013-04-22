@@ -97,7 +97,8 @@ typedef enum {
 
 - (IBAction) settingsButtonPressed: (id) sender
 {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAccountSettingsPressed
+                                                        object:self];
 }
 
 

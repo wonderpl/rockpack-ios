@@ -24,6 +24,7 @@
 #import "SYNSearchBoxViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
+#import "SYNDeviceManager.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -44,6 +45,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
+
+@property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 @property (nonatomic) CGFloat sideNavigationOriginCenterX;
 @property (nonatomic) BOOL buttonLocked;
@@ -241,6 +244,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
+    
     [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
     
@@ -263,6 +270,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     originalAddButtonX = self.addToChannelButton.frame.origin.x;
 }
@@ -800,5 +808,56 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
+#pragma mark - Account Settings
+
+- (void) accountSettingsLogout: (NSNotification*) notification
+{
+    [self.accountSettingsPopover dismissPopoverAnimated: NO];
+    self.accountSettingsPopover = nil;
+    [appDelegate logout];
+}
+
+
+- (void) showAccountSettingsPopover
+{
+    if(self.accountSettingsPopover)
+        return;
+    
+    SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
+    
+    self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+    self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
+    self.accountSettingsPopover.delegate = self;
+    
+    self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+    
+    CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
+                             [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
+    
+    [self.accountSettingsPopover presentPopoverFromRect: rect
+                                                 inView: self.view
+                               permittedArrowDirections: 0
+                                               animated: YES];
+}
+
+
+- (void) hideAutocompletePopover
+{
+    if (!self.accountSettingsPopover)
+        return;
+    
+    [self.accountSettingsPopover dismissPopoverAnimated: YES];
+}
+
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
+{
+    if (popoverController == self.accountSettingsPopover)
+    {
+        
+        self.accountSettingsPopover = nil;
+    }
+    
+}
 
 @end

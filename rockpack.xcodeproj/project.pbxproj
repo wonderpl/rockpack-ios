@@ -488,6 +488,10 @@
 		BE285D9C1725726300D995AB /* SYNExistingChannelsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */; };
 		BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */; };
 		BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */; };
+		BE285DA617258A0A00D995AB /* ButtonConfirm.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA217258A0A00D995AB /* ButtonConfirm.png */; };
+		BE285DA717258A0A00D995AB /* ButtonConfirm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */; };
+		BE285DA817258A0A00D995AB /* ButtonConfirmHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */; };
+		BE285DA917258A0A00D995AB /* ButtonConfirmHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */; };
 		BE29A32C16DE56AB00C00F92 /* SYNSearchVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */; };
 		BE29A32F16DE8C8700C00F92 /* SYNSearchRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A32E16DE8C8700C00F92 /* SYNSearchRootViewController.m */; };
 		BE29A33216DE8CAE00C00F92 /* SYNSearchChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE29A33116DE8CAE00C00F92 /* SYNSearchChannelsViewController.m */; };
@@ -1209,6 +1213,10 @@
 		BE285D9D172584E200D995AB /* SYNChannelCreateNewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCreateNewCell.h; sourceTree = "<group>"; };
 		BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCreateNewCell.m; sourceTree = "<group>"; };
 		BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCreateNewCell.xib; sourceTree = "<group>"; };
+		BE285DA217258A0A00D995AB /* ButtonConfirm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirm.png; path = Assets/Images/ButtonConfirm.png; sourceTree = "<group>"; };
+		BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirm@2x.png"; path = "Assets/Images/ButtonConfirm@2x.png"; sourceTree = "<group>"; };
+		BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirmHighlighted.png; path = Assets/Images/ButtonConfirmHighlighted.png; sourceTree = "<group>"; };
+		BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirmHighlighted@2x.png"; path = "Assets/Images/ButtonConfirmHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE29A32A16DE56AB00C00F92 /* SYNSearchVideosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchVideosViewController.h; sourceTree = "<group>"; };
 		BE29A32B16DE56AB00C00F92 /* SYNSearchVideosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchVideosViewController.m; sourceTree = "<group>"; };
 		BE29A32D16DE8C8600C00F92 /* SYNSearchRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchRootViewController.h; sourceTree = "<group>"; };
@@ -2347,6 +2355,10 @@
 		01B7F76C164FE464009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
+				BE285DA217258A0A00D995AB /* ButtonConfirm.png */,
+				BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */,
+				BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */,
+				BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */,
 				01B7CD8B166D1E23001F4AF0 /* PanelChannelsTitle.png */,
 				01B7CD8C166D1E23001F4AF0 /* PanelChannelsTitle@2x.png */,
 				019E82451654051600744A03 /* BackgroundChannelThumbnail.png */,
@@ -3543,6 +3555,10 @@
 				01BCD1DE172560FB00F459BF /* ButtonCoverHighlighted@2x.png in Resources */,
 				BE285D9C1725726300D995AB /* SYNExistingChannelsViewController.xib in Resources */,
 				BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell.xib in Resources */,
+				BE285DA617258A0A00D995AB /* ButtonConfirm.png in Resources */,
+				BE285DA717258A0A00D995AB /* ButtonConfirm@2x.png in Resources */,
+				BE285DA817258A0A00D995AB /* ButtonConfirmHighlighted.png in Resources */,
+				BE285DA917258A0A00D995AB /* ButtonConfirmHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
