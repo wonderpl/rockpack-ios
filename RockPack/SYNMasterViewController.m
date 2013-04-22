@@ -530,7 +530,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) removeCategoryChooserOverlayController
 {
-    SYNContainerViewController* bottomTabViewController = (SYNContainerViewController*)self.containerViewController;
     
     UIView* child = self.overlayView.subviews[0];
     

@@ -233,15 +233,18 @@
 }
 
 
-- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
+- (void) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
    
+    [addItButton setSelected:YES];
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    [self animateVideoAdditionToVideoQueue: videoInstance];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                        object: self
+                                                      userInfo: @{@"VideoInstance" : videoInstance}];
 }
 
 
@@ -252,8 +255,6 @@
     
 }
 
-
-// Called by invisible button on video view cell
 
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
@@ -385,13 +386,6 @@
     return FALSE;
 }
 
-
-- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
-                                                        object:self
-                                                      userInfo:@{@"VideoInstance" : videoInstance}];
-}
 
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
