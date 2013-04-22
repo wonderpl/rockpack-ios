@@ -41,8 +41,8 @@
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
 @property (nonatomic, strong) UIImageView *pinchedView;
 
-
 @end
+
 
 @implementation SYNYouRootViewController
 
@@ -56,6 +56,7 @@
     {
         self.title = kProfileTitle;
     }
+    
     return self;
 }
 
