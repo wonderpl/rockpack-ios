@@ -2,17 +2,36 @@
 //  SYNSearchTabView.h
 //  rockpack
 //
-//  Created by Michael Michailidis on 20/02/2013.
+//  Created by Michael Michailidis on 19/04/2013.
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNTabView.h"
-#import "SYNSearchItemView.h"
+#import <UIKit/UIKit.h>
 
-@interface SYNSearchTabView : SYNTabView
+typedef enum {
+
+    SearchTabTypeVideos = 0,
+    SearchTabTypeChannels
+
+} SearchTabType;
+
+@interface SYNSearchTabView : UIControl {
+    UIImage* backgroundImageOn;
+    UIImage* backgroundImageOff;
+    UIImageView* bgImageView;
+    UILabel* titleLabel;
+    NSString* typeTitle;
+    SearchTabType type;
+    UIColor* onColor;
+    UIColor* offColor;
+    UIButton* overButton;
+    BOOL selected;
+}
 
 
-@property (nonatomic, readonly) SYNSearchItemView* searchVideosItemView;
-@property (nonatomic, readonly) SYNSearchItemView* searchChannelsItemView;
+
+-(void)setNumberOfItems:(NSInteger)numberOfItems animated:(BOOL)animated;
+
++(id)tabViewWithSearchType:(SearchTabType)itsType;
 
 @end

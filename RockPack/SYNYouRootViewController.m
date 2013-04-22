@@ -83,7 +83,7 @@
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.itemSize = CGSizeMake(184.0, 138.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 8.0, 5.0, 25.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.leftLandscapeLayout = flowLayout;
@@ -94,7 +94,7 @@
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.itemSize = CGSizeMake(184.0, 138.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 25.0, 5.0, 8.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.rightLandscapeLayout = flowLayout;
@@ -105,7 +105,7 @@
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.itemSize = CGSizeMake(184.0, 138.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.leftPortraitLayout = flowLayout;
@@ -116,7 +116,7 @@
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.itemSize = CGSizeMake(184.0, 138.0);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
-    flowLayout.minimumLineSpacing = 8.0;
+    flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
     
     self.rightPortraitLayout = flowLayout;
@@ -239,9 +239,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-//    NSLog(@"height1: %f", self.channelThumbnailCollectionView.contentSize.height);
-//    NSLog(@"height2: %f", self.subscriptionsViewController.collectionView.contentSize.height);
     
     CGSize subSize = self.subscriptionsViewController.collectionView.contentSize;
     CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;

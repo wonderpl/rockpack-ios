@@ -19,7 +19,6 @@
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNSearchRootViewController.h"
-#import "SYNSearchTabViewController.h"
 #import "SYNVideosRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
@@ -36,13 +35,16 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 
+@property (nonatomic) BOOL hasReplacedNavigationController;
+
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 @property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
-
+@property (nonatomic, weak) UINavigationController* replacementNavigationController;
+@property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
@@ -60,6 +62,7 @@
 @implementation SYNContainerViewController
 
 @synthesize selectedViewController;
+@synthesize hasReplacedNavigationController;
 @synthesize currentScreenOffset;
 @synthesize videoQueueController;
 @synthesize channelsUserNavigationViewController;
@@ -116,13 +119,10 @@
     //SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
     
     
-    
-    
     // == Search (out of normal controller array)
     
     
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-    self.searchViewController.tabViewController = [[SYNSearchTabViewController alloc] init];
     self.seachViewNavigationViewController = [self wrapInNavigationController:self.searchViewController];
     
     
@@ -275,11 +275,55 @@
 - (void) popCurrentViewController: (id) sender
 {
 
-    UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
+    // two functions for pop.
     
-    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+    if(hasReplacedNavigationController)
+    {
+        
+        
+        hasReplacedNavigationController = NO;
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
+        
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseIn
+                         animations: ^{
+                             self.replacementNavigationController.view.alpha = 0.0;
+                             
+                         }
+                         completion: ^(BOOL finished) {
+                             self.selectedViewController = self.seachViewNavigationViewController;
+                             
+                             [UIView animateWithDuration: 0.7f
+                                                   delay: 0.2f
+                                                 options: UIViewAnimationOptionCurveEaseOut
+                                              animations: ^{
+                                                  self.replacedNavigationController.view.alpha = 1.0;
+                                              }
+                                              completion: ^(BOOL finished) {
+                                                  
+                                                  self.replacementNavigationController = nil;
+                                                  [self.replacementNavigationController.view removeFromSuperview];
+                                              }];
+                         }];
+        
+        hasReplacedNavigationController = NO;
+    }
+    else
+    {
     
-    [abstractVC animatedPopViewController];
+        UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
+        
+        SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+        
+        [abstractVC animatedPopViewController];
+    
+    }
+    
+    
     
     self.scrollView.scrollEnabled = YES;
     
@@ -305,12 +349,12 @@
 
 - (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
 {
-     
-    
+
     [self replaceShowingNavigationController:self.seachViewNavigationViewController];
     
-
+    
     [self.searchViewController showSearchResultsForTerm: searchTerm];
+    
     
     
 }
@@ -332,20 +376,26 @@
 }
 
 
-- (void) replaceShowingNavigationController:(UIViewController*)viewController
+- (void) replaceShowingNavigationController:(UINavigationController*)navigationController
 {
     UINavigationController* showingNavController = [self showingViewController].navigationController;
+    
+    self.replacedNavigationController = showingNavController;
 
+    hasReplacedNavigationController = YES;
     
-    CGFloat showingOffset = showingNavController.view.frame.origin.x;
+    self.replacementNavigationController = navigationController;
     
-    CGRect vcFrame = viewController.view.frame;
-    vcFrame.origin.x = showingOffset;
-    viewController.view.frame = vcFrame;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
     
-    viewController.view.alpha = 0.0;
+    CGRect vcFrame = navigationController.view.frame;
+    vcFrame.origin.x = showingNavController.view.frame.origin.x;
+    navigationController.view.frame = vcFrame;
     
-    [self.scrollView addSubview:viewController.view];
+    
+    navigationController.view.alpha = 0.0;
+    
+    [self.scrollView addSubview:navigationController.view];
     
     self.scrollView.scrollEnabled = NO;
     
@@ -362,7 +412,7 @@
                                                delay: 0.2f
                                              options: UIViewAnimationOptionCurveEaseOut
                                           animations: ^{
-                                              viewController.view.alpha = 1.0;
+                                              navigationController.view.alpha = 1.0;
                                           }
                                           completion: nil];
                      }];
@@ -501,6 +551,7 @@
     
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:abstractViewController];
     navigationController.title = abstractViewController.title;
+    navigationController.view.frame = abstractViewController.view.frame;
     navigationController.navigationBarHidden = YES;
     navigationController.view.autoresizesSubviews = YES;
     navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;

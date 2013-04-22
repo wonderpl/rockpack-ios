@@ -8,10 +8,10 @@
 
 #import "SYNSearchVideosViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNSearchItemView.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "VideoInstance.h"
+#import "SYNSearchTabView.h"
 #import "Video.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
@@ -29,28 +29,19 @@
 {
     [super viewDidLoad];
     
+    
+    
     self.trackedViewName = @"Search - Videos";
     
     // override the data loading
     
-    self.videoThumbnailCollectionView.center = CGPointMake(self.videoThumbnailCollectionView.center.x,
-                                                           self.videoThumbnailCollectionView.center.y + 30.0);
+    CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
+    collectionFrame.origin.y += 60.0;
+    collectionFrame.size.height -= 90.0;
+    self.videoThumbnailCollectionView.frame = collectionFrame;
     
-    self.largeVideoPanelView.center = CGPointMake(self.largeVideoPanelView.center.x,
-                                                  self.largeVideoPanelView.center.y + 30.0);
 }
 
-// FIXME: Should there be a call to super in these methods?
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    //override with empty function
-}
-
-- (void) viewWillAppear:(BOOL)animated
-{
-    // override with empty function
-}
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -87,14 +78,11 @@
 -(void)performSearchWithTerm:(NSString*)term
 {
     
-//    if(self.itemToUpdate)
-//        [self.itemToUpdate hideItem];
-    
+    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+
     [appDelegate.networkEngine searchVideosForTerm:term];
     
-    NSIndexPath *firstIndexPath = [NSIndexPath indexPathForRow: 0 inSection: 0];
     
-    self.currentIndexPath = firstIndexPath;
     
     
 }
@@ -104,7 +92,7 @@
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
 
-    // DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
+    DebugLog(@"Total Search Items: %i", controller.fetchedObjects.count);
     
     if(self.itemToUpdate)
         [self.itemToUpdate setNumberOfItems:[controller.fetchedObjects count] animated:YES];
@@ -141,7 +129,7 @@
         [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
         NSString* viewsNumberString = [numberFormatter stringFromNumber:video.viewCount];
         
-        videoThumbnailCell.numberOfViewLabel.text = [NSString stringWithFormat:@"%@ views", viewsNumberString];
+        videoThumbnailCell.numberOfViewLabel.text = [[NSString stringWithFormat:@"%@ views", viewsNumberString] uppercaseString];
         
         
         NSCalendar* currentCalendar = [NSCalendar currentCalendar];
@@ -161,7 +149,7 @@
         
         
         
-        videoThumbnailCell.dateAddedLabel.text = format;
+        videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
         
         NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
         NSUInteger seconds = [video.duration integerValue] % 60;
@@ -174,6 +162,26 @@
     }
     
     return cell;
+}
+
+
+#pragma mark - Override Header Related Methods
+
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+referenceSizeForHeaderInSection: (NSInteger) section
+{
+    return CGSizeZero;
+}
+
+
+// Used for the collection view header
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    return nil;
+    
 }
 
 @end

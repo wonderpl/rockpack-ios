@@ -131,7 +131,7 @@
 									<object class="IBUILabel" id="272361376">
 										<reference key="NSNextResponder" ref="239537915"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{0, 2}, {153, 21}}</string>
+										<string key="NSFrame">{{0, 11}, {153, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="487122063"/>
@@ -143,9 +143,9 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<string key="IBUIText">BASEMENT JAXX</string>
-										<object class="NSColor" key="IBUITextColor">
+										<object class="NSColor" key="IBUITextColor" id="679805213">
 											<int key="NSColorSpace">1</int>
-											<bytes key="NSRGB">MC40MjM1Mjk0MTE4IDAuNDU4ODIzNTI5NCAwLjQ3NDUwOTgwMzkAA</bytes>
+											<bytes key="NSRGB">MC43MzMzMzMzNDkyIDAuNzMzMzMzMzQ5MiAwLjczMzMzMzM0OTIAA</bytes>
 										</object>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
@@ -163,10 +163,10 @@
 									<object class="IBUILabel" id="487122063">
 										<reference key="NSNextResponder" ref="239537915"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{0, 17}, {153, 21}}</string>
+										<string key="NSFrame">{{0, 27}, {153, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="678494832"/>
+										<reference key="NSNextKeyView" ref="820602389"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -175,38 +175,19 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<string key="IBUIText">BASEMENT JAXX</string>
-										<object class="NSColor" key="IBUITextColor">
-											<int key="NSColorSpace">1</int>
-											<bytes key="NSRGB">MC40MjM1Mjk0MTE4IDAuNDU4ODIzNTI5NCAwLjQ3NDUwOTgwMzkAA</bytes>
-										</object>
+										<reference key="IBUITextColor" ref="679805213"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
 										<reference key="IBUIFontDescription" ref="909412018"/>
 										<reference key="IBUIFont" ref="162055809"/>
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
-									<object class="IBUIImageView" id="678494832">
-										<reference key="NSNextResponder" ref="239537915"/>
-										<int key="NSvFlags">289</int>
-										<string key="NSFrame">{{165, 6}, {49, 20}}</string>
-										<reference key="NSSuperview" ref="239537915"/>
-										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="820602389"/>
-										<string key="NSReuseIdentifierKey">_NS:9</string>
-										<bool key="IBUIUserInteractionEnabled">NO</bool>
-										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<object class="NSCustomResource" key="IBUIImage">
-											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">VideoDurationBackground.png</string>
-										</object>
-									</object>
 									<object class="IBUILabel" id="820602389">
 										<reference key="NSNextResponder" ref="239537915"/>
-										<int key="NSvFlags">289</int>
-										<string key="NSFrame">{{165, 7}, {49, 21}}</string>
+										<int key="NSvFlags">297</int>
+										<string key="NSFrame">{{182, 145}, {49, 21}}</string>
 										<reference key="NSSuperview" ref="239537915"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="67368057"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -215,19 +196,16 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<string key="IBUIText">32:00</string>
-										<object class="NSColor" key="IBUITextColor">
-											<int key="NSColorSpace">1</int>
-											<bytes key="NSRGB">MC41MDk4MDM5MjE2IDAuNTk2MDc4NDMxNCAwLjYxNTY4NjI3NDUAA</bytes>
-										</object>
+										<reference key="IBUITextColor" ref="679805213"/>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">0</int>
-										<int key="IBUITextAlignment">1</int>
+										<int key="IBUITextAlignment">2</int>
 										<reference key="IBUIFontDescription" ref="909412018"/>
 										<reference key="IBUIFont" ref="162055809"/>
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
 								</array>
-								<string key="NSFrame">{{269, 20}, {221, 63}}</string>
+								<string key="NSFrame">{{257, 0}, {239, 170}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="272361376"/>
@@ -710,7 +688,6 @@
 							<reference ref="272361376"/>
 							<reference ref="487122063"/>
 							<reference ref="820602389"/>
-							<reference ref="678494832"/>
 						</array>
 						<reference key="parent" ref="182925985"/>
 						<string key="objectName">Video Info View</string>
@@ -780,12 +757,6 @@
 						<string key="objectName">Button - Profile</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">88</int>
-						<reference key="object" ref="678494832"/>
-						<reference key="parent" ref="239537915"/>
-						<string key="objectName">Duration background</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">92</int>
 						<reference key="object" ref="804857251"/>
 						<reference key="parent" ref="76609695"/>
@@ -838,7 +809,6 @@
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="82.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="83.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="88.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="92.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="93.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="97.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -977,7 +947,6 @@
 			<string key="GlossChannelSmall.png">{80, 60}</string>
 			<string key="GlossVideo.png">{249, 140}</string>
 			<string key="PanelVideoFeedLandscape.png">{497, 170}</string>
-			<string key="VideoDurationBackground.png">{49, 20}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

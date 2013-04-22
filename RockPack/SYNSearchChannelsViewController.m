@@ -7,9 +7,8 @@
 //
 
 #import "SYNSearchChannelsViewController.h"
-
+#import "SYNSearchTabView.h"
 #import "SYNSearchRootViewController.h"
-#import "SYNSearchItemView.h"
 
 @interface SYNSearchChannelsViewController ()
 
@@ -30,8 +29,11 @@
     
     self.trackedViewName = @"Search - Channels";
     
-    self.channelThumbnailCollectionView.center = CGPointMake(self.channelThumbnailCollectionView.center.x,
-                                                             self.channelThumbnailCollectionView.center.y + 30.0);
+    
+    CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+    collectionFrame.origin.y += 60.0;
+    collectionFrame.size.height -= 60.0;
+    self.channelThumbnailCollectionView.frame = collectionFrame;
 }
 
 

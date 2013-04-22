@@ -11,7 +11,8 @@
 #import "SYNSearchVideosViewController.h"
 #import "SYNSearchChannelsViewController.h"
 #import "AppConstants.h"
-#import "SYNSearchTabViewController.h"
+#import "SYNDeviceManager.h"
+#import "SYNSearchTabView.h"
 
 @interface SYNSearchRootViewController ()
 
@@ -26,10 +27,16 @@
 
 @property (nonatomic, strong) NSString* currentSelectionId;
 
+@property (nonatomic, strong) SYNSearchTabView* videoSearchTabView;
+@property (nonatomic, strong) SYNSearchTabView* channelsSearchTabView;
+@property (nonatomic, strong) UIView* tabsContainer;
+
 
 @end
 
 @implementation SYNSearchRootViewController
+@synthesize tabsContainer;
+@synthesize videoSearchTabView, channelsSearchTabView;
 
 -(id)initWithViewId:(NSString *)vid
 {
@@ -41,8 +48,11 @@
 
 -(void)loadView
 {
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGRect frame = CGRectMake(0.0, 0.0, screenBounds.size.width, screenBounds.size.height);
+    
+    CGRect frame = CGRectMake(0.0, 0.0,
+                              [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                              [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    
     self.view = [[UIView alloc] initWithFrame:frame];
     self.view.backgroundColor = [UIColor clearColor];
 }
@@ -52,19 +62,89 @@
 {
     [super viewDidLoad];
     
+    
+    
+    self.videoSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeVideos];
+    self.channelsSearchTabView = [SYNSearchTabView tabViewWithSearchType:SearchTabTypeChannels];
+    
+    CGRect channelTabRect = self.channelsSearchTabView.frame;
+    channelTabRect.origin.x = self.videoSearchTabView.frame.size.width;
+    self.channelsSearchTabView.frame = channelTabRect;
+    
+    tabsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
+                                                            self.channelsSearchTabView.frame.size.width * 2.0,
+                                                            self.channelsSearchTabView.frame.size.height)];
+    
+    [tabsContainer addSubview:self.channelsSearchTabView];
+    [tabsContainer addSubview:self.videoSearchTabView];
+    
+    [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    tabsContainer.center = CGPointMake(self.view.center.x, 84.0);
+    tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
+    
+    
+    [self.view addSubview:tabsContainer];
+    
     // Google Analytics support
     self.trackedViewName = @"Search - Root";
 }
 
-
-- (void) viewDidAppear: (BOOL) animated
+-(void)videoTabPressed:(UIControl*)control
 {
-    [super viewDidAppear: animated];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueShow
-                                                        object: self
-                                                      userInfo: @{@"lock" : @(YES)}];
+    
+   if(self.videoSearchTabView.selected)
+       return;
+    
+    self.videoSearchTabView.selected = YES;
+    self.channelsSearchTabView.selected = NO;
+    
+    
+    [self showVideoSearchResults];
+    
 }
+
+-(void)channelTabPressed:(UIControl*)control
+{
+    
+    
+    if(self.channelsSearchTabView.selected)
+        return;
+    
+    self.channelsSearchTabView.selected = YES;
+    self.videoSearchTabView.selected = NO;
+    
+    [self showChannelsSearchResult];
+}
+
+-(void)showVideoSearchResults
+{
+    SYNAbstractViewController* newController;
+    [self.view insertSubview:self.searchVideosController.view belowSubview:tabsContainer];
+    newController = self.searchVideosController;
+    
+    
+    if(self.currentController)
+        [self.currentController.view removeFromSuperview];
+    
+    self.currentController = newController;
+    
+}
+-(void)showChannelsSearchResult
+{
+    SYNAbstractViewController* newController;
+    [self.view insertSubview:self.searchChannelsController.view belowSubview:tabsContainer];
+    newController = self.searchChannelsController;
+    
+    if(self.currentController)
+        [self.currentController.view removeFromSuperview];
+    
+    self.currentController = newController;
+}
+
+
 
 
 -(void)showSearchResultsForTerm:(NSString*)newSearchTerm
@@ -97,11 +177,11 @@
     // TODO: Check why we have to invert
     
     self.searchVideosController = [[SYNSearchVideosViewController alloc] initWithViewId:viewId];
-    self.searchVideosController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchVideosItemView;
+    self.searchVideosController.itemToUpdate = self.videoSearchTabView;
     self.searchVideosController.parent = self;
     
     self.searchChannelsController = [[SYNSearchChannelsViewController alloc] initWithViewId:viewId];
-    self.searchChannelsController.itemToUpdate = ((SYNSearchTabViewController*)self.tabViewController).searchChannelsItemView;
+    self.searchChannelsController.itemToUpdate = self.channelsSearchTabView;
     self.searchChannelsController.parent = self;
     
     
@@ -119,7 +199,7 @@
     [self clearOldSearchData];
     
     if(!self.currentController)
-        [self.tabViewController setSelectedWithId:@"0"];
+        [self videoTabPressed:nil];
     
     
     [self.searchVideosController performSearchWithTerm:searchTerm];
@@ -159,31 +239,6 @@
     self.searchChannelsController = nil;
 }
 
--(void)handleNewTabSelectionWithId:(NSString *)selectionId
-{
-    
-    SYNAbstractViewController* newController;
-    
-    if ([selectionId isEqualToString:@"0"])
-    {
-        
-        [self.view insertSubview:self.searchVideosController.view belowSubview:self.tabViewController.view];
-        newController = self.searchVideosController;
-        
-    }
-    else
-    {
-        [self.view insertSubview:self.searchChannelsController.view belowSubview:self.tabViewController.view];
-        newController = self.searchChannelsController;
-    }
-    
-    
-    if(self.currentController)
-        [self.currentController.view removeFromSuperview];
-    
-    self.currentController = newController;
-    
-    
-}
+
 
 @end

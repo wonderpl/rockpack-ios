@@ -42,7 +42,6 @@
 @property (nonatomic, strong) IBOutlet UIButton* faceImageButton;
 
 @property (nonatomic, strong) IBOutlet UILabel* secondaryFacebookMessage;
-@property (nonatomic, strong) IBOutlet UILabel* facebookLogingInLabel;
 
 
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
@@ -95,7 +94,6 @@
 @synthesize appDelegate;
 @synthesize signUpButton, facebookSignInButton;
 @synthesize loginButton, finalLoginButton, passwordInputField, registerButton, userNameInputField;
-@synthesize facebookLogingInLabel;
 @synthesize passwordForgottenButton, passwordForgottenLabel, areYouNewLabel, memberLabel, termsAndConditionsLabel;
 @synthesize activityIndicator, dividerImageView, secondaryFacebookMessage;
 @synthesize isAnimating, termsAndConditionsLabelSide;
@@ -132,7 +130,6 @@
     
     passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
     secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
-    facebookLogingInLabel.font = [UIFont boldRockpackFontOfSize:22];
     termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:14.0];
     termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
     
@@ -212,7 +209,7 @@
     // controls to hide initially
     
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
-                                areYouNewLabel, registerButton, passwordForgottenLabel, facebookLogingInLabel,
+                                areYouNewLabel, registerButton, passwordForgottenLabel,
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
                                 registerNewUserButton, dividerImageView, faceImageButton, sendEmailButton,
                                 wellSendYouLabel, termsAndConditionsLabelSide];
@@ -778,7 +775,6 @@
 -(void)doFacebookLoginAnimation
 {
     [UIView animateWithDuration:0.3 animations:^{
-        facebookLogingInLabel.alpha = 1.0;
         signUpButton.alpha = 0.0;
         signUpButton.center = CGPointMake(signUpButton.center.x + 10.0, signUpButton.center.y);
     } completion:^(BOOL finished) {
@@ -796,10 +792,6 @@
     activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
                                            facebookSignInButton.center.y);
     
-    CGRect labelFrame = facebookLogingInLabel.frame;
-    labelFrame.origin.x = facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 40.0;
-    labelFrame.origin.y = facebookSignInButton.frame.origin.y + 8.0;
-    facebookLogingInLabel.frame = labelFrame;
 }
 
 -(IBAction)signInWithFacebook:(id)sender
@@ -847,7 +839,7 @@
                                                          
                                                          
                                                         } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                            facebookLogingInLabel.alpha = 0.0;
+                                                    
 
                                                             signUpButton.alpha = 1.0;
 

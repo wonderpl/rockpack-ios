@@ -113,6 +113,7 @@
     
     CGRect overButtonFrame = CGRectZero;
     overButtonFrame.size = totalSize;
+    overButtonFrame.origin = self.frame.origin;
     
     self.frame = overButtonFrame;
 }

@@ -21,12 +21,13 @@
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNCategoryChooserViewController.h"
 #import "SYNRefreshButton.h"
-#import "SYNAutocompleteViewController.h"
+#import "SYNSearchBoxViewController.h"
 #import "SYNDeviceManager.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
+#define kSearchBoxShrinkFactor 136.0
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
@@ -40,6 +41,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
+@property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 @property (nonatomic) CGFloat sideNavigationOriginCenterX;
@@ -49,10 +51,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
+@property (nonatomic) BOOL showingBackButton;
+
 
 @property (nonatomic) CGRect addToChannelFrame;
 
-@property (nonatomic, strong) SYNAutocompleteViewController* autocompleteController;
+@property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 
 
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
@@ -68,6 +72,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @synthesize containerViewController;
 @synthesize pageTitleLabel;
+@synthesize showingBackButton;
 @synthesize addToChannelFrame;
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
@@ -88,23 +93,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
-        sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth];
+        sideNavigationFrame.origin.x = 1024.0;
+        NSLog(@"Current width: %f", sideNavigationFrame.origin.x);
         sideNavigationFrame.origin.y = 74.0;
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
-        
+        self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         
         
 //        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
 //        [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
         
+        
+        // == Search Box == //
     
         
-        self.autocompleteController = [[SYNAutocompleteViewController alloc] init];
-        CGRect autocompleteControllerFrame = self.autocompleteController.view.frame;
+        self.searchBoxController = [[SYNSearchBoxViewController alloc] init];
+        CGRect autocompleteControllerFrame = self.searchBoxController.view.frame;
         autocompleteControllerFrame.origin.x = 10.0;
         autocompleteControllerFrame.origin.y = 10.0;
-        self.autocompleteController.view.frame = autocompleteControllerFrame;
+        self.searchBoxController.view.frame = autocompleteControllerFrame;
         
         self.overEverythingView.userInteractionEnabled = NO;
         
@@ -137,7 +145,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.refreshButton.frame = refreshButtonFrame;
     [self.movableButtonsContainer addSubview:self.refreshButton];
     
-    self.closeSearchButton.alpha = 0.0;
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -167,7 +174,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     // == Cancel Button == //
     
-    self.closeSearchButton.hidden = YES;
+    //self.closeSearchButton.hidden = YES;
     
     
     
@@ -229,9 +236,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
-    
-    
-   
     
     
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
@@ -353,7 +357,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
                          
-                         sideNavigationFrame.origin.x = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 192.0;
+                         sideNavigationFrame.origin.x = 1024.0 - 192.0;
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {
@@ -437,6 +441,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion: ^(BOOL finished) {
                          
                          [self.sideNavigationViewController reset];
+                         [self.sideNavigationViewController deselectAllCells];
                          self.sideNavigationViewController.state = SideNavigationStateHidden;
                          
                      }];
@@ -562,9 +567,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     self.sideNavigationButton.hidden = YES;
+    CGRect sboxFrame;
+    if(showingBackButton)
+    {
+        sboxFrame = self.searchBoxController.view.frame;
+        
+        sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
+        
+        
+    }
+    else
+    {
+        
+        sboxFrame.origin.x = 10.0;
+    }
     
+    sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+    sboxFrame.origin.y = 10.0;
+    self.searchBoxController.view.frame = sboxFrame;
     
-    [self.view addSubview:self.autocompleteController.view];
+    [self.view addSubview:self.searchBoxController.view];
 }
 
 -(void)searchTyped:(NSNotification*)notification
@@ -576,6 +598,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!termString)
         return;
     
+    self.closeSearchButton.hidden = YES;
+    self.sideNavigationButton.hidden = NO;
+    
     [self.containerViewController showSearchViewControllerWithTerm:termString];
     
     
@@ -583,8 +608,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(IBAction)cancelButtonPressed:(id)sender
 {
-    [self.autocompleteController clear];
-    [self.autocompleteController.view removeFromSuperview];
+    [self.searchBoxController clear];
+    [self.searchBoxController.view removeFromSuperview];
     
     
     self.sideNavigationButton.hidden = NO;
@@ -641,11 +666,32 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.backButtonControl addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         [self.backButtonControl setBackTitle:self.pageTitleLabel.text];
+        if(self.searchBoxController.isOnScreen)
+        {
+            [UIView animateWithDuration:0.5 animations:^{
+                CGRect sboxFrame = self.searchBoxController.view.frame;
+                sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
+                sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                self.searchBoxController.view.frame = sboxFrame;
+            }];
+        }
         [self showBackButton:YES];
     }
     else
     {
         [self.backButtonControl removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        if(self.searchBoxController.isOnScreen)
+        {
+            [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                CGRect sboxFrame = self.searchBoxController.view.frame;
+                sboxFrame.origin.x = 10.0;
+                sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
+                self.sideNavigationButton.hidden = YES;
+                self.closeSearchButton.hidden = NO;
+                self.searchBoxController.view.frame = sboxFrame;
+            } completion:nil];
+            
+        }
         [self showBackButton:NO];
     }
 }
@@ -676,12 +722,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (show)
     {
+        showingBackButton = YES;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = 8.0;
         targetAlpha = 1.0;
     }
     else
     {
+        showingBackButton = NO;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
         targetAlpha = 0.0;

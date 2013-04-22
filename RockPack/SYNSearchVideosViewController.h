@@ -7,14 +7,15 @@
 //
 
 #import "SYNVideosRootViewController.h"
+#import "SYNFeedRootViewController.h"
 
-@class SYNSearchItemView;
+@class SYNSearchTabView;
 @class SYNSearchRootViewController;
 
-@interface SYNSearchVideosViewController : SYNVideosRootViewController
+@interface SYNSearchVideosViewController : SYNFeedRootViewController
 
 @property (nonatomic, weak) SYNSearchRootViewController* parent;
-@property (nonatomic, weak) SYNSearchItemView* itemToUpdate;
+@property (nonatomic, weak) SYNSearchTabView* itemToUpdate;
 
 -(void)performSearchWithTerm:(NSString*)term;
 
