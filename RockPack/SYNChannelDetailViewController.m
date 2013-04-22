@@ -7,6 +7,7 @@
 //
 
 #import "Channel.h"
+#import "ChannelOwner.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailRegularCell.h"
@@ -25,6 +26,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
+@property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
@@ -61,11 +63,31 @@
     // Google Analytics support
     self.trackedViewName = @"Channels - Detail";
     
+    // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
+    // Set custom fonts and shadows for labels
+    self.channelOwnerLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
+    [self addShadowToLayer: self.channelOwnerLabel.layer];
+    
+    self.channelDetailsLabel.font = [UIFont rockpackFontOfSize: 15.0f];
+    [self addShadowToLayer: self.channelDetailsLabel.layer];
+    
+    // Add Rockpack font and shadow to UITextView
+    self.channelTitleTextView.font = [UIFont rockpackFontOfSize: 55.0f];
+    [self addShadowToLayer: self.channelTitleTextView.layer];
+    
+    // Needed for shadows to work
+    self.channelTitleTextView.backgroundColor = [UIColor clearColor];
+    
+    // Shadow for avatar background
+    [self addShadowToLayer: self.avatarBackgroundView.layer];
+    
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(256.0f , 179.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
+    
+    [self updateChannelDetails];
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
@@ -80,17 +102,6 @@
     [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
                                            placeHolderImage: nil];
     
-    // Add Rockpack font and shadow to UITextView
-    // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
-    CALayer *textLayer = self.channelTitleTextView.layer;
-    textLayer.shadowColor = [UIColor blackColor].CGColor;
-    textLayer.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    textLayer.shadowOpacity = 0.5f;
-    textLayer.shadowRadius = 2.0f;
-    
-    // Needed for shadows to work
-    self.channelTitleTextView.backgroundColor = [UIColor clearColor];
-    
     // Set wallpaper
     [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                                      placeHolderImage: nil];
@@ -104,10 +115,17 @@
 {
     [super viewWillAppear: animated];
     
+    // Look out for update notifications
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(reloadCollectionViews)
                                                  name: kDataUpdated
                                                object: nil];
+    
+    // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
+    [self.videoThumbnailCollectionView addObserver: self
+                                        forKeyPath: kCollectionViewContentOffsetKey
+                                           options: NSKeyValueObservingOptionNew
+                                           context: nil];
     
     // FIXME: Move out to subclass is there is a distinct display view, overridden by edit subclass
     [self setDisplayControlsVisibility: TRUE];
@@ -123,19 +141,16 @@
     {
         [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
     }
-    
-    [self.videoThumbnailCollectionView addObserver: self
-                                        forKeyPath: kCollectionViewContentOffsetKey
-                                           options: NSKeyValueObservingOptionNew
-                                           context: nil];
 }
 
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    // Remove KVO observer
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
     
+    // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kDataUpdated
                                                   object: nil];
@@ -146,6 +161,25 @@
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
+}
+
+
+#pragma mark - VIEW helper methods
+
+- (void) addShadowToLayer: (CALayer *) layer
+{
+    layer.shadowColor = [UIColor blackColor].CGColor;
+    layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+    layer.shadowOpacity = 0.3f;
+    layer.shadowRadius = 2.0f;
+}
+
+- (void) updateChannelDetails
+{
+    self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
+    
+    NSString *detailsString = [NSString stringWithFormat: @"%d VIDEOS / %d SUBSCRIBERS", self.channel.videoInstancesSet.count, 0];
+    self.channelDetailsLabel.text = detailsString;
 }
 
 
@@ -269,8 +303,10 @@
                      completion: nil];
 }
 
-#pragma mark - KVO fading
+#pragma mark - KVO control fading
 
+// We face out all controls/information views when the user starts scrolling the videos collection view
+// but monitoring the collectionview content offset using KVO
 - (void) observeValueForKeyPath: (NSString *) keyPath
                        ofObject: (id) object
                          change: (NSDictionary *) change
@@ -280,10 +316,7 @@
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
         CGFloat normalisedOffsetY = - (newContentOffset.y);
-        
-//        originalContentOffset
-        NSLog (@"change =  %f", normalisedOffsetY);
-        
+
         if (newContentOffset.y <= self.originalContentOffset.y)
         {
             self.masterControlsView.alpha = 1.0f;
