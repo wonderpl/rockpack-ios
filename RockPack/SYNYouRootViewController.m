@@ -24,6 +24,8 @@
 #import "SYNChannelMidCell.h"
 #import "SYNYouHeaderView.h"
 
+#define kInterChannelSpacing 138.0
+
 @interface SYNYouRootViewController ()
 
 @property (nonatomic, assign) BOOL userPinchedOut;
@@ -81,7 +83,7 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 8.0, 5.0, 25.0);
     flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
@@ -92,7 +94,7 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 25.0, 5.0, 8.0);
     flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
@@ -103,7 +105,7 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
     flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;
@@ -114,7 +116,7 @@
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
     flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, 138.0);
+    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
     flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0);
     flowLayout.minimumLineSpacing = 10.0;
     flowLayout.minimumInteritemSpacing = 0.0;

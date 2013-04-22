@@ -386,7 +386,7 @@
                                               }
                                               completion: ^(BOOL finished) {
                                                   
-                                                  [self.replacedNavigationController.view removeFromSuperview];
+                                                  [self.replacementNavigationController.view removeFromSuperview];
                                                   
                                                   
                                                   self.replacementNavigationController = nil;
@@ -445,7 +445,6 @@
                      }
                      completion: ^(BOOL finished) {
                          
-                         //[self.replacedNavigationController.view removeFromSuperview];
                          
                          self.selectedViewController = self.seachViewNavigationViewController;
                          
