@@ -26,11 +26,7 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
-<<<<<<< HEAD
-=======
-#import "SYNChannelsAddVideosViewController.h"
 #import "Channel.h"
->>>>>>> origin/develop
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
