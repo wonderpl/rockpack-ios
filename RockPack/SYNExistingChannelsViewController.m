@@ -191,7 +191,7 @@
     }
     
     SYNChannelMidCell* cell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
-    cell.selected = YES;
+    cell.specialSelected = YES;
     
     self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
     

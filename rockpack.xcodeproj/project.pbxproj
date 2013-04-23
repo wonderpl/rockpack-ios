@@ -1958,7 +1958,7 @@
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				BE08158F16D3C46800ADB1DC /* Search */,
 				BE285D971725722400D995AB /* Existing Channels */,
-				01982560162ADE3300216900 /* You */,
+				01982560162ADE3300216900 /* Profile */,
 				01982561162ADE4000216900 /* Friends */,
 			);
 			name = "View Controllers";
@@ -2102,7 +2102,7 @@
 			name = Panels;
 			sourceTree = "<group>";
 		};
-		01982560162ADE3300216900 /* You */ = {
+		01982560162ADE3300216900 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
 				0142ED8716B19FBE008694DA /* SYNYouRootViewController.h */,
@@ -2112,7 +2112,7 @@
 				BE86BF1D171FFB980006DC8A /* SYNYouHeaderView.h */,
 				BE86BF1E171FFB980006DC8A /* SYNYouHeaderView.m */,
 			);
-			name = You;
+			name = Profile;
 			sourceTree = "<group>";
 		};
 		01982561162ADE4000216900 /* Friends */ = {
