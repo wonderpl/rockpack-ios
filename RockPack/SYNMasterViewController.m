@@ -300,10 +300,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         dotImageView = (UIImageView*)self.dotsView.subviews[i];
         if (i == pageNumber) {
             dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
-            continue;
+        } else {
+            dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
         }
         
-        dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
+        
         
     }
     
