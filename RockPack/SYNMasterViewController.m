@@ -46,6 +46,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
+@property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
@@ -195,6 +196,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
+    
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
@@ -252,8 +254,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editToChannelAction:) name:kNoteAddToChannel object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
     
@@ -350,26 +352,31 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
-- (void) createOrEditChannel:(Channel*)channel
+-(void)addToChannelAction:(NSNotification*)notification
 {
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!channel)
+        return;
+    
+    DebugLog(@"Goint to add Channel with %d video instances", channel.videoInstances.count);
+    
+    // TODO : Show confirm message
+    
+}
+
+-(void)createNewChannelAction:(NSNotification*)notification
+{
+    
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!channel)
+        return;
+    
     SYNChannelsDetailsCreationViewController *channelCreationVC =
     [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
     SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
     [showingController animatedPushViewController: channelCreationVC];
 }
 
--(void)editToChannelAction:(NSNotification*)notification
-{
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
-    if(!channel)
-        return;
-    
-    DebugLog(@"Goint to create/edit Channel with %d video instances", channel.videoInstances.count);
-    
-    [self createOrEditChannel:channel];
-    
-}
 
 
 #pragma mark - Navigation Panel Methods
@@ -708,7 +715,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.networkErrorView = [SYNNetworkErrorView errorView];
     [self.networkErrorView setText:message];
-    [self.overEverythingView addSubview:self.networkErrorView];
+    [self.errorContainerView addSubview:self.networkErrorView];
     
     [self alignErrorMessage];
     
@@ -965,7 +972,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self alignErrorMessage];
     }
-    
+
+    //[self.existingChannelsController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
 }
 
