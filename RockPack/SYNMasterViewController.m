@@ -272,17 +272,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // [self.view addSubview:self.existingChannelsController.view];
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    originalAddButtonX = self.addToChannelButton.frame.origin.x;
-}
 
 -(void)refreshButtonPressed
 {
@@ -639,6 +629,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void) reachabilityChanged:(NSNotification*) notification
 {
+    NSString* reachabilityString;
+    if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+        reachabilityString = @"WiFi";
+    else if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+        reachabilityString = @"WWAN";
+    else
+        reachabilityString = @"None";
+    
+    DebugLog(@"Reachability == %@", reachabilityString);
     if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
         if(self.networkErrorView)
@@ -677,9 +676,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.networkErrorView setText:message];
     [self.overEverythingView addSubview:self.networkErrorView];
     
+    [self alignErrorMessage];
+    
     [UIView animateWithDuration:0.3 animations:^{
         CGRect erroViewFrame = self.networkErrorView.frame;
         erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 70.0;
+        
         self.networkErrorView.frame = erroViewFrame;
     }];
 }
@@ -925,5 +927,39 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     
 }
+
+
+#pragma mark - Autorotation Methods
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if(self.networkErrorView)
+    {
+        [self alignErrorMessage];
+    }
+    
+    
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    originalAddButtonX = self.addToChannelButton.frame.origin.x;
+}
+
+-(void)alignErrorMessage
+{
+    CGFloat newWidth = UIInterfaceOrientationIsPortrait([[SYNDeviceManager sharedInstance] currentOrientation]) ? 640.0 :  512.0;
+    self.networkErrorView.center = CGPointMake(newWidth, self.networkErrorView.center.y);
+    self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
+}
+
 
 @end

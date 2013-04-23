@@ -37,6 +37,7 @@
         errorLabel.textColor = [UIColor colorWithRed:(223.0/255.0) green:(244.0/255.0) blue:(1.0) alpha:(1.0)];
         errorLabel.font = [UIFont rockpackFontOfSize:20.0];
         errorLabel.backgroundColor = [UIColor clearColor];
+        errorLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         
         [self addSubview:errorLabel];
         
@@ -44,13 +45,13 @@
         // Wifi Icon
         
         wifiImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconNetwork"]];
-        wifiImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        wifiImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         [self addSubview:wifiImageView];
         
         [self setText:@"Network Error"];
         
-        self.autoresizesSubviews = YES;
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
         
     }
