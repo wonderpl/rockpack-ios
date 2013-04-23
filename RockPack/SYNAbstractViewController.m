@@ -245,21 +245,7 @@
 }
 
 
-#pragma mark - Channel Creation Methods
 
-- (void) createChannel:(Channel*)channel
-{
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: channelCreationVC];
-}
-
-- (void) addToChannel:(Channel*)channel
-{
-//    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
-//    
-//    [self animatedPushViewController: channelCreationVC];
-}
 
 // User touched the channel thumbnail in a video cell
 - (IBAction) userTouchedChannelButton: (UIButton *) channelButton

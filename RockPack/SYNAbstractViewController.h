@@ -77,9 +77,6 @@
 - (void) displayCategoryChooser;
 
 
-- (void) createChannel:(Channel*)channel;
-- (void) addToChannel:(Channel*)channel;
-
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 

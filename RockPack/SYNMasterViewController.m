@@ -25,6 +25,8 @@
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
 #import "SYNDeviceManager.h"
+#import "SYNChannelDetailViewController.h"
+#import "SYNChannelsDetailsCreationViewController.h"
 
 #import "SYNNetworkErrorView.h"
 
@@ -328,14 +330,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
+#pragma mark - Channel Creation Methods
 
 -(IBAction)addToChannelPressed:(id)sender
 {
     
-    
+    [self createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
     
 }
+
+
+
+- (void) createChannel:(Channel*)channel
+{
+    SYNChannelsDetailsCreationViewController *channelCreationVC =
+    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
+    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
+    [showingController animatedPushViewController: channelCreationVC];
+}
+
+
 
 
 #pragma mark - Navigation Panel Methods

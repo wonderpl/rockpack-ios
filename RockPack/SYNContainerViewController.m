@@ -269,17 +269,7 @@
     
 }
 
-- (void) createChannelFromVideoQueue
-{
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        
-        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
-        
-    }
 
-}
 
 -(void)addVideosToExistingChannel
 {
