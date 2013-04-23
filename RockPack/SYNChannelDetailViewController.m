@@ -45,6 +45,11 @@
     if ((self = [super init]))
     {
 		self.channel = channel;
+        
+        [self.channel addObserver:self
+                       forKeyPath:@"subscribedByUser"
+                          options:NSKeyValueObservingOptionNew
+                          context:nil];
 	}
     
     
@@ -345,6 +350,19 @@
             }
         }
     }
+    else if ([keyPath isEqualToString:@"subscribedByUser"])
+    {
+        NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
+        BOOL finalValue = [newSubscribedByUserValue boolValue];
+        if(finalValue)
+        {
+            self.subscribeButton.selected = YES;
+        }
+        else
+        {
+            self.subscribeButton.selected = NO;
+        }
+    }
 }
 
 
@@ -381,6 +399,9 @@
                                                         object: self
                                                       userInfo: @{ kChannel : self.channel }];
 }
+
+
+
 
 
 @end
