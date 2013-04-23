@@ -44,7 +44,7 @@
 						<string key="NSFrame">{{874, 29}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="563424753"/>
+						<reference key="NSNextKeyView" ref="339448384"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -88,7 +88,7 @@
 						<string key="NSFrame">{{14, 11}, {60, 61}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="602539174"/>
+						<reference key="NSNextKeyView" ref="339488041"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -113,9 +113,9 @@
 					</object>
 					<object class="IBUICollectionView" id="339448384">
 						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">309</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{20, 150}, {984, 578}}</string>
+						<string key="NSFrame">{{127, 150}, {769, 578}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -136,13 +136,13 @@
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
-					<object class="IBUILabel" id="563424753">
+					<object class="IBUILabel" id="339488041">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{326, 25}, {373, 52}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="339448384"/>
+						<reference key="NSNextKeyView" ref="602539174"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -229,7 +229,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">titleLabel</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="563424753"/>
+						<reference key="destination" ref="339488041"/>
 					</object>
 					<int key="connectionID">19</int>
 				</object>
@@ -293,7 +293,7 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="754349621"/>
 							<reference ref="602539174"/>
-							<reference ref="563424753"/>
+							<reference ref="339488041"/>
 							<reference ref="339448384"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -325,7 +325,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
-						<reference key="object" ref="563424753"/>
+						<reference key="object" ref="339488041"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 				</array>
@@ -401,6 +401,20 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNExistingChannelsViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="closeButtonPressed:">id</string>
+						<string key="confirmButtonPressed:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="closeButtonPressed:">
+							<string key="name">closeButtonPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="confirmButtonPressed:">
+							<string key="name">confirmButtonPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelThumbnailCollectionView">UICollectionView</string>
 						<string key="closeButton">UIButton</string>

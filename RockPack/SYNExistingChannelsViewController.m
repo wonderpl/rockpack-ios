@@ -232,7 +232,19 @@
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
+    CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    {
+        collectionFrame.size.width = 572.0;
+        
+    }
+    else
+    {
+        collectionFrame.size.width = 766.0;
+        
+    }
+    collectionFrame.origin.x = (self.view.frame.size.width * 0.5) - (collectionFrame.size.width * 0.5);
+    self.channelThumbnailCollectionView.frame = CGRectIntegral(collectionFrame);
     
 }
 
