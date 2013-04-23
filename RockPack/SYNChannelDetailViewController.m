@@ -127,6 +127,16 @@
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
     
+    
+    if([self.channel.subscribedByUser boolValue])
+    {
+        self.subscribeButton.selected = YES;
+    }
+    else
+    {
+        self.subscribeButton.selected = NO;
+    }
+    
     [self.channel addObserver:self
                    forKeyPath:@"subscribedByUser"
                       options:NSKeyValueObservingOptionNew
