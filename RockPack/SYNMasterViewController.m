@@ -758,14 +758,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.backButtonControl removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         if(self.searchBoxController.isOnScreen)
         {
-            [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                CGRect sboxFrame = self.searchBoxController.view.frame;
-                sboxFrame.origin.x = 10.0;
-                sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-                self.sideNavigationButton.hidden = YES;
-                self.closeSearchButton.hidden = NO;
-                self.searchBoxController.view.frame = sboxFrame;
-            } completion:nil];
+            [self cancelButtonPressed:nil];
             
         }
         [self showBackButton:NO];
