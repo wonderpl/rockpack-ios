@@ -115,7 +115,7 @@
     if(self.headerView)
     {
         NSInteger totalChannels = self.fetchedResultsController.fetchedObjects.count;
-        [self.headerView setTitle:@"YOUR CHANNELS" andNumber:totalChannels];
+        [self.headerView setTitle:@"SUBSCRIPTIONS" andNumber:totalChannels];
     }
     
 }

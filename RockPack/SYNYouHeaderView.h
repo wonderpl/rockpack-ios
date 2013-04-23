@@ -23,4 +23,6 @@
 
 -(void)setBackgroundImage:(UIImage*)backgroundImage;
 
+-(void)setFontSize:(CGFloat)pointSize;
+
 @end

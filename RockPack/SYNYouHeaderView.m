@@ -84,4 +84,9 @@
     return self.frame.size.width;
 }
 
+-(void)setFontSize:(CGFloat)pointSize
+{
+    label.font =[UIFont rockpackFontOfSize:pointSize];
+}
+
 @end
