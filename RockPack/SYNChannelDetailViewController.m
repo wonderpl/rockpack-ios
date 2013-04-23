@@ -32,6 +32,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (strong, nonatomic) NSMutableArray *videoInstances;
 
 @end
 
@@ -87,8 +88,6 @@
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
     
-    [self updateChannelDetails];
-    
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     // Regster video thumbnail cell
@@ -142,12 +141,7 @@
         [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
     }
     
-    
-    // If we have a valid ecommerce URL, then display the button
-    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
-    {
-        self.buyButton.hidden = FALSE;
-    }
+    [self updateChannelDetails];
 }
 
 
@@ -169,11 +163,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
-    // If we have a valid ecommerce URL, then display the button
-    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
-    {
-        self.buyButton.hidden = FALSE;
-    }
+    [self updateChannelDetails];
 }
 
 
@@ -193,6 +183,14 @@
     
     NSString *detailsString = [NSString stringWithFormat: @"%d VIDEOS / %d SUBSCRIBERS", self.channel.videoInstancesSet.count, 0];
     self.channelDetailsLabel.text = detailsString;
+    
+    // If we have a valid ecommerce URL, then display the button
+    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
+    {
+        self.buyButton.hidden = FALSE;
+    }
+    
+    self.channelTitleTextView.text = self.channel.title;
 }
 
 

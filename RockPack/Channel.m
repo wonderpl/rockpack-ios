@@ -102,6 +102,11 @@ static NSEntityDescription *channelEntity = nil;
     self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
                                      withDefault: @""];
     
+    if (![self.eCommerceURL isEqualToString: @""])
+    {
+        NSLog (@"Found ecommerce URL");
+    }
+    
     self.channelOwner = owner;
 }
 
@@ -145,6 +150,11 @@ static NSEntityDescription *channelEntity = nil;
         {
             instance.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
                                                  withDefault: @""];
+            
+            if (![instance.eCommerceURL isEqualToString: @""])
+            {
+                NSLog (@"Found ecommerce URL");
+            }
         }  
     }
     else
@@ -195,6 +205,7 @@ static NSEntityDescription *channelEntity = nil;
     
     // Search on the unique Id
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
     [channelFetchRequest setPredicate: predicate];
     
     NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
@@ -211,6 +222,11 @@ static NSEntityDescription *channelEntity = nil;
         {
             instance.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
                                                  withDefault: @""];
+            
+            if (![instance.eCommerceURL isEqualToString: @""])
+            {
+                NSLog (@"Found ecommerce URL");
+            }
         }
         
         // NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
@@ -325,6 +341,11 @@ static NSEntityDescription *channelEntity = nil;
     self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
                                      withDefault: @""];
     
+    if (![self.eCommerceURL isEqualToString: @""])
+    {
+        NSLog (@"Found ecommerce URL");
+    }
+    
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {
         NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
@@ -388,7 +409,7 @@ static NSEntityDescription *channelEntity = nil;
 - (NSString *) description
 {
     
-    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: id(%@), category:%@, lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, coverThumbnailSmallURL: %@, title: %@", self.uniqueId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.coverThumbnailSmallURL, self.title];
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: id(%@), category:%@, lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, coverThumbnailSmallURL: %@, title: %@, eCommerceURL: %@", self.uniqueId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.coverThumbnailSmallURL, self.title, self.eCommerceURL];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)
     {
