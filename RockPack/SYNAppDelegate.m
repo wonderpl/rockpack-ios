@@ -157,6 +157,9 @@ extern void instrumentObjcMessageSends(BOOL);
 //    instrumentObjcMessageSends(YES); //to start
     
     
+    
+    
+    
     return YES;
 }
 

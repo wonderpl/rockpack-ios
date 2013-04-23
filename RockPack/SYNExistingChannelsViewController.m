@@ -196,8 +196,6 @@
                                                           userInfo: @{kChannel:self.selectedChannel}];
     }];
     
-    
-    
 }
 
 
@@ -207,22 +205,41 @@
     
     if(indexPath.row == 0)
     {
-        // create new channel clicked
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
-                                                            object: self
-                                                          userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
+        
+        if(!appDelegate.videoQueue.currentlyCreatingChannel)
+            return;
         
         self.selectedChannel = nil;
+        self.selectedCell = nil;
         
-        [self confirmButtonPressed:nil];
+        [UIView animateWithDuration:0.3
+                              delay:0.0
+                            options:UIViewAnimationCurveLinear
+                         animations:^{
+                             
+                             self.view.alpha = 0.0;
+                            
+            
+                         } completion:^(BOOL finished) {
+            
+                             [self.view removeFromSuperview];
+                           
+                             [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                                                 object: self
+                                                                               userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
+                       
+                         }];
         
-        return;
+    }
+    else
+    {
+        self.selectedCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
+        
+        self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
     }
     
-    self.selectedCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
-    
-    self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
+
     
     
     
@@ -232,14 +249,28 @@
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
+    CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+    if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    {
+        collectionFrame.size.width = 572.0;
+        
+    }
+    else
+    {
+        collectionFrame.size.width = 766.0;
+        
+    }
+    collectionFrame.origin.x = (self.view.frame.size.width * 0.5) - (collectionFrame.size.width * 0.5);
+    self.channelThumbnailCollectionView.frame = CGRectIntegral(collectionFrame);
     
 }
 
 -(void)setSelectedCell:(SYNChannelMidCell *)selectedCell
 {
     _selectedCell.specialSelected = NO;
-    selectedCell.specialSelected = YES;
+    
+    if(selectedCell) // we can still pass nill
+        selectedCell.specialSelected = YES;
     
     _selectedCell = selectedCell;
 }

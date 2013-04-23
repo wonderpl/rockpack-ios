@@ -130,13 +130,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         autocompleteControllerFrame.origin.y = 10.0;
         self.searchBoxController.view.frame = autocompleteControllerFrame;
         
-        self.overEverythingView.userInteractionEnabled = NO;
-        
-        
-        
-        
-        
-        
     }
     return self;
 }
@@ -278,7 +271,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // [self.view addSubview:self.existingChannelsController.view];
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.containerViewController.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+}
 
 -(void)refreshButtonPressed
 {
@@ -307,10 +305,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         dotImageView = (UIImageView*)self.dotsView.subviews[i];
         if (i == pageNumber) {
             dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
-            continue;
+        } else {
+            dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
         }
         
-        dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
+        
         
     }
     
@@ -668,14 +667,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Notification Handlers
 
+-(void)accountSettingsLogout
+{
+    [appDelegate logout];
+}
+
 -(void) reachabilityChanged:(NSNotification*) notification
 {
     NSString* reachabilityString;
     if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
         reachabilityString = @"WiFi";
-    else if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
         reachabilityString = @"WWAN";
-    else
+    else if([self.reachability currentReachabilityStatus] == NotReachable) 
         reachabilityString = @"None";
     
     DebugLog(@"Reachability == %@", reachabilityString);
@@ -928,6 +932,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
     
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+    
     self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
     self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
     self.accountSettingsPopover.delegate = self;
@@ -991,8 +998,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)alignErrorMessage
 {
-    CGFloat newWidth = UIInterfaceOrientationIsPortrait([[SYNDeviceManager sharedInstance] currentOrientation]) ? 640.0 :  512.0;
-    self.networkErrorView.center = CGPointMake(newWidth, self.networkErrorView.center.y);
+    
+    self.networkErrorView.center = CGPointMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5, self.networkErrorView.center.y);
     self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
 }
 
