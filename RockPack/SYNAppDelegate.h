@@ -14,6 +14,7 @@
 #import "User.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNVideoQueue.h"
+#import "SYNSubscriptionsManager.h"
 
 #define kShowLoginPhase YES
 #define kUsingProductionAPI YES
@@ -31,6 +32,8 @@
 
 // Support for Core Data
 @property (nonatomic, readonly) NSManagedObjectContext *mainManagedObjectContext;
+
+@property (nonatomic, readonly) SYNSubscriptionsManager* subscriptionsManager;
 
 @property (nonatomic, readonly) NSManagedObjectContext *searchManagedObjectContext;
 

@@ -52,8 +52,6 @@
 
 -(void) reloadCollectionViews;
 
-// Persist the current state of CoreData to the mySQL DB
-- (void) saveDB;
 
 // Animation support
 
@@ -62,8 +60,6 @@
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
 
-
-- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath;
 
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;

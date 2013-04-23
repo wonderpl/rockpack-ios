@@ -91,6 +91,7 @@
 {
     startAnimationDelay = 0.0;
     [self reloadCollectionViews];
+    
 }
 
 
@@ -99,31 +100,7 @@
     //AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
 
-// Helper method: Save the current DB state
-- (void) saveDB
-{
-    NSError *error = nil;
-    
-    if (![appDelegate.mainManagedObjectContext save: &error])
-    {
-        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-        
-        if ([detailedErrors count] > 0)
-        {
-            for(NSError* detailedError in detailedErrors)
-            {
-                DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-            }
-        }
-        
-        // Bail out if save failed
-        error = [NSError errorWithDomain: NSURLErrorDomain
-                                    code: NSCoreDataError
-                                userInfo: nil];
-        
-        @throw error;
-    }  
-}
+
 
 
 
@@ -177,44 +154,6 @@
 }
 
 
-- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.subscribedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.subscribedByUserValue = FALSE;
-        channel.subscribersCountValue -= 1;
-        
-        // Update the star/unstar status on the server
-        [appDelegate.oAuthNetworkEngine channelUnsubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                          channelId: channel.uniqueId
-                                                  completionHandler: ^(NSDictionary *responseDictionary) {
-                                                      DebugLog(@"Unsubscribe action successful");
-                                                  }
-                                                       errorHandler: ^(NSDictionary* errorDictionary) {
-                                                           DebugLog(@"Unsubscribe action failed");
-                                                       }];
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.subscribedByUserValue = TRUE;
-        channel.subscribersCountValue += 1;
-        
-        // Update the star/unstar status on the server
-        [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                       channelURL: channel.resourceURL
-                                                completionHandler: ^(NSDictionary *responseDictionary) {
-                                                        DebugLog(@"Subscribe action successful");
-                                                   } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                       DebugLog(@"Subscribe action failed");
-                                                   }];
-    }
-    
-    [self saveDB];
-}
 
 
 

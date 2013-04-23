@@ -25,6 +25,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
@@ -41,15 +42,17 @@
 
 - (id) initWithChannel: (Channel *) channel
 {
-//	if ((self = [super initWithNibName: @"SYNAbstractChannelDetailViewController"
-//                                bundle: nil]))
+
     if ((self = [super init]))
     {
 		self.channel = channel;
+        
+        [self.channel addObserver:self
+                       forKeyPath:@"subscribedByUser"
+                          options:NSKeyValueObservingOptionNew
+                          context:nil];
 	}
-    {
-		self.channel = channel;
-	}
+    
     
 	return self;
 }
@@ -274,7 +277,7 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *)toIndexPath
 {
-    [self saveDB];
+    [appDelegate saveContext:YES];
 }
 
 - (void) setDisplayControlsVisibility: (BOOL) visible
@@ -345,10 +348,23 @@
             }
         }
     }
+    else if ([keyPath isEqualToString:@"subscribedByUser"])
+    {
+        NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
+        BOOL finalValue = [newSubscribedByUserValue boolValue];
+        if(finalValue)
+        {
+            self.subscribeButton.selected = YES;
+        }
+        else
+        {
+            self.subscribeButton.selected = NO;
+        }
+    }
 }
 
 
-#pragma mark - Share
+#pragma mark - Control Delegate
 
 - (IBAction) shareChannelButtonTapped: (id) sender
 {
@@ -373,6 +389,17 @@
 {
     [self initiatePurchaseAtURL: [NSURL URLWithString: self.channel.eCommerceURL]];
 }
+
+
+-(IBAction)subscribeButtonTapped:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
+                                                        object: self
+                                                      userInfo: @{ kChannel : self.channel }];
+}
+
+
+
 
 
 @end
