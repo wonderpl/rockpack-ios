@@ -91,6 +91,7 @@
 {
     startAnimationDelay = 0.0;
     [self reloadCollectionViews];
+    
 }
 
 
@@ -99,31 +100,7 @@
     //AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
 
-// Helper method: Save the current DB state
-- (void) saveDB
-{
-    NSError *error = nil;
-    
-    if (![appDelegate.mainManagedObjectContext save: &error])
-    {
-        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-        
-        if ([detailedErrors count] > 0)
-        {
-            for(NSError* detailedError in detailedErrors)
-            {
-                DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-            }
-        }
-        
-        // Bail out if save failed
-        error = [NSError errorWithDomain: NSURLErrorDomain
-                                    code: NSCoreDataError
-                                userInfo: nil];
-        
-        @throw error;
-    }  
-}
+
 
 
 
@@ -181,10 +158,10 @@
 {
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    if (channel.subscribedByUserValue == TRUE)
+    if (channel.subscribedByUserValue == YES)
     {
         // Currently highlighted, so decrement
-        channel.subscribedByUserValue = FALSE;
+        channel.subscribedByUserValue = NO;
         channel.subscribersCountValue -= 1;
         
         // Update the star/unstar status on the server
@@ -213,7 +190,7 @@
                                                    }];
     }
     
-    [self saveDB];
+    [appDelegate saveContext:YES];
 }
 
 

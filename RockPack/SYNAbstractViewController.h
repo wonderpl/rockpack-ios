@@ -52,8 +52,6 @@
 
 -(void) reloadCollectionViews;
 
-// Persist the current state of CoreData to the mySQL DB
-- (void) saveDB;
 
 // Animation support
 

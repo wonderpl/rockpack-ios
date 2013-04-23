@@ -276,7 +276,7 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *)toIndexPath
 {
-    [self saveDB];
+    [appDelegate saveContext:YES];
 }
 
 - (void) setDisplayControlsVisibility: (BOOL) visible
