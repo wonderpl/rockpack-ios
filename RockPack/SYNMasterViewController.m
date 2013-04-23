@@ -252,6 +252,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
     
@@ -335,7 +337,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(IBAction)addToChannelPressed:(id)sender
 {
     
-    [self createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
+    [self.view addSubview:self.existingChannelsController.view];
+    [self addChildViewController:self.existingChannelsController];
+    
+    self.existingChannelsController.view.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+        self.existingChannelsController.view.alpha = 1.0;
+    }];
     
 }
 
@@ -349,7 +359,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [showingController animatedPushViewController: channelCreationVC];
 }
 
-
+-(void)addToChannelAction:(NSNotification*)notification
+{
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!channel)
+        return;
+    
+    [self createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
+    
+}
 
 
 #pragma mark - Navigation Panel Methods

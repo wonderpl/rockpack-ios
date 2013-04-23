@@ -167,7 +167,7 @@
         [self.view removeFromSuperview];
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannel
                                                             object: self
-                                                          userInfo: @{@"SelectedChannel":self.selectedChannel}];
+                                                          userInfo: @{kChannel:self.selectedChannel}];
     }];
     
     
