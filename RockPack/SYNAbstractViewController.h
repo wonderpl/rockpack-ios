@@ -23,8 +23,7 @@
 @interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
                                                                  UICollectionViewDelegate,
-                                                                 SYNTabViewDelegate>
-{
+                                                                 SYNTabViewDelegate> {
 @protected
     SYNAppDelegate* appDelegate;
     BOOL tabExpanded;
@@ -77,9 +76,6 @@
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
 - (void) displayCategoryChooser;
 
-
-- (void) createChannel:(Channel*)channel;
-- (void) addToChannel:(Channel*)channel;
 
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;

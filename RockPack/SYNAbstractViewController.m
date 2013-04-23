@@ -24,7 +24,6 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
-#import "SYNNetworkErrorView.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "Channel.h"
@@ -38,7 +37,6 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
-@property (nonatomic, strong) SYNNetworkErrorView* errorView;
 
 @property (nonatomic, strong) UIView *dropZoneView;
 
@@ -247,21 +245,7 @@
 }
 
 
-#pragma mark - Channel Creation Methods
 
-- (void) createChannel:(Channel*)channel
-{
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: channelCreationVC];
-}
-
-- (void) addToChannel:(Channel*)channel
-{
-//    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
-//    
-//    [self animatedPushViewController: channelCreationVC];
-}
 
 // User touched the channel thumbnail in a video cell
 - (IBAction) userTouchedChannelButton: (UIButton *) channelButton

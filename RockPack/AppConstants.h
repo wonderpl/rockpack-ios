@@ -316,6 +316,7 @@ typedef enum {
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 
 #define kNoteAddToChannel           @"kNoteAddToChannel"
+#define kNoteCreateNewChannel       @"kNoteCreateNewChannel"
 
 
 //

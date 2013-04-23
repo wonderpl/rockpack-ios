@@ -12,7 +12,7 @@
 
 @implementation SYNChannelMidCell
 
-
+@synthesize specialSelected;
 
 - (void) awakeFromNib
 {
@@ -20,7 +20,7 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
     
-    self.selected = NO;
+    self.specialSelected = NO;
     
 }
 
@@ -49,7 +49,7 @@
     
 }
 
--(void)setSelected:(BOOL)value
+-(void)setSpecialSelected:(BOOL)value
 {
     
     if(value)
@@ -60,6 +60,11 @@
     {
         self.panelSelectedImageView.hidden = YES;
     }
+}
+
+-(BOOL)specialSelected
+{
+    return !self.panelSelectedImageView.hidden;
 }
 
 @end

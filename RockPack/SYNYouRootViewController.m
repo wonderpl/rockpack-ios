@@ -432,6 +432,7 @@
     
     if(collectionView == self.channelThumbnailCollectionView)
     {
+        
         channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
     }
@@ -439,6 +440,7 @@
     {
         channel = [self.subscriptionsViewController channelAtIndexPath:indexPath];
     }
+    
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
     
@@ -494,17 +496,16 @@
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
+                     animations: ^{
+                         
          // Contract thumbnail view
          self.view.alpha = 0.0f;
          channelVC.view.alpha = 1.0f;
          self.pinchedView.alpha = 0.0f;
          self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
          
-     }
-                     completion: ^(BOOL finished)
-     {
+                  } completion: ^(BOOL finished) {
+            
          [self.pinchedView removeFromSuperview];
      }];
     

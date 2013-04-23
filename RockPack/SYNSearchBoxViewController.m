@@ -152,13 +152,12 @@
 
 - (void) clear
 {
-    self.searchTextField.text = @"";
+    
     
     [self.autoSuggestionController clearWords];
     
     [self resizeTableView];
     
-    [self.searchTextField resignFirstResponder];
 }
 
 
@@ -285,11 +284,11 @@
     [self.autocompleteTimer invalidate];    
     self.autocompleteTimer = nil;
     
+    [self clear];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kSearchTyped object:self userInfo:@{kSearchTerm:currentSearchTerm}];
     
-    
-    [textField resignFirstResponder];
-    
+    [self.searchTextField resignFirstResponder];
     
     return YES;
 }

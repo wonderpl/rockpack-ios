@@ -12,12 +12,18 @@
 #import "SYNChannelCreateNewCell.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "AppConstants.h"
+#import "SYNDeviceManager.h"
+#import "UIFont+SYNFont.h"
 
 @interface SYNExistingChannelsViewController ()
 
 @property (nonatomic, strong) IBOutlet UICollectionView* channelThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIButton* closeButton;
 @property (nonatomic, strong) IBOutlet UIButton* confirmButtom;
+@property (nonatomic, weak) SYNChannelMidCell* selectedCell;
+
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+
 
 @property (nonatomic, weak) Channel* selectedChannel;
 
@@ -45,6 +51,8 @@
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    
+    self.titleLabel.font = [UIFont rockpackFontOfSize:28.0];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -53,6 +61,8 @@
     
     self.closeButton.enabled = YES;
     self.confirmButtom.enabled = YES;
+    
+    [self willAnimateRotationToInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation] duration:0.0f];
     
     [self.channelThumbnailCollectionView reloadData];
 }
@@ -158,16 +168,32 @@
 
 -(IBAction)confirmButtonPressed:(id)sender
 {
+    if(!self.selectedChannel)
+        return;
     
     self.confirmButtom.enabled = NO;
     self.closeButton.enabled = NO;
     [UIView animateWithDuration:0.2 animations:^{
+        
         self.view.alpha = 0.0;
+        
+        
     } completion:^(BOOL finished) {
+        
+        
         [self.view removeFromSuperview];
+        
+        
+        
+        Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
+        [self.selectedChannel addVideoInstancesFromChannel:currentlyCreating];
+        [appDelegate saveContext:YES];
+        
+        [self removeFromParentViewController];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannel
                                                             object: self
-                                                          userInfo: @{@"SelectedChannel":self.selectedChannel}];
+                                                          userInfo: @{kChannel:self.selectedChannel}];
     }];
     
     
@@ -183,15 +209,18 @@
     {
         // create new channel clicked
         
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                            object: self
+                                                          userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
         
         self.selectedChannel = nil;
+        
+        [self confirmButtonPressed:nil];
         
         return;
     }
     
-    SYNChannelMidCell* cell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
-    cell.selected = YES;
+    self.selectedCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
     
     self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
     
@@ -199,5 +228,20 @@
     
 }
 
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    
+}
+
+-(void)setSelectedCell:(SYNChannelMidCell *)selectedCell
+{
+    _selectedCell.specialSelected = NO;
+    selectedCell.specialSelected = YES;
+    
+    _selectedCell = selectedCell;
+}
 
 @end
