@@ -991,8 +991,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)alignErrorMessage
 {
-    CGFloat newWidth = UIInterfaceOrientationIsPortrait([[SYNDeviceManager sharedInstance] currentOrientation]) ? 640.0 :  512.0;
-    self.networkErrorView.center = CGPointMake(newWidth, self.networkErrorView.center.y);
+    
+    self.networkErrorView.center = CGPointMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5, self.networkErrorView.center.y);
     self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
 }
 
