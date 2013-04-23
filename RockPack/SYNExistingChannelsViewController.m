@@ -165,6 +165,17 @@
         self.view.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self.view removeFromSuperview];
+        Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
+        if(self.selectedChannel == nil)
+        {
+            self.selectedChannel = currentlyCreating;
+        }
+        else
+        {
+            [self.selectedChannel addVideoInstancesFromChannel:currentlyCreating];
+            [appDelegate saveContext:YES];
+        }
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannel
                                                             object: self
                                                           userInfo: @{kChannel:self.selectedChannel}];
@@ -184,8 +195,9 @@
         // create new channel clicked
         
         
-        
         self.selectedChannel = nil;
+        
+        [self confirmButtonPressed:nil];
         
         return;
     }

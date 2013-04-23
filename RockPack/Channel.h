@@ -18,4 +18,6 @@
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                            andViewId:(NSString*)viewId;
 
+-(void)addVideoInstancesFromChannel:(Channel*)channel;
+
 @end

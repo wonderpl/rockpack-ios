@@ -359,6 +359,22 @@ static NSEntityDescription *channelEntity = nil;
 }
 
 
+-(void)addVideoInstancesFromChannel:(Channel*)channel
+{
+    
+    for (VideoInstance* videoInstance in channel.videoInstances)
+    {
+        VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
+                                                                           forChannel:self
+                                                            usingManagedObjectContext:self.managedObjectContext
+                                                                            andViewId:@"ChannelDetails"];
+        [self.videoInstancesSet addObject: copyOfVideoInstance];
+        
+    }
+    
+}
+
+
 #pragma mark - Object reference counting
 
 // This is very important, we need to set the delete rule to 'Nullify' and then custom delete our connected NSManagedObjects

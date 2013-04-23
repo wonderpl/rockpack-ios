@@ -252,7 +252,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editToChannelAction:) name:kNoteAddToChannel object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
@@ -351,7 +351,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
-- (void) createChannel:(Channel*)channel
+- (void) createOrEditChannel:(Channel*)channel
 {
     SYNChannelsDetailsCreationViewController *channelCreationVC =
     [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
@@ -359,13 +359,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [showingController animatedPushViewController: channelCreationVC];
 }
 
--(void)addToChannelAction:(NSNotification*)notification
+-(void)editToChannelAction:(NSNotification*)notification
 {
     Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!channel)
         return;
     
-    [self createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
+    DebugLog(@"Goint to create/edit Channel with %d video instances", channel.videoInstances.count);
+    
+    [self createOrEditChannel:channel];
     
 }
 
