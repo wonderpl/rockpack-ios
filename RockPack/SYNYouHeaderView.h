@@ -25,4 +25,5 @@
 
 -(void)setFontSize:(CGFloat)pointSize;
 
+-(void) setColorsForText:(UIColor*)textColor parentheses:(UIColor*)parenthesesColor number:(UIColor*)numberColor;
 @end

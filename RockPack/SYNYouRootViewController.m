@@ -185,6 +185,7 @@
         [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsSelected"] forState:UIControlStateSelected];
         [self.view insertSubview:tabButton belowSubview:self.headerChannelsView];
         [tabButton addTarget:self action:@selector(channelsTabTapped:) forControlEvents:UIControlEventTouchUpInside];
+        tabButton.showsTouchWhenHighlighted = NO;
         self.channelsTabButton = tabButton;
         
         tabButton = [[UIButton alloc]initWithFrame:CGRectMake(160.0f,self.headerSubscriptionsView.frame.origin.y,tabButtonImage.size.width, tabButtonImage.size.height)];
@@ -192,6 +193,7 @@
         [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsHighlighted"] forState:UIControlStateHighlighted];
         [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsSelected"] forState:UIControlStateSelected];
         [self.view insertSubview:tabButton belowSubview:self.headerChannelsView];
+        tabButton.showsTouchWhenHighlighted = NO;
         [tabButton addTarget:self action:@selector(subscriptionsTabTapped:) forControlEvents:UIControlEventTouchUpInside];
         self.subscriptionsTabButton = tabButton;
         
@@ -677,6 +679,18 @@
     self.subscriptionsTabButton.selected = self.subscriptionsTabActive;
     self.channelThumbnailCollectionView.hidden = self.subscriptionsTabActive;
     self.subscriptionsViewController.view.hidden = !self.subscriptionsTabActive;
+    
+    if(self.subscriptionsTabActive)
+    {
+        [self.headerChannelsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+        [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+    }
+    else
+    {
+        [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+        [self.headerChannelsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+    }
+    
 }
 
 @end

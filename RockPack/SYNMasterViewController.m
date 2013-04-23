@@ -217,7 +217,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
-    self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:30];
+    self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:self.pageTitleLabel.font.pointSize];
     self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
                                                     green:(45.0/255.0)
                                                      blue:(51.0/255.0)
