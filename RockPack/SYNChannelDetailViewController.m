@@ -113,7 +113,17 @@
     
     self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
     
-    for (VideoInstance *videoInstance in self.channel.videoInstances)
+    // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
+    
+    // First, sort the array in 'position' order
+    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
+        NSNumber *first = [(VideoInstance *)a position];
+        NSNumber *second = [(VideoInstance *)b position];
+        return [first compare: second];
+    }];
+    
+    // Now add those videoinstances to our own mutable array
+    for (VideoInstance *videoInstance in sortedArray)
     {
         [self.videoInstances addObject: videoInstance];
     }
@@ -149,11 +159,18 @@
         {
             [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL
                                         completionHandler: ^(NSDictionary *responseDictionary) {
+                                            // Save the position for back-patching in later
+                                            NSNumber *savedPosition = self.channel.position;
+                                            
                                             [self.channel setAttributesFromDictionary: responseDictionary
                                                                                withId: self.channel.uniqueId
                                                             usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                                   ignoringObjectTypes: kIgnoreNothing
                                                                             andViewId: kChannelDetailsViewId];
+                                            
+                                            // Back-patch a few things that may have been overwritten
+                                            self.channel.position = savedPosition;
+                                            self.channel.viewId = kChannelsViewId;
                                             
                                             self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
                                             
@@ -305,6 +322,39 @@
     return cell;
 }
 
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *) fetchedResultsController
+{
+    
+    
+    if (fetchedResultsController)
+        return fetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    fetchedResultsController.delegate = self;
+    
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return fetchedResultsController;
+}
+
+
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -326,6 +376,12 @@
     
     [self.videoInstances insertObject: fromItem
                               atIndex: toIndexPath.item];
+    
+    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
+    // Do this with block enumeration for speed
+    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        [(VideoInstance *)obj setPositionValue : index];
+    } ];
 }
 
 
@@ -366,7 +422,8 @@
                      completion: nil];
 }
 
-#pragma mark - KVO control fading
+
+#pragma mark - KVO support
 
 // We face out all controls/information views when the user starts scrolling the videos collection view
 // but monitoring the collectionview content offset using KVO
@@ -440,7 +497,7 @@
 }
 
 
-- (IBAction)subscribeButtonTapped: (id) sender
+- (IBAction) subscribeButtonTapped: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
                                                         object: self
