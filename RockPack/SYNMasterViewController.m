@@ -271,7 +271,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // [self.view addSubview:self.existingChannelsController.view];
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.containerViewController.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+}
 
 -(void)refreshButtonPressed
 {
@@ -662,6 +667,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Notification Handlers
 
+-(void)accountSettingsLogout
+{
+    [appDelegate logout];
+}
+
 -(void) reachabilityChanged:(NSNotification*) notification
 {
     NSString* reachabilityString;
@@ -921,6 +931,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
     
     self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
     self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);

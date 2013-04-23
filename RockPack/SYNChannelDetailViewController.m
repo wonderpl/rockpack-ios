@@ -46,10 +46,7 @@
     {
 		self.channel = channel;
         
-        [self.channel addObserver:self
-                       forKeyPath:@"subscribedByUser"
-                          options:NSKeyValueObservingOptionNew
-                          context:nil];
+        
 	}
     
     
@@ -130,6 +127,11 @@
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
     
+    [self.channel addObserver:self
+                   forKeyPath:@"subscribedByUser"
+                      options:NSKeyValueObservingOptionNew
+                      context:nil];
+    
     // FIXME: Move out to subclass is there is a distinct display view, overridden by edit subclass
     [self setDisplayControlsVisibility: TRUE];
     
@@ -159,6 +161,9 @@
     // Remove KVO observer
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
+    
+    [self.channel removeObserver:self
+                      forKeyPath:@"subscribedByUser"];
     
     // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self

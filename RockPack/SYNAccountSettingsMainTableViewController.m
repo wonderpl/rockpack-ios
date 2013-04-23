@@ -276,21 +276,9 @@
                 break;
                 
             case 2:
-                [self.navigationController pushViewController:[[SYNAccountSettingsPassword alloc] initWithUserFieldType:UserFieldPassword] animated:YES];
-                break;
-                
-            case 3:
-                [self.navigationController pushViewController:[[SYNAccountSettingsAbout alloc] init] animated:YES];
-                break;
-                
-            case 4:
-                
                 [self showLogoutAlert];
                 break;
-                
-                
-            default:
-                break;
+               
                 
         }
     
