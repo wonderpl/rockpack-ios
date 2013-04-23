@@ -1160,20 +1160,20 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAdd.png">{16, 16}</string>
-			<string key="ButtonAddHighlighted.png">{16, 16}</string>
-			<string key="ButtonClose.png">{16, 16}</string>
+			<string key="ButtonAdd.png">{44, 45}</string>
+			<string key="ButtonAddHighlighted.png">{44, 45}</string>
+			<string key="ButtonClose.png">{40, 41}</string>
 			<string key="ButtonRock.png">{50, 50}</string>
 			<string key="ButtonRockHighlighted.png">{100, 100}</string>
-			<string key="ButtonShare.png">{16, 16}</string>
-			<string key="ButtonShareHighlighted.png">{16, 16}</string>
+			<string key="ButtonShare.png">{61, 61}</string>
+			<string key="ButtonShareHighlighted.png">{61, 61}</string>
 			<string key="ButtonStar.png">{50, 50}</string>
 			<string key="ButtonStarHighlighted.png">{50, 50}</string>
-			<string key="ButtonVideoScreenNext.png">{16, 16}</string>
-			<string key="ButtonVideoScreenNextHighlighted.png">{16, 16}</string>
-			<string key="ButtonVideoScreenPrevious.png">{16, 16}</string>
-			<string key="ButtonVideoScreenPreviousHighlighted.png">{16, 16}</string>
-			<string key="PanelVideoScreenVideoMainOverlay.png">{16, 16}</string>
+			<string key="ButtonVideoScreenNext.png">{50, 51}</string>
+			<string key="ButtonVideoScreenNextHighlighted.png">{50, 51}</string>
+			<string key="ButtonVideoScreenPrevious.png">{50, 51}</string>
+			<string key="ButtonVideoScreenPreviousHighlighted.png">{50, 51}</string>
+			<string key="PanelVideoScreenVideoMainOverlay.png">{1024, 748}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

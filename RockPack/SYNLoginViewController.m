@@ -19,6 +19,7 @@
 #import "User.h"
 #import "SYNCameraPopoverViewController.h"
 #import "SYNAutocompletePopoverBackgroundView.h"
+#import "SYNDeviceManager.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface SYNLoginViewController ()  <UITextFieldDelegate>
@@ -247,6 +248,8 @@
     memberLabel.center = CGPointMake(loginButton.center.x,
                                      registerButton.center.y - 57.0);
     
+    userNameInputField.placeholder = @"USERNAME OR PASSWORD";
+    
     
     memberLabel.frame = CGRectIntegral(memberLabel.frame);
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
@@ -258,6 +261,7 @@
         finalLoginButton.alpha = 0.0;
         passwordForgottenLabel.alpha = 0.0;
         loginButton.alpha = 1.0;
+        
         registerButton.alpha = 0.0;
         
         memberLabel.alpha = 1.0;
@@ -284,7 +288,7 @@
     secondaryFacebookMessage.alpha = 0.0;
     [self clearAllErrorArrows];
     isAnimating = YES;
-    
+    userNameInputField.placeholder = @"USERNAME";
     if(previousState == kLoginScreenStateInitial)
     {
         
@@ -332,6 +336,7 @@
                 passwordForgottenLabel.alpha = 1.0;
                 termsAndConditionsLabel.alpha = 1.0;
                 dividerImageView.alpha = 1.0;
+                
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:0.2 animations:^{
                     areYouNewLabel.alpha = 1.0;
@@ -353,8 +358,6 @@
                     
                     memberLabel.frame = CGRectIntegral(memberLabel.frame);
                     
-                    sendEmailButton.center = CGPointMake(sendEmailButton.center.x,
-                                                         sendEmailButton.center.y - kOffsetForLoginForm);
                     
                     
                     
@@ -381,8 +384,9 @@
         [UIView animateWithDuration:0.5 animations:^{
             
             facebookSignInButton.alpha = 1.0;
-            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x - kOffsetForRegisterForm,
-                                                      facebookSignInButton.center.y);
+            CGRect facebookRect = facebookSignInButton.frame;
+            facebookRect.origin.x = self.userNameInputField.frame.origin.x;
+            facebookSignInButton.frame = facebookRect;
             
             emailInputField.alpha = 0.0;
             emailInputField.center = CGPointMake(userNameInputField.center.x - 50.0,
@@ -392,12 +396,15 @@
             dobView.center = CGPointMake(userNameInputField.center.x - 50.0,
                                          dobView.center.y);
             
+            
+            
             dividerImageView.alpha = 1.0;
             
             registerNewUserButton.alpha = 0.0;
             
             finalLoginButton.alpha = 1.0;
-            finalLoginButton.center = CGPointMake(finalLoginButton.center.x - 50.0,
+            
+            finalLoginButton.center = CGPointMake(userNameInputField.center.x,
                                                   finalLoginButton.center.y);
             
             faceImageButton.alpha = 0.0;
@@ -479,6 +486,7 @@
     secondaryFacebookMessage.alpha = 0.0;
     [self clearAllErrorArrows];
     isAnimating = YES;
+    userNameInputField.placeholder = @"USERNAME";
     if(previousState == kLoginScreenStateInitial)
     {
         
@@ -489,6 +497,9 @@
         dobView.alpha = 1.0;
         dobView.center = CGPointMake(userNameInputField.center.x,
                                      dobView.center.y);
+        
+        
+        
         
         NSArray* loginForControls = @[emailInputField, userNameInputField, passwordInputField, dobView, registerNewUserButton];
         float delay = 0.05;
@@ -542,9 +553,10 @@
             
             
             
-            
-            faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
-                                                 faceImageButton.center.y - kOffsetForLoginForm);
+            CGRect faceRect = faceImageButton.frame;
+            faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
+            faceRect.origin.y -= kOffsetForLoginForm;
+            faceImageButton.frame = faceRect;
             
             isAnimating = NO;
             
@@ -576,17 +588,20 @@
                                                  emailInputField.center.y);
             
             dobView.alpha = 1.0;
-            dobView.center = CGPointMake(userNameInputField.center.x,
-                                         dobView.center.y);
+            CGRect dobRect = dobView.frame;
+            dobRect.origin.x = self.userNameInputField.frame.origin.x;
+            dobView.frame = dobRect;
             
             faceImageButton.alpha = 1.0;
-            faceImageButton.center = CGPointMake(faceImageButton.center.x + 50.0,
-                                                 faceImageButton.center.y);
+            CGRect faceRect = faceImageButton.frame;
+            faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
+            faceImageButton.frame = faceRect;
             
             loginButton.alpha = 1.0;
             memberLabel.alpha = 1.0;
             
             // move facebook button to the right
+            
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm,
                                                       facebookSignInButton.center.y);
             
@@ -1329,9 +1344,27 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if([[SYNDeviceManager sharedInstance] isLandscape])
+    {
+        signUpButton.center = CGPointMake(signUpButton.center.x, signUpButton.center.y);
+    }
+    else
+    {
+        signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
+        faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
+        passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+    }
+    
+}
+
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
     if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
@@ -1349,6 +1382,7 @@
         areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 46.0);
     }
     
-    
 }
+
+
 @end

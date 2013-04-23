@@ -14,15 +14,6 @@
 // API
 //
 
-// Host for API
-
-
-//#define kAPIHostName @"dev.rockpack.com"
-//#define kAPIHostName @"demo.rockpack.com"
-//#define kAPIProductionHostName @"api.rockpack.com"
-//#define kAPISecureHostName @"secure.demo.rockpack.com"
-//#define kAPISecureProductionHostName @"secure.rockpack.com"
-
 // Returns a list of all the recently added videos associated with a user's subscribed channels (the %@ represents the USERID)
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
@@ -30,12 +21,12 @@
 
 // OAuth2
 
-
 #define kFeedViewId                 @"Home"
 #define kChannelsViewId             @"Channels"
 #define kProfileViewId              @"You"
 #define kSearchViewId               @"Search"
 #define kUserChanneslViewId         @"UserChannels"
+#define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
 
 #define kFeedTitle                  @"Feed"
@@ -44,8 +35,6 @@
 #define kSearchTitle                @"Search"
 #define kUserChanneslTitle          @"UserChannels"
 #define kChannelDetailsTitle        @"ChannelDetails"
-
-
 
 #define kAPIRefreshToken            @"/ws/token"
 
@@ -139,6 +128,9 @@
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"
 
+// Observers
+#define kCollectionViewContentOffsetKey @"contentOffset"
+
 // Settings
 
 #define kDownloadedVideoContentBool @"kDownloadedVideoContentBool"
@@ -229,6 +221,7 @@ typedef enum _Gender {
 #define kStandardCollectionViewOffsetYiPhone 60.0f
 #define kYouCollectionViewOffsetY 160.0f
 #define kChannelDetailsCollectionViewOffsetY 540.0f
+#define kChannelDetailsFadeSpan 15.0f
 
 #define kImageUploadWidth 1024
 #define kImageUploadHeight 768
@@ -295,23 +288,26 @@ typedef enum {
 // Video Overlay
 //
 
-#define kVideoBackgroundColour [UIColor blackColor]
-#define kBufferMonitoringTimerInterval 1.0f
-#define kShuttleBarUpdateTimerInterval 0.5f
-#define kMiddlePlaceholderCycleTime 2.0f
-#define kMiddlePlaceholderIdentifier @"MiddlePlaceholder"
-#define kBottomPlaceholderCycleTime 4.0f
-#define kBottomPlaceholderIdentifier @"BottomPlaceholder"
-#define kShuttleBarHeight 44.0f
-#define kShuttleBarTimeLabelWidth 40.0f
-#define kShuttleBarTimeLabelOffset 100.0f
-#define kShuttleBarButtonWidth 77.0f
-#define kShuttleBarSliderOffset 10.0f
+#define kVideoBackgroundColour          [UIColor blackColor]
+#define kBufferMonitoringTimerInterval  1.0f
+#define kShuttleBarUpdateTimerInterval  0.5f
+#define kMiddlePlaceholderCycleTime     2.0f
+#define kMiddlePlaceholderIdentifier    @"MiddlePlaceholder"
+#define kBottomPlaceholderCycleTime     4.0f
+#define kBottomPlaceholderIdentifier    @"BottomPlaceholder"
+#define kShuttleBarHeight               44.0f
+#define kShuttleBarTimeLabelWidth       40.0f
+#define kShuttleBarTimeLabelOffset      100.0f
+#define kShuttleBarButtonWidth          77.0f
+#define kShuttleBarSliderOffset         10.0f
 
 // Notifications
-#define kNoteBackButtonShow @"kNoteBackButtonShow"
-#define kNoteBackButtonHide @"kNoteBackButtonHide"
-#define kNoteStarButtonPressed @"kNoteStarButtonPressed"
+
+#define kNoteBackButtonShow         @"kNoteBackButtonShow"
+#define kNoteBackButtonHide         @"kNoteBackButtonHide"
+#define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
+
+#define kNoteAddToChannel           @"kNoteAddToChannel"
 
 
 //

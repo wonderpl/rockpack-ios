@@ -73,8 +73,14 @@
     
     switch (currentFieldType)
     {
-        case UserFieldTypeFullname:
-            self.inputField.text = [NSString stringWithFormat: @"%@ %@", appDelegate.currentUser.firstName, appDelegate.currentUser.lastName];
+        case UserFieldTypeFirstName:
+            self.inputField.text = appDelegate.currentUser.firstName;
+            self.inputField.leftViewMode = UITextFieldViewModeAlways;
+            self.inputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
+            break;
+            
+        case UserFieldTypeLastName:
+            self.inputField.text = appDelegate.currentUser.lastName;
             self.inputField.leftViewMode = UITextFieldViewModeAlways;
             self.inputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
             break;
@@ -178,7 +184,11 @@
     
     switch (currentFieldType)
     {
-        case UserFieldTypeFullname: // only letters
+        case UserFieldTypeFirstName: 
+            isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
+            break;
+            
+        case UserFieldTypeLastName: 
             isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
             break;
             
@@ -224,8 +234,7 @@
                                            [[NSNotificationCenter defaultCenter]  postNotificationName: kUserDataChanged
                                                                                                 object: self
                                                                                               userInfo: @{@"user": appDelegate.currentUser}];
-                                       }
-                                            errorHandler: ^(id errorInfo) {
+                                       } errorHandler: ^(id errorInfo) {
                                                 [self.spinner stopAnimating];
                                                 self.saveButton.hidden = NO;
                                                 self.saveButton.enabled = YES;

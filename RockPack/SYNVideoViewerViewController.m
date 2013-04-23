@@ -337,7 +337,10 @@
 {
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
-    [self animateVideoAdditionToVideoQueue: videoInstance];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                        object: self
+                                                      userInfo: @{@"VideoInstance" : videoInstance}];
 }
 
 

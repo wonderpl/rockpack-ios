@@ -21,7 +21,7 @@
         self.timeLabel.font = [UIFont rockpackFontOfSize:12.0];
         self.timeLabel.textAlignment = NSTextAlignmentLeft;
         self.timeLabel.textColor = [UIColor grayColor];
-        
+        self.timeLabel.backgroundColor = [UIColor clearColor];
         
         [self addSubview:self.timeLabel];
     }

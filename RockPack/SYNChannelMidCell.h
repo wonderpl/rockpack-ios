@@ -11,8 +11,10 @@
 @interface SYNChannelMidCell : UICollectionViewCell
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UIImageView* panelSelectedImageView;
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
 - (void) setChannelTitle: (NSString*) titleString;
+
 
 @end

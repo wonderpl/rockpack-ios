@@ -95,4 +95,9 @@
     return [self currentScreenHeight]  - 20.0;
 }
 
+-(UIInterfaceOrientation)currentOrientation
+{
+    return [[UIApplication sharedApplication] statusBarOrientation];
+}
+
 @end

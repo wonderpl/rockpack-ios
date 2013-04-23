@@ -10,6 +10,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *coverBackgroundURL;
 	__unsafe_unretained NSString *coverThumbnailLargeURL;
 	__unsafe_unretained NSString *coverThumbnailSmallURL;
+	__unsafe_unretained NSString *eCommerceURL;
 	__unsafe_unretained NSString *lastUpdated;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *resourceURL;
@@ -30,6 +31,7 @@ extern const struct ChannelFetchedProperties {
 
 @class ChannelOwner;
 @class VideoInstance;
+
 
 
 
@@ -103,6 +105,16 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateCoverThumbnailSmallURL:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* eCommerceURL;
+
+
+
+//- (BOOL)validateECommerceURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -255,6 +267,12 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveCoverThumbnailSmallURL;
 - (void)setPrimitiveCoverThumbnailSmallURL:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveECommerceURL;
+- (void)setPrimitiveECommerceURL:(NSString*)value;
 
 
 

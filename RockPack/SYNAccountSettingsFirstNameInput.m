@@ -6,28 +6,20 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAccountSettingsFullNameInput.h"
+#import "SYNAccountSettingsFirstNameInput.h"
 #import "UIFont+SYNFont.h"
 #import "SYNOAuthNetworkEngine.h"
 
-@interface SYNAccountSettingsFullNameInput ()
+@interface SYNAccountSettingsFirstNameInput ()
 
 @property (nonatomic, strong) UITableView* tableView;
 
 @end
 
-@implementation SYNAccountSettingsFullNameInput
+@implementation SYNAccountSettingsFirstNameInput
 
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -49,7 +41,10 @@
     self.saveButton.frame = saveButtonRect;
     
     
-    [self.spinner startAnimating];
+    self.errorTextField.center = CGPointMake(self.errorTextField.center.x, self.saveButton.center.y + 60.0);
+    self.errorTextField.frame = CGRectIntegral(self.errorTextField.frame);
+    
+    
     
 }
 
@@ -95,39 +90,23 @@
     
     if(![self formIsValid]) {
         self.errorTextField.text = @"You Have Entered Invalid Characters";
+        [self.spinner stopAnimating];
+        self.saveButton.hidden = NO;
         return;
     }
     
-    NSArray* componentsOfInput = [self.inputField.text componentsSeparatedByString:@" "];
     
-    NSString* firstName = componentsOfInput[0];
-    NSString* lastName;
-    if(componentsOfInput.count >= 2) {
-        lastName = componentsOfInput[componentsOfInput.count-1];
-    }
     
-    [self updateField:@"first_name" forValue:firstName withCompletionHandler:^{
+    [self updateField:@"first_name" forValue:self.inputField.text withCompletionHandler:^{
         
         
-        self.appDelegate.currentUser.firstName = firstName;
+        self.appDelegate.currentUser.firstName = self.inputField.text;
         
         
         [self.appDelegate saveContext:YES];
         
-        if(!lastName) // do not update last name if there is no input for it
-            return;
+        [self.navigationController popViewControllerAnimated:YES];
         
-        [self updateField:@"last_name" forValue:lastName withCompletionHandler:^{
-            
-            
-            self.appDelegate.currentUser.lastName = lastName;
-            
-            
-            [self.appDelegate saveContext:YES];
-            
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        }];
     }];
 }
 

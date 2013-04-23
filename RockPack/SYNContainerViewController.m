@@ -24,6 +24,7 @@
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
+#import "SYNExistingChannelsViewController.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -45,6 +46,8 @@
 @property (nonatomic, weak) UINavigationController* replacementNavigationController;
 @property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
+
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
@@ -52,6 +55,7 @@
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 
 @property (nonatomic, readonly) CGFloat currentScreenOffset;
+
 
 
 
@@ -67,6 +71,7 @@
 @synthesize channelsUserViewController, searchViewController;
 @synthesize scrollingDirection;
 @synthesize currentPageOffset;
+@synthesize appDelegate;
 @synthesize currentPage;
 
 @dynamic showingViewController;
@@ -110,11 +115,7 @@
     // == You Page == //
     
     SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: kProfileViewId];
-    
-    // == Friends Page == //
-    
-    // TODO: Implement Friends Section
-    //SYNFriendsRootViewController *friendsRootViewController = [[SYNFriendsRootViewController alloc] initWithViewId: @"Friends"];
+
     
     
     // == Search (out of normal controller array)
@@ -156,6 +157,7 @@
     self.selectedViewController = self.childViewControllers[0];
     
     
+    
     // == Register Notifications == //
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
@@ -166,6 +168,8 @@
 -(void) viewWillAppear:(BOOL)animated
 {
     [self packViewControllersForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+    
+    
 }
 
 #pragma mark - Rotation Callbacks
@@ -278,7 +282,7 @@
     {
         
         SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        //[child createChannel:[self.videoQueueController getChannelFromCurrentQueue]];
+        [child createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
         
     }
 
@@ -286,13 +290,7 @@
 
 -(void)addVideosToExistingChannel
 {
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        
-        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        
-        
-    }
+    
 }
 
 
@@ -415,6 +413,8 @@
     self.scrollView.scrollEnabled = YES;
     
 }
+
+
 
 
 - (void) replaceShowingNavigationController:(UINavigationController*)navigationController

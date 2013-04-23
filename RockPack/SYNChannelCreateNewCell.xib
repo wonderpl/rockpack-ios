@@ -13,7 +13,6 @@
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
 			<string>IBUICollectionViewCell</string>
-			<string>IBUIImageView</string>
 			<string>IBUILabel</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
@@ -32,79 +31,35 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
-			<object class="IBUICollectionViewCell" id="411706856">
+			<object class="IBUICollectionViewCell" id="534839242">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIView" id="582525683">
-						<reference key="NSNextResponder" ref="411706856"/>
+					<object class="IBUIView" id="1069425472">
+						<reference key="NSNextResponder" ref="534839242"/>
 						<int key="NSvFlags">256</int>
 						<array class="NSMutableArray" key="NSSubviews">
-							<object class="IBUIImageView" id="308581837">
-								<reference key="NSNextResponder" ref="582525683"/>
+							<object class="IBUILabel" id="622490700">
+								<reference key="NSNextResponder" ref="1069425472"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 2}, {184, 136}}</string>
-								<reference key="NSSuperview" ref="582525683"/>
+								<string key="NSFrame">{{20, 29}, {144, 79}}</string>
+								<reference key="NSSuperview" ref="1069425472"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1069176426"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIAutoresizesSubviews">NO</bool>
-								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-								<int key="IBUIContentMode">2</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ChannelCreationCoverNone.png</string>
-								</object>
-							</object>
-							<object class="IBUIImageView" id="1069176426">
-								<reference key="NSNextResponder" ref="582525683"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{184, 140}</string>
-								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="933051206"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">PanelChannelCreationCoverSelected.png</string>
-								</object>
-							</object>
-							<object class="IBUILabel" id="933051206">
-								<reference key="NSNextResponder" ref="582525683"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{8, 84}, {168, 47}}</string>
-								<reference key="NSSuperview" ref="582525683"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor" id="427251072">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MCAwAA</bytes>
-								</object>
-								<bool key="IBUIAutoresizesSubviews">NO</bool>
-								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">CHANNEL NAME HJHJSHA</string>
+								<string key="IBUIText">CREATE NEW CHANNEL</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MSAxIDEAA</bytes>
+									<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuNzE3NjQ3MDU4OCAwLjgzMTM3MjU0OQA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
-								<object class="NSColor" key="IBUIShadowColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xNTY4NjI3NTA2IDAuMTc2NDcwNTkyNiAwLjIwMDAwMDAwMyAwLjUAA</bytes>
-								</object>
-								<string key="IBUIShadowOffset">{-1, 2}</string>
 								<int key="IBUIBaselineAdjustment">0</int>
-								<bool key="IBUIAdjustsLetterSpacingToFitWidth">YES</bool>
 								<int key="IBUINumberOfLines">2</int>
-								<int key="IBUILineBreakMode">0</int>
+								<int key="IBUITextAlignment">1</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">2</int>
 									<double key="pointSize">20</double>
@@ -115,14 +70,17 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-								<double key="preferredMaxLayoutWidth">168</double>
+								<double key="preferredMaxLayoutWidth">144</double>
 							</object>
 						</array>
 						<string key="NSFrameSize">{184, 138}</string>
-						<reference key="NSSuperview" ref="411706856"/>
+						<reference key="NSSuperview" ref="534839242"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="308581837"/>
-						<reference key="IBUIBackgroundColor" ref="427251072"/>
+						<reference key="NSNextKeyView" ref="622490700"/>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MCAwAA</bytes>
+						</object>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
@@ -133,43 +91,30 @@
 				<string key="NSFrameSize">{184, 138}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="582525683"/>
+				<reference key="NSNextKeyView" ref="1069425472"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
-				<reference key="IBUIBackgroundColor" ref="427251072"/>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MSAxIDEAA</bytes>
+				</object>
 				<bool key="IBUIAutoresizesSubviews">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-				<string key="IBUIReuseIdentifier">SYNChannelMidCell</string>
-				<reference key="IBUIContentView" ref="582525683"/>
+				<string key="IBUIReuseIdentifier">SYNChannelCreateNewCell</string>
+				<reference key="IBUIContentView" ref="1069425472"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<array class="NSMutableArray" key="connectionRecords">
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">imageView</string>
-						<reference key="source" ref="411706856"/>
-						<reference key="destination" ref="308581837"/>
-					</object>
-					<int key="connectionID">10</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">titleLabel</string>
-						<reference key="source" ref="411706856"/>
-						<reference key="destination" ref="933051206"/>
+						<reference key="source" ref="534839242"/>
+						<reference key="destination" ref="622490700"/>
 					</object>
-					<int key="connectionID">11</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">panelSelectedImageView</string>
-						<reference key="source" ref="411706856"/>
-						<reference key="destination" ref="1069176426"/>
-					</object>
-					<int key="connectionID">42</int>
+					<int key="connectionID">16</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -193,32 +138,16 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
-						<reference key="object" ref="411706856"/>
+						<reference key="object" ref="534839242"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="933051206"/>
-							<reference ref="308581837"/>
-							<reference ref="1069176426"/>
+							<reference ref="622490700"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">8</int>
-						<reference key="object" ref="933051206"/>
-						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="411706856"/>
-						<string key="objectName">Title UILabel</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">9</int>
-						<reference key="object" ref="308581837"/>
-						<array class="NSMutableArray" key="children"/>
-						<reference key="parent" ref="411706856"/>
-						<string key="objectName">Image View - Channel Thumbnail</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">41</int>
-						<reference key="object" ref="1069176426"/>
-						<reference key="parent" ref="411706856"/>
+						<int key="objectID">15</int>
+						<reference key="object" ref="622490700"/>
+						<reference key="parent" ref="534839242"/>
 					</object>
 				</array>
 			</object>
@@ -226,17 +155,15 @@
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.CustomClassName">SYNChannelMidCell</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">42</int>
+			<int key="maxID">16</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -245,16 +172,11 @@
 					<string key="superclassName">UICollectionViewCell</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="imageView">UIImageView</string>
-						<string key="panelSelectedImageView">UIImageView</string>
 						<string key="titleLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="imageView">
 							<string key="name">imageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="panelSelectedImageView">
-							<string key="name">panelSelectedImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="titleLabel">
@@ -289,10 +211,6 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ChannelCreationCoverNone.png">{160, 121}</string>
-			<string key="PanelChannelCreationCoverSelected.png">{160, 121}</string>
-		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

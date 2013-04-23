@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Channel.h"
+
 @interface SYNVideoQueue : NSObject
+
+@property (nonatomic, strong) Channel* currentlyCreatingChannel;
 
 +(id)queue;
 

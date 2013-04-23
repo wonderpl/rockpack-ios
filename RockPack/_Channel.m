@@ -9,6 +9,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.coverBackgroundURL = @"coverBackgroundURL",
 	.coverThumbnailLargeURL = @"coverThumbnailLargeURL",
 	.coverThumbnailSmallURL = @"coverThumbnailSmallURL",
+	.eCommerceURL = @"eCommerceURL",
 	.lastUpdated = @"lastUpdated",
 	.position = @"position",
 	.resourceURL = @"resourceURL",
@@ -104,6 +105,13 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 
 @dynamic coverThumbnailSmallURL;
+
+
+
+
+
+
+@dynamic eCommerceURL;
 
 
 

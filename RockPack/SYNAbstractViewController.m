@@ -24,6 +24,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "SYNNetworkErrorView.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "Channel.h"
@@ -36,9 +37,12 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, assign) NSUInteger selectedIndex;
-
+@property (nonatomic, strong) UIPopoverController *activityPopoverController;
+@property (nonatomic, strong) SYNNetworkErrorView* errorView;
 
 @property (nonatomic, strong) UIView *dropZoneView;
+
+
 @end
 
 
@@ -233,15 +237,18 @@
 }
 
 
-- (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
+- (void) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
    
+    [addItButton setSelected:YES];
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    [self animateVideoAdditionToVideoQueue: videoInstance];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+                                                        object: self
+                                                      userInfo: @{@"VideoInstance" : videoInstance}];
 }
 
 
@@ -252,8 +259,6 @@
     
 }
 
-
-// Called by invisible button on video view cell
 
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
@@ -386,13 +391,6 @@
 }
 
 
-- (void) animateVideoAdditionToVideoQueue: (VideoInstance *) videoInstance
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueAdd
-                                                        object:self
-                                                      userInfo:@{@"VideoInstance" : videoInstance}];
-}
-
 
 - (void) highlightVideoQueue: (BOOL) showHighlight
 {
@@ -476,12 +474,12 @@
     // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
-        UIPopoverController *activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+        self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
         
-        [activityPopoverController presentPopoverFromRect: rect
-                                                   inView: self.view
-                                 permittedArrowDirections: arrowDirections
-                                                 animated: YES];
+        [self.activityPopoverController presentPopoverFromRect: rect
+                                                        inView: self.view
+                                      permittedArrowDirections: arrowDirections
+                                                      animated: YES];
     }
     else
     {
@@ -490,5 +488,17 @@
                          completion: nil];
     }
 }
+
+
+#pragma mark - Purchase
+
+- (void) initiatePurchaseAtURL: (NSURL *) purchaseURL
+{
+    if ([[UIApplication sharedApplication] canOpenURL: purchaseURL])
+	{
+		[[UIApplication sharedApplication] openURL: purchaseURL];
+	}
+}
+
 
 @end

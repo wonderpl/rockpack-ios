@@ -199,7 +199,7 @@
 }
 
 
-#pragma mark - Collection view support
+#pragma mark - UICollectionView Delegate
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {

@@ -71,6 +71,9 @@
 
 - (void) loadView
 {
+    // Google Analytics support
+    self.trackedViewName = @"Channels - Root";
+    
     SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
@@ -108,13 +111,6 @@
     currentCategoryId = @"all";
     
     currentRange = NSMakeRange(0, 50);
-    
-    // Google Analytics support
-    self.trackedViewName = @"Channels - Root";
-    
-    
-    
-    
 }
 
 

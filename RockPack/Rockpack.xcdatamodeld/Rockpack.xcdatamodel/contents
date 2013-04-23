@@ -13,6 +13,7 @@
         <attribute name="coverBackgroundURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="coverThumbnailLargeURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="coverThumbnailSmallURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
+        <attribute name="eCommerceURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="resourceURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
@@ -73,7 +74,7 @@
     <elements>
         <element name="AbstractCommon" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Category" positionX="-252" positionY="111" width="128" height="60"/>
-        <element name="Channel" positionX="-27" positionY="207" width="128" height="270"/>
+        <element name="Channel" positionX="-27" positionY="207" width="128" height="285"/>
         <element name="ChannelOwner" positionX="-353" positionY="216" width="128" height="90"/>
         <element name="Subcategory" positionX="-441" positionY="111" width="128" height="60"/>
         <element name="TabItem" positionX="-333" positionY="6" width="128" height="75"/>
