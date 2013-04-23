@@ -2722,7 +2722,7 @@
 			name = Overlays;
 			sourceTree = "<group>";
 		};
-		BE0AAD2616E6521300DA958E /* Search Box */ = {
+		BE0AAD2616E6521300DA958E /* Autocomplete Search Box */ = {
 			isa = PBXGroup;
 			children = (
 				BE2D2143171C5A0600B4B755 /* SYNSearchBoxViewController.h */,
@@ -2732,7 +2732,7 @@
 				BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */,
 				BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */,
 			);
-			name = "Search Box";
+			name = "Autocomplete Search Box";
 			sourceTree = "<group>";
 		};
 		BE21EE8416FA200C0067223B /* Specific Fields */ = {
@@ -3087,7 +3087,7 @@
 				BE7D3548171866550085AB81 /* User Profile Panel */,
 				BE7D3538171708E20085AB81 /* Refresh Button */,
 				BE03A69016F7457900245314 /* Account Settings */,
-				BE0AAD2616E6521300DA958E /* Search Box */,
+				BE0AAD2616E6521300DA958E /* Autocomplete Search Box */,
 				BE08159C16D3D7E300ADB1DC /* Tab Bars */,
 				01A3EC2A16AECE0F008DCE08 /* Popover */,
 				BE0815CE16D6444200ADB1DC /* Overlays */,
