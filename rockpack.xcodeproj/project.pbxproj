@@ -464,6 +464,14 @@
 		388DAB7E17268A990024B81A /* PanelChannelProfile~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388DAB6E17268A990024B81A /* PanelChannelProfile~iphone.png */; };
 		38C3FA7417203D6600F126B1 /* PanelDayPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */; };
 		38C3FA7517203D6600F126B1 /* PanelDayPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */; };
+		38D6DEA11726E204008C492D /* ButtonRefreshHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE991726E204008C492D /* ButtonRefreshHighlighted~iphone.png */; };
+		38D6DEA21726E204008C492D /* ButtonRefreshArrow~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9A1726E204008C492D /* ButtonRefreshArrow~iphone.png */; };
+		38D6DEA31726E204008C492D /* ButtonRefreshHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9B1726E204008C492D /* ButtonRefreshHighlighted@2x~iphone.png */; };
+		38D6DEA41726E204008C492D /* ButtonRefreshArrow@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9C1726E204008C492D /* ButtonRefreshArrow@2x~iphone.png */; };
+		38D6DEA51726E204008C492D /* ButtonNavHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9D1726E204008C492D /* ButtonNavHighlighted@2x~iphone.png */; };
+		38D6DEA61726E204008C492D /* ButtonNavHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9E1726E204008C492D /* ButtonNavHighlighted~iphone.png */; };
+		38D6DEA71726E204008C492D /* PanelDay~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9F1726E204008C492D /* PanelDay~iphone.png */; };
+		38D6DEA81726E204008C492D /* PanelDay@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DEA01726E204008C492D /* PanelDay@2x~iphone.png */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B816F7697900245314 /* ButtonFlagDefault.png */; };
 		BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */; };
@@ -1236,6 +1244,14 @@
 		388DAB6E17268A990024B81A /* PanelChannelProfile~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelChannelProfile~iphone.png"; sourceTree = "<group>"; };
 		38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelDayPortrait.png; path = Assets/Images/PanelDayPortrait.png; sourceTree = "<group>"; };
 		38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelDayPortrait@2x.png"; path = "Assets/Images/PanelDayPortrait@2x.png"; sourceTree = "<group>"; };
+		38D6DE991726E204008C492D /* ButtonRefreshHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRefreshHighlighted~iphone.png"; sourceTree = "<group>"; };
+		38D6DE9A1726E204008C492D /* ButtonRefreshArrow~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRefreshArrow~iphone.png"; sourceTree = "<group>"; };
+		38D6DE9B1726E204008C492D /* ButtonRefreshHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRefreshHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DE9C1726E204008C492D /* ButtonRefreshArrow@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonRefreshArrow@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DE9D1726E204008C492D /* ButtonNavHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DE9E1726E204008C492D /* ButtonNavHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavHighlighted~iphone.png"; sourceTree = "<group>"; };
+		38D6DE9F1726E204008C492D /* PanelDay~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelDay~iphone.png"; sourceTree = "<group>"; };
+		38D6DEA01726E204008C492D /* PanelDay@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelDay@2x~iphone.png"; sourceTree = "<group>"; };
 		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
 		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE03A6B816F7697900245314 /* ButtonFlagDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFlagDefault.png; path = Assets/Images/ButtonFlagDefault.png; sourceTree = "<group>"; };
@@ -2736,6 +2752,14 @@
 		388DAAF417267DD60024B81A /* feed */ = {
 			isa = PBXGroup;
 			children = (
+				38D6DE991726E204008C492D /* ButtonRefreshHighlighted~iphone.png */,
+				38D6DE9A1726E204008C492D /* ButtonRefreshArrow~iphone.png */,
+				38D6DE9B1726E204008C492D /* ButtonRefreshHighlighted@2x~iphone.png */,
+				38D6DE9C1726E204008C492D /* ButtonRefreshArrow@2x~iphone.png */,
+				38D6DE9D1726E204008C492D /* ButtonNavHighlighted@2x~iphone.png */,
+				38D6DE9E1726E204008C492D /* ButtonNavHighlighted~iphone.png */,
+				38D6DE9F1726E204008C492D /* PanelDay~iphone.png */,
+				38D6DEA01726E204008C492D /* PanelDay@2x~iphone.png */,
 				388DAAF517267DD60024B81A /* ButtonNav@2x~iphone.png */,
 				388DAAF617267DD60024B81A /* ButtonNav~iphone.png */,
 				388DAAF717267DD60024B81A /* ButtonRefresh@2x~iphone.png */,
@@ -3886,6 +3910,14 @@
 				388DAB7C17268A990024B81A /* GlossChannelProfile~iphone.png in Resources */,
 				388DAB7D17268A990024B81A /* PanelChannelProfile@2x~iphone.png in Resources */,
 				388DAB7E17268A990024B81A /* PanelChannelProfile~iphone.png in Resources */,
+				38D6DEA11726E204008C492D /* ButtonRefreshHighlighted~iphone.png in Resources */,
+				38D6DEA21726E204008C492D /* ButtonRefreshArrow~iphone.png in Resources */,
+				38D6DEA31726E204008C492D /* ButtonRefreshHighlighted@2x~iphone.png in Resources */,
+				38D6DEA41726E204008C492D /* ButtonRefreshArrow@2x~iphone.png in Resources */,
+				38D6DEA51726E204008C492D /* ButtonNavHighlighted@2x~iphone.png in Resources */,
+				38D6DEA61726E204008C492D /* ButtonNavHighlighted~iphone.png in Resources */,
+				38D6DEA71726E204008C492D /* PanelDay~iphone.png in Resources */,
+				38D6DEA81726E204008C492D /* PanelDay@2x~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

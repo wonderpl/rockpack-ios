@@ -110,7 +110,6 @@
 								<string key="NSFrame">{{10, 84}, {132, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="427251072">
 									<int key="NSColorSpace">3</int>
@@ -131,7 +130,7 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xNTY4NjI3NTA2IDAuMTc2NDcwNTkyNiAwLjIwMDAwMDAwMyAwLjUAA</bytes>
 								</object>
-								<string key="IBUIShadowOffset">{-1, 2}</string>
+								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<bool key="IBUIAdjustsLetterSpacingToFitWidth">YES</bool>
 								<int key="IBUINumberOfLines">2</int>
