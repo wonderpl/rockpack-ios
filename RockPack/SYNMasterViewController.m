@@ -130,13 +130,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         autocompleteControllerFrame.origin.y = 10.0;
         self.searchBoxController.view.frame = autocompleteControllerFrame;
         
-        self.overEverythingView.userInteractionEnabled = NO;
-        
-        
-        
-        
-        
-        
     }
     return self;
 }
@@ -673,9 +666,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     NSString* reachabilityString;
     if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
         reachabilityString = @"WiFi";
-    else if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
         reachabilityString = @"WWAN";
-    else
+    else if([self.reachability currentReachabilityStatus] == NotReachable) 
         reachabilityString = @"None";
     
     DebugLog(@"Reachability == %@", reachabilityString);
