@@ -732,7 +732,9 @@
                                                    
                                                                                       } errorHandler:^(NSDictionary* errorDictionary) {
                                                    
-                                                   
+                                                                                          [activityIndicator stopAnimating];
+                                                                                          
+                                                                                          self.finalLoginButton.alpha = 1.0;
                                                    
                                                                                       }];
                                                
