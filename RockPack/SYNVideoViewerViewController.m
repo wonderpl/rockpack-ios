@@ -129,6 +129,7 @@
         videoFrame = CGRectMake(142, 71, 739, 416);
     }
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
+    self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 
     [self.view insertSubview: self.videoPlaybackViewController.view
                 aboveSubview: self.blackPanelView];
@@ -289,23 +290,25 @@
 {
     int sectionCount = self.fetchedResultsController.sections.count;
     
+    CGFloat insetWidth = [[SYNDeviceManager sharedInstance] isIPhone] ? 81.0f : 438.0f;
+    
     if (section == 0)
     {
         if (sectionCount > 1)
         {
             // Leading inset on first section
-            return UIEdgeInsetsMake (0, 438, 0, 0);
+            return UIEdgeInsetsMake (0, insetWidth, 0, 0);
         }
         else
         {
             // We only have one section, so add both trailing and leading insets
-            return UIEdgeInsetsMake (0, 438, 0, 438 );
+            return UIEdgeInsetsMake (0, insetWidth, 0, insetWidth );
         }
     }
     else if (section == (sectionCount - 1))
     {
         // Trailing inset on last section
-        return UIEdgeInsetsMake (0, 0, 0, 438);
+        return UIEdgeInsetsMake (0, 0, 0, insetWidth);
     }
     else
     {
