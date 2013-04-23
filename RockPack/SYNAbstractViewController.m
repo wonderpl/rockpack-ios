@@ -205,15 +205,12 @@
         
         // Update the star/unstar status on the server
         [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-         channelURL: channel.resourceURL
-         completionHandler: ^(NSDictionary *responseDictionary)
-         {
-             DebugLog(@"Subscribe action successful");
-         }
-         errorHandler: ^(NSDictionary* errorDictionary)
-         {
-             DebugLog(@"Subscribe action failed");
-         }];
+                                                       channelURL: channel.resourceURL
+                                                completionHandler: ^(NSDictionary *responseDictionary) {
+                                                        DebugLog(@"Subscribe action successful");
+                                                   } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                       DebugLog(@"Subscribe action failed");
+                                                   }];
     }
     
     [self saveDB];

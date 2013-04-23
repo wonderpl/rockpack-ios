@@ -11,11 +11,13 @@ extern const struct ChannelOwnerAttributes {
 
 extern const struct ChannelOwnerRelationships {
 	__unsafe_unretained NSString *channels;
+	__unsafe_unretained NSString *subscriptions;
 } ChannelOwnerRelationships;
 
 extern const struct ChannelOwnerFetchedProperties {
 } ChannelOwnerFetchedProperties;
 
+@class Channel;
 @class Channel;
 
 
@@ -61,6 +63,13 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *subscriptions;
+
+- (NSMutableSet*)subscriptionsSet;
+
+
+
+
 
 @end
 
@@ -70,6 +79,11 @@ extern const struct ChannelOwnerFetchedProperties {
 - (void)removeChannels:(NSSet*)value_;
 - (void)addChannelsObject:(Channel*)value_;
 - (void)removeChannelsObject:(Channel*)value_;
+
+- (void)addSubscriptions:(NSSet*)value_;
+- (void)removeSubscriptions:(NSSet*)value_;
+- (void)addSubscriptionsObject:(Channel*)value_;
+- (void)removeSubscriptionsObject:(Channel*)value_;
 
 @end
 
@@ -91,6 +105,11 @@ extern const struct ChannelOwnerFetchedProperties {
 
 - (NSMutableSet*)primitiveChannels;
 - (void)setPrimitiveChannels:(NSMutableSet*)value;
+
+
+
+- (NSMutableSet*)primitiveSubscriptions;
+- (void)setPrimitiveSubscriptions:(NSMutableSet*)value;
 
 
 @end

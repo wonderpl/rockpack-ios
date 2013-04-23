@@ -22,6 +22,7 @@ const struct ChannelAttributes ChannelAttributes = {
 
 const struct ChannelRelationships ChannelRelationships = {
 	.channelOwner = @"channelOwner",
+	.subscribers = @"subscribers",
 	.videoInstances = @"videoInstances",
 };
 
@@ -233,6 +234,19 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 @dynamic channelOwner;
 
+	
+
+@dynamic subscribers;
+
+	
+- (NSMutableSet*)subscribersSet {
+	[self willAccessValueForKey:@"subscribers"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"subscribers"];
+  
+	[self didAccessValueForKey:@"subscribers"];
+	return result;
+}
 	
 
 @dynamic videoInstances;

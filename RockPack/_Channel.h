@@ -23,12 +23,14 @@ extern const struct ChannelAttributes {
 
 extern const struct ChannelRelationships {
 	__unsafe_unretained NSString *channelOwner;
+	__unsafe_unretained NSString *subscribers;
 	__unsafe_unretained NSString *videoInstances;
 } ChannelRelationships;
 
 extern const struct ChannelFetchedProperties {
 } ChannelFetchedProperties;
 
+@class ChannelOwner;
 @class ChannelOwner;
 @class VideoInstance;
 
@@ -219,6 +221,13 @@ extern const struct ChannelFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *subscribers;
+
+- (NSMutableSet*)subscribersSet;
+
+
+
+
 @property (nonatomic, strong) NSOrderedSet *videoInstances;
 
 - (NSMutableOrderedSet*)videoInstancesSet;
@@ -230,6 +239,11 @@ extern const struct ChannelFetchedProperties {
 @end
 
 @interface _Channel (CoreDataGeneratedAccessors)
+
+- (void)addSubscribers:(NSSet*)value_;
+- (void)removeSubscribers:(NSSet*)value_;
+- (void)addSubscribersObject:(ChannelOwner*)value_;
+- (void)removeSubscribersObject:(ChannelOwner*)value_;
 
 - (void)addVideoInstances:(NSOrderedSet*)value_;
 - (void)removeVideoInstances:(NSOrderedSet*)value_;
@@ -337,6 +351,11 @@ extern const struct ChannelFetchedProperties {
 
 - (ChannelOwner*)primitiveChannelOwner;
 - (void)setPrimitiveChannelOwner:(ChannelOwner*)value;
+
+
+
+- (NSMutableSet*)primitiveSubscribers;
+- (void)setPrimitiveSubscribers:(NSMutableSet*)value;
 
 
 
