@@ -138,6 +138,7 @@
 
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
+#define kChannelUpdatedKey @"eCommerceURL"
 
 // Settings
 

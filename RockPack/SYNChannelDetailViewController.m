@@ -47,13 +47,12 @@
     {
 		self.channel = channel;
         
-        [self.channel addObserver:self
-                       forKeyPath:@"subscribedByUser"
-                          options:NSKeyValueObservingOptionNew
-                          context:nil];
+        [self.channel addObserver: self
+                       forKeyPath: @"subscribedByUser"
+                          options: NSKeyValueObservingOptionNew
+                          context: nil];
 	}
-    
-    
+
 	return self;
 }
 
@@ -129,6 +128,11 @@
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
     
+    [self.channel addObserver: self
+                   forKeyPath: kChannelUpdatedKey
+                      options: NSKeyValueObservingOptionNew
+                      context: nil];
+    
     // FIXME: Move out to subclass is there is a distinct display view, overridden by edit subclass
     [self setDisplayControlsVisibility: TRUE];
     
@@ -137,11 +141,31 @@
     
     if ([self.channel.resourceURL hasPrefix: @"https"])
     {
-        [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL];
+//        [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL];
+        [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL
+                                    completionHandler: ^(NSDictionary *responseDictionary) {
+                                    self.channel = [Channel subscriberInstanceFromDictionary: responseDictionary
+                                                                   usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                   andViewId: kChannelDetailsViewId];
+                                    }
+                                         errorHandler: ^(NSDictionary* errorDictionary) {
+                                             DebugLog(@"Update action failed");
+                                         }];
+
     }
     else
     {
-        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
+//        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
+        [appDelegate.networkEngine updateChannel: self.channel.resourceURL
+                               completionHandler: ^(NSDictionary *responseDictionary) {
+                                   self.channel = [Channel subscriberInstanceFromDictionary: responseDictionary
+                                                                  usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                  andViewId: kChannelDetailsViewId];
+                               }
+                                    errorHandler: ^(NSDictionary* errorDictionary) {
+                                        DebugLog(@"Update action failed");
+                                    }];
+
     }
     
     [self updateChannelDetails];
@@ -150,7 +174,11 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    // Remove KVO observer
+    // Remove KVO observers
+    
+    [self.channel removeObserver: self
+                      forKeyPath: kChannelUpdatedKey];
+    
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
     
@@ -326,7 +354,7 @@
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-    if ([keyPath isEqualToString: @"contentOffset"])
+    if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
 
@@ -361,6 +389,11 @@
             self.subscribeButton.selected = NO;
         }
     }
+    else if ([keyPath isEqualToString: kChannelUpdatedKey])
+    {
+        NSLog (@"channel updated");
+        [self updateChannelDetails];
+    }
 }
 
 
@@ -391,7 +424,7 @@
 }
 
 
--(IBAction)subscribeButtonTapped:(id)sender
+- (IBAction)subscribeButtonTapped: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
                                                         object: self
