@@ -19,20 +19,20 @@
 
 @interface SYNChannelDetailViewController ()
 
-@property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
+@property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
-@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
-@property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
-@property (nonatomic, strong) IBOutlet UIView *displayControlsView;
+@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
+@property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
+@property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
+@property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
+@property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
-@property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
-@property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
-@property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (strong, nonatomic) NSMutableArray *videoInstances;
 
 @end
@@ -46,11 +46,6 @@
     if ((self = [super init]))
     {
 		self.channel = channel;
-        
-        [self.channel addObserver: self
-                       forKeyPath: @"subscribedByUser"
-                          options: NSKeyValueObservingOptionNew
-                          context: nil];
 	}
 
 	return self;
@@ -116,6 +111,13 @@
 {
     [super viewWillAppear: animated];
     
+    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+    
+    for (VideoInstance *videoInstance in self.channel.videoInstances)
+    {
+        [self.videoInstances addObject: videoInstance];
+    }
+    
     // Look out for update notifications
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(reloadCollectionViews)
@@ -129,7 +131,7 @@
                                            context: nil];
     
     [self.channel addObserver: self
-                   forKeyPath: kChannelUpdatedKey
+                   forKeyPath: @"subscribedByUser"
                       options: NSKeyValueObservingOptionNew
                       context: nil];
     
@@ -139,33 +141,65 @@
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
-    if ([self.channel.resourceURL hasPrefix: @"https"])
+    // Only do this is we have a resource URL (i.e. we haven't just created the channel)
+    
+    if (self.channel.resourceURL != nil && ![self.channel.resourceURL isEqualToString: @""])
     {
-//        [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL];
-        [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL
-                                    completionHandler: ^(NSDictionary *responseDictionary) {
-                                    self.channel = [Channel subscriberInstanceFromDictionary: responseDictionary
-                                                                   usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                   andViewId: kChannelDetailsViewId];
-                                    }
-                                         errorHandler: ^(NSDictionary* errorDictionary) {
-                                             DebugLog(@"Update action failed");
-                                         }];
+        if ([self.channel.resourceURL hasPrefix: @"https"])
+        {
+            [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL
+                                        completionHandler: ^(NSDictionary *responseDictionary) {
+                                            [self.channel setAttributesFromDictionary: responseDictionary
+                                                                               withId: self.channel.uniqueId
+                                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                                  ignoringObjectTypes: kIgnoreNothing
+                                                                            andViewId: kChannelDetailsViewId];
+                                            
+                                            self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+                                            
+                                            for (VideoInstance *videoInstance in self.channel.videoInstances)
+                                            {
+                                                [self.videoInstances addObject: videoInstance];
+                                            }
+                                            
+                                            [self reloadCollectionViews];
+                                        }
+                                             errorHandler: ^(NSDictionary* errorDictionary) {
+                                                 DebugLog(@"Update action failed");
+                                             }];
 
-    }
-    else
-    {
-//        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
-        [appDelegate.networkEngine updateChannel: self.channel.resourceURL
-                               completionHandler: ^(NSDictionary *responseDictionary) {
-                                   self.channel = [Channel subscriberInstanceFromDictionary: responseDictionary
-                                                                  usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                  andViewId: kChannelDetailsViewId];
-                               }
-                                    errorHandler: ^(NSDictionary* errorDictionary) {
-                                        DebugLog(@"Update action failed");
-                                    }];
+        }
+        else
+        {
+            [appDelegate.networkEngine updateChannel: self.channel.resourceURL
+                                   completionHandler: ^(NSDictionary *responseDictionary) {
+                                       // Save the position for back-patching in later
+                                       NSNumber *savedPosition = self.channel.position;
+                                       
+                                       [self.channel setAttributesFromDictionary: responseDictionary
+                                                                          withId: self.channel.uniqueId
+                                                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                             ignoringObjectTypes: kIgnoreNothing
+                                                                       andViewId: kChannelDetailsViewId];
+                                       
+                                       // Back-patch a few things that may have been overwritten
+                                       self.channel.position = savedPosition;
+                                       self.channel.viewId = kChannelsViewId;
+                                       
+                                       self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+                                       
+                                       for (VideoInstance *videoInstance in self.channel.videoInstances)
+                                       {
+                                           [self.videoInstances addObject: videoInstance];
+                                       }
+                                       
+                                       [self reloadCollectionViews];
+                                   }
+                                        errorHandler: ^(NSDictionary* errorDictionary) {
+                                            DebugLog(@"Update action failed");
+                                        }];
 
+        }
     }
     
     [self updateChannelDetails];
@@ -174,10 +208,10 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    // Remove KVO observers
+    self.videoInstances = nil;
     
     [self.channel removeObserver: self
-                      forKeyPath: kChannelUpdatedKey];
+                      forKeyPath: @"subscribedByUser"];
     
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
@@ -225,47 +259,26 @@
 }
 
 
-#pragma mark - Fetched results controller
-
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    
-    
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
-
-
 #pragma mark - Collection view support
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    DebugLog (@"Objects %d", sectionInfo.numberOfObjects);
-    return sectionInfo.numberOfObjects;
+    switch (section)
+    {
+        case 0:
+        {
+            return self.videoInstances.count;
+        }
+        break;
+            
+        default:
+        {
+            AssertOrLog(@"Shouldn't have more than one section");
+            return 0;
+        }
+        break;
+    }
 }
 
 
@@ -283,7 +296,7 @@
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
     
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = self.videoInstances [indexPath.row];
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
     videoThumbnailCell.titleLabel.text = videoInstance.title;
     
@@ -301,12 +314,20 @@
 }
 
 
+#pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
+
 - (void) collectionView: (UICollectionView *) collectionView
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *)toIndexPath
+    willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    [appDelegate saveContext:YES];
+    id fromItem = [self.videoInstances objectAtIndex: fromIndexPath.item];
+    
+    [self.videoInstances removeObjectAtIndex: fromIndexPath.item];
+    
+    [self.videoInstances insertObject: fromItem
+                              atIndex: toIndexPath.item];
 }
+
 
 - (void) setDisplayControlsVisibility: (BOOL) visible
 {
@@ -388,11 +409,6 @@
         {
             self.subscribeButton.selected = NO;
         }
-    }
-    else if ([keyPath isEqualToString: kChannelUpdatedKey])
-    {
-        NSLog (@"channel updated");
-        [self updateChannelDetails];
     }
 }
 

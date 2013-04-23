@@ -110,7 +110,7 @@
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    //[channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     
     // == You Page == //
     
