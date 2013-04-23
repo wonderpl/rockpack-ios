@@ -61,8 +61,6 @@
 - (IBAction) animatedPopViewController;
 
 
-- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath;
-
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 

@@ -25,6 +25,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
@@ -40,15 +41,12 @@
 
 - (id) initWithChannel: (Channel *) channel
 {
-//	if ((self = [super initWithNibName: @"SYNAbstractChannelDetailViewController"
-//                                bundle: nil]))
+
     if ((self = [super init]))
     {
 		self.channel = channel;
 	}
-    {
-		self.channel = channel;
-	}
+    
     
 	return self;
 }
@@ -350,7 +348,7 @@
 }
 
 
-#pragma mark - Share
+#pragma mark - Control Delegate
 
 - (IBAction) shareChannelButtonTapped: (id) sender
 {
@@ -374,6 +372,14 @@
 - (IBAction) buyButtonTapped: (id) sender
 {
     [self initiatePurchaseAtURL: [NSURL URLWithString: self.channel.eCommerceURL]];
+}
+
+
+-(IBAction)subscribeButtonTapped:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
+                                                        object: self
+                                                      userInfo: @{ kChannel : self.channel }];
 }
 
 

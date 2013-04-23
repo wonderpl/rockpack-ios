@@ -154,44 +154,6 @@
 }
 
 
-- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.subscribedByUserValue == YES)
-    {
-        // Currently highlighted, so decrement
-        channel.subscribedByUserValue = NO;
-        channel.subscribersCountValue -= 1;
-        
-        // Update the star/unstar status on the server
-        [appDelegate.oAuthNetworkEngine channelUnsubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                          channelId: channel.uniqueId
-                                                  completionHandler: ^(NSDictionary *responseDictionary) {
-                                                      DebugLog(@"Unsubscribe action successful");
-                                                  }
-                                                       errorHandler: ^(NSDictionary* errorDictionary) {
-                                                           DebugLog(@"Unsubscribe action failed");
-                                                       }];
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.subscribedByUserValue = TRUE;
-        channel.subscribersCountValue += 1;
-        
-        // Update the star/unstar status on the server
-        [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                       channelURL: channel.resourceURL
-                                                completionHandler: ^(NSDictionary *responseDictionary) {
-                                                        DebugLog(@"Subscribe action successful");
-                                                   } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                       DebugLog(@"Subscribe action failed");
-                                                   }];
-    }
-    
-    [appDelegate saveContext:YES];
-}
 
 
 

@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Channel.h"
+
 @interface SYNSubscriptionsManager : NSObject
+
+
+-(void)subscribeToChannel:(Channel*)channel;
+-(void)unsubscribeFromChannel:(Channel*)channel;
+-(void)toggleSubscriptionToChannel:(Channel*)channel;
+
++(id)manager;
 
 @end
