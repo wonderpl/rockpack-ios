@@ -30,16 +30,17 @@
 
 -(id)initWithDefaultSettings
 {
+    
+    hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIHostName"];
+    
     self = [super initWithDefaultSettings];
     
     if(self) {
         
-        hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIHostName"];
+        
         
     }
     
-    
-    // read host from plist
     
     return self;
 }

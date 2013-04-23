@@ -23,8 +23,7 @@
 @interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
                                                                  UICollectionViewDelegate,
-                                                                 SYNTabViewDelegate>
-{
+                                                                 SYNTabViewDelegate> {
 @protected
     SYNAppDelegate* appDelegate;
     BOOL tabExpanded;
