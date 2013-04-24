@@ -86,9 +86,9 @@
     
     CGRect fieldRect = grayPanel.frame;
     fieldRect.origin.x += 18.0 + loopImage.size.width;
-    fieldRect.origin.y += 12.0;
-    fieldRect.size.width -= 10.0 * 2;
-    fieldRect.size.height -= 10.0 * 2;
+    fieldRect.origin.y += 14.0;
+    fieldRect.size.width -= 28.0 * 2;
+    fieldRect.size.height -= 14.0 * 2;
     self.searchTextField = [[UITextField alloc] initWithFrame:fieldRect];
     self.searchTextField.font = [UIFont rockpackFontOfSize:26.0];
     self.searchTextField.backgroundColor = [UIColor clearColor];
@@ -96,8 +96,8 @@
     self.searchTextField.delegate = self;
     self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-    
-    
+    self.searchTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    //self.searchTextField.backgroundColor = [UIColor greenColor];
     
     CGRect finalFrame = backgroundPanel.frame;
     

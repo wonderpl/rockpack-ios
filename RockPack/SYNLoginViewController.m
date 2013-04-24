@@ -56,6 +56,8 @@
 @property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 
+@property (nonatomic, strong) NSArray* mainFormElements;
+
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
 
 @property (nonatomic, strong) IBOutlet UILabel* passwordForgottenLabel;
@@ -77,6 +79,8 @@
 @property (nonatomic) CGRect signUpButtonInitialFrame;
 @property (nonatomic) CGRect initialUsernameFrame;
 
+@property (nonatomic, readonly) CGFloat elementsOffsetY;
+
 @property (nonatomic) BOOL isAnimating;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
@@ -86,7 +90,6 @@
 @end
 
 
-#define kOffsetForLoginForm 285.0
 #define kOffsetForRegisterForm 100.0
 
 @implementation SYNLoginViewController
@@ -105,6 +108,7 @@
 @synthesize faceImageButton, facebookButtonInitialFrame, signUpButtonInitialFrame;
 @synthesize sendEmailButton;
 @synthesize wellSendYouLabel;
+@synthesize elementsOffsetY;
 
 - (void) viewDidLoad
 {
@@ -157,6 +161,8 @@
     signUpButtonInitialFrame = signUpButton.frame;
     
     emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
+    
+    self.mainFormElements = @[];
     
     // == Setup Input Fields
     
@@ -215,8 +221,8 @@
                                 registerNewUserButton, dividerImageView, faceImageButton, sendEmailButton,
                                 wellSendYouLabel, termsAndConditionsLabelSide];
     
-    for (UIView* control in controlsToHide) {
-       
+    for (UIView* control in controlsToHide)
+    {
         control.alpha = 0.0;
     }
     
@@ -304,7 +310,7 @@
                              animations:^{
                                  
                                  control.alpha = 1.0;
-                                 control.center = CGPointMake(control.center.x, control.center.y - kOffsetForLoginForm);
+                                 control.center = CGPointMake(control.center.x, control.center.y - self.elementsOffsetY);
                                  
                              } completion:^(BOOL finished) {
                                  
@@ -319,9 +325,9 @@
         // place secondary elements to the correct place for fade in animation
         
         
-        passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
-        passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
-        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
+        passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
+        passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - self.elementsOffsetY);
+        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - self.elementsOffsetY);
         
         // consequitive fade in animations
         
@@ -330,7 +336,7 @@
             memberLabel.alpha = 0.0;
             loginButton.alpha = 0.0;
         } completion:^(BOOL finished) {
-            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - kOffsetForLoginForm);
+            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - self.elementsOffsetY);
             [UIView animateWithDuration:0.2 animations:^{
                 passwordForgottenButton.alpha = 1.0;
                 passwordForgottenLabel.alpha = 1.0;
@@ -348,9 +354,9 @@
                     
                     
                     emailInputField.center = CGPointMake(emailInputField.center.x,
-                                                         emailInputField.center.y - kOffsetForLoginForm);
+                                                         emailInputField.center.y - self.elementsOffsetY);
                     dobView.center = CGPointMake(dobView.center.x,
-                                                 dobView.center.y - kOffsetForLoginForm);
+                                                 dobView.center.y - self.elementsOffsetY);
                     
                     memberLabel.center = CGPointMake(memberLabel.center.x,
                                                      registerButton.center.y - 57.0);
@@ -364,11 +370,11 @@
                     sendEmailButton.frame = CGRectIntegral(sendEmailButton.frame);
                     
                     registerNewUserButton.center = CGPointMake(registerNewUserButton.center.x,
-                                                               registerNewUserButton.center.y - kOffsetForLoginForm);
+                                                               registerNewUserButton.center.y - self.elementsOffsetY);
                     
                     
                     faceImageButton.center = CGPointMake(faceImageButton.center.x,
-                                                         faceImageButton.center.y - kOffsetForLoginForm);
+                                                         faceImageButton.center.y - self.elementsOffsetY);
                     
                     [userNameInputField becomeFirstResponder];
                     
@@ -512,7 +518,7 @@
                              animations:^{
                                  
                                  control.alpha = 1.0;
-                                 control.center = CGPointMake(control.center.x, control.center.y - kOffsetForLoginForm);
+                                 control.center = CGPointMake(control.center.x, control.center.y - self.elementsOffsetY);
                                  
                              } completion:^(BOOL finished) {
                                  
@@ -525,7 +531,7 @@
             memberLabel.alpha = 0.0;
             loginButton.alpha = 0.0;
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x,
-                                                      facebookSignInButton.center.y - kOffsetForLoginForm);
+                                                      facebookSignInButton.center.y - self.elementsOffsetY);
             signUpButton.alpha = 0.0;
             
             
@@ -533,14 +539,14 @@
             
         } completion:^(BOOL finished) {
             
-            finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - kOffsetForLoginForm);
-            passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - kOffsetForLoginForm);
-            passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - kOffsetForLoginForm);
+            finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - self.elementsOffsetY);
+            passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
+            passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - self.elementsOffsetY);
             facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm,
                                                       facebookSignInButton.center.y);
             
-            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - kOffsetForLoginForm);
-            termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - kOffsetForLoginForm);
+            dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - self.elementsOffsetY);
+            termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - self.elementsOffsetY);
             
             [emailInputField becomeFirstResponder];
             
@@ -555,7 +561,7 @@
             
             CGRect faceRect = faceImageButton.frame;
             faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
-            faceRect.origin.y -= kOffsetForLoginForm;
+            faceRect.origin.y -= self.elementsOffsetY;
             faceImageButton.frame = faceRect;
             
             isAnimating = NO;
@@ -1372,6 +1378,7 @@
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
+        
         memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 56.0);
         areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     }
@@ -1388,6 +1395,14 @@
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 46.0);
+}
+
+-(CGFloat)elementsOffsetY
+{
+    if([[SYNDeviceManager sharedInstance] isLandscape])
+        return 284.0;
+    else
+        return 284.0;
 }
 
 
