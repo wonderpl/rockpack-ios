@@ -24,7 +24,7 @@ typedef enum {
 @property (nonatomic, readonly) SYNContainerScrollView* scrollView;
 
 
-@property (nonatomic) NSInteger currentPage;
+@property (nonatomic, readonly) NSInteger currentPage;
 
 @property (nonatomic) CGPoint currentPageOffset;
 @property (nonatomic) ScrollingDirection scrollingDirection;

@@ -241,7 +241,7 @@
     self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
     self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
     [self.scrollView setContentOffset:self.currentPageOffset];
-    self.currentPage = self.scrollView.page;
+    
     scrollingDirection = ScrollingDirectionNone;
 }
 
@@ -471,11 +471,11 @@
     CGFloat pageDiff = pageInProgress - self.currentPage;
     if(fabsf(pageDiff) > 1.0f)
     {
-        self.currentPage = self.scrollView.page;
+        
         CGPoint newOffset = self.scrollView.contentOffset;
         newOffset.x = currentPage * width;
         self.currentPageOffset = newOffset;
-        self.selectedViewController = self.childViewControllers[self.currentPage];
+        self.selectedViewController = self.childViewControllers[self.scrollView.page];
         [self.showingViewController viewCameToScrollFront];
     }
     
@@ -494,7 +494,7 @@
     self.selectedViewController = self.childViewControllers[self.scrollView.page];
     
     self.currentPageOffset = self.scrollView.contentOffset;
-    self.currentPage = self.scrollView.page;
+    
     
     [self.showingViewController viewCameToScrollFront];
 }
@@ -561,7 +561,10 @@
 }
 
 
-
+-(NSInteger)currentPage
+{
+    return self.scrollView.page;
+}
 
 
 @end
