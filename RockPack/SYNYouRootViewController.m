@@ -233,8 +233,8 @@
     [super viewWillDisappear:animated];
     
     
-    [self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
-    [self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
+    //[self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
+    //[self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
 }
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation

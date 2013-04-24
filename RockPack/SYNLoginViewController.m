@@ -1381,9 +1381,13 @@
         passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
         memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 58.0);
-        areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 46.0);
+        
     }
     
+    signUpButton.frame = CGRectIntegral(signUpButton.frame);
+    passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
+    faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
+    areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 46.0);
 }
 
 

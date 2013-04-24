@@ -18,13 +18,13 @@
 #import "SYNFeedRootViewController.h"
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNSearchRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
+#import "SYNObjectFactory.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -38,19 +38,13 @@
 
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
-@property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
-@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
-@property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
-@property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
-@property (nonatomic, weak) UINavigationController* replacementNavigationController;
-@property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
-@property (nonatomic, weak) UIViewController *selectedViewController;
+@property (nonatomic, weak) UINavigationController *selectedNavigationController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 
 @property (nonatomic, readonly) CGFloat currentScreenOffset;
@@ -63,17 +57,15 @@
 
 @implementation SYNContainerViewController
 
-@synthesize selectedViewController;
+@synthesize selectedNavigationController;
 @synthesize currentScreenOffset;
-@synthesize channelsUserNavigationViewController;
-@synthesize channelsUserViewController, searchViewController;
 @synthesize scrollingDirection;
 @synthesize currentPageOffset;
 @synthesize appDelegate;
 @synthesize currentPage;
 
 @dynamic showingViewController;
-@dynamic page;
+
 @dynamic scrollView;
 
 // Initialise all the elements common to all 4 tabs
@@ -84,7 +76,7 @@
 -(void)loadView
 {
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
-    UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
+    SYNContainerScrollView* scrollView = [[SYNContainerScrollView alloc] initWithFrame:scrollerFrame];
     scrollView.autoresizingMask = UIViewAutoresizingNone;
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.delegate = self;
@@ -116,19 +108,6 @@
 
     
     
-    // == Search (out of normal controller array)
-    
-    
-    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-    self.seachViewNavigationViewController = [self wrapInNavigationController:self.searchViewController];
-    
-    
-    // == Channels User (out of normal controller array)
-    
-    self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId: kUserChanneslViewId];
-    self.channelsUserNavigationViewController = [self wrapInNavigationController:self.channelsUserViewController];
-    
-    
     self.shouldAnimateViewTransitions = YES;
     
     
@@ -141,18 +120,18 @@
     
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
     self.scrollView.frame = scrollerFrame;
-    UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
+    UINavigationController* feedNavController = [SYNObjectFactory wrapInNavigationController:feedRootViewController];
     feedNavController.view.frame = CGRectMake (0.0f, 0.0f, 1024.0f, 748.0f);
     [self addChildViewController:feedNavController];
     
-    [self addChildViewController:[self wrapInNavigationController:channelsRootViewController]];
+    [self addChildViewController:[SYNObjectFactory wrapInNavigationController:channelsRootViewController]];
     
-    [self addChildViewController:[self wrapInNavigationController:myRockpackViewController]];
+    [self addChildViewController:[SYNObjectFactory wrapInNavigationController:myRockpackViewController]];
     
     
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
-    self.selectedViewController = self.childViewControllers[0];
+    self.selectedNavigationController = self.childViewControllers[0];
     
     
     
@@ -168,36 +147,6 @@
     [self packViewControllersForInterfaceOrientation:[[SYNDeviceManager sharedInstance] orientation]];
     
     
-}
-
-#pragma mark - Rotation Callbacks
-
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
-    if(self.replacementNavigationController)
-    {
-        [self.replacementNavigationController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }
-}
-
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    if(self.replacementNavigationController)
-    {
-        [self.replacementNavigationController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    }
-}
-
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if(self.replacementNavigationController)
-    {
-        [self.replacementNavigationController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }
 }
 
 #pragma mark - Placement of Views
@@ -218,29 +167,18 @@
     {
         controller.view.frame = newFrame;
         
-        if ([controller isKindOfClass:[UINavigationController class]] )
-        {
-            UINavigationController* navController = (UINavigationController*)controller;
-            navController.topViewController.view.frame = controller.view.bounds;
-        }
-        
-        
-        if(controller == self.replacedNavigationController)
-        {
-            self.replacementNavigationController.view.frame = newFrame;
-        }
+        UINavigationController* navController = (UINavigationController*)controller;
+        navController.topViewController.view.frame = controller.view.bounds;
         
         newFrame.origin.x += newFrame.size.width;
     }
     
     // pack replacement
     
-    
-    
     self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
     self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
     [self.scrollView setContentOffset:self.currentPageOffset];
-    self.currentPage = self.page;
+    
     scrollingDirection = ScrollingDirectionNone;
 }
 
@@ -264,29 +202,26 @@
 -(void)backButtonHide:(NSNotification*)notification
 {
     
-    
+    self.scrollView.scrollEnabled = YES;
 }
 
 
 
--(void)addVideosToExistingChannel
+
+#pragma mark - Navigation Methods
+
+- (void) popCurrentViewController: (id) sender
 {
     
+    
+    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)self.selectedNavigationController.topViewController;
+    
+    [abstractVC animatedPopViewController];
+    
+    self.scrollView.scrollEnabled = YES;
+    
+    
 }
-
-
-
-
-
-
-- (IBAction) recordAction: (UIButton*) button
-{
-    button.selected = !button.selected;
-}
-
-
-
-#pragma mark - Navigate To Views
 
 -(void) navigateToPageByName:(NSString*)pageName
 {
@@ -294,158 +229,11 @@
     for (UINavigationController* nvc in self.childViewControllers)
     {
         if([pageName isEqualToString:nvc.title]) {
-            [self setPage:page];
+            self.scrollView.page = page;
             break;
         }
         page++;
     }
-}
-
-
-#pragma mark - Show Special Views
-
-- (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
-{
-
-    [self replaceShowingNavigationController:self.seachViewNavigationViewController];
-    
-    
-    [self.searchViewController showSearchResultsForTerm: searchTerm];
-    
-    
-    
-}
-
-- (void) showUserChannel: (NSNotification*) notification
-{
-    NSDictionary* userInfo = [notification userInfo];
-    
-    ChannelOwner* channelOwner = (ChannelOwner*)[userInfo objectForKey: @"ChannelOwner"];
-    
-    if (!channelOwner)
-        return;
-    
-    self.selectedViewController = self.channelsUserNavigationViewController;
-        
-    
-    
-    [self.channelsUserViewController fetchUserChannels: channelOwner];
-}
-
-
-#pragma mark - Navigation View Controllers
-
-- (void) popCurrentViewController: (id) sender
-{
-    
-    // two functions for pop.
-    
-    if(self.replacementNavigationController && self.replacementNavigationController.viewControllers.count == 1)
-    {
-        
-        
-        
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide
-                                                            object:self];
-        
-        
-        
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseIn
-                         animations: ^{
-                             self.replacementNavigationController.view.alpha = 0.0;
-                             
-                         }
-                         completion: ^(BOOL finished) {
-                             //self.selectedViewController = self.seachViewNavigationViewController;
-                             
-                             [UIView animateWithDuration: 0.7f
-                                                   delay: 0.2f
-                                                 options: UIViewAnimationOptionCurveEaseOut
-                                              animations: ^{
-                                                  self.replacedNavigationController.view.alpha = 1.0;
-                                              }
-                                              completion: ^(BOOL finished) {
-                                                  
-                                                  [self.replacementNavigationController.view removeFromSuperview];
-                                                  
-                                                  self.replacementNavigationController = nil;
-                                                  
-                                              }];
-                             
-                         }];
-        
-    }
-    else if(self.replacementNavigationController)
-    {
-        UINavigationController *repNavVC = (UINavigationController *)self.selectedViewController;
-        
-        SYNAbstractViewController *repAbstractVC = (SYNAbstractViewController *)repNavVC.topViewController;
-        
-        [repAbstractVC animatedPopViewController];
-    }
-    else
-    {
-        
-        UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
-        
-        SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
-        
-        [abstractVC animatedPopViewController];
-        
-    }
-    
-    
-    
-    self.scrollView.scrollEnabled = YES;
-    
-}
-
-
-
-
-- (void) replaceShowingNavigationController:(UINavigationController*)navigationController
-{
-    UINavigationController* showingNavController = [self showingViewController].navigationController;
-    
-    self.replacedNavigationController = showingNavController;
-    
-    self.replacementNavigationController = navigationController;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
-    
-    CGRect vcFrame = navigationController.view.frame;
-    vcFrame.origin.x = showingNavController.view.frame.origin.x;
-    navigationController.view.frame = vcFrame;
-    
-    
-    navigationController.view.alpha = 0.0;
-    
-    [self.scrollView addSubview:navigationController.view];
-    
-    self.scrollView.scrollEnabled = NO;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseIn
-                     animations: ^{
-                         showingNavController.view.alpha = 0.0;
-                     }
-                     completion: ^(BOOL finished) {
-                         
-                         
-                         //self.selectedViewController = self.seachViewNavigationViewController;
-                         
-                         [UIView animateWithDuration: 0.7f
-                                               delay: 0.2f
-                                             options: UIViewAnimationOptionCurveEaseOut
-                                          animations: ^{
-                                              navigationController.view.alpha = 1.0;
-                                          }
-                                          completion: nil];
-                     }];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -470,11 +258,11 @@
     CGFloat pageDiff = pageInProgress - self.currentPage;
     if(fabsf(pageDiff) > 1.0f)
     {
-        self.currentPage = [self page];
+        
         CGPoint newOffset = self.scrollView.contentOffset;
         newOffset.x = currentPage * width;
         self.currentPageOffset = newOffset;
-        self.selectedViewController = self.childViewControllers[self.currentPage];
+        self.selectedNavigationController = self.childViewControllers[self.scrollView.page];
         [self.showingViewController viewCameToScrollFront];
     }
     
@@ -482,6 +270,7 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+    // catch programmatic animations
     [self scrollViewDidEndDecelerating:scrollView];
 }
 
@@ -490,21 +279,19 @@
     
     scrollingDirection = ScrollingDirectionNone;
     
-    self.selectedViewController = self.childViewControllers[self.page];
+    self.selectedNavigationController = self.childViewControllers[self.scrollView.page];
     
     self.currentPageOffset = self.scrollView.contentOffset;
-    self.currentPage = self.page;
     
     [self.showingViewController viewCameToScrollFront];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    
-}
+#pragma mark - Rotation Callbacks
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
     
 }
 
@@ -512,60 +299,36 @@
 
 -(SYNAbstractViewController*)showingViewController
 {
-    SYNAbstractViewController* controllerOnView;
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        controllerOnView = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
-    }
-    else
-    {
-        controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
-    }
-    return controllerOnView;
+    return (SYNAbstractViewController*)((UINavigationController*)self.selectedNavigationController).visibleViewController;
 }
 -(SYNAbstractViewController*)nextShowingViewController
 {
     UINavigationController* navigationController;
-    SYNAbstractViewController* controllerOnView;
     if(self.scrollingDirection == ScrollingDirectionRight && (self.currentPage+1) < self.childViewControllers.count) {
         navigationController = self.childViewControllers[(self.currentPage+1)];
     } else if(self.scrollingDirection == ScrollingDirectionLeft && (self.currentPage-1) >= 0) {
         navigationController = self.childViewControllers[(self.currentPage-1)];
     }
-    controllerOnView = (SYNAbstractViewController*)(navigationController.visibleViewController);
-    return controllerOnView;
+    return (SYNAbstractViewController*)(navigationController.visibleViewController);
 }
--(void)setPage:(NSInteger)page
+
+
+
+
+
+-(void)setSelectedNavigationController:(UINavigationController *)selectedVC
 {
-    if(!self.scrollView.scrollEnabled)
-        return;
+    selectedNavigationController = selectedVC;
     
-    CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
-    [self.scrollView setContentOffset:newPoint animated:YES];
-    
+    // == notify the page change for the MasterViewController to catch it == //
+    [[NSNotificationCenter defaultCenter] postNotificationName:kScrollerPageChanged
+                                                        object:self
+                                                      userInfo:@{kCurrentPage:@(self.scrollView.page)}];
 }
 
-
-
--(NSInteger)page
+-(SYNContainerScrollView*)scrollView
 {
-    CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
-    int pageWidth = (int)self.scrollView.contentSize.width / self.childViewControllers.count;
-    NSInteger page = roundf((currentScrollerOffset / pageWidth)); // 0 indexed
-    return page;
-    
-}
-
--(void)setSelectedViewController:(UIViewController *)selectedVC
-{
-    selectedViewController = selectedVC;
-    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{kCurrentPage:@(self.page)}];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
-}
-
--(UIScrollView*)scrollView
-{
-    return (UIScrollView*)self.view;
+    return (SYNContainerScrollView*)self.view;
 }
 
 - (NSString*) description
@@ -574,19 +337,11 @@
 }
 
 
-#pragma mark - Helper Methods
-
--(UINavigationController*)wrapInNavigationController:(SYNAbstractViewController*)abstractViewController
+-(NSInteger)currentPage
 {
-    
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:abstractViewController];
-    navigationController.title = abstractViewController.title;
-    navigationController.view.frame = abstractViewController.view.frame;
-    navigationController.navigationBarHidden = YES;
-    navigationController.view.autoresizesSubviews = YES;
-    navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    return navigationController;
+    return self.scrollView.page;
 }
+
 
 
 @end
