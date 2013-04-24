@@ -31,14 +31,14 @@
     [super viewDidLoad];
     
     
-    
     self.trackedViewName = @"Search - Videos";
     
     // override the data loading
     
     CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
     collectionFrame.origin.y += 60.0;
-    collectionFrame.size.height -= 90.0;
+    collectionFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth];
+    collectionFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 190.0;
     self.videoThumbnailCollectionView.frame = collectionFrame;
     
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
@@ -86,8 +86,6 @@
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     [appDelegate.networkEngine searchVideosForTerm:term];
-    
-    
     
     
 }
@@ -152,8 +150,7 @@
         else
             [format appendString:@"Today"];
         
-        
-        
+
         videoThumbnailCell.dateAddedLabel.text = [format uppercaseString];
         
         NSUInteger minutes = ([video.duration integerValue] / 60) % 60;
@@ -173,15 +170,14 @@
 #pragma mark - Override Header Related Methods
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
-                   layout: (UICollectionViewLayout*) collectionViewLayout
-referenceSizeForHeaderInSection: (NSInteger) section
+                   layout: (UICollectionViewLayout*) collectionViewLayout referenceSizeForHeaderInSection: (NSInteger) section
 {
     return CGSizeZero;
 }
 
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     if([[SYNDeviceManager sharedInstance] isLandscape])
     {
         return CGSizeMake(497, 170);
@@ -196,8 +192,7 @@ referenceSizeForHeaderInSection: (NSInteger) section
 // Used for the collection view header
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
-                                  atIndexPath: (NSIndexPath *) indexPath
-{
+                                  atIndexPath: (NSIndexPath *) indexPath {
     return nil;
     
 }

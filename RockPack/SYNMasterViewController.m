@@ -1025,6 +1025,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              self.containerView.alpha = 0.0;
                          }
                          completion: ^(BOOL finished) {
+                             self.containerView.hidden = YES;
                              _overlayNavigationController = overlayNavigationController;
                              [self addChildViewController:_overlayNavigationController];
                              [UIView animateWithDuration: 0.7f
@@ -1038,6 +1039,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseIn
@@ -1048,6 +1050,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              [_overlayNavigationController.view removeFromSuperview];
                              [_overlayNavigationController removeFromParentViewController];
                              _overlayNavigationController = nil;
+                             self.containerView.hidden = NO;
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f
                                                  options: UIViewAnimationOptionCurveEaseOut
