@@ -26,7 +26,6 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNObjectFactory.h"
 
 #import "SYNSearchRootViewController.h"
@@ -380,10 +379,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-    SYNChannelsDetailsCreationViewController *channelCreationVC =
-    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
-    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
-    [showingController animatedPushViewController: channelCreationVC];
+//    SYNChannelsDetailsCreationViewController *channelCreationVC =
+//    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
+//    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
+//    [showingController animatedPushViewController: channelCreationVC];
 }
 
 

@@ -14,7 +14,6 @@
 #import "SYNContainerViewController.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNChannelsUserViewController.h"
-#import "SYNFriendsRootViewController.h"
 #import "SYNFeedRootViewController.h"
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
