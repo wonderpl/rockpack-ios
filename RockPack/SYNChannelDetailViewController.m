@@ -239,6 +239,8 @@
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
     
+    [self.channel removeObserver:self
+                      forKeyPath:@"subscribedByUser"];
     
     // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self
