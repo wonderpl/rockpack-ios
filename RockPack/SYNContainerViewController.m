@@ -74,7 +74,7 @@
 @synthesize currentPage;
 
 @dynamic showingViewController;
-@dynamic page;
+
 @dynamic scrollView;
 
 // Initialise all the elements common to all 4 tabs
@@ -85,7 +85,7 @@
 -(void)loadView
 {
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
-    UIScrollView* scrollView = [[UIScrollView alloc] initWithFrame:scrollerFrame];
+    SYNContainerScrollView* scrollView = [[SYNContainerScrollView alloc] initWithFrame:scrollerFrame];
     scrollView.autoresizingMask = UIViewAutoresizingNone;
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.delegate = self;
@@ -241,7 +241,7 @@
     self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
     self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
     [self.scrollView setContentOffset:self.currentPageOffset];
-    self.currentPage = self.page;
+    self.currentPage = self.scrollView.page;
     scrollingDirection = ScrollingDirectionNone;
 }
 
@@ -295,7 +295,7 @@
     for (UINavigationController* nvc in self.childViewControllers)
     {
         if([pageName isEqualToString:nvc.title]) {
-            [self setPage:page];
+            self.scrollView.page = page;
             break;
         }
         page++;
@@ -471,7 +471,7 @@
     CGFloat pageDiff = pageInProgress - self.currentPage;
     if(fabsf(pageDiff) > 1.0f)
     {
-        self.currentPage = [self page];
+        self.currentPage = self.scrollView.page;
         CGPoint newOffset = self.scrollView.contentOffset;
         newOffset.x = currentPage * width;
         self.currentPageOffset = newOffset;
@@ -491,10 +491,10 @@
     
     scrollingDirection = ScrollingDirectionNone;
     
-    self.selectedViewController = self.childViewControllers[self.page];
+    self.selectedViewController = self.childViewControllers[self.scrollView.page];
     
     self.currentPageOffset = self.scrollView.contentOffset;
-    self.currentPage = self.page;
+    self.currentPage = self.scrollView.page;
     
     [self.showingViewController viewCameToScrollFront];
 }
@@ -536,37 +536,23 @@
     controllerOnView = (SYNAbstractViewController*)(navigationController.visibleViewController);
     return controllerOnView;
 }
--(void)setPage:(NSInteger)page
-{
-    if(!self.scrollView.scrollEnabled)
-        return;
-    
-    CGPoint newPoint = CGPointMake(page * [[SYNDeviceManager sharedInstance] currentScreenWidth], 0.0);
-    [self.scrollView setContentOffset:newPoint animated:YES];
-    
-}
 
 
 
--(NSInteger)page
-{
-    CGFloat currentScrollerOffset = self.scrollView.contentOffset.x;
-    int pageWidth = (int)self.scrollView.contentSize.width / self.childViewControllers.count;
-    NSInteger page = roundf((currentScrollerOffset / pageWidth)); // 0 indexed
-    return page;
-    
-}
+
 
 -(void)setSelectedViewController:(UIViewController *)selectedVC
 {
     selectedViewController = selectedVC;
-    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged object:self userInfo:@{kCurrentPage:@(self.page)}];
+    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged
+                                                                 object:self
+                                                               userInfo:@{kCurrentPage:@(self.scrollView.page)}];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
--(UIScrollView*)scrollView
+-(SYNContainerScrollView*)scrollView
 {
-    return (UIScrollView*)self.view;
+    return (SYNContainerScrollView*)self.view;
 }
 
 - (NSString*) description

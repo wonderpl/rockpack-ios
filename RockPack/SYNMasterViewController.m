@@ -228,7 +228,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [dotImageView addGestureRecognizer:tapGestureRecogniser];
      }
     
-    [self pageChanged:self.containerViewController.page];
+    [self pageChanged:self.containerViewController.scrollView.page];
     
     
     // == Set Up Notifications == //

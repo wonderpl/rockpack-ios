@@ -617,6 +617,7 @@
 		BEE4A6C2170B5640008F9D05 /* SYNAccountSettingsEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C1170B563E008F9D05 /* SYNAccountSettingsEmail.m */; };
 		BEE4A6C5170B56B5008F9D05 /* SYNAccountSettingsUsername.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4A6C4170B56B4008F9D05 /* SYNAccountSettingsUsername.m */; };
 		BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE732B61727D81A0083E1B9 /* SYNObjectFactory.m */; };
+		BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE732B91727D99E0083E1B9 /* SYNContainerScrollView.m */; };
 		BEEB6F1C1721713500FEFA43 /* PanelMenuBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F1A1721713500FEFA43 /* PanelMenuBottom.png */; };
 		BEEB6F1D1721713500FEFA43 /* PanelMenuBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F1B1721713500FEFA43 /* PanelMenuBottom@2x.png */; };
 		BEEB6F201721807200FEFA43 /* SYNSearchTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEB6F1F1721807100FEFA43 /* SYNSearchTabView.m */; };
@@ -1391,6 +1392,8 @@
 		BEE4A6C4170B56B4008F9D05 /* SYNAccountSettingsUsername.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsUsername.m; sourceTree = "<group>"; };
 		BEE732B51727D81A0083E1B9 /* SYNObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNObjectFactory.h; sourceTree = "<group>"; };
 		BEE732B61727D81A0083E1B9 /* SYNObjectFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNObjectFactory.m; sourceTree = "<group>"; };
+		BEE732B81727D99E0083E1B9 /* SYNContainerScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNContainerScrollView.h; sourceTree = "<group>"; };
+		BEE732B91727D99E0083E1B9 /* SYNContainerScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNContainerScrollView.m; sourceTree = "<group>"; };
 		BEEB6F1A1721713500FEFA43 /* PanelMenuBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelMenuBottom.png; path = Assets/Images/PanelMenuBottom.png; sourceTree = "<group>"; };
 		BEEB6F1B1721713500FEFA43 /* PanelMenuBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelMenuBottom@2x.png"; path = "Assets/Images/PanelMenuBottom@2x.png"; sourceTree = "<group>"; };
 		BEEB6F1E1721807100FEFA43 /* SYNSearchTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchTabView.h; sourceTree = "<group>"; };
@@ -2134,6 +2137,8 @@
 			children = (
 				0198250A1629DCF100216900 /* SYNContainerViewController.h */,
 				0198250B1629DCF100216900 /* SYNContainerViewController.m */,
+				BEE732B81727D99E0083E1B9 /* SYNContainerScrollView.h */,
+				BEE732B91727D99E0083E1B9 /* SYNContainerScrollView.m */,
 			);
 			name = "Container View Controller";
 			sourceTree = "<group>";
@@ -3821,6 +3826,7 @@
 				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
 				BE285DBC1726828F00D995AB /* SYNSubscriptionsManager.m in Sources */,
 				BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */,
+				BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
