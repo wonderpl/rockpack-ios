@@ -100,7 +100,7 @@
 					</object>
 					<object class="IBUIView" id="793593682">
 						<reference key="NSNextResponder" ref="453930770"/>
-						<int key="NSvFlags">-2147483356</int>
+						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUIImageView" id="624001696">
 								<reference key="NSNextResponder" ref="793593682"/>
