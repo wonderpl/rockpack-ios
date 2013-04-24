@@ -327,8 +327,9 @@
         
         passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
         passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - self.elementsOffsetY);
-        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsAndConditionsLabel.center.y - self.elementsOffsetY);
-        
+        CGFloat termsOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 714.0 : 370.0;
+        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsOffsetY);
+        termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, termsOffsetY);
         // consequitive fade in animations
         
         [UIView animateWithDuration:0.4 animations:^{
@@ -1378,7 +1379,8 @@
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
-        
+        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
+        termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);
         memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 56.0);
         areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     }
@@ -1387,6 +1389,8 @@
         signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
+        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
+        termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 58.0);
         
     }
