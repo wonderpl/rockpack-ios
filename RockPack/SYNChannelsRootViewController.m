@@ -169,7 +169,6 @@
                                                   } onError:^(NSDictionary* errorInfo) {
         
                                                   }];
-    
 }
 
 
@@ -178,9 +177,6 @@
     [super viewWillAppear: animated];
     
     self.touchedChannelButton = NO;
-    
-    
-    
 }
 
 

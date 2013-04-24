@@ -19,20 +19,21 @@
 
 @interface SYNChannelDetailViewController ()
 
-@property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
+@property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, strong) Channel *channel;
-@property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
-@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
-@property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
-@property (nonatomic, strong) IBOutlet UIView *displayControlsView;
+@property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
+@property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
+@property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
+@property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
+@property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
-@property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
-@property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
-@property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (strong, nonatomic) NSMutableArray *videoInstances;
 
 @end
 
@@ -45,11 +46,8 @@
     if ((self = [super init]))
     {
 		self.channel = channel;
-        
-        
 	}
-    
-    
+
 	return self;
 }
 
@@ -87,8 +85,6 @@
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
     
-    [self updateChannelDetails];
-    
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
     // Regster video thumbnail cell
@@ -115,6 +111,23 @@
 {
     [super viewWillAppear: animated];
     
+    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+    
+    // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
+    
+    // First, sort the array in 'position' order
+    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
+        NSNumber *first = [(VideoInstance *)a position];
+        NSNumber *second = [(VideoInstance *)b position];
+        return [first compare: second];
+    }];
+    
+    // Now add those videoinstances to our own mutable array
+    for (VideoInstance *videoInstance in sortedArray)
+    {
+        [self.videoInstances addObject: videoInstance];
+    }
+    
     // Look out for update notifications
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(reloadCollectionViews)
@@ -127,7 +140,6 @@
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
     
-    
     if([self.channel.subscribedByUser boolValue])
     {
         self.subscribeButton.selected = YES;
@@ -137,10 +149,10 @@
         self.subscribeButton.selected = NO;
     }
     
-    [self.channel addObserver:self
-                   forKeyPath:@"subscribedByUser"
-                      options:NSKeyValueObservingOptionNew
-                      context:nil];
+    [self.channel addObserver: self
+                   forKeyPath: @"subscribedByUser"
+                      options: NSKeyValueObservingOptionNew
+                      context :nil];
     
     // FIXME: Move out to subclass is there is a distinct display view, overridden by edit subclass
     [self setDisplayControlsVisibility: TRUE];
@@ -148,27 +160,85 @@
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
     
-    if ([self.channel.resourceURL hasPrefix: @"https"])
+    // Only do this is we have a resource URL (i.e. we haven't just created the channel)
+    
+    if (self.channel.resourceURL != nil && ![self.channel.resourceURL isEqualToString: @""])
     {
-        [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL];
-    }
-    else
-    {
-        [appDelegate.networkEngine updateChannel: self.channel.resourceURL];
+        if ([self.channel.resourceURL hasPrefix: @"https"])
+        {
+            [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL
+                                        completionHandler: ^(NSDictionary *responseDictionary) {
+                                            // Save the position for back-patching in later
+                                            NSNumber *savedPosition = self.channel.position;
+                                            
+                                            [self.channel setAttributesFromDictionary: responseDictionary
+                                                                               withId: self.channel.uniqueId
+                                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                                  ignoringObjectTypes: kIgnoreNothing
+                                                                            andViewId: kChannelDetailsViewId];
+                                            
+                                            // Back-patch a few things that may have been overwritten
+                                            self.channel.position = savedPosition;
+                                            self.channel.viewId = kChannelsViewId;
+                                            
+                                            self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+                                            
+                                            for (VideoInstance *videoInstance in self.channel.videoInstances)
+                                            {
+                                                [self.videoInstances addObject: videoInstance];
+                                            }
+                                            
+                                            [self reloadCollectionViews];
+                                        }
+                                             errorHandler: ^(NSDictionary* errorDictionary) {
+                                                 DebugLog(@"Update action failed");
+                                             }];
+
+        }
+        else
+        {
+            [appDelegate.networkEngine updateChannel: self.channel.resourceURL
+                                   completionHandler: ^(NSDictionary *responseDictionary) {
+                                       // Save the position for back-patching in later
+                                       NSNumber *savedPosition = self.channel.position;
+                                       
+                                       [self.channel setAttributesFromDictionary: responseDictionary
+                                                                          withId: self.channel.uniqueId
+                                                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                             ignoringObjectTypes: kIgnoreNothing
+                                                                       andViewId: kChannelDetailsViewId];
+                                       
+                                       // Back-patch a few things that may have been overwritten
+                                       self.channel.position = savedPosition;
+                                       self.channel.viewId = kChannelsViewId;
+                                       
+                                       self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+                                       
+                                       for (VideoInstance *videoInstance in self.channel.videoInstances)
+                                       {
+                                           [self.videoInstances addObject: videoInstance];
+                                       }
+                                       
+                                       [self reloadCollectionViews];
+                                   }
+                                        errorHandler: ^(NSDictionary* errorDictionary) {
+                                            DebugLog(@"Update action failed");
+                                        }];
+
+        }
     }
     
-    
-    // If we have a valid ecommerce URL, then display the button
-    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
-    {
-        self.buyButton.hidden = FALSE;
-    }
+    [self updateChannelDetails];
 }
 
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    // Remove KVO observer
+    self.videoInstances = nil;
+    
+    [self.channel removeObserver: self
+                      forKeyPath: @"subscribedByUser"];
+    
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
     
@@ -187,11 +257,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
-    // If we have a valid ecommerce URL, then display the button
-    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
-    {
-        self.buyButton.hidden = FALSE;
-    }
+    [self updateChannelDetails];
 }
 
 
@@ -211,8 +277,62 @@
     
     NSString *detailsString = [NSString stringWithFormat: @"%d VIDEOS / %d SUBSCRIBERS", self.channel.videoInstancesSet.count, 0];
     self.channelDetailsLabel.text = detailsString;
+    
+    // If we have a valid ecommerce URL, then display the button
+    if (self.channel.eCommerceURL != nil && ![self.channel.eCommerceURL isEqualToString: @""])
+    {
+        self.buyButton.hidden = FALSE;
+    }
+    
+    self.channelTitleTextView.text = self.channel.title;
 }
 
+
+#pragma mark - Collection view support
+
+- (NSInteger) collectionView: (UICollectionView *) collectionView
+      numberOfItemsInSection: (NSInteger) section
+{
+    switch (section)
+    {
+        case 0:
+        {
+            return self.videoInstances.count;
+        }
+        break;
+            
+        default:
+        {
+            AssertOrLog(@"Shouldn't have more than one section");
+            return 0;
+        }
+        break;
+    }
+}
+
+
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
+{
+    return 1;
+}
+
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionViewCell *cell = nil;
+    
+    SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
+                                                                                                 forIndexPath: indexPath];
+    
+    VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+    videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
+    videoThumbnailCell.titleLabel.text = videoInstance.title;
+    
+    cell = videoThumbnailCell;
+    
+    return cell;
+}
 
 #pragma mark - Fetched results controller
 
@@ -247,40 +367,6 @@
 }
 
 
-#pragma mark - Collection view support
-
-- (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section
-{
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    DebugLog (@"Objects %d", sectionInfo.numberOfObjects);
-    return sectionInfo.numberOfObjects;
-}
-
-
-- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
-{
-    return 1;
-}
-
-
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    UICollectionViewCell *cell = nil;
-    
-    SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
-                                                                                                 forIndexPath: indexPath];
-    
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
-    videoThumbnailCell.titleLabel.text = videoInstance.title;
-    
-    cell = videoThumbnailCell;
-    
-    return cell;
-}
-
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -290,12 +376,26 @@
 }
 
 
+#pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
+
 - (void) collectionView: (UICollectionView *) collectionView
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *)toIndexPath
+    willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    [appDelegate saveContext:YES];
+    id fromItem = [self.videoInstances objectAtIndex: fromIndexPath.item];
+    
+    [self.videoInstances removeObjectAtIndex: fromIndexPath.item];
+    
+    [self.videoInstances insertObject: fromItem
+                              atIndex: toIndexPath.item];
+    
+    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
+    // Do this with block enumeration for speed
+    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        [(VideoInstance *)obj setPositionValue : index];
+    } ];
 }
+
 
 - (void) setDisplayControlsVisibility: (BOOL) visible
 {
@@ -334,7 +434,8 @@
                      completion: nil];
 }
 
-#pragma mark - KVO control fading
+
+#pragma mark - KVO support
 
 // We face out all controls/information views when the user starts scrolling the videos collection view
 // but monitoring the collectionview content offset using KVO
@@ -343,7 +444,7 @@
                          change: (NSDictionary *) change
                         context: (void *) context
 {
-    if ([keyPath isEqualToString: @"contentOffset"])
+    if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
         CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
 
@@ -408,7 +509,7 @@
 }
 
 
--(IBAction)subscribeButtonTapped:(id)sender
+- (IBAction) subscribeButtonTapped: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
                                                         object: self

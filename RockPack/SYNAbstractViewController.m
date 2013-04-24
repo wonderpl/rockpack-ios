@@ -213,6 +213,7 @@
                                              andIndexPath: selectedIndexPath];
 }
 
+
 - (void) displayCategoryChooser
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
@@ -226,6 +227,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
     return 0;
 }
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     

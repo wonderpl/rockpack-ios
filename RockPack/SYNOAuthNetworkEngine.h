@@ -156,8 +156,10 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
        completionHandler: (MKNKBasicSuccessBlock) successBlock
             errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) updateChannel: (NSString *) resourceURL;
+//- (void) updateChannel: (NSString *) resourceURL;
 
-
+- (void) updateChannel: (NSString *) resourceURL
+     completionHandler: (MKNKUserSuccessBlock) completionBlock
+          errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 @end
