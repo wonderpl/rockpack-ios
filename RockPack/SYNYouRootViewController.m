@@ -76,7 +76,7 @@
     }
 
     // Main Collection View
-    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0];
+    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0)];
     
 
     self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0)];
@@ -266,8 +266,11 @@
     [super viewWillDisappear:animated];
     
     
-    [self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
-    [self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
+        [self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
+    }
 }
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation

@@ -4243,6 +4243,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Develop-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
@@ -4256,6 +4257,7 @@
 				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4273,6 +4275,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Release-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
@@ -4284,6 +4287,7 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = rockpack;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -4328,6 +4332,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
 				INFOPLIST_FILE = "RockPack/rockpack-Release-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/RockPack\"",
@@ -4341,6 +4346,7 @@
 				PRODUCT_NAME = rockpack;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = AdHoc;
