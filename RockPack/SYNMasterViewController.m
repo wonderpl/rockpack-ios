@@ -26,7 +26,6 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNObjectFactory.h"
 
 #import "SYNSearchRootViewController.h"
@@ -256,7 +255,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteAddedToChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
@@ -362,13 +361,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
--(void)addToChannelAction:(NSNotification*)notification
+-(void)addedToChannelAction:(NSNotification*)notification
 {
     Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!channel)
         return;
     
-    DebugLog(@"Goint to add Channel with %d video instances", channel.videoInstances.count);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kClearAllAddedCells object:self];
+    
     
     // TODO : Show confirm message
     
@@ -381,10 +381,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-    SYNChannelsDetailsCreationViewController *channelCreationVC =
-    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
-    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
-    [showingController animatedPushViewController: channelCreationVC];
+//    SYNChannelsDetailsCreationViewController *channelCreationVC =
+//    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
+//    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
+//    [showingController animatedPushViewController: channelCreationVC];
 }
 
 
@@ -967,6 +967,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              self.containerView.alpha = 0.0;
                          }
                          completion: ^(BOOL finished) {
+                             self.containerView.hidden = YES;
                              _overlayNavigationController = overlayNavigationController;
                              [self addChildViewController:_overlayNavigationController];
                              [UIView animateWithDuration: 0.7f
@@ -980,6 +981,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseIn
@@ -990,6 +992,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              [_overlayNavigationController.view removeFromSuperview];
                              [_overlayNavigationController removeFromParentViewController];
                              _overlayNavigationController = nil;
+                             self.containerView.hidden = NO;
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f
                                                  options: UIViewAnimationOptionCurveEaseOut

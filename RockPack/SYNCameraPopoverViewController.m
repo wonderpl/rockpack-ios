@@ -7,7 +7,7 @@
 //
 
 #import "SYNCameraPopoverViewController.h"
-#import "OLDSYNAbstractChannelsDetailViewController.h"
+//#import "OLDSYNAbstractChannelsDetailViewController.h"
 
 @interface SYNCameraPopoverViewController ()
 
@@ -17,12 +17,12 @@
 
 - (IBAction) userTouchedTakePhotoButton: (id) sender
 {
-    [self.delegate userTouchedTakePhotoButton];
+//    [self.delegate userTouchedTakePhotoButton];
 }
 
 - (IBAction) userTouchedChooseExistingPhotoButton: (id) sender
 {
-    [self.delegate userTouchedChooseExistingPhotoButton];
+//    [self.delegate userTouchedChooseExistingPhotoButton];
 }
 
 

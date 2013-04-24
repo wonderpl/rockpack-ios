@@ -12,6 +12,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNVideoThumbnailWideCell ()
@@ -49,8 +50,17 @@
     self.highlightedBackgroundView.hidden = TRUE;
     
     self.displayMode = kDisplayModeChannel; // default is channel
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deselectCell:)
+                                                 name:kClearAllAddedCells
+                                               object:nil];
 }
 
+-(void)deselectCell:(NSNotification*)notification
+{
+    self.addItButton.selected = NO;
+}
 
 #pragma mark - Switch Between Modes
 

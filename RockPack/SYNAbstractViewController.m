@@ -17,7 +17,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
@@ -173,16 +172,28 @@
 
 - (void) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
-   
-    [addItButton setSelected:YES];
+    NSString* noteName;
+    if(!addItButton.selected)
+    {
+        noteName = kVideoQueueAdd;
+        
+    }
+    else
+    {
+        noteName = kVideoQueueRemove;
+    }
+    
+    
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+    [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
                                                       userInfo: @{@"VideoInstance" : videoInstance}];
+    
+    addItButton.selected = !addItButton.selected;
 }
 
 

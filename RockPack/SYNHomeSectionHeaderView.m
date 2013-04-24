@@ -24,7 +24,7 @@
 {
     [super awakeFromNib];
     
-    self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 18.0f];
+    self.sectionTitleLabel.font = [UIFont rockpackFontOfSize: 20.0f];
     self.highlightedSectionView.hidden = TRUE;
     self.sectionView.hidden = FALSE;
 }

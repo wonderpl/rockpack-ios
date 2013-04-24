@@ -214,15 +214,15 @@
 {
     
     // controls to hide initially
-    
+
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
                                 registerNewUserButton, dividerImageView, faceImageButton, sendEmailButton,
                                 wellSendYouLabel, termsAndConditionsLabelSide];
     
-    for (UIView* control in controlsToHide)
-    {
+    for (UIView* control in controlsToHide) {
+       
         control.alpha = 0.0;
     }
     

@@ -7,7 +7,6 @@
 //
 
 #import "Channel.h"
-#import "SYNChannelHeaderView.h"
 #import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNTextField.h"
 #import "UIImageView+ImageProcessing.h"
@@ -59,9 +58,9 @@
 {
     [super viewWillAppear: animated];
     
-    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
-    self.collectionHeaderView.channelDescriptionTextView.text = @"Describe your channel...";
-    self.collectionHeaderView.cfollowButton.hidden = YES;
+//    self.collectionHeaderView.channelDescriptionHightlightView.hidden = FALSE;
+//    self.collectionHeaderView.channelDescriptionTextView.text = @"Describe your channel...";
+//    self.collectionHeaderView.cfollowButton.hidden = YES;
     
 }
 

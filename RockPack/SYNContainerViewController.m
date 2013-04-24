@@ -14,7 +14,6 @@
 #import "SYNContainerViewController.h"
 #import "SYNChannelsRootViewController.h"
 #import "SYNChannelsUserViewController.h"
-#import "SYNFriendsRootViewController.h"
 #import "SYNFeedRootViewController.h"
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -137,7 +136,7 @@
     
     // == Register Notifications == //
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannels:) name:kShowUserChannels object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
 }

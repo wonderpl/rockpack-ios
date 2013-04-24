@@ -180,10 +180,7 @@
         
     } completion:^(BOOL finished) {
         
-        
         [self.view removeFromSuperview];
-        
-        
         
         Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
         [self.selectedChannel addVideoInstancesFromChannel:currentlyCreating];
@@ -191,7 +188,7 @@
         
         [self removeFromParentViewController];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannel
+        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddedToChannel
                                                             object: self
                                                           userInfo: @{kChannel:self.selectedChannel}];
     }];
