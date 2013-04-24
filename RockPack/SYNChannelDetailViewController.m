@@ -319,6 +319,8 @@
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
+    videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
+                                                    kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     
     VideoInstance *videoInstance = self.videoInstances [indexPath.row];
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
@@ -363,14 +365,16 @@
     return fetchedResultsController;
 }
 
+#pragma mark - Helper methods
 
-
-//- (void) collectionView: (UICollectionView *) collectionView
-//         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//        // Display the video viewer
-//        [self displayVideoViewerWithSelectedIndexPath: indexPath];
-//}
+- (void) reorderVideoInstances
+{
+    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
+    // Do this with block enumeration for speed
+    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        [(VideoInstance *)obj setPositionValue : index];
+    } ];
+}
 
 
 #pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
@@ -379,18 +383,19 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    id fromItem = [self.videoInstances objectAtIndex: fromIndexPath.item];
+//    id fromItem = [self.videoInstances objectAtIndex: fromIndexPath.item];
+//    
+//    [self.videoInstances removeObjectAtIndex: fromIndexPath.item];
+//    
+//    [self.videoInstances insertObject: fromItem
+//                              atIndex: toIndexPath.item];
     
-    [self.videoInstances removeObjectAtIndex: fromIndexPath.item];
-    
-    [self.videoInstances insertObject: fromItem
-                              atIndex: toIndexPath.item];
+    [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
+                             withObjectAtIndex: toIndexPath.item];
     
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
-    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
-        [(VideoInstance *)obj setPositionValue : index];
-    } ];
+    [self reorderVideoInstances];
 }
 
 
@@ -467,7 +472,7 @@
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
         BOOL finalValue = [newSubscribedByUserValue boolValue];
-        if(finalValue)
+        if (finalValue)
         {
             self.subscribeButton.selected = YES;
         }
@@ -521,5 +526,40 @@
                                                       userInfo: @{ kChannel : self.channel }];
 }
 
+
+- (void) videoAddButtonTapped: (UIButton *) addButton
+{
+    NSString* noteName;
+    
+    if (!addButton.selected)
+    {
+        noteName = kVideoQueueAdd;
+        
+    }
+    else
+    {
+        noteName = kVideoQueueRemove;
+    }
+    
+    UIView *v = addButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: noteName
+                                                        object: self
+                                                      userInfo: @{@"VideoInstance" : videoInstance}];
+    
+    addButton.selected = !addButton.selected;
+}
+
+
+- (void) videoDeleteButtonTapped: (UIButton *) addButton
+{
+    UIView *v = addButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    [self.videoInstances removeObjectAtIndex: indexPath.row];
+    
+    [self reloadCollectionViews];
+}
 
 @end

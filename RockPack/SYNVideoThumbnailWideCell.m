@@ -113,17 +113,17 @@
                forControlEvents: UIControlEventTouchUpInside];
     
     [self.addItButton addTarget: self.viewControllerDelegate
-                         action: @selector(userTouchedVideoAddItButton:)
+                         action: @selector(videoAddButtonTapped:)
                forControlEvents: UIControlEventTouchUpInside];
     
     // User touches channel thumbnail
     [self.channelButton addTarget: self.viewControllerDelegate
-                           action: @selector(userTouchedChannelButton:)
+                           action: @selector(channelButtonTapped:)
                  forControlEvents: UIControlEventTouchUpInside];
     
     // User touches user details
     [self.profileButton addTarget: self.viewControllerDelegate
-                           action: @selector(userTouchedProfileButton:)
+                           action: @selector(profileButtonTapped:)
                  forControlEvents: UIControlEventTouchUpInside];
 }
 

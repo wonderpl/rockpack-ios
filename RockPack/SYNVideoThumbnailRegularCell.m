@@ -75,8 +75,12 @@
                forControlEvents: UIControlEventTouchUpInside];
     
     [self.addButton addTarget: self.viewControllerDelegate
-                         action: @selector(userTouchedVideoAddItButton:)
+                         action: @selector(videoAddButtonTapped:)
                forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.deleteButton addTarget: self.viewControllerDelegate
+                          action: @selector(videoDeleteButtonTapped:)
+                forControlEvents: UIControlEventTouchUpInside];
 }
 
 

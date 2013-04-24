@@ -38,7 +38,7 @@
 
 - (id) initWithViewId: (NSString *) vid
 {
-    if(self = [super initWithViewId: vid])
+    if ((self = [super initWithViewId: vid]))
     {
         self.title = kFeedTitle;
     }
@@ -58,7 +58,8 @@
     
     CGRect videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
     
-    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
+                                                           collectionViewLayout: standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
@@ -110,21 +111,27 @@
     [self refreshVideoThumbnails];
 }
 
--(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+
+- (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                 duration: (NSTimeInterval) duration
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super willRotateToInterfaceOrientation: toInterfaceOrientation
+                                   duration: duration];
     [self reloadCollectionViews];
 }
+
 
 - (void) reloadCollectionViews
 {
     [self.videoThumbnailCollectionView reloadData];
 }
 
+
 - (BOOL) hasVideoQueue
 {
     return TRUE;
 }
+
 
 - (void) refreshVideoThumbnails
 {
@@ -192,7 +199,8 @@
 }
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView
-      numberOfItemsInSection: (NSInteger) section {
+      numberOfItemsInSection: (NSInteger) section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
     return sectionInfo.numberOfObjects;
     
@@ -214,8 +222,8 @@
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath {
-    
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
     UICollectionViewCell *cell = nil;
     
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
@@ -237,7 +245,6 @@
     
     return cell;
 }
-
 
 
 - (CGSize) collectionView: (UICollectionView *) collectionView
@@ -288,9 +295,6 @@
             
             // We need to store this away, so can control animations (but must nil when goes out of scope)
             self.supplementaryViewWithRefreshButton = headerSupplementaryView;
-            
-            
-            
         }
         
         // Unavoidably long if-then-else
@@ -355,16 +359,14 @@
     }
 }
 
--(BOOL)needsAddButton
+
+- (BOOL) needsAddButton
 {
     return YES;
 }
 
 
 #pragma mark - UI Actions
-
-
-
 
 - (void) refresh
 {
