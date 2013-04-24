@@ -44,7 +44,7 @@
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 
@@ -77,6 +77,8 @@
             @"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
+    
+    
 }
 
 
