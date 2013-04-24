@@ -236,12 +236,11 @@
 {
     self.videoInstances = nil;
     
-    [self.channel removeObserver: self
-                      forKeyPath: @"subscribedByUser"];
-    
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
     
+    [self.channel removeObserver:self
+                      forKeyPath:@"subscribedByUser"];
     
     // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self
@@ -326,6 +325,7 @@
     VideoInstance *videoInstance = self.videoInstances [indexPath.row];
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
     videoThumbnailCell.titleLabel.text = videoInstance.title;
+    videoThumbnailCell.viewControllerDelegate = self;
     
     cell = videoThumbnailCell;
     
@@ -366,12 +366,12 @@
 
 
 
-- (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-        // Display the video viewer
-        [self displayVideoViewerWithSelectedIndexPath: indexPath];
-}
+//- (void) collectionView: (UICollectionView *) collectionView
+//         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+//{
+//        // Display the video viewer
+//        [self displayVideoViewerWithSelectedIndexPath: indexPath];
+//}
 
 
 #pragma mark - LXReorderableCollectionViewDelegateFlowLayout methods
@@ -513,9 +513,6 @@
                                                         object: self
                                                       userInfo: @{ kChannel : self.channel }];
 }
-
-
-
 
 
 @end

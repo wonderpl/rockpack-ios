@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UIButton *addItButton;
+@property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
 - (void) setVideoImageViewImage: (NSString*) imageURLString;
 
