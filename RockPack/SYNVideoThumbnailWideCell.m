@@ -40,8 +40,8 @@
     self.fromLabel.font = [UIFont rockpackFontOfSize: 13.0f];
     self.channelName.font = [UIFont rockpackFontOfSize: 13.0f];
     
-    self.usernameLabel.font = [UIFont rockpackFontOfSize: 13.0f];
-    self.byLabel.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.usernameLabel.font = [UIFont rockpackFontOfSize: 12.0f];
+    self.byLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     
     self.numberOfViewLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.dateAddedLabel.font = [UIFont rockpackFontOfSize: 12.0f];
@@ -130,7 +130,7 @@
     CGSize stringSize = [text sizeWithFont:self.usernameLabel.font];
     CGRect currentFrame = self.usernameLabel.frame;
     currentFrame.size = stringSize;
-    currentFrame.size.width = MIN(currentFrame.size.width,maxWidth);
+    currentFrame.size.width = MIN(currentFrame.size.width, maxWidth);
     currentFrame.origin.x = self.channelInfoView.frame.size.width - 15.0 - currentFrame.size.width;
     self.usernameLabel.frame = currentFrame;
     self.usernameLabel.text = text;

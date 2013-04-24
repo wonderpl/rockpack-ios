@@ -257,6 +257,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
@@ -277,7 +278,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillAppear:animated];
     
-    // [self.view addSubview:self.existingChannelsController.view];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

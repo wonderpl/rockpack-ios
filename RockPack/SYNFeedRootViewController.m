@@ -34,7 +34,7 @@
 
 @implementation SYNFeedRootViewController
 
-#pragma mark - View lifecycle
+#pragma mark - View Lifecycle
 
 -(id)initWithViewId:(NSString *)vid
 {
