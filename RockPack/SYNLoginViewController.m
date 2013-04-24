@@ -575,8 +575,6 @@
             }];
         }];
     }
-    
-    
     else if(previousState == kLoginScreenStateLogin)
     {
         // prepare in the correct place
@@ -587,8 +585,6 @@
         memberLabel.frame = CGRectIntegral(memberLabel.frame);
         
         [UIView animateWithDuration:0.5 animations:^{
-            
-            
             
             emailInputField.alpha = 1.0;
             emailInputField.center = CGPointMake(userNameInputField.center.x,
@@ -1382,6 +1378,7 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);
         memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 56.0);
+        registerButton.center = CGPointMake(registerButton.center.x, 704.0);
         areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     }
     else
@@ -1391,6 +1388,7 @@
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
+        registerButton.center = CGPointMake(registerButton.center.x, 358.0);
         memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 58.0);
         
     }
