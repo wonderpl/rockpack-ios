@@ -472,6 +472,8 @@
 		38D6DEA61726E204008C492D /* ButtonNavHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9E1726E204008C492D /* ButtonNavHighlighted~iphone.png */; };
 		38D6DEA71726E204008C492D /* PanelDay~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DE9F1726E204008C492D /* PanelDay~iphone.png */; };
 		38D6DEA81726E204008C492D /* PanelDay@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DEA01726E204008C492D /* PanelDay@2x~iphone.png */; };
+		38D6DEAC1726EE3D008C492D /* SYNChannelCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D6DEAA1726EE3C008C492D /* SYNChannelCategoryTableViewController.m */; };
+		38D6DEAD1726EE3D008C492D /* SYNChannelCategoryTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DEAB1726EE3D008C492D /* SYNChannelCategoryTableViewController.xib */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B816F7697900245314 /* ButtonFlagDefault.png */; };
 		BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */; };
@@ -1252,6 +1254,9 @@
 		38D6DE9E1726E204008C492D /* ButtonNavHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavHighlighted~iphone.png"; sourceTree = "<group>"; };
 		38D6DE9F1726E204008C492D /* PanelDay~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelDay~iphone.png"; sourceTree = "<group>"; };
 		38D6DEA01726E204008C492D /* PanelDay@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelDay@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DEA91726EE3C008C492D /* SYNChannelCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCategoryTableViewController.h; sourceTree = "<group>"; };
+		38D6DEAA1726EE3C008C492D /* SYNChannelCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCategoryTableViewController.m; sourceTree = "<group>"; };
+		38D6DEAB1726EE3D008C492D /* SYNChannelCategoryTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCategoryTableViewController.xib; sourceTree = "<group>"; };
 		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
 		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE03A6B816F7697900245314 /* ButtonFlagDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFlagDefault.png; path = Assets/Images/ButtonFlagDefault.png; sourceTree = "<group>"; };
@@ -2509,6 +2514,9 @@
 				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
+				38D6DEA91726EE3C008C492D /* SYNChannelCategoryTableViewController.h */,
+				38D6DEAA1726EE3C008C492D /* SYNChannelCategoryTableViewController.m */,
+				38D6DEAB1726EE3D008C492D /* SYNChannelCategoryTableViewController.xib */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -3918,6 +3926,7 @@
 				38D6DEA61726E204008C492D /* ButtonNavHighlighted~iphone.png in Resources */,
 				38D6DEA71726E204008C492D /* PanelDay~iphone.png in Resources */,
 				38D6DEA81726E204008C492D /* PanelDay@2x~iphone.png in Resources */,
+				38D6DEAD1726EE3D008C492D /* SYNChannelCategoryTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4106,6 +4115,7 @@
 				BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */,
 				BE285DAC1725978F00D995AB /* SYNAccountSettingsLastNameInput.m in Sources */,
 				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
+				38D6DEAC1726EE3D008C492D /* SYNChannelCategoryTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

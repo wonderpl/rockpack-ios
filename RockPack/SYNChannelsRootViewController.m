@@ -21,6 +21,7 @@
 #import "SYNChannelFooterMoreView.h"
 #import "SYNDeviceManager.h"
 #import "SYNMainRegistry.h"
+#import "SYNChannelCategoryTableViewController.h"
 
 #define STANDARD_LENGTH 50
 
@@ -38,6 +39,8 @@
 
 @property (nonatomic) NSRange currentRange;
 @property (nonatomic) NSInteger currentTotal;
+
+@property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 
 @end
 
@@ -73,6 +76,8 @@
 {
     // Google Analytics support
     self.trackedViewName = @"Channels - Root";
+    
+    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     
     SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -111,6 +116,14 @@
     currentCategoryId = @"all";
     
     currentRange = NSMakeRange(0, 50);
+    
+    // Categories table WIP
+    /*if(isIPhone)
+    {
+        self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
+        [self.view addSubview:self.categoryTableViewController.view];
+    }*/
+    
 }
 
 
