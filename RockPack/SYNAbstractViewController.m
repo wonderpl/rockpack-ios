@@ -32,13 +32,11 @@
 
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
+@property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
-
 @property (nonatomic, strong) UIView *dropZoneView;
-
 
 @end
 
@@ -198,7 +196,18 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
-    // TODO: Add video sharing
+//    NSString *messageString = kChannelShareMessage;
+//    
+//    //  TODO: Put in cover art image?
+//    //  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
+//    
+//    // TODO: Put in real link
+//    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
+//    
+//    [self shareURL: messageURL
+//       withMessage: messageString
+//          fromRect: self.shareButton.frame
+//   arrowDirections: UIPopoverArrowDirectionDown];
 }
 
 
@@ -276,7 +285,8 @@
 
 - (void) viewChannelDetails: (Channel *) channel
 {
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
     
     [self animatedPushViewController: channelVC];
 }

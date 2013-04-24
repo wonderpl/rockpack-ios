@@ -20,6 +20,7 @@
 @interface SYNChannelDetailViewController ()
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign)  kChannelDetailsMode mode;
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
@@ -41,11 +42,13 @@
 @implementation SYNChannelDetailViewController
 
 - (id) initWithChannel: (Channel *) channel
+             usingMode: (kChannelDetailsMode) mode
 {
 
     if ((self = [super init]))
     {
 		self.channel = channel;
+        self.mode = mode;
 	}
 
 	return self;
@@ -139,8 +142,8 @@
                       options: NSKeyValueObservingOptionNew
                       context :nil];
     
-    // FIXME: Move out to subclass is there is a distinct display view, overridden by edit subclass
-    [self setDisplayControlsVisibility: TRUE];
+    // We set up assets depending on whether we are in display or edit mode
+    [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
