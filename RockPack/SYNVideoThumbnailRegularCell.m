@@ -14,6 +14,8 @@
 @interface SYNVideoThumbnailRegularCell ()
 
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
+@property (nonatomic, strong) IBOutlet UIButton *addButton;
+@property (nonatomic, strong) IBOutlet UIButton *deleteButton;
 
 @end
 
@@ -21,12 +23,36 @@
 @implementation SYNVideoThumbnailRegularCell
 
 @synthesize viewControllerDelegate = _viewControllerDelegate;
+@synthesize displayMode = _displayMode;
 
 - (void) awakeFromNib
 {
     [super awakeFromNib];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
+}
+
+
+#pragma mark - Switch between display and edit modes
+
+- (void) setDisplayMode: (kChannelThumbnailDisplayMode) displayMode
+{
+    _displayMode = displayMode;
+    
+    if (displayMode == kChannelThumbnailDisplayModeStandard)
+    {
+        self.addButton.hidden = NO;
+        self.deleteButton.hidden = YES;
+    }
+    else if (displayMode == kChannelThumbnailDisplayModeEdit)
+    {
+        self.addButton.hidden = YES;
+        self.deleteButton.hidden = NO;
+    }
+    else
+    {
+        AssertOrLog(@"Unexpected option");
+    }
 }
 
 #pragma mark - Asynchronous image loading support
@@ -48,7 +74,7 @@
                          action: @selector(displayVideoViewerFromView:)
                forControlEvents: UIControlEventTouchUpInside];
     
-    [self.addItButton addTarget: self.viewControllerDelegate
+    [self.addButton addTarget: self.viewControllerDelegate
                          action: @selector(userTouchedVideoAddItButton:)
                forControlEvents: UIControlEventTouchUpInside];
 }

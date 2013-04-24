@@ -173,6 +173,7 @@
 - (void) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
     NSString* noteName;
+    
     if(!addItButton.selected)
     {
         noteName = kVideoQueueAdd;
@@ -182,8 +183,6 @@
     {
         noteName = kVideoQueueRemove;
     }
-    
-    
     
     UIView *v = addItButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
@@ -199,9 +198,7 @@
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
-    
-    
-    
+    // TODO: Add video sharing
 }
 
 

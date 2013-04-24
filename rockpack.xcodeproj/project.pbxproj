@@ -27,6 +27,12 @@
 		010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFDD1629BDC40080F26B /* InfoPlist.strings */; };
 		010DEFE11629BDC40080F26B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE01629BDC40080F26B /* main.m */; };
 		010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE41629BDC40080F26B /* SYNAppDelegate.m */; };
+		0111CDE717284DD700612186 /* ButtonVideoDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE117284DD700612186 /* ButtonVideoDelete.png */; };
+		0111CDE817284DD700612186 /* ButtonVideoDelete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */; };
+		0111CDE917284DD700612186 /* ButtonVideoDeleteHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */; };
+		0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */; };
+		0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */; };
+		0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */; };
 		011A15E116EE2F46008CF25E /* popover-black-right-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */; };
 		011A15E216EE2F46008CF25E /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */; };
 		011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A15F416EE3E9A008CF25E /* SYNCameraPopoverViewController.m */; };
@@ -579,6 +585,12 @@
 		010DEFE21629BDC40080F26B /* rockpack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rockpack-Prefix.pch"; sourceTree = "<group>"; };
 		010DEFE31629BDC40080F26B /* SYNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
 		010DEFE41629BDC40080F26B /* SYNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
+		0111CDE117284DD700612186 /* ButtonVideoDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDelete.png; path = Assets/Images/ButtonVideoDelete.png; sourceTree = "<group>"; };
+		0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDelete@2x.png"; path = "Assets/Images/ButtonVideoDelete@2x.png"; sourceTree = "<group>"; };
+		0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteHighlighted.png; path = Assets/Images/ButtonVideoDeleteHighlighted.png; sourceTree = "<group>"; };
+		0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteHighlighted@2x.png"; path = "Assets/Images/ButtonVideoDeleteHighlighted@2x.png"; sourceTree = "<group>"; };
+		0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteSelectedted.png; path = Assets/Images/ButtonVideoDeleteSelectedted.png; sourceTree = "<group>"; };
+		0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteSelectedted@2x.png"; path = "Assets/Images/ButtonVideoDeleteSelectedted@2x.png"; sourceTree = "<group>"; };
 		011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image@2x.png"; path = "Assets/Images/popover-black-right-arrow-image@2x.png"; sourceTree = "<group>"; };
 		011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image.png"; path = "Assets/Images/popover-black-right-arrow-image.png"; sourceTree = "<group>"; };
 		011A15F316EE3E9A008CF25E /* SYNCameraPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCameraPopoverViewController.h; sourceTree = "<group>"; };
@@ -1460,6 +1472,12 @@
 		012632F6162E18310009FF9C /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				0111CDE117284DD700612186 /* ButtonVideoDelete.png */,
+				0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */,
+				0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */,
+				0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */,
+				0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */,
+				0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */,
 				01450AF3171DB4B5009F54CD /* ButtonAddSelected.png */,
 				01450AF4171DB4B5009F54CD /* ButtonAddSelected@2x.png */,
 				BE7D353C17170F530085AB81 /* ButtonRefresh.png */,
@@ -3309,6 +3327,12 @@
 				BE285DC11726990F00D995AB /* BarNetwork@2x.png in Resources */,
 				BE285DC41726996700D995AB /* IconNetwork.png in Resources */,
 				BE285DC51726996700D995AB /* IconNetwork@2x.png in Resources */,
+				0111CDE717284DD700612186 /* ButtonVideoDelete.png in Resources */,
+				0111CDE817284DD700612186 /* ButtonVideoDelete@2x.png in Resources */,
+				0111CDE917284DD700612186 /* ButtonVideoDeleteHighlighted.png in Resources */,
+				0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */,
+				0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */,
+				0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

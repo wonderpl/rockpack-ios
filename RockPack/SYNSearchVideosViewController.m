@@ -124,7 +124,7 @@
                                                                                       forIndexPath: indexPath];
         
         
-        videoThumbnailCell.displayMode = kDisplayModeYoutube;
+        videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         

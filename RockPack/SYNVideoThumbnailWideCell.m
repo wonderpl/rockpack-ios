@@ -49,7 +49,7 @@
     self.durationLabel.font = [UIFont rockpackFontOfSize: 12.0f];
     self.highlightedBackgroundView.hidden = TRUE;
     
-    self.displayMode = kDisplayModeChannel; // default is channel
+    self.displayMode = kVideoThumbnailDisplayModeChannel; // default is channel
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(deselectCell:)
@@ -64,16 +64,16 @@
 
 #pragma mark - Switch Between Modes
 
-- (void) setDisplayMode: (kDisplayMode) displayMode
+- (void) setDisplayMode: (kVideoThumbnailDisplayMode) displayMode
 {
     _displayMode = displayMode;
     
-    if (displayMode == kDisplayModeChannel)
+    if (displayMode == kVideoThumbnailDisplayModeChannel)
     {
         self.videoInfoView.hidden = YES;
         self.channelInfoView.hidden = NO;
     }
-    else if (displayMode == kDisplayModeYoutube)
+    else if (displayMode == kVideoThumbnailDisplayModeYoutube)
     {
         self.channelInfoView.hidden = YES;
         self.videoInfoView.hidden = NO;
