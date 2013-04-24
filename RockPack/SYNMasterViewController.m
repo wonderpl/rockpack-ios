@@ -611,10 +611,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.sideNavigationButton.hidden = NO;
     
     [self showSearchViewControllerWithTerm:termString];
-    
 }
 
-- (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
+- (void) showSearchViewControllerWithTerm: (NSString*) searchTerm
 {
     
     [self showBackButton:YES];
@@ -624,34 +623,31 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
     
     [self.searchViewController showSearchResultsForTerm: searchTerm];
-    
 }
 
 
 
--(IBAction)cancelButtonPressed:(id)sender
+- (IBAction) cancelButtonPressed: (id) sender
 {
     [self.searchBoxController clear];
     [self.searchBoxController.view removeFromSuperview];
     
-    
     self.sideNavigationButton.hidden = NO;
-    
-    
 }
 
 
 #pragma mark - Notification Handlers
 
--(void)accountSettingsLogout
+- (void) accountSettingsLogout
 {
     [appDelegate logout];
 }
 
--(void) reachabilityChanged:(NSNotification*) notification
+
+- (void) reachabilityChanged: (NSNotification*) notification
 {
     NSString* reachabilityString;
-    if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
         reachabilityString = @"WiFi";
     else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
         reachabilityString = @"WWAN";
@@ -659,33 +655,29 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         reachabilityString = @"None";
     
     DebugLog(@"Reachability == %@", reachabilityString);
-    if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
-        if(self.networkErrorView)
+        if (self.networkErrorView)
         {
             [self hideNetworkErrorView];
         }
     }
     else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
     {
-        if(self.networkErrorView)
+        if (self.networkErrorView)
         {
             [self hideNetworkErrorView];
         }
     }
-    else if([self.reachability currentReachabilityStatus] == NotReachable)
+    else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        [self presentNetworkErrorViewWithMesssage:@"NO NETWORK CONNECTION"];
-        
-        
+        [self presentNetworkErrorViewWithMesssage: @"NO NETWORK CONNECTION"];
     }
-    
-    
 }
 
 
 
--(void)presentNetworkErrorViewWithMesssage:(NSString*)message
+- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
 {
     if(self.networkErrorView)
     {
@@ -719,11 +711,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-    if ([keyPath isEqualToString:@"contentOffset"]) {
-        
-        CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) change
+                        context: (void *) context
+{
+    if ([keyPath isEqualToString: @"contentOffset"])
+    {
+        CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
         CGFloat diff = fabsf(newContentOffset.x - self.containerViewController.currentPageOffset.x);
         diff = diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
         if (diff >1.0f)
@@ -742,20 +737,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else
         {
-            self.addToChannelButton.alpha = self.containerViewController.showingViewController.needsAddButton? 1.0f:0.0f; 
+            self.addToChannelButton.alpha = self.containerViewController.showingViewController.needsAddButton? 1.0f : 0.0f; 
         }
-
     }
 }
 
--(void)dotTapped:(UIGestureRecognizer*)recogniser
+- (void) dotTapped: (UIGestureRecognizer*) recogniser
 {
-    
+    // TODO: Need to implement this
 }
 
--(void)backButtonRequested:(NSNotification*)notification
+- (void) backButtonRequested: (NSNotification*) notification
 {
-    
     NSString* notificationName = [notification name];
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
@@ -770,21 +763,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
--(void)navigateToPage:(NSNotification*)notification
+- (void) navigateToPage: (NSNotification*) notification
 {
     
-    NSString* pageName = [[notification userInfo] objectForKey:@"pageName"];
+    NSString* pageName = [[notification userInfo] objectForKey: @"pageName"];
     if(!pageName)
         return;
-    
     
     [self.containerViewController navigateToPageByName:pageName];
     
     if(self.sideNavigationViewController.state != SideNavigationStateHidden)
-        [self hideSideNavigation];
-    
-    
-    
+        [self hideSideNavigation]; 
 }
 
 #pragma mark - Navigation Methods
@@ -796,8 +785,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if (show)
     {
-        [self.backButtonControl addTarget:self action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
-        [self.backButtonControl setBackTitle:self.pageTitleLabel.text];
+        [self.backButtonControl addTarget: self
+                                   action: @selector(popCurrentViewController:)
+                         forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
         if(self.searchBoxController.isOnScreen)
         {
             [UIView animateWithDuration:0.5 animations:^{
@@ -815,7 +807,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        [self.backButtonControl removeTarget:self action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        [self.backButtonControl removeTarget: self
+                                      action: @selector(popCurrentViewController:)
+                            forControlEvents: UIControlEventTouchUpInside];
+        
         if(self.searchBoxController.isOnScreen)
         {
             [self cancelButtonPressed:nil];
@@ -830,29 +825,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [UIView animateWithDuration: 0.6f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-                     {
+                     animations: ^{
                          self.movableButtonsContainer.frame = targetFrame;
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.dotsView.alpha = !targetAlpha;
                          self.refreshButton.alpha = !targetAlpha;
                      }
-                     completion: ^(BOOL finished)
-                     {
-                         
-                     }];
+                     completion: nil];
 
 }
 
 - (void) popCurrentViewController: (id) sender
 {
-    
     if(_overlayNavigationController)
     {
         if(_overlayNavigationController.viewControllers.count > 1)
         {
-            
             SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
             
             [abstractVC animatedPopViewController];
@@ -867,53 +856,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self.containerViewController popCurrentViewController:sender];
     }
-    
-}
-
-
-#pragma mark - Helper Methods
-
--(void)showAddButton
-{
-    [UIView animateWithDuration:0.3
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseOut
-                     animations:^{
-                         
-                         self.addToChannelButton.frame = self.addToChannelFrame;
-        
-                   } completion:^(BOOL finished) {
-                       
-                       
-                
-                   }];
-    
-}
-
--(void)hideAddButton
-{
-    [UIView animateWithDuration:0.3
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseOut
-                     animations:^{
-                         
-                         self.addToChannelButton.alpha = 0.0;
-                         
-                     } completion:^(BOOL finished) {
-                         
-                         [self moveAddButtonOutOfWay];
-                         
-                     }];
-    
-}
-
--(void)moveAddButtonOutOfWay
-{
-    
-    self.addToChannelButton.frame = CGRectMake(self.view.frame.size.width + 2.0,
-                                               addToChannelFrame.origin.y,
-                                               addToChannelFrame.size.width,
-                                               addToChannelFrame.size.height);
 }
 
 

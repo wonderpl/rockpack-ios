@@ -307,6 +307,8 @@
 {
     return (SYNAbstractViewController*)((UINavigationController*)self.selectedNavigationController).visibleViewController;
 }
+
+
 -(SYNAbstractViewController*)nextShowingViewController
 {
     UINavigationController* navigationController;
