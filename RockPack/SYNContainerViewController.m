@@ -49,7 +49,7 @@
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
-@property (nonatomic, weak) UIViewController *selectedViewController;
+@property (nonatomic, weak) UINavigationController *selectedViewController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 
 @property (nonatomic, readonly) CGFloat currentScreenOffset;
@@ -322,6 +322,21 @@
     
     // two functions for pop.
     
+    UINavigationController *navVC = self.selectedViewController;
+    
+    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+    
+    [abstractVC animatedPopViewController];
+    
+    self.scrollView.scrollEnabled = YES;
+    
+    return;
+    
+    
+    
+    
+    
+    
     if(self.replacementNavigationController && self.replacementNavigationController.viewControllers.count == 1)
     {
         
@@ -368,20 +383,9 @@
         
         [repAbstractVC animatedPopViewController];
     }
-    else
-    {
-        
-        UINavigationController *navVC = (UINavigationController *)self.selectedViewController;
-        
-        SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
-        
-        [abstractVC animatedPopViewController];
-        
-    }
     
     
     
-    self.scrollView.scrollEnabled = YES;
     
 }
 
@@ -451,16 +455,7 @@
 
 -(SYNAbstractViewController*)showingViewController
 {
-    SYNAbstractViewController* controllerOnView;
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        controllerOnView = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
-    }
-    else
-    {
-        controllerOnView = (SYNAbstractViewController*)self.selectedViewController;
-    }
-    return controllerOnView;
+    return (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
 }
 -(SYNAbstractViewController*)nextShowingViewController
 {
@@ -479,7 +474,7 @@
 
 
 
--(void)setSelectedViewController:(UIViewController *)selectedVC
+-(void)setSelectedViewController:(UINavigationController *)selectedVC
 {
     selectedViewController = selectedVC;
     NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged
