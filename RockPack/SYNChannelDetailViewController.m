@@ -111,22 +111,7 @@
 {
     [super viewWillAppear: animated];
     
-    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
-    
-    // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
-    
-    // First, sort the array in 'position' order
-    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
-        NSNumber *first = [(VideoInstance *)a position];
-        NSNumber *second = [(VideoInstance *)b position];
-        return [first compare: second];
-    }];
-    
-    // Now add those videoinstances to our own mutable array
-    for (VideoInstance *videoInstance in sortedArray)
-    {
-        [self.videoInstances addObject: videoInstance];
-    }
+    [self updateVideoInstanceArray];
     
     // Look out for update notifications
     [[NSNotificationCenter defaultCenter] addObserver: self
@@ -181,12 +166,7 @@
                                             self.channel.position = savedPosition;
                                             self.channel.viewId = kChannelsViewId;
                                             
-                                            self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
-                                            
-                                            for (VideoInstance *videoInstance in self.channel.videoInstances)
-                                            {
-                                                [self.videoInstances addObject: videoInstance];
-                                            }
+                                            [self updateVideoInstanceArray];
                                             
                                             [self reloadCollectionViews];
                                         }
@@ -212,19 +192,13 @@
                                        self.channel.position = savedPosition;
                                        self.channel.viewId = kChannelsViewId;
                                        
-                                       self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
-                                       
-                                       for (VideoInstance *videoInstance in self.channel.videoInstances)
-                                       {
-                                           [self.videoInstances addObject: videoInstance];
-                                       }
+                                       [self updateVideoInstanceArray];
                                        
                                        [self reloadCollectionViews];
                                    }
                                         errorHandler: ^(NSDictionary* errorDictionary) {
                                             DebugLog(@"Update action failed");
                                         }];
-
         }
     }
     
@@ -247,6 +221,27 @@
                                                     name: kDataUpdated
                                                   object: nil];
     [super viewWillDisappear: animated];
+}
+
+
+- (void) updateVideoInstanceArray
+{
+    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+    
+    // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
+    
+    // First, sort the array in 'position' order
+    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
+        NSNumber *first = [(VideoInstance *)a position];
+        NSNumber *second = [(VideoInstance *)b position];
+        return [first compare: second];
+    }];
+    
+    // Now add those videoinstances to our own mutable array
+    for (VideoInstance *videoInstance in sortedArray)
+    {
+        [self.videoInstances addObject: videoInstance];
+    }
 }
 
 
@@ -331,6 +326,7 @@
     
     return cell;
 }
+
 
 #pragma mark - Fetched results controller
 
@@ -508,6 +504,14 @@
 
 
 - (IBAction) subscribeButtonTapped: (id) sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
+                                                        object: self
+                                                      userInfo: @{ kChannel : self.channel }];
+}
+
+
+- (IBAction) addButtonTapped: (id) sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
                                                         object: self

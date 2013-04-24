@@ -667,39 +667,6 @@
 }
 
 
-//- (void) updateChannel: (NSString *) resourceURL
-//{
-//    
-//    SYNNetworkOperationJsonObject *networkOperation =
-//    (SYNNetworkOperationJsonObject*)[self operationWithURLString:resourceURL params:[self getLocalParam]];
-//    
-//    [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
-//        
-//        NSString* possibleError = dictionary[@"error"];
-//        
-//        if (possibleError)
-//        {
-//            DebugLog(@"Call for updateChannel failed with error");
-//            return;
-//        }
-//        
-//        BOOL registryResultOk = [self.registry registerChannelFromDictionary:dictionary];
-//        if (!registryResultOk) {
-//            DebugLog(@"Registration of Channel Failed at NetworkEngine");
-//            return;
-//        }
-//        
-//        
-//        
-//    } errorHandler:^(NSError* error) {
-//        DebugLog(@"Update Channel Screens Request Failed");
-//    }];
-//    
-//    
-//    [self enqueueSignedOperation: networkOperation];
-//    
-//}
-
 - (void) updateChannel: (NSString *) resourceURL
      completionHandler: (MKNKUserSuccessBlock) completionBlock
           errorHandler: (MKNKUserErrorBlock) errorBlock

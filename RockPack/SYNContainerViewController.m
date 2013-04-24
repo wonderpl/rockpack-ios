@@ -205,6 +205,12 @@
     self.scrollView.scrollEnabled = YES;
 }
 
+- (void) showUserChannels: (NSNotification*) notification
+{
+    // FIXME: Need to put in something for this
+    DebugLog (@"Nothing to see here, move along please");
+}
+
 
 
 
