@@ -55,7 +55,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleVideoQueueClearRequest:)
-                                                 name: kVideoQueueRemove
+                                                 name: kVideoQueueClear
                                                object: nil];
 }
 
