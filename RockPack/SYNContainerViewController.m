@@ -18,7 +18,6 @@
 #import "SYNFeedRootViewController.h"
 #import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNSearchRootViewController.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNCategoriesTabViewController.h"
@@ -40,9 +39,8 @@
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
-@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
+
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
-@property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
 @property (nonatomic, weak) UINavigationController* replacementNavigationController;
 @property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
@@ -67,7 +65,7 @@
 @synthesize selectedViewController;
 @synthesize currentScreenOffset;
 @synthesize channelsUserNavigationViewController;
-@synthesize channelsUserViewController, searchViewController;
+@synthesize channelsUserViewController;
 @synthesize scrollingDirection;
 @synthesize currentPageOffset;
 @synthesize appDelegate;
@@ -117,11 +115,6 @@
 
     
     
-    // == Search (out of normal controller array)
-    
-    
-    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-    self.seachViewNavigationViewController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
     
     
     // == Channels User (out of normal controller array)
@@ -303,19 +296,7 @@
 }
 
 
-#pragma mark - Show Special Views
 
-- (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
-{
-
-    [self replaceShowingNavigationController:self.seachViewNavigationViewController];
-    
-    
-    [self.searchViewController showSearchResultsForTerm: searchTerm];
-    
-    
-    
-}
 
 - (void) showUserChannel: (NSNotification*) notification
 {
@@ -405,49 +386,6 @@
 }
 
 
-
-
-- (void) replaceShowingNavigationController:(UINavigationController*)navigationController
-{
-    UINavigationController* showingNavController = [self showingViewController].navigationController;
-    
-    self.replacedNavigationController = showingNavController;
-    
-    self.replacementNavigationController = navigationController;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
-    
-    CGRect vcFrame = navigationController.view.frame;
-    vcFrame.origin.x = showingNavController.view.frame.origin.x;
-    navigationController.view.frame = vcFrame;
-    
-    
-    navigationController.view.alpha = 0.0;
-    
-    [self.scrollView addSubview:navigationController.view];
-    
-    self.scrollView.scrollEnabled = NO;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseIn
-                     animations: ^{
-                         showingNavController.view.alpha = 0.0;
-                     }
-                     completion: ^(BOOL finished) {
-                         
-                         
-                         //self.selectedViewController = self.seachViewNavigationViewController;
-                         
-                         [UIView animateWithDuration: 0.7f
-                                               delay: 0.2f
-                                             options: UIViewAnimationOptionCurveEaseOut
-                                          animations: ^{
-                                              navigationController.view.alpha = 1.0;
-                                          }
-                                          completion: nil];
-                     }];
-}
 
 #pragma mark - UIScrollViewDelegate
 

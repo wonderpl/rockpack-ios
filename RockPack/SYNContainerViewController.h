@@ -31,7 +31,6 @@ typedef enum {
 -(SYNAbstractViewController*)nextShowingViewController;
 
 - (void) popCurrentViewController: (id) sender;
--(void) showSearchViewControllerWithTerm:(NSString*)term;
 -(void) navigateToPageByName:(NSString*)pageName;
 
 

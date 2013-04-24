@@ -27,6 +27,9 @@
 #import "SYNDeviceManager.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelsDetailsCreationViewController.h"
+#import "SYNObjectFactory.h"
+
+#import "SYNSearchRootViewController.h"
 
 #import "SYNNetworkErrorView.h"
 
@@ -53,6 +56,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (strong, nonatomic) Reachability *reachability;
 
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
+@property (strong, nonatomic) IBOutlet UIView *searchContainerView;
+
+@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
@@ -68,6 +74,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
+
+
+@property (nonatomic, strong) UINavigationController* seachViewNavigationViewController;
 
 
 @property (nonatomic) CGRect addToChannelFrame;
@@ -175,6 +184,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }];
     
     self.navigatioContainerView.userInteractionEnabled = YES;
+    
+    
+    // == Search View Controller == //
+    
+    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
+    self.seachViewNavigationViewController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
     
     
     
@@ -601,8 +616,48 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = NO;
     
-    [self.containerViewController showSearchViewControllerWithTerm:termString];
+    [self showSearchViewControllerWithTerm:termString];
     
+}
+
+- (void) showSearchViewControllerWithTerm:(NSString*)searchTerm
+{
+    
+    [self replaceShowingNavigationController:self.seachViewNavigationViewController];
+    
+    [self.searchViewController showSearchResultsForTerm: searchTerm];
+    
+}
+
+- (void) replaceShowingNavigationController:(UINavigationController*)navigationController
+{
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
+    
+    
+    navigationController.view.alpha = 0.0;
+    
+    [self.searchContainerView addSubview:navigationController.view];
+    
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations: ^{
+                         self.containerView.alpha = 0.0;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                         
+                         [UIView animateWithDuration: 0.7f
+                                               delay: 0.2f
+                                             options: UIViewAnimationOptionCurveEaseOut
+                                          animations: ^{
+                                              navigationController.view.alpha = 1.0;
+                                          }
+                                          completion: nil];
+                     }];
 }
 
 -(IBAction)cancelButtonPressed:(id)sender
