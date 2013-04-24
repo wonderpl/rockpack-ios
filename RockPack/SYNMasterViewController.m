@@ -187,9 +187,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
     
     
-    
-    
-    
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
@@ -435,52 +432,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [self hideSideNavigation];
 }
--(void)sideNavigationPanned:(UIPanGestureRecognizer*)recogniser
-{
-    CGFloat translationX = [recogniser translationInView:self.sideNavigationViewController.view].x;
-    
-    if(recogniser.state == UIGestureRecognizerStateBegan)
-    {
-        
-        isDragging = YES;
-        sideNavigationOriginCenterX = self.sideNavigationViewController.view.center.x;
-        
-        
-    }
-    CGFloat newOriginX = sideNavigationOriginCenterX + translationX;
-    if(newOriginX < sideNavigationOriginCenterX)
-    {
-        newOriginX = sideNavigationOriginCenterX;
-    }
-    
-    self.sideNavigationViewController.view.center = CGPointMake( newOriginX ,
-                                                                self.sideNavigationViewController.view.center.y);
-    
-    
-    if(recogniser.state == UIGestureRecognizerStateEnded)
-    {
-        CGFloat border;
-        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-        {
-            border = [[UIScreen mainScreen] bounds].size.height;
-        }
-        else
-        {
-            border = [[UIScreen mainScreen] bounds].size.width;
-        }
-        
-        if(border - newOriginX < 20.0)
-        {
-            [self hideSideNavigation];
-        }
-        else
-        {
-            [self showSideNavigation];
-        }
-        isDragging = NO;
-    }
-    
-}
+
 
 
 - (void) hideSideNavigation
