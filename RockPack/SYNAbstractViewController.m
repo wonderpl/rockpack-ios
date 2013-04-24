@@ -81,7 +81,7 @@
 
 - (void) viewCameToScrollFront
 {
-    
+    DebugLog (@"came to front");
 }
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller

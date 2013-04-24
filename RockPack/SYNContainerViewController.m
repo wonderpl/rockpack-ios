@@ -136,7 +136,7 @@
     
     // == Register Notifications == //
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannel:) name:kShowUserChannels object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUserChannels:) name:kShowUserChannels object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonShow:) name:kNoteBackButtonShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonHide:) name:kNoteBackButtonHide object:nil];
 }
@@ -306,6 +306,8 @@
 {
     return (SYNAbstractViewController*)((UINavigationController*)self.selectedNavigationController).visibleViewController;
 }
+
+
 -(SYNAbstractViewController*)nextShowingViewController
 {
     UINavigationController* navigationController;
