@@ -46,11 +46,6 @@
     if ((self = [super init]))
     {
 		self.channel = channel;
-<<<<<<< HEAD
-=======
-        
-        
->>>>>>> origin/develop
 	}
 
 	return self;
@@ -145,13 +140,6 @@
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
     
-<<<<<<< HEAD
-    [self.channel addObserver: self
-                   forKeyPath: @"subscribedByUser"
-                      options: NSKeyValueObservingOptionNew
-                      context: nil];
-=======
-    
     if([self.channel.subscribedByUser boolValue])
     {
         self.subscribeButton.selected = YES;
@@ -161,11 +149,10 @@
         self.subscribeButton.selected = NO;
     }
     
-    [self.channel addObserver:self
-                   forKeyPath:@"subscribedByUser"
-                      options:NSKeyValueObservingOptionNew
-                      context:nil];
->>>>>>> origin/develop
+    [self.channel addObserver: self
+                   forKeyPath: @"subscribedByUser"
+                      options: NSKeyValueObservingOptionNew
+                      context :nil];
     
     // FIXME: Move out to subclass is there is a distinct display view, overridden by edit subclass
     [self setDisplayControlsVisibility: TRUE];
