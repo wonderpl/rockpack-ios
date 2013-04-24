@@ -1026,6 +1026,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          }
                          completion: ^(BOOL finished) {
                              _overlayNavigationController = overlayNavigationController;
+                             [self addChildViewController:_overlayNavigationController];
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f
                                                  options: UIViewAnimationOptionCurveEaseOut
@@ -1045,6 +1046,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          }
                          completion: ^(BOOL finished) {
                              [_overlayNavigationController.view removeFromSuperview];
+                             [_overlayNavigationController removeFromParentViewController];
                              _overlayNavigationController = nil;
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f

@@ -162,26 +162,8 @@
     
 }
 
-#pragma mark - Rotation Callbacks
 
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
-    
-}
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-}
-
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-}
 
 #pragma mark - Placement of Views
 
@@ -213,8 +195,6 @@
     
     // pack replacement
     
-    
-    
     self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
     self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
     [self.scrollView setContentOffset:self.currentPageOffset];
@@ -245,16 +225,10 @@
     
 }
 
-
-
 -(void)addVideosToExistingChannel
 {
     
 }
-
-
-
-
 
 
 - (IBAction) recordAction: (UIButton*) button
@@ -294,7 +268,6 @@
     self.selectedViewController = self.channelsUserNavigationViewController;
         
     
-    
     [self.channelsUserViewController fetchUserChannels: channelOwner];
 }
 
@@ -304,11 +277,8 @@
 - (void) popCurrentViewController: (id) sender
 {
     
-    // two functions for pop.
     
-    UINavigationController *navVC = self.selectedViewController;
-    
-    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)navVC.topViewController;
+    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)self.selectedViewController.topViewController;
     
     [abstractVC animatedPopViewController];
     
@@ -353,6 +323,7 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+    // catch programmatic animations
     [self scrollViewDidEndDecelerating:scrollView];
 }
 
@@ -369,15 +340,16 @@
     [self.showingViewController viewCameToScrollFront];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+#pragma mark - Rotation Callbacks
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
     
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    
-}
+
 
 #pragma mark - Getters/Setters
 
@@ -426,6 +398,7 @@
 {
     return self.scrollView.page;
 }
+
 
 
 @end
