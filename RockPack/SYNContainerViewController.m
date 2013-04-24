@@ -38,16 +38,13 @@
 
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
-@property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
-
-@property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 
 @property (nonatomic, strong) UIPopoverController *actionButtonPopover;
 
-@property (nonatomic, weak) UINavigationController *selectedViewController;
+@property (nonatomic, weak) UINavigationController *selectedNavigationController;
 @property (strong, nonatomic) MKNetworkOperation *downloadOperation;
 
 @property (nonatomic, readonly) CGFloat currentScreenOffset;
@@ -60,10 +57,8 @@
 
 @implementation SYNContainerViewController
 
-@synthesize selectedViewController;
+@synthesize selectedNavigationController;
 @synthesize currentScreenOffset;
-@synthesize channelsUserNavigationViewController;
-@synthesize channelsUserViewController;
 @synthesize scrollingDirection;
 @synthesize currentPageOffset;
 @synthesize appDelegate;
@@ -113,14 +108,6 @@
 
     
     
-    
-    
-    // == Channels User (out of normal controller array)
-    
-    self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId: kUserChanneslViewId];
-    self.channelsUserNavigationViewController = [SYNObjectFactory wrapInNavigationController:self.channelsUserViewController];
-    
-    
     self.shouldAnimateViewTransitions = YES;
     
     
@@ -144,7 +131,7 @@
     
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
     
-    self.selectedViewController = self.childViewControllers[0];
+    self.selectedNavigationController = self.childViewControllers[0];
     
     
     
@@ -161,9 +148,6 @@
     
     
 }
-
-
-
 
 #pragma mark - Placement of Views
 
@@ -183,12 +167,8 @@
     {
         controller.view.frame = newFrame;
         
-        if ([controller isKindOfClass:[UINavigationController class]] )
-        {
-            UINavigationController* navController = (UINavigationController*)controller;
-            navController.topViewController.view.frame = controller.view.bounds;
-        }
-        
+        UINavigationController* navController = (UINavigationController*)controller;
+        navController.topViewController.view.frame = controller.view.bounds;
         
         newFrame.origin.x += newFrame.size.width;
     }
@@ -222,23 +202,26 @@
 -(void)backButtonHide:(NSNotification*)notification
 {
     
-    
+    self.scrollView.scrollEnabled = YES;
 }
 
--(void)addVideosToExistingChannel
+
+
+
+#pragma mark - Navigation Methods
+
+- (void) popCurrentViewController: (id) sender
 {
     
+    
+    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)self.selectedNavigationController.topViewController;
+    
+    [abstractVC animatedPopViewController];
+    
+    self.scrollView.scrollEnabled = YES;
+    
+    
 }
-
-
-- (IBAction) recordAction: (UIButton*) button
-{
-    button.selected = !button.selected;
-}
-
-
-
-#pragma mark - Navigate To Views
 
 -(void) navigateToPageByName:(NSString*)pageName
 {
@@ -252,42 +235,6 @@
         page++;
     }
 }
-
-
-
-
-- (void) showUserChannel: (NSNotification*) notification
-{
-    NSDictionary* userInfo = [notification userInfo];
-    
-    ChannelOwner* channelOwner = (ChannelOwner*)[userInfo objectForKey: @"ChannelOwner"];
-    
-    if (!channelOwner)
-        return;
-    
-    self.selectedViewController = self.channelsUserNavigationViewController;
-        
-    
-    [self.channelsUserViewController fetchUserChannels: channelOwner];
-}
-
-
-#pragma mark - Navigation View Controllers
-
-- (void) popCurrentViewController: (id) sender
-{
-    
-    
-    SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)self.selectedViewController.topViewController;
-    
-    [abstractVC animatedPopViewController];
-    
-    self.scrollView.scrollEnabled = YES;
-    
-    
-}
-
-
 
 #pragma mark - UIScrollViewDelegate
 
@@ -315,7 +262,7 @@
         CGPoint newOffset = self.scrollView.contentOffset;
         newOffset.x = currentPage * width;
         self.currentPageOffset = newOffset;
-        self.selectedViewController = self.childViewControllers[self.scrollView.page];
+        self.selectedNavigationController = self.childViewControllers[self.scrollView.page];
         [self.showingViewController viewCameToScrollFront];
     }
     
@@ -332,10 +279,9 @@
     
     scrollingDirection = ScrollingDirectionNone;
     
-    self.selectedViewController = self.childViewControllers[self.scrollView.page];
+    self.selectedNavigationController = self.childViewControllers[self.scrollView.page];
     
     self.currentPageOffset = self.scrollView.contentOffset;
-    
     
     [self.showingViewController viewCameToScrollFront];
 }
@@ -349,38 +295,35 @@
     
 }
 
-
-
 #pragma mark - Getters/Setters
 
 -(SYNAbstractViewController*)showingViewController
 {
-    return (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).visibleViewController;
+    return (SYNAbstractViewController*)((UINavigationController*)self.selectedNavigationController).visibleViewController;
 }
 -(SYNAbstractViewController*)nextShowingViewController
 {
     UINavigationController* navigationController;
-    SYNAbstractViewController* controllerOnView;
     if(self.scrollingDirection == ScrollingDirectionRight && (self.currentPage+1) < self.childViewControllers.count) {
         navigationController = self.childViewControllers[(self.currentPage+1)];
     } else if(self.scrollingDirection == ScrollingDirectionLeft && (self.currentPage-1) >= 0) {
         navigationController = self.childViewControllers[(self.currentPage-1)];
     }
-    controllerOnView = (SYNAbstractViewController*)(navigationController.visibleViewController);
-    return controllerOnView;
+    return (SYNAbstractViewController*)(navigationController.visibleViewController);
 }
 
 
 
 
 
--(void)setSelectedViewController:(UINavigationController *)selectedVC
+-(void)setSelectedNavigationController:(UINavigationController *)selectedVC
 {
-    selectedViewController = selectedVC;
-    NSNotification* notification = [NSNotification notificationWithName:kScrollerPageChanged
-                                                                 object:self
-                                                               userInfo:@{kCurrentPage:@(self.scrollView.page)}];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    selectedNavigationController = selectedVC;
+    
+    // == notify the page change for the MasterViewController to catch it == //
+    [[NSNotificationCenter defaultCenter] postNotificationName:kScrollerPageChanged
+                                                        object:self
+                                                      userInfo:@{kCurrentPage:@(self.scrollView.page)}];
 }
 
 -(SYNContainerScrollView*)scrollView
