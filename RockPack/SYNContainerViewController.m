@@ -41,8 +41,6 @@
 @property (nonatomic, strong) SYNChannelsUserViewController* channelsUserViewController;
 
 @property (nonatomic, strong) UINavigationController* channelsUserNavigationViewController;
-@property (nonatomic, weak) UINavigationController* replacementNavigationController;
-@property (nonatomic, weak) UINavigationController* replacedNavigationController;
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
@@ -170,28 +168,19 @@
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self packViewControllersForInterfaceOrientation:toInterfaceOrientation];
-    if(self.replacementNavigationController)
-    {
-        [self.replacementNavigationController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }
+    
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    if(self.replacementNavigationController)
-    {
-        [self.replacementNavigationController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    }
+    
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if(self.replacementNavigationController)
-    {
-        [self.replacementNavigationController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    }
+    
 }
 
 #pragma mark - Placement of Views
@@ -218,11 +207,6 @@
             navController.topViewController.view.frame = controller.view.bounds;
         }
         
-        
-        if(controller == self.replacedNavigationController)
-        {
-            self.replacementNavigationController.view.frame = newFrame;
-        }
         
         newFrame.origin.x += newFrame.size.width;
     }
@@ -329,62 +313,6 @@
     [abstractVC animatedPopViewController];
     
     self.scrollView.scrollEnabled = YES;
-    
-    return;
-    
-    
-    
-    
-    
-    
-    if(self.replacementNavigationController && self.replacementNavigationController.viewControllers.count == 1)
-    {
-        
-        
-        
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide
-                                                            object:self];
-        
-        
-        
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseIn
-                         animations: ^{
-                             self.replacementNavigationController.view.alpha = 0.0;
-                             
-                         }
-                         completion: ^(BOOL finished) {
-                             //self.selectedViewController = self.seachViewNavigationViewController;
-                             
-                             [UIView animateWithDuration: 0.7f
-                                                   delay: 0.2f
-                                                 options: UIViewAnimationOptionCurveEaseOut
-                                              animations: ^{
-                                                  self.replacedNavigationController.view.alpha = 1.0;
-                                              }
-                                              completion: ^(BOOL finished) {
-                                                  
-                                                  [self.replacementNavigationController.view removeFromSuperview];
-                                                  
-                                                  self.replacementNavigationController = nil;
-                                                  
-                                              }];
-                             
-                         }];
-        
-    }
-    else if(self.replacementNavigationController)
-    {
-        UINavigationController *repNavVC = (UINavigationController *)self.selectedViewController;
-        
-        SYNAbstractViewController *repAbstractVC = (SYNAbstractViewController *)repNavVC.topViewController;
-        
-        [repAbstractVC animatedPopViewController];
-    }
-    
-    
     
     
 }

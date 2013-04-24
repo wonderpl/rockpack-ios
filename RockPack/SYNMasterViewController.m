@@ -1006,7 +1006,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
 }
 
-#pragma mark - Accessor Methods
+#pragma mark - Overlay Accessor Methods
 
 -(void)setOverlayNavigationController:(UINavigationController *)overlayNavigationController
 {
