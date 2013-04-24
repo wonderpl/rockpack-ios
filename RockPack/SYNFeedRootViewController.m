@@ -195,7 +195,9 @@
     
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+   sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if([[SYNDeviceManager sharedInstance] isLandscape])
     {
@@ -361,7 +363,7 @@
 
 
 
--(void)refresh
+- (void) refresh
 {
     [self refreshVideoThumbnails];
 }

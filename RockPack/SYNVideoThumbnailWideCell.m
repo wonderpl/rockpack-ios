@@ -54,14 +54,23 @@
 
 #pragma mark - Switch Between Modes
 
--(void)setDisplayMode:(kDisplayMode)displayMode
+- (void) setDisplayMode: (kDisplayMode) displayMode
 {
-    if (displayMode == kDisplayModeChannel) {
+    _displayMode = displayMode;
+    
+    if (displayMode == kDisplayModeChannel)
+    {
         self.videoInfoView.hidden = YES;
         self.channelInfoView.hidden = NO;
-    } else if (displayMode == kDisplayModeYoutube) {
+    }
+    else if (displayMode == kDisplayModeYoutube)
+    {
         self.channelInfoView.hidden = YES;
         self.videoInfoView.hidden = NO;
+    }
+    else
+    {
+        AssertOrLog(@"Unexpected option");
     }
 }
 
@@ -74,25 +83,11 @@
                                     placeHolderImage: nil];
 }
 
+
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {    
     [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                                       placeHolderImage: nil];
-}
-
-
-#pragma mark - Cell focus 
-
-- (void) setFocus: (BOOL) focus
-{
-    if (focus)
-    {
-        self.highlightedBackgroundView.hidden = FALSE;
-    }
-    else
-    {
-        self.highlightedBackgroundView.hidden = TRUE;
-    }
 }
 
 
@@ -162,6 +157,5 @@
     self.videoImageView.image = nil;
     self.channelImageView.image = nil;
 }
-
 
 @end

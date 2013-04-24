@@ -11,9 +11,16 @@
 #import "UIImageView+ImageProcessing.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 
+@interface SYNVideoThumbnailRegularCell ()
+
+@property (nonatomic, strong) IBOutlet UIButton *videoButton;
+
+@end
+
+
 @implementation SYNVideoThumbnailRegularCell
 
-
+@synthesize viewControllerDelegate = _viewControllerDelegate;
 
 - (void) awakeFromNib
 {
@@ -28,6 +35,22 @@
 {
     [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                                placeHolderImage: nil];
+}
+
+
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+{
+    _viewControllerDelegate = viewControllerDelegate;
+    
+    // Add button targets
+    
+    [self.videoButton addTarget: self.viewControllerDelegate
+                         action: @selector(displayVideoViewerFromView:)
+               forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.addItButton addTarget: self.viewControllerDelegate
+                         action: @selector(userTouchedVideoAddItButton:)
+               forControlEvents: UIControlEventTouchUpInside];
 }
 
 
