@@ -17,7 +17,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoQueueCell.h"
