@@ -114,10 +114,10 @@
     
     
     
-    VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
-                                                                       forChannel:self.currentlyCreatingChannel
-                                                        usingManagedObjectContext:self.appDelegate.channelsManagedObjectContext
-                                                                        andViewId:@"ChannelDetails"];
+    VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance: videoInstance
+                                                                       forChannel: self.currentlyCreatingChannel
+                                                        usingManagedObjectContext: self.appDelegate.channelsManagedObjectContext
+                                                                        andViewId: kChannelDetailsViewId];
     
     [self.currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];
     

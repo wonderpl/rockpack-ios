@@ -25,6 +25,10 @@
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
 #import "SYNDeviceManager.h"
+#import "SYNChannelDetailViewController.h"
+#import "SYNChannelsDetailsCreationViewController.h"
+
+#import "SYNNetworkErrorView.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -46,14 +50,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
+@property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
+@property (strong, nonatomic) Reachability *reachability;
+
+@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
 @property (nonatomic) CGFloat sideNavigationOriginCenterX;
 @property (nonatomic) BOOL buttonLocked;
+
 @property (nonatomic) BOOL isDragging;
 
 
@@ -124,12 +133,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         autocompleteControllerFrame.origin.x = 10.0;
         autocompleteControllerFrame.origin.y = 10.0;
         self.searchBoxController.view.frame = autocompleteControllerFrame;
-        
-        
-        
-        
-        
-        
         
     }
     return self;
@@ -207,6 +210,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
+    
     // == Back Button == //
     
     self.backButtonControl = [SYNBackButtonControl backButton];
@@ -223,6 +227,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                      blue:(51.0/255.0)
                                                     alpha:(1.0)];
     
+    self.reachability = [Reachability reachabilityWithHostname:appDelegate.networkEngine.hostName];
     
     // == Add to Channel Button == //
     
@@ -269,10 +274,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     
     [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
@@ -301,16 +310,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // [self.view addSubview:self.existingChannelsController.view];
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+-(void)viewWillDisappear:(BOOL)animated
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}
-
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+    [super viewWillDisappear:animated];
     
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    originalAddButtonX = self.addToChannelButton.frame.origin.x;
+    [self.containerViewController.scrollView removeObserver:self forKeyPath:@"contentOffset"];
 }
 
 -(void)refreshButtonPressed
@@ -340,10 +344,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         dotImageView = (UIImageView*)self.dotsView.subviews[i];
         if (i == pageNumber) {
             dotImageView.image = [UIImage imageNamed:@"NavigationDotCurrent"];
-            continue;
+        } else {
+            dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
         }
         
-        dotImageView.image = [UIImage imageNamed:@"NavigationDot"];
+        
         
     }
     
@@ -367,14 +372,49 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
+#pragma mark - Channel Creation Methods
 
 -(IBAction)addToChannelPressed:(id)sender
 {
     
+    [self.view addSubview:self.existingChannelsController.view];
+    [self addChildViewController:self.existingChannelsController];
     
+    self.existingChannelsController.view.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.3
+                     animations:^{
+        self.existingChannelsController.view.alpha = 1.0;
+    }];
     
 }
+
+
+-(void)addToChannelAction:(NSNotification*)notification
+{
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!channel)
+        return;
+    
+    DebugLog(@"Goint to add Channel with %d video instances", channel.videoInstances.count);
+    
+    // TODO : Show confirm message
+    
+}
+
+-(void)createNewChannelAction:(NSNotification*)notification
+{
+    
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!channel)
+        return;
+    
+    SYNChannelsDetailsCreationViewController *channelCreationVC =
+    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
+    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
+    [showingController animatedPushViewController: channelCreationVC];
+}
+
 
 
 #pragma mark - Navigation Panel Methods
@@ -667,7 +707,81 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Notification Handlers
 
+-(void)accountSettingsLogout
+{
+    [appDelegate logout];
+}
 
+-(void) reachabilityChanged:(NSNotification*) notification
+{
+    NSString* reachabilityString;
+    if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+        reachabilityString = @"WiFi";
+    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
+        reachabilityString = @"WWAN";
+    else if([self.reachability currentReachabilityStatus] == NotReachable) 
+        reachabilityString = @"None";
+    
+    DebugLog(@"Reachability == %@", reachabilityString);
+    if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    {
+        if(self.networkErrorView)
+        {
+            [self hideNetworkErrorView];
+        }
+    }
+    else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
+    {
+        if(self.networkErrorView)
+        {
+            [self hideNetworkErrorView];
+        }
+    }
+    else if([self.reachability currentReachabilityStatus] == NotReachable)
+    {
+        [self presentNetworkErrorViewWithMesssage:@"NO NETWORK CONNECTION"];
+        
+        
+    }
+    
+    
+}
+
+
+
+-(void)presentNetworkErrorViewWithMesssage:(NSString*)message
+{
+    if(self.networkErrorView)
+    {
+        [self.networkErrorView setText:message];
+        return;
+    }
+    
+    self.networkErrorView = [SYNNetworkErrorView errorView];
+    [self.networkErrorView setText:message];
+    [self.errorContainerView addSubview:self.networkErrorView];
+    
+    [self alignErrorMessage];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect erroViewFrame = self.networkErrorView.frame;
+        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 70.0;
+        
+        self.networkErrorView.frame = erroViewFrame;
+    }];
+}
+
+-(void)hideNetworkErrorView
+{
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+        CGRect erroViewFrame = self.networkErrorView.frame;
+        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        self.networkErrorView.frame = erroViewFrame;
+    } completion:^(BOOL finished) {
+        [self.networkErrorView removeFromSuperview];
+        self.networkErrorView = nil;
+    }];
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
@@ -729,14 +843,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self.backButtonControl removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
         if(self.searchBoxController.isOnScreen)
         {
-            [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                CGRect sboxFrame = self.searchBoxController.view.frame;
-                sboxFrame.origin.x = 10.0;
-                sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-                self.sideNavigationButton.hidden = YES;
-                self.closeSearchButton.hidden = NO;
-                self.searchBoxController.view.frame = sboxFrame;
-            } completion:nil];
+            [self cancelButtonPressed:nil];
             
         }
         [self showBackButton:NO];
@@ -865,6 +972,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
     
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+    
     self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
     self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
     self.accountSettingsPopover.delegate = self;
@@ -898,5 +1008,40 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     
 }
+
+
+#pragma mark - Autorotation Methods
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if(self.networkErrorView)
+    {
+        [self alignErrorMessage];
+    }
+
+    //[self.existingChannelsController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    originalAddButtonX = self.addToChannelButton.frame.origin.x;
+}
+
+-(void)alignErrorMessage
+{
+    
+    self.networkErrorView.center = CGPointMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5, self.networkErrorView.center.y);
+    self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
+}
+
 
 @end

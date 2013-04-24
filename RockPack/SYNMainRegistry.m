@@ -83,7 +83,7 @@
         
         if(!channel) continue;
         
-        [currentUser addChannelsObject:channel];
+        [currentUser addSubscriptionsObject:channel];
         
     }
     

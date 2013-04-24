@@ -24,7 +24,6 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
-#import "SYNNetworkErrorView.h"
 #import "Video.h"
 #import "VideoInstance.h"
 #import "Channel.h"
@@ -38,7 +37,6 @@
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
-@property (nonatomic, strong) SYNNetworkErrorView* errorView;
 
 @property (nonatomic, strong) UIView *dropZoneView;
 
@@ -91,6 +89,7 @@
 {
     startAnimationDelay = 0.0;
     [self reloadCollectionViews];
+    
 }
 
 
@@ -99,31 +98,7 @@
     //AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
 
-// Helper method: Save the current DB state
-- (void) saveDB
-{
-    NSError *error = nil;
-    
-    if (![appDelegate.mainManagedObjectContext save: &error])
-    {
-        NSArray* detailedErrors = [[error userInfo] objectForKey: NSDetailedErrorsKey];
-        
-        if ([detailedErrors count] > 0)
-        {
-            for(NSError* detailedError in detailedErrors)
-            {
-                DebugLog(@" DetailedError: %@", [detailedError userInfo]);
-            }
-        }
-        
-        // Bail out if save failed
-        error = [NSError errorWithDomain: NSURLErrorDomain
-                                    code: NSCoreDataError
-                                userInfo: nil];
-        
-        @throw error;
-    }  
-}
+
 
 
 
@@ -177,47 +152,6 @@
 }
 
 
-- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    if (channel.subscribedByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        channel.subscribedByUserValue = FALSE;
-        channel.subscribersCountValue -= 1;
-        
-        // Update the star/unstar status on the server
-        [appDelegate.oAuthNetworkEngine channelUnsubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                          channelId: channel.uniqueId
-                                                  completionHandler: ^(NSDictionary *responseDictionary) {
-                                                      DebugLog(@"Unsubscribe action successful");
-                                                  }
-                                                       errorHandler: ^(NSDictionary* errorDictionary) {
-                                                           DebugLog(@"Unsubscribe action failed");
-                                                       }];
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        channel.subscribedByUserValue = TRUE;
-        channel.subscribersCountValue += 1;
-        
-        // Update the star/unstar status on the server
-        [appDelegate.oAuthNetworkEngine channelSubscribeForUserId: appDelegate.currentOAuth2Credentials.userId
-         channelURL: channel.resourceURL
-         completionHandler: ^(NSDictionary *responseDictionary)
-         {
-             DebugLog(@"Subscribe action successful");
-         }
-         errorHandler: ^(NSDictionary* errorDictionary)
-         {
-             DebugLog(@"Subscribe action failed");
-         }];
-    }
-    
-    [self saveDB];
-}
 
 
 
@@ -279,6 +213,7 @@
                                              andIndexPath: selectedIndexPath];
 }
 
+
 - (void) displayCategoryChooser
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
@@ -292,6 +227,7 @@
 - (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
     return 0;
 }
+
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
@@ -311,21 +247,7 @@
 }
 
 
-#pragma mark - Channel Creation Methods
 
-- (void) createChannel:(Channel*)channel
-{
-    SYNChannelsDetailsCreationViewController *channelCreationVC = [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
-    
-    [self animatedPushViewController: channelCreationVC];
-}
-
-- (void) addToChannel:(Channel*)channel
-{
-//    SYNChannelsAddVideosViewController *channelCreationVC = [[SYNChannelsAddVideosViewController alloc] initWithChannel: channel];
-//    
-//    [self animatedPushViewController: channelCreationVC];
-}
 
 // User touched the channel thumbnail in a video cell
 - (IBAction) userTouchedChannelButton: (UIButton *) channelButton

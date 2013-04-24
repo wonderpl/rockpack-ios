@@ -380,7 +380,7 @@
 
     [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
     
-    [self saveDB];
+    [appDelegate saveContext:YES];
 }
 
 

@@ -23,8 +23,7 @@
 @interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
                                                                  UICollectionViewDelegate,
-                                                                 SYNTabViewDelegate>
-{
+                                                                 SYNTabViewDelegate> {
 @protected
     SYNAppDelegate* appDelegate;
     BOOL tabExpanded;
@@ -52,8 +51,6 @@
 
 -(void) reloadCollectionViews;
 
-// Persist the current state of CoreData to the mySQL DB
-- (void) saveDB;
 
 // Animation support
 
@@ -62,8 +59,6 @@
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
 
-
-- (void) toggleChannelSubscribeAtIndex: (NSIndexPath *) indexPath;
 
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
@@ -81,9 +76,6 @@
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
 - (void) displayCategoryChooser;
 
-
-- (void) createChannel:(Channel*)channel;
-- (void) addToChannel:(Channel*)channel;
 
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;

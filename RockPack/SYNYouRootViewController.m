@@ -21,7 +21,8 @@
 #import "SYNChannelMidCell.h"
 #import "SYNYouHeaderView.h"
 
-#define kInterChannelSpacing 138.0
+#define kInterChannelSpacing 150.0
+#define kInterRowMarging 12.0
 
 @interface SYNYouRootViewController ()
 
@@ -75,21 +76,24 @@
     }
 
     // Main Collection View
-    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 8.0, 5.0, 25.0)];
+    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0];
     
-    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 25.0, 5.0, 8.0)];
+
+    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0)];
     if(isIPhone)
     {
         self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
-    
+
         self.subscriptionsPortraitLayout= [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
     }
     else
     {
-        self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0)];
+        self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
         
-        self.subscriptionsPortraitLayout= [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, 5.0, 4.0)];
+        self.subscriptionsPortraitLayout= [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
     }
+                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                             
     CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
     
     self.headerChannelsView = [SYNYouHeaderView headerViewForWidth:correctWidth];
@@ -256,6 +260,15 @@
     [self reloadCollectionViews];
 }
 
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    
+    [self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
+    [self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
+}
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
@@ -482,6 +495,7 @@
     
     if(collectionView == self.channelThumbnailCollectionView)
     {
+        
         channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
     }
@@ -489,6 +503,7 @@
     {
         channel = [self.subscriptionsViewController channelAtIndexPath:indexPath];
     }
+    
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
     
@@ -547,17 +562,16 @@
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
+                     animations: ^{
+                         
          // Contract thumbnail view
          self.view.alpha = 0.0f;
          channelVC.view.alpha = 1.0f;
          self.pinchedView.alpha = 0.0f;
          self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
          
-     }
-                     completion: ^(BOOL finished)
-     {
+                  } completion: ^(BOOL finished) {
+            
          [self.pinchedView removeFromSuperview];
      }];
     

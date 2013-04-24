@@ -235,6 +235,11 @@
     
     viewIsOnScreen = NO;
     
+    searchTerm = nil;
+    
+    self.videoSearchTabView.selected = NO;
+    self.channelsSearchTabView.selected = NO;
+    
     
     [self.currentController.view removeFromSuperview];
     

@@ -35,7 +35,6 @@
 @property (nonatomic, assign) double lowPassResults;
 @property (nonatomic, assign, getter = isShowingBackButton) BOOL showingBackButton;
 
-@property (nonatomic) BOOL hasReplacedNavigationController;
 
 @property (nonatomic, getter = isTabBarHidden) BOOL tabBarHidden;
 
@@ -65,7 +64,6 @@
 @implementation SYNContainerViewController
 
 @synthesize selectedViewController;
-@synthesize hasReplacedNavigationController;
 @synthesize currentScreenOffset;
 @synthesize channelsUserNavigationViewController;
 @synthesize channelsUserViewController, searchViewController;
@@ -110,7 +108,7 @@
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
     channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    //[channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
     
     // == You Page == //
     
@@ -276,17 +274,7 @@
     
 }
 
-- (void) createChannelFromVideoQueue
-{
-    if([self.selectedViewController isKindOfClass:[UINavigationController class]])
-    {
-        
-        SYNAbstractViewController* child = (SYNAbstractViewController*)((UINavigationController*)self.selectedViewController).topViewController;
-        [child createChannel:appDelegate.videoQueue.currentlyCreatingChannel];
-        
-    }
 
-}
 
 -(void)addVideosToExistingChannel
 {
@@ -359,14 +347,14 @@
     
     // two functions for pop.
     
-    if(hasReplacedNavigationController)
+    if(self.replacementNavigationController && self.replacementNavigationController.viewControllers.count == 1)
     {
         
         
-        hasReplacedNavigationController = NO;
         
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonHide
+                                                            object:self];
         
         
         
@@ -378,7 +366,7 @@
                              
                          }
                          completion: ^(BOOL finished) {
-                             self.selectedViewController = self.seachViewNavigationViewController;
+                             //self.selectedViewController = self.seachViewNavigationViewController;
                              
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f
@@ -390,12 +378,20 @@
                                                   
                                                   [self.replacementNavigationController.view removeFromSuperview];
                                                   
-                                                  
                                                   self.replacementNavigationController = nil;
                                                   
                                               }];
+                             
                          }];
         
+    }
+    else if(self.replacementNavigationController)
+    {
+        UINavigationController *repNavVC = (UINavigationController *)self.selectedViewController;
+        
+        SYNAbstractViewController *repAbstractVC = (SYNAbstractViewController *)repNavVC.topViewController;
+        
+        [repAbstractVC animatedPopViewController];
     }
     else
     {
@@ -423,9 +419,6 @@
     
     self.replacedNavigationController = showingNavController;
     
-    
-    hasReplacedNavigationController = YES;
-    
     self.replacementNavigationController = navigationController;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
@@ -450,7 +443,7 @@
                      completion: ^(BOOL finished) {
                          
                          
-                         self.selectedViewController = self.seachViewNavigationViewController;
+                         //self.selectedViewController = self.seachViewNavigationViewController;
                          
                          [UIView animateWithDuration: 0.7f
                                                delay: 0.2f

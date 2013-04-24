@@ -19,21 +19,27 @@
                               onError: (MKNKErrorBlock) errorBlock;
 
 - (void) updateVideosScreenForCategory: (NSString*) categoryId;
-- (void) updateChannel: (NSString *) resourceURL;
 
-- (void) updateChannelsScreenForCategory:(NSString*)categoryId
-                                forRange:(NSRange)range
-                            onCompletion:(MKNKJSONCompleteBlock)completeBlock
-                                 onError:(MKNKJSONErrorBlock)errorBlock;
+
+- (void) updateChannelsScreenForCategory: (NSString*) categoryId
+                                forRange: (NSRange) range
+                            onCompletion: (MKNKJSONCompleteBlock) completeBlock
+                                 onError: (MKNKJSONErrorBlock) errorBlock;
 
 - (void) searchVideosForTerm: (NSString*) searchTerm;
 - (void) searchChannelsForTerm: (NSString*) searchTerm;
 
-- (void) getAutocompleteForHint: (NSString*)hint
-                    forResource: (EntityType)entityType
+- (void) getAutocompleteForHint: (NSString*) hint
+                    forResource: (EntityType) entityType
                    withComplete: (MKNKAutocompleteProcessBlock) completionBlock
                        andError: (MKNKErrorBlock) errorBlock;
 
--(void)userPublicChannelsByOwner:(ChannelOwner*)channelOwner;
+-(void) userPublicChannelsByOwner: (ChannelOwner*) channelOwner;
+
+//- (void) updateChannel: (NSString *) resourceURL;
+
+- (void) updateChannel: (NSString *) resourceURL
+     completionHandler: (MKNKUserSuccessBlock) completionBlock
+          errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 @end

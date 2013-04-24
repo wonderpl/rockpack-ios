@@ -18,4 +18,12 @@
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                            andViewId:(NSString*)viewId;
 
+- (void) setAttributesFromDictionary: (NSDictionary *) dictionary
+                              withId: (NSString *) uniqueId
+           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
+                           andViewId: (NSString *) viewId;
+
+- (void) addVideoInstancesFromChannel: (Channel*) channel;
+
 @end

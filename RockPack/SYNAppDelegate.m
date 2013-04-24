@@ -39,6 +39,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 @property (nonatomic, strong) NSString *userAgentString;
 @property (nonatomic, strong) SYNVideoQueue* videoQueue;
+@property (nonatomic, strong) SYNSubscriptionsManager* subscriptionsManager;
 
 
 @end
@@ -93,18 +94,22 @@ extern void instrumentObjcMessageSends(BOOL);
     // Create tracker instance.
     [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
     
-    // Se up core data
+    // Se up CoreData // 
     [self initializeCoreDataStack];
 
     // Create default user
     [self createDefaultUser];
     
-    // == Video Queue View Controller == //
     
+    // Video Queue View Controller //
     self.videoQueue = [SYNVideoQueue queue];
     
-    // == Network Engine == //
     
+    // Subscriptions Manager //
+    self.subscriptionsManager = [SYNSubscriptionsManager manager];
+    
+    
+    // Network Engine //
     [self initializeNetworkEngines];
     
     
@@ -150,6 +155,9 @@ extern void instrumentObjcMessageSends(BOOL);
     }
     
 //    instrumentObjcMessageSends(YES); //to start
+    
+    
+    
     
     
     return YES;

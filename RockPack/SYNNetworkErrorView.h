@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNNetworkErrorView : UIView
+@interface SYNNetworkErrorView : UIView {
+    UILabel* errorLabel;
+    UIImageView* wifiImageView;
+}
 
-@property (nonatomic, strong) UILabel* errorLabel;
 
 +(id)errorView;
+
+-(void)setText:(NSString*)text;
+-(CGFloat)height;
 
 @end

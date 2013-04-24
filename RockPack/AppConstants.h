@@ -18,6 +18,13 @@
 #define kAPIRecentlyAddedVideoInSubscribedChannelsForUser @"ws/%@/subscriptions/recent_videos/"
 
 // Main RestFul API
+// Entities
+
+#define kChannel                    @"Channel"
+#define kVideo                      @"Video"
+#define kVideoInstance              @"VideoInstance"
+#define kChannelOwner               @"ChannelOwner"
+#define kUser                       @"User"
 
 // OAuth2
 
@@ -97,6 +104,7 @@
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"
+#define kChannelSubscribeRequest    @"kUserDataChanged"
 
 #define kRefresheComplete           @"kRefresheComplete"
 
@@ -130,6 +138,7 @@
 
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
+#define kChannelUpdatedKey @"eCommerceURL"
 
 // Settings
 
@@ -308,6 +317,7 @@ typedef enum {
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 
 #define kNoteAddToChannel           @"kNoteAddToChannel"
+#define kNoteCreateNewChannel       @"kNoteCreateNewChannel"
 
 
 //

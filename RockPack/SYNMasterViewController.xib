@@ -258,27 +258,39 @@
 					<object class="IBUIView" id="307475558">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">273</int>
-						<array class="NSMutableArray" key="NSSubviews">
-							<object class="IBUIView" id="542880119">
-								<reference key="NSNextResponder" ref="307475558"/>
-								<int key="NSvFlags">274</int>
-								<array class="NSMutableArray" key="NSSubviews"/>
-								<string key="NSFrameSize">{1024, 748}</string>
-								<reference key="NSSuperview" ref="307475558"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1066454248"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<reference key="IBUIBackgroundColor" ref="210113303"/>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-							</object>
-						</array>
+						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrameSize">{1024, 748}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="542880119"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="210113303"/>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
+					<object class="IBUIView" id="542880119">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">274</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrameSize">{1024, 748}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="255490418"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<reference key="IBUIBackgroundColor" ref="210113303"/>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
+					<object class="IBUIView" id="255490418">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">274</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrameSize">{1024, 748}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="1066454248"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<reference key="IBUIBackgroundColor" ref="210113303"/>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
@@ -393,6 +405,14 @@
 					<int key="connectionID">96</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">errorContainerView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="255490418"/>
+					</object>
+					<int key="connectionID">129</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">showAndHideSideNavigation:</string>
 						<reference key="source" ref="289097721"/>
@@ -462,6 +482,8 @@
 							<reference ref="1066454248"/>
 							<reference ref="307475558"/>
 							<reference ref="166375579"/>
+							<reference ref="542880119"/>
+							<reference ref="255490418"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -475,9 +497,7 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">67</int>
 						<reference key="object" ref="307475558"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="542880119"/>
-						</array>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Navigation Container View</string>
 					</object>
@@ -533,8 +553,14 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">95</int>
 						<reference key="object" ref="542880119"/>
-						<reference key="parent" ref="307475558"/>
+						<reference key="parent" ref="766721923"/>
 						<string key="objectName">Over Everything View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">128</int>
+						<reference key="object" ref="255490418"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Error Message View</string>
 					</object>
 				</array>
 			</object>
@@ -551,6 +577,7 @@
 				<real value="1" key="108.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="118.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="118.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="128.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="64.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="67.CustomClassName">SYNPassthroughView</string>
@@ -565,7 +592,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">127</int>
+			<int key="maxID">129</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -609,6 +636,7 @@
 						<string key="closeSearchButton">UIButton</string>
 						<string key="containerView">UIView</string>
 						<string key="dotsView">UIView</string>
+						<string key="errorContainerView">UIView</string>
 						<string key="movableButtonsContainer">UIView</string>
 						<string key="navigatioContainerView">UIView</string>
 						<string key="overEverythingView">UIView</string>
@@ -632,6 +660,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="dotsView">
 							<string key="name">dotsView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="errorContainerView">
+							<string key="name">errorContainerView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="movableButtonsContainer">
