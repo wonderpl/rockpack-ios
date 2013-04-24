@@ -255,7 +255,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteAddedToChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
@@ -361,13 +361,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
--(void)addToChannelAction:(NSNotification*)notification
+-(void)addedToChannelAction:(NSNotification*)notification
 {
     Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!channel)
         return;
     
-    DebugLog(@"Goint to add Channel with %d video instances", channel.videoInstances.count);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kClearAllAddedCells object:self];
+    
     
     // TODO : Show confirm message
     

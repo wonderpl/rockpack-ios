@@ -55,7 +55,12 @@
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleVideoQueueClearRequest:)
-                                                 name: kVideoQueueRemove
+                                                 name: kVideoQueueClear
+                                               object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleVideoQueueClearRequest:)
+                                                 name: kClearAllAddedCells
                                                object: nil];
 }
 
@@ -77,7 +82,22 @@
     [self removeFromVideoQueue: videoInstanceToAdd];
 }
 
-
+-(void)handleVideoQueueClearRequest:(NSNotification*)notification
+{
+    if(!self.currentlyCreatingChannel)
+        return;
+    
+    
+    for (VideoInstance* currentVideoInstance in self.currentlyCreatingChannel.videoInstances) {
+        
+        [self.appDelegate.channelsManagedObjectContext deleteObject:currentVideoInstance];
+        
+    }
+    
+    [self.appDelegate.channelsManagedObjectContext deleteObject:self.currentlyCreatingChannel];
+    
+    [self.appDelegate saveChannelsContext];
+}
 
 #pragma mark - 
 
