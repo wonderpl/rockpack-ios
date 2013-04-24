@@ -367,6 +367,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kClearAllAddedCells object:self];
+    
     
     // TODO : Show confirm message
     

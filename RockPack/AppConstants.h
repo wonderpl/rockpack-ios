@@ -108,6 +108,8 @@
 
 #define kRefresheComplete           @"kRefresheComplete"
 
+#define kClearAllAddedCells         @"kClearAllAddedCells"
+
 
 
 #define kShowUserChannels           @"kShowUserChannels"
