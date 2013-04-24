@@ -36,14 +36,16 @@
 
 #pragma mark - View Lifecycle
 
--(id)initWithViewId:(NSString *)vid
+- (id) initWithViewId: (NSString *) vid
 {
-    if(self = [super initWithViewId:vid])
+    if(self = [super initWithViewId: vid])
     {
         self.title = kFeedTitle;
     }
+    
     return self;
 }
+
 
 - (void) loadView
 {
@@ -60,6 +62,7 @@
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(12, 0, 0, 0);
     
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar)];
     
@@ -315,7 +318,7 @@
         // Special case, remember the first section view
         headerSupplementaryView.viewControllerDelegate = self;
         headerSupplementaryView.focus = focus;
-        headerSupplementaryView.sectionTitleLabel.text = sectionText;
+        headerSupplementaryView.sectionTitleLabel.text = sectionText.uppercaseString;
         if([[SYNDeviceManager sharedInstance] isLandscape])
         {
             headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDay"];
