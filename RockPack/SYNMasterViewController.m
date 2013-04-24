@@ -282,6 +282,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.containerViewController.showingViewController refresh];
 }
 
+#pragma mark - Scroller Changes
+
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
     NSNumber* pageNumber = [[notification userInfo] objectForKey:kCurrentPage];
@@ -566,18 +568,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     self.sideNavigationButton.hidden = YES;
+    
     CGRect sboxFrame;
+    
     if(showingBackButton)
     {
         sboxFrame = self.searchBoxController.view.frame;
-        
         sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
-        
-        
     }
     else
     {
-        
         sboxFrame.origin.x = 10.0;
     }
     
@@ -586,13 +586,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchBoxController.view.frame = sboxFrame;
     
     [self.view addSubview:self.searchBoxController.view];
+    
 }
 
 -(void)searchTyped:(NSNotification*)notification
 {
     
     
-    NSString* termString = [[notification userInfo] objectForKey:kSearchTerm];
+    NSString* termString = (NSString*)[[notification userInfo] objectForKey:kSearchTerm];
     
     if(!termString)
         return;
@@ -601,7 +602,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.sideNavigationButton.hidden = NO;
     
     [self.containerViewController showSearchViewControllerWithTerm:termString];
-    
     
 }
 

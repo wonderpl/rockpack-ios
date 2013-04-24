@@ -25,6 +25,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
+#import "SYNObjectFactory.h"
 
 @interface SYNContainerViewController () <UIPopoverControllerDelegate,
                                           UITextViewDelegate>
@@ -120,13 +121,13 @@
     
     
     self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-    self.seachViewNavigationViewController = [self wrapInNavigationController:self.searchViewController];
+    self.seachViewNavigationViewController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
     
     
     // == Channels User (out of normal controller array)
     
     self.channelsUserViewController = [[SYNChannelsUserViewController alloc] initWithViewId: kUserChanneslViewId];
-    self.channelsUserNavigationViewController = [self wrapInNavigationController:self.channelsUserViewController];
+    self.channelsUserNavigationViewController = [SYNObjectFactory wrapInNavigationController:self.channelsUserViewController];
     
     
     self.shouldAnimateViewTransitions = YES;
@@ -141,13 +142,13 @@
     
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
     self.scrollView.frame = scrollerFrame;
-    UINavigationController* feedNavController = [self wrapInNavigationController:feedRootViewController];
+    UINavigationController* feedNavController = [SYNObjectFactory wrapInNavigationController:feedRootViewController];
     feedNavController.view.frame = CGRectMake (0.0f, 0.0f, 1024.0f, 748.0f);
     [self addChildViewController:feedNavController];
     
-    [self addChildViewController:[self wrapInNavigationController:channelsRootViewController]];
+    [self addChildViewController:[SYNObjectFactory wrapInNavigationController:channelsRootViewController]];
     
-    [self addChildViewController:[self wrapInNavigationController:myRockpackViewController]];
+    [self addChildViewController:[SYNObjectFactory wrapInNavigationController:myRockpackViewController]];
     
     
     [self packViewControllersForInterfaceOrientation:UIDeviceOrientationLandscapeLeft];
@@ -574,19 +575,7 @@
 }
 
 
-#pragma mark - Helper Methods
 
--(UINavigationController*)wrapInNavigationController:(SYNAbstractViewController*)abstractViewController
-{
-    
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:abstractViewController];
-    navigationController.title = abstractViewController.title;
-    navigationController.view.frame = abstractViewController.view.frame;
-    navigationController.navigationBarHidden = YES;
-    navigationController.view.autoresizesSubviews = YES;
-    navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    return navigationController;
-}
 
 
 @end
