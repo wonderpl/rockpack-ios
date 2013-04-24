@@ -107,8 +107,15 @@
     // == Channels Page == //
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
-    channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
+        [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    }
+    else
+    {
+        channelsRootViewController.enableCategoryTable = YES;
+    }
     
     // == You Page == //
     

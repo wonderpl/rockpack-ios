@@ -25,7 +25,7 @@
 
 #define STANDARD_LENGTH 50
 
-@interface SYNChannelsRootViewController () <UIScrollViewDelegate>
+@interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
 @property (nonatomic, assign) BOOL userPinchedOut;
 @property (nonatomic, assign) BOOL ignoreRefresh;
@@ -41,6 +41,8 @@
 @property (nonatomic) NSInteger currentTotal;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
+@property (nonatomic, strong) UIButton* categorySelectButton;
+@property (nonatomic, strong) UIControl* categorySelectDismissControl;
 
 @end
 
@@ -64,12 +66,12 @@
 
 -(CGSize)itemSize
 {
-    return CGSizeMake(251.0, 212.0);
+    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 212.0);
 }
 
 -(CGSize)footerSize
 {
-    return CGSizeMake(1024.0, 64.0);
+    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 - (void) loadView
@@ -79,21 +81,32 @@
     
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     
-    SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = [self footerSize];
-    flowLayout.itemSize = [self itemSize];
-    flowLayout.sectionInset = UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0);
-    flowLayout.minimumLineSpacing = 30.0;
-    flowLayout.minimumInteritemSpacing = 0.0;
+    SYNIntegralCollectionViewFlowLayout* flowLayout;
+    if(isIPhone)
+    {
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        flowLayout.footerReferenceSize = [self footerSize];
+    }
+    else
+    {
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:[self itemSize] minimumInterItemSpacing:0.0 minimumLineSpacing:30.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0)];
+        flowLayout.footerReferenceSize = [self footerSize];
+    }
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
-    CGRect channelCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
-    CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
-    CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
+    CGRect channelCollectionViewFrame;
+    if(isIPhone)
+    {
+        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 123.0f);
+    }
+    else
+    {
+        channelCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
+        CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
+    }
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -103,9 +116,20 @@
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
-                 CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
-                 CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
+    CGRect newFrame;
+    if(isIPhone)
+    {
+        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
+    }
+    else
+    {
+        newFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
+        CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
+    }
+
+    
+    self.view = [[UIView alloc] initWithFrame:newFrame];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
@@ -117,12 +141,10 @@
     
     currentRange = NSMakeRange(0, 50);
     
-    // Categories table WIP
-    /*if(isIPhone)
+    if(self.enableCategoryTable)
     {
-        self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
-        [self.view addSubview:self.categoryTableViewController.view];
-    }*/
+        [self enableChannelsCategoryTable];
+    }
     
 }
 
@@ -552,5 +574,78 @@
                                                       
                                                   }];
 }
+
+#pragma mark - categories tableview
+
+-(void)enableChannelsCategoryTable
+{
+    self.categorySelectDismissControl = [[UIControl alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:self.categorySelectDismissControl];
+    [self.categorySelectDismissControl addTarget:self action:@selector(toggleChannelsCategoryTable:) forControlEvents:UIControlEventTouchDown];
+    self.categorySelectDismissControl.hidden = YES;
+    
+    
+    self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
+    CGRect newFrame = self.channelThumbnailCollectionView.frame;
+    newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
+    self.categoryTableViewController.view.frame = newFrame;
+    [self.view addSubview:self.categoryTableViewController.view];
+    self.categoryTableViewController.categoryTableControllerDelegate= self;
+    self.categoryTableViewController.view.hidden = YES;
+    
+    
+    newFrame.origin.y -= 44.0f;
+    newFrame.size.height = 44.0f;
+    newFrame.size.width = 320.0f;
+    self.categorySelectButton = [[UIButton alloc] initWithFrame:newFrame];
+    [self.categorySelectButton setBackgroundImage:[UIImage imageNamed:@"CategoryBar"] forState:UIControlStateNormal];
+    [self.categorySelectButton setBackgroundImage:[UIImage imageNamed:@"CategoryBarHighlighted"] forState:UIControlStateHighlighted];
+    [self.categorySelectButton addTarget:self action:@selector(toggleChannelsCategoryTable:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.categorySelectButton];
+    
+    
+}
+
+-(void)toggleChannelsCategoryTable:(id)sender
+{
+    if(self.categoryTableViewController.view.hidden)
+    {
+        CGRect startFrame = self.categoryTableViewController.view.frame;
+        startFrame.origin.x = -startFrame.size.width;
+        self.categoryTableViewController.view.frame = startFrame;
+        self.categoryTableViewController.view.hidden = NO;
+        self.categorySelectDismissControl.hidden = NO;
+        
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            CGRect endFrame = self.categoryTableViewController.view.frame;
+            endFrame.origin.x = 0;
+            self.categoryTableViewController.view.frame = endFrame;
+        } completion:nil];
+     }
+    else
+    {
+        self.categorySelectDismissControl.hidden = YES;
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+            CGRect endFrame = self.categoryTableViewController.view.frame;
+            endFrame.origin.x = -endFrame.size.width;
+            self.categoryTableViewController.view.frame = endFrame;
+        } completion:^(BOOL finished) {
+            self.categoryTableViewController.view.hidden = YES;
+        }];
+    }
+}
+
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategoryWithId:(NSString *)uniqueId
+{
+    [self handleNewTabSelectionWithId:uniqueId];
+}
+
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId
+{
+    [self handleNewTabSelectionWithId:uniqueId];
+    [self toggleChannelsCategoryTable:nil];
+}
+
+
 
 @end

@@ -11,6 +11,8 @@
 #import "SYNNetworkEngine.h"
 #import "Category.h"
 #import "Subcategory.h"
+#import "SYNChannelCategoryTableCell.h"
+#import "SYNChannelCategoryTableHeader.h"
 
 @interface SYNChannelCategoryTableViewController ()
 
@@ -35,8 +37,11 @@
 {
     [super viewDidLoad];
 
+    [self.tableView registerNib:[UINib nibWithNibName:@"SYNChannelCategoryTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SYNChannelCategoryTableCell"];
+    [self.tableView registerClass:[SYNChannelCategoryTableHeader class] forHeaderFooterViewReuseIdentifier:@"SYNChannelCategoryTableHeader"];
+    
     [self loadCategories];
-    self.tableView.backgroundColor = [UIColor greenColor];
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,35 +112,40 @@
     return [[[self.transientDatasource objectAtIndex:section] valueForKey:kSubCategoriesKey] count];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 44.0f;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
     Subcategory* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] valueForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    cell.textLabel.text = subCategory.name;
+    SYNChannelCategoryTableCell *cell = (SYNChannelCategoryTableCell*) [tableView dequeueReusableCellWithIdentifier:@"SYNChannelCategoryTableCell"];
+    cell.titleLabel.text = subCategory.name;
     return cell;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIButton* header = [[UIButton alloc] initWithFrame:CGRectMake(0.0f,0.0f, 320.0f,60.0f)];
     NSDictionary* dictionary = [self.transientDatasource objectAtIndex:section];
-    header.titleLabel.text = [dictionary valueForKey:kCategoryNameKey];
-    if([[dictionary valueForKey:kSubCategoriesKey] count])
+    SYNChannelCategoryTableHeader *header = (SYNChannelCategoryTableHeader*) [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"SYNChannelCategoryTableHeader"];
+    header.titleLabel.text = [dictionary objectForKey:kCategoryNameKey];
+    if([dictionary valueForKey:kSubCategoriesKey])
     {
-        header.backgroundColor = [UIColor redColor];
+        header.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+        header.titleLabel.textColor = [UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f];
+        header.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
     }
     else
     {
-        header.backgroundColor = [UIColor blueColor];
+        header.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+        header.titleLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
+        header.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
     }
-    header.tag = section;
-    
-    [header addTarget:self action:@selector(tappedHeader:) forControlEvents:UIControlEventTouchUpInside];
+    [header.headerButton addTarget:self action:@selector(tappedHeader:) forControlEvents:UIControlEventTouchUpInside];
+    [header.headerButton addTarget:self action:@selector(pressedHeader:) forControlEvents:UIControlEventTouchDown];
+    [header.headerButton addTarget:self action:@selector(releasedHeader:) forControlEvents:UIControlEventTouchUpOutside];
+    header.headerButton.tag = section;
     
     return header;
 }
@@ -181,12 +191,39 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-}
+    Subcategory* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] objectForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
+    //Callback to update content
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:)])
+    {
+        [self.categoryTableControllerDelegate categoryTableController:self didSelectSubCategoryWithId:subCategory.uniqueId];
+    }}
 
 #pragma mark - Table header tap callback
+
+-(void)pressedHeader:(UIButton*)header;
+{
+    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:header.tag];
+    headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideHighlighted"];
+}
+
+-(void)releasedHeader:(UIButton*)header
+{
+    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:header.tag];
+    NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:header.tag];
+    NSArray* subCategories = [sectionDictionary objectForKey:kSubCategoriesKey];
+    if(subCategories)
+    {
+        headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+    }
+    else
+    {
+        headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+    }
+
+}
+
 -(void)tappedHeader:(UIButton*)header
 {
     NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:header.tag];
@@ -204,24 +241,56 @@
         }
         [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
+        SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:header.tag];
+        [UIView transitionWithView:headerView.titleLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            headerView.titleLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
+            headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
+        } completion:nil];
+        
+        [UIView transitionWithView:headerView.backgroundImage duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+        } completion:nil];
+               
+        
     }
     else
     {
+        //expand section
+        
         Category * category = [self.categoriesDatasource objectAtIndex:header.tag];
         NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
         NSArray* newSubCategories = [category.subcategories sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-        //already expanded, close section
         [self.tableView beginUpdates];
         [sectionDictionary setObject:newSubCategories forKey:kSubCategoriesKey];
         [self.transientDatasource replaceObjectAtIndex:header.tag withObject:sectionDictionary];
         NSMutableArray* indexPaths = [NSMutableArray arrayWithCapacity:[newSubCategories count]];
         for(int i=0; i< [newSubCategories count]; i++)
         {
-                [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:header.tag]];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:header.tag]];
         }
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
+        
+        SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:header.tag];
+        [UIView transitionWithView:headerView.titleLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            headerView.titleLabel.textColor = [UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f];
+            headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
+        } completion:nil];
+        
+        [UIView transitionWithView:headerView.backgroundImage duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+        } completion:nil];
+        
+        //Callback to update content
+        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategoryWithId:)])
+        {
+            [self.categoryTableControllerDelegate categoryTableController:self didSelectCategoryWithId:category.uniqueId];
+        }
+        
+        self.lastSelectedIndexpath = [NSIndexPath indexPathForRow:-1 inSection:header.tag];
+               
     }
 }
+
 
 @end

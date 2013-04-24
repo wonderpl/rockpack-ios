@@ -473,7 +473,34 @@
 		38D6DF471727DEFF008C492D /* SYNVideoViewerViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF461727DEFF008C492D /* SYNVideoViewerViewController~iphone.xib */; };
 		38D6DF491727DF1A008C492D /* SYNChannelMidCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF481727DF1A008C492D /* SYNChannelMidCell~iphone.xib */; };
 		38D6DF4D1727DF32008C492D /* SYNChannelCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D6DF4B1727DF32008C492D /* SYNChannelCategoryTableViewController.m */; };
-		38D6DF4E1727DF32008C492D /* SYNChannelCategoryTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF4C1727DF32008C492D /* SYNChannelCategoryTableViewController.xib */; };
+		38D6DF4E1727DF32008C492D /* SYNChannelCategoryTableViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF4C1727DF32008C492D /* SYNChannelCategoryTableViewController~iphone.xib */; };
+		38D6DF501727E99B008C492D /* SYNChannelThumbnailCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF4F1727E99B008C492D /* SYNChannelThumbnailCell~iphone.xib */; };
+		38D6DF681727EF1F008C492D /* CategoryBar@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF521727EF1F008C492D /* CategoryBar@2x~iphone.png */; };
+		38D6DF691727EF1F008C492D /* CategoryBarHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF531727EF1F008C492D /* CategoryBarHighlighted@2x~iphone.png */; };
+		38D6DF6A1727EF1F008C492D /* CategoryBarHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF541727EF1F008C492D /* CategoryBarHighlighted~iphone.png */; };
+		38D6DF6B1727EF1F008C492D /* CategoryBar~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF551727EF1F008C492D /* CategoryBar~iphone.png */; };
+		38D6DF6C1727EF1F008C492D /* CategorySlide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF561727EF1F008C492D /* CategorySlide@2x~iphone.png */; };
+		38D6DF6D1727EF1F008C492D /* CategorySlideHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF571727EF1F008C492D /* CategorySlideHighlighted@2x~iphone.png */; };
+		38D6DF6E1727EF1F008C492D /* CategorySlideHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF581727EF1F008C492D /* CategorySlideHighlighted~iphone.png */; };
+		38D6DF6F1727EF1F008C492D /* CategorySlideSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF591727EF1F008C492D /* CategorySlideSelected@2x~iphone.png */; };
+		38D6DF701727EF1F008C492D /* CategorySlideSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF5A1727EF1F008C492D /* CategorySlideSelected~iphone.png */; };
+		38D6DF711727EF1F008C492D /* CategorySlide~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF5B1727EF1F008C492D /* CategorySlide~iphone.png */; };
+		38D6DF721727EF1F008C492D /* IconCategoryBarChevron@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF5C1727EF1F008C492D /* IconCategoryBarChevron@2x~iphone.png */; };
+		38D6DF731727EF1F008C492D /* IconCategoryBarChevron~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF5D1727EF1F008C492D /* IconCategoryBarChevron~iphone.png */; };
+		38D6DF741727EF1F008C492D /* IconCategorySlideChevron@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF5E1727EF1F008C492D /* IconCategorySlideChevron@2x~iphone.png */; };
+		38D6DF751727EF1F008C492D /* IconCategorySlideChevronSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF5F1727EF1F008C492D /* IconCategorySlideChevronSelected@2x~iphone.png */; };
+		38D6DF761727EF1F008C492D /* IconCategorySlideChevronSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF601727EF1F008C492D /* IconCategorySlideChevronSelected~iphone.png */; };
+		38D6DF771727EF1F008C492D /* IconCategorySlideChevron~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF611727EF1F008C492D /* IconCategorySlideChevron~iphone.png */; };
+		38D6DF781727EF1F008C492D /* SubCategorySlide@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF621727EF1F008C492D /* SubCategorySlide@2x~iphone.png */; };
+		38D6DF791727EF1F008C492D /* SubCategorySlideHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF631727EF1F008C492D /* SubCategorySlideHighlighted@2x~iphone.png */; };
+		38D6DF7A1727EF1F008C492D /* SubCategorySlideHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF641727EF1F008C492D /* SubCategorySlideHighlighted~iphone.png */; };
+		38D6DF7B1727EF1F008C492D /* SubCategorySlideSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF651727EF1F008C492D /* SubCategorySlideSelected@2x~iphone.png */; };
+		38D6DF7C1727EF1F008C492D /* SubCategorySlideSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF661727EF1F008C492D /* SubCategorySlideSelected~iphone.png */; };
+		38D6DF7D1727EF1F008C492D /* SubCategorySlide~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF671727EF1F008C492D /* SubCategorySlide~iphone.png */; };
+		38D6DF811727F34C008C492D /* SYNChannelCategoryTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D6DF801727F34C008C492D /* SYNChannelCategoryTableCell.m */; };
+		38D6DF831727F386008C492D /* SYNChannelCategoryTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF821727F385008C492D /* SYNChannelCategoryTableCell.xib */; };
+		38D6DF87172813B0008C492D /* SYNChannelCategoryTableHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38D6DF84172813AD008C492D /* SYNChannelCategoryTableHeader.xib */; };
+		38D6DF88172813B0008C492D /* SYNChannelCategoryTableHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D6DF86172813AF008C492D /* SYNChannelCategoryTableHeader.m */; };
 		BE03A69316F7459D00245314 /* SYNAccountSettingsMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */; };
 		BE03A6C616F7697900245314 /* ButtonFlagDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B816F7697900245314 /* ButtonFlagDefault.png */; };
 		BE03A6C716F7697900245314 /* ButtonFlagDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6B916F7697900245314 /* ButtonFlagDefault@2x.png */; };
@@ -1261,7 +1288,36 @@
 		38D6DF481727DF1A008C492D /* SYNChannelMidCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelMidCell~iphone.xib"; sourceTree = "<group>"; };
 		38D6DF4A1727DF32008C492D /* SYNChannelCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCategoryTableViewController.h; sourceTree = "<group>"; };
 		38D6DF4B1727DF32008C492D /* SYNChannelCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCategoryTableViewController.m; sourceTree = "<group>"; };
-		38D6DF4C1727DF32008C492D /* SYNChannelCategoryTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCategoryTableViewController.xib; sourceTree = "<group>"; };
+		38D6DF4C1727DF32008C492D /* SYNChannelCategoryTableViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelCategoryTableViewController~iphone.xib"; sourceTree = "<group>"; };
+		38D6DF4F1727E99B008C492D /* SYNChannelThumbnailCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelThumbnailCell~iphone.xib"; sourceTree = "<group>"; };
+		38D6DF521727EF1F008C492D /* CategoryBar@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategoryBar@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF531727EF1F008C492D /* CategoryBarHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategoryBarHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF541727EF1F008C492D /* CategoryBarHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategoryBarHighlighted~iphone.png"; sourceTree = "<group>"; };
+		38D6DF551727EF1F008C492D /* CategoryBar~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategoryBar~iphone.png"; sourceTree = "<group>"; };
+		38D6DF561727EF1F008C492D /* CategorySlide@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlide@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF571727EF1F008C492D /* CategorySlideHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlideHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF581727EF1F008C492D /* CategorySlideHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlideHighlighted~iphone.png"; sourceTree = "<group>"; };
+		38D6DF591727EF1F008C492D /* CategorySlideSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlideSelected@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF5A1727EF1F008C492D /* CategorySlideSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlideSelected~iphone.png"; sourceTree = "<group>"; };
+		38D6DF5B1727EF1F008C492D /* CategorySlide~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlide~iphone.png"; sourceTree = "<group>"; };
+		38D6DF5C1727EF1F008C492D /* IconCategoryBarChevron@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconCategoryBarChevron@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF5D1727EF1F008C492D /* IconCategoryBarChevron~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconCategoryBarChevron~iphone.png"; sourceTree = "<group>"; };
+		38D6DF5E1727EF1F008C492D /* IconCategorySlideChevron@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconCategorySlideChevron@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF5F1727EF1F008C492D /* IconCategorySlideChevronSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconCategorySlideChevronSelected@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF601727EF1F008C492D /* IconCategorySlideChevronSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconCategorySlideChevronSelected~iphone.png"; sourceTree = "<group>"; };
+		38D6DF611727EF1F008C492D /* IconCategorySlideChevron~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconCategorySlideChevron~iphone.png"; sourceTree = "<group>"; };
+		38D6DF621727EF1F008C492D /* SubCategorySlide@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SubCategorySlide@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF631727EF1F008C492D /* SubCategorySlideHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SubCategorySlideHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF641727EF1F008C492D /* SubCategorySlideHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SubCategorySlideHighlighted~iphone.png"; sourceTree = "<group>"; };
+		38D6DF651727EF1F008C492D /* SubCategorySlideSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SubCategorySlideSelected@2x~iphone.png"; sourceTree = "<group>"; };
+		38D6DF661727EF1F008C492D /* SubCategorySlideSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SubCategorySlideSelected~iphone.png"; sourceTree = "<group>"; };
+		38D6DF671727EF1F008C492D /* SubCategorySlide~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SubCategorySlide~iphone.png"; sourceTree = "<group>"; };
+		38D6DF7F1727F34C008C492D /* SYNChannelCategoryTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCategoryTableCell.h; sourceTree = "<group>"; };
+		38D6DF801727F34C008C492D /* SYNChannelCategoryTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCategoryTableCell.m; sourceTree = "<group>"; };
+		38D6DF821727F385008C492D /* SYNChannelCategoryTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCategoryTableCell.xib; sourceTree = "<group>"; };
+		38D6DF84172813AD008C492D /* SYNChannelCategoryTableHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCategoryTableHeader.xib; sourceTree = "<group>"; };
+		38D6DF85172813AE008C492D /* SYNChannelCategoryTableHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCategoryTableHeader.h; sourceTree = "<group>"; };
+		38D6DF86172813AF008C492D /* SYNChannelCategoryTableHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCategoryTableHeader.m; sourceTree = "<group>"; };
 		BE03A69116F7459D00245314 /* SYNAccountSettingsMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsMainTableViewController.h; sourceTree = "<group>"; };
 		BE03A69216F7459D00245314 /* SYNAccountSettingsMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsMainTableViewController.m; sourceTree = "<group>"; };
 		BE03A6B816F7697900245314 /* ButtonFlagDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFlagDefault.png; path = Assets/Images/ButtonFlagDefault.png; sourceTree = "<group>"; };
@@ -2490,6 +2546,10 @@
 		01B7CD9E166E163D001F4AF0 /* Channel cells */ = {
 			isa = PBXGroup;
 			children = (
+				38D6DF84172813AD008C492D /* SYNChannelCategoryTableHeader.xib */,
+				38D6DF85172813AE008C492D /* SYNChannelCategoryTableHeader.h */,
+				38D6DF86172813AF008C492D /* SYNChannelCategoryTableHeader.m */,
+				38D6DF4F1727E99B008C492D /* SYNChannelThumbnailCell~iphone.xib */,
 				38D6DF481727DF1A008C492D /* SYNChannelMidCell~iphone.xib */,
 				01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */,
 				01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */,
@@ -2503,6 +2563,9 @@
 				BE285D9D172584E200D995AB /* SYNChannelCreateNewCell.h */,
 				BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */,
 				BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */,
+				38D6DF7F1727F34C008C492D /* SYNChannelCategoryTableCell.h */,
+				38D6DF801727F34C008C492D /* SYNChannelCategoryTableCell.m */,
+				38D6DF821727F385008C492D /* SYNChannelCategoryTableCell.xib */,
 			);
 			name = "Channel cells";
 			sourceTree = "<group>";
@@ -2522,7 +2585,7 @@
 			children = (
 				38D6DF4A1727DF32008C492D /* SYNChannelCategoryTableViewController.h */,
 				38D6DF4B1727DF32008C492D /* SYNChannelCategoryTableViewController.m */,
-				38D6DF4C1727DF32008C492D /* SYNChannelCategoryTableViewController.xib */,
+				38D6DF4C1727DF32008C492D /* SYNChannelCategoryTableViewController~iphone.xib */,
 				014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */,
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
 				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
@@ -2762,6 +2825,7 @@
 		38D6DEB41727DE59008C492D /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				38D6DF511727EF1F008C492D /* channels */,
 				38D6DEB51727DE59008C492D /* feed */,
 				38D6DECC1727DE59008C492D /* profile */,
 				38D6DEDD1727DE59008C492D /* videoPlayer */,
@@ -2857,6 +2921,35 @@
 				38D6DEFB1727DE59008C492D /* PanelVideoScreenVideoMainOverlay~iphone.png */,
 			);
 			path = videoPlayer;
+			sourceTree = "<group>";
+		};
+		38D6DF511727EF1F008C492D /* channels */ = {
+			isa = PBXGroup;
+			children = (
+				38D6DF521727EF1F008C492D /* CategoryBar@2x~iphone.png */,
+				38D6DF531727EF1F008C492D /* CategoryBarHighlighted@2x~iphone.png */,
+				38D6DF541727EF1F008C492D /* CategoryBarHighlighted~iphone.png */,
+				38D6DF551727EF1F008C492D /* CategoryBar~iphone.png */,
+				38D6DF561727EF1F008C492D /* CategorySlide@2x~iphone.png */,
+				38D6DF571727EF1F008C492D /* CategorySlideHighlighted@2x~iphone.png */,
+				38D6DF581727EF1F008C492D /* CategorySlideHighlighted~iphone.png */,
+				38D6DF591727EF1F008C492D /* CategorySlideSelected@2x~iphone.png */,
+				38D6DF5A1727EF1F008C492D /* CategorySlideSelected~iphone.png */,
+				38D6DF5B1727EF1F008C492D /* CategorySlide~iphone.png */,
+				38D6DF5C1727EF1F008C492D /* IconCategoryBarChevron@2x~iphone.png */,
+				38D6DF5D1727EF1F008C492D /* IconCategoryBarChevron~iphone.png */,
+				38D6DF5E1727EF1F008C492D /* IconCategorySlideChevron@2x~iphone.png */,
+				38D6DF5F1727EF1F008C492D /* IconCategorySlideChevronSelected@2x~iphone.png */,
+				38D6DF601727EF1F008C492D /* IconCategorySlideChevronSelected~iphone.png */,
+				38D6DF611727EF1F008C492D /* IconCategorySlideChevron~iphone.png */,
+				38D6DF621727EF1F008C492D /* SubCategorySlide@2x~iphone.png */,
+				38D6DF631727EF1F008C492D /* SubCategorySlideHighlighted@2x~iphone.png */,
+				38D6DF641727EF1F008C492D /* SubCategorySlideHighlighted~iphone.png */,
+				38D6DF651727EF1F008C492D /* SubCategorySlideSelected@2x~iphone.png */,
+				38D6DF661727EF1F008C492D /* SubCategorySlideSelected~iphone.png */,
+				38D6DF671727EF1F008C492D /* SubCategorySlide~iphone.png */,
+			);
+			path = channels;
 			sourceTree = "<group>";
 		};
 		BE03A69016F7457900245314 /* Account Settings */ = {
@@ -3963,7 +4056,32 @@
 				38D6DF451727DEA5008C492D /* SYNVideoThumbnailSmallCell~iphone.xib in Resources */,
 				38D6DF471727DEFF008C492D /* SYNVideoViewerViewController~iphone.xib in Resources */,
 				38D6DF491727DF1A008C492D /* SYNChannelMidCell~iphone.xib in Resources */,
-				38D6DF4E1727DF32008C492D /* SYNChannelCategoryTableViewController.xib in Resources */,
+				38D6DF4E1727DF32008C492D /* SYNChannelCategoryTableViewController~iphone.xib in Resources */,
+				38D6DF501727E99B008C492D /* SYNChannelThumbnailCell~iphone.xib in Resources */,
+				38D6DF681727EF1F008C492D /* CategoryBar@2x~iphone.png in Resources */,
+				38D6DF691727EF1F008C492D /* CategoryBarHighlighted@2x~iphone.png in Resources */,
+				38D6DF6A1727EF1F008C492D /* CategoryBarHighlighted~iphone.png in Resources */,
+				38D6DF6B1727EF1F008C492D /* CategoryBar~iphone.png in Resources */,
+				38D6DF6C1727EF1F008C492D /* CategorySlide@2x~iphone.png in Resources */,
+				38D6DF6D1727EF1F008C492D /* CategorySlideHighlighted@2x~iphone.png in Resources */,
+				38D6DF6E1727EF1F008C492D /* CategorySlideHighlighted~iphone.png in Resources */,
+				38D6DF6F1727EF1F008C492D /* CategorySlideSelected@2x~iphone.png in Resources */,
+				38D6DF701727EF1F008C492D /* CategorySlideSelected~iphone.png in Resources */,
+				38D6DF711727EF1F008C492D /* CategorySlide~iphone.png in Resources */,
+				38D6DF721727EF1F008C492D /* IconCategoryBarChevron@2x~iphone.png in Resources */,
+				38D6DF731727EF1F008C492D /* IconCategoryBarChevron~iphone.png in Resources */,
+				38D6DF741727EF1F008C492D /* IconCategorySlideChevron@2x~iphone.png in Resources */,
+				38D6DF751727EF1F008C492D /* IconCategorySlideChevronSelected@2x~iphone.png in Resources */,
+				38D6DF761727EF1F008C492D /* IconCategorySlideChevronSelected~iphone.png in Resources */,
+				38D6DF771727EF1F008C492D /* IconCategorySlideChevron~iphone.png in Resources */,
+				38D6DF781727EF1F008C492D /* SubCategorySlide@2x~iphone.png in Resources */,
+				38D6DF791727EF1F008C492D /* SubCategorySlideHighlighted@2x~iphone.png in Resources */,
+				38D6DF7A1727EF1F008C492D /* SubCategorySlideHighlighted~iphone.png in Resources */,
+				38D6DF7B1727EF1F008C492D /* SubCategorySlideSelected@2x~iphone.png in Resources */,
+				38D6DF7C1727EF1F008C492D /* SubCategorySlideSelected~iphone.png in Resources */,
+				38D6DF7D1727EF1F008C492D /* SubCategorySlide~iphone.png in Resources */,
+				38D6DF831727F386008C492D /* SYNChannelCategoryTableCell.xib in Resources */,
+				38D6DF87172813B0008C492D /* SYNChannelCategoryTableHeader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4154,6 +4272,8 @@
 				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
 				BE285DBC1726828F00D995AB /* SYNSubscriptionsManager.m in Sources */,
 				38D6DF4D1727DF32008C492D /* SYNChannelCategoryTableViewController.m in Sources */,
+				38D6DF811727F34C008C492D /* SYNChannelCategoryTableCell.m in Sources */,
+				38D6DF88172813B0008C492D /* SYNChannelCategoryTableHeader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
