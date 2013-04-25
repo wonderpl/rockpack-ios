@@ -257,12 +257,12 @@
     
     NSArray *existingObjectsInViewId;
     
-    if(!append)
-    {
-        existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
-                                                                                 andViewId: kChannelsViewId
-                                                                    inManagedObjectContext: importManagedObjectContext];
-    }
+//    if(!append)
+//    {
+//        existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
+//                                                                                 andViewId: kChannelsViewId
+//                                                                    inManagedObjectContext: importManagedObjectContext];
+//    }
     
     
     // Query for existing objects
@@ -272,7 +272,9 @@
                                                 inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == '%@' AND category == '%@'", kChannelsViewId];
     
     [channelFetchRequest setPredicate: predicate];
     
@@ -283,23 +285,31 @@
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingChannelEntries.count];
     
-    for (Channel* existingChannel in matchingChannelEntries) {
+    for (Channel* existingChannel in matchingChannelEntries)
+    {
+        NSLog(@" - Channel: %@", existingChannel.title);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
     }
     
-    for (NSDictionary *itemDictionary in itemArray) {
+    for (NSDictionary *itemDictionary in itemArray)
+    {
         
         NSString *uniqueId = [itemDictionary objectForKey: @"id"];
         if(!uniqueId)
             continue;
         
         if([existingChannelsByIndex objectForKey:uniqueId])
+        {
+            NSLog(@"Found (title:%@, category:%@)", [itemDictionary objectForKey: @"title"], [itemDictionary objectForKey: @"category"]);
             continue;
+        }
+            
         
-        if ([itemDictionary isKindOfClass: [NSDictionary class]]) {
+        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+        {
             
             [Channel instanceFromDictionary: itemDictionary
-                  usingManagedObjectContext: importManagedObjectContext
+                  usingManagedObjectContext: appDelegate.mainManagedObjectContext
                         ignoringObjectTypes: kIgnoreStoredObjects
                                   andViewId: kChannelsViewId];
         }
@@ -308,13 +318,13 @@
         
     
 
-    if(!append)
-    {
-        
-        [self removeUnusedManagedObjects: existingObjectsInViewId
-                  inManagedObjectContext: importManagedObjectContext];
-        
-    }
+//    if(!append)
+//    {
+//        
+//        [self removeUnusedManagedObjects: existingObjectsInViewId
+//                  inManagedObjectContext: importManagedObjectContext];
+//        
+//    }
     
     
     BOOL saveResult = [self saveImportContext];
