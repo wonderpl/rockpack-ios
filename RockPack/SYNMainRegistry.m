@@ -257,13 +257,6 @@
     
     NSArray *existingObjectsInViewId;
     
-//    if(!append)
-//    {
-//        existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Channel"
-//                                                                                 andViewId: kChannelsViewId
-//                                                                    inManagedObjectContext: importManagedObjectContext];
-//    }
-    
     
     // Query for existing objects
     
@@ -274,7 +267,7 @@
     
     
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == '%@' AND category == '%@'", kChannelsViewId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == '%@' AND categoryId == %d", kChannelsViewId, 1];
     
     [channelFetchRequest setPredicate: predicate];
     
@@ -289,8 +282,10 @@
     {
         NSLog(@" - Channel: %@", existingChannel.title);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
+        existingChannel.markedForDeletion = YES;
     }
     
+    Channel* existingChannelMatch;
     for (NSDictionary *itemDictionary in itemArray)
     {
         
@@ -298,9 +293,10 @@
         if(!uniqueId)
             continue;
         
-        if([existingChannelsByIndex objectForKey:uniqueId])
+        if((existingChannelMatch = [existingChannelsByIndex objectForKey:uniqueId]))
         {
-            NSLog(@"Found (title:%@, category:%@)", [itemDictionary objectForKey: @"title"], [itemDictionary objectForKey: @"category"]);
+            NSLog(@"Found (title:%@)", existingChannelMatch.title);
+            existingChannelMatch.markedForDeletion = NO;
             continue;
         }
             
@@ -318,13 +314,13 @@
         
     
 
-//    if(!append)
-//    {
-//        
-//        [self removeUnusedManagedObjects: existingObjectsInViewId
-//                  inManagedObjectContext: importManagedObjectContext];
-//        
-//    }
+    if(!append)
+    {
+        
+        [self removeUnusedManagedObjects: existingObjectsInViewId
+                  inManagedObjectContext: importManagedObjectContext];
+        
+    }
     
     
     BOOL saveResult = [self saveImportContext];
