@@ -41,6 +41,8 @@
 		0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF217292F3B00612186 /* ButtonCamera@2x.png */; };
 		0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */; };
 		0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */; };
+		0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE0A172954E900612186 /* PanelChannelCreationCover.png */; };
+		0111CE0D172954E900612186 /* PanelChannelCreationCover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE0B172954E900612186 /* PanelChannelCreationCover@2x.png */; };
 		011A15E116EE2F46008CF25E /* popover-black-right-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */; };
 		011A15E216EE2F46008CF25E /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */; };
 		011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A15F416EE3E9A008CF25E /* SYNCameraPopoverViewController.m */; };
@@ -601,6 +603,8 @@
 		0111CDFA1729314E00612186 /* SYNCoverThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverThumbnailCell.h; sourceTree = "<group>"; };
 		0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverThumbnailCell.m; sourceTree = "<group>"; };
 		0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverThumbnailCell.xib; sourceTree = "<group>"; };
+		0111CE0A172954E900612186 /* PanelChannelCreationCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelCreationCover.png; path = Assets/Images/PanelChannelCreationCover.png; sourceTree = "<group>"; };
+		0111CE0B172954E900612186 /* PanelChannelCreationCover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelChannelCreationCover@2x.png"; path = "Assets/Images/PanelChannelCreationCover@2x.png"; sourceTree = "<group>"; };
 		011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image@2x.png"; path = "Assets/Images/popover-black-right-arrow-image@2x.png"; sourceTree = "<group>"; };
 		011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image.png"; path = "Assets/Images/popover-black-right-arrow-image.png"; sourceTree = "<group>"; };
 		011A15F316EE3E9A008CF25E /* SYNCameraPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCameraPopoverViewController.h; sourceTree = "<group>"; };
@@ -1416,6 +1420,12 @@
 		0111CE091729537300612186 /* Cover Thumbnail */ = {
 			isa = PBXGroup;
 			children = (
+				0111CE0A172954E900612186 /* PanelChannelCreationCover.png */,
+				0111CE0B172954E900612186 /* PanelChannelCreationCover@2x.png */,
+				BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */,
+				BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */,
+				BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */,
+				BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */,
 			);
 			name = "Cover Thumbnail";
 			sourceTree = "<group>";
@@ -2153,14 +2163,10 @@
 		01B7F76C164FE464009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
-				BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */,
-				BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */,
 				BE285DA217258A0A00D995AB /* ButtonConfirm.png */,
 				BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */,
 				BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */,
 				BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */,
-				BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */,
-				BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -3337,6 +3343,8 @@
 				0111CDF717292F3B00612186 /* ButtonCamera.png in Resources */,
 				0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */,
 				0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */,
+				0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */,
+				0111CE0D172954E900612186 /* PanelChannelCreationCover@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
