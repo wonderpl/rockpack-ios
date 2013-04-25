@@ -16,10 +16,8 @@
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNContainerViewController.h"
 #import "SYNBackButtonControl.h"
-
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
-#import "SYNCategoryChooserViewController.h"
 #import "SYNRefreshButton.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNDeviceManager.h"
@@ -84,7 +82,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-@property (nonatomic, strong) SYNCategoryChooserViewController *categoryChooserViewController;
 
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
 
@@ -514,48 +511,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     UIView* child = self.overlayView.subviews[0];
     
-    
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         child.alpha = 0.0f;
-                     } completion: ^(BOOL finished) {
-                         self.overlayView.userInteractionEnabled = NO;
-                         self.videoViewerViewController = nil;
-                         [child removeFromSuperview];
-                         
-                     }];
-
-}
-
-- (void) addCategoryChooserOverlayToViewController: (UIViewController *) originViewController
-{
-    // Remember the view controller that we came from
-    self.originViewController = originViewController;
-
-    self.categoryChooserViewController = [[SYNCategoryChooserViewController alloc] init];
-    
-    [self.overlayView addSubview: self.categoryChooserViewController.view];
-    [originViewController addChildViewController:self.categoryChooserViewController];
-    
-    self.categoryChooserViewController.view.alpha = 0.0f;
-    self.categoryChooserViewController.overlayParent = self;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         self.categoryChooserViewController.view.alpha = 1.0f;
-                     } completion: ^(BOOL finished) {
-                         self.overlayView.userInteractionEnabled = YES;
-                     }];
-}
-
-- (void) removeCategoryChooserOverlayController
-{
-    
-    UIView* child = self.overlayView.subviews[0];
     
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f

@@ -23,7 +23,6 @@
 #import "SYNChannelSelectorCell.h"
 #import "SYNNetworkEngine.h"
 #import "SYNSoundPlayer.h"
-#import "SYNTextField.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "Subcategory.h"
 #import "UIFont+SYNFont.h"

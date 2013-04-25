@@ -230,12 +230,6 @@
 }
 
 
-- (void) displayCategoryChooser
-{
-    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-    
-    [masterViewController addCategoryChooserOverlayToViewController: self];
-}
 
 
 #pragma mark - UICollectionView Data Source Stubb

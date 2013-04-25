@@ -23,7 +23,8 @@
 @interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
                                                                  UICollectionViewDelegate,
-                                                                 SYNTabViewDelegate> {
+                                                                 SYNTabViewDelegate>
+{
 @protected
     SYNAppDelegate* appDelegate;
     BOOL tabExpanded;
@@ -46,11 +47,10 @@
 @property (nonatomic, strong) SYNTabViewController* tabViewController;
 
 - (void) highlightTab: (int) tabIndex;
--(void)handleNewTabSelectionWithId:(NSString*)selectionId;
+- (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 
 
--(void) reloadCollectionViews;
-
+- (void) reloadCollectionViews;
 
 // Animation support
 
@@ -59,36 +59,23 @@
 - (void) animatedPushViewController: (UIViewController *) vc;
 - (IBAction) animatedPopViewController;
 
-
-
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
-
 // Video Queue
-
 - (BOOL) hasTabBar;
 - (BOOL) isVideoQueueVisibleOnStart;
-
-
 - (void) highlightVideoQueue: (BOOL) showHighlight;
-
-
 - (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
-- (void) displayCategoryChooser;
-
-
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
-
 - (void) refresh;
 
 
--(id)initWithViewId:(NSString*)vid;
--(void)viewCameToScrollFront;
--(BOOL)needsAddButton;
+- (id) initWithViewId: (NSString*) vid;
+- (void) viewCameToScrollFront;
+- (BOOL) needsAddButton;
 
 // Share
-
 - (void) shareURL: (NSURL *) shareURL
       withMessage: (NSString *) shareString
          fromRect: (CGRect) rect

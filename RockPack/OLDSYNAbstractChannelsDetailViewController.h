@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Nick Banks. All rights reserved.
 //
 
-@class Channel, HPGrowingTextView, SYNChannelHeaderView, SYNTextField;
+@class Channel, HPGrowingTextView, SYNChannelHeaderView;
 
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractViewController.h"
