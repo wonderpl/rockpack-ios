@@ -79,14 +79,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.tableView reloadData];
 }
 
-- (void)didReceiveMemoryWarning
+-(void)viewDidAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewDidAppear:animated];
+    
+    
 }
 
 #pragma mark - Table view data source
@@ -110,7 +110,7 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;
-   
+    
     
     if(indexPath.section == 0) {
         
@@ -178,7 +178,7 @@
                 if(!user.dateOfBirth)
                     cell.textLabel.text = @"Date of Birth";
                 else
-                    cell.textLabel.text = [self getDOBPlainStringFromCurrentUser];
+                    cell.textLabel.text = [self getDOBPlainString:user.dateOfBirth];
                 
                 cell.detailTextLabel.text = @"D.O.B Private";
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
@@ -200,7 +200,7 @@
         
         cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
         
-        if(indexPath.row != 4) {
+        if(indexPath.row != 2) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         
@@ -208,15 +208,6 @@
     
     return cell;
 }
-
-
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return NO;
-}
-
 
 
 
@@ -268,11 +259,11 @@
         switch (indexPath.row) {
                 
             case 0:
-                [self.navigationController pushViewController:[[SYNAccountSettingsShareSettings alloc] init] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsPassword alloc] init] animated:YES];
                 break;
                 
             case 1:
-                [self.navigationController pushViewController:[[SYNAccountSettingsPushNotifications alloc] init] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsAbout alloc] init] animated:YES];
                 break;
                 
             case 2:
@@ -329,8 +320,6 @@
     self.dobPopover.delegate = self;
     
     
-    
-    
     [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
                                      inView: self.view
                    permittedArrowDirections: UIPopoverArrowDirectionAny
@@ -343,23 +332,26 @@
 -(UITableViewCell*)getDOBTableViewCell
 {
     
-    UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:5 inSection:0]];
+    UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:6 inSection:0]];
     return cellClicked;
 }
 
 -(void)datePickerValueChanged:(UIDatePicker*)datePicker
 {
-    user.dateOfBirth = datePicker.date;
     
-    NSString* dateString = [self getDOBFormattedStringFromCurrentUser];
     
-    [self getDOBTableViewCell].textLabel.text = dateString;
+    NSString* dateString = [self getDOBFormattedString:datePicker.date];
+    
+    
     
     [self.appDelegate.oAuthNetworkEngine changeUserField:@"date_of_birth"
                                                  forUser:self.appDelegate.currentUser
                                             withNewValue:dateString
                                        completionHandler:^ {
                                            
+                                           user.dateOfBirth = datePicker.date;
+                                           
+                                           [self getDOBTableViewCell].textLabel.text = [self getDOBPlainString:user.dateOfBirth];
                                            
                                        } errorHandler:^(id errorInfo) {
                                            
@@ -383,29 +375,27 @@
              dimension: ageString];
 }
 
--(NSString*)getDOBPlainStringFromCurrentUser
+-(NSString*)getDOBPlainString:(NSDate*)date
 {
-    if(!user.dateOfBirth)
-        return @"";
+    if(!date) return nil;
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     
-    return [dateFormatter stringFromDate:user.dateOfBirth];
+    return [dateFormatter stringFromDate:date];
 }
 
--(NSString*) getDOBFormattedStringFromCurrentUser
+-(NSString*) getDOBFormattedString:(NSDate*)date
 {
-    if(!user.dateOfBirth)
-        return @"";
+    if(!date) return nil;
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     
     [dateFormatter setDateFormat: @"yyyy-MM-dd"];
     
-    return [dateFormatter stringFromDate:user.dateOfBirth];
+    return [dateFormatter stringFromDate:date];
 }
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController

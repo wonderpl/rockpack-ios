@@ -10,6 +10,14 @@
 
 @implementation SYNPaddedUITextField
 
+-(id)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        
+    }
+    return self;
+}
+
 // placeholder position
 - (CGRect)textRectForBounds:(CGRect)bounds
 {
