@@ -128,7 +128,7 @@
 								<string key="NSFrame">{{3, 0}, {249, 140}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="356111960"/>
+								<reference key="NSNextKeyView" ref="716427388"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="456240611"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -192,7 +192,7 @@
 								<reference key="IBUIFontDescription" ref="259640192"/>
 								<reference key="IBUIFont" ref="887648909"/>
 							</object>
-							<object class="IBUIButton" id="356111960">
+							<object class="IBUIButton" id="716427388">
 								<reference key="NSNextResponder" ref="301134111"/>
 								<int key="NSvFlags">-2147483356</int>
 								<string key="NSFrame">{{3, 0}, {64, 65}}</string>
@@ -293,7 +293,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">deleteButton</string>
 						<reference key="source" ref="274337159"/>
-						<reference key="destination" ref="356111960"/>
+						<reference key="destination" ref="716427388"/>
 					</object>
 					<int key="connectionID">65</int>
 				</object>
@@ -327,7 +327,7 @@
 							<reference ref="429279700"/>
 							<reference ref="865164628"/>
 							<reference ref="596320206"/>
-							<reference ref="356111960"/>
+							<reference ref="716427388"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -366,7 +366,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">63</int>
-						<reference key="object" ref="356111960"/>
+						<reference key="object" ref="716427388"/>
 						<reference key="parent" ref="274337159"/>
 						<string key="objectName">Button - Delete</string>
 					</object>
@@ -401,7 +401,6 @@
 					<string key="superclassName">UICollectionViewCell</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addButton">UIButton</string>
-						<string key="addItButton">UIButton</string>
 						<string key="deleteButton">UIButton</string>
 						<string key="imageView">UIImageView</string>
 						<string key="titleLabel">UILabel</string>
@@ -410,10 +409,6 @@
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="addButton">
 							<string key="name">addButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="addItButton">
-							<string key="name">addItButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="deleteButton">

@@ -41,8 +41,6 @@
 		0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF217292F3B00612186 /* ButtonCamera@2x.png */; };
 		0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */; };
 		0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */; };
-		0111CE051729375300612186 /* PanelChannelCreationCover.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE011729375300612186 /* PanelChannelCreationCover.png */; };
-		0111CE061729375300612186 /* PanelChannelCreationCover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE021729375300612186 /* PanelChannelCreationCover@2x.png */; };
 		011A15E116EE2F46008CF25E /* popover-black-right-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */; };
 		011A15E216EE2F46008CF25E /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */; };
 		011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A15F416EE3E9A008CF25E /* SYNCameraPopoverViewController.m */; };
@@ -603,8 +601,6 @@
 		0111CDFA1729314E00612186 /* SYNCoverThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverThumbnailCell.h; sourceTree = "<group>"; };
 		0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverThumbnailCell.m; sourceTree = "<group>"; };
 		0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverThumbnailCell.xib; sourceTree = "<group>"; };
-		0111CE011729375300612186 /* PanelChannelCreationCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelCreationCover.png; path = Assets/Images/PanelChannelCreationCover.png; sourceTree = "<group>"; };
-		0111CE021729375300612186 /* PanelChannelCreationCover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelChannelCreationCover@2x.png"; path = "Assets/Images/PanelChannelCreationCover@2x.png"; sourceTree = "<group>"; };
 		011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image@2x.png"; path = "Assets/Images/popover-black-right-arrow-image@2x.png"; sourceTree = "<group>"; };
 		011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image.png"; path = "Assets/Images/popover-black-right-arrow-image.png"; sourceTree = "<group>"; };
 		011A15F316EE3E9A008CF25E /* SYNCameraPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCameraPopoverViewController.h; sourceTree = "<group>"; };
@@ -1417,15 +1413,9 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
-		0111CE001729369200612186 /* Cover Thumbnail */ = {
+		0111CE091729537300612186 /* Cover Thumbnail */ = {
 			isa = PBXGroup;
 			children = (
-				0111CE011729375300612186 /* PanelChannelCreationCover.png */,
-				0111CE021729375300612186 /* PanelChannelCreationCover@2x.png */,
-				BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */,
-				BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */,
-				BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */,
-				BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */,
 			);
 			name = "Cover Thumbnail";
 			sourceTree = "<group>";
@@ -1682,7 +1672,7 @@
 			name = "Google Analytics";
 			sourceTree = "<group>";
 		};
-		0173F6F616E028C6005B3ECA /* Video Thumbnail Small */ = {
+		0173F6F616E028C6005B3ECA /* VideoThumbnailSmall */ = {
 			isa = PBXGroup;
 			children = (
 				019E6A8D16E9081D00647002 /* GlossVideoThumbnailSmallPlaying.png */,
@@ -1692,7 +1682,7 @@
 				0173F6F916E028E4005B3ECA /* GlossVideoThumbnailSmall.png */,
 				0173F6FA16E028E4005B3ECA /* GlossVideoThumbnailSmall@2x.png */,
 			);
-			name = "Video Thumbnail Small";
+			name = VideoThumbnailSmall;
 			sourceTree = "<group>";
 		};
 		0173F70416E0C498005B3ECA /* Layouts */ = {
@@ -2082,16 +2072,16 @@
 		01B0A969166CEC3400CAA235 /* Cell Assets */ = {
 			isa = PBXGroup;
 			children = (
-				0111CE001729369200612186 /* Cover Thumbnail */,
+				0111CE091729537300612186 /* Cover Thumbnail */,
+				0173F6F616E028C6005B3ECA /* VideoThumbnailSmall */,
 				01B34C9516A99D40002AD8FB /* Channel Thumbnail */,
-				0173F6F616E028C6005B3ECA /* Video Thumbnail Small */,
-				01B0A972166CEE1300CAA235 /* Video Thumbnail Regular */,
-				01D8C6AC16820AB1000059D1 /* Video Thumbnail Wide */,
+				01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */,
+				01B0A972166CEE1300CAA235 /* VideoThumbnailRegular */,
 			);
 			name = "Cell Assets";
 			sourceTree = "<group>";
 		};
-		01B0A972166CEE1300CAA235 /* Video Thumbnail Regular */ = {
+		01B0A972166CEE1300CAA235 /* VideoThumbnailRegular */ = {
 			isa = PBXGroup;
 			children = (
 				01B0A96E166CEE0700CAA235 /* GlossVideoThumbnailRegular.png */,
@@ -2099,7 +2089,7 @@
 				01B0A96B166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png */,
 				01B0A96A166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png */,
 			);
-			name = "Video Thumbnail Regular";
+			name = VideoThumbnailRegular;
 			sourceTree = "<group>";
 		};
 		01B34C9516A99D40002AD8FB /* Channel Thumbnail */ = {
@@ -2153,12 +2143,6 @@
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
 				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
 				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
-<<<<<<< HEAD
-				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
-				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
-				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
-=======
->>>>>>> origin/develop
 				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
@@ -2169,15 +2153,19 @@
 		01B7F76C164FE464009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
+				BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */,
+				BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */,
 				BE285DA217258A0A00D995AB /* ButtonConfirm.png */,
 				BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */,
 				BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */,
 				BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */,
+				BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */,
+				BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
 		};
-		01D8C6AC16820AB1000059D1 /* Video Thumbnail Wide */ = {
+		01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */ = {
 			isa = PBXGroup;
 			children = (
 				01ABBAD817200992007E4462 /* PanelVideoFeedLandscape.png */,
@@ -2199,7 +2187,7 @@
 				01946B531683209600354601 /* PanelVideoGlow.png */,
 				01946B541683209600354601 /* PanelVideoGlow@2x.png */,
 			);
-			name = "Video Thumbnail Wide";
+			name = VideoThumbnailWide;
 			sourceTree = "<group>";
 		};
 		01E427D01664C701009B941F /* Data Model */ = {
@@ -3349,8 +3337,6 @@
 				0111CDF717292F3B00612186 /* ButtonCamera.png in Resources */,
 				0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */,
 				0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */,
-				0111CE051729375300612186 /* PanelChannelCreationCover.png in Resources */,
-				0111CE061729375300612186 /* PanelChannelCreationCover@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
