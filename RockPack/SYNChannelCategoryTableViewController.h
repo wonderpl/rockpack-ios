@@ -17,8 +17,9 @@
 @protocol SYNChannelCategoryTableViewDelegate <NSObject>
 
 @optional
--(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectCategoryWithId:(NSString*)uniqueId;
--(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectSubCategoryWithId:(NSString*)uniqueId;
+-(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectCategoryWithId:(NSString*)uniqueId title:(NSString*)title;
+-(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectSubCategoryWithId:(NSString*)uniqueId categoryTitle:(NSString*)categoryTitle subCategoryTitle:(NSString*)subCategoryTitle;
+-(void)categoryTableControllerDeselectedAll:(SYNChannelCategoryTableViewController*)tableController;
 
 @end
 

@@ -43,6 +43,9 @@
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
 @property (nonatomic, strong) UIButton* categorySelectButton;
 @property (nonatomic, strong) UIControl* categorySelectDismissControl;
+@property (nonatomic, strong) UILabel* categoryNameLabel;
+@property (nonatomic, strong) UILabel* subCategoryNameLabel;
+@property (nonatomic, strong) UIImageView* arrowImage;
 
 @end
 
@@ -143,7 +146,7 @@
     
     if(self.enableCategoryTable)
     {
-        [self enableChannelsCategoryTable];
+        [self layoutChannelsCategoryTable];
     }
     
 }
@@ -577,7 +580,7 @@
 
 #pragma mark - categories tableview
 
--(void)enableChannelsCategoryTable
+-(void)layoutChannelsCategoryTable
 {
     self.categorySelectDismissControl = [[UIControl alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:self.categorySelectDismissControl];
@@ -602,6 +605,45 @@
     [self.categorySelectButton setBackgroundImage:[UIImage imageNamed:@"CategoryBarHighlighted"] forState:UIControlStateHighlighted];
     [self.categorySelectButton addTarget:self action:@selector(toggleChannelsCategoryTable:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.categorySelectButton];
+    
+    newFrame.origin.x = 40.0f;
+    newFrame.origin.y += 3.0f;
+    newFrame.size.width = 280.0f;
+    
+    UILabel* newLabel = [[UILabel alloc] initWithFrame:newFrame];
+    newLabel.font = [UIFont boldRockpackFontOfSize:18.0f];
+    newLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
+    newLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
+    newLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    newLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
+    newLabel.backgroundColor = [UIColor clearColor];
+    CGPoint center = newLabel.center;
+    [newLabel sizeToFit];
+    center.x = newLabel.center.x;
+    newLabel.center = center;
+    self.categoryNameLabel = newLabel;
+    [self.view addSubview:self.categoryNameLabel];
+    
+    
+    newLabel = [[UILabel alloc] initWithFrame:self.categoryNameLabel.frame];
+    newLabel.font = self.categoryNameLabel.font;
+    newLabel.textColor = self.categoryNameLabel.textColor;
+    newLabel.shadowColor = self.categoryNameLabel.shadowColor;
+    newLabel.shadowOffset = self.categoryNameLabel.shadowOffset;
+    newLabel.backgroundColor = self.categoryNameLabel.backgroundColor;
+    newLabel.hidden = YES;
+    newLabel.center = center;
+
+    self.subCategoryNameLabel = newLabel;
+    [self.view addSubview:self.subCategoryNameLabel];
+    
+    self.arrowImage =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconCategoryBarChevron~iphone"]];
+    center.y -= 4.0f;
+    self.arrowImage.center = center;
+    self.arrowImage.hidden = YES;
+    [self.view addSubview:self.arrowImage];
+    
+    
     
     
 }
@@ -635,14 +677,44 @@
     }
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategoryWithId:(NSString *)uniqueId
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategoryWithId:(NSString *)uniqueId title:(NSString *)title
 {
+    self.categoryNameLabel.text = title;
+    [self.categoryNameLabel sizeToFit];
+    self.subCategoryNameLabel.hidden = YES;
+    self.arrowImage.hidden = YES;
     [self handleNewTabSelectionWithId:uniqueId];
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
 {
+    self.categoryNameLabel.text = categoryTitle;
+    [self.categoryNameLabel sizeToFit];
+    self.subCategoryNameLabel.text = subCategoryTitle;
+    self.subCategoryNameLabel.hidden = NO;
+    [self.subCategoryNameLabel sizeToFit];
+    self.arrowImage.hidden = NO;
+    
+    CGRect newFrame = self.arrowImage.frame;
+    newFrame.origin.x = self.categoryNameLabel.frame.origin.x + self.categoryNameLabel.frame.size.width + 5.0f;
+    self.arrowImage.frame = newFrame;
+    
+    newFrame = self.subCategoryNameLabel.frame;
+    newFrame.origin.x = self.arrowImage.frame.origin.x + self.arrowImage.frame.size.width + 5.0f;
+    self.subCategoryNameLabel.frame = newFrame;
+    
     [self handleNewTabSelectionWithId:uniqueId];
+    [self toggleChannelsCategoryTable:nil];
+}
+
+-(void)categoryTableControllerDeselectedAll:(SYNChannelCategoryTableViewController *)tableController
+{
+    self.categoryNameLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
+    [self.categoryNameLabel sizeToFit];
+    self.subCategoryNameLabel.hidden = YES;
+    self.arrowImage.hidden = YES;
+    
+    [self handleNewTabSelectionWithId:@"all"];
     [self toggleChannelsCategoryTable:nil];
 }
 
