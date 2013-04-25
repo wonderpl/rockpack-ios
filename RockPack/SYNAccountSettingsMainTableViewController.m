@@ -79,14 +79,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.tableView reloadData];
 }
 
-- (void)didReceiveMemoryWarning
+-(void)viewDidAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewDidAppear:animated];
+    
+    
 }
 
 #pragma mark - Table view data source
@@ -110,7 +110,7 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell;
-   
+    
     
     if(indexPath.section == 0) {
         
@@ -200,7 +200,7 @@
         
         cell.textLabel.font = [UIFont rockpackFontOfSize:18.0];
         
-        if(indexPath.row != 4) {
+        if(indexPath.row != 2) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         
@@ -208,15 +208,6 @@
     
     return cell;
 }
-
-
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return NO;
-}
-
 
 
 
@@ -268,11 +259,11 @@
         switch (indexPath.row) {
                 
             case 0:
-                [self.navigationController pushViewController:[[SYNAccountSettingsShareSettings alloc] init] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsPassword alloc] init] animated:YES];
                 break;
                 
             case 1:
-                [self.navigationController pushViewController:[[SYNAccountSettingsPushNotifications alloc] init] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsAbout alloc] init] animated:YES];
                 break;
                 
             case 2:

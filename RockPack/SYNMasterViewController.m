@@ -812,6 +812,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
+    navigationController.view.backgroundColor = [UIColor clearColor];
     
     [[UINavigationBar appearance] setTitleTextAttributes:
      @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
@@ -834,6 +835,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) hideAutocompletePopover
 {
+    
     if (!self.accountSettingsPopover)
         return;
     
