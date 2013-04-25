@@ -41,6 +41,9 @@
              completionHandler: (MKNKUserSuccessBlock) completionBlock
                   errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) updateCoverArtOnCompletion: (MKNKVoidBlock) completionBlock
+                            onError: (MKNKErrorBlock) errorBlock;
+
 - (void) updateChannel: (NSString *) resourceURL
      completionHandler: (MKNKUserSuccessBlock) completionBlock
           errorHandler: (MKNKUserErrorBlock) errorBlock;

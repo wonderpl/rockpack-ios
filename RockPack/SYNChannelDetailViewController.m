@@ -8,6 +8,7 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "ChannelCover.h"
 #import "SYNCategoriesTabViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -20,7 +21,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNChannelDetailViewController ()
-
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -39,12 +39,18 @@
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
+@property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (strong, nonatomic) NSMutableArray *videoInstances;
+
 @end
 
 
 @implementation SYNChannelDetailViewController
+
+@synthesize channelCoverFetchedResultsController = _channelCoverFetchedResultsController;
+@synthesize userChannelCoverFetchedResultsController = _userChannelCoverFetchedResultsController;
 
 - (id) initWithChannel: (Channel *) channel
              usingMode: (kChannelDetailsMode) mode
@@ -272,6 +278,23 @@
     }
 }
 
+- (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
+{
+    if (controller == self.fetchedResultsController)
+    {
+        startAnimationDelay = 0.0;
+        [self reloadCollectionViews];
+    }
+    else if ((controller == self.channelCoverFetchedResultsController) || (controller == self.userChannelCoverFetchedResultsController))
+    {
+         [self.coverThumbnailCollectionView reloadData];
+    }
+    else
+    {
+        AssertOrLog(@"Received update from unexpected fetched results controller")
+    }
+    
+}
 
 - (void) reloadCollectionViews
 {
@@ -327,10 +350,17 @@
                 
             case 1:
             {
-                // TODO: Add in cover images herer
-                return 0;
+                id <NSFetchedResultsSectionInfo> sectionInfo = self.userChannelCoverFetchedResultsController.sections [0];
+                return sectionInfo.numberOfObjects;
             }
             break;
+                
+            case 2:
+            {
+                id <NSFetchedResultsSectionInfo> sectionInfo = self.channelCoverFetchedResultsController.sections [0];
+                return sectionInfo.numberOfObjects;
+            }
+                break;
                 
             default:
             {
@@ -368,7 +398,7 @@
     if (collectionView == self.coverThumbnailCollectionView)
     {
         // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
-        return 2;        
+        return 3;
     }
     else
     {
@@ -384,23 +414,38 @@
     // Check to see what collection this concerns
     if (collectionView == self.coverThumbnailCollectionView)
     {
+        SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
+                                                                                              forIndexPath: indexPath];
+        
         // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
         switch (indexPath.section)
         {
             case 0:
             {               
-                SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
-                                                                                                      forIndexPath: indexPath];
-                
                 coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
+                return coverThumbnailCell;
+            }
+            break;
+                
+            case 1:
+            {
+                // User channel covers
+                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                        inSection: 0]];
+                
+                coverThumbnailCell.coverImageWithURLString = channelCover.carouselURL;
                 return coverThumbnailCell;
             }
             break;
                 
             case 2:
             {
-                // TODO: Add in cover images herer
-                return nil;
+                // Rockpack channel covers
+                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                  inSection: 0]];
+                
+                coverThumbnailCell.coverImageWithURLString = channelCover.carouselURL;
+                return coverThumbnailCell;
             }
             break;
                 
@@ -432,6 +477,24 @@
     }
 }
 
+// UICollectionViewScrollPositionNone
+//- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated
+
+- (void) collectionView: (UICollectionView *) collectionView
+         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    if (collectionView == self.coverThumbnailCollectionView)
+    {
+        // Ensure that the cell we have selected is fully on-screen
+        [self.coverThumbnailCollectionView scrollToItemAtIndexPath: indexPath
+                                                  atScrollPosition: UICollectionViewScrollPositionNone
+                                                          animated: YES];
+    }
+    else
+    {
+        DebugLog (@"Selecting video cell does nothing");
+    }
+}
 
 #pragma mark - Fetched results controller
 
@@ -463,6 +526,65 @@
     ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     
     return fetchedResultsController;
+}
+
+
+- (NSFetchedResultsController *) channelCoverFetchedResultsController
+{
+    if (_channelCoverFetchedResultsController)
+        return _channelCoverFetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"ChannelCover"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kCoverArtViewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    self.channelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                          sectionNameKeyPath: nil
+                                                                                   cacheName: nil];
+    self.channelCoverFetchedResultsController.delegate = self;
+    
+    
+    NSError *error = nil;
+    
+    ZAssert([_channelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return _channelCoverFetchedResultsController;
+}
+
+- (NSFetchedResultsController *) userChannelCoverFetchedResultsController
+{
+    if (_userChannelCoverFetchedResultsController)
+        return _userChannelCoverFetchedResultsController;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    fetchRequest.entity = [NSEntityDescription entityForName: @"ChannelCover"
+                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kUserCoverArtViewId]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    
+    self.userChannelCoverFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
+                                                                                    managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                      sectionNameKeyPath: nil
+                                                                                               cacheName: nil];
+    self.userChannelCoverFetchedResultsController.delegate = self;
+    
+    
+    NSError *error = nil;
+    
+    ZAssert([_userChannelCoverFetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
+    return _userChannelCoverFetchedResultsController;
 }
 
 #pragma mark - Helper methods
@@ -682,7 +804,7 @@
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
         // Update the list of cover art
-        [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
+        [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
             DebugLog(@"Success");
         }
                                                         onError: ^(NSError* error) {
