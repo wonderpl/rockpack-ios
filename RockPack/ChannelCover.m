@@ -51,7 +51,7 @@ static NSEntityDescription *channelCoverEntity = nil;
         
         // Mark this object so that it is not deleted in the post-import step
         instance.markedForDeletionValue = FALSE;
-        
+        NSLog (@"CoverArt reused");
         return instance;
     }
     else
@@ -62,7 +62,7 @@ static NSEntityDescription *channelCoverEntity = nil;
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
                                     andViewId: viewId];
-
+        NSLog (@"CoverArt created");
         return instance;
     }
 }

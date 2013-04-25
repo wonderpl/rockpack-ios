@@ -152,7 +152,7 @@
     
     // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
     // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"ChannelCover"
                                                                                       andViewId: viewId
                                                                          inManagedObjectContext: importManagedObjectContext];
     
@@ -376,7 +376,7 @@
     // Only use the viewId as a predicate if we actually have one (makes no sense for categories)
     if (viewId)
     {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", viewId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == \"%@\"", viewId];
         [entityFetchRequest setPredicate: predicate];
     }
 

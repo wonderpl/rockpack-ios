@@ -101,7 +101,8 @@
                                                                                                        params: [self getLocalParam]];
     
     
-    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+    {
         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
                                                                     forViewId: kCoverArtViewId];
         if (!registryResultOk)
@@ -198,10 +199,6 @@
     [self enqueueOperation: networkOperation];
     
 }
-
-
-
-
 
 
 #pragma mark - Search
