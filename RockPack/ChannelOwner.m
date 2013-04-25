@@ -115,7 +115,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
     self.uniqueId = uniqueId;
     
     self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
-                                     withDefault: @"http://"];
+                                     withDefault: @"http://localhost"];
     
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
                                       withDefault: @""];

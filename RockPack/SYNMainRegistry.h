@@ -11,11 +11,21 @@
 
 @interface SYNMainRegistry : SYNRegistry
 
--(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary;
--(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary forViewId:(NSString*)viewId byAppending:(BOOL)append;
--(BOOL)registerChannelFromDictionary:(NSDictionary*)dictionary;
--(BOOL)registerNewChannelScreensFromDictionary:(NSDictionary *)dictionary byAppending:(BOOL)append;
--(BOOL)registerUserFromDictionary:(NSDictionary*)dictionary;
--(BOOL)registerSubscriptionsForCurrentUserFromDictionary:(NSDictionary*)dictionary;
+- (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary;
+
+- (BOOL) registerVideoInstancesFromDictionary: (NSDictionary *) dictionary
+                                    forViewId: (NSString*) viewId
+                                  byAppending: (BOOL) append;
+
+- (BOOL) registerChannelFromDictionary: (NSDictionary*) dictionary;
+
+- (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
+                                     byAppending: (BOOL) append;
+
+- (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary;
+- (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary;
+
+- (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
+                             forViewId: (NSString *) viewId;
 
 @end
