@@ -387,11 +387,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-//    SYNChannelsDetailsCreationViewController *channelCreationVC =
-//    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel
-//                                                            usingMode: kChannelDetailsModeDisplay] ;
-//    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
-//    [showingController animatedPushViewController: channelCreationVC];
+    SYNChannelDetailViewController *channelCreationVC =
+    [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                            usingMode: kChannelDetailsModeEdit] ;
+    SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
+    [showingController animatedPushViewController: channelCreationVC];
 }
 
 
