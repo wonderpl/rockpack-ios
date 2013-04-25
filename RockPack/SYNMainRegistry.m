@@ -269,12 +269,7 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-<<<<<<< HEAD
-    // == ================ == //
-=======
-    
 
->>>>>>> origin/develop
     
     NSArray *existingObjectsInViewId;
     
@@ -284,13 +279,7 @@
                                                                                  andViewId: kChannelsViewId
                                                                     inManagedObjectContext: importManagedObjectContext];
     }
-<<<<<<< HEAD
 
-    // === Main Processing === //
-    
-    for (NSDictionary *itemDictionary in itemArray)
-        if ([itemDictionary isKindOfClass: [NSDictionary class]])
-=======
     
     
     // Query for existing objects
@@ -326,7 +315,6 @@
         
         if ([itemDictionary isKindOfClass: [NSDictionary class]]) {
             
->>>>>>> origin/develop
             [Channel instanceFromDictionary: itemDictionary
                   usingManagedObjectContext: importManagedObjectContext
                         ignoringObjectTypes: kIgnoreStoredObjects
@@ -336,12 +324,7 @@
     }
         
     
-<<<<<<< HEAD
-    // == ================ == //
 
-    [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: importManagedObjectContext];
-=======
 
     if(!append)
     {
@@ -351,7 +334,6 @@
         
     }
     
->>>>>>> origin/develop
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
