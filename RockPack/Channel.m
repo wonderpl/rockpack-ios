@@ -315,8 +315,9 @@ static NSEntityDescription *channelEntity = nil;
         return;
     }
     
-    self.categoryId = [dictionary objectForKey: @"category"
-                                   withDefault: @""];
+    NSNumber* categoryNumber = [dictionary objectForKey:@"category"];
+    
+    self.categoryId = (categoryNumber && [categoryNumber isKindOfClass:[NSNumber class]]) ? [categoryNumber stringValue] : @"0" ;
     
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
