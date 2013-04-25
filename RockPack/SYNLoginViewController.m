@@ -292,9 +292,12 @@
 -(void)setUpLoginStateFromPreviousState:(kLoginScreenState)previousState
 {
     secondaryFacebookMessage.alpha = 0.0;
+    
     [self clearAllErrorArrows];
+    
     isAnimating = YES;
     userNameInputField.placeholder = @"USERNAME";
+    
     if(previousState == kLoginScreenStateInitial)
     {
         
@@ -318,34 +321,36 @@
             delay += 0.05;
         }
         
+        
+        
+        
+        
+        
         [UIView animateWithDuration:0.3 animations:^{
-            titleImageView.alpha = 0.0;
-        }];
-        
-        // place secondary elements to the correct place for fade in animation
-        
-        
-        passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
-        passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - self.elementsOffsetY);
-        CGFloat termsOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 714.0 : 370.0;
-        termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsOffsetY);
-        termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, termsOffsetY);
-        // consequitive fade in animations
-        
-        [UIView animateWithDuration:0.4 animations:^{
-            signUpButton.alpha = 0.0;
+            signUpButton.alpha = 0.0; // right of facebook button
+            
             memberLabel.alpha = 0.0;
             loginButton.alpha = 0.0;
+            
+            titleImageView.alpha = 0.0;
+            
         } completion:^(BOOL finished) {
+            
+            [self placeSecondaryElements];
+            
             dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - self.elementsOffsetY);
+            
             [UIView animateWithDuration:0.2 animations:^{
+                
                 passwordForgottenButton.alpha = 1.0;
                 passwordForgottenLabel.alpha = 1.0;
                 termsAndConditionsLabel.alpha = 1.0;
                 dividerImageView.alpha = 1.0;
                 
             } completion:^(BOOL finished) {
+                
                 [UIView animateWithDuration:0.2 animations:^{
+                    
                     areYouNewLabel.alpha = 1.0;
                     registerButton.alpha = 1.0;
                     
@@ -554,9 +559,7 @@
             loginButton.center = CGPointMake(registerButton.center.x,
                                              registerButton.center.y);
             
-            memberLabel.center = CGPointMake(loginButton.center.x,
-                                             registerButton.center.y - 57.0);
-            memberLabel.frame = CGRectIntegral(memberLabel.frame);
+            [self placeSecondaryElements];
             
             
             
@@ -1377,11 +1380,10 @@
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);
-        memberLabel.center = CGPointMake(memberLabel.center.x, areYouNewLabel.center.y);
+        
         registerButton.center = CGPointMake(registerButton.center.x, 704.0);
-        if(self.state != kLoginScreenStateInitial)
-            loginButton.center = registerButton.center;
-        areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
+        
+        
     }
     else
     {
@@ -1391,10 +1393,14 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
-        if(self.state != kLoginScreenStateInitial)
-            loginButton.center = registerButton.center;
-        memberLabel.center = CGPointMake(memberLabel.center.x, areYouNewLabel.center.y);
         
+        
+        
+    }
+    areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
+    if(self.state != kLoginScreenStateInitial) {
+        loginButton.center = registerButton.center;
+        memberLabel.center = CGPointMake(loginButton.center.x, areYouNewLabel.center.y - 8.0);
     }
     
     loginButton.frame = CGRectIntegral(loginButton.frame);
@@ -1402,7 +1408,7 @@
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
-    areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 46.0);
+    areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
 }
 
 -(CGFloat)elementsOffsetY
@@ -1411,6 +1417,20 @@
         return 284.0;
     else
         return 284.0;
+}
+
+-(void)placeSecondaryElements
+{
+    CGFloat registerOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 704.0 : 358.0;
+    registerButton.center = CGPointMake(registerButton.center.x, registerOffsetY);
+    areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
+    memberLabel.center = CGPointMake(memberLabel.center.x, areYouNewLabel.center.y);
+    loginButton.center = registerButton.center;
+    passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
+    passwordForgottenButton.center = CGPointMake(passwordForgottenButton.center.x, passwordForgottenButton.center.y - self.elementsOffsetY);
+    CGFloat termsOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 714.0 : 370.0;
+    termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsOffsetY);
+    termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, termsOffsetY);
 }
 
 
