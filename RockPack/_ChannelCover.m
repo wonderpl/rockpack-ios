@@ -1,9 +1,9 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to ChanneCover.m instead.
+// Make changes to ChannelCover.m instead.
 
-#import "_ChanneCover.h"
+#import "_ChannelCover.h"
 
-const struct ChanneCoverAttributes ChanneCoverAttributes = {
+const struct ChannelCoverAttributes ChannelCoverAttributes = {
 	.backgroundURL = @"backgroundURL",
 	.carouselURL = @"carouselURL",
 	.coverRef = @"coverRef",
@@ -11,33 +11,33 @@ const struct ChanneCoverAttributes ChanneCoverAttributes = {
 	.position = @"position",
 };
 
-const struct ChanneCoverRelationships ChanneCoverRelationships = {
+const struct ChannelCoverRelationships ChannelCoverRelationships = {
 };
 
-const struct ChanneCoverFetchedProperties ChanneCoverFetchedProperties = {
+const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 };
 
-@implementation ChanneCoverID
+@implementation ChannelCoverID
 @end
 
-@implementation _ChanneCover
+@implementation _ChannelCover
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"ChanneCover" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"ChannelCover" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"ChanneCover";
+	return @"ChannelCover";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"ChanneCover" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"ChannelCover" inManagedObjectContext:moc_];
 }
 
-- (ChanneCoverID*)objectID {
-	return (ChanneCoverID*)[super objectID];
+- (ChannelCoverID*)objectID {
+	return (ChannelCoverID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {

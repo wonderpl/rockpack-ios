@@ -1,38 +1,38 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to ChanneCover.h instead.
+// Make changes to ChannelCover.h instead.
 
 #import <CoreData/CoreData.h>
 #import "AbstractCommon.h"
 
-extern const struct ChanneCoverAttributes {
+extern const struct ChannelCoverAttributes {
 	__unsafe_unretained NSString *backgroundURL;
 	__unsafe_unretained NSString *carouselURL;
 	__unsafe_unretained NSString *coverRef;
 	__unsafe_unretained NSString *createdByUser;
 	__unsafe_unretained NSString *position;
-} ChanneCoverAttributes;
+} ChannelCoverAttributes;
 
-extern const struct ChanneCoverRelationships {
-} ChanneCoverRelationships;
+extern const struct ChannelCoverRelationships {
+} ChannelCoverRelationships;
 
-extern const struct ChanneCoverFetchedProperties {
-} ChanneCoverFetchedProperties;
-
-
+extern const struct ChannelCoverFetchedProperties {
+} ChannelCoverFetchedProperties;
 
 
 
 
 
 
-@interface ChanneCoverID : NSManagedObjectID {}
+
+
+@interface ChannelCoverID : NSManagedObjectID {}
 @end
 
-@interface _ChanneCover : AbstractCommon {}
+@interface _ChannelCover : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (ChanneCoverID*)objectID;
+- (ChannelCoverID*)objectID;
 
 
 
@@ -99,11 +99,11 @@ extern const struct ChanneCoverFetchedProperties {
 
 @end
 
-@interface _ChanneCover (CoreDataGeneratedAccessors)
+@interface _ChannelCover (CoreDataGeneratedAccessors)
 
 @end
 
-@interface _ChanneCover (CoreDataGeneratedPrimitiveAccessors)
+@interface _ChannelCover (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSString*)primitiveBackgroundURL;

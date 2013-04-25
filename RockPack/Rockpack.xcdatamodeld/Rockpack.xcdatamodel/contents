@@ -7,13 +7,6 @@
     <entity name="Category" representedClassName="Category" parentEntity="TabItem" syncable="YES">
         <relationship name="subcategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Subcategory" inverseName="category" inverseEntity="Subcategory" syncable="YES"/>
     </entity>
-    <entity name="ChanneCover" representedClassName="ChanneCover" parentEntity="AbstractCommon" syncable="YES">
-        <attribute name="backgroundURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
-        <attribute name="carouselURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
-        <attribute name="coverRef" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="createdByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-    </entity>
     <entity name="Channel" representedClassName="Channel" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="categoryId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="channelDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -32,6 +25,13 @@
         <relationship name="channelOwner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="channels" inverseEntity="ChannelOwner" syncable="YES"/>
         <relationship name="subscribers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChannelOwner" inverseName="subscriptions" inverseEntity="ChannelOwner" syncable="YES"/>
         <relationship name="videoInstances" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="VideoInstance" inverseName="channel" inverseEntity="VideoInstance" syncable="YES"/>
+    </entity>
+    <entity name="ChannelCover" representedClassName="ChannelCover" parentEntity="AbstractCommon" syncable="YES">
+        <attribute name="backgroundURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
+        <attribute name="carouselURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
+        <attribute name="coverRef" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="ChannelOwner" representedClassName="ChannelOwner" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
@@ -90,6 +90,6 @@
         <element name="User" positionX="-362" positionY="348" width="128" height="210"/>
         <element name="Video" positionX="252" positionY="285" width="128" height="210"/>
         <element name="VideoInstance" positionX="243" positionY="108" width="128" height="135"/>
-        <element name="ChanneCover" positionX="250" positionY="27" width="128" height="118"/>
+        <element name="ChannelCover" positionX="250" positionY="27" width="128" height="118"/>
     </elements>
 </model>
