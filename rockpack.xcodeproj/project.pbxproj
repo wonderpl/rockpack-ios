@@ -313,6 +313,8 @@
 		01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */; };
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
 		01EC6237166EAAA6003154B1 /* SYNChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */; };
+		01F1B85417297277005735AF /* _ChanneCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F1B85317297277005735AF /* _ChanneCover.m */; };
+		01F1B8571729728A005735AF /* ChanneCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F1B8561729728A005735AF /* ChanneCover.m */; };
 		01F8E73A16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */; };
 		01F8E73B16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */; };
 		01F8E74416B012A8000D44B9 /* ButtonVideoScreenNext.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */; };
@@ -955,6 +957,10 @@
 		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
 		01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelDetailViewController.h; sourceTree = "<group>"; };
 		01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelDetailViewController.m; sourceTree = "<group>"; };
+		01F1B85217297277005735AF /* _ChanneCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ChanneCover.h; sourceTree = "<group>"; };
+		01F1B85317297277005735AF /* _ChanneCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ChanneCover.m; sourceTree = "<group>"; };
+		01F1B8551729728A005735AF /* ChanneCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChanneCover.h; sourceTree = "<group>"; };
+		01F1B8561729728A005735AF /* ChanneCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChanneCover.m; sourceTree = "<group>"; };
 		01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoScreenVideoMainOverlay.png; path = Assets/Images/PanelVideoScreenVideoMainOverlay.png; sourceTree = "<group>"; };
 		01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoScreenVideoMainOverlay@2x.png"; path = "Assets/Images/PanelVideoScreenVideoMainOverlay@2x.png"; sourceTree = "<group>"; };
 		01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoScreenNext.png; path = Assets/Images/ButtonVideoScreenNext.png; sourceTree = "<group>"; };
@@ -2212,6 +2218,8 @@
 		01E427F21664F32D009B941F /* Auto generated files */ = {
 			isa = PBXGroup;
 			children = (
+				01F1B85217297277005735AF /* _ChanneCover.h */,
+				01F1B85317297277005735AF /* _ChanneCover.m */,
 				BE95B92316CBED4400EC2E72 /* _TabItem.h */,
 				BE95B92416CBED4400EC2E72 /* _TabItem.m */,
 				BEA043DD16CAA8C2005406E7 /* _Category.h */,
@@ -2237,14 +2245,16 @@
 		01E427F31664F346009B941F /* Editable files */ = {
 			isa = PBXGroup;
 			children = (
+				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
+				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
+				01F1B8551729728A005735AF /* ChanneCover.h */,
+				01F1B8561729728A005735AF /* ChanneCover.m */,
 				BE95B92116CBED2800EC2E72 /* TabItem.h */,
 				BE95B92216CBED2800EC2E72 /* TabItem.m */,
 				BEA043E316CAA8E1005406E7 /* Category.h */,
 				BEA043E416CAA8E1005406E7 /* Category.m */,
 				BEA043E516CAA8E1005406E7 /* Subcategory.h */,
 				BEA043E616CAA8E1005406E7 /* Subcategory.m */,
-				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
-				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
 				01E427E31664DF21009B941F /* Channel.h */,
 				01E427E41664DF21009B941F /* Channel.m */,
 				01946B931683339F00354601 /* ChannelOwner.h */,
@@ -3517,6 +3527,8 @@
 				BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */,
 				BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */,
 				0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */,
+				01F1B85417297277005735AF /* _ChanneCover.m in Sources */,
+				01F1B8571729728A005735AF /* ChanneCover.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

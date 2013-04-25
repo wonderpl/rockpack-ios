@@ -681,6 +681,31 @@
 {
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
+        // Update the list of cover art
+        [appDelegate.networkEngine coverArtWithWithStart: 0
+                                                    size: 0
+                               completionHandler: ^(NSDictionary *responseDictionary) {
+                                   // Save the position for back-patching in later
+                                   NSNumber *savedPosition = self.channel.position;
+                                   
+                                   [self.channel setAttributesFromDictionary: responseDictionary
+                                                                      withId: self.channel.uniqueId
+                                                   usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                         ignoringObjectTypes: kIgnoreNothing
+                                                                   andViewId: kChannelDetailsViewId];
+                                   
+                                   // Back-patch a few things that may have been overwritten
+                                   self.channel.position = savedPosition;
+                                   self.channel.viewId = kChannelsViewId;
+                                   
+                                   [self updateVideoInstanceArray];
+                                   
+                                   [self reloadCollectionViews];
+                               }
+                                    errorHandler: ^(NSDictionary* errorDictionary) {
+                                        DebugLog(@"Update action failed");
+                                    }];
+        
         self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
                                                      kChannelCreationCategoryAdditionalOffsetY);
         
