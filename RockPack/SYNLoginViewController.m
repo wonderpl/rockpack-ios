@@ -1377,8 +1377,10 @@
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);
-        memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 56.0);
+        memberLabel.center = CGPointMake(memberLabel.center.x, areYouNewLabel.center.y);
         registerButton.center = CGPointMake(registerButton.center.x, 704.0);
+        if(self.state != kLoginScreenStateInitial)
+            loginButton.center = registerButton.center;
         areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
     }
     else
@@ -1389,10 +1391,14 @@
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
-        memberLabel.center = CGPointMake(memberLabel.center.x, loginButton.center.y - 58.0);
+        if(self.state != kLoginScreenStateInitial)
+            loginButton.center = registerButton.center;
+        memberLabel.center = CGPointMake(memberLabel.center.x, areYouNewLabel.center.y);
         
     }
     
+    loginButton.frame = CGRectIntegral(loginButton.frame);
+    registerButton.frame = CGRectIntegral(registerButton.frame);
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
