@@ -257,8 +257,9 @@
 
 
 - (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
-                                   byAppending: (BOOL) append
-{
+                                   byAppending: (BOOL) append {
+    
+    
     // == Check for Validity == //
     
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
@@ -269,27 +270,27 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-
+    if(itemArray.count == 0)
+        return YES;
     
-    NSArray *existingObjectsInViewId;
-    
-
+    NSDictionary *firstItem = [itemArray objectAtIndex:0];
     
     // Query for existing objects
     
     NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
     [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
-                                                inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+                                                inManagedObjectContext: importManagedObjectContext]];
     
     
+    //NSString* heuristicCategoryId = [firstItem objectForKey:@"category"];
     
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat: @"viewId == '%@'", kChannelsViewId];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == '%@' AND categoryId == %d", kChannelsViewId, 1];
+    //[channelFetchRequest setPredicate: predicate];
     
-    [channelFetchRequest setPredicate: predicate];
     
     NSError* error;
-    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+    NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: channelFetchRequest
                                                                                           error: &error];
     
     
@@ -297,9 +298,9 @@
     
     for (Channel* existingChannel in matchingChannelEntries)
     {
-        NSLog(@" - Channel: %@", existingChannel.title);
+        NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
-        existingChannel.markedForDeletion = YES;
+        ((AbstractCommon *)existingChannel).markedForDeletionValue = YES;
     }
     
     Channel* existingChannelMatch;
@@ -313,7 +314,7 @@
         if((existingChannelMatch = [existingChannelsByIndex objectForKey:uniqueId]))
         {
             NSLog(@"Found (title:%@)", existingChannelMatch.title);
-            existingChannelMatch.markedForDeletion = NO;
+            ((AbstractCommon *)existingChannelMatch).markedForDeletionValue = NO;
             continue;
         }
             
@@ -322,7 +323,7 @@
         {
             
             [Channel instanceFromDictionary: itemDictionary
-                  usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                  usingManagedObjectContext: importManagedObjectContext
                         ignoringObjectTypes: kIgnoreStoredObjects
                                   andViewId: kChannelsViewId];
         }
@@ -335,7 +336,7 @@
     if(!append)
     {
         
-        [self removeUnusedManagedObjects: existingObjectsInViewId
+        [self removeUnusedManagedObjects: matchingChannelEntries
                   inManagedObjectContext: importManagedObjectContext];
         
     }
