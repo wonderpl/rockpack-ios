@@ -178,7 +178,7 @@
                 if(!user.dateOfBirth)
                     cell.textLabel.text = @"Date of Birth";
                 else
-                    cell.textLabel.text = [self getDOBPlainStringFromCurrentUser];
+                    cell.textLabel.text = [self getDOBPlainString:user.dateOfBirth];
                 
                 cell.detailTextLabel.text = @"D.O.B Private";
                 cell.imageView.image = [UIImage imageNamed:@"IconBirthday.png"];
@@ -320,8 +320,6 @@
     self.dobPopover.delegate = self;
     
     
-    
-    
     [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
                                      inView: self.view
                    permittedArrowDirections: UIPopoverArrowDirectionAny
@@ -334,23 +332,26 @@
 -(UITableViewCell*)getDOBTableViewCell
 {
     
-    UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:5 inSection:0]];
+    UITableViewCell* cellClicked = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:6 inSection:0]];
     return cellClicked;
 }
 
 -(void)datePickerValueChanged:(UIDatePicker*)datePicker
 {
-    user.dateOfBirth = datePicker.date;
     
-    NSString* dateString = [self getDOBFormattedStringFromCurrentUser];
     
-    [self getDOBTableViewCell].textLabel.text = dateString;
+    NSString* dateString = [self getDOBFormattedString:datePicker.date];
+    
+    
     
     [self.appDelegate.oAuthNetworkEngine changeUserField:@"date_of_birth"
                                                  forUser:self.appDelegate.currentUser
                                             withNewValue:dateString
                                        completionHandler:^ {
                                            
+                                           user.dateOfBirth = datePicker.date;
+                                           
+                                           [self getDOBTableViewCell].textLabel.text = [self getDOBPlainString:user.dateOfBirth];
                                            
                                        } errorHandler:^(id errorInfo) {
                                            
@@ -374,29 +375,27 @@
              dimension: ageString];
 }
 
--(NSString*)getDOBPlainStringFromCurrentUser
+-(NSString*)getDOBPlainString:(NSDate*)date
 {
-    if(!user.dateOfBirth)
-        return @"";
+    if(!date) return nil;
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     
-    return [dateFormatter stringFromDate:user.dateOfBirth];
+    return [dateFormatter stringFromDate:date];
 }
 
--(NSString*) getDOBFormattedStringFromCurrentUser
+-(NSString*) getDOBFormattedString:(NSDate*)date
 {
-    if(!user.dateOfBirth)
-        return @"";
+    if(!date) return nil;
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     
     [dateFormatter setDateFormat: @"yyyy-MM-dd"];
     
-    return [dateFormatter stringFromDate:user.dateOfBirth];
+    return [dateFormatter stringFromDate:date];
 }
 
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
