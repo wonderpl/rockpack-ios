@@ -15,7 +15,6 @@
 #import "SYNChannelsRootViewController.h"
 #import "SYNChannelsUserViewController.h"
 #import "SYNFeedRootViewController.h"
-#import "SYNMovableView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNYouRootViewController.h"
 #import "UIFont+SYNFont.h"
