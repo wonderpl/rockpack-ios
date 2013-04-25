@@ -2138,9 +2138,6 @@
 				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
-				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
-				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
-				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -2618,6 +2615,9 @@
 		BE285D971725722400D995AB /* Existing Channels */ = {
 			isa = PBXGroup;
 			children = (
+				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
+				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
+				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
 			);
 			name = "Existing Channels";
 			sourceTree = "<group>";

@@ -262,8 +262,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     
-    [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
-    
     
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
     
@@ -324,7 +322,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
-    
+    if(self.containerViewController.showingViewController.needsAddButton)
+    {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.addToChannelButton.alpha = 1.0;
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.addToChannelButton.alpha = 0.0;
+        }];
+    }
     
     if(self.sideNavigationViewController.state == SideNavigationStateFull)
     {
@@ -667,36 +676,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }];
 }
 
-- (void) observeValueForKeyPath: (NSString *) keyPath
-                       ofObject: (id) object
-                         change: (NSDictionary *) change
-                        context: (void *) context
-{
-    if ([keyPath isEqualToString: @"contentOffset"])
-    {
-        CGPoint newContentOffset = [[change valueForKey: NSKeyValueChangeNewKey] CGPointValue];
-        CGFloat diff = fabsf(newContentOffset.x - self.containerViewController.currentPageOffset.x);
-        diff = diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
-        if (diff >1.0f)
-        {
-            diff = diff - truncf(diff);
-        }
-        SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
-        
-        if(nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton)
-        {
-            self.addToChannelButton.alpha = diff;
-        }
-        else if(!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)
-        {
-            self.addToChannelButton.alpha = 1.0f - diff;
-        }
-        else
-        {
-            self.addToChannelButton.alpha = self.containerViewController.showingViewController.needsAddButton? 1.0f : 0.0f; 
-        }
-    }
-}
+
 
 - (void) dotTapped: (UIGestureRecognizer*) recogniser
 {
