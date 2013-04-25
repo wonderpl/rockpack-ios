@@ -8,6 +8,7 @@ const struct ChannelCoverAttributes ChannelCoverAttributes = {
 	.carouselURL = @"carouselURL",
 	.coverRef = @"coverRef",
 	.position = @"position",
+	.viewId = @"viewId",
 };
 
 const struct ChannelCoverRelationships ChannelCoverRelationships = {
@@ -96,6 +97,13 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 - (void)setPrimitivePositionValue:(int64_t)value_ {
 	[self setPrimitivePosition:[NSNumber numberWithLongLong:value_]];
 }
+
+
+
+
+
+@dynamic viewId;
+
 
 
 

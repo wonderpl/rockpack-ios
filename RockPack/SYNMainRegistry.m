@@ -8,6 +8,7 @@
 
 #import "Category.h"
 #import "Channel.h"
+#import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
@@ -28,15 +29,14 @@
 
 #pragma mark - Update Data Methods
 
--(BOOL)registerUserFromDictionary:(NSDictionary*)dictionary
+- (BOOL) registerUserFromDictionary: (NSDictionary*) dictionary
 {
     // == Check for Validity == //
-    
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    User* newUser = [User instanceFromDictionary:dictionary
-                       usingManagedObjectContext:importManagedObjectContext];
+    User* newUser = [User instanceFromDictionary: dictionary
+                       usingManagedObjectContext: importManagedObjectContext];
     
     if(!newUser)
         return NO;
@@ -54,10 +54,9 @@
 }
 
 
--(BOOL)registerSubscriptionsForCurrentUserFromDictionary:(NSDictionary*)dictionary
+- (BOOL) registerSubscriptionsForCurrentUserFromDictionary: (NSDictionary*) dictionary
 {
     // == Check for Validity == //
-    
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
@@ -66,55 +65,47 @@
     if(!currentUser)
         return NO;
     
-    NSDictionary* channeslDictionary = [dictionary objectForKey:@"channels"];
+    NSDictionary* channeslDictionary = [dictionary objectForKey: @"channels"];
     if(!channeslDictionary)
         return NO;
     
-    NSArray* itemsArray = [channeslDictionary objectForKey:@"items"];
+    NSArray* itemsArray = [channeslDictionary objectForKey: @"items"];
     if(!itemsArray)
         return NO;
     
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
-        Channel* channel = [Channel subscriberInstanceFromDictionary:subscriptionChannel
-                                 usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                                 andViewId:kProfileViewId];
+        Channel* channel = [Channel subscriberInstanceFromDictionary: subscriptionChannel
+                                           usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                           andViewId: kProfileViewId];
         
+        if (!channel) continue;
         
-        if(!channel) continue;
-        
-        [currentUser addSubscriptionsObject:channel];
+        [currentUser addSubscriptionsObject: channel];
         
     }
-    
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
     
-    
     [appDelegate saveContext: TRUE];
-    
     
     return YES;
 }
 
--(BOOL)registerCategoriesFromDictionary:(NSDictionary*)dictionary
+
+- (BOOL) registerCategoriesFromDictionary: (NSDictionary*) dictionary
 {
-    
     // == Check for Validity == //
-    
     NSDictionary *categoriesDictionary = [dictionary objectForKey: @"categories"];
-    if (!categoriesDictionary || ![categoriesDictionary isKindOfClass:[NSDictionary class]])
+    if (!categoriesDictionary || ![categoriesDictionary isKindOfClass: [NSDictionary class]])
         return NO;
-    
     
     NSArray *itemArray = [categoriesDictionary objectForKey: @"items"];
     
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
-    
-    // == =============== == //
     
     // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
     // and should be removed in a post-import cleanup
@@ -123,18 +114,12 @@
                                                                          inManagedObjectContext: importManagedObjectContext];
     
     // === Main Processing === //
-    
     for (NSDictionary *categoryDictionary in itemArray)
         if ([categoryDictionary isKindOfClass: [NSDictionary class]])
             [Category instanceFromDictionary: categoryDictionary
                    usingManagedObjectContext: importManagedObjectContext];
     
-    
-    
-    
     // == =============== == //
-    
-    
     
     // Now remove any Category objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: existingObjectsInViewId
@@ -152,9 +137,53 @@
 }
 
 
--(BOOL)registerVideoInstancesFromDictionary:(NSDictionary *)dictionary
-                                  forViewId:(NSString*)viewId
-                                byAppending:(BOOL)append
+- (BOOL) registerCoverArtFromDictionary: (NSDictionary*) dictionary
+                             forViewId: (NSString *) viewId
+{
+    // == Check for Validity == //
+    NSDictionary *channelCoverDictionary = [dictionary objectForKey: @"cover_art"];
+    if (!channelCoverDictionary || ![channelCoverDictionary isKindOfClass: [NSDictionary class]])
+        return NO;
+    
+    NSArray *itemArray = [channelCoverDictionary objectForKey: @"items"];
+    
+    if (![itemArray isKindOfClass: [NSArray class]])
+        return NO;
+    
+    // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
+    // and should be removed in a post-import cleanup
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
+                                                                                      andViewId: viewId
+                                                                         inManagedObjectContext: importManagedObjectContext];
+    
+    for (NSDictionary *individualChannelCoverDictionary in itemArray)
+    {
+        if ([individualChannelCoverDictionary isKindOfClass: [NSDictionary class]])
+        {
+            [ChannelCover instanceFromDictionary: individualChannelCoverDictionary
+                       usingManagedObjectContext: importManagedObjectContext
+                                       andViewId: viewId];
+        }
+    }
+    
+    // Now remove any Category objects that are no longer referenced in the import
+    [self removeUnusedManagedObjects: existingObjectsInViewId
+              inManagedObjectContext: importManagedObjectContext];
+
+    BOOL saveResult = [self saveImportContext];
+    
+    if (!saveResult)
+        return NO;
+    
+    [appDelegate saveContext: TRUE];
+    
+    return YES;
+}
+
+
+- (BOOL) registerVideoInstancesFromDictionary: (NSDictionary *) dictionary
+                                    forViewId: (NSString*) viewId
+                                  byAppending: (BOOL) append
 {
     
     // == Check for Validity == //
@@ -168,10 +197,7 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
-    
     // == =============== == //
-    
-    
     
     // We need to mark all of our existing VideoInstance objects corresponding to this viewId, just in case they are no longer required
     // and should be removed in a post-import cleanup
@@ -188,23 +214,17 @@
                               ignoringObjectTypes: kIgnoreNothing
                                         andViewId: viewId];
     
-    
-    
     // == =============== == //
     
     // Now remove any VideoInstance objects that are no longer referenced in the import
     [self removeUnusedManagedObjects: existingObjectsInViewId
               inManagedObjectContext: importManagedObjectContext];
     
-    
-    
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
         return NO;
     
-    
     [appDelegate saveContext: TRUE];
-    
     
     return YES;
 }
@@ -236,22 +256,18 @@
 
 
 
--(BOOL)registerNewChannelScreensFromDictionary:(NSDictionary *)dictionary
-                                   byAppending:(BOOL)append {
-    
-
+- (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
+                                   byAppending: (BOOL) append
+{
     // == Check for Validity == //
-    
     
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
-    
     NSArray *itemArray = [channelsDictionary objectForKey: @"items"];
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
-    
     
     // == ================ == //
     
@@ -263,11 +279,8 @@
                                                                                  andViewId: kChannelsViewId
                                                                     inManagedObjectContext: importManagedObjectContext];
     }
-    
-    
-    
+
     // === Main Processing === //
-    
     
     for (NSDictionary *itemDictionary in itemArray)
         if ([itemDictionary isKindOfClass: [NSDictionary class]])
@@ -277,8 +290,7 @@
                                   andViewId: kChannelsViewId];
     
     // == ================ == //
-    
-    
+
     [self removeUnusedManagedObjects: existingObjectsInViewId
               inManagedObjectContext: importManagedObjectContext];
     
@@ -286,15 +298,10 @@
     if(!saveResult)
         return NO;
     
-    
-    [appDelegate saveContext:TRUE];
+    [appDelegate saveContext: TRUE];
     
     return YES;
 }
-
-#pragma mark - Context Management
-
-
 
 
 #pragma mark - Database garbage collection

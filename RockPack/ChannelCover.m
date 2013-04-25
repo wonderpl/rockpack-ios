@@ -1,5 +1,7 @@
 #import "ChannelCover.h"
+#import "NSDictionary+Validation.h"
 
+static NSEntityDescription *channelCoverEntity = nil;
 
 @interface ChannelCover ()
 
@@ -21,7 +23,7 @@
                                       withDefault: @"Uninitialized Id"];
     
     // Only create an entity description once, should increase performance
-    if (categoryEntity == nil)
+    if (channelCoverEntity == nil)
     {
         // Do once, and only once
         static dispatch_once_t oncePredicate;
@@ -97,7 +99,7 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), backgroundURL(%@), carouselURL (%@), coverRef(%@), createdByUser(%@), position(%@)", self.uniqueId, self.backgroundURL, self.carouselURL, self.coverRef, self.createdByUser, self.position];
+    return [NSString stringWithFormat: @"ChannelCover: uniqueId(%@), viewId (%@), backgroundURL(%@), carouselURL (%@), coverRef(%@),  position(%@)", self.uniqueId, self.viewId, self.backgroundURL, self.carouselURL, self.coverRef, self.position];
 }
 
 

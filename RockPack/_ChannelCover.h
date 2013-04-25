@@ -9,6 +9,7 @@ extern const struct ChannelCoverAttributes {
 	__unsafe_unretained NSString *carouselURL;
 	__unsafe_unretained NSString *coverRef;
 	__unsafe_unretained NSString *position;
+	__unsafe_unretained NSString *viewId;
 } ChannelCoverAttributes;
 
 extern const struct ChannelCoverRelationships {
@@ -16,6 +17,7 @@ extern const struct ChannelCoverRelationships {
 
 extern const struct ChannelCoverFetchedProperties {
 } ChannelCoverFetchedProperties;
+
 
 
 
@@ -80,6 +82,16 @@ extern const struct ChannelCoverFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* viewId;
+
+
+
+//- (BOOL)validateViewId:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 
 @end
 
@@ -113,6 +125,12 @@ extern const struct ChannelCoverFetchedProperties {
 
 - (int64_t)primitivePositionValue;
 - (void)setPrimitivePositionValue:(int64_t)value_;
+
+
+
+
+- (NSString*)primitiveViewId;
+- (void)setPrimitiveViewId:(NSString*)value;
 
 
 
