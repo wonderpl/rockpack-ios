@@ -132,7 +132,7 @@
           errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     
-    SYNNetworkOperationJsonObject *networkOperation =(SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithURLString: resourceURL
                                                                                                            params: nil];
     
     [self addCommonHandlerToNetworkOperation: networkOperation

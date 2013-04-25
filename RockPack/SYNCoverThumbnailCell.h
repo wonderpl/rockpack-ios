@@ -10,4 +10,8 @@
 
 @interface SYNCoverThumbnailCell : UICollectionViewCell
 
+@property (nonatomic, strong) IBOutlet UIImageView *coverImageView;
+
+- (void) setCoverImageWithURLString: (NSString*) imageURLString;
+
 @end

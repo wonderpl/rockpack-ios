@@ -253,7 +253,7 @@
         return NO;
     
     
-    // == ================ == //
+
     
     NSArray *existingObjectsInViewId;
     
@@ -265,22 +265,57 @@
     }
     
     
+    // Query for existing objects
     
-    // === Main Processing === //
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
     
-    for (NSDictionary *itemDictionary in itemArray)
-        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingChannelEntries.count];
+    
+    for (Channel* existingChannel in matchingChannelEntries) {
+        [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
+    }
+    
+    for (NSDictionary *itemDictionary in itemArray) {
+        
+        NSString *uniqueId = [itemDictionary objectForKey: @"id"];
+        if(!uniqueId)
+            continue;
+        
+        if([existingChannelsByIndex objectForKey:uniqueId])
+            continue;
+        
+        if ([itemDictionary isKindOfClass: [NSDictionary class]]) {
+            
             [Channel instanceFromDictionary: itemDictionary
                   usingManagedObjectContext: importManagedObjectContext
-                        ignoringObjectTypes: kIgnoreNothing
+                        ignoringObjectTypes: kIgnoreStoredObjects
                                   andViewId: kChannelsViewId];
+        }
+            
+    }
+        
     
-    // == ================ == //
+
+    if(!append)
+    {
+        
+        [self removeUnusedManagedObjects: existingObjectsInViewId
+                  inManagedObjectContext: importManagedObjectContext];
+        
+    }
     
-    
-    [self removeUnusedManagedObjects: existingObjectsInViewId
-              inManagedObjectContext: importManagedObjectContext];
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
