@@ -26,18 +26,20 @@
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate>
 
+#ifdef ALLOWS_PINCH_GESTURES
+
 @property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, assign) BOOL ignoreRefresh;
-@property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
 @property (nonatomic, strong) UIImageView *pinchedView;
-@property (nonatomic, strong) NSString* currentCategoryId;
 
-@property (nonatomic, weak) SYNMainRegistry* mainRegistry;
+#endif
 
-
-@property (nonatomic) NSRange currentRange;
+@property (getter = hasTouchedChannelButton) BOOL touchedChannelButton;
 @property (nonatomic) NSInteger currentTotal;
+@property (nonatomic) NSRange currentRange;
+@property (nonatomic, assign) BOOL ignoreRefresh;
+@property (nonatomic, strong) NSString* currentCategoryId;
+@property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
 @end
 
@@ -50,24 +52,16 @@
 
 #pragma mark - View lifecycle
 
--(id)initWithViewId:(NSString *)vid
+- (id) initWithViewId: (NSString *) vid
 {
-    if ((self = [super initWithViewId:vid]))
+    if ((self = [super initWithViewId: vid]))
     {
         self.title = kChannelsTitle;
     }
+    
     return self;
 }
 
--(CGSize)itemSize
-{
-    return CGSizeMake(251.0, 212.0);
-}
-
--(CGSize)footerSize
-{
-    return CGSizeMake(1024.0, 64.0);
-}
 
 - (void) loadView
 {
@@ -131,20 +125,22 @@
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib:footerViewNib
-                          forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                 withReuseIdentifier:@"SYNChannelFooterMoreView"];
-    
+    [self.channelThumbnailCollectionView registerNib: footerViewNib
+                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
+
+#ifdef ALLOWS_PINCH_GESTURES
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
+#endif
     
     __weak SYNChannelsRootViewController *weakSelf = self;
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
-                                                      forRange:currentRange
-                                                  onCompletion:^(NSDictionary* response) {
+    [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
+                                                      forRange: currentRange
+                                                  onCompletion: ^(NSDictionary* response) {
                                                       
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
                                                       if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
@@ -155,20 +151,18 @@
                                                           return;
                                                       
                                                       currentTotal = [totalNumber integerValue];
-                                                    
-                                                      
-                                                  
                                                       
                                                       BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
-                                                                                                                             byAppending:NO];
+                                                                                                                                 byAppending:NO];
                                                       if (!registryResultOk) {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
-        
-                                                  } onError:^(NSDictionary* errorInfo) {
-        
-                                                  }];
+                                                      
+                                                  }
+                                                       onError: ^(NSDictionary* errorInfo) {
+                                                           
+                                                       }];
 }
 
 
@@ -177,6 +171,21 @@
     [super viewWillAppear: animated];
     
     self.touchedChannelButton = NO;
+}
+
+
+#pragma mark - Helper methods
+
+
+- (CGSize) itemSize
+{
+    return CGSizeMake(251.0, 212.0);
+}
+
+
+- (CGSize) footerSize
+{
+    return CGSizeMake(1024.0, 64.0);
 }
 
 
@@ -207,9 +216,10 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
+    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position"
+                                                                 ascending: YES]];
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -236,25 +246,24 @@
 
 }
 
+
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 1;
 }
 
+
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
-    
-    
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle: channel.title];
-    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat:@"%@", channel.channelOwner.displayName];
+    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
 //    if(channelThumbnailCell.shouldAnimate)
@@ -269,33 +278,31 @@
 //        startAnimationDelay += 0.08;
 //        channelThumbnailCell.shouldAnimate = NO;
 //    }
-    
-    
-    
+
     return channelThumbnailCell;
 }
 
--(void)displayNameButtonPressed:(UIButton*)button
+- (void)displayNameButtonPressed: (UIButton*) button
 {
     SYNChannelThumbnailCell* parent = (SYNChannelThumbnailCell*)[[button superview] superview];
     
-    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell:parent];
+    NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
     
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels
-                                                        object:self
-                                                      userInfo:@{@"ChannelOwner":channel.channelOwner}];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
+                                                        object: self
+                                                      userInfo: @{@"ChannelOwner" : channel.channelOwner}];
     
 }
 
 
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
-           viewForSupplementaryElementOfKind:(NSString *)kind
-                                 atIndexPath:(NSIndexPath *)indexPath {
-    
-    if(collectionView != self.channelThumbnailCollectionView)
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    if (collectionView != self.channelThumbnailCollectionView)
         return nil;
     
     SYNChannelFooterMoreView *channelMoreFooter;
@@ -310,20 +317,20 @@
     
     if (kind == UICollectionElementKindSectionFooter)
     {
-        channelMoreFooter = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                                                    withReuseIdentifier:@"SYNChannelFooterMoreView"
-                                                                                           forIndexPath:indexPath];
+        channelMoreFooter = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                    withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                           forIndexPath: indexPath];
         
-        [channelMoreFooter.loadMoreButton addTarget:self
-                                             action:@selector(loadMoreChannels:)
-                                   forControlEvents:UIControlEventTouchUpInside];
+        [channelMoreFooter.loadMoreButton addTarget: self
+                                             action: @selector(loadMoreChannels:)
+                                   forControlEvents: UIControlEventTouchUpInside];
         
         supplementaryView = channelMoreFooter;
     }
     
-    
     return supplementaryView;
 }
+
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
@@ -334,65 +341,27 @@
         
         Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
+        SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                                  usingMode: kChannelDetailsModeDisplay];
         
         [self animatedPushViewController: channelVC];
     }
 }
 
 
-// Custom zoom out transition
-- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
-    
-    channelVC.view.alpha = 0.0f;
-    
-    [self.navigationController pushViewController: channelVC
-                                         animated: NO];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-     {
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         channelVC.view.alpha = 1.0f;
-         
-         // TODO: Put the correct code to hide the top bar (was removed when the implementation started)
-         
-         self.pinchedView.alpha = 0.0f;
-         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
-         
-     }
-                     completion: ^(BOOL finished)
-     {
-         [self.pinchedView removeFromSuperview];
-     }];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
-                                                        object: self];
-}
-
-
 #pragma mark - Button Actions
 
--(void)loadMoreChannels:(UIButton*)sender
+- (void) loadMoreChannels: (UIButton*) sender
 {
-    
-    
     NSInteger nextStart = currentRange.location + currentRange.length;
     NSInteger nextSize = (nextStart + STANDARD_LENGTH) > currentTotal ? (currentTotal - nextStart) : STANDARD_LENGTH;
     
     currentRange = NSMakeRange(nextStart, nextSize);
     
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
-                                                      forRange:currentRange
-                                                  onCompletion:^(NSDictionary* response) {
+    [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
+                                                      forRange: currentRange
+                                                  onCompletion: ^(NSDictionary* response) {
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:YES];
                                                       if (!registryResultOk) {
@@ -400,12 +369,14 @@
                                                           return;
                                                       }
                                                       
-                                                  } onError:^(NSDictionary* errorInfo) {
-                                                      
-                                                  }];
+                                                  }
+                                                       onError: ^(NSDictionary* errorInfo) {
+                                                           
+                                                       }];
 }
 
 
+#ifdef ALLOWS_PINCH_GESTURES
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
 {
@@ -481,63 +452,108 @@
     }
 }
 
--(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+
+// Custom zoom out transition
+- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    
+    channelVC.view.alpha = 0.0f;
+    
+    [self.navigationController pushViewController: channelVC
+                                         animated: NO];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^
+     {
+         // Contract thumbnail view
+         self.view.alpha = 0.0f;
+         channelVC.view.alpha = 1.0f;
+         
+         // TODO: Put the correct code to hide the top bar (was removed when the implementation started)
+         
+         self.pinchedView.alpha = 0.0f;
+         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
+         
+     }
+                     completion: ^(BOOL finished)
+     {
+         [self.pinchedView removeFromSuperview];
+     }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
+                                                        object: self];
+}
+
+#endif
+
+
+- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
 {
     [super handleMainTap:recogniser];
     
-    if(!recogniser) {
+    if (!recogniser)
+    {
         // then home button was pressed
-        
-        if(tabExpanded) {
-            [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
-                CGPoint currentCenter = self.channelThumbnailCollectionView.center;
-                [self.channelThumbnailCollectionView setCenter:CGPointMake(currentCenter.x, currentCenter.y - kCategorySecondRowHeight)];
-            }  completion:^(BOOL result) {
-                tabExpanded = NO;
-            }];
+        if (tabExpanded)
+        {
+            [UIView animateWithDuration: 0.3
+                                  delay: 0.0
+                                options: UIViewAnimationCurveEaseInOut
+                             animations: ^{
+                                 CGPoint currentCenter = self.channelThumbnailCollectionView.center;
+                                 [self.channelThumbnailCollectionView setCenter: CGPointMake(currentCenter.x, currentCenter.y - kCategorySecondRowHeight)];
+                             }  completion: ^(BOOL result) {
+                                 tabExpanded = NO;
+                             }];
         }
         
-        
         return;
-        
     }
     
-    if(tabExpanded)
+    if (tabExpanded)
         return;
     
     tabExpanded = YES;
     
-    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
-        CGPoint currentCenter = self.channelThumbnailCollectionView.center;
-        [self.channelThumbnailCollectionView setCenter:CGPointMake(currentCenter.x, currentCenter.y + kCategorySecondRowHeight)];
-    }  completion:^(BOOL result) {
-        tabExpanded = YES;
-    }];
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationCurveEaseInOut
+                     animations: ^{
+                         CGPoint currentCenter = self.channelThumbnailCollectionView.center;
+                         [self.channelThumbnailCollectionView setCenter: CGPointMake(currentCenter.x, currentCenter.y + kCategorySecondRowHeight)];
+                     }
+                     completion: ^(BOOL result) {
+                         tabExpanded = YES;
+                     }];
 }
 
 
--(void)handleNewTabSelectionWithId:(NSString *)selectionId
+- (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
     currentCategoryId = selectionId;
     currentRange = NSMakeRange(0, 50);
-    [appDelegate.networkEngine updateChannelsScreenForCategory:currentCategoryId
-                                                      forRange:currentRange
-                                                  onCompletion:^(NSDictionary* response) {
+    [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
+                                                      forRange: currentRange
+                                                  onCompletion: ^(NSDictionary* response) {
+                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary: response
+                                                                                                                             byAppending: NO];
                                                       
-                                                      
-
-                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
-                                                                                                                             byAppending:NO];
-                                                      
-                                                      
-                                                      if (!registryResultOk) {
+                                                      if (!registryResultOk)
+                                                      {
                                                           DebugLog(@"Registration of Channel Failed");
                                                           return;
                                                       }
                                                       
-                                                  } onError:^(NSDictionary* errorInfo) {
-                                                      
-                                                  }];
+                                                  }
+                                                       onError: ^(NSDictionary* errorInfo) {
+                                                           
+                                                       }];
 }
 
 @end

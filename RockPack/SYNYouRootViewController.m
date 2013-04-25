@@ -26,9 +26,17 @@
 
 @interface SYNYouRootViewController ()
 
+
+// Enable to allow the user to 'pinch out' on thumbnails
+#ifdef ALLOWS_PINCH_GESTURES
+
 @property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
+@property (nonatomic, strong) UIImageView *pinchedView;
+
+#endif
+
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftLandscapeLayout;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftPortraitLayout;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightLandscapeLayout;
@@ -37,7 +45,7 @@
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView* headerCheannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
-@property (nonatomic, strong) UIImageView *pinchedView;
+
 
 @end
 
@@ -190,11 +198,13 @@
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
+#ifdef ALLOWS_PINCH_GESTURES
+    
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
-    
+#endif
     
     
     [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
@@ -452,7 +462,8 @@
     }
     
     
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
     
     [self animatedPushViewController: channelVC];
     
@@ -491,38 +502,8 @@
 }
 
 
-// Custom zoom out transition
-- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
-    
-    channelVC.view.alpha = 0.0f;
-    
-    [self.navigationController pushViewController: channelVC
-                                         animated: NO];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         channelVC.view.alpha = 1.0f;
-         self.pinchedView.alpha = 0.0f;
-         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
-         
-                  } completion: ^(BOOL finished) {
-            
-         [self.pinchedView removeFromSuperview];
-     }];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
-                                                        object: self];
-}
-
+#ifdef ALLOWS_PINCH_GESTURES
+// TODO: Decide whether to keep pinch in or out
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
 {
@@ -596,6 +577,41 @@
     }
 }
 
+
+// Custom zoom out transition
+- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    
+    channelVC.view.alpha = 0.0f;
+    
+    [self.navigationController pushViewController: channelVC
+                                         animated: NO];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         // Contract thumbnail view
+                         self.view.alpha = 0.0f;
+                         channelVC.view.alpha = 1.0f;
+                         self.pinchedView.alpha = 0.0f;
+                         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         [self.pinchedView removeFromSuperview];
+                     }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
+                                                        object: self];
+}
+
+#endif
 
 
 - (void) observeValueForKeyPath: (NSString *) keyPath

@@ -9,10 +9,16 @@
 #import "LXReorderableCollectionViewFlowLayout.h"
 #import "SYNAbstractViewController.h"
 
+typedef enum {
+    kChannelDetailsModeDisplay = 0,
+    kChannelDetailsModeEdit = 1
+} kChannelDetailsMode;
+
 @interface SYNChannelDetailViewController : SYNAbstractViewController <LXReorderableCollectionViewDelegateFlowLayout,
                                                                      UICollectionViewDataSource,
                                                                      UICollectionViewDelegateFlowLayout>
 
-- (id) initWithChannel: (Channel *) channel;
+- (id) initWithChannel: (Channel *) channel
+             usingMode: (kChannelDetailsMode) mode;
 
 @end

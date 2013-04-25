@@ -356,4 +356,8 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 #define kChannelShareMessage @"Take a look at this great channel I found on Rockpack"
 #define kVideoShareMessage @"Take a look at this great video I found on Rockpack"
 
+// Gestures
+
+#define ALLOWS_PINCH_GESTURES__
+
 #endif
