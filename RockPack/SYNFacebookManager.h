@@ -37,4 +37,6 @@ typedef void (^FacebookLogoutFailureBlock)(NSString *errorMessage);
 - (void) logoutOnSuccess: (FacebookLogoutSuccessBlock) successBlock
                onFailure: (FacebookLogoutFailureBlock) failureBlock;
 
+- (void) postToWall:(NSString*)message;
+
 @end

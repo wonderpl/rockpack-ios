@@ -269,7 +269,12 @@
     if (![itemArray isKindOfClass: [NSArray class]])
         return NO;
     
+<<<<<<< HEAD
     // == ================ == //
+=======
+    
+
+>>>>>>> origin/develop
     
     NSArray *existingObjectsInViewId;
     
@@ -279,20 +284,74 @@
                                                                                  andViewId: kChannelsViewId
                                                                     inManagedObjectContext: importManagedObjectContext];
     }
+<<<<<<< HEAD
 
     // === Main Processing === //
     
     for (NSDictionary *itemDictionary in itemArray)
         if ([itemDictionary isKindOfClass: [NSDictionary class]])
+=======
+    
+    
+    // Query for existing objects
+    
+    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+    [channelFetchRequest setEntity: [NSEntityDescription entityForName: @"Channel"
+                                                inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
+    
+    [channelFetchRequest setPredicate: predicate];
+    
+    NSError* error;
+    NSArray *matchingChannelEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: channelFetchRequest
+                                                                                          error: &error];
+    
+    
+    NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingChannelEntries.count];
+    
+    for (Channel* existingChannel in matchingChannelEntries) {
+        [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
+    }
+    
+    for (NSDictionary *itemDictionary in itemArray) {
+        
+        NSString *uniqueId = [itemDictionary objectForKey: @"id"];
+        if(!uniqueId)
+            continue;
+        
+        if([existingChannelsByIndex objectForKey:uniqueId])
+            continue;
+        
+        if ([itemDictionary isKindOfClass: [NSDictionary class]]) {
+            
+>>>>>>> origin/develop
             [Channel instanceFromDictionary: itemDictionary
                   usingManagedObjectContext: importManagedObjectContext
-                        ignoringObjectTypes: kIgnoreNothing
+                        ignoringObjectTypes: kIgnoreStoredObjects
                                   andViewId: kChannelsViewId];
+        }
+            
+    }
+        
     
+<<<<<<< HEAD
     // == ================ == //
 
     [self removeUnusedManagedObjects: existingObjectsInViewId
               inManagedObjectContext: importManagedObjectContext];
+=======
+
+    if(!append)
+    {
+        
+        [self removeUnusedManagedObjects: existingObjectsInViewId
+                  inManagedObjectContext: importManagedObjectContext];
+        
+    }
+    
+>>>>>>> origin/develop
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)

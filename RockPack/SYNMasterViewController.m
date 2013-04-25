@@ -25,6 +25,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNObjectFactory.h"
+#import "SYNFacebookManager.h"
 
 #import "SYNSearchRootViewController.h"
 
@@ -353,6 +354,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(IBAction)addToChannelPressed:(id)sender
 {
+    
+    [[SYNFacebookManager sharedFBManager] postToWall:@"This is my first post"];
+    
+    return;
+    
     
     [self.view addSubview:self.existingChannelsController.view];
     [self addChildViewController:self.existingChannelsController];

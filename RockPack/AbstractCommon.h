@@ -8,7 +8,8 @@ typedef enum {
     kIgnoreVideoInstanceObjects = 1,
     kIgnoreChannelObjects = 2,
     kIgnoreChannelOwnerObjects = 4,
-    kIgnoreVideoObjects = 8
+    kIgnoreVideoObjects = 8,
+    kIgnoreStoredObjects = 16
 } IgnoringObjects;
 
 @end
