@@ -342,7 +342,8 @@
         Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
         SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                                  usingMode: kChannelDetailsModeDisplay];
+                                                                                                  usingMode: kChannelDetailsModeEdit
+                                                     ];
         
         [self animatedPushViewController: channelVC];
     }

@@ -8,6 +8,7 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "SYNCategoriesTabViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailRegularCell.h"
@@ -31,9 +32,11 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
 @property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
+@property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
+@property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (strong, nonatomic) NSMutableArray *videoInstances;
 
 @end
@@ -107,6 +110,17 @@
     
     // Store the initial content offset, so that we can fade out the control if the user scrolls away from this
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+    
+    // Create categories tab, but make invisible (alpha = 0) for now
+    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] init];
+    self.categoriesTabViewController.delegate = self;
+    CGRect tabFrame = self.categoriesTabViewController.view.frame;
+    tabFrame.origin.y += kChannelCreationCategoryTabOffsetY;
+    self.categoriesTabViewController.view.frame = tabFrame;
+    [self.view addSubview: self.categoriesTabViewController.view];
+    self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.categoriesTabViewController.view.alpha = 0.0f;
+    [self addChildViewController: self.categoriesTabViewController];
 }
 
 
@@ -560,6 +574,87 @@
     [self.videoInstances removeObjectAtIndex: indexPath.row];
     
     [self reloadCollectionViews];
+}
+
+
+#pragma mark - Cover choice
+
+- (void) showCoverChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade up the category tab controller
+                         self.coverChooserMasterView.alpha = 1.0f;
+                         
+                         // slide down the video collection view a bit
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
+                                                                                        kChannelCreationCategoryAdditionalOffsetY);
+                     }
+                     completion: nil];
+}
+
+- (void) hideCoverChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade out the category tab controller
+                         self.coverChooserMasterView.alpha = 0.0f;
+                         
+                         // slide up the video collection view a bit ot its original position
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY);
+                     }
+                     completion: nil];
+}
+
+#pragma mark - Category choice
+
+- (void) showCategoryChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade up the category tab controller
+                         self.categoriesTabViewController.view.alpha = 1.0f;
+                         
+                         // slide down the video collection view a bit
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
+                                                                                        kChannelCreationCategoryAdditionalOffsetY);
+                     }
+                     completion: nil];
+
+}
+
+- (void) hideCategoryChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade out the category tab controller
+                         self.categoriesTabViewController.view.alpha = 0.0f;
+                         
+                         // slide up the video collection view a bit ot its original position
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY);
+                     }
+                     completion: nil];
+}
+
+- (BOOL) showSubcategories
+{
+    return YES;
+}
+
+- (void) handleMainTap: (UITapGestureRecognizer*) recogniser
+{
+    
+}
+
+- (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
+{
+    
+}
+
+// general
+- (void) handleNewTabSelectionWithId: (NSString*) temId
+{
+    
 }
 
 @end

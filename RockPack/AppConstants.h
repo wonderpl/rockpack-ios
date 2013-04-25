@@ -311,6 +311,12 @@ typedef enum {
 #define kShuttleBarButtonWidth          77.0f
 #define kShuttleBarSliderOffset         10.0f
 
+// Channel creation
+
+#define kChannelCreationCollectionViewOffsetY           540.0f
+#define kChannelCreationCategoryTabOffsetY              444.0f
+#define kChannelCreationCategoryAdditionalOffsetY       91.0f
+
 // Notifications
 
 #define kNoteBackButtonShow         @"kNoteBackButtonShow"

@@ -19,7 +19,6 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
