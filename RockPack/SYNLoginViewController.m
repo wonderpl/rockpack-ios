@@ -550,7 +550,7 @@
             
             finalLoginButton.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y - self.elementsOffsetY);
             
-            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x, facebookSignInButton.center.y - self.elementsOffsetY);
+            facebookSignInButton.center = CGPointMake(facebookSignInButton.center.x + kOffsetForRegisterForm, facebookSignInButton.center.y - self.elementsOffsetY);
             
             [self placeSecondaryElements];
             
@@ -1427,7 +1427,7 @@
     CGFloat registerOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 704.0 : 358.0;
     registerButton.center = CGPointMake(registerButton.center.x, registerOffsetY);
     areYouNewLabel.center = CGPointMake(areYouNewLabel.center.x, registerButton.center.y - 44.0);
-    memberLabel.center = CGPointMake(memberLabel.center.x, areYouNewLabel.center.y);
+    memberLabel.center = CGPointMake(loginButton.center.x, areYouNewLabel.center.y);
     loginButton.center = registerButton.center;
     dividerImageView.center = CGPointMake(dividerImageView.center.x, dividerImageView.center.y - self.elementsOffsetY);
     passwordForgottenLabel.center = CGPointMake(passwordForgottenLabel.center.x, passwordForgottenLabel.center.y - self.elementsOffsetY);
@@ -1435,6 +1435,17 @@
     CGFloat termsOffsetY = [[SYNDeviceManager sharedInstance] isPortrait] ? 714.0 : 370.0;
     termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, termsOffsetY);
     termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, termsOffsetY);
+    
+    
+    loginButton.frame = CGRectIntegral(loginButton.frame);
+    registerButton.frame = CGRectIntegral(registerButton.frame);
+    signUpButton.frame = CGRectIntegral(signUpButton.frame);
+    passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
+    faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
+    areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
+    termsAndConditionsLabel.frame = CGRectIntegral(termsAndConditionsLabel.frame);
+    termsAndConditionsLabelSide.frame = CGRectIntegral(termsAndConditionsLabelSide.frame);
+    memberLabel.frame = CGRectIntegral(memberLabel.frame);
 }
 
 
