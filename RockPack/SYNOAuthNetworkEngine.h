@@ -113,6 +113,10 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
          completionHandler: (MKNKUserSuccessBlock) completionBlock
               errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) updateCoverArtForUserId: (NSString *) userId
+                    onCompletion: (MKNKVoidBlock) completionBlock
+                         onError: (MKNKErrorBlock) errorBlock;
+
 - (void) uploadCoverArtForUserId: (NSString *) userId
                            image: (UIImage *) image
                completionHandler: (MKNKUserSuccessBlock) completionBlock

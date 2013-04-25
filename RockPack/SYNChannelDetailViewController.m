@@ -807,6 +807,14 @@
         [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
             DebugLog(@"Success");
         }
+                                                      onError: ^(NSError* error) {
+                                                          DebugLog(@"%@", [error debugDescription]);
+                                                      }];
+        
+        [appDelegate.oAuthNetworkEngine updateCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                   onCompletion: ^{
+                                                       DebugLog(@"Success");
+                                                   }
                                                         onError: ^(NSError* error) {
                                                             DebugLog(@"%@", [error debugDescription]);
                                                         }];
