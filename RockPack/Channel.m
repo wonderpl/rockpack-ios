@@ -21,6 +21,11 @@ static NSEntityDescription *channelEntity = nil;
                         channelOwner: (ChannelOwner*)owner
                            andViewId: (NSString *) viewId {
     
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        return nil;
+    }
     
     
     NSString *uniqueId = [dictionary objectForKey: @"id"
@@ -36,11 +41,16 @@ static NSEntityDescription *channelEntity = nil;
     
     Channel *instance = [Channel insertInManagedObjectContext: managedObjectContext];
     
-    [instance setAttributesFromDictionary: dictionary
-                                   withId: uniqueId
-                usingManagedObjectContext: managedObjectContext
-                             channelOwner: owner
-                                andViewId: viewId];
+    
+    
+    // Simple objects
+    instance.uniqueId = uniqueId;
+    
+    instance.viewId = viewId;
+    
+    [instance setBasicAttributesFromDictionary:dictionary];
+    
+    instance.channelOwner = owner;
     
     
     return instance;
@@ -51,64 +61,6 @@ static NSEntityDescription *channelEntity = nil;
 }
 
 
-- (void) setAttributesFromDictionary: (NSDictionary *) dictionary
-                              withId: (NSString *) uniqueId
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                        channelOwner: (ChannelOwner*)owner
-                           andViewId: (NSString *) viewId
-{
-    // Is we are not actually a dictionary, then bail
-    if (![dictionary isKindOfClass: [NSDictionary class]])
-    {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
-        return;
-    }
-    
-    // Simple objects
-    self.uniqueId = uniqueId;
-    
-    self.viewId = viewId;
-    
-    self.categoryId = [dictionary objectForKey: @"category_id"
-                                   withDefault: @""];
-    
-    self.position = [dictionary objectForKey: @"position"
-                                 withDefault: [NSNumber numberWithInt: 0]];
-    
-    self.title = [dictionary upperCaseStringForKey: @"title"
-                                       withDefault: @""];
-    
-    self.lastUpdated = [dictionary dateFromISO6801StringForKey: @"last_updated"
-                                                   withDefault: [NSDate date]];
-    
-    self.subscribersCount = [dictionary objectForKey: @"subscribe_count"
-                                         withDefault: [NSNumber numberWithBool: FALSE]];
-    
-    self.coverThumbnailSmallURL = [dictionary objectForKey: @"cover_thumbnail_small_url"
-                                               withDefault: @"http://localhost"];
-    
-    self.coverThumbnailLargeURL = [dictionary objectForKey: @"cover_thumbnail_large_url"
-                                               withDefault: @"http://localhost"];
-    
-    self.wallpaperURL = [dictionary objectForKey: @"cover_background_url"
-                                     withDefault: @"http://localhost"];
-    
-    self.resourceURL = [dictionary objectForKey: @"resource_url"
-                                    withDefault: @"http://localhost"];
-    
-    self.channelDescription = [dictionary objectForKey: @"description"
-                                           withDefault: @"Description of channel goes here"];
-    
-    self.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
-                                     withDefault: @""];
-    
-    if (![self.eCommerceURL isEqualToString: @""])
-    {
-        NSLog (@"Found ecommerce URL");
-    }
-    
-    self.channelOwner = owner;
-}
 
 
 #pragma mark - Without Owner
@@ -198,45 +150,48 @@ static NSEntityDescription *channelEntity = nil;
                                         inManagedObjectContext: managedObjectContext];
         });
     }
-
-    // Now we need to see if this object already exists, and if so return it and if not create it
-    NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
-    [channelFetchRequest setEntity: channelEntity];
     
-    // Search on the unique Id
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
-    [channelFetchRequest setPredicate: predicate];
-    
-    NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                error: &error];
     Channel *instance;
     
-    if (matchingChannelEntries.count > 0)
+    if(!(ignoringObjects & kIgnoreStoredObjects))
     {
-        instance = matchingChannelEntries[0];
-        // Mark this object so that it is not deleted in the post-import step
-        instance.markedForDeletionValue = FALSE;
+        NSFetchRequest *channelFetchRequest = [[NSFetchRequest alloc] init];
+        [channelFetchRequest setEntity: channelEntity];
         
-        if ([instance.eCommerceURL isEqualToString: @""])
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@ AND viewId == %@", uniqueId, viewId];
+        
+        [channelFetchRequest setPredicate: predicate];
+        
+        NSArray *matchingChannelEntries = [managedObjectContext executeFetchRequest: channelFetchRequest
+                                                                              error: &error];
+        
+        
+        if (matchingChannelEntries.count > 0)
         {
-            instance.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
-                                                 withDefault: @""];
+            instance = matchingChannelEntries[0];
+            // Mark this object so that it is not deleted in the post-import step
+            instance.markedForDeletionValue = FALSE;
             
-            if (![instance.eCommerceURL isEqualToString: @""])
+            if ([instance.eCommerceURL isEqualToString: @""])
             {
-                NSLog (@"Found ecommerce URL");
+                instance.eCommerceURL = [dictionary objectForKey: @"ecommerce_url"
+                                                     withDefault: @""];
+                
+                if (![instance.eCommerceURL isEqualToString: @""])
+                {
+                    NSLog (@"Found ecommerce URL");
+                }
             }
-        }
-        
-        // NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
-        
-        // Check to see if we need to fill in the viewId
-        if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
-        {
-            instance.viewId = viewId;
             
-            NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+            // NSLog(@"Using existing Channel instance with id %@", instance.uniqueId);
+            
+            // Check to see if we need to fill in the viewId
+            if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
+            {
+                instance.viewId = viewId;
+                
+                NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
                 
                 // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
                 if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
@@ -258,30 +213,43 @@ static NSEntityDescription *channelEntity = nil;
                         }
                     }
                 }
+            }
+           
+            
+            
         }
         else
         {
-           
+            instance = [Channel insertInManagedObjectContext: managedObjectContext];
+            
+            
+            [instance setAttributesFromDictionary: dictionary
+                                           withId: uniqueId
+                        usingManagedObjectContext: managedObjectContext
+                              ignoringObjectTypes: ignoringObjects
+                                        andViewId: viewId];
+            
+            
+            
         }
-        
-        return instance;
     }
     else
     {
         instance = [Channel insertInManagedObjectContext: managedObjectContext];
         
-        // As we have a new object, we need to set all the attributes (from the dictionary passed in)
-        // We have already obtained the uniqueId, so pass it in as an optimisation
+        
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
                     usingManagedObjectContext: managedObjectContext
                           ignoringObjectTypes: ignoringObjects
                                     andViewId: viewId];
         
-        // DebugLog(@"Created Channel instance with id %@ and viewId %@", instance.uniqueId, instance.viewId);
         
-        return instance;
+        
     }
+    
+    return instance;
+    
 }
 
 
@@ -292,11 +260,6 @@ static NSEntityDescription *channelEntity = nil;
                            andViewId: (NSString *) viewId
 {
     
-    if (![dictionary isKindOfClass: [NSDictionary class]])
-    {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
-        return;
-    }
     
     
     self.uniqueId = uniqueId;
@@ -304,6 +267,52 @@ static NSEntityDescription *channelEntity = nil;
     if (!(ignoringObjects & kIgnoreVideoInstanceObjects))
     {
         self.viewId = viewId;
+    }
+    
+    [self setBasicAttributesFromDictionary:dictionary];
+    
+    
+    if (!(ignoringObjects & kIgnoreChannelObjects))
+    {
+        NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
+        
+        // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
+        if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
+        {
+            // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
+            NSArray *itemArray = [videosDictionary objectForKey: @"items"];
+            
+            if ([itemArray isKindOfClass: [NSArray class]])
+            {
+                for (NSDictionary *itemDictionary in itemArray)
+                {
+                    if ([itemDictionary isKindOfClass: [NSDictionary class]])
+                    {
+                        [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
+                                                                   usingManagedObjectContext: managedObjectContext
+                                                                          ignoringObjectTypes: kIgnoreChannelObjects
+                                                                                   andViewId: viewId]];
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
+                                   usingManagedObjectContext: managedObjectContext
+                                         ignoringObjectTypes: ignoringObjects
+                                                   andViewId: viewId];
+}
+
+
+-(void)setBasicAttributesFromDictionary:(NSDictionary*)dictionary
+{
+    
+    if (![dictionary isKindOfClass: [NSDictionary class]])
+    {
+        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
+        return;
     }
     
     self.categoryId = [dictionary objectForKey: @"category"
@@ -345,38 +354,6 @@ static NSEntityDescription *channelEntity = nil;
     {
         NSLog (@"Found ecommerce URL");
     }
-    
-    if (!(ignoringObjects & kIgnoreChannelObjects))
-    {
-        NSDictionary *videosDictionary = [dictionary objectForKey: @"videos"];
-        
-        // Get Data, being cautious and checking to see that we do indeed have an 'Data' key and it does return a dictionary
-        if (videosDictionary && [videosDictionary isKindOfClass: [NSDictionary class]])
-        {
-            // Template for reading values from model (numbers, strings, dates and bools are the data types that we currently have)
-            NSArray *itemArray = [videosDictionary objectForKey: @"items"];
-            
-            if ([itemArray isKindOfClass: [NSArray class]])
-            {
-                for (NSDictionary *itemDictionary in itemArray)
-                {
-                    if ([itemDictionary isKindOfClass: [NSDictionary class]])
-                    {
-                        [self.videoInstancesSet addObject: [VideoInstance instanceFromDictionary: itemDictionary
-                                                                   usingManagedObjectContext: managedObjectContext
-                                                                          ignoringObjectTypes: kIgnoreChannelObjects
-                                                                                   andViewId: viewId]];
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
-                                   usingManagedObjectContext: managedObjectContext
-                                         ignoringObjectTypes: ignoringObjects
-                                                   andViewId: viewId];
 }
 
 

@@ -66,7 +66,7 @@ typedef enum
 - (void) loginOnSuccess: (FacebookLoginSuccessBlock) successBlock
               onFailure: (FacebookLoginFailureBlock) failureBlock
 {
-    [self openSessionWithPermissionType: kFacebookPermissionTypeRead
+    [self openSessionWithPermissionType: kFacebookPermissionTypeRead | kFacebookPermissionTypePublish
                               onSuccess: ^{
                                   
          [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
@@ -251,6 +251,35 @@ typedef enum
              }
          }];
     }
+}
+
+#pragma mark - Posting to Wall
+
+- (void) postToWall:(NSString*)message
+{
+    NSDictionary* postParams = @{@"caption" : @"First Post",
+                                 @"description" : message};
+    
+    [FBRequestConnection startWithGraphPath:@"me/feed"
+                                 parameters:postParams
+                                 HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              NSString *alertText;
+                              if (error) {
+                                  alertText = [NSString stringWithFormat:@"error: domain = %@, code = %d", error.domain, error.code];
+                                  NSLog(@"\n%@", error);
+                              } else {
+                                  alertText = [NSString stringWithFormat:
+                                               @"Posted action, id: %@",
+                                               [result objectForKey:@"id"]];
+                              }
+                              // Show the result in an alert
+                              [[[UIAlertView alloc] initWithTitle:@"Result"
+                                                          message:alertText
+                                                         delegate:self
+                                                cancelButtonTitle:@"OK!"
+                                                otherButtonTitles:nil] show];
+                          }];
 }
 
 

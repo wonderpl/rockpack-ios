@@ -3,6 +3,11 @@
     <entity name="AbstractCommon" representedClassName="AbstractCommon" isAbstract="YES" syncable="YES">
         <attribute name="markedForDeletion" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="uniqueId" optional="YES" attributeType="String" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="uniqueId"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <entity name="Category" representedClassName="Category" parentEntity="TabItem" syncable="YES">
         <relationship name="subcategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Subcategory" inverseName="category" inverseEntity="Subcategory" syncable="YES"/>
@@ -74,7 +79,7 @@
         <relationship name="video" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Video" inverseName="videoInstances" inverseEntity="Video" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractCommon" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="AbstractCommon" positionX="0" positionY="0" width="128" height="73"/>
         <element name="Category" positionX="-252" positionY="111" width="128" height="60"/>
         <element name="Channel" positionX="-27" positionY="207" width="128" height="298"/>
         <element name="ChannelOwner" positionX="-353" positionY="216" width="128" height="103"/>

@@ -397,8 +397,8 @@
 - (void) shareURL: (NSURL *) shareURL
       withMessage: (NSString *) shareString
          fromRect: (CGRect) rect
-  arrowDirections: (UIPopoverArrowDirection) arrowDirections
-{
+  arrowDirections: (UIPopoverArrowDirection) arrowDirections {
+    
     NSArray *activityItems = @[shareString, shareURL];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems: activityItems
