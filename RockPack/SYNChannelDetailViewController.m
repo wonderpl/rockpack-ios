@@ -16,9 +16,11 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNCoverThumbnailCell.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNChannelDetailViewController ()
+
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -26,6 +28,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *coverThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
@@ -38,7 +41,6 @@
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (strong, nonatomic) NSMutableArray *videoInstances;
-
 @end
 
 
@@ -100,6 +102,15 @@
     [self.videoThumbnailCollectionView registerNib: videoThumbnailCellNib
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"];
     
+    // Register cover thumbnail cell
+    
+    // Regster video thumbnail cell
+    UINib *coverThumbnailCellNib = [UINib nibWithNibName: @"SYNCoverThumbnailCell"
+                                                  bundle: nil];
+    
+    [self.coverThumbnailCollectionView registerNib: coverThumbnailCellNib
+                        forCellWithReuseIdentifier: @"SYNCoverThumbnailCell"];
+    
     // Set wallpaper
     [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
                                            placeHolderImage: nil];
@@ -115,7 +126,7 @@
     self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] init];
     self.categoriesTabViewController.delegate = self;
     CGRect tabFrame = self.categoriesTabViewController.view.frame;
-    tabFrame.origin.y += kChannelCreationCategoryTabOffsetY;
+    tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
     self.categoriesTabViewController.view.frame = tabFrame;
     [self.view addSubview: self.categoriesTabViewController.view];
     self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -302,48 +313,123 @@
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    switch (section)
+    // Check to see what collection this concerns
+    if (collectionView == self.coverThumbnailCollectionView)
     {
-        case 0:
+        // Video thumbnails
+        switch (section)
         {
-            return self.videoInstances.count;
+            case 0:
+            {
+                return 1;
+            }
+            break;
+                
+            case 1:
+            {
+                // TODO: Add in cover images herer
+                return 0;
+            }
+            break;
+                
+            default:
+            {
+                AssertOrLog(@"Shouldn't have more than two sections");
+                return 0;
+            }
+            break;
         }
-        break;
-            
-        default:
+    }
+    else
+    {
+        // Video thumbnails
+        switch (section)
         {
-            AssertOrLog(@"Shouldn't have more than one section");
-            return 0;
+            case 0:
+            {
+                return self.videoInstances.count;
+            }
+            break;
+                
+            default:
+            {
+                AssertOrLog(@"Shouldn't have more than one section");
+                return 0;
+            }
+            break;
         }
-        break;
     }
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return 1;
+    // Check to see what collection this concerns
+    if (collectionView == self.coverThumbnailCollectionView)
+    {
+        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
+        return 2;        
+    }
+    else
+    {
+        // Only one sectino for video thumbnails
+        return 1;
+    }
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = nil;
-    
-    SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
-                                                                                                 forIndexPath: indexPath];
-    videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
-                                                    kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
-    
-    VideoInstance *videoInstance = self.videoInstances [indexPath.row];
-    videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
-    videoThumbnailCell.titleLabel.text = videoInstance.title;
-    videoThumbnailCell.viewControllerDelegate = self;
-    
-    cell = videoThumbnailCell;
-    
-    return cell;
+    // Check to see what collection this concerns
+    if (collectionView == self.coverThumbnailCollectionView)
+    {
+        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
+        switch (indexPath.section)
+        {
+            case 0:
+            {               
+                SYNCoverThumbnailCell *coverThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNCoverThumbnailCell"
+                                                                                                      forIndexPath: indexPath];
+                
+                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
+                return coverThumbnailCell;
+            }
+            break;
+                
+            case 2:
+            {
+                // TODO: Add in cover images herer
+                return nil;
+            }
+            break;
+                
+            default:
+            {
+                AssertOrLog(@"Shouldn't have more than two sections");
+                return 0;
+            }
+            break;
+        }
+    }
+    else
+    {
+        UICollectionViewCell *cell = nil;
+        
+        SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
+                                                                                                     forIndexPath: indexPath];
+        videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
+                                                        kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
+        
+        VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+        videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
+        videoThumbnailCell.titleLabel.text = videoInstance.title;
+        videoThumbnailCell.viewControllerDelegate = self;
+        
+        cell = videoThumbnailCell;
+        
+        return cell;
+    }
 }
 
 
@@ -471,7 +557,7 @@
         else
         {
             CGFloat differenceInY = - (self.originalContentOffset.y - newContentOffset.y);
-            // kChannelDetailsFadeSpan
+
             if (differenceInY < kChannelDetailsFadeSpan)
             {
                 self.masterControlsView.alpha = 1 - (differenceInY / kChannelDetailsFadeSpan);
@@ -482,7 +568,7 @@
             }
         }
     }
-    else if ([keyPath isEqualToString:@"subscribedByUser"])
+    else if ([keyPath isEqualToString: @"subscribedByUser"])
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
         BOOL finalValue = [newSubscribedByUserValue boolValue];
@@ -576,54 +662,121 @@
     [self reloadCollectionViews];
 }
 
+- (IBAction) addCoverButtonTapped: (UIButton *) button
+{
+    [self showCoverChooser];
+    [self hideCategoryChooser];
+}
+
+- (IBAction) selectCategoryButtonTapped: (UIButton *) button
+{
+    [self showCategoryChooser];
+    [self hideCoverChooser];
+}
+
 
 #pragma mark - Cover choice
 
 - (void) showCoverChooser
 {
-    [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                     animations: ^{
-                         // Fade up the category tab controller
-                         self.coverChooserMasterView.alpha = 1.0f;
-                         
-                         // slide down the video collection view a bit
-                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
-                                                                                        kChannelCreationCategoryAdditionalOffsetY);
-                     }
-                     completion: nil];
+    if (self.coverChooserMasterView.alpha == 0.0f)
+    {
+        // Update the list of cover art
+        [appDelegate.networkEngine coverArtWithWithStart: 0
+                                                    size: 0
+                               completionHandler: ^(NSDictionary *responseDictionary) {
+                                   // Save the position for back-patching in later
+                                   NSNumber *savedPosition = self.channel.position;
+                                   
+                                   [self.channel setAttributesFromDictionary: responseDictionary
+                                                                      withId: self.channel.uniqueId
+                                                   usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                         ignoringObjectTypes: kIgnoreNothing
+                                                                   andViewId: kChannelDetailsViewId];
+                                   
+                                   // Back-patch a few things that may have been overwritten
+                                   self.channel.position = savedPosition;
+                                   self.channel.viewId = kChannelsViewId;
+                                   
+                                   [self updateVideoInstanceArray];
+                                   
+                                   [self reloadCollectionViews];
+                               }
+                                    errorHandler: ^(NSDictionary* errorDictionary) {
+                                        DebugLog(@"Update action failed");
+                                    }];
+        
+        self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
+                                                     kChannelCreationCategoryAdditionalOffsetY);
+        
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             // Fade up the category tab controller
+                             self.coverChooserMasterView.alpha = 1.0f;
+                             
+                             // slide down the video collection view a bit
+                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
+                                                                                               kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
+                             
+                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
+                                                                                                 kChannelCreationCategoryAdditionalOffsetY));
+                         }
+                         completion: nil];
+    }
 }
 
 - (void) hideCoverChooser
 {
-    [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                     animations: ^{
-                         // Fade out the category tab controller
-                         self.coverChooserMasterView.alpha = 0.0f;
-                         
-                         // slide up the video collection view a bit ot its original position
-                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY);
-                     }
-                     completion: nil];
+    if (self.coverChooserMasterView.alpha == 1.0f)
+    {
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             // Fade out the category tab controller
+                             self.coverChooserMasterView.alpha = 0.0f;
+                         }
+                         completion: nil];
+    }
 }
+
 
 #pragma mark - Category choice
 
 - (void) showCategoryChooser
 {
-    [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                     animations: ^{
-                         // Fade up the category tab controller
-                         self.categoriesTabViewController.view.alpha = 1.0f;
-                         
-                         // slide down the video collection view a bit
-                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
-                                                                                        kChannelCreationCategoryAdditionalOffsetY);
-                     }
-                     completion: nil];
+    if (self.categoriesTabViewController.view.alpha == 0.0f)
+    {
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             // Fade up the category tab controller
+                             self.categoriesTabViewController.view.alpha = 1.0f;
+                             
+                             // slide down the video collection view a bit
+                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
+                                                                                               kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
+                             
+                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
+                                                                                                 kChannelCreationCategoryAdditionalOffsetY));
+                         }
+                         completion: nil];
+    }
 
 }
 
+
 - (void) hideCategoryChooser
+{
+    if (self.categoriesTabViewController.view.alpha == 1.0f)
+    {
+        [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                         animations: ^{
+                             // Fade out the category tab controller
+                             self.categoriesTabViewController.view.alpha = 0.0f;
+                         }
+                         completion: nil];
+    }
+}
+
+- (void) resetVideoCollectionViewPosition
 {
     [UIView animateWithDuration: kChannelEditModeAnimationDuration
                      animations: ^{
@@ -632,6 +785,8 @@
                          
                          // slide up the video collection view a bit ot its original position
                          self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY);
+                         
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY));
                      }
                      completion: nil];
 }

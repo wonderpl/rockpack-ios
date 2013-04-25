@@ -41,6 +41,8 @@
 		0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF217292F3B00612186 /* ButtonCamera@2x.png */; };
 		0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */; };
 		0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */; };
+		0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE0A172954E900612186 /* PanelChannelCreationCover.png */; };
+		0111CE0D172954E900612186 /* PanelChannelCreationCover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE0B172954E900612186 /* PanelChannelCreationCover@2x.png */; };
 		011A15E116EE2F46008CF25E /* popover-black-right-arrow-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */; };
 		011A15E216EE2F46008CF25E /* popover-black-right-arrow-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */; };
 		011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 011A15F416EE3E9A008CF25E /* SYNCameraPopoverViewController.m */; };
@@ -311,6 +313,8 @@
 		01EA81BF16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BD16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay.png */; };
 		01EA81C016B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01EA81BE16B8AA110069AFF9 /* ButtonLargeVideoPanelPlay@2x.png */; };
 		01EC6237166EAAA6003154B1 /* SYNChannelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */; };
+		01F1B85A17297460005735AF /* _ChannelCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F1B85917297460005735AF /* _ChannelCover.m */; };
+		01F1B85D17297471005735AF /* ChannelCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 01F1B85C17297471005735AF /* ChannelCover.m */; };
 		01F8E73A16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */; };
 		01F8E73B16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */; };
 		01F8E74416B012A8000D44B9 /* ButtonVideoScreenNext.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */; };
@@ -601,6 +605,8 @@
 		0111CDFA1729314E00612186 /* SYNCoverThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverThumbnailCell.h; sourceTree = "<group>"; };
 		0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverThumbnailCell.m; sourceTree = "<group>"; };
 		0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverThumbnailCell.xib; sourceTree = "<group>"; };
+		0111CE0A172954E900612186 /* PanelChannelCreationCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelCreationCover.png; path = Assets/Images/PanelChannelCreationCover.png; sourceTree = "<group>"; };
+		0111CE0B172954E900612186 /* PanelChannelCreationCover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelChannelCreationCover@2x.png"; path = "Assets/Images/PanelChannelCreationCover@2x.png"; sourceTree = "<group>"; };
 		011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image@2x.png"; path = "Assets/Images/popover-black-right-arrow-image@2x.png"; sourceTree = "<group>"; };
 		011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popover-black-right-arrow-image.png"; path = "Assets/Images/popover-black-right-arrow-image.png"; sourceTree = "<group>"; };
 		011A15F316EE3E9A008CF25E /* SYNCameraPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCameraPopoverViewController.h; sourceTree = "<group>"; };
@@ -951,6 +957,10 @@
 		01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNVideoThumbnailSmallCell.xib; sourceTree = "<group>"; };
 		01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelDetailViewController.h; sourceTree = "<group>"; };
 		01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelDetailViewController.m; sourceTree = "<group>"; };
+		01F1B85817297460005735AF /* _ChannelCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ChannelCover.h; sourceTree = "<group>"; };
+		01F1B85917297460005735AF /* _ChannelCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ChannelCover.m; sourceTree = "<group>"; };
+		01F1B85B17297471005735AF /* ChannelCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelCover.h; sourceTree = "<group>"; };
+		01F1B85C17297471005735AF /* ChannelCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelCover.m; sourceTree = "<group>"; };
 		01F8E73816B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoScreenVideoMainOverlay.png; path = Assets/Images/PanelVideoScreenVideoMainOverlay.png; sourceTree = "<group>"; };
 		01F8E73916B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelVideoScreenVideoMainOverlay@2x.png"; path = "Assets/Images/PanelVideoScreenVideoMainOverlay@2x.png"; sourceTree = "<group>"; };
 		01F8E73C16B012A8000D44B9 /* ButtonVideoScreenNext.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoScreenNext.png; path = Assets/Images/ButtonVideoScreenNext.png; sourceTree = "<group>"; };
@@ -1413,6 +1423,19 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
+		0111CE091729537300612186 /* Cover Thumbnail */ = {
+			isa = PBXGroup;
+			children = (
+				0111CE0A172954E900612186 /* PanelChannelCreationCover.png */,
+				0111CE0B172954E900612186 /* PanelChannelCreationCover@2x.png */,
+				BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */,
+				BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */,
+				BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */,
+				BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */,
+			);
+			name = "Cover Thumbnail";
+			sourceTree = "<group>";
+		};
 		011A160F16EF5E4F008CF25E /* Image Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1785,7 +1808,6 @@
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				01982560162ADE3300216900 /* Profile */,
 				BE08158F16D3C46800ADB1DC /* Search */,
-				BE285D971725722400D995AB /* Existing Channels */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -2065,6 +2087,7 @@
 		01B0A969166CEC3400CAA235 /* Cell Assets */ = {
 			isa = PBXGroup;
 			children = (
+				0111CE091729537300612186 /* Cover Thumbnail */,
 				0173F6F616E028C6005B3ECA /* VideoThumbnailSmall */,
 				01B34C9516A99D40002AD8FB /* Channel Thumbnail */,
 				01D8C6AC16820AB1000059D1 /* VideoThumbnailWide */,
@@ -2135,6 +2158,9 @@
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
 				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
 				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
+				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
+				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
+				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
 				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
@@ -2145,14 +2171,10 @@
 		01B7F76C164FE464009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
-				BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */,
-				BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */,
 				BE285DA217258A0A00D995AB /* ButtonConfirm.png */,
 				BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */,
 				BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */,
 				BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */,
-				BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */,
-				BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -2196,6 +2218,8 @@
 		01E427F21664F32D009B941F /* Auto generated files */ = {
 			isa = PBXGroup;
 			children = (
+				01F1B85817297460005735AF /* _ChannelCover.h */,
+				01F1B85917297460005735AF /* _ChannelCover.m */,
 				BE95B92316CBED4400EC2E72 /* _TabItem.h */,
 				BE95B92416CBED4400EC2E72 /* _TabItem.m */,
 				BEA043DD16CAA8C2005406E7 /* _Category.h */,
@@ -2221,14 +2245,16 @@
 		01E427F31664F346009B941F /* Editable files */ = {
 			isa = PBXGroup;
 			children = (
+				01F1B85B17297471005735AF /* ChannelCover.h */,
+				01F1B85C17297471005735AF /* ChannelCover.m */,
+				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
+				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
 				BE95B92116CBED2800EC2E72 /* TabItem.h */,
 				BE95B92216CBED2800EC2E72 /* TabItem.m */,
 				BEA043E316CAA8E1005406E7 /* Category.h */,
 				BEA043E416CAA8E1005406E7 /* Category.m */,
 				BEA043E516CAA8E1005406E7 /* Subcategory.h */,
 				BEA043E616CAA8E1005406E7 /* Subcategory.m */,
-				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
-				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
 				01E427E31664DF21009B941F /* Channel.h */,
 				01E427E41664DF21009B941F /* Channel.m */,
 				01946B931683339F00354601 /* ChannelOwner.h */,
@@ -2610,16 +2636,6 @@
 				BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */,
 			);
 			name = Login;
-			sourceTree = "<group>";
-		};
-		BE285D971725722400D995AB /* Existing Channels */ = {
-			isa = PBXGroup;
-			children = (
-				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
-				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
-				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
-			);
-			name = "Existing Channels";
 			sourceTree = "<group>";
 		};
 		BE285DAD1725A20B00D995AB /* Network Error View */ = {
@@ -3329,6 +3345,8 @@
 				0111CDF717292F3B00612186 /* ButtonCamera.png in Resources */,
 				0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */,
 				0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */,
+				0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */,
+				0111CE0D172954E900612186 /* PanelChannelCreationCover@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3509,6 +3527,8 @@
 				BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */,
 				BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */,
 				0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */,
+				01F1B85A17297460005735AF /* _ChannelCover.m in Sources */,
+				01F1B85D17297471005735AF /* ChannelCover.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

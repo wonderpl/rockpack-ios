@@ -36,7 +36,10 @@
 
 -(void) userPublicChannelsByOwner: (ChannelOwner*) channelOwner;
 
-//- (void) updateChannel: (NSString *) resourceURL;
+- (void) coverArtWithWithStart: (unsigned int) start
+                          size: (unsigned int) size
+             completionHandler: (MKNKUserSuccessBlock) completionBlock
+                  errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (void) updateChannel: (NSString *) resourceURL
      completionHandler: (MKNKUserSuccessBlock) completionBlock

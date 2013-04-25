@@ -106,6 +106,7 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{28, 97}, {132, 26}}</string>
 										<reference key="NSSuperview" ref="298951224"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<object class="NSColor" key="IBUIBackgroundColor" id="107296247">
 											<int key="NSColorSpace">3</int>
@@ -306,9 +307,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundVideoThumbnailSmall.png">{147, 106}</string>
-			<string key="GlossVideoThumbnailSmall.png">{147, 106}</string>
-			<string key="GlossVideoThumbnailSmallPlaying.png">{147, 106}</string>
+			<string key="BackgroundVideoThumbnailSmall.png">{16, 16}</string>
+			<string key="GlossVideoThumbnailSmall.png">{16, 16}</string>
+			<string key="GlossVideoThumbnailSmallPlaying.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
