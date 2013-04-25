@@ -1802,7 +1802,6 @@
 				01B7F75B164FB7A7009C5CCD /* Channels */,
 				01982560162ADE3300216900 /* Profile */,
 				BE08158F16D3C46800ADB1DC /* Search */,
-				BE285D971725722400D995AB /* Existing Channels */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -2153,6 +2152,9 @@
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
 				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
 				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
+				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
+				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
+				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
 				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
@@ -2624,16 +2626,6 @@
 				BE270BB716EE493800CDDA6D /* LogoSignup@2x.png */,
 			);
 			name = Login;
-			sourceTree = "<group>";
-		};
-		BE285D971725722400D995AB /* Existing Channels */ = {
-			isa = PBXGroup;
-			children = (
-				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
-				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
-				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
-			);
-			name = "Existing Channels";
 			sourceTree = "<group>";
 		};
 		BE285DAD1725A20B00D995AB /* Network Error View */ = {
