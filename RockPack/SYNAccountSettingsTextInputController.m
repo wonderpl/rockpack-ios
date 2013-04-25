@@ -54,11 +54,11 @@
     
     lastTextFieldY = 10.0;
     
-    CGRect buttonRect = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 40.0);
+    UIImage* buttonImage = [UIImage imageNamed: @"ButtonAccountSaveDefault.png"];
     saveButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    saveButton.frame = buttonRect;
+    saveButton.frame = CGRectMake(5.0, 0.0, buttonImage.size.width, buttonImage.size.height);
     
-    [saveButton setImage: [UIImage imageNamed: @"ButtonAccountSaveDefault.png"]
+    [saveButton setImage: buttonImage
                 forState: UIControlStateNormal];
     
     [saveButton setImage: [UIImage imageNamed: @"ButtonAccountSaveHighlighted.png"]
@@ -149,14 +149,17 @@
 {
     SYNPaddedUITextField *newInputField = [[SYNPaddedUITextField alloc] initWithFrame: CGRectMake(10.0,
                                                                                                   lastTextFieldY,
-                                                                                                  self.contentSizeForViewInPopover.width - 10.0,
+                                                                                                  self.contentSizeForViewInPopover.width - 20.0,
                                                                                                   40.0)];
     
-    newInputField.backgroundColor = [UIColor whiteColor];
+    newInputField.backgroundColor = [UIColor colorWithRed:(239.0/255.0) green:(239.0/255.0) blue:(239.0/255.0) alpha:(1.0)];
     newInputField.layer.cornerRadius = 5.0f;
+    newInputField.textColor = [UIColor darkGrayColor];
     
     CGRect saveButtonFrame = saveButton.frame;
     saveButtonFrame.origin.y = newInputField.frame.origin.y + newInputField.frame.size.height + 10.0;
+    saveButton.frame = saveButtonFrame;
+    
     saveButton.frame = CGRectIntegral(saveButtonFrame);
     
     CGRect errorTextFrame = errorTextField.frame;

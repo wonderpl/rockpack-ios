@@ -25,7 +25,7 @@
 
 
 @property (nonatomic, strong) IBOutlet UIView* containerView;
-@property (nonatomic, strong) IBOutlet UIView* overEverythingView;
+
 @property (nonatomic, strong) UIViewController* originViewController;
 @property (nonatomic, strong) SYNContainerViewController* containerViewController;
 
@@ -35,9 +35,6 @@
             withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
                             andIndexPath: (NSIndexPath *) indexPath;
 
-- (void) addCategoryChooserOverlayToViewController: (UIViewController *) originViewController;
-
 - (void) removeVideoOverlayController;
-- (void) removeCategoryChooserOverlayController;
 
 @end

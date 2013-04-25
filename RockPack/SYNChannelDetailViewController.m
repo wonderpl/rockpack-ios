@@ -8,6 +8,7 @@
 
 #import "Channel.h"
 #import "ChannelOwner.h"
+#import "SYNCategoriesTabViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailRegularCell.h"
@@ -20,6 +21,7 @@
 @interface SYNChannelDetailViewController ()
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
+@property (nonatomic, assign)  kChannelDetailsMode mode;
 @property (nonatomic, strong) Channel *channel;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
@@ -30,9 +32,11 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
 @property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
+@property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
+@property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (strong, nonatomic) NSMutableArray *videoInstances;
 
 @end
@@ -41,11 +45,13 @@
 @implementation SYNChannelDetailViewController
 
 - (id) initWithChannel: (Channel *) channel
+             usingMode: (kChannelDetailsMode) mode
 {
 
     if ((self = [super init]))
     {
 		self.channel = channel;
+        self.mode = mode;
 	}
 
 	return self;
@@ -104,6 +110,17 @@
     
     // Store the initial content offset, so that we can fade out the control if the user scrolls away from this
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+    
+    // Create categories tab, but make invisible (alpha = 0) for now
+    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] init];
+    self.categoriesTabViewController.delegate = self;
+    CGRect tabFrame = self.categoriesTabViewController.view.frame;
+    tabFrame.origin.y += kChannelCreationCategoryTabOffsetY;
+    self.categoriesTabViewController.view.frame = tabFrame;
+    [self.view addSubview: self.categoriesTabViewController.view];
+    self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.categoriesTabViewController.view.alpha = 0.0f;
+    [self addChildViewController: self.categoriesTabViewController];
 }
 
 
@@ -111,22 +128,7 @@
 {
     [super viewWillAppear: animated];
     
-    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
-    
-    // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
-    
-    // First, sort the array in 'position' order
-    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
-        NSNumber *first = [(VideoInstance *)a position];
-        NSNumber *second = [(VideoInstance *)b position];
-        return [first compare: second];
-    }];
-    
-    // Now add those videoinstances to our own mutable array
-    for (VideoInstance *videoInstance in sortedArray)
-    {
-        [self.videoInstances addObject: videoInstance];
-    }
+    [self updateVideoInstanceArray];
     
     // Look out for update notifications
     [[NSNotificationCenter defaultCenter] addObserver: self
@@ -154,8 +156,8 @@
                       options: NSKeyValueObservingOptionNew
                       context :nil];
     
-    // FIXME: Move out to subclass is there is a distinct display view, overridden by edit subclass
-    [self setDisplayControlsVisibility: TRUE];
+    // We set up assets depending on whether we are in display or edit mode
+    [self setDisplayControlsVisibility: (self.mode == kChannelDetailsModeDisplay) ? TRUE: FALSE];
     
     // Refresh our view
     [self.videoThumbnailCollectionView reloadData];
@@ -181,12 +183,7 @@
                                             self.channel.position = savedPosition;
                                             self.channel.viewId = kChannelsViewId;
                                             
-                                            self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
-                                            
-                                            for (VideoInstance *videoInstance in self.channel.videoInstances)
-                                            {
-                                                [self.videoInstances addObject: videoInstance];
-                                            }
+                                            [self updateVideoInstanceArray];
                                             
                                             [self reloadCollectionViews];
                                         }
@@ -212,19 +209,13 @@
                                        self.channel.position = savedPosition;
                                        self.channel.viewId = kChannelsViewId;
                                        
-                                       self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
-                                       
-                                       for (VideoInstance *videoInstance in self.channel.videoInstances)
-                                       {
-                                           [self.videoInstances addObject: videoInstance];
-                                       }
+                                       [self updateVideoInstanceArray];
                                        
                                        [self reloadCollectionViews];
                                    }
                                         errorHandler: ^(NSDictionary* errorDictionary) {
                                             DebugLog(@"Update action failed");
                                         }];
-
         }
     }
     
@@ -236,9 +227,6 @@
 {
     self.videoInstances = nil;
     
-    [self.channel removeObserver: self
-                      forKeyPath: @"subscribedByUser"];
-    
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
 
@@ -248,6 +236,27 @@
                                                     name: kDataUpdated
                                                   object: nil];
     [super viewWillDisappear: animated];
+}
+
+
+- (void) updateVideoInstanceArray
+{
+    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+    
+    // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
+    
+    // First, sort the array in 'position' order
+    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
+        NSNumber *first = [(VideoInstance *)a position];
+        NSNumber *second = [(VideoInstance *)b position];
+        return [first compare: second];
+    }];
+    
+    // Now add those videoinstances to our own mutable array
+    for (VideoInstance *videoInstance in sortedArray)
+    {
+        [self.videoInstances addObject: videoInstance];
+    }
 }
 
 
@@ -322,15 +331,19 @@
     
     SYNVideoThumbnailRegularCell *videoThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailRegularCell"
                                                                                                  forIndexPath: indexPath];
+    videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
+                                                    kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
     
     VideoInstance *videoInstance = self.videoInstances [indexPath.row];
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
     videoThumbnailCell.titleLabel.text = videoInstance.title;
+    videoThumbnailCell.viewControllerDelegate = self;
     
     cell = videoThumbnailCell;
     
     return cell;
 }
+
 
 #pragma mark - Fetched results controller
 
@@ -364,13 +377,15 @@
     return fetchedResultsController;
 }
 
+#pragma mark - Helper methods
 
-
-- (void) collectionView: (UICollectionView *) collectionView
-         didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void) reorderVideoInstances
 {
-        // Display the video viewer
-        [self displayVideoViewerWithSelectedIndexPath: indexPath];
+    // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
+    // Do this with block enumeration for speed
+    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        [(VideoInstance *)obj setPositionValue : index];
+    } ];
 }
 
 
@@ -380,18 +395,19 @@
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
     willMoveToIndexPath: (NSIndexPath *) toIndexPath
 {
-    id fromItem = [self.videoInstances objectAtIndex: fromIndexPath.item];
+//    id fromItem = [self.videoInstances objectAtIndex: fromIndexPath.item];
+//    
+//    [self.videoInstances removeObjectAtIndex: fromIndexPath.item];
+//    
+//    [self.videoInstances insertObject: fromItem
+//                              atIndex: toIndexPath.item];
     
-    [self.videoInstances removeObjectAtIndex: fromIndexPath.item];
-    
-    [self.videoInstances insertObject: fromItem
-                              atIndex: toIndexPath.item];
+    [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
+                             withObjectAtIndex: toIndexPath.item];
     
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
-    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
-        [(VideoInstance *)obj setPositionValue : index];
-    } ];
+    [self reorderVideoInstances];
 }
 
 
@@ -468,7 +484,7 @@
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
         BOOL finalValue = [newSubscribedByUserValue boolValue];
-        if(finalValue)
+        if (finalValue)
         {
             self.subscribeButton.selected = YES;
         }
@@ -515,7 +531,128 @@
 }
 
 
+- (IBAction) addButtonTapped: (id) sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName: kChannelSubscribeRequest
+                                                        object: self
+                                                      userInfo: @{ kChannel : self.channel }];
+}
 
 
+- (void) videoAddButtonTapped: (UIButton *) addButton
+{
+    NSString* noteName;
+    
+    if (!addButton.selected)
+    {
+        noteName = kVideoQueueAdd;
+        
+    }
+    else
+    {
+        noteName = kVideoQueueRemove;
+    }
+    
+    UIView *v = addButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: noteName
+                                                        object: self
+                                                      userInfo: @{@"VideoInstance" : videoInstance}];
+    
+    addButton.selected = !addButton.selected;
+}
+
+
+- (void) videoDeleteButtonTapped: (UIButton *) addButton
+{
+    UIView *v = addButton.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    [self.videoInstances removeObjectAtIndex: indexPath.row];
+    
+    [self reloadCollectionViews];
+}
+
+
+#pragma mark - Cover choice
+
+- (void) showCoverChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade up the category tab controller
+                         self.coverChooserMasterView.alpha = 1.0f;
+                         
+                         // slide down the video collection view a bit
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
+                                                                                        kChannelCreationCategoryAdditionalOffsetY);
+                     }
+                     completion: nil];
+}
+
+- (void) hideCoverChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade out the category tab controller
+                         self.coverChooserMasterView.alpha = 0.0f;
+                         
+                         // slide up the video collection view a bit ot its original position
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY);
+                     }
+                     completion: nil];
+}
+
+#pragma mark - Category choice
+
+- (void) showCategoryChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade up the category tab controller
+                         self.categoriesTabViewController.view.alpha = 1.0f;
+                         
+                         // slide down the video collection view a bit
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
+                                                                                        kChannelCreationCategoryAdditionalOffsetY);
+                     }
+                     completion: nil];
+
+}
+
+- (void) hideCategoryChooser
+{
+    [UIView animateWithDuration: kChannelEditModeAnimationDuration
+                     animations: ^{
+                         // Fade out the category tab controller
+                         self.categoriesTabViewController.view.alpha = 0.0f;
+                         
+                         // slide up the video collection view a bit ot its original position
+                         self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY);
+                     }
+                     completion: nil];
+}
+
+- (BOOL) showSubcategories
+{
+    return YES;
+}
+
+- (void) handleMainTap: (UITapGestureRecognizer*) recogniser
+{
+    
+}
+
+- (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
+{
+    
+}
+
+// general
+- (void) handleNewTabSelectionWithId: (NSString*) temId
+{
+    
+}
 
 @end

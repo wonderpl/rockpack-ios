@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    kDisplayModeChannel = 0,
-    kDisplayModeYoutube = 1
-} kDisplayMode;
+    kVideoThumbnailDisplayModeChannel = 0,
+    kVideoThumbnailDisplayModeYoutube = 1
+} kVideoThumbnailDisplayMode;
 
 @interface SYNVideoThumbnailWideCell : UICollectionViewCell
 
@@ -32,12 +32,11 @@ typedef enum {
 @property (nonatomic, weak) NSString* usernameText;
 @property (nonatomic, weak) NSString* channelNameText;
 
-@property (nonatomic) kDisplayMode displayMode;
+@property (nonatomic) kVideoThumbnailDisplayMode displayMode;
 
 // This is used to indicate the UIViewController that 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
-- (void) setFocus: (BOOL) focus;
 - (void) setVideoImageViewImage: (NSString*) imageURLString;
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
 

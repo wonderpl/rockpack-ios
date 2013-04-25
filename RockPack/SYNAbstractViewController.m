@@ -17,10 +17,8 @@
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelsDetailsCreationViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNVideoQueueCell.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
@@ -33,13 +31,11 @@
 
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
+@property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
-@property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
-
 @property (nonatomic, strong) UIView *dropZoneView;
-
 
 @end
 
@@ -56,8 +52,8 @@
 
 - (id) init
 {
-    DebugLog(@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
-    return [self initWithViewId: @"NULL"];
+    DebugLog (@"WARNING: init called on Abstract View Controller, call initWithViewId instead");
+    return [self initWithViewId: @"UnintializedViewId"];
 }
 
 - (id) initWithViewId: (NSString*) vid
@@ -80,10 +76,12 @@
     appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate]; 
 }
 
+
 - (void) viewCameToScrollFront
 {
-    
+    DebugLog (@"came to front");
 }
+
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
@@ -93,14 +91,10 @@
 }
 
 
--(void) reloadCollectionViews
+- (void) reloadCollectionViews
 {
     //AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
-
-
-
-
 
 
 #pragma mark - Animation support
@@ -121,9 +115,11 @@
                      }
                      completion: nil];
     
-    [self.navigationController pushViewController:vc animated: NO];
+    [self.navigationController pushViewController: vc
+                                         animated: NO];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteBackButtonShow object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
+                                                        object: self];
 }
 
 
@@ -171,26 +167,46 @@
 }
 
 
-- (void) userTouchedVideoAddItButton: (UIButton *) addItButton
+- (void) videoAddButtonTapped: (UIButton *) addButton
 {
-   
-    [addItButton setSelected:YES];
+    NSString* noteName;
     
-    UIView *v = addItButton.superview.superview;
+    if (!addButton.selected)
+    {
+        noteName = kVideoQueueAdd;
+        
+    }
+    else
+    {
+        noteName = kVideoQueueRemove;
+    }
+    
+    UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
+    [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
                                                       userInfo: @{@"VideoInstance" : videoInstance}];
+    
+    addButton.selected = !addButton.selected;
 }
 
 
 - (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
 {
-    
-    
-    
+//    NSString *messageString = kChannelShareMessage;
+//    
+//    //  TODO: Put in cover art image?
+//    //  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
+//    
+//    // TODO: Put in real link
+//    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
+//    
+//    [self shareURL: messageURL
+//       withMessage: messageString
+//          fromRect: self.shareButton.frame
+//   arrowDirections: UIPopoverArrowDirectionDown];
 }
 
 
@@ -214,43 +230,41 @@
 }
 
 
-- (void) displayCategoryChooser
-{
-    SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-    
-    [masterViewController addCategoryChooserOverlayToViewController: self];
-}
 
 
 #pragma mark - UICollectionView Data Source Stubb
 
-- (NSInteger) collectionView: (UICollectionView *) cv numberOfItemsInSection: (NSInteger) section {
+- (NSInteger) collectionView: (UICollectionView *) cv
+      numberOfItemsInSection: (NSInteger) section
+{
     return 0;
 }
 
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
-    
+- (UICollectionViewCell *) collectionView: (UICollectionView *) cv
+                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+{
     UICollectionViewCell *cell = nil;
     // to be implemented by subview
     return cell;
 }
 
 
-- (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath {
+- (BOOL) collectionView: (UICollectionView *) cv
+         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
+{
     return NO;
 }
 
--(void)refresh
+
+- (void) refresh
 {
     // to implement in subclass
 }
 
 
-
-
 // User touched the channel thumbnail in a video cell
-- (IBAction) userTouchedChannelButton: (UIButton *) channelButton
+- (IBAction) channelButtonTapped: (UIButton *) channelButton
 {
     // Get to cell it self (from button subview)
     UIView *v = channelButton.superview.superview.superview;
@@ -268,13 +282,14 @@
 
 - (void) viewChannelDetails: (Channel *) channel
 {
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
     
     [self animatedPushViewController: channelVC];
 }
 
 
-- (IBAction) userTouchedProfileButton: (UIButton *) profileButton
+- (IBAction) profileButtonTapped: (UIButton *) profileButton
 {
     // Get to cell it self (from button subview)
     UIView *v = profileButton.superview.superview.superview;
@@ -289,14 +304,14 @@
     }
 }
 
+
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kShowUserChannels object:self userInfo:@{@"ChannelOwner":channelOwner}];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
+                                                        object: self
+                                                      userInfo :@{@"ChannelOwner" : channelOwner}];
 }
-
-
-
 
 
 - (BOOL) hasTabBar
@@ -320,13 +335,11 @@
 }
 
 
-
-
 #pragma mark - Trace
 
--(NSString*) description
+- (NSString*) description
 {
-    return [NSString stringWithFormat:@"ViewController: %@", viewId];
+    return [NSString stringWithFormat: @"ViewController: %@", viewId];
 }
 
 
@@ -338,40 +351,43 @@
 }
 
 
--(void)setTabViewController:(SYNTabViewController *)newTabViewController
+- (void) setTabViewController: (SYNTabViewController *) newTabViewController
 {
     tabViewController = newTabViewController;
     tabViewController.delegate = self;
-    [self.view addSubview:tabViewController.tabView];
+    [self.view addSubview: tabViewController.tabView];
     
     tabExpanded = NO;
 }
 
 #pragma mark - TabViewDelegate
 
--(void)handleMainTap:(UITapGestureRecognizer *)recogniser
+- (void) handleMainTap: (UITapGestureRecognizer *) recogniser
 {
     // to be implemented by child
+    DebugLog(@"WARNING: Abstract method called");
 }
 
 
--(void)handleSecondaryTap:(UITapGestureRecognizer *)recogniser
+- (void) handleSecondaryTap: (UITapGestureRecognizer *) recogniser
 {
     // to be implemented by child
+    DebugLog(@"WARNING: Abstract method called");
 }
 
 
--(void)handleNewTabSelectionWithId:(NSString*)selectionId
+- (void) handleNewTabSelectionWithId: (NSString*) selectionId
 {
     // to be implemented by child
+    DebugLog(@"WARNING: Abstract method called");
 }
 
--(BOOL)showSubcategories
+- (BOOL) showSubcategories
 {
     return YES;
 }
 
--(BOOL)needsAddButton
+- (BOOL) needsAddButton
 {
     return NO;
 }

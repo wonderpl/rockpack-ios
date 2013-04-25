@@ -8,6 +8,7 @@
 
 #import "GAITrackedViewController.h"
 #import "SYNAbstractViewController.h"
+#import "SYNContainerScrollView.h"
 #import <UIKit/UIKit.h>
 
 typedef enum {
@@ -20,17 +21,16 @@ typedef enum {
 
 
 @property (nonatomic, readonly) SYNAbstractViewController* showingViewController;
-@property (nonatomic, readonly) UIScrollView* scrollView;
+@property (nonatomic, readonly) SYNContainerScrollView* scrollView;
 
-@property (nonatomic) NSInteger page;
-@property (nonatomic) NSInteger currentPage;
+
+@property (nonatomic, readonly) NSInteger currentPage;
 
 @property (nonatomic) CGPoint currentPageOffset;
 @property (nonatomic) ScrollingDirection scrollingDirection;
 -(SYNAbstractViewController*)nextShowingViewController;
 
 - (void) popCurrentViewController: (id) sender;
--(void) showSearchViewControllerWithTerm:(NSString*)term;
 -(void) navigateToPageByName:(NSString*)pageName;
 
 

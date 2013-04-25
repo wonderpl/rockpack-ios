@@ -26,21 +26,34 @@
 
 @interface SYNYouRootViewController ()
 
+
+// Enable to allow the user to 'pinch out' on thumbnails
+#ifdef ALLOWS_PINCH_GESTURES
+
 @property (nonatomic, assign) BOOL userPinchedOut;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *pinchedIndexPath;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* channelsLandscapeLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* channelsPortraitLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsLandscapeLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
+@property (nonatomic, strong) UIImageView *pinchedView;
+
+#endif
+
+@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
+
 @property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
-@property (nonatomic, strong) UIImageView *pinchedView;
+
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* channelsLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* channelsPortraitLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
+
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
+
+
+
 
 @end
 
@@ -221,11 +234,13 @@
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
+#ifdef ALLOWS_PINCH_GESTURES
+    
     UIPinchGestureRecognizer *pinchOnChannelView = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                              action: @selector(handlePinchGesture:)];
     
     [self.view addGestureRecognizer: pinchOnChannelView];
-    
+#endif
     
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
@@ -264,7 +279,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
     
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
@@ -508,7 +522,8 @@
     }
     
     
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
     
     [self animatedPushViewController: channelVC];
     
@@ -550,38 +565,8 @@
 }
 
 
-// Custom zoom out transition
-- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel];
-    
-    channelVC.view.alpha = 0.0f;
-    
-    [self.navigationController pushViewController: channelVC
-                                         animated: NO];
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-         // Contract thumbnail view
-         self.view.alpha = 0.0f;
-         channelVC.view.alpha = 1.0f;
-         self.pinchedView.alpha = 0.0f;
-         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
-         
-                  } completion: ^(BOOL finished) {
-            
-         [self.pinchedView removeFromSuperview];
-     }];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
-                                                        object: self];
-}
-
+#ifdef ALLOWS_PINCH_GESTURES
+// TODO: Decide whether to keep pinch in or out
 
 - (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
 {
@@ -655,6 +640,41 @@
     }
 }
 
+
+// Custom zoom out transition
+- (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
+{
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                                                              usingMode: kChannelDetailsModeDisplay];
+    
+    channelVC.view.alpha = 0.0f;
+    
+    [self.navigationController pushViewController: channelVC
+                                         animated: NO];
+    
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         // Contract thumbnail view
+                         self.view.alpha = 0.0f;
+                         channelVC.view.alpha = 1.0f;
+                         self.pinchedView.alpha = 0.0f;
+                         self.pinchedView.transform = CGAffineTransformMakeScale(10.0f, 10.0f);
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         [self.pinchedView removeFromSuperview];
+                     }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
+                                                        object: self];
+}
+
+#endif
 
 
 - (void) observeValueForKeyPath: (NSString *) keyPath

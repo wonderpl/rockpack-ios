@@ -108,6 +108,8 @@
 
 #define kRefresheComplete           @"kRefresheComplete"
 
+#define kClearAllAddedCells         @"kClearAllAddedCells"
+
 
 
 #define kShowUserChannels           @"kShowUserChannels"
@@ -310,13 +312,19 @@ typedef enum {
 #define kShuttleBarButtonWidth          77.0f
 #define kShuttleBarSliderOffset         10.0f
 
+// Channel creation
+
+#define kChannelCreationCollectionViewOffsetY           540.0f
+#define kChannelCreationCategoryTabOffsetY              444.0f
+#define kChannelCreationCategoryAdditionalOffsetY       91.0f
+
 // Notifications
 
 #define kNoteBackButtonShow         @"kNoteBackButtonShow"
 #define kNoteBackButtonHide         @"kNoteBackButtonHide"
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
 
-#define kNoteAddToChannel           @"kNoteAddToChannel"
+#define kNoteAddedToChannel         @"kNoteAddedToChannel"
 #define kNoteCreateNewChannel       @"kNoteCreateNewChannel"
 
 
@@ -354,5 +362,9 @@ typedef void (^JSONResponseBlock)(id jsonObject);
 
 #define kChannelShareMessage @"Take a look at this great channel I found on Rockpack"
 #define kVideoShareMessage @"Take a look at this great video I found on Rockpack"
+
+// Gestures
+
+#define ALLOWS_PINCH_GESTURES__
 
 #endif

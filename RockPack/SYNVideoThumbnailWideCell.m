@@ -12,6 +12,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
 
@@ -49,20 +50,38 @@
     self.durationLabel.font = [UIFont rockpackFontOfSize: self.durationLabel.font.pointSize];
     self.highlightedBackgroundView.hidden = TRUE;
     
-    self.displayMode = kDisplayModeChannel; // default is channel
+    self.displayMode = kVideoThumbnailDisplayModeChannel; // default is channel
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deselectCell:)
+                                                 name:kClearAllAddedCells
+                                               object:nil];
 }
 
+-(void)deselectCell:(NSNotification*)notification
+{
+    self.addItButton.selected = NO;
+}
 
 #pragma mark - Switch Between Modes
 
--(void)setDisplayMode:(kDisplayMode)displayMode
+- (void) setDisplayMode: (kVideoThumbnailDisplayMode) displayMode
 {
-    if (displayMode == kDisplayModeChannel) {
+    _displayMode = displayMode;
+    
+    if (displayMode == kVideoThumbnailDisplayModeChannel)
+    {
         self.videoInfoView.hidden = YES;
         self.channelInfoView.hidden = NO;
-    } else if (displayMode == kDisplayModeYoutube) {
+    }
+    else if (displayMode == kVideoThumbnailDisplayModeYoutube)
+    {
         self.channelInfoView.hidden = YES;
         self.videoInfoView.hidden = NO;
+    }
+    else
+    {
+        AssertOrLog(@"Unexpected option");
     }
 }
 
@@ -75,25 +94,11 @@
                                     placeHolderImage: nil];
 }
 
+
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {    
     [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                                       placeHolderImage: nil];
-}
-
-
-#pragma mark - Cell focus 
-
-- (void) setFocus: (BOOL) focus
-{
-    if (focus)
-    {
-        self.highlightedBackgroundView.hidden = FALSE;
-    }
-    else
-    {
-        self.highlightedBackgroundView.hidden = TRUE;
-    }
 }
 
 
@@ -109,17 +114,17 @@
                forControlEvents: UIControlEventTouchUpInside];
     
     [self.addItButton addTarget: self.viewControllerDelegate
-                         action: @selector(userTouchedVideoAddItButton:)
+                         action: @selector(videoAddButtonTapped:)
                forControlEvents: UIControlEventTouchUpInside];
     
     // User touches channel thumbnail
     [self.channelButton addTarget: self.viewControllerDelegate
-                           action: @selector(userTouchedChannelButton:)
+                           action: @selector(channelButtonTapped:)
                  forControlEvents: UIControlEventTouchUpInside];
     
     // User touches user details
     [self.profileButton addTarget: self.viewControllerDelegate
-                           action: @selector(userTouchedProfileButton:)
+                           action: @selector(profileButtonTapped:)
                  forControlEvents: UIControlEventTouchUpInside];
 }
 
@@ -133,7 +138,7 @@
         CGSize stringSize = [text sizeWithFont:self.usernameLabel.font];
         CGRect currentFrame = self.usernameLabel.frame;
         currentFrame.size = stringSize;
-        currentFrame.size.width = MIN(currentFrame.size.width,maxWidth);
+        currentFrame.size.width = MIN(currentFrame.size.width, maxWidth);
         currentFrame.origin.x = self.channelInfoView.frame.size.width - 15.0 - currentFrame.size.width;
         self.usernameLabel.frame = currentFrame;
         self.usernameLabel.text = text;
@@ -177,6 +182,5 @@
     self.videoImageView.image = nil;
     self.channelImageView.image = nil;
 }
-
 
 @end

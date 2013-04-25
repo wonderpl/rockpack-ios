@@ -16,17 +16,17 @@
 #import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNContainerViewController.h"
 #import "SYNBackButtonControl.h"
-
 #import "SYNVideoViewerViewController.h"
 #import "SYNAccountSettingsMainTableViewController.h"
-#import "SYNCategoryChooserViewController.h"
 #import "SYNRefreshButton.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNExistingChannelsViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNChannelDetailViewController.h"
-#import "SYNChannelsDetailsCreationViewController.h"
+#import "SYNObjectFactory.h"
+
+#import "SYNSearchRootViewController.h"
 
 #import "SYNNetworkErrorView.h"
 
@@ -56,7 +56,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
 @property (strong, nonatomic) Reachability *reachability;
 
+@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
+
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
+@property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
+
+@property (nonatomic, strong) UINavigationController* overlayNavigationController;
 
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
@@ -74,13 +79,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
 
 
+
 @property (nonatomic) CGRect addToChannelFrame;
 
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 
 
 @property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-@property (nonatomic, strong) SYNCategoryChooserViewController *categoryChooserViewController;
 
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
 
@@ -96,6 +101,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize addToChannelFrame;
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
+@synthesize overlayNavigationController = _overlayNavigationController;
 
 #pragma mark - Initialise
 
@@ -199,6 +205,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
+    
+    
     // == Add the Root Controller which will contain all others (Tabs in our case) == //
 
     [self.containerView addSubview:containerViewController.view];
@@ -206,9 +214,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
-    
-    
-    
     
     
     // == Back Button == //
@@ -258,7 +263,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [dotImageView addGestureRecognizer:tapGestureRecogniser];
      }
     
-    [self pageChanged:self.containerViewController.page];
+    [self pageChanged:self.containerViewController.scrollView.page];
     
     
     // == Set Up Notifications == //
@@ -274,7 +279,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelAction:) name:kNoteAddToChannel object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteAddedToChannel object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
@@ -282,8 +288,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    
-    [self.containerViewController.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
     
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
@@ -307,7 +311,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillAppear:animated];
     
-    // [self.view addSubview:self.existingChannelsController.view];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -323,6 +326,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.containerViewController.showingViewController refresh];
 }
+
+#pragma mark - Scroller Changes
 
 -(void)scrollerPageChanged:(NSNotification*)notification
 {
@@ -356,7 +361,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
-    
+    if(self.containerViewController.showingViewController.needsAddButton)
+    {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.addToChannelButton.alpha = 1.0;
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.2 animations:^{
+            self.addToChannelButton.alpha = 0.0;
+        }];
+    }
     
     if(self.sideNavigationViewController.state == SideNavigationStateFull)
     {
@@ -390,13 +406,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
--(void)addToChannelAction:(NSNotification*)notification
+-(void)addedToChannelAction:(NSNotification*)notification
 {
     Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
     if(!channel)
         return;
     
-    DebugLog(@"Goint to add Channel with %d video instances", channel.videoInstances.count);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kClearAllAddedCells object:self];
+    
     
     // TODO : Show confirm message
     
@@ -409,8 +426,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-    SYNChannelsDetailsCreationViewController *channelCreationVC =
-    [[SYNChannelsDetailsCreationViewController alloc] initWithChannel: channel];
+    SYNChannelDetailViewController *channelCreationVC =
+    [[SYNChannelDetailViewController alloc] initWithChannel: channel
+                                                            usingMode: kChannelDetailsModeEdit] ;
     SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
     [showingController animatedPushViewController: channelCreationVC];
 }
@@ -474,52 +492,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [self hideSideNavigation];
 }
--(void)sideNavigationPanned:(UIPanGestureRecognizer*)recogniser
-{
-    CGFloat translationX = [recogniser translationInView:self.sideNavigationViewController.view].x;
-    
-    if(recogniser.state == UIGestureRecognizerStateBegan)
-    {
-        
-        isDragging = YES;
-        sideNavigationOriginCenterX = self.sideNavigationViewController.view.center.x;
-        
-        
-    }
-    CGFloat newOriginX = sideNavigationOriginCenterX + translationX;
-    if(newOriginX < sideNavigationOriginCenterX)
-    {
-        newOriginX = sideNavigationOriginCenterX;
-    }
-    
-    self.sideNavigationViewController.view.center = CGPointMake( newOriginX ,
-                                                                self.sideNavigationViewController.view.center.y);
-    
-    
-    if(recogniser.state == UIGestureRecognizerStateEnded)
-    {
-        CGFloat border;
-        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-        {
-            border = [[UIScreen mainScreen] bounds].size.height;
-        }
-        else
-        {
-            border = [[UIScreen mainScreen] bounds].size.width;
-        }
-        
-        if(border - newOriginX < 20.0)
-        {
-            [self hideSideNavigation];
-        }
-        else
-        {
-            [self showSideNavigation];
-        }
-        isDragging = NO;
-    }
-    
-}
+
 
 
 - (void) hideSideNavigation
@@ -545,9 +518,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          
                      }];
 }
-
-
-
 
 
 
@@ -605,67 +575,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 }
 
-- (void) addCategoryChooserOverlayToViewController: (UIViewController *) originViewController
-{
-    // Remember the view controller that we came from
-    self.originViewController = originViewController;
 
-    self.categoryChooserViewController = [[SYNCategoryChooserViewController alloc] init];
-    
-    [self.overlayView addSubview: self.categoryChooserViewController.view];
-    [originViewController addChildViewController:self.categoryChooserViewController];
-    
-    self.categoryChooserViewController.view.alpha = 0.0f;
-    self.categoryChooserViewController.overlayParent = self;
-    
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         self.categoryChooserViewController.view.alpha = 1.0f;
-                     } completion: ^(BOOL finished) {
-                         self.overlayView.userInteractionEnabled = YES;
-                     }];
-}
-
-- (void) removeCategoryChooserOverlayController
-{
-    
-    UIView* child = self.overlayView.subviews[0];
-    
-    [UIView animateWithDuration: 0.25f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         child.alpha = 0.0f;
-                     } completion: ^(BOOL finished) {
-                         self.overlayView.userInteractionEnabled = NO;
-                         self.videoViewerViewController = nil;
-                         [child removeFromSuperview];
-                         
-                     }];
-
-}
-
-
-#pragma mark - Search Box Delegate Methods
+#pragma mark - Search Delegate Methods
 
 -(IBAction)showSearchBoxField:(id)sender
 {
     
     self.sideNavigationButton.hidden = YES;
+    
     CGRect sboxFrame;
+    
     if(showingBackButton)
     {
         sboxFrame = self.searchBoxController.view.frame;
-        
         sboxFrame.origin.x = self.backButtonControl.frame.origin.x + self.backButtonControl.frame.size.width + 16.0;
-        
-        
     }
     else
     {
-        
         sboxFrame.origin.x = 10.0;
     }
     
@@ -674,13 +600,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.searchBoxController.view.frame = sboxFrame;
     
     [self.view addSubview:self.searchBoxController.view];
+    
 }
 
 -(void)searchTyped:(NSNotification*)notification
 {
     
     
-    NSString* termString = [[notification userInfo] objectForKey:kSearchTerm];
+    NSString* termString = (NSString*)[[notification userInfo] objectForKey:kSearchTerm];
     
     if(!termString)
         return;
@@ -688,34 +615,44 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = NO;
     
-    [self.containerViewController showSearchViewControllerWithTerm:termString];
-    
-    
+    [self showSearchViewControllerWithTerm:termString];
 }
 
--(IBAction)cancelButtonPressed:(id)sender
+- (void) showSearchViewControllerWithTerm: (NSString*) searchTerm
+{
+    
+    [self showBackButton:YES];
+    
+    
+    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
+    self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
+    
+    [self.searchViewController showSearchResultsForTerm: searchTerm];
+}
+
+
+
+- (IBAction) cancelButtonPressed: (id) sender
 {
     [self.searchBoxController clear];
     [self.searchBoxController.view removeFromSuperview];
     
-    
     self.sideNavigationButton.hidden = NO;
-    
-    
 }
 
 
 #pragma mark - Notification Handlers
 
--(void)accountSettingsLogout
+- (void) accountSettingsLogout
 {
     [appDelegate logout];
 }
 
--(void) reachabilityChanged:(NSNotification*) notification
+
+- (void) reachabilityChanged: (NSNotification*) notification
 {
     NSString* reachabilityString;
-    if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
         reachabilityString = @"WiFi";
     else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
         reachabilityString = @"WWAN";
@@ -723,33 +660,29 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         reachabilityString = @"None";
     
     DebugLog(@"Reachability == %@", reachabilityString);
-    if([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
+    if ([self.reachability currentReachabilityStatus] == ReachableViaWiFi)
     {
-        if(self.networkErrorView)
+        if (self.networkErrorView)
         {
             [self hideNetworkErrorView];
         }
     }
     else if([self.reachability currentReachabilityStatus] == ReachableViaWWAN)
     {
-        if(self.networkErrorView)
+        if (self.networkErrorView)
         {
             [self hideNetworkErrorView];
         }
     }
-    else if([self.reachability currentReachabilityStatus] == NotReachable)
+    else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        [self presentNetworkErrorViewWithMesssage:@"NO NETWORK CONNECTION"];
-        
-        
+        [self presentNetworkErrorViewWithMesssage: @"NO NETWORK CONNECTION"];
     }
-    
-    
 }
 
 
 
--(void)presentNetworkErrorViewWithMesssage:(NSString*)message
+- (void) presentNetworkErrorViewWithMesssage: (NSString*) message
 {
     if(self.networkErrorView)
     {
@@ -783,50 +716,56 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-    if ([keyPath isEqualToString:@"contentOffset"]) {
-        
-        CGPoint newContentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
-        CGFloat diff = fabsf(newContentOffset.x - self.containerViewController.currentPageOffset.x);
-        diff = diff/[[SYNDeviceManager sharedInstance] currentScreenWidth];
-        if (diff >1.0f)
-        {
-            diff = diff - truncf(diff);
-        }
-        SYNAbstractViewController* nextViewController = [self.containerViewController nextShowingViewController];
-        
-        if(nextViewController.needsAddButton && !self.containerViewController.showingViewController.needsAddButton)
-        {
-            self.addToChannelButton.alpha = diff;
-        }
-        else if(!nextViewController.needsAddButton && self.containerViewController.showingViewController.needsAddButton)
-        {
-            self.addToChannelButton.alpha = 1.0f - diff;
-        }
-        else
-        {
-            self.addToChannelButton.alpha = self.containerViewController.showingViewController.needsAddButton? 1.0f:0.0f; 
-        }
 
-    }
+
+- (void) dotTapped: (UIGestureRecognizer*) recogniser
+{
+    // TODO: Need to implement this
 }
 
--(void)dotTapped:(UIGestureRecognizer*)recogniser
+- (void) backButtonRequested: (NSNotification*) notification
 {
-    
-}
-
--(void)backButtonRequested:(NSNotification*)notification
-{
-    
     NSString* notificationName = [notification name];
-    
     
     if([notificationName isEqualToString:kNoteBackButtonShow])
     {
-        [self.backButtonControl addTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
-        [self.backButtonControl setBackTitle:self.pageTitleLabel.text];
+        [self showBackButton:YES];
+    }
+    else
+    {
+        [self showBackButton:NO];
+    }
+}
+
+
+
+- (void) navigateToPage: (NSNotification*) notification
+{
+    
+    NSString* pageName = [[notification userInfo] objectForKey: @"pageName"];
+    if(!pageName)
+        return;
+    
+    [self.containerViewController navigateToPageByName:pageName];
+    
+    if(self.sideNavigationViewController.state != SideNavigationStateHidden)
+        [self hideSideNavigation]; 
+}
+
+#pragma mark - Navigation Methods
+
+- (void) showBackButton: (BOOL) show
+{
+    CGRect targetFrame;
+    CGFloat targetAlpha;
+    
+    if (show)
+    {
+        [self.backButtonControl addTarget: self
+                                   action: @selector(popCurrentViewController:)
+                         forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
         if(self.searchBoxController.isOnScreen)
         {
             [UIView animateWithDuration:0.5 animations:^{
@@ -836,46 +775,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                 self.searchBoxController.view.frame = sboxFrame;
             }];
         }
-        [self showBackButton:YES];
-    }
-    else
-    {
-        [self.backButtonControl removeTarget:containerViewController action:@selector(popCurrentViewController:) forControlEvents:UIControlEventTouchUpInside];
-        if(self.searchBoxController.isOnScreen)
-        {
-            [self cancelButtonPressed:nil];
-            
-        }
-        [self showBackButton:NO];
-    }
-}
-
-
-
--(void)navigateToPage:(NSNotification*)notification
-{
-    
-    NSString* pageName = [[notification userInfo] objectForKey:@"pageName"];
-    if(!pageName)
-        return;
-    
-    
-    [self.containerViewController navigateToPageByName:pageName];
-    
-    if(self.sideNavigationViewController.state != SideNavigationStateHidden)
-        [self hideSideNavigation];
-    
-    
-    
-}
-
-- (void) showBackButton: (BOOL) show
-{
-    CGRect targetFrame;
-    CGFloat targetAlpha;
-    
-    if (show)
-    {
+        
         showingBackButton = YES;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = 8.0;
@@ -883,6 +783,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        [self.backButtonControl removeTarget: self
+                                      action: @selector(popCurrentViewController:)
+                            forControlEvents: UIControlEventTouchUpInside];
+        
+        if(self.searchBoxController.isOnScreen)
+        {
+            [self cancelButtonPressed:nil];
+            
+        }
         showingBackButton = NO;
         targetFrame = self.movableButtonsContainer.frame;
         targetFrame.origin.x = kMovableViewOffX;
@@ -892,65 +801,37 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [UIView animateWithDuration: 0.6f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^
-                     {
+                     animations: ^{
                          self.movableButtonsContainer.frame = targetFrame;
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.dotsView.alpha = !targetAlpha;
                          self.refreshButton.alpha = !targetAlpha;
                      }
-                     completion: ^(BOOL finished)
-                     {
-                     }];
+                     completion: nil];
 
 }
 
-
-
-#pragma mark - Helper Methods
-
--(void)showAddButton
+- (void) popCurrentViewController: (id) sender
 {
-    [UIView animateWithDuration:0.3
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseOut
-                     animations:^{
-                         
-                         self.addToChannelButton.frame = self.addToChannelFrame;
-        
-                   } completion:^(BOOL finished) {
-                       
-                       
-                
-                   }];
-    
-}
-
--(void)hideAddButton
-{
-    [UIView animateWithDuration:0.3
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseOut
-                     animations:^{
-                         
-                         self.addToChannelButton.alpha = 0.0;
-                         
-                     } completion:^(BOOL finished) {
-                         
-                         [self moveAddButtonOutOfWay];
-                         
-                     }];
-    
-}
-
--(void)moveAddButtonOutOfWay
-{
-    
-    self.addToChannelButton.frame = CGRectMake(self.view.frame.size.width + 2.0,
-                                               addToChannelFrame.origin.y,
-                                               addToChannelFrame.size.width,
-                                               addToChannelFrame.size.height);
+    if(_overlayNavigationController)
+    {
+        if(_overlayNavigationController.viewControllers.count > 1)
+        {
+            SYNAbstractViewController *abstractVC = (SYNAbstractViewController *)_overlayNavigationController.topViewController;
+            
+            [abstractVC animatedPopViewController];
+        }
+        else
+        {
+            self.overlayNavigationController = nil;
+            [self showBackButton:NO];
+        }
+    }
+    else
+    {
+        [self.containerViewController popCurrentViewController:sender];
+    }
 }
 
 
@@ -971,6 +852,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
+    navigationController.view.backgroundColor = [UIColor clearColor];
     
     [[UINavigationBar appearance] setTitleTextAttributes:
      @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
@@ -993,6 +875,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) hideAutocompletePopover
 {
+    
     if (!self.accountSettingsPopover)
         return;
     
@@ -1041,6 +924,70 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.networkErrorView.center = CGPointMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5, self.networkErrorView.center.y);
     self.networkErrorView.frame = CGRectIntegral(self.networkErrorView.frame);
+}
+
+#pragma mark - Overlay Accessor Methods
+
+-(void)setOverlayNavigationController:(UINavigationController *)overlayNavigationController
+{
+    if(_overlayNavigationController && overlayNavigationController) // there can be only one overlay at a time
+        return;
+    
+    
+    if(overlayNavigationController) // if we did not pass nil
+    {
+        [self.overlayContainerView addSubview:overlayNavigationController.view];
+        self.overlayContainerView.alpha = 0.0;
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseIn
+                         animations: ^{
+                             self.containerView.alpha = 0.0;
+                         }
+                         completion: ^(BOOL finished) {
+                             self.containerView.hidden = YES;
+                             _overlayNavigationController = overlayNavigationController;
+                             [self addChildViewController:_overlayNavigationController];
+                             [UIView animateWithDuration: 0.7f
+                                                   delay: 0.2f
+                                                 options: UIViewAnimationOptionCurveEaseOut
+                                              animations: ^{
+                                                  self.overlayContainerView.alpha = 1.0;
+                                              }
+                                              completion: nil];
+                         }];
+    }
+    else
+    {
+        
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseIn
+                         animations: ^{
+                             self.overlayContainerView.alpha = 0.0;
+                         }
+                         completion: ^(BOOL finished) {
+                             [_overlayNavigationController.view removeFromSuperview];
+                             [_overlayNavigationController removeFromParentViewController];
+                             _overlayNavigationController = nil;
+                             self.containerView.hidden = NO;
+                             [UIView animateWithDuration: 0.7f
+                                                   delay: 0.2f
+                                                 options: UIViewAnimationOptionCurveEaseOut
+                                              animations: ^{
+                                                  self.containerView.alpha = 1.0;
+                                                  
+                                              }
+                                              completion: nil];
+                         }];
+    }
+    
+    
+}
+
+-(UINavigationController*)overlayNavigationController
+{
+    return _overlayNavigationController;
 }
 
 
