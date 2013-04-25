@@ -273,7 +273,7 @@
     if(itemArray.count == 0)
         return YES;
     
-    NSDictionary *firstItem = [itemArray objectAtIndex:0];
+    
     
     // Query for existing objects
     
@@ -282,22 +282,25 @@
                                                 inManagedObjectContext: importManagedObjectContext]];
     
     
+    //NSDictionary *firstItem = [itemArray objectAtIndex:0];
+    
     //NSString* heuristicCategoryId = [firstItem objectForKey:@"category"];
     
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat: @"viewId == '%@'", kChannelsViewId];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
     
-    //[channelFetchRequest setPredicate: predicate];
+    [channelFetchRequest setPredicate: predicate];
     
     
     NSError* error;
     NSArray *matchingChannelEntries = [importManagedObjectContext executeFetchRequest: channelFetchRequest
-                                                                                          error: &error];
+                                                                                error: &error];
     
     
     NSMutableDictionary* existingChannelsByIndex = [NSMutableDictionary dictionaryWithCapacity:matchingChannelEntries.count];
     
     for (Channel* existingChannel in matchingChannelEntries)
     {
+        
         NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
         ((AbstractCommon *)existingChannel).markedForDeletionValue = YES;
@@ -313,7 +316,7 @@
         
         if((existingChannelMatch = [existingChannelsByIndex objectForKey:uniqueId]))
         {
-            NSLog(@"Found (title:%@)", existingChannelMatch.title);
+            //NSLog(@"Found (title:%@)", existingChannelMatch.title);
             ((AbstractCommon *)existingChannelMatch).markedForDeletionValue = NO;
             continue;
         }
