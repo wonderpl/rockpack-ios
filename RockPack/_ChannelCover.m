@@ -7,7 +7,6 @@ const struct ChannelCoverAttributes ChannelCoverAttributes = {
 	.backgroundURL = @"backgroundURL",
 	.carouselURL = @"carouselURL",
 	.coverRef = @"coverRef",
-	.createdByUser = @"createdByUser",
 	.position = @"position",
 };
 
@@ -43,11 +42,6 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"createdByUserValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"createdByUser"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
 	if ([key isEqualToString:@"positionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"position"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -76,32 +70,6 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 
 @dynamic coverRef;
 
-
-
-
-
-
-@dynamic createdByUser;
-
-
-
-- (BOOL)createdByUserValue {
-	NSNumber *result = [self createdByUser];
-	return [result boolValue];
-}
-
-- (void)setCreatedByUserValue:(BOOL)value_ {
-	[self setCreatedByUser:[NSNumber numberWithBool:value_]];
-}
-
-- (BOOL)primitiveCreatedByUserValue {
-	NSNumber *result = [self primitiveCreatedByUser];
-	return [result boolValue];
-}
-
-- (void)setPrimitiveCreatedByUserValue:(BOOL)value_ {
-	[self setPrimitiveCreatedByUser:[NSNumber numberWithBool:value_]];
-}
 
 
 

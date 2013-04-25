@@ -8,7 +8,6 @@ extern const struct ChannelCoverAttributes {
 	__unsafe_unretained NSString *backgroundURL;
 	__unsafe_unretained NSString *carouselURL;
 	__unsafe_unretained NSString *coverRef;
-	__unsafe_unretained NSString *createdByUser;
 	__unsafe_unretained NSString *position;
 } ChannelCoverAttributes;
 
@@ -17,7 +16,6 @@ extern const struct ChannelCoverRelationships {
 
 extern const struct ChannelCoverFetchedProperties {
 } ChannelCoverFetchedProperties;
-
 
 
 
@@ -68,20 +66,6 @@ extern const struct ChannelCoverFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* createdByUser;
-
-
-
-@property BOOL createdByUserValue;
-- (BOOL)createdByUserValue;
-- (void)setCreatedByUserValue:(BOOL)value_;
-
-//- (BOOL)validateCreatedByUser:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSNumber* position;
 
 
@@ -120,15 +104,6 @@ extern const struct ChannelCoverFetchedProperties {
 
 - (NSString*)primitiveCoverRef;
 - (void)setPrimitiveCoverRef:(NSString*)value;
-
-
-
-
-- (NSNumber*)primitiveCreatedByUser;
-- (void)setPrimitiveCreatedByUser:(NSNumber*)value;
-
-- (BOOL)primitiveCreatedByUserValue;
-- (void)setPrimitiveCreatedByUserValue:(BOOL)value_;
 
 
 
