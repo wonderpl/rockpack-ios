@@ -663,7 +663,6 @@
 		BEEB6F27172181FD00FEFA43 /* SearchTabHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F23172181FD00FEFA43 /* SearchTabHighlighted.png */; };
 		BEEB6F28172181FD00FEFA43 /* SearchTabHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F24172181FD00FEFA43 /* SearchTabHighlighted@2x.png */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
-		BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
 		BEFAE89817241FD5009B2F66 /* SearchTabSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */; };
 		BEFAE89917241FD5009B2F66 /* SearchTabSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */; };
@@ -1474,8 +1473,6 @@
 		BEEB6F24172181FD00FEFA43 /* SearchTabHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTabHighlighted@2x.png"; path = "Assets/Images/SearchTabHighlighted@2x.png"; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
-		BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompletePopoverBackgroundView.h; sourceTree = "<group>"; };
-		BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompletePopoverBackgroundView.m; sourceTree = "<group>"; };
 		BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSoundPlayer.h; sourceTree = "<group>"; };
 		BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSoundPlayer.m; sourceTree = "<group>"; };
 		BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchTabSelected.png; path = Assets/Images/SearchTabSelected.png; sourceTree = "<group>"; };
@@ -2310,16 +2307,16 @@
 		01B7CD9D166E1616001F4AF0 /* Video cells */ = {
 			isa = PBXGroup;
 			children = (
-				3862E8A2172979120066E8E7 /* SYNVideoThumbnailSmallCell~iphone.xib */,
-				3862E8A3172979120066E8E7 /* SYNVideoThumbnailWideCell~iphone.xib */,
 				01EA81C316B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.h */,
 				01EA81C416B9483D0069AFF9 /* SYNVideoThumbnailSmallCell.m */,
 				01EA81C616B9487A0069AFF9 /* SYNVideoThumbnailSmallCell.xib */,
+				3862E8A2172979120066E8E7 /* SYNVideoThumbnailSmallCell~iphone.xib */,
 				01B0A961166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.h */,
 				01B0A962166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m */,
 				01B0A967166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib */,
 				01363F221630B81400FFAA09 /* SYNVideoThumbnailWideCell.h */,
 				01363F231630B81400FFAA09 /* SYNVideoThumbnailWideCell.m */,
+				3862E8A3172979120066E8E7 /* SYNVideoThumbnailWideCell~iphone.xib */,
 				01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */,
 			);
 			name = "Video cells";
@@ -2836,8 +2833,6 @@
 				BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */,
 				BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */,
 				BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */,
-				BEF0AE1916E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.h */,
-				BEF0AE1A16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m */,
 			);
 			name = "Autocomplete Search Box";
 			sourceTree = "<group>";
@@ -3892,7 +3887,6 @@
 				BE0AAD2916E6534300DA958E /* SYNAutocompleteSuggestionsController.m in Sources */,
 				BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */,
 				017A9EFA16E77E6600AA5B18 /* UIView+Subviews.m in Sources */,
-				BEF0AE1B16E79A4F0094BFDA /* SYNAutocompletePopoverBackgroundView.m in Sources */,
 				011A15F616EE3E9A008CF25E /* SYNCameraPopoverViewController.m in Sources */,
 				011A160E16EE53A0008CF25E /* UIImage+Resize.m in Sources */,
 				011A162D16EF5EC5008CF25E /* GKCropBorderView.m in Sources */,

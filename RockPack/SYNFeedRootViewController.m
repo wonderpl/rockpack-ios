@@ -130,6 +130,12 @@
     [self refreshVideoThumbnails];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.videoThumbnailCollectionView reloadData];
+}
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
@@ -260,7 +266,7 @@
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
-    
+    videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
     
     videoThumbnailCell.viewControllerDelegate = self;
     

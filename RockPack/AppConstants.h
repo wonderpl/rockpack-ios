@@ -249,7 +249,8 @@ typedef enum _Gender {
 
 #define kVideoQueueAdd              @"kVideoQueueAdd"
 #define kVideoQueueRemove           @"kVideoQueueRemove"
-#define kVideoQueueClear           @"kVideoQueueClear"
+#define kVideoQueueClear            @"kVideoQueueClear"
+
 
 #define kScrollerPageChanged        @"kScrollerPageChanged"
 

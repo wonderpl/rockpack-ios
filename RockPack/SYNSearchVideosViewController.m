@@ -127,6 +127,7 @@
         videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
         videoThumbnailCell.videoTitle.text = videoInstance.title;
+        videoThumbnailCell.videoInstance = videoInstance;
         
         Video* video = videoInstance.video;
         

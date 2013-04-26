@@ -40,6 +40,24 @@
 {
     return [[self alloc] init];
 }
+
+-(BOOL)videoInstanceIsAddedToChannel:(VideoInstance*)videoInstance
+{
+    
+    for (VideoInstance* channelInstance in self.currentlyCreatingChannel.videoInstances)
+    {
+        
+        if([channelInstance.uniqueId isEqualToString:videoInstance.uniqueId])
+        {
+            return YES;
+        }
+        
+    }
+    
+    
+    
+    return NO;
+}
 -(void)setup
 {
     [[NSNotificationCenter defaultCenter] addObserver: self

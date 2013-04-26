@@ -17,8 +17,8 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
+#import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
-#import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNDeviceManager.h"
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -1282,7 +1282,7 @@
     self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
     self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
     self.cameraMenuPopoverController.delegate = self;
-    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAutocompletePopoverBackgroundView class];
+    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
     
     [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
                                                       inView: self.view
