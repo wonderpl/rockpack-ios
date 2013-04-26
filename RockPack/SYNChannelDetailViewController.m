@@ -175,9 +175,9 @@
     
     // Look out for update notifications
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
+                                             selector: @selector(mainContextDataChanged:)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: appDelegate.mainManagedObjectContext];
     
     // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
     [self.videoThumbnailCollectionView addObserver: self
@@ -209,70 +209,14 @@
     
     if(self.mode == kChannelDetailsModeDisplay)
     {
-        [self updateChannelData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelUpdateRequest object:self userInfo:@{kChannel:self.channel}];
     }
     
     
     [self displayChannelDetails];
 }
 
--(void)updateChannelData
-{
-    if (self.channel.resourceURL != nil && ![self.channel.resourceURL isEqualToString: @""])
-    {
-        if ([self.channel.resourceURL hasPrefix: @"https"])
-        {
-            [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL
-                                        completionHandler: ^(NSDictionary *responseDictionary) {
-                                            // Save the position for back-patching in later
-                                            NSNumber *savedPosition = self.channel.position;
-                                            
-                                            [self.channel setAttributesFromDictionary: responseDictionary
-                                                                               withId: self.channel.uniqueId
-                                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                                  ignoringObjectTypes: kIgnoreNothing
-                                                                            andViewId: kChannelDetailsViewId];
-                                            
-                                            // Back-patch a few things that may have been overwritten
-                                            self.channel.position = savedPosition;
-                                            self.channel.viewId = kChannelsViewId;
-                                            
-                                            [self updateVideoInstanceArray];
-                                            
-                                            [self reloadCollectionViews];
-                                        }
-                                             errorHandler: ^(NSDictionary* errorDictionary) {
-                                                 DebugLog(@"Update action failed");
-                                             }];
-            
-        }
-        else
-        {
-            [appDelegate.networkEngine updateChannel: self.channel.resourceURL
-                                   completionHandler: ^(NSDictionary *responseDictionary) {
-                                       // Save the position for back-patching in later
-                                       NSNumber *savedPosition = self.channel.position;
-                                       
-                                       [self.channel setAttributesFromDictionary: responseDictionary
-                                                                          withId: self.channel.uniqueId
-                                                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                             ignoringObjectTypes: kIgnoreNothing
-                                                                       andViewId: kChannelDetailsViewId];
-                                       
-                                       // Back-patch a few things that may have been overwritten
-                                       self.channel.position = savedPosition;
-                                       self.channel.viewId = kChannelsViewId;
-                                       
-                                       [self updateVideoInstanceArray];
-                                       
-                                       [self reloadCollectionViews];
-                                   }
-                                        errorHandler: ^(NSDictionary* errorDictionary) {
-                                            DebugLog(@"Update action failed");
-                                        }];
-        }
-    }
-}
+
 
 
 - (void) viewWillDisappear: (BOOL) animated
@@ -284,13 +228,22 @@
     [self.channel removeObserver: self
                       forKeyPath: kSubscribedByUserKey];
 
-    // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kDataUpdated
-                                                  object: nil];
+                                                    name: NSManagedObjectContextDidSaveNotification
+                                                  object: appDelegate.mainManagedObjectContext];
     [super viewWillDisappear: animated];
 }
 
+-(void)mainContextDataChanged:(NSNotification*)notification
+{
+    if(!notification)
+        return;
+    
+    if(notification.object == appDelegate.mainManagedObjectContext)
+    {
+        
+    }
+}
 
 - (void) updateVideoInstanceArray
 {
