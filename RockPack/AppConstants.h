@@ -328,6 +328,7 @@ typedef enum {
 #define kNoteBackButtonShow         @"kNoteBackButtonShow"
 #define kNoteBackButtonHide         @"kNoteBackButtonHide"
 #define kNoteStarButtonPressed      @"kNoteStarButtonPressed"
+#define kNoteAddToChannelRequest    @"kNoteAddToChannelRequest"
 
 #define kNoteAddedToChannel         @"kNoteAddedToChannel"
 #define kNoteCreateNewChannel       @"kNoteCreateNewChannel"

@@ -73,9 +73,35 @@
 {
     [super viewDidLoad];
     
-    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    
+    if(self.needsAddButton)
+    {
+        UIButton* addToChannelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        UIImage* buttonImageInactive = [UIImage imageNamed:@"ButtonAddToChannelInactive"];
+        UIImage* buttonImageActive = [UIImage imageNamed:@"ButtonAddToChannelActive"];
+        UIImage* buttonImageHighlighted = [UIImage imageNamed:@"ButtonAddToChannelInactiveHighlighted"];
+        
+        
+        addToChannelButton.frame = CGRectMake(884.0, 80.0, buttonImageInactive.size.width, buttonImageInactive.size.height);
+        [addToChannelButton setImage:buttonImageInactive forState:UIControlStateNormal];
+        
+        [addToChannelButton setImage:buttonImageActive forState:UIControlStateSelected];
+        [addToChannelButton setImage:buttonImageHighlighted forState:UIControlStateHighlighted];
+        
+        [addToChannelButton addTarget:self action:@selector(addToChannelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view addSubview:addToChannelButton];
+        
+    }
 }
 
+-(void)addToChannelButtonPressed:(UIButton*)button
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+}
 
 - (void) viewCameToScrollFront
 {
