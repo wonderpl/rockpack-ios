@@ -199,16 +199,7 @@
 -(void)performAutocompleteSearch:(NSTimeInterval*)interval
 {
     
-    if(self.searchTextField.text.length == 0) {
-        [UIView animateWithDuration:0.5 animations:^{
-            //self.clearTextButton.alpha = 0.0;
-        }];
-        
-    } else {
-        [UIView animateWithDuration:0.1 animations:^{
-            //self.clearTextButton.alpha = 1.0;
-        }];
-    }
+    
     
     
     [self.autocompleteTimer invalidate];

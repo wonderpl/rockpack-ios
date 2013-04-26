@@ -571,7 +571,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)searchTyped:(NSNotification*)notification
 {
     
-    
     NSString* termString = (NSString*)[[notification userInfo] objectForKey:kSearchTerm];
     
     if(!termString)
@@ -580,20 +579,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = NO;
     
-    [self showSearchViewControllerWithTerm:termString];
+    if(!self.overlayNavigationController)
+    {
+        
+        [self showBackButton:YES];
+        
+        
+        self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
+        self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
+    }
+    
+    
+    [self.searchViewController showSearchResultsForTerm: termString];
 }
 
-- (void) showSearchViewControllerWithTerm: (NSString*) searchTerm
-{
-    
-    [self showBackButton:YES];
-    
-    
-    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-    self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
-    
-    [self.searchViewController showSearchResultsForTerm: searchTerm];
-}
+
 
 
 
@@ -913,27 +913,34 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseIn
-                         animations: ^{
-                             self.overlayContainerView.alpha = 0.0;
-                         }
-                         completion: ^(BOOL finished) {
-                             [_overlayNavigationController.view removeFromSuperview];
-                             [_overlayNavigationController removeFromParentViewController];
-                             _overlayNavigationController = nil;
-                             self.containerView.hidden = NO;
-                             [UIView animateWithDuration: 0.7f
-                                                   delay: 0.2f
-                                                 options: UIViewAnimationOptionCurveEaseOut
-                                              animations: ^{
-                                                  self.containerView.alpha = 1.0;
-                                                  
-                                              }
-                                              completion: nil];
-                         }];
+        if(_overlayContainerView) // nil was passed and there was another on screen (remove)
+        {
+            [UIView animateWithDuration: 0.5f
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseIn
+                             animations: ^{
+                                 self.overlayContainerView.alpha = 0.0;
+                             }
+                             completion: ^(BOOL finished) {
+                                 [_overlayNavigationController.view removeFromSuperview];
+                                 [_overlayNavigationController removeFromParentViewController];
+                                 _overlayNavigationController = nil;
+                                 self.containerView.hidden = NO;
+                                 [UIView animateWithDuration: 0.7f
+                                                       delay: 0.2f
+                                                     options: UIViewAnimationOptionCurveEaseOut
+                                                  animations: ^{
+                                                      self.containerView.alpha = 1.0;
+                                                      
+                                                  }
+                                                  completion: nil];
+                             }];
+        }
+        else // nil was passed while there was nothing on screen (it is already nil)
+        {
+            _overlayContainerView = nil;
+        }
+       
     }
     
     
