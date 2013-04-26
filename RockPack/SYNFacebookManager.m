@@ -66,7 +66,7 @@ typedef enum
 - (void) loginOnSuccess: (FacebookLoginSuccessBlock) successBlock
               onFailure: (FacebookLoginFailureBlock) failureBlock
 {
-    [self openSessionWithPermissionType: kFacebookPermissionTypeRead | kFacebookPermissionTypePublish
+    [self openSessionWithPermissionType: kFacebookPermissionTypeRead
                               onSuccess: ^{
                                   
          [FBRequestConnection startForMeWithCompletionHandler: ^(FBRequestConnection *connection,
@@ -255,30 +255,52 @@ typedef enum
 
 #pragma mark - Posting to Wall
 
-- (void) postToWall:(NSString*)message
+- (void) postMessageToWall:(NSString*)message
+                 onSuccess: (FacebookPostSuccessBlock) successBlock
+                 onFailure: (FacebookPostFailureBlock) failureBlock
 {
+    
+    if( ![FBSession.activeSession isOpen] || [[[FBSession activeSession] permissions]indexOfObject:@"publish_actions"] == NSNotFound)
+    {
+        // reopen session
+        
+        [self openSessionWithPermissionType: kFacebookPermissionTypeRead | kFacebookPermissionTypePublish
+                                  onSuccess: ^{
+                                      
+                                      [self postMessageToWall:message
+                                                    onSuccess:successBlock
+                                                    onFailure:failureBlock];
+                                     
+                                  }
+                                  onFailure: ^(NSString* errorMessage) {
+                                     
+                                 }];
+        
+        return;
+        
+    }
+    
+    
+    
     NSDictionary* postParams = @{@"caption" : @"First Post",
+                                 @"message" : message,
                                  @"description" : message};
     
     [FBRequestConnection startWithGraphPath:@"me/feed"
                                  parameters:postParams
                                  HTTPMethod:@"POST"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                              NSString *alertText;
+                              
+                            
                               if (error) {
-                                  alertText = [NSString stringWithFormat:@"error: domain = %@, code = %d", error.domain, error.code];
-                                  NSLog(@"\n%@", error);
-                              } else {
-                                  alertText = [NSString stringWithFormat:
-                                               @"Posted action, id: %@",
-                                               [result objectForKey:@"id"]];
+                                  
+                                  failureBlock(error);
+                                  return;
                               }
-                              // Show the result in an alert
-                              [[[UIAlertView alloc] initWithTitle:@"Result"
-                                                          message:alertText
-                                                         delegate:self
-                                                cancelButtonTitle:@"OK!"
-                                                otherButtonTitles:nil] show];
+                              
+                              successBlock();
+                              
+
                           }];
 }
 
