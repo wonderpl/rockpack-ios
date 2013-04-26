@@ -431,6 +431,19 @@
 
 #pragma mark - Channel management
 
+- (void) channelCreatedForUserId: (NSString *) userId
+                       channelId: (NSString *) channelId
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock {
+    
+    [self channelDataForUserId:userId
+                     channelId:channelId
+                         start:0 size:1000
+             completionHandler:completionBlock
+                  errorHandler:errorBlock];
+
+}
+
 - (void) channelDataForUserId: (NSString *) userId
                     channelId: (NSString *) channelId
                         start: (unsigned int) start
