@@ -25,6 +25,8 @@
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
 @property (nonatomic, strong) Channel *channel;
+@property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
+@property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
