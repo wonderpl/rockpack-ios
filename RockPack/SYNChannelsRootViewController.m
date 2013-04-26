@@ -81,7 +81,7 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     if(isIPhone)
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 167.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
         flowLayout.footerReferenceSize = [self footerSize];
     }
     else
@@ -371,7 +371,7 @@
         Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
         SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                                  usingMode: kChannelDetailsModeEdit
+                                                                                                  usingMode: kChannelDetailsModeDisplay
                                                      ];
         
         [self animatedPushViewController: channelVC];

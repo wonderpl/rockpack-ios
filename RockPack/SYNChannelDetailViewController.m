@@ -817,7 +817,6 @@
                                                             DebugLog(@"%@", [error debugDescription]);
                                                         }];
 
-        
         self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
                                                      kChannelCreationCategoryAdditionalOffsetY);
         
