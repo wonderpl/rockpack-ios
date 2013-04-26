@@ -207,6 +207,17 @@
     
     // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
+    if(self.mode == kChannelDetailsModeDisplay)
+    {
+        [self updateChannelData];
+    }
+    
+    
+    [self displayChannelDetails];
+}
+
+-(void)updateChannelData
+{
     if (self.channel.resourceURL != nil && ![self.channel.resourceURL isEqualToString: @""])
     {
         if ([self.channel.resourceURL hasPrefix: @"https"])
@@ -233,7 +244,7 @@
                                              errorHandler: ^(NSDictionary* errorDictionary) {
                                                  DebugLog(@"Update action failed");
                                              }];
-
+            
         }
         else
         {
@@ -261,8 +272,6 @@
                                         }];
         }
     }
-    
-    [self updateChannelDetails];
 }
 
 
@@ -325,7 +334,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
-    [self updateChannelDetails];
+    [self displayChannelDetails];
 }
 
 
@@ -339,7 +348,7 @@
     layer.shadowRadius = 2.0f;
 }
 
-- (void) updateChannelDetails
+- (void) displayChannelDetails
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
