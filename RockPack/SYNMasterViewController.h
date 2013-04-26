@@ -15,6 +15,8 @@
 #import <UIKit/UIKit.h>
 
 
+typedef void (^VideoOverlayDismissBlock)(void);
+
 @interface SYNMasterViewController : GAITrackedViewController <UIPopoverControllerDelegate,
                                                                 UIGestureRecognizerDelegate>
 
@@ -33,7 +35,8 @@
 
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
             withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
-                            andIndexPath: (NSIndexPath *) indexPath;
+                            andIndexPath: (NSIndexPath *) indexPath
+                               onDismiss: (VideoOverlayDismissBlock) dismissBlock;
 
 - (void) removeVideoOverlayController;
 
