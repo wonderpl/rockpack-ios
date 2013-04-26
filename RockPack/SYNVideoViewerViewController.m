@@ -40,9 +40,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
-@property (nonatomic, strong) IBOutlet UILabel *followLabel;
-@property (nonatomic, strong) IBOutlet UILabel *numberOfStarsLabel;
-@property (nonatomic, strong) IBOutlet UILabel *numberOfSharesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *blackPanelView;
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
@@ -84,10 +81,7 @@
     // Set custom fonts
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: self.channelTitleLabel.font.pointSize];
     self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: self.channelCreatorLabel.font.pointSize];
-    self.followLabel.font = [UIFont boldRockpackFontOfSize: self.followLabel.font.pointSize];
     self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: self.videoTitleLabel.font.pointSize];
-    self.numberOfStarsLabel.font = [UIFont boldRockpackFontOfSize: self.numberOfStarsLabel.font.pointSize];
-    self.numberOfSharesLabel.font = [UIFont boldRockpackFontOfSize: self.numberOfSharesLabel.font.pointSize];
 
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
@@ -211,7 +205,6 @@
     self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
-    self.numberOfStarsLabel.text = videoInstance.video.starCount.stringValue;
     self.starButton.selected = videoInstance.video.starredByUserValue;
 }
 
