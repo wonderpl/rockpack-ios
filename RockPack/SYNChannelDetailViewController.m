@@ -45,7 +45,6 @@
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
-@property (strong, nonatomic) NSMutableArray *videoInstances;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 @end
@@ -269,7 +268,6 @@
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    self.videoInstances = nil;
     
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
@@ -287,22 +285,22 @@
 
 - (void) updateVideoInstanceArray
 {
-    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+    
     
     // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
     
     // First, sort the array in 'position' order
-    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
-        NSNumber *first = [(VideoInstance *)a position];
-        NSNumber *second = [(VideoInstance *)b position];
-        return [first compare: second];
-    }];
-    
-    // Now add those videoinstances to our own mutable array
-    for (VideoInstance *videoInstance in sortedArray)
-    {
-        [self.videoInstances addObject: videoInstance];
-    }
+//    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
+//        NSNumber *first = [(VideoInstance *)a position];
+//        NSNumber *second = [(VideoInstance *)b position];
+//        return [first compare: second];
+//    }];
+//    
+//    // Now add those videoinstances to our own mutable array
+//    for (VideoInstance *videoInstance in sortedArray)
+//    {
+//        [self.videoInstances addObject: videoInstance];
+//    }
 }
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
@@ -404,7 +402,7 @@
         {
             case 0:
             {
-                return self.videoInstances.count;
+                return self.channel.videoInstances.count;
             }
             break;
                 
@@ -526,35 +524,7 @@
 
 #pragma mark - Fetched results controller
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    
-    
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: self.channel.managedObjectContext];
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: self.channel.managedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
+
 
 
 - (NSFetchedResultsController *) channelCoverFetchedResultsController
@@ -622,13 +592,13 @@
 {
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
-    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
         [(VideoInstance *)obj setPositionValue : index];
     }];
     
-    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
-        [(VideoInstance *)obj setPositionValue : index];
-    }];
+//    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+//        [(VideoInstance *)obj setPositionValue : index];
+//    }];
 }
 
 
@@ -650,8 +620,8 @@
                          withObjectAtIndex: toIndexPath.item];
     self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet:mutableInstance];
     
-    [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
-                             withObjectAtIndex: toIndexPath.item];
+//    [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
+//                             withObjectAtIndex: toIndexPath.item];
     
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
@@ -818,7 +788,7 @@
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex:indexPath.row];
-    [self.videoInstances removeObjectAtIndex: indexPath.row];
+//    [self.videoInstances removeObjectAtIndex: indexPath.row];
     
     NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.channel.videoInstances];
     [channelsSet removeObject:instanceToDelete];
