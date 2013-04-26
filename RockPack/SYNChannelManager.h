@@ -10,7 +10,7 @@
 
 #import "Channel.h"
 
-@interface SYNSubscriptionsManager : NSObject
+@interface SYNChannelManager : NSObject
 
 
 -(void)subscribeToChannel:(Channel*)channel;

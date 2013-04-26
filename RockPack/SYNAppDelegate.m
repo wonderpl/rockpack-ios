@@ -39,7 +39,7 @@ extern void instrumentObjcMessageSends(BOOL);
 @property (nonatomic, strong) SYNOAuthNetworkEngine *oAuthNetworkEngine;
 @property (nonatomic, strong) NSString *userAgentString;
 @property (nonatomic, strong) SYNVideoQueue* videoQueue;
-@property (nonatomic, strong) SYNSubscriptionsManager* subscriptionsManager;
+@property (nonatomic, strong) SYNChannelManager* channelManager;
 
 
 @end
@@ -106,7 +106,7 @@ extern void instrumentObjcMessageSends(BOOL);
     
     
     // Subscriptions Manager //
-    self.subscriptionsManager = [SYNSubscriptionsManager manager];
+    self.channelManager = [SYNChannelManager manager];
     
     
     // Network Engine //
