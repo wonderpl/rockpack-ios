@@ -44,6 +44,12 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 
 // Channel creation
 
+
+- (void) channelCreatedForUserId: (NSString *) userId
+                       channelId: (NSString *) channelId
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 - (void) channelDataForUserId: (NSString *) userId
                     channelId: (NSString *) channelId
                         start: (unsigned int) start
