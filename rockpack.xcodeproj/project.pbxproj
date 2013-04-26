@@ -2222,26 +2222,26 @@
 		01B7CD9E166E163D001F4AF0 /* Channel cells */ = {
 			isa = PBXGroup;
 			children = (
-				3862E8A6172979410066E8E7 /* SYNChannelCategoryTableCell.h */,
-				3862E8A7172979410066E8E7 /* SYNChannelCategoryTableCell.m */,
-				3862E8A8172979410066E8E7 /* SYNChannelCategoryTableCell.xib */,
-				3862E8A9172979410066E8E7 /* SYNChannelCategoryTableHeader.h */,
-				3862E8AA172979410066E8E7 /* SYNChannelCategoryTableHeader.m */,
-				3862E8AB172979410066E8E7 /* SYNChannelCategoryTableHeader.xib */,
-				3862E8AF172979410066E8E7 /* SYNChannelMidCell~iphone.xib */,
-				3862E8B0172979410066E8E7 /* SYNChannelThumbnailCell~iphone.xib */,
 				01B7F761164FC88A009C5CCD /* SYNChannelThumbnailCell.h */,
 				01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */,
 				01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */,
+				3862E8B0172979410066E8E7 /* SYNChannelThumbnailCell~iphone.xib */,
 				01E4281816666F09009B941F /* SYNChannelSelectorCell.h */,
 				01E4281916666F09009B941F /* SYNChannelSelectorCell.m */,
 				01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */,
 				BE86BF18171F07B10006DC8A /* SYNChannelMidCell.h */,
 				BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */,
 				BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */,
+				3862E8AF172979410066E8E7 /* SYNChannelMidCell~iphone.xib */,
 				BE285D9D172584E200D995AB /* SYNChannelCreateNewCell.h */,
 				BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */,
 				BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */,
+				3862E8A6172979410066E8E7 /* SYNChannelCategoryTableCell.h */,
+				3862E8A7172979410066E8E7 /* SYNChannelCategoryTableCell.m */,
+				3862E8A8172979410066E8E7 /* SYNChannelCategoryTableCell.xib */,
+				3862E8A9172979410066E8E7 /* SYNChannelCategoryTableHeader.h */,
+				3862E8AA172979410066E8E7 /* SYNChannelCategoryTableHeader.m */,
+				3862E8AB172979410066E8E7 /* SYNChannelCategoryTableHeader.xib */,
 			);
 			name = "Channel cells";
 			sourceTree = "<group>";
@@ -2460,10 +2460,10 @@
 		01F8E77B16B039E6000D44B9 /* Video viewer */ = {
 			isa = PBXGroup;
 			children = (
-				3862E8BB172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib */,
 				01F8E77C16B03A7C000D44B9 /* SYNVideoViewerViewController.h */,
 				01F8E77D16B03A7C000D44B9 /* SYNVideoViewerViewController.m */,
 				01F8E77E16B03A7C000D44B9 /* SYNVideoViewerViewController.xib */,
+				3862E8BB172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib */,
 			);
 			name = "Video viewer";
 			sourceTree = "<group>";
@@ -2644,10 +2644,10 @@
 		BE0815C216D5386B00ADB1DC /* Master View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				3862E8B91729797F0066E8E7 /* SYNMasterViewController~iphone.xib */,
 				BE0815C316D5389C00ADB1DC /* SYNMasterViewController.h */,
 				BE0815C416D5389C00ADB1DC /* SYNMasterViewController.m */,
 				BE0815C516D5389C00ADB1DC /* SYNMasterViewController.xib */,
+				3862E8B91729797F0066E8E7 /* SYNMasterViewController~iphone.xib */,
 			);
 			name = "Master View Controller";
 			sourceTree = "<group>";
