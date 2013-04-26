@@ -394,7 +394,29 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(IBAction)addToChannelPressed:(id)sender
 {
     
-    [[SYNFacebookManager sharedFBManager] postToWall:@"This is my first post"];
+    [[SYNFacebookManager sharedFBManager] postMessageToWall:@"This is my second post"
+                                                  onSuccess:^{
+                                                      
+                                                      
+        
+                                                } onFailure:^(NSError* error) {
+                                                    
+                                                    
+                                                    NSDictionary* errorRoot = [error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"];
+                                                    NSDictionary* errorBody = [errorRoot objectForKey:@"body"];
+                                                    NSDictionary* errorError = [errorBody objectForKey:@"error"];
+                                                    NSNumber* errorCode = [errorError objectForKey:@"code"];
+                                                    
+                                                    switch ([errorCode integerValue]) {
+                                                        case 2500: // An active access token must be used
+                                                            DebugLog(@"Facebook Posting Needs an Active Session");
+                                                            break;
+                                                            
+                                                        default:
+                                                            break;
+                                                    }
+        
+                                                }];
     
     return;
     

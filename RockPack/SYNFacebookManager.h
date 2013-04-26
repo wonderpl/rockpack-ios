@@ -27,6 +27,9 @@ typedef void (^FacebookLoginFailureBlock)(NSString *errorMessage);
 typedef void (^FacebookLogoutSuccessBlock)(void);
 typedef void (^FacebookLogoutFailureBlock)(NSString *errorMessage);
 
+typedef void (^FacebookPostSuccessBlock)(void);
+typedef void (^FacebookPostFailureBlock)(NSError *error);
+
 @interface SYNFacebookManager : NSObject
 
 + (id) sharedFBManager;
@@ -37,6 +40,8 @@ typedef void (^FacebookLogoutFailureBlock)(NSString *errorMessage);
 - (void) logoutOnSuccess: (FacebookLogoutSuccessBlock) successBlock
                onFailure: (FacebookLogoutFailureBlock) failureBlock;
 
-- (void) postToWall:(NSString*)message;
+- (void) postMessageToWall: (NSString*)message
+                 onSuccess: (FacebookPostSuccessBlock) successBlock
+                 onFailure: (FacebookPostFailureBlock) failureBlock;
 
 @end

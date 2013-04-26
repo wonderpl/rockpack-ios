@@ -81,7 +81,7 @@
     SYNIntegralCollectionViewFlowLayout* flowLayout;
     if(isIPhone)
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 167.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
         flowLayout.footerReferenceSize = [self footerSize];
     }
     else
@@ -178,6 +178,7 @@
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
+                                                 ignoringCache: YES
                                                   onCompletion: ^(NSDictionary* response) {
                                                       
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
@@ -197,10 +198,9 @@
                                                           return;
                                                       }
                                                       
-                                                  }
-                                                       onError: ^(NSDictionary* errorInfo) {
+                                                  } onError: ^(NSDictionary* errorInfo) {
                                                            
-                                                       }];
+                                                  }];
 }
 
 
@@ -256,7 +256,7 @@
     if(!currentCategoryId || [currentCategoryId isEqualToString:@"all"] || [currentCategoryId isEqualToString:@""])
         fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == '%@'", viewId]];
     else
-        fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == '%@' AND categoryId == '%@'", viewId, currentCategoryId]];
+        fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"(viewId == '%@') AND (categoryId == '%@')", viewId, currentCategoryId]];
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position"
                                                                  ascending: YES]];
@@ -306,18 +306,7 @@
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;
     
-//    if(channelThumbnailCell.shouldAnimate)
-//    {
-//        channelThumbnailCell.alpha = 0.0;
-//        [UIView animateWithDuration:0.3 delay:(startAnimationDelay + 0.5) options:UIViewAnimationCurveEaseInOut animations:^{
-//            channelThumbnailCell.alpha = 1.0;
-//            
-//        } completion:^(BOOL finished) {
-//            
-//        }];
-//        startAnimationDelay += 0.08;
-//        channelThumbnailCell.shouldAnimate = NO;
-//    }
+
 
     return channelThumbnailCell;
 }
@@ -402,7 +391,9 @@
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
+                                                 ignoringCache: YES
                                                   onCompletion: ^(NSDictionary* response) {
+                                                      
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:YES];
                                                       if (!registryResultOk) {
@@ -410,10 +401,9 @@
                                                           return;
                                                       }
                                                       
-                                                  }
-                                                       onError: ^(NSDictionary* errorInfo) {
+                                                    } onError: ^(NSDictionary* errorInfo) {
                                                            
-                                                       }];
+                                                    }];
 }
 
 
@@ -581,6 +571,7 @@
     currentRange = NSMakeRange(0, 50);
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
+                                                 ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary: response
                                                                                                                              byAppending: NO];

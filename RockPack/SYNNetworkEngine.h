@@ -15,16 +15,19 @@
 
 @interface SYNNetworkEngine : SYNAbstractNetworkEngine
 
+@property (nonatomic) BOOL shouldFirstCheckCache;
+
 - (void) updateCategoriesOnCompletion: (MKNKVoidBlock) completionBlock
                               onError: (MKNKErrorBlock) errorBlock;
 
 - (void) updateVideosScreenForCategory: (NSString*) categoryId;
 
 
-- (void) updateChannelsScreenForCategory: (NSString*) categoryId
-                                forRange: (NSRange) range
-                            onCompletion: (MKNKJSONCompleteBlock) completeBlock
-                                 onError: (MKNKJSONErrorBlock) errorBlock;
+- (void) updateChannelsScreenForCategory:(NSString*)categoryId
+                                forRange:(NSRange)range
+                           ignoringCache:(BOOL)ingore
+                            onCompletion:(MKNKJSONCompleteBlock)completeBlock
+                                 onError:(MKNKJSONErrorBlock)errorBlock;
 
 - (void) searchVideosForTerm: (NSString*) searchTerm;
 - (void) searchChannelsForTerm: (NSString*) searchTerm;

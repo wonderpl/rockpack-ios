@@ -26,9 +26,9 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 20.0f];
-    self.displayNameLabel.font = [UIFont rockpackFontOfSize: 13.0f];
-    self.byLabel.font = [UIFont rockpackFontOfSize: 13.0f];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+    self.displayNameLabel.font = [UIFont rockpackFontOfSize: self.displayNameLabel.font.pointSize];
+    self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     
     self.shouldAnimate = YES;
 }
