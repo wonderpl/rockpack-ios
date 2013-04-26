@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNChannelCategoryTableHeader : UITableViewHeaderFooterView
+@interface SYNChannelCategoryTableHeader : UIView
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 @property (weak, nonatomic) IBOutlet UIButton *headerButton;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImage;
 
 @end

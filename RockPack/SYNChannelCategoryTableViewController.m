@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSArray* categoriesDatasource;
 @property NSMutableArray* transientDatasource;
 @property NSIndexPath* lastSelectedIndexpath;
+@property NSMutableDictionary* headerRegister;
 
 @end
 
@@ -29,7 +30,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        _headerRegister = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -39,21 +40,21 @@
     [super viewDidLoad];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"SYNChannelCategoryTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SYNChannelCategoryTableCell"];
-    [self.tableView registerClass:[SYNChannelCategoryTableHeader class] forHeaderFooterViewReuseIdentifier:@"SYNChannelCategoryTableHeader"];
     
-    SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] initWithReuseIdentifier:@""];
+    SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
     topHeader.titleLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
     topHeader.headerButton.tag = -1;
     topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
-    topHeader.frame = CGRectMake(0.0f, 0.0f,245.0f, 44.0f);
+    topHeader.frame = CGRectMake(0.0f, 0.0f, 245.0f, 45.0f);
     [topHeader.headerButton addTarget:self action:@selector(tappedAllCategories:) forControlEvents:UIControlEventTouchUpInside];
     [topHeader.headerButton addTarget:self action:@selector(pressedAllCategories:) forControlEvents:UIControlEventTouchDown];
     [topHeader.headerButton addTarget:self action:@selector(releasedAllCategories:) forControlEvents:UIControlEventTouchUpOutside];
+    [topHeader.arrowImage removeFromSuperview];
     self.tableView.tableHeaderView = topHeader;
     
     
     [self loadCategories];
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"CategorySlideBackground"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -124,7 +125,12 @@
     return [[[self.transientDatasource objectAtIndex:section] valueForKey:kSubCategoriesKey] count];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 44.0f;
+//}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 44.0f;
 }
@@ -140,17 +146,24 @@
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSDictionary* dictionary = [self.transientDatasource objectAtIndex:section];
-    SYNChannelCategoryTableHeader *header = (SYNChannelCategoryTableHeader*) [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"SYNChannelCategoryTableHeader"];
+    SYNChannelCategoryTableHeader *header = [self.headerRegister objectForKey:@(section)];
+    if(!header)
+    {
+        header = [[SYNChannelCategoryTableHeader alloc] init];
+        [self.headerRegister setObject:header forKey:@(section)];
+    }
     header.titleLabel.text = [dictionary objectForKey:kCategoryNameKey];
     if([dictionary valueForKey:kSubCategoriesKey])
     {
         header.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+        header.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
         header.titleLabel.textColor = [UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f];
         header.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
     }
     else
     {
         header.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+        header.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevron"];
         header.titleLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
         header.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
     }
@@ -228,10 +241,12 @@
     if(subCategories)
     {
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+        headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
     }
     else
     {
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+        headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevron"];
     }
 
 }
@@ -296,16 +311,14 @@
     }
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
     
-    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:section];
-    [UIView transitionWithView:headerView.titleLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(section)];
+    [UIView transitionWithView:headerView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         headerView.titleLabel.textColor = [UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f];
         headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
-    } completion:nil];
-    
-    [UIView transitionWithView:headerView.backgroundImage duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
+        headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
     } completion:nil];
-    
+        
     //Callback to update content
     if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategoryWithId:title:)])
     {
@@ -326,13 +339,12 @@
         [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:section]];
     }
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:section];
-    [UIView transitionWithView:headerView.titleLabel duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(section)];
+    [UIView transitionWithView:headerView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
         headerView.titleLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
         headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
-    } completion:nil];
-    [UIView transitionWithView:headerView.backgroundImage duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-        headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+        headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevron"];
+        headerView.backgroundImage.image=[UIImage imageNamed:@"CategorySlide"];
     } completion:nil];
     
 }

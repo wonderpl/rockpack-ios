@@ -11,14 +11,12 @@
 
 @implementation SYNChannelCategoryTableHeader
 
--(id)initWithReuseIdentifier:(NSString *)reuseIdentifier
+-(id)init
 {
-    self = [super initWithReuseIdentifier:reuseIdentifier];
+    self = [super init];
     if(self)
     {
         UIView* subView = [[[NSBundle mainBundle] loadNibNamed:@"SYNChannelCategoryTableHeader" owner:self options:nil] objectAtIndex:0];
-        [self.backgroundImage removeFromSuperview];
-        self.backgroundView = self.backgroundImage;
         self.titleLabel.font = [UIFont rockpackFontOfSize:self.titleLabel.font.pointSize];
         [self addSubview:subView];
     }
