@@ -394,31 +394,30 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(IBAction)addToChannelPressed:(id)sender
 {
     
-    [[SYNFacebookManager sharedFBManager] postMessageToWall:@"This is my second post"
-                                                  onSuccess:^{
-                                                      
-                                                      
-        
-                                                } onFailure:^(NSError* error) {
-                                                    
-                                                    
-                                                    NSDictionary* errorRoot = [error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"];
-                                                    NSDictionary* errorBody = [errorRoot objectForKey:@"body"];
-                                                    NSDictionary* errorError = [errorBody objectForKey:@"error"];
-                                                    NSNumber* errorCode = [errorError objectForKey:@"code"];
-                                                    
-                                                    switch ([errorCode integerValue]) {
-                                                        case 2500: // An active access token must be used
-                                                            DebugLog(@"Facebook Posting Needs an Active Session");
-                                                            break;
-                                                            
-                                                        default:
-                                                            break;
-                                                    }
-        
-                                                }];
+//    [[SYNFacebookManager sharedFBManager] postMessageToWall:@"This is my second post"
+//                                                  onSuccess:^{
+//                                                      
+//                                                      
+//        
+//                                                } onFailure:^(NSError* error) {
+//                                                    
+//                                                    
+//                                                    NSDictionary* errorRoot = [error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"];
+//                                                    NSDictionary* errorBody = [errorRoot objectForKey:@"body"];
+//                                                    NSDictionary* errorError = [errorBody objectForKey:@"error"];
+//                                                    NSNumber* errorCode = [errorError objectForKey:@"code"];
+//                                                    
+//                                                    switch ([errorCode integerValue]) {
+//                                                        case 2500: // An active access token must be used
+//                                                            DebugLog(@"Facebook Posting Needs an Active Session");
+//                                                            break;
+//                                                            
+//                                                        default:
+//                                                            break;
+//                                                    }
+//        
+//                                                }];
     
-    return;
     
     
     [self.view addSubview:self.existingChannelsController.view];
@@ -454,9 +453,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
+    // ** channel.managedObjectContext == appDelegate.chanelsContext ** //
+    
+    
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                            usingMode: kChannelDetailsModeEdit] ;
+                                                  usingMode: kChannelDetailsModeEdit] ;
+    
     SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
     [showingController animatedPushViewController: channelCreationVC];
 }
@@ -558,8 +561,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // Remember the view controller that we came from
     self.originViewController = originViewController;
     
-    
-    
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
@@ -572,35 +573,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-         self.videoViewerViewController.view.alpha = 1.0f;
-     }
-     completion: ^(BOOL finished)
-     {
-        self.overlayView.userInteractionEnabled = YES;
-         
-         
-     }];
+                         self.videoViewerViewController.view.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         self.overlayView.userInteractionEnabled = YES;
+                     }];
 }
 
 - (void) removeVideoOverlayController
-{
-    
-    
+{  
     UIView* child = self.overlayView.subviews[0];
-    
     
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          child.alpha = 0.0f;
-                     } completion: ^(BOOL finished) {
+                     }
+                     completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = NO;
                          self.videoViewerViewController = nil;
                          [child removeFromSuperview];
-                         
                      }];
-
 }
 
 

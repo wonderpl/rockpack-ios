@@ -491,6 +491,7 @@
     else
     {
         DebugLog (@"Selecting video cell does nothing");
+        [self displayVideoViewerWithSelectedIndexPath: indexPath];
     }
 }
 
@@ -507,14 +508,14 @@
     
     
     fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+                                      inManagedObjectContext: self.channel.managedObjectContext];
     
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
+                                                                        managedObjectContext: self.channel.managedObjectContext
                                                                           sectionNameKeyPath: nil
                                                                                    cacheName: nil];
     fetchedResultsController.delegate = self;
@@ -563,9 +564,10 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName: @"ChannelCover"
+                                                         inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    fetchRequest.entity = [NSEntityDescription entityForName: @"ChannelCover"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    fetchRequest.entity = entityDescription;
     
     
     fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat: @"viewId == \"%@\"", kUserCoverArtViewId]];
