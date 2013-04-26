@@ -558,8 +558,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // Remember the view controller that we came from
     self.originViewController = originViewController;
     
-    
-    
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
@@ -572,35 +570,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-         self.videoViewerViewController.view.alpha = 1.0f;
-     }
-     completion: ^(BOOL finished)
-     {
-        self.overlayView.userInteractionEnabled = YES;
-         
-         
-     }];
+                         self.videoViewerViewController.view.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         self.overlayView.userInteractionEnabled = YES;
+                     }];
 }
 
 - (void) removeVideoOverlayController
-{
-    
-    
+{  
     UIView* child = self.overlayView.subviews[0];
-    
     
     [UIView animateWithDuration: 0.25f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          child.alpha = 0.0f;
-                     } completion: ^(BOOL finished) {
+                     }
+                     completion: ^(BOOL finished) {
                          self.overlayView.userInteractionEnabled = NO;
                          self.videoViewerViewController = nil;
                          [child removeFromSuperview];
-                         
                      }];
-
 }
 
 

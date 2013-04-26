@@ -491,6 +491,7 @@
     else
     {
         DebugLog (@"Selecting video cell does nothing");
+        [self displayVideoViewerWithSelectedIndexPath: indexPath];
     }
 }
 
