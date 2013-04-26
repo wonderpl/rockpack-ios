@@ -453,9 +453,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
+    // ** channel.managedObjectContext == appDelegate.chanelsContext ** //
+    
+    
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                            usingMode: kChannelDetailsModeEdit] ;
+                                                  usingMode: kChannelDetailsModeEdit] ;
+    
     SYNAbstractViewController* showingController = self.containerViewController.showingViewController;
     [showingController animatedPushViewController: channelCreationVC];
 }
