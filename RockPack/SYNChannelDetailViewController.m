@@ -778,7 +778,13 @@
 {
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    VideoInstance* instanceToDelete = (VideoInstance*)[self.videoInstances objectAtIndex:indexPath.row];
     [self.videoInstances removeObjectAtIndex: indexPath.row];
+    
+    NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.channel.videoInstances];
+    [channelsSet removeObject:instanceToDelete];
+    
+    self.channel.videoInstances = channelsSet;
     
     [self reloadCollectionViews];
 }
