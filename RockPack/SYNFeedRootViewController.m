@@ -57,11 +57,11 @@
     }
     else
     {
-        insets = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
+        insets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
     }
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout =
     [SYNIntegralCollectionViewFlowLayout
-        layoutWithItemSize:CGSizeMake(507.0f , 182.0f)
+        layoutWithItemSize:CGSizeMake(497.0f , 182.0f)
         minimumInterItemSpacing:0.0f
         minimumLineSpacing:10.0f
         scrollDirection:UICollectionViewScrollDirectionVertical
@@ -263,6 +263,7 @@
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
     videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
     videoThumbnailCell.channelImageView.hidden =[[SYNDeviceManager sharedInstance] isPortrait] && [[SYNDeviceManager sharedInstance] isIPad];
+    videoThumbnailCell.channelShadowView.hidden =[[SYNDeviceManager sharedInstance] isPortrait] && [[SYNDeviceManager sharedInstance] isIPad];
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
