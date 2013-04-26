@@ -49,23 +49,42 @@
 
 - (void) loadView
 {
-    SYNIntegralCollectionViewFlowLayout *standardFlowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    standardFlowLayout.itemSize = CGSizeMake(507.0f , 182.0f);
-    standardFlowLayout.minimumInteritemSpacing = 0.0f;
-    standardFlowLayout.minimumLineSpacing = 10.0f;
-    standardFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    standardFlowLayout.sectionInset = UIEdgeInsetsMake(0, 10.0f, 0, 10.0f);
+    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    UIEdgeInsets insets;
+    if(isIPhone)
+    {
+        insets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+    }
+    else
+    {
+        insets = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
+    }
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout =
+    [SYNIntegralCollectionViewFlowLayout
+        layoutWithItemSize:CGSizeMake(507.0f , 182.0f)
+        minimumInterItemSpacing:0.0f
+        minimumLineSpacing:10.0f
+        scrollDirection:UICollectionViewScrollDirectionVertical
+        sectionInset:insets];
     
-    CGRect videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
-    
-    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
-                                                           collectionViewLayout: standardFlowLayout];
+    CGRect videoCollectionViewFrame, selfFrame;
+    if(isIPhone)
+    {
+        CGSize screenSize= CGSizeMake([[SYNDeviceManager sharedInstance]currentScreenWidth],[[SYNDeviceManager sharedInstance]currentScreenHeight]);
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
+        selfFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
+    }
+    else
+    {
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        selfFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+    }
+    self.videoThumbnailCollectionView = [[UICollectionView alloc] initWithFrame:videoCollectionViewFrame collectionViewLayout:standardFlowLayout];
     self.videoThumbnailCollectionView.delegate = self;
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(12, 0, 0, 0);
-    
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar)];
+
+    self.view = [[UIView alloc] initWithFrame:selfFrame];
     
     [self.view addSubview:self.videoThumbnailCollectionView];
     self.view.backgroundColor = [UIColor clearColor];
@@ -210,7 +229,11 @@
                    layout: (UICollectionViewLayout*) collectionViewLayout
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if([[SYNDeviceManager sharedInstance] isLandscape])
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        return CGSizeMake(310,251);
+    }
+    else if([[SYNDeviceManager sharedInstance] isLandscape])
     {
         return CGSizeMake(497, 170);
     }
@@ -233,7 +256,7 @@
     
     videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
     videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
-    videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait];
+    videoThumbnailCell.channelImageView.hidden =[[SYNDeviceManager sharedInstance] isPortrait] && [[SYNDeviceManager sharedInstance] isIPad];
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
@@ -253,7 +276,11 @@
 {
     if (collectionView == self.videoThumbnailCollectionView)
     {
-        return CGSizeMake(1024, 65);
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            return CGSizeMake(1024, 65);   
+        }
+        return CGSizeMake(320, 34);
     }
     else
     {
