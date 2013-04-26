@@ -10,13 +10,21 @@
 
 @implementation SYNNetworkOperationJsonObject
 
+@synthesize ignoreCachedResponse;
+
 -(void)addJSONCompletionHandler:(JSONResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock
 {
+    BOOL ignore = self.ignoreCachedResponse;
+    
     [self addCompletionHandler:^(MKNetworkOperation *completedOperation)
-     {
+    {
+         
+        if(ignore && completedOperation.isCachedResponse)
+            return;
+         
          [completedOperation responseJSONWithOptions: NSJSONReadingAllowFragments
-                                   completionHandler: ^(id jsonObject)
-        {
+                                   completionHandler: ^(id jsonObject) {
+                                       
             // We need to check to see if the response is signalled as blank
              if(!jsonObject && (completedOperation.HTTPStatusCode != 204))
              {
@@ -69,20 +77,6 @@
          }
       }];
 }
-
-//-(void) setCustomPostDataEncodingHandler: (MKNKEncodingBlock) postDataEncodingHandler
-//                                 forType:( NSString*) contentType
-//{
-//    
-//    NSString *charset = (__bridge NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(self.stringEncoding));
-////    self.postDataEncoding = MKNKPostDataEncodingTypeCustom;
-//    self.postDataEncodingHandler = postDataEncodingHandler;
-//    [self.request setValue:
-//     [NSString stringWithFormat:@"%@; charset=%@", contentType, charset]
-//        forHTTPHeaderField:@"Content-Type"];
-//}
-
-
 
 
 

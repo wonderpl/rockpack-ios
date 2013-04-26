@@ -23,6 +23,8 @@
 
 @implementation SYNNetworkEngine
 
+@synthesize shouldFirstCheckCache;
+
 - (NSString *) hostName
 {
     return hostName;
@@ -168,6 +170,7 @@
 
 - (void) updateChannelsScreenForCategory:(NSString*)categoryId
                                 forRange:(NSRange)range
+                           ignoringCache:(BOOL)ingore
                             onCompletion:(MKNKJSONCompleteBlock)completeBlock
                                  onError:(MKNKJSONErrorBlock)errorBlock {
     
@@ -186,6 +189,8 @@
     
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject*)[self operationWithPath:kAPIPopularChannels params: parameters];
+    
+    networkOperation.ignoreCachedResponse = ingore;
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
