@@ -487,7 +487,7 @@
         videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
                                                         kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         
-        VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+        VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         videoThumbnailCell.viewControllerDelegate = self;
@@ -618,7 +618,11 @@
     // Do this with block enumeration for speed
     [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
         [(VideoInstance *)obj setPositionValue : index];
-    } ];
+    }];
+    
+    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+        [(VideoInstance *)obj setPositionValue : index];
+    }];
 }
 
 
@@ -634,6 +638,11 @@
 //    
 //    [self.videoInstances insertObject: fromItem
 //                              atIndex: toIndexPath.item];
+    
+    NSMutableOrderedSet* mutableInstance = [[NSMutableOrderedSet alloc] initWithOrderedSet:self.channel.videoInstances];
+    [mutableInstance exchangeObjectAtIndex: fromIndexPath.item
+                         withObjectAtIndex: toIndexPath.item];
+    self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet:mutableInstance];
     
     [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
                              withObjectAtIndex: toIndexPath.item];
@@ -788,7 +797,7 @@
     
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+    VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
@@ -802,13 +811,13 @@
 {
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance* instanceToDelete = (VideoInstance*)[self.videoInstances objectAtIndex:indexPath.row];
+    VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex:indexPath.row];
     [self.videoInstances removeObjectAtIndex: indexPath.row];
     
     NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.channel.videoInstances];
     [channelsSet removeObject:instanceToDelete];
     
-    self.channel.videoInstances = channelsSet;
+    [self.channel setVideoInstances:channelsSet];
     
     [self reloadCollectionViews];
 }
@@ -960,8 +969,8 @@
 -(IBAction)createChannelPressed:(id)sender
 {
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                     title: @"Title 2"
-                                               description: @"New Channel"
+                                                     title: self.channel.title
+                                               description: (self.channel.channelDescription ? self.channel.channelDescription : @"")
                                                   category: @"222"
                                                      cover: @""
                                                   isPublic: YES
