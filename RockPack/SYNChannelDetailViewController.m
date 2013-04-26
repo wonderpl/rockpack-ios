@@ -19,6 +19,7 @@
 #import "VideoInstance.h"
 #import "SYNCoverThumbnailCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNDeviceManager.h"
 
 @interface SYNChannelDetailViewController ()
 
@@ -45,6 +46,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (strong, nonatomic) NSMutableArray *videoInstances;
+@property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 @end
 
@@ -74,19 +76,23 @@
 {
     [super viewDidLoad];
     
+    BOOL isIPhone= [[SYNDeviceManager sharedInstance] isIPhone];
+    
     // Google Analytics support
     self.trackedViewName = @"Channels - Detail";
     
     // Originally the opacity was required to be 0.25f, but this appears less visible on the actual screen
     // Set custom fonts and shadows for labels
-    self.channelOwnerLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
+    self.channelOwnerLabel.font = [UIFont boldRockpackFontOfSize: self.channelOwnerLabel.font.pointSize];
     [self addShadowToLayer: self.channelOwnerLabel.layer];
     
-    self.channelDetailsLabel.font = [UIFont rockpackFontOfSize: 15.0f];
+    self.channelDetailsLabel.font = [UIFont rockpackFontOfSize: self.channelDetailsLabel.font.pointSize];
     [self addShadowToLayer: self.channelDetailsLabel.layer];
     
+    self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
+    
     // Add Rockpack font and shadow to UITextView
-    self.channelTitleTextView.font = [UIFont rockpackFontOfSize: 55.0f];
+    self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
     [self addShadowToLayer: self.channelTitleTextView.layer];
     
     // Needed for shadows to work
@@ -97,7 +103,7 @@
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(256.0f , 179.0f);
+    layout.itemSize = isIPhone?CGSizeMake(158.0f , 86.0f):CGSizeMake(256.0f , 179.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = 0.0f;
     
@@ -633,6 +639,8 @@
 
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
+    self.addToChannelButton.alpha = (visible) ? 1.0f : 0.0f;
+    self.createChannelButton.alpha = (visible) ? 0.0f : 1.0f;
 }
 
 

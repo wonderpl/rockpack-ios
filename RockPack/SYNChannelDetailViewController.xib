@@ -480,33 +480,6 @@
 										<float key="IBUIAlpha">0.0</float>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 									</object>
-									<object class="IBUICollectionView" id="1042878543">
-										<reference key="NSNextResponder" ref="574818441"/>
-										<int key="NSvFlags">276</int>
-										<array class="NSMutableArray" key="NSSubviews"/>
-										<string key="NSFrameSize">{1024, 748}</string>
-										<reference key="NSSuperview" ref="574818441"/>
-										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="605119646"/>
-										<string key="NSReuseIdentifierKey">_NS:9</string>
-										<reference key="IBUIBackgroundColor" ref="905238541"/>
-										<bool key="IBUIClipsSubviews">YES</bool>
-										<bool key="IBUIMultipleTouchEnabled">YES</bool>
-										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-										<double key="IBUIContentInset.top">540</double>
-										<double key="IBUIContentInset.bottom">0.0</double>
-										<double key="IBUIContentInset.left">0.0</double>
-										<double key="IBUIContentInset.right">0.0</double>
-										<bool key="IBUIAlwaysBounceVertical">YES</bool>
-										<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
-										<float key="IBUIMinimumZoomScale">0.0</float>
-										<float key="IBUIMaximumZoomScale">0.0</float>
-										<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="220942766">
-											<reference key="IBUICollectionView" ref="1042878543"/>
-											<string key="IBUIItemSize">{256, 179}</string>
-										</object>
-										<reference key="IBUICells" ref="0"/>
-									</object>
 								</array>
 								<string key="NSFrameSize">{1024, 748}</string>
 								<reference key="NSSuperview" ref="793593682"/>
@@ -522,7 +495,7 @@
 								<string key="NSFrame">{{55, 205}, {540, 146}}</string>
 								<reference key="NSSuperview" ref="793593682"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1064955156"/>
+								<reference key="NSNextKeyView" ref="1063460983"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="905238541"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -557,13 +530,40 @@
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
-					<object class="IBUIButton" id="1064955156">
+					<object class="IBUICollectionView" id="1042878543">
+						<reference key="NSNextResponder" ref="453930770"/>
+						<int key="NSvFlags">276</int>
+						<array class="NSMutableArray" key="NSSubviews"/>
+						<string key="NSFrameSize">{1024, 748}</string>
+						<reference key="NSSuperview" ref="453930770"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="605119646"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<reference key="IBUIBackgroundColor" ref="905238541"/>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<double key="IBUIContentInset.top">540</double>
+						<double key="IBUIContentInset.bottom">0.0</double>
+						<double key="IBUIContentInset.left">0.0</double>
+						<double key="IBUIContentInset.right">0.0</double>
+						<bool key="IBUIAlwaysBounceVertical">YES</bool>
+						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+						<float key="IBUIMinimumZoomScale">0.0</float>
+						<float key="IBUIMaximumZoomScale">0.0</float>
+						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="220942766">
+							<reference key="IBUICollectionView" ref="1042878543"/>
+							<string key="IBUIItemSize">{256, 179}</string>
+						</object>
+						<reference key="IBUICells" ref="0"/>
+					</object>
+					<object class="IBUIButton" id="1063460983">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="590078631"/>
+						<reference key="NSNextKeyView" ref="657402384"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -586,15 +586,15 @@
 						<reference key="IBUIFontDescription" ref="842263965"/>
 						<reference key="IBUIFont" ref="713840540"/>
 					</object>
-					<object class="IBUIButton" id="590078631">
+					<object class="IBUIButton" id="657402384">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
+						<float key="IBUIAlpha">0.0</float>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -755,7 +755,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">addToChannelButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="1064955156"/>
+						<reference key="destination" ref="1063460983"/>
 					</object>
 					<int key="connectionID">101</int>
 				</object>
@@ -763,7 +763,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">createChannelButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="590078631"/>
+						<reference key="destination" ref="657402384"/>
 					</object>
 					<int key="connectionID">102</int>
 				</object>
@@ -777,19 +777,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="1042878543"/>
-						<reference key="destination" ref="841351856"/>
-					</object>
-					<int key="connectionID">47</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="1042878543"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">46</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="1042878543"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">47</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -879,8 +879,9 @@
 							<reference ref="793593682"/>
 							<reference ref="164681596"/>
 							<reference ref="1013209184"/>
-							<reference ref="1064955156"/>
-							<reference ref="590078631"/>
+							<reference ref="1063460983"/>
+							<reference ref="657402384"/>
+							<reference ref="1042878543"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -986,7 +987,6 @@
 							<reference ref="999796781"/>
 							<reference ref="605119646"/>
 							<reference ref="260102133"/>
-							<reference ref="1042878543"/>
 						</array>
 						<reference key="parent" ref="793593682"/>
 						<string key="objectName">Passthrough View - Edit Controls</string>
@@ -1045,13 +1045,13 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">99</int>
-						<reference key="object" ref="1064955156"/>
+						<reference key="object" ref="1063460983"/>
 						<reference key="parent" ref="453930770"/>
 						<string key="objectName">Button - Add to channel</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100</int>
-						<reference key="object" ref="590078631"/>
+						<reference key="object" ref="657402384"/>
 						<reference key="parent" ref="453930770"/>
 						<string key="objectName">Button - Create channel</string>
 					</object>
@@ -1061,7 +1061,7 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="220942766"/>
 						</array>
-						<reference key="parent" ref="574818441"/>
+						<reference key="parent" ref="453930770"/>
 						<string key="objectName">Collection View - Video thumbnails</string>
 					</object>
 					<object class="IBObjectRecord">
@@ -1296,8 +1296,8 @@
 			<string key="ButtonCover.png">{295, 45}</string>
 			<string key="ButtonCoverHighlighted.png">{295, 45}</string>
 			<string key="ButtonCreate.png">{130, 45}</string>
-			<string key="ButtonCreateHighlighted.png">{16, 16}</string>
-			<string key="ButtonShare.png">{44, 44}</string>
+			<string key="ButtonCreateHighlighted.png">{130, 45}</string>
+			<string key="ButtonShare.png">{61, 61}</string>
 			<string key="ButtonShareHighlighted.png">{61, 61}</string>
 			<string key="ButtonSubscribe.png">{110, 45}</string>
 			<string key="ButtonSubscribeHighlighted.png">{110, 45}</string>
