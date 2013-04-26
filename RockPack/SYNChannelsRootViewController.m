@@ -668,7 +668,7 @@
         self.categoryTableViewController.view.hidden = NO;
         self.categorySelectDismissControl.hidden = NO;
         
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
             CGRect endFrame = self.categoryTableViewController.view.frame;
             endFrame.origin.x = 0;
             self.categoryTableViewController.view.frame = endFrame;
@@ -677,7 +677,7 @@
     else
     {
         self.categorySelectDismissControl.hidden = YES;
-        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
             CGRect endFrame = self.categoryTableViewController.view.frame;
             endFrame.origin.x = -endFrame.size.width;
             self.categoryTableViewController.view.frame = endFrame;
