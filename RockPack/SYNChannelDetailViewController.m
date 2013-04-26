@@ -633,6 +633,8 @@
 
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
+    self.addToChannelButton.alpha = (visible) ? 1.0f : 0.0f;
+    self.createChannelButton.alpha = (visible) ? 0.0f : 1.0f;
 }
 
 
