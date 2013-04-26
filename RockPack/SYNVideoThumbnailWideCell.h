@@ -18,6 +18,7 @@ typedef enum {
 
 @property (nonatomic, strong) IBOutlet UIImageView *videoImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelImageView;
+@property (nonatomic, strong) IBOutlet UIView *channelShadowView;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitle;
 @property (nonatomic, strong) IBOutlet UILabel *channelName;
 @property (nonatomic, strong) IBOutlet UILabel *usernameLabel;
