@@ -415,21 +415,25 @@
 												<reference key="NSNextResponder" ref="260102133"/>
 												<int key="NSvFlags">274</int>
 												<array class="NSMutableArray" key="NSSubviews"/>
-												<string key="NSFrame">{{98, 22}, {1024, 123}}</string>
+												<string key="NSFrame">{{98, 22}, {926, 121}}</string>
 												<reference key="NSSuperview" ref="260102133"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="624001696"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<reference key="IBUIBackgroundColor" ref="905238541"/>
 												<bool key="IBUIClipsSubviews">YES</bool>
+												<int key="IBUIContentMode">7</int>
 												<bool key="IBUIMultipleTouchEnabled">YES</bool>
 												<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+												<bool key="IBUIAlwaysBounceHorizontal">YES</bool>
+												<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+												<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 												<float key="IBUIMinimumZoomScale">0.0</float>
 												<float key="IBUIMaximumZoomScale">0.0</float>
 												<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="388605855">
 													<reference key="IBUICollectionView" ref="186307923"/>
 													<int key="IBUIScrollDirection">1</int>
-													<string key="IBUIItemSize">{161, 123}</string>
+													<string key="IBUIItemSize">{160, 121}</string>
 													<float key="IBUIMinimumLineSpacing">10</float>
 												</object>
 												<reference key="IBUICells" ref="0"/>
@@ -1046,40 +1050,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addButtonTapped:">id</string>
-						<string key="addCoverButtonTapped:">UIButton</string>
-						<string key="buyButtonTapped:">id</string>
-						<string key="selectCategoryButtonTapped:">UIButton</string>
-						<string key="shareChannelButtonTapped:">id</string>
-						<string key="subscribeButtonTapped:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addButtonTapped:">
-							<string key="name">addButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addCoverButtonTapped:">
-							<string key="name">addCoverButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="buyButtonTapped:">
-							<string key="name">buyButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
-							<string key="name">selectCategoryButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="shareChannelButtonTapped:">
-							<string key="name">shareChannelButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="subscribeButtonTapped:">
-							<string key="name">subscribeButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="avatarBackgroundView">UIView</string>
 						<string key="avatarImageView">UIImageView</string>

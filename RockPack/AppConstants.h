@@ -35,6 +35,8 @@
 #define kUserChanneslViewId         @"UserChannels"
 #define kExistingChannelsViewId     @"ExistingChannels"
 #define kChannelDetailsViewId       @"ChannelDetails"
+#define kCoverArtViewId             @"CoverArt"
+#define kUserCoverArtViewId         @"UserCoverArt"
 
 #define kFeedTitle                  @"Feed"
 #define kChannelsTitle              @"Channels"

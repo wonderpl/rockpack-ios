@@ -741,6 +741,34 @@
 
 // Cover art
 
+- (void) updateCoverArtForUserId: (NSString *) userId
+                    onCompletion: (MKNKVoidBlock) completionBlock
+                            onError: (MKNKErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIGetUserCoverArt stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: [self getLocalParam]];
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+     {
+         BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
+                                                                     forViewId: kUserCoverArtViewId];
+         if (!registryResultOk)
+             return;
+         
+         completionBlock();
+     }
+                                  errorHandler: ^(NSError* error) {
+                                      DebugLog(@"API request failed");
+                                  }];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 - (void) coverArtForUserId: (NSString *) userId
                      start: (unsigned int) start
                       size: (unsigned int) size

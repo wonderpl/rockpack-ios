@@ -315,8 +315,9 @@ static NSEntityDescription *channelEntity = nil;
         return;
     }
     
-    self.categoryId = [dictionary objectForKey: @"category"
-                                   withDefault: @""];
+    NSNumber* categoryNumber = [dictionary objectForKey:@"category"];
+    
+    self.categoryId = (categoryNumber && [categoryNumber isKindOfClass:[NSNumber class]]) ? [categoryNumber stringValue] : @"0" ;
     
     self.position = [dictionary objectForKey: @"position"
                                  withDefault: [NSNumber numberWithInt: 0]];
@@ -402,7 +403,7 @@ static NSEntityDescription *channelEntity = nil;
 - (NSString *) description
 {
     
-    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: id(%@), category:%@, lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, coverThumbnailSmallURL: %@, title: %@, eCommerceURL: %@", self.uniqueId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.coverThumbnailSmallURL, self.title, self.eCommerceURL];
+    NSMutableString* initialDescription = [NSMutableString stringWithFormat: @"Channel: id:'%@', viewId:'%@', category:'%@', lastUpdated: %@, subscribersCount: %@, subscribedByUser: %@, title: %@, eCommerceURL: %@", self.uniqueId, self.viewId, self.categoryId, self.lastUpdated, self.subscribersCount, self.subscribedByUser, self.title, self.eCommerceURL];
     
     for (VideoInstance* childrenVideoInstance in self.videoInstances)
     {

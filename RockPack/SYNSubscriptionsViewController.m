@@ -14,6 +14,7 @@
 
 @interface SYNSubscriptionsViewController ()
 
+
 @end
 
 @implementation SYNSubscriptionsViewController
@@ -44,7 +45,17 @@
 - (void) viewDidLoad
 {
 
-    [super viewDidLoad];
+    //[super viewDidLoad];
+    
+    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    // Register Footer
+    UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
+                                          bundle: nil];
+    
+    [self.channelThumbnailCollectionView registerNib: footerViewNib
+                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"

@@ -253,7 +253,10 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == \"%@\"", viewId]];
+    if(!currentCategoryId || [currentCategoryId isEqualToString:@"all"] || [currentCategoryId isEqualToString:@""])
+        fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == '%@'", viewId]];
+    else
+        fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == '%@' AND categoryId == '%@'", viewId, currentCategoryId]];
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position"
                                                                  ascending: YES]];

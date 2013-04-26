@@ -35,8 +35,8 @@
         <attribute name="backgroundURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="carouselURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="coverRef" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="createdByUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="ChannelOwner" representedClassName="ChannelOwner" parentEntity="AbstractCommon" syncable="YES">
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>

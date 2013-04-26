@@ -94,6 +94,29 @@
     
 }
 
+- (void) updateCoverArtOnCompletion: (MKNKVoidBlock) completionBlock
+                            onError: (MKNKErrorBlock) errorBlock
+{
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIGetCoverArt
+                                                                                                       params: [self getLocalParam]];
+    
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary)
+    {
+        BOOL registryResultOk = [self.registry registerCoverArtFromDictionary: dictionary
+                                                                    forViewId: kCoverArtViewId];
+        if (!registryResultOk)
+            return;
+        
+        completionBlock();
+    }
+                                  errorHandler: ^(NSError* error) {
+                                      DebugLog(@"API request failed");
+                                  }];
+    
+    [self enqueueOperation: networkOperation];
+}
+
 
 - (void) updateVideosScreenForCategory:(NSString*)categoryId
 {
@@ -176,10 +199,6 @@
     [self enqueueOperation: networkOperation];
     
 }
-
-
-
-
 
 
 #pragma mark - Search
