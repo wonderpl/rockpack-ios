@@ -282,11 +282,11 @@
                                                 inManagedObjectContext: importManagedObjectContext]];
     
     
-    //NSDictionary *firstItem = [itemArray objectAtIndex:0];
+    NSDictionary *firstItem = [itemArray objectAtIndex:0];
     
-    //NSString* heuristicCategoryId = [firstItem objectForKey:@"category"];
+    NSString* heuristicCategoryId = [firstItem objectForKey:@"category"];
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"viewId == %@", kChannelsViewId];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"(viewId == %@)", kChannelsViewId, heuristicCategoryId];
     
     [channelFetchRequest setPredicate: predicate];
     

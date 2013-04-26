@@ -14,9 +14,10 @@
 {
     [self addCompletionHandler:^(MKNetworkOperation *completedOperation)
      {
+         //DebugLog(@"completedOperation: %@", completedOperation);
          [completedOperation responseJSONWithOptions: NSJSONReadingAllowFragments
-                                   completionHandler: ^(id jsonObject)
-        {
+                                   completionHandler: ^(id jsonObject) {
+                                       
             // We need to check to see if the response is signalled as blank
              if(!jsonObject && (completedOperation.HTTPStatusCode != 204))
              {
