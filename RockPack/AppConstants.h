@@ -106,7 +106,8 @@
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"
-#define kChannelSubscribeRequest    @"kUserDataChanged"
+#define kChannelSubscribeRequest    @"kChannelSubscribeRequest"
+#define kChannelUpdateRequest       @"kChannelUpdateRequest"
 
 #define kRefresheComplete           @"kRefresheComplete"
 
@@ -134,8 +135,6 @@
 
 // Notifications
 
-// One the APIs imported some new data - we will need to be more specific at some stage.
-#define kDataUpdated @"kDataUpdated"
 
 // One the APIs imported some new data - we will need to be more specific at some stage.
 #define kCategoriesUpdated @"kCategoriesUpdated"

@@ -89,12 +89,12 @@
         <element name="AbstractCommon" positionX="0" positionY="0" width="128" height="73"/>
         <element name="Category" positionX="-252" positionY="111" width="128" height="60"/>
         <element name="Channel" positionX="-27" positionY="207" width="128" height="298"/>
+        <element name="ChannelCover" positionX="250" positionY="27" width="128" height="118"/>
         <element name="ChannelOwner" positionX="-353" positionY="216" width="128" height="103"/>
         <element name="Subcategory" positionX="-441" positionY="111" width="128" height="60"/>
         <element name="TabItem" positionX="-333" positionY="6" width="128" height="75"/>
         <element name="User" positionX="-362" positionY="348" width="128" height="210"/>
         <element name="Video" positionX="252" positionY="285" width="128" height="210"/>
         <element name="VideoInstance" positionX="243" positionY="108" width="128" height="135"/>
-        <element name="ChannelCover" positionX="250" positionY="27" width="128" height="118"/>
     </elements>
 </model>

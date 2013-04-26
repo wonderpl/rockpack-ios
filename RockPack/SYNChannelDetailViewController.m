@@ -45,7 +45,6 @@
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
-@property (strong, nonatomic) NSMutableArray *videoInstances;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 @end
@@ -177,9 +176,9 @@
     
     // Look out for update notifications
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadCollectionViews)
-                                                 name: kDataUpdated
-                                               object: nil];
+                                             selector: @selector(mainContextDataChanged:)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: appDelegate.mainManagedObjectContext];
     
     // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
     [self.videoThumbnailCollectionView addObserver: self
@@ -209,68 +208,20 @@
     
     // Only do this is we have a resource URL (i.e. we haven't just created the channel)
     
-    if (self.channel.resourceURL != nil && ![self.channel.resourceURL isEqualToString: @""])
+    if(self.mode == kChannelDetailsModeDisplay)
     {
-        if ([self.channel.resourceURL hasPrefix: @"https"])
-        {
-            [appDelegate.oAuthNetworkEngine updateChannel: self.channel.resourceURL
-                                        completionHandler: ^(NSDictionary *responseDictionary) {
-                                            // Save the position for back-patching in later
-                                            NSNumber *savedPosition = self.channel.position;
-                                            
-                                            [self.channel setAttributesFromDictionary: responseDictionary
-                                                                               withId: self.channel.uniqueId
-                                                            usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                                  ignoringObjectTypes: kIgnoreNothing
-                                                                            andViewId: kChannelDetailsViewId];
-                                            
-                                            // Back-patch a few things that may have been overwritten
-                                            self.channel.position = savedPosition;
-                                            self.channel.viewId = kChannelsViewId;
-                                            
-                                            [self updateVideoInstanceArray];
-                                            
-                                            [self reloadCollectionViews];
-                                        }
-                                             errorHandler: ^(NSDictionary* errorDictionary) {
-                                                 DebugLog(@"Update action failed");
-                                             }];
-
-        }
-        else
-        {
-            [appDelegate.networkEngine updateChannel: self.channel.resourceURL
-                                   completionHandler: ^(NSDictionary *responseDictionary) {
-                                       // Save the position for back-patching in later
-                                       NSNumber *savedPosition = self.channel.position;
-                                       
-                                       [self.channel setAttributesFromDictionary: responseDictionary
-                                                                          withId: self.channel.uniqueId
-                                                       usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                             ignoringObjectTypes: kIgnoreNothing
-                                                                       andViewId: kChannelDetailsViewId];
-                                       
-                                       // Back-patch a few things that may have been overwritten
-                                       self.channel.position = savedPosition;
-                                       self.channel.viewId = kChannelsViewId;
-                                       
-                                       [self updateVideoInstanceArray];
-                                       
-                                       [self reloadCollectionViews];
-                                   }
-                                        errorHandler: ^(NSDictionary* errorDictionary) {
-                                            DebugLog(@"Update action failed");
-                                        }];
-        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kChannelUpdateRequest object:self userInfo:@{kChannel:self.channel}];
     }
     
-    [self updateChannelDetails];
+    
+    [self displayChannelDetails];
 }
+
+
 
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    self.videoInstances = nil;
     
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
@@ -278,32 +229,41 @@
     [self.channel removeObserver: self
                       forKeyPath: kSubscribedByUserKey];
 
-    // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: kDataUpdated
-                                                  object: nil];
+                                                    name: NSManagedObjectContextDidSaveNotification
+                                                  object: appDelegate.mainManagedObjectContext];
     [super viewWillDisappear: animated];
 }
 
+-(void)mainContextDataChanged:(NSNotification*)notification
+{
+    if(!notification)
+        return;
+    
+    if(notification.object == appDelegate.mainManagedObjectContext)
+    {
+        
+    }
+}
 
 - (void) updateVideoInstanceArray
 {
-    self.videoInstances = [[NSMutableArray alloc] initWithCapacity: self.channel.videoInstances.count];
+    
     
     // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
     
     // First, sort the array in 'position' order
-    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
-        NSNumber *first = [(VideoInstance *)a position];
-        NSNumber *second = [(VideoInstance *)b position];
-        return [first compare: second];
-    }];
-    
-    // Now add those videoinstances to our own mutable array
-    for (VideoInstance *videoInstance in sortedArray)
-    {
-        [self.videoInstances addObject: videoInstance];
-    }
+//    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
+//        NSNumber *first = [(VideoInstance *)a position];
+//        NSNumber *second = [(VideoInstance *)b position];
+//        return [first compare: second];
+//    }];
+//    
+//    // Now add those videoinstances to our own mutable array
+//    for (VideoInstance *videoInstance in sortedArray)
+//    {
+//        [self.videoInstances addObject: videoInstance];
+//    }
 }
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
@@ -328,7 +288,7 @@
 {
     [self.videoThumbnailCollectionView reloadData];
     
-    [self updateChannelDetails];
+    [self displayChannelDetails];
 }
 
 
@@ -342,7 +302,7 @@
     layer.shadowRadius = 2.0f;
 }
 
-- (void) updateChannelDetails
+- (void) displayChannelDetails
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
@@ -405,7 +365,7 @@
         {
             case 0:
             {
-                return self.videoInstances.count;
+                return self.channel.videoInstances.count;
             }
             break;
                 
@@ -494,7 +454,7 @@
         videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
                                                         kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         
-        VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+        VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         videoThumbnailCell.viewControllerDelegate = self;
@@ -527,35 +487,7 @@
 
 #pragma mark - Fetched results controller
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    
-    
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    
-    fetchRequest.entity = [NSEntityDescription entityForName: @"VideoInstance"
-                                      inManagedObjectContext: self.channel.managedObjectContext];
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat: @"channel.uniqueId == \"%@\"", self.channel.uniqueId]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position" ascending: YES]];
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: self.channel.managedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error], @"Channels Details Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
+
 
 
 - (NSFetchedResultsController *) channelCoverFetchedResultsController
@@ -623,9 +555,13 @@
 {
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
-    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+    [self.channel.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
         [(VideoInstance *)obj setPositionValue : index];
-    } ];
+    }];
+    
+//    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
+//        [(VideoInstance *)obj setPositionValue : index];
+//    }];
 }
 
 
@@ -642,8 +578,13 @@
 //    [self.videoInstances insertObject: fromItem
 //                              atIndex: toIndexPath.item];
     
-    [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
-                             withObjectAtIndex: toIndexPath.item];
+    NSMutableOrderedSet* mutableInstance = [[NSMutableOrderedSet alloc] initWithOrderedSet:self.channel.videoInstances];
+    [mutableInstance exchangeObjectAtIndex: fromIndexPath.item
+                         withObjectAtIndex: toIndexPath.item];
+    self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet:mutableInstance];
+    
+//    [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
+//                             withObjectAtIndex: toIndexPath.item];
     
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
@@ -795,7 +736,7 @@
     
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance *videoInstance = self.videoInstances [indexPath.row];
+    VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: noteName
                                                         object: self
@@ -809,13 +750,13 @@
 {
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance* instanceToDelete = (VideoInstance*)[self.videoInstances objectAtIndex:indexPath.row];
-    [self.videoInstances removeObjectAtIndex: indexPath.row];
+    VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex:indexPath.row];
+//    [self.videoInstances removeObjectAtIndex: indexPath.row];
     
     NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.channel.videoInstances];
     [channelsSet removeObject:instanceToDelete];
     
-    self.channel.videoInstances = channelsSet;
+    [self.channel setVideoInstances:channelsSet];
     
     [self reloadCollectionViews];
 }
@@ -967,8 +908,8 @@
 -(IBAction)createChannelPressed:(id)sender
 {
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                     title: @"Title 2"
-                                               description: @"New Channel"
+                                                     title: self.channel.title
+                                               description: (self.channel.channelDescription ? self.channel.channelDescription : @"")
                                                   category: @"222"
                                                      cover: @""
                                                   isPublic: YES
