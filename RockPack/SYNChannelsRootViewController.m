@@ -140,6 +140,7 @@
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
+                                                 ignoringCache: YES
                                                   onCompletion: ^(NSDictionary* response) {
                                                       
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
@@ -159,10 +160,9 @@
                                                           return;
                                                       }
                                                       
-                                                  }
-                                                       onError: ^(NSDictionary* errorInfo) {
+                                                  } onError: ^(NSDictionary* errorInfo) {
                                                            
-                                                       }];
+                                                  }];
 }
 
 
@@ -365,7 +365,9 @@
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
+                                                 ignoringCache: YES
                                                   onCompletion: ^(NSDictionary* response) {
+                                                      
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
                                                                                                                              byAppending:YES];
                                                       if (!registryResultOk) {
@@ -373,10 +375,9 @@
                                                           return;
                                                       }
                                                       
-                                                  }
-                                                       onError: ^(NSDictionary* errorInfo) {
+                                                    } onError: ^(NSDictionary* errorInfo) {
                                                            
-                                                       }];
+                                                    }];
 }
 
 
@@ -544,6 +545,7 @@
     currentRange = NSMakeRange(0, 50);
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
+                                                 ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary: response
                                                                                                                              byAppending: NO];

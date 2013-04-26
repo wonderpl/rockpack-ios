@@ -28,4 +28,6 @@ typedef void (^MKNKBasicFailureBlock)(void);
 
 -(void)addJSONCompletionHandler:(JSONResponseBlock)responseBlock errorHandler:(MKNKErrorBlock)errorBlock;
 
+@property (nonatomic) BOOL ignoreCachedResponse;
+
 @end
