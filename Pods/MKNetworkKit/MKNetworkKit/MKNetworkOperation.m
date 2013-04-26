@@ -1393,8 +1393,24 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
       return;
     }
     
+      // Code to implement aspect fit
+      
+    float hfactor = image.size.width / imageWidth;
+    float vfactor = image.size.height / imageHeight;
+
+    float factor = fmax(hfactor, vfactor);
+
+    // Divide the size by the greater of the vertical or horizontal shrinkage factor
+    float newWidth = image.size.width / factor;
+    float newHeight = image.size.height / factor;
+
+    // Then figure out if you need to offset it to center vertically or horizontally
+    float leftOffset = (imageWidth - newWidth) / 2;
+    float topOffset = (imageHeight - newHeight) / 2;
+
+    CGRect rect = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
     
-    CGRect rect = (CGRect){CGPointZero, {imageWidth, imageHeight}};
+//    CGRect rect = (CGRect){CGPointZero, {imageWidth, imageHeight}};
     CGContextDrawImage(context, rect, imageRef);
     CGImageRef decompressedImageRef = CGBitmapContextCreateImage(context);
     CGContextRelease(context);
