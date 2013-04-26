@@ -44,51 +44,35 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @interface SYNMasterViewController ()
 
-@property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 
-@property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
+@property (nonatomic) BOOL buttonLocked;
+@property (nonatomic) BOOL isDragging;
+@property (nonatomic) BOOL showingBackButton;
+@property (nonatomic) CGFloat sideNavigationOriginCenterX;
+@property (nonatomic) CGRect addToChannelFrame;
 @property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
-@property (nonatomic, strong) IBOutlet UIView* overlayView;
-@property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
+@property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
+@property (nonatomic, strong) IBOutlet UIButton* searchButton;
+@property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
+@property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
-@property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
-@property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
-@property (strong, nonatomic) Reachability *reachability;
-
-@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
-
-@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
-@property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
-
-@property (nonatomic, strong) UINavigationController* overlayNavigationController;
-
-@property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
-@property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
-@property (nonatomic) CGFloat sideNavigationOriginCenterX;
-@property (nonatomic) BOOL buttonLocked;
-
-@property (nonatomic) BOOL isDragging;
-
-
-@property (nonatomic, strong) SYNRefreshButton* refreshButton;
-
-@property (nonatomic) BOOL showingBackButton;
-
-
+@property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
+@property (nonatomic, strong) IBOutlet UIView* overlayView;
+@property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
-
-
-
-@property (nonatomic) CGRect addToChannelFrame;
-
+@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
+@property (nonatomic, strong) SYNRefreshButton* refreshButton;
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
-
-
-@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
-
+@property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
+@property (nonatomic, strong) SYNVideoViewerViewController *videoViewerViewController;
+@property (nonatomic, strong) UINavigationController* overlayNavigationController;
+@property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
+@property (nonatomic, strong) VideoOverlayDismissBlock videoOverlayDismissBlock;
+@property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
+@property (strong, nonatomic) Reachability *reachability;
 
 
 
@@ -551,12 +535,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
 #pragma mark - Video Overlay View
 
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
             withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
-                            andIndexPath: (NSIndexPath *) indexPath {
+                            andIndexPath: (NSIndexPath *) indexPath
+                               onDismiss: (VideoOverlayDismissBlock) dismissBlock
+{
+    self.videoOverlayDismissBlock = dismissBlock;
     
     // Remember the view controller that we came from
     self.originViewController = originViewController;
@@ -594,6 +580,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.overlayView.userInteractionEnabled = NO;
                          self.videoViewerViewController = nil;
                          [child removeFromSuperview];
+                         
+                         self.videoOverlayDismissBlock();
                      }];
 }
 

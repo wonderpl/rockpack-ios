@@ -34,17 +34,16 @@
     CGFloat startAnimationDelay;
 }
 
-@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
-@property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
+
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
-@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
-@property (nonatomic, strong) UIImageView *draggedView;
-
+@property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
-
+@property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) SYNTabViewController* tabViewController;
+@property (nonatomic, strong) UIImageView *draggedView;
+@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
+@property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
 - (void) highlightTab: (int) tabIndex;
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
