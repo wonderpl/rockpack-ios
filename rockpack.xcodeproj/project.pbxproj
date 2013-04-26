@@ -665,6 +665,8 @@
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF34486172ABCF2008F98FF /* ButtonCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34484172ABCF2008F98FF /* ButtonCreate.png */; };
 		BEF34487172ABCF2008F98FF /* ButtonCreate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34485172ABCF2008F98FF /* ButtonCreate@2x.png */; };
+		BEF3448A172AC16F008F98FF /* ButtonCreateHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34488172AC16F008F98FF /* ButtonCreateHighlighted.png */; };
+		BEF3448B172AC16F008F98FF /* ButtonCreateHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34489172AC16F008F98FF /* ButtonCreateHighlighted@2x.png */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
 		BEFAE89817241FD5009B2F66 /* SearchTabSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */; };
 		BEFAE89917241FD5009B2F66 /* SearchTabSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */; };
@@ -1477,6 +1479,8 @@
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF34484172ABCF2008F98FF /* ButtonCreate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCreate.png; path = Assets/Images/ButtonCreate.png; sourceTree = "<group>"; };
 		BEF34485172ABCF2008F98FF /* ButtonCreate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreate@2x.png"; path = "Assets/Images/ButtonCreate@2x.png"; sourceTree = "<group>"; };
+		BEF34488172AC16F008F98FF /* ButtonCreateHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCreateHighlighted.png; path = Assets/Images/ButtonCreateHighlighted.png; sourceTree = "<group>"; };
+		BEF34489172AC16F008F98FF /* ButtonCreateHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateHighlighted@2x.png"; path = "Assets/Images/ButtonCreateHighlighted@2x.png"; sourceTree = "<group>"; };
 		BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSoundPlayer.h; sourceTree = "<group>"; };
 		BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSoundPlayer.m; sourceTree = "<group>"; };
 		BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchTabSelected.png; path = Assets/Images/SearchTabSelected.png; sourceTree = "<group>"; };
@@ -2383,6 +2387,8 @@
 				BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */,
 				BEF34484172ABCF2008F98FF /* ButtonCreate.png */,
 				BEF34485172ABCF2008F98FF /* ButtonCreate@2x.png */,
+				BEF34488172AC16F008F98FF /* ButtonCreateHighlighted.png */,
+				BEF34489172AC16F008F98FF /* ButtonCreateHighlighted@2x.png */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -3770,6 +3776,8 @@
 				38FD441F172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib in Resources */,
 				BEF34486172ABCF2008F98FF /* ButtonCreate.png in Resources */,
 				BEF34487172ABCF2008F98FF /* ButtonCreate@2x.png in Resources */,
+				BEF3448A172AC16F008F98FF /* ButtonCreateHighlighted.png in Resources */,
+				BEF3448B172AC16F008F98FF /* ButtonCreateHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
