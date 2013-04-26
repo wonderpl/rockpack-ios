@@ -146,6 +146,19 @@
     self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.categoriesTabViewController.view.alpha = 0.0f;
     [self addChildViewController: self.categoriesTabViewController];
+    
+    
+    if(self.mode == kChannelDetailsModeDisplay)
+    {
+        self.addToChannelButton.hidden = NO;
+        self.createChannelButton.hidden = YES;
+    }
+    else
+    {
+        self.addToChannelButton.hidden = YES;
+        self.createChannelButton.hidden = NO;
+        
+    }
 }
 
 
@@ -639,8 +652,6 @@
 
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
-    self.addToChannelButton.alpha = (visible) ? 1.0f : 0.0f;
-    self.createChannelButton.alpha = (visible) ? 0.0f : 1.0f;
 }
 
 
@@ -941,6 +952,72 @@
 - (void) handleNewTabSelectionWithId: (NSString*) temId
 {
     
+}
+
+
+#pragma mark - Channel Creation (3 steps)
+
+-(IBAction)createChannelPressed:(id)sender
+{
+    [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                     title: @"Title 2"
+                                               description: @"New Channel"
+                                                  category: @"222"
+                                                     cover: @""
+                                                  isPublic: YES
+                                         completionHandler:^(NSDictionary* resourceCreated) {
+                                             
+            
+                                             NSString* channelId = [resourceCreated objectForKey:@"id"];
+                                             
+                                             [self addVideosToNewChannelForId:channelId];
+                                             
+                                             
+                                         } errorHandler:^(id error) {
+                                             
+                                             DebugLog(@"Error @ createChannelPressed:");
+                                             
+                                             
+                                         }];
+}
+
+-(void)addVideosToNewChannelForId:(NSString*)channelId
+{
+    
+    
+    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentOAuth2Credentials.userId
+                                                          channelId:channelId
+                                                   videoInstanceSet:self.channel.videoInstances
+                                                  completionHandler:^(id response) {
+                                                      
+                                                      // a 204 returned
+                                                      
+                                                      [self getNewlyCreatedChannelForId:channelId];
+            
+                                                  } errorHandler:^(id err) {
+                                                      
+                                                      DebugLog(@"Error @ addVideosToNewChannelForId:");
+        
+                                                  }];
+    
+    
+}
+
+-(void)getNewlyCreatedChannelForId:(NSString*)channelId
+{
+    [appDelegate.oAuthNetworkEngine channelCreatedForUserId:appDelegate.currentOAuth2Credentials.userId
+                                                  channelId:channelId
+                                          completionHandler:^(id res) {
+                                              
+                                              
+                                              [appDelegate.mainRegistry registerChannelFromDictionary:res];
+                                              
+                                              
+                                          } errorHandler:^(id err) {
+                                              
+                                              DebugLog(@"Error @ getNewlyCreatedChannelForId:");
+                                              
+                                          }];
 }
 
 @end

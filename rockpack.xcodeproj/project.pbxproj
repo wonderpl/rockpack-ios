@@ -2028,7 +2028,7 @@
 			isa = PBXGroup;
 			children = (
 				BEE732B41727D7FD0083E1B9 /* Object Factory */,
-				BE285DB91726826800D995AB /* Subscription Manager */,
+				BE285DB91726826800D995AB /* Channels Manager */,
 				0173E6C5171822BF00EEE76B /* Google Analytics */,
 				BE7D34CB171443330085AB81 /* Device */,
 				01AEFBCA1701AC270060467A /* Activity Manager */,
@@ -2985,13 +2985,13 @@
 			name = "Network Error View";
 			sourceTree = "<group>";
 		};
-		BE285DB91726826800D995AB /* Subscription Manager */ = {
+		BE285DB91726826800D995AB /* Channels Manager */ = {
 			isa = PBXGroup;
 			children = (
 				BE285DBA1726828F00D995AB /* SYNChannelManager.h */,
 				BE285DBB1726828F00D995AB /* SYNChannelManager.m */,
 			);
-			name = "Subscription Manager";
+			name = "Channels Manager";
 			sourceTree = "<group>";
 		};
 		BE285DBD172698C000D995AB /* Error Messages */ = {
