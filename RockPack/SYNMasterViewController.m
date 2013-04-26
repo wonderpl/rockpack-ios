@@ -13,7 +13,6 @@
 #import "SYNContainerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNSoundPlayer.h"
-#import "SYNAutocompletePopoverBackgroundView.h"
 #import "SYNContainerViewController.h"
 #import "SYNBackButtonControl.h"
 #import "SYNVideoViewerViewController.h"

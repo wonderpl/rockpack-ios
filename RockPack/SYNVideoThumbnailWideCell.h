@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VideoInstance.h"
 
 typedef enum {
     kVideoThumbnailDisplayModeChannel = 0,
@@ -28,6 +29,8 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UILabel *numberOfViewLabel;
 @property (nonatomic, strong) IBOutlet UILabel *dateAddedLabel;
 @property (nonatomic, strong) IBOutlet UILabel *durationLabel;
+
+@property (nonatomic, weak) VideoInstance* videoInstance;
 
 @property (nonatomic, weak) NSString* usernameText;
 @property (nonatomic, weak) NSString* channelNameText;

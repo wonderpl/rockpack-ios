@@ -16,4 +16,6 @@
 
 +(id)queue;
 
+-(BOOL)videoInstanceIsAddedToChannel:(VideoInstance*)videoInstance;
+
 @end

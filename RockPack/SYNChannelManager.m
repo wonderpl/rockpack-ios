@@ -6,19 +6,19 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNSubscriptionsManager.h"
+#import "SYNChannelManager.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "AppConstants.h"
 
 
-@interface SYNSubscriptionsManager()
+@interface SYNChannelManager()
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
 
-@implementation SYNSubscriptionsManager
+@implementation SYNChannelManager
 
 @synthesize appDelegate;
 

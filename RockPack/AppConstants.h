@@ -143,6 +143,7 @@
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"
 #define kChannelUpdatedKey @"eCommerceURL"
+#define kSubscribedByUserKey @"subscribedByUser"
 
 // Settings
 
@@ -248,11 +249,14 @@ typedef enum _Gender {
 
 #define kVideoQueueAdd              @"kVideoQueueAdd"
 #define kVideoQueueRemove           @"kVideoQueueRemove"
-#define kVideoQueueClear           @"kVideoQueueClear"
+#define kVideoQueueClear            @"kVideoQueueClear"
+
 
 #define kScrollerPageChanged        @"kScrollerPageChanged"
 
 #define kNavigateToPage       @"kNavigateToPage"
+
+#define kNoteCreateButtonRequested       @"kNoteCreateButtonRequested"
 
 #define kSearchTyped      @"kSearchTyped"
 #define kSearchTerm      @"kSearchTerm"

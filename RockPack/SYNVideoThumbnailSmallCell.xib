@@ -307,9 +307,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="BackgroundVideoThumbnailSmall.png">{16, 16}</string>
-			<string key="GlossVideoThumbnailSmall.png">{16, 16}</string>
-			<string key="GlossVideoThumbnailSmallPlaying.png">{16, 16}</string>
+			<string key="BackgroundVideoThumbnailSmall.png">{147, 106}</string>
+			<string key="GlossVideoThumbnailSmall.png">{147, 106}</string>
+			<string key="GlossVideoThumbnailSmallPlaying.png">{147, 106}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
