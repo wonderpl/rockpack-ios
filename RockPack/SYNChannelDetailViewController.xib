@@ -1011,22 +1011,22 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonBuy.png">{61, 61}</string>
-			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
-			<string key="ButtonCamera.png">{60, 61}</string>
-			<string key="ButtonCameraHighlighted.png">{60, 61}</string>
-			<string key="ButtonCameraSelected.png">{60, 61}</string>
-			<string key="ButtonCategory.png">{295, 45}</string>
-			<string key="ButtonCategoryHighlighted.png">{295, 45}</string>
-			<string key="ButtonCover.png">{295, 45}</string>
-			<string key="ButtonCoverHighlighted.png">{295, 45}</string>
-			<string key="ButtonShare.png">{61, 61}</string>
-			<string key="ButtonShareHighlighted.png">{61, 61}</string>
-			<string key="ButtonSubscribe.png">{110, 45}</string>
-			<string key="ButtonSubscribeHighlighted.png">{110, 45}</string>
-			<string key="ButtonSubscribeSelected.png">{110, 45}</string>
-			<string key="ChannelDetailOverlayBackground.png">{1024, 748}</string>
-			<string key="LogoRockpack.png">{148, 27}</string>
+			<string key="ButtonBuy.png">{16, 16}</string>
+			<string key="ButtonBuyHighlighted.png">{16, 16}</string>
+			<string key="ButtonCamera.png">{16, 16}</string>
+			<string key="ButtonCameraHighlighted.png">{16, 16}</string>
+			<string key="ButtonCameraSelected.png">{16, 16}</string>
+			<string key="ButtonCategory.png">{16, 16}</string>
+			<string key="ButtonCategoryHighlighted.png">{16, 16}</string>
+			<string key="ButtonCover.png">{16, 16}</string>
+			<string key="ButtonCoverHighlighted.png">{16, 16}</string>
+			<string key="ButtonShare.png">{16, 16}</string>
+			<string key="ButtonShareHighlighted.png">{16, 16}</string>
+			<string key="ButtonSubscribe.png">{16, 16}</string>
+			<string key="ButtonSubscribeHighlighted.png">{16, 16}</string>
+			<string key="ButtonSubscribeSelected.png">{16, 16}</string>
+			<string key="ChannelDetailOverlayBackground.png">{16, 16}</string>
+			<string key="LogoRockpack.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
