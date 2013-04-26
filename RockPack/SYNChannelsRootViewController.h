@@ -11,5 +11,5 @@
 @interface SYNChannelsRootViewController : SYNAbstractViewController
 
 @property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
-
+@property (nonatomic, assign) BOOL enableCategoryTable;
 @end

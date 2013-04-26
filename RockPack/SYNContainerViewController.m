@@ -73,8 +73,9 @@
 
 -(void)loadView
 {
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
+    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     SYNContainerScrollView* scrollView = [[SYNContainerScrollView alloc] initWithFrame:scrollerFrame];
+
     scrollView.autoresizingMask = UIViewAutoresizingNone;
     scrollView.backgroundColor = [UIColor clearColor];
     scrollView.delegate = self;
@@ -97,8 +98,15 @@
     // == Channels Page == //
     
     SYNChannelsRootViewController *channelsRootViewController = [[SYNChannelsRootViewController alloc] initWithViewId: kChannelsViewId];
-    channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
-    [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        channelsRootViewController.tabViewController = [[SYNCategoriesTabViewController alloc] init];
+        [channelsRootViewController addChildViewController:channelsRootViewController.tabViewController];
+    }
+    else
+    {
+        channelsRootViewController.enableCategoryTable = YES;
+    }
     
     // == You Page == //
     
@@ -115,11 +123,11 @@
     
     // == Populate Scroller == //
     
-    
     CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
     self.scrollView.frame = scrollerFrame;
     UINavigationController* feedNavController = [SYNObjectFactory wrapInNavigationController:feedRootViewController];
     feedNavController.view.frame = CGRectMake (0.0f, 0.0f, 1024.0f, 748.0f);
+
     [self addChildViewController:feedNavController];
     
     [self addChildViewController:[SYNObjectFactory wrapInNavigationController:channelsRootViewController]];
@@ -152,7 +160,14 @@
 -(void)packViewControllersForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
     CGRect newFrame;
-    if(UIDeviceOrientationIsLandscape(orientation))
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        // The full screen video player can interfere with reading the screen dimensions on viewWillAppear.
+        // Use MAX and MIN to determine which one is width and which one is height
+        CGSize screenSize = CGSizeMake([[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight]);
+        newFrame = CGRectMake(0, 0, MIN(screenSize.width, screenSize.height), MAX(screenSize.width, screenSize.height) - 20.0f);
+    }
+    else if(UIDeviceOrientationIsLandscape(orientation))
     {
         newFrame = CGRectMake(0.0f, 0.0f, 1024.0f, 748.0f);
     }
@@ -303,7 +318,9 @@
 
 -(SYNAbstractViewController*)showingViewController
 {
+
     return (SYNAbstractViewController*)((UINavigationController*)self.selectedNavigationController).visibleViewController;
+
 }
 
 

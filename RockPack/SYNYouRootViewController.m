@@ -3,7 +3,7 @@
 //  rockpack
 //
 //  Created by Nick Banks on 24/01/2013.
-//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//  Copysubscriptions (c) 2013 Nick Banks. All subscriptionss reserved.
 //
 
 #import "Channel.h"
@@ -37,14 +37,22 @@
 #endif
 
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftLandscapeLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* leftPortraitLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightLandscapeLayout;
-@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* rightPortraitLayout;
+
 @property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
 @property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
-@property (nonatomic, strong) SYNYouHeaderView* headerCheannelsView;
+@property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
+
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* channelsLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* channelsPortraitLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
+
+@property (nonatomic, assign) BOOL subscriptionsTabActive;
+@property (nonatomic, weak) UIButton* channelsTabButton;
+@property (nonatomic, weak) UIButton* subscriptionsTabButton;
+
+
 
 
 @end
@@ -71,71 +79,60 @@
 
 - (void) loadView
 {
-    //    UIImageView *headerView = [UI]
+    
+    BOOL isIPhone =  [[SYNDeviceManager sharedInstance] isIPhone];
     
     // User Profile
-    
-    self.userProfileController = [[SYNUserProfileViewController alloc] init];
+    if(!isIPhone)
+    {
+        self.userProfileController = [[SYNUserProfileViewController alloc] init];
+    }
 
     // Main Collection View
+    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0)];
     
-    SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0);
-    flowLayout.minimumLineSpacing = 10.0;
-    flowLayout.minimumInteritemSpacing = 0.0;
-    
-    self.leftLandscapeLayout = flowLayout;
-    
-    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0);
-    flowLayout.minimumLineSpacing = 10.0;
-    flowLayout.minimumInteritemSpacing = 0.0;
-    
-    self.rightLandscapeLayout = flowLayout;
-    
-    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0);
-    flowLayout.minimumLineSpacing = 10.0;
-    flowLayout.minimumInteritemSpacing = 0.0;
-    
-    self.leftPortraitLayout = flowLayout;
-    
-    flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.itemSize = CGSizeMake(184.0, kInterChannelSpacing);
-    flowLayout.sectionInset = UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0);
-    flowLayout.minimumLineSpacing = 10.0;
-    flowLayout.minimumInteritemSpacing = 0.0;
-    
-    self.rightPortraitLayout = flowLayout;
-    
+
+    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0)];
+    if(isIPhone)
+    {
+        self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+
+        self.subscriptionsPortraitLayout= [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+    }
+    else
+    {
+        self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
+        
+        self.subscriptionsPortraitLayout= [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
+    }
+                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                             
     CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
     
-    self.headerCheannelsView = [SYNYouHeaderView headerViewForWidth:correctWidth];
-    [self.headerCheannelsView setTitle:@"YOUR CHANNELS" andNumber:2];
-    [self.headerCheannelsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    self.headerChannelsView = [SYNYouHeaderView headerViewForWidth:correctWidth];
+    if(isIPhone)
+    {
+        CGRect newFrame = self.headerChannelsView.frame;
+        newFrame.origin.y = 59.0f;
+        newFrame.size.height = 44.0f;
+        self.headerChannelsView.frame = newFrame;
+        [self.headerChannelsView setFontSize:12.0f];
+        [self.headerChannelsView setTitle:NSLocalizedString(@"CHANNELS",nil) andNumber:2];
+        self.headerChannelsView.userInteractionEnabled = NO;
+    }
+    else
+    {
+        [self.headerChannelsView setTitle:@"YOUR CHANNELS" andNumber:2];
+        [self.headerChannelsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+    }
     
     CGRect collectionViewFrame = CGRectMake(0.0,
-                                            self.headerCheannelsView.frame.origin.y + self.headerCheannelsView.currentHeight,
+                                            self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight,
                                             correctWidth,
                                             [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0 - kYouCollectionViewOffsetY);
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
-                                                             collectionViewLayout: flowLayout];
+                                                             collectionViewLayout: self.channelsLandscapeLayout];
     
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
@@ -146,7 +143,7 @@
     
     self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
     CGRect subColViewFrame = self.subscriptionsViewController.view.frame;
-    subColViewFrame.origin.x = collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
+    subColViewFrame.origin.x = isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
@@ -154,8 +151,21 @@
     [self.subscriptionsViewController setViewFrame:subColViewFrame];
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
-    [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber: 2];
-    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+    if(isIPhone)
+    {
+        CGRect newFrame = self.headerSubscriptionsView.frame;
+        newFrame.origin.y = 59.0f;
+        newFrame.size.height = 44.0f;
+        self.headerSubscriptionsView.frame = newFrame;
+        [self.headerSubscriptionsView setFontSize:12.0f];
+        [self.headerSubscriptionsView setTitle:NSLocalizedString(@"SUBSCRIPTIONS",nil) andNumber:2];
+        self.headerSubscriptionsView.userInteractionEnabled = NO;
+    }
+    else
+    {
+        [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber: 2];
+        [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+    }
     CGRect headerSubFrame = self.headerSubscriptionsView.frame;
     headerSubFrame.origin.x = subColViewFrame.origin.x;
     self.headerSubscriptionsView.frame = headerSubFrame;
@@ -167,7 +177,7 @@
     
     self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
     
-    [self.view addSubview:self.headerCheannelsView];
+    [self.view addSubview:self.headerChannelsView];
     
     [self.view addSubview:self.headerSubscriptionsView];
     
@@ -182,6 +192,32 @@
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
     [self.view addSubview:self.userProfileController.view];
+    
+    if(isIPhone)
+    {
+        UIImage* tabButtonImage = [UIImage imageNamed:@"ButtonProfileChannels"];
+        UIButton* tabButton = [[UIButton alloc]initWithFrame:CGRectMake(0.0f,self.headerChannelsView.frame.origin.y,tabButtonImage.size.width, tabButtonImage.size.height)];
+        [tabButton setImage:tabButtonImage forState:UIControlStateNormal];
+        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsHighlighted"] forState:UIControlStateHighlighted];
+        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsSelected"] forState:UIControlStateSelected];
+        [self.view insertSubview:tabButton belowSubview:self.headerChannelsView];
+        [tabButton addTarget:self action:@selector(channelsTabTapped:) forControlEvents:UIControlEventTouchUpInside];
+        tabButton.showsTouchWhenHighlighted = NO;
+        self.channelsTabButton = tabButton;
+        
+        tabButton = [[UIButton alloc]initWithFrame:CGRectMake(160.0f,self.headerSubscriptionsView.frame.origin.y,tabButtonImage.size.width, tabButtonImage.size.height)];
+        [tabButton setImage:tabButtonImage forState:UIControlStateNormal];
+        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsHighlighted"] forState:UIControlStateHighlighted];
+        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsSelected"] forState:UIControlStateSelected];
+        [self.view insertSubview:tabButton belowSubview:self.headerChannelsView];
+        tabButton.showsTouchWhenHighlighted = NO;
+        [tabButton addTarget:self action:@selector(subscriptionsTabTapped:) forControlEvents:UIControlEventTouchUpInside];
+        self.subscriptionsTabButton = tabButton;
+        
+        [self updateTabStates];
+
+    }
+    
 }
 
 
@@ -206,9 +242,11 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    
-    [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-    [self.subscriptionsViewController.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+        [self.subscriptionsViewController.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    }
 }
 
 
@@ -242,9 +280,11 @@
 {
     [super viewWillDisappear:animated];
     
-    
-    //[self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
-    //[self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
+        [self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
+    }
 }
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
@@ -258,50 +298,70 @@
 {
     CGRect newFrame;
     CGFloat viewHeight;
-    SYNIntegralCollectionViewFlowLayout* leftLayout;
-    SYNIntegralCollectionViewFlowLayout* rightLayout;
-    
+    SYNIntegralCollectionViewFlowLayout* channelsLayout;
+    SYNIntegralCollectionViewFlowLayout* subscriptionsLayout;
+    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     //Setup the headers
-    if (UIDeviceOrientationIsPortrait(orientation))
-    {
-        
-        newFrame = self.headerCheannelsView.frame;
-        newFrame.size.width = 384.0f;
-        self.headerCheannelsView.frame = newFrame;
+    if(isIPhone)
+    {        
+        newFrame = self.headerChannelsView.frame;
+        newFrame.size.width = 160.0f;
+        self.headerChannelsView.frame = newFrame;
         
         newFrame = self.headerSubscriptionsView.frame;
-        newFrame.origin.x = 384.0f ;
-        newFrame.size.width = 384.0f;
+        newFrame.origin.x = 160.0f;
+        newFrame.size.width = 160.0f;
         self.headerSubscriptionsView.frame = newFrame;
         
-        viewHeight = 1004;
-        
-        leftLayout = self.leftPortraitLayout;
-        rightLayout = self.rightPortraitLayout;
+        viewHeight = MAX([[SYNDeviceManager sharedInstance] currentScreenHeight], [[SYNDeviceManager sharedInstance] currentScreenWidth]) - 20.0f;
+        channelsLayout = self.channelsPortraitLayout;
+        subscriptionsLayout = self.subscriptionsPortraitLayout;
         
     }
     else
     {
-        newFrame = self.headerCheannelsView.frame;
-        newFrame.size.width = 612.0f;
-        self.headerCheannelsView.frame = newFrame;
+        if (UIDeviceOrientationIsPortrait(orientation))
+        {
+            
+            newFrame = self.headerChannelsView.frame;
+            newFrame.size.width = 384.0f;
+            self.headerChannelsView.frame = newFrame;
+            
+            newFrame = self.headerSubscriptionsView.frame;
+            newFrame.origin.x = 384.0f ;
+            newFrame.size.width = 384.0f;
+            self.headerSubscriptionsView.frame = newFrame;
+            
+            viewHeight = 1004;
+            
+            channelsLayout = self.channelsPortraitLayout;
+            subscriptionsLayout = self.subscriptionsPortraitLayout;
+            
+        }
+        else
+        {
+            newFrame = self.headerChannelsView.frame;
+            newFrame.size.width = 612.0f;
+            self.headerChannelsView.frame = newFrame;
+            
+            newFrame = self.headerSubscriptionsView.frame;
+            newFrame.origin.x = 612.0f ;
+            newFrame.size.width = 412.0f;
+            self.headerSubscriptionsView.frame = newFrame;
+            
+            viewHeight = 748;
+            
+            channelsLayout = self.channelsLandscapeLayout;
+            subscriptionsLayout = self.subscriptionsLandscapeLayout;
+        }
+    
+        //Apply correct backgorund images
+        [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
         
-        newFrame = self.headerSubscriptionsView.frame;
-        newFrame.origin.x = 612.0f ;
-        newFrame.size.width = 412.0f;
-        self.headerSubscriptionsView.frame = newFrame;
+        [self.headerChannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
         
-        viewHeight = 748;
-        
-        leftLayout = self.leftLandscapeLayout;
-        rightLayout = self.rightLandscapeLayout;
     }
-    
-    //Apply correct backgorund images
-    [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
-    
-    [self.headerCheannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
-    
+
     NSIndexPath* indexPath = nil;
     if(self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
     {
@@ -313,11 +373,11 @@
     
     // Setup Channel feed collection view
     newFrame = self.channelThumbnailCollectionView.frame;
-    newFrame.size.width = self.headerCheannelsView.frame.size.width;
+    newFrame.size.width = isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
     self.channelThumbnailCollectionView.frame = newFrame;
-    self.channelThumbnailCollectionView.collectionViewLayout = leftLayout;
-    [leftLayout invalidateLayout];
+    self.channelThumbnailCollectionView.collectionViewLayout = channelsLayout;
+    [channelsLayout invalidateLayout];
     
     if (indexPath)
     {
@@ -341,12 +401,12 @@
     
     //Setup subscription feed collection view
     newFrame = self.subscriptionsViewController.view.frame;
-    newFrame.size.width = self.headerSubscriptionsView.frame.size.width;
+    newFrame.size.width = isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
-    newFrame.origin.x = self.headerSubscriptionsView.frame.origin.x;
+    newFrame.origin.x = isIPhone ? 0.0f : self.headerSubscriptionsView.frame.origin.x;
     self.subscriptionsViewController.view.frame = newFrame;
-    self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = rightLayout;
-    [rightLayout invalidateLayout];
+    self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = subscriptionsLayout;
+    [subscriptionsLayout invalidateLayout];
     
     if (indexPath)
     {
@@ -402,8 +462,8 @@
     [super reloadCollectionViews];
     
     NSInteger totalChannels = self.fetchedResultsController.fetchedObjects.count;
-    
-    [self.headerCheannelsView setTitle: @"YOUR CHANNELS"
+    NSString* title = [[SYNDeviceManager sharedInstance] isIPhone] ? NSLocalizedString(@"CHANNELS",nil): NSLocalizedString(@"YOUR CHANNELS",nil);
+    [self.headerChannelsView setTitle: title
                              andNumber: totalChannels];
     
     [self.subscriptionsViewController reloadCollectionViews];
@@ -472,18 +532,21 @@
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    CGPoint offset;
-    if ([scrollView isEqual: self.channelThumbnailCollectionView])
+    if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        offset = self.channelThumbnailCollectionView.contentOffset;
-        offset.y = self.channelThumbnailCollectionView.contentOffset.y;
-        [self.subscriptionsViewController.collectionView setContentOffset: offset];
-    }
-    else if ([scrollView isEqual:self.subscriptionsViewController.collectionView])
-    {
-        offset = self.subscriptionsViewController.collectionView.contentOffset;
-        offset.y = self.subscriptionsViewController.collectionView.contentOffset.y;
-        [self.channelThumbnailCollectionView setContentOffset: offset];
+        CGPoint offset;
+        if ([scrollView isEqual: self.channelThumbnailCollectionView])
+        {
+            offset = self.channelThumbnailCollectionView.contentOffset;
+            offset.y = self.channelThumbnailCollectionView.contentOffset.y;
+            [self.subscriptionsViewController.collectionView setContentOffset: offset];
+        }
+        else if ([scrollView isEqual:self.subscriptionsViewController.collectionView])
+        {
+            offset = self.subscriptionsViewController.collectionView.contentOffset;
+            offset.y = self.subscriptionsViewController.collectionView.contentOffset.y;
+            [self.channelThumbnailCollectionView setContentOffset: offset];
+        }
     }
 }
 
@@ -632,6 +695,39 @@
         //
         //        self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(s2Size.width, s1Size.height);
     }
+}
+
+#pragma mark - tab button actions
+-(IBAction)channelsTabTapped:(id)sender
+{
+    self.subscriptionsTabActive = NO;
+    [self updateTabStates];
+}
+
+-(IBAction)subscriptionsTabTapped:(id)sender
+{
+    self.subscriptionsTabActive = YES;
+    [self updateTabStates];
+}
+
+-(void)updateTabStates
+{
+    self.channelsTabButton.selected = !self.subscriptionsTabActive;
+    self.subscriptionsTabButton.selected = self.subscriptionsTabActive;
+    self.channelThumbnailCollectionView.hidden = self.subscriptionsTabActive;
+    self.subscriptionsViewController.view.hidden = !self.subscriptionsTabActive;
+    
+    if(self.subscriptionsTabActive)
+    {
+        [self.headerChannelsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+        [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+    }
+    else
+    {
+        [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+        [self.headerChannelsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
+    }
+    
 }
 
 @end

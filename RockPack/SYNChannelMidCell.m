@@ -18,7 +18,7 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: 14.0f];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
     self.specialSelected = NO;
     

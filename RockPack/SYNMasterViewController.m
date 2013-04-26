@@ -34,7 +34,11 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
+#define kMovableViewReloadButtonX 70
+#define kMovableViewReloadButtonXIPhone 63
+
 #define kSearchBoxShrinkFactor 136.0
+
 
 typedef void(^AnimationCompletionBlock)(BOOL finished);
 
@@ -160,15 +164,32 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.refreshButton = [SYNRefreshButton refreshButton];
     [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = 70.0f;
+    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]?kMovableViewReloadButtonX:kMovableViewReloadButtonXIPhone;
     self.refreshButton.frame = refreshButtonFrame;
     [self.movableButtonsContainer addSubview:self.refreshButton];
     
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
-    UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
-    splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];
+    UIImageView *splashView;
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        if([[SYNDeviceManager sharedInstance] currentScreenHeight]>480.0f)
+        {
+            splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default-568h"]];
+        }
+        else
+        {
+            splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
+        }
+        splashView.center = CGPointMake(splashView.center.x, splashView.center.y-20.0f);
+
+    }
+    else
+    {
+        splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
+    }
+    
 	[self.view addSubview: splashView];
     
     [UIView animateWithDuration: kSplashAnimationDuration
@@ -206,7 +227,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     
-    self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:30];
+    self.pageTitleLabel.font = [UIFont boldRockpackFontOfSize:self.pageTitleLabel.font.pointSize];
     self.pageTitleLabel.textColor = [UIColor colorWithRed:(40.0/255.0)
                                                     green:(45.0/255.0)
                                                      blue:(51.0/255.0)
@@ -223,13 +244,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // == Set up Dots View == //
     
     self.dotsView.backgroundColor = [UIColor clearColor];
-    
-    
-    for(int i = 0; i < 3; i++)
+    int numberOfDots = [self.containerViewController.childViewControllers count];
+    UIImage* dotImage = [UIImage imageNamed:@"NavigationDot"];
+    CGPoint center = self.dotsView.center;
+    CGRect newFrame = self.dotsView.frame;
+    newFrame.size.width = (2*numberOfDots - 1) * dotImage.size.width;
+    newFrame.origin.x = round(center.x - newFrame.size.width/2.0f);
+    self.dotsView.frame = newFrame;
+    CGFloat dotSpacing = 2*dotImage.size.width;
+    for(int i = 0; i < numberOfDots; i++)
     {
-        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NavigationDot"]];
+        UIImageView* dotImageView = [[UIImageView alloc] initWithImage:dotImage];
         CGRect dotImageViewFrame = dotImageView.frame;
-        dotImageViewFrame.origin.x = i * 30.0;
+        dotImageViewFrame.origin.x = i * dotSpacing;
         dotImageView.frame = dotImageViewFrame;
         [self.dotsView addSubview:dotImageView];
         
@@ -267,6 +294,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
     
     
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    if([[SYNDeviceManager sharedInstance]isIPhone])
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    else
+    {
+        return UIInterfaceOrientationMaskAll;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -501,6 +540,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
                                                                                           selectedIndexPath: (NSIndexPath *) indexPath];
+    self.videoViewerViewController.view.frame = self.overlayView.bounds;
     [self.overlayView addSubview:self.videoViewerViewController.view];
     
     self.videoViewerViewController.view.alpha = 0.0f;

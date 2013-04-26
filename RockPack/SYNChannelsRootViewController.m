@@ -21,10 +21,11 @@
 #import "SYNChannelFooterMoreView.h"
 #import "SYNDeviceManager.h"
 #import "SYNMainRegistry.h"
+#import "SYNChannelCategoryTableViewController.h"
 
 #define STANDARD_LENGTH 50
 
-@interface SYNChannelsRootViewController () <UIScrollViewDelegate>
+@interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
 #ifdef ALLOWS_PINCH_GESTURES
 
@@ -40,6 +41,13 @@
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
+
+@property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
+@property (nonatomic, strong) UIButton* categorySelectButton;
+@property (nonatomic, strong) UIControl* categorySelectDismissControl;
+@property (nonatomic, strong) UILabel* categoryNameLabel;
+@property (nonatomic, strong) UILabel* subCategoryNameLabel;
+@property (nonatomic, strong) UIImageView* arrowImage;
 
 @end
 
@@ -68,21 +76,34 @@
     // Google Analytics support
     self.trackedViewName = @"Channels - Root";
     
-    SYNIntegralCollectionViewFlowLayout* flowLayout = [[SYNIntegralCollectionViewFlowLayout alloc] init];
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.headerReferenceSize = CGSizeMake(0.0, 0.0);
-    flowLayout.footerReferenceSize = [self footerSize];
-    flowLayout.itemSize = [self itemSize];
-    flowLayout.sectionInset = UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0);
-    flowLayout.minimumLineSpacing = 30.0;
-    flowLayout.minimumInteritemSpacing = 0.0;
+    BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    
+    SYNIntegralCollectionViewFlowLayout* flowLayout;
+    if(isIPhone)
+    {
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        flowLayout.footerReferenceSize = [self footerSize];
+    }
+    else
+    {
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:[self itemSize] minimumInterItemSpacing:0.0 minimumLineSpacing:30.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0)];
+        flowLayout.footerReferenceSize = [self footerSize];
+    }
     
     // Work out how hight the inital tab bar is
     CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
     
-    CGRect channelCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
-    CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
-    CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
+    CGRect channelCollectionViewFrame;
+    if(isIPhone)
+    {
+        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 123.0f);
+    }
+    else
+    {
+        channelCollectionViewFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        CGRectMake(0.0, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY - topTabBarHeight) :
+        CGRectMake(0.0f, kStandardCollectionViewOffsetY + topTabBarHeight, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar  - kStandardCollectionViewOffsetY - topTabBarHeight);
+    }
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -92,9 +113,20 @@
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    self.view = [[UIView alloc] initWithFrame:[[SYNDeviceManager sharedInstance] isLandscape] ?
-                 CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
-                 CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar)];
+    CGRect newFrame;
+    if(isIPhone)
+    {
+        newFrame = CGRectMake(0.0f, 59.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth],[[SYNDeviceManager sharedInstance] currentScreenHeight] - 20.0f);
+    }
+    else
+    {
+        newFrame = [[SYNDeviceManager sharedInstance] isLandscape] ?
+        CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
+        CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
+    }
+
+    
+    self.view = [[UIView alloc] initWithFrame:newFrame];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
@@ -105,6 +137,12 @@
     currentCategoryId = @"all";
     
     currentRange = NSMakeRange(0, 50);
+    
+    if(self.enableCategoryTable)
+    {
+        [self layoutChannelsCategoryTable];
+    }
+    
 }
 
 
@@ -177,15 +215,14 @@
 #pragma mark - Helper methods
 
 
-- (CGSize) itemSize
+-(CGSize)itemSize
 {
-    return CGSizeMake(251.0, 212.0);
+    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 212.0);
 }
 
-
-- (CGSize) footerSize
+-(CGSize)footerSize
 {
-    return CGSizeMake(1024.0, 64.0);
+    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
 }
 
 
@@ -561,5 +598,147 @@
                                                            
                                                        }];
 }
+
+#pragma mark - categories tableview
+
+-(void)layoutChannelsCategoryTable
+{
+    self.categorySelectDismissControl = [[UIControl alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:self.categorySelectDismissControl];
+    [self.categorySelectDismissControl addTarget:self action:@selector(toggleChannelsCategoryTable:) forControlEvents:UIControlEventTouchDown];
+    self.categorySelectDismissControl.hidden = YES;
+    
+    
+    self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
+    CGRect newFrame = self.channelThumbnailCollectionView.frame;
+    newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
+    self.categoryTableViewController.view.frame = newFrame;
+    [self.view addSubview:self.categoryTableViewController.view];
+    self.categoryTableViewController.categoryTableControllerDelegate= self;
+    self.categoryTableViewController.view.hidden = YES;
+    
+    
+    newFrame.origin.y -= 44.0f;
+    newFrame.size.height = 44.0f;
+    newFrame.size.width = 320.0f;
+    self.categorySelectButton = [[UIButton alloc] initWithFrame:newFrame];
+    [self.categorySelectButton setBackgroundImage:[UIImage imageNamed:@"CategoryBar"] forState:UIControlStateNormal];
+    [self.categorySelectButton setBackgroundImage:[UIImage imageNamed:@"CategoryBarHighlighted"] forState:UIControlStateHighlighted];
+    [self.categorySelectButton addTarget:self action:@selector(toggleChannelsCategoryTable:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.categorySelectButton];
+    
+    newFrame.origin.x = 40.0f;
+    newFrame.origin.y += 3.0f;
+    newFrame.size.width = 280.0f;
+    
+    UILabel* newLabel = [[UILabel alloc] initWithFrame:newFrame];
+    newLabel.font = [UIFont boldRockpackFontOfSize:18.0f];
+    newLabel.textColor = [UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f];
+    newLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.75f];
+    newLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    newLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
+    newLabel.backgroundColor = [UIColor clearColor];
+    CGPoint center = newLabel.center;
+    [newLabel sizeToFit];
+    center.x = newLabel.center.x;
+    newLabel.center = center;
+    self.categoryNameLabel = newLabel;
+    [self.view addSubview:self.categoryNameLabel];
+    
+    
+    newLabel = [[UILabel alloc] initWithFrame:self.categoryNameLabel.frame];
+    newLabel.font = self.categoryNameLabel.font;
+    newLabel.textColor = self.categoryNameLabel.textColor;
+    newLabel.shadowColor = self.categoryNameLabel.shadowColor;
+    newLabel.shadowOffset = self.categoryNameLabel.shadowOffset;
+    newLabel.backgroundColor = self.categoryNameLabel.backgroundColor;
+    newLabel.hidden = YES;
+    newLabel.center = center;
+
+    self.subCategoryNameLabel = newLabel;
+    [self.view addSubview:self.subCategoryNameLabel];
+    
+    self.arrowImage =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"IconCategoryBarChevron~iphone"]];
+    center.y -= 4.0f;
+    self.arrowImage.center = center;
+    self.arrowImage.hidden = YES;
+    [self.view addSubview:self.arrowImage];
+    
+    
+    
+    
+}
+
+-(void)toggleChannelsCategoryTable:(id)sender
+{
+    if(self.categoryTableViewController.view.hidden)
+    {
+        CGRect startFrame = self.categoryTableViewController.view.frame;
+        startFrame.origin.x = -startFrame.size.width;
+        self.categoryTableViewController.view.frame = startFrame;
+        self.categoryTableViewController.view.hidden = NO;
+        self.categorySelectDismissControl.hidden = NO;
+        
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            CGRect endFrame = self.categoryTableViewController.view.frame;
+            endFrame.origin.x = 0;
+            self.categoryTableViewController.view.frame = endFrame;
+        } completion:nil];
+     }
+    else
+    {
+        self.categorySelectDismissControl.hidden = YES;
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+            CGRect endFrame = self.categoryTableViewController.view.frame;
+            endFrame.origin.x = -endFrame.size.width;
+            self.categoryTableViewController.view.frame = endFrame;
+        } completion:^(BOOL finished) {
+            self.categoryTableViewController.view.hidden = YES;
+        }];
+    }
+}
+
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategoryWithId:(NSString *)uniqueId title:(NSString *)title
+{
+    self.categoryNameLabel.text = title;
+    [self.categoryNameLabel sizeToFit];
+    self.subCategoryNameLabel.hidden = YES;
+    self.arrowImage.hidden = YES;
+    [self handleNewTabSelectionWithId:uniqueId];
+}
+
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
+{
+    self.categoryNameLabel.text = categoryTitle;
+    [self.categoryNameLabel sizeToFit];
+    self.subCategoryNameLabel.text = subCategoryTitle;
+    self.subCategoryNameLabel.hidden = NO;
+    [self.subCategoryNameLabel sizeToFit];
+    self.arrowImage.hidden = NO;
+    
+    CGRect newFrame = self.arrowImage.frame;
+    newFrame.origin.x = self.categoryNameLabel.frame.origin.x + self.categoryNameLabel.frame.size.width + 5.0f;
+    self.arrowImage.frame = newFrame;
+    
+    newFrame = self.subCategoryNameLabel.frame;
+    newFrame.origin.x = self.arrowImage.frame.origin.x + self.arrowImage.frame.size.width + 5.0f;
+    self.subCategoryNameLabel.frame = newFrame;
+    
+    [self handleNewTabSelectionWithId:uniqueId];
+    [self toggleChannelsCategoryTable:nil];
+}
+
+-(void)categoryTableControllerDeselectedAll:(SYNChannelCategoryTableViewController *)tableController
+{
+    self.categoryNameLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
+    [self.categoryNameLabel sizeToFit];
+    self.subCategoryNameLabel.hidden = YES;
+    self.arrowImage.hidden = YES;
+    
+    [self handleNewTabSelectionWithId:@"all"];
+    [self toggleChannelsCategoryTable:nil];
+}
+
+
 
 @end
