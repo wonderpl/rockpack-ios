@@ -169,7 +169,7 @@
     }
     
     [self.channel addObserver: self
-                   forKeyPath: @"subscribedByUser"
+                   forKeyPath: kSubscribedByUserKey
                       options: NSKeyValueObservingOptionNew
                       context :nil];
     
@@ -246,6 +246,9 @@
     
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
+
+    [self.channel removeObserver: self
+                      forKeyPath: kSubscribedByUserKey];
 
     // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self
@@ -689,7 +692,7 @@
             }
         }
     }
-    else if ([keyPath isEqualToString: @"subscribedByUser"])
+    else if ([keyPath isEqualToString: kSubscribedByUserKey])
     {
         NSNumber* newSubscribedByUserValue = (NSNumber*)[change valueForKey: NSKeyValueChangeNewKey];
         BOOL finalValue = [newSubscribedByUserValue boolValue];
