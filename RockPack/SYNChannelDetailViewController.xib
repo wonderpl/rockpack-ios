@@ -537,7 +537,7 @@
 						<string key="NSFrameSize">{1024, 748}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="667495981"/>
+						<reference key="NSNextKeyView" ref="572064014"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -557,13 +557,13 @@
 						</object>
 						<reference key="IBUICells" ref="0"/>
 					</object>
-					<object class="IBUIButton" id="667495981">
+					<object class="IBUIButton" id="572064014">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="497872818"/>
+						<reference key="NSNextKeyView" ref="197275230"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -575,15 +575,15 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage" id="646981024">
+						<object class="NSCustomResource" key="IBUIHighlightedImage" id="784839813">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">ButtonAddToChannelInactive.png</string>
 						</object>
-						<reference key="IBUINormalImage" ref="646981024"/>
+						<reference key="IBUINormalImage" ref="784839813"/>
 						<reference key="IBUIFontDescription" ref="842263965"/>
 						<reference key="IBUIFont" ref="713840540"/>
 					</object>
-					<object class="IBUIButton" id="497872818">
+					<object class="IBUIButton" id="197275230">
 						<reference key="NSNextResponder" ref="453930770"/>
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
@@ -592,7 +592,6 @@
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
-						<float key="IBUIAlpha">0.0</float>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -602,8 +601,14 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="271166090"/>
-						<reference key="IBUIHighlightedImage" ref="646981024"/>
-						<reference key="IBUINormalImage" ref="646981024"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonCreate</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonCreate.png</string>
+						</object>
 						<reference key="IBUIFontDescription" ref="842263965"/>
 						<reference key="IBUIFont" ref="713840540"/>
 					</object>
@@ -856,8 +861,8 @@
 							<reference ref="164681596"/>
 							<reference ref="1042878543"/>
 							<reference ref="1013209184"/>
-							<reference ref="667495981"/>
-							<reference ref="497872818"/>
+							<reference ref="572064014"/>
+							<reference ref="197275230"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1035,15 +1040,15 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">99</int>
-						<reference key="object" ref="667495981"/>
+						<reference key="object" ref="572064014"/>
 						<reference key="parent" ref="453930770"/>
 						<string key="objectName">Add Button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100</int>
-						<reference key="object" ref="497872818"/>
+						<reference key="object" ref="197275230"/>
 						<reference key="parent" ref="453930770"/>
-						<string key="objectName">Add Button</string>
+						<string key="objectName">Create Button</string>
 					</object>
 				</array>
 			</object>
@@ -1121,25 +1126,17 @@
 							<string key="candidateClassName">id</string>
 						</object>
 					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="channelNameTextField">UITextField</string>
-						<string key="channelOverlayView">UIImageView</string>
-						<string key="videoThumbnailCollectionView">UICollectionView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="channelNameTextField">
-							<string key="name">channelNameTextField</string>
-							<string key="candidateClassName">UITextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelOverlayView">
-							<string key="name">channelOverlayView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="videoThumbnailCollectionView">
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">videoThumbnailCollectionView</string>
+						<string key="NS.object.0">UICollectionView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">videoThumbnailCollectionView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
 							<string key="name">videoThumbnailCollectionView</string>
 							<string key="candidateClassName">UICollectionView</string>
 						</object>
-					</dictionary>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNAbstractViewController.h</string>
@@ -1148,80 +1145,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="avatarBackgroundView">UIView</string>
-						<string key="avatarImageView">UIImageView</string>
-						<string key="buyButton">UIButton</string>
-						<string key="channelCoverImageView">UIImageView</string>
-						<string key="channelDetailsLabel">UILabel</string>
-						<string key="channelOwnerLabel">UILabel</string>
-						<string key="channelTitleTextView">UITextView</string>
-						<string key="coverChooserMasterView">UIView</string>
-						<string key="coverThumbnailCollectionView">UICollectionView</string>
-						<string key="displayControlsView">UIView</string>
-						<string key="editControlsView">UIView</string>
-						<string key="masterControlsView">UIView</string>
-						<string key="shareButton">UIButton</string>
-						<string key="subscribeButton">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="avatarBackgroundView">
-							<string key="name">avatarBackgroundView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="avatarImageView">
-							<string key="name">avatarImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="buyButton">
-							<string key="name">buyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelCoverImageView">
-							<string key="name">channelCoverImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelDetailsLabel">
-							<string key="name">channelDetailsLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelOwnerLabel">
-							<string key="name">channelOwnerLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="channelTitleTextView">
-							<string key="name">channelTitleTextView</string>
-							<string key="candidateClassName">UITextView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="coverChooserMasterView">
-							<string key="name">coverChooserMasterView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="coverThumbnailCollectionView">
-							<string key="name">coverThumbnailCollectionView</string>
-							<string key="candidateClassName">UICollectionView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="displayControlsView">
-							<string key="name">displayControlsView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="editControlsView">
-							<string key="name">editControlsView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="masterControlsView">
-							<string key="name">masterControlsView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="shareButton">
-							<string key="name">shareButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="subscribeButton">
-							<string key="name">subscribeButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNChannelDetailViewController.h</string>
@@ -1268,6 +1191,8 @@
 			<string key="ButtonCategoryHighlighted.png">{295, 45}</string>
 			<string key="ButtonCover.png">{295, 45}</string>
 			<string key="ButtonCoverHighlighted.png">{295, 45}</string>
+			<string key="ButtonCreate">{16, 16}</string>
+			<string key="ButtonCreate.png">{130, 45}</string>
 			<string key="ButtonShare.png">{44, 44}</string>
 			<string key="ButtonShareHighlighted.png">{61, 61}</string>
 			<string key="ButtonSubscribe.png">{110, 45}</string>
