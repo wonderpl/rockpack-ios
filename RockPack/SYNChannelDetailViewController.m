@@ -159,7 +159,7 @@
                                            options: NSKeyValueObservingOptionNew
                                            context: nil];
     
-    if([self.channel.subscribedByUser boolValue])
+    if ([self.channel.subscribedByUser boolValue])
     {
         self.subscribeButton.selected = YES;
     }
@@ -247,7 +247,6 @@
     [self.videoThumbnailCollectionView removeObserver: self
                                            forKeyPath: kCollectionViewContentOffsetKey];
 
-    
     // Remove update notification observer
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: kDataUpdated
