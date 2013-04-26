@@ -535,7 +535,7 @@
 		BE285DB41725A85600D995AB /* ChannelCreationCoverNone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */; };
 		BE285DB71725A8BD00D995AB /* PanelChannelCreationCoverSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */; };
 		BE285DB81725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */; };
-		BE285DBC1726828F00D995AB /* SYNSubscriptionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DBB1726828F00D995AB /* SYNSubscriptionsManager.m */; };
+		BE285DBC1726828F00D995AB /* SYNChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DBB1726828F00D995AB /* SYNChannelManager.m */; };
 		BE285DC01726990F00D995AB /* BarNetwork.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DBE1726990F00D995AB /* BarNetwork.png */; };
 		BE285DC11726990F00D995AB /* BarNetwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DBF1726990F00D995AB /* BarNetwork@2x.png */; };
 		BE285DC41726996700D995AB /* IconNetwork.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DC21726996700D995AB /* IconNetwork.png */; };
@@ -1307,8 +1307,8 @@
 		BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCreationCoverNone@2x.png"; path = "Assets/Images/ChannelCreationCoverNone@2x.png"; sourceTree = "<group>"; };
 		BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelCreationCoverSelected.png; path = Assets/Images/PanelChannelCreationCoverSelected.png; sourceTree = "<group>"; };
 		BE285DB61725A8BD00D995AB /* PanelChannelCreationCoverSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelChannelCreationCoverSelected@2x.png"; path = "Assets/Images/PanelChannelCreationCoverSelected@2x.png"; sourceTree = "<group>"; };
-		BE285DBA1726828F00D995AB /* SYNSubscriptionsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSubscriptionsManager.h; sourceTree = "<group>"; };
-		BE285DBB1726828F00D995AB /* SYNSubscriptionsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSubscriptionsManager.m; sourceTree = "<group>"; };
+		BE285DBA1726828F00D995AB /* SYNChannelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelManager.h; sourceTree = "<group>"; };
+		BE285DBB1726828F00D995AB /* SYNChannelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelManager.m; sourceTree = "<group>"; };
 		BE285DBE1726990F00D995AB /* BarNetwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BarNetwork.png; path = Assets/Images/BarNetwork.png; sourceTree = "<group>"; };
 		BE285DBF1726990F00D995AB /* BarNetwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BarNetwork@2x.png"; path = "Assets/Images/BarNetwork@2x.png"; sourceTree = "<group>"; };
 		BE285DC21726996700D995AB /* IconNetwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconNetwork.png; path = Assets/Images/IconNetwork.png; sourceTree = "<group>"; };
@@ -2982,8 +2982,8 @@
 		BE285DB91726826800D995AB /* Subscription Manager */ = {
 			isa = PBXGroup;
 			children = (
-				BE285DBA1726828F00D995AB /* SYNSubscriptionsManager.h */,
-				BE285DBB1726828F00D995AB /* SYNSubscriptionsManager.m */,
+				BE285DBA1726828F00D995AB /* SYNChannelManager.h */,
+				BE285DBB1726828F00D995AB /* SYNChannelManager.m */,
 			);
 			name = "Subscription Manager";
 			sourceTree = "<group>";
@@ -3945,7 +3945,7 @@
 				BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */,
 				BE285DAC1725978F00D995AB /* SYNAccountSettingsLastNameInput.m in Sources */,
 				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
-				BE285DBC1726828F00D995AB /* SYNSubscriptionsManager.m in Sources */,
+				BE285DBC1726828F00D995AB /* SYNChannelManager.m in Sources */,
 				BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */,
 				BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */,
 				0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */,
