@@ -11,6 +11,7 @@ const struct ChannelAttributes ChannelAttributes = {
 	.coverThumbnailSmallURL = @"coverThumbnailSmallURL",
 	.eCommerceURL = @"eCommerceURL",
 	.lastUpdated = @"lastUpdated",
+	.popular = @"popular",
 	.position = @"position",
 	.resourceURL = @"resourceURL",
 	.subscribedByUser = @"subscribedByUser",
@@ -55,6 +56,11 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"popularValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"popular"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"positionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"position"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -121,6 +127,32 @@ const struct ChannelFetchedProperties ChannelFetchedProperties = {
 
 @dynamic lastUpdated;
 
+
+
+
+
+
+@dynamic popular;
+
+
+
+- (BOOL)popularValue {
+	NSNumber *result = [self popular];
+	return [result boolValue];
+}
+
+- (void)setPopularValue:(BOOL)value_ {
+	[self setPopular:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitivePopularValue {
+	NSNumber *result = [self primitivePopular];
+	return [result boolValue];
+}
+
+- (void)setPrimitivePopularValue:(BOOL)value_ {
+	[self setPrimitivePopular:[NSNumber numberWithBool:value_]];
+}
 
 
 

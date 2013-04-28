@@ -12,6 +12,7 @@ extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *coverThumbnailSmallURL;
 	__unsafe_unretained NSString *eCommerceURL;
 	__unsafe_unretained NSString *lastUpdated;
+	__unsafe_unretained NSString *popular;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *resourceURL;
 	__unsafe_unretained NSString *subscribedByUser;
@@ -33,6 +34,7 @@ extern const struct ChannelFetchedProperties {
 @class ChannelOwner;
 @class ChannelOwner;
 @class VideoInstance;
+
 
 
 
@@ -127,6 +129,20 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateLastUpdated:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* popular;
+
+
+
+@property BOOL popularValue;
+- (BOOL)popularValue;
+- (void)setPopularValue:(BOOL)value_;
+
+//- (BOOL)validatePopular:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -293,6 +309,15 @@ extern const struct ChannelFetchedProperties {
 
 - (NSDate*)primitiveLastUpdated;
 - (void)setPrimitiveLastUpdated:(NSDate*)value;
+
+
+
+
+- (NSNumber*)primitivePopular;
+- (void)setPrimitivePopular:(NSNumber*)value;
+
+- (BOOL)primitivePopularValue;
+- (void)setPrimitivePopularValue:(BOOL)value_;
 
 
 
