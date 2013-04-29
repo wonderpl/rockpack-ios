@@ -25,7 +25,7 @@
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
-@property (nonatomic, strong) Channel *channel;
+@property (nonatomic, weak) Channel *channel;
 @property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
@@ -59,10 +59,12 @@
              usingMode: (kChannelDetailsMode) mode
 {
 
-    if ((self = [super init]))
+    if ((self = [super initWithViewId:kChannelDetailsViewId]))
     {
 		self.channel = channel;
         self.mode = mode;
+        
+        
 	}
 
 	return self;

@@ -17,6 +17,7 @@
 #import "SYNNetworkEngine.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "VideoInstance.h"
 #import "Video.h"
 #import "SYNChannelFooterMoreView.h"
 #import "SYNDeviceManager.h"
@@ -208,6 +209,10 @@
 {
     [super viewWillAppear: animated];
     
+    Channel *channel = [self.fetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForItem:0 inSection:0]];
+    
+    NSLog(@"channel.videoInstances: %@", channel.videoInstances);
+    
     self.touchedChannelButton = NO;
 }
 
@@ -252,14 +257,13 @@
     // Edit the entity name as appropriate.
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == '%@'", viewId]];
     
-    if(!currentCategoryId || [currentCategoryId isEqualToString:@"all"] || [currentCategoryId isEqualToString:@""])
-        fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == '%@'", viewId]];
-    else
-        fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"(viewId == '%@') AND (categoryId == '%@')", viewId, currentCategoryId]];
     
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position"
                                                                  ascending: YES]];
+    
+    
     
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
@@ -370,9 +374,13 @@
         
         Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
+        NSLog(@"channel.videoInstances: %@", channel.videoInstances);
+        
+        //BOOL hasFault = [channel hasFaultForRelationshipNamed:@"videoInstances"];
+        
+        
         SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                                  usingMode: kChannelDetailsModeDisplay
-                                                     ];
+                                                                                                  usingMode: kChannelDetailsModeDisplay];
         
         [self animatedPushViewController: channelVC];
     }
