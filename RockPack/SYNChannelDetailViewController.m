@@ -880,9 +880,12 @@
 
 -(IBAction)createChannelPressed:(id)sender
 {
+    self.channel.title = self.channelTitleTextView.text;
+    self.channel.channelDescription = @"Test Description";
+    
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
-                                               description: (self.channel.channelDescription ? self.channel.channelDescription : @"")
+                                               description: (self.channel.channelDescription)
                                                   category: @"222"
                                                      cover: @""
                                                   isPublic: YES

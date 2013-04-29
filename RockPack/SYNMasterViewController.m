@@ -711,6 +711,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
+    if(showingBackButton)
+    {
+        
+        [self.containerViewController.showingViewController animatedPopViewController];
+        
+    }
+    
+    if(self.overlayNavigationController)
+    {
+        [self showBackButton:NO];
+        self.overlayNavigationController = nil;
+    }
+    
     [self.containerViewController navigateToPageByName:pageName];
     
     if(self.sideNavigationViewController.state != SideNavigationStateHidden)
@@ -723,6 +736,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     CGRect targetFrame;
     CGFloat targetAlpha;
+    
+    // XOR '^' the values so that they return 0 if they are both YES or both NO
+    if(!(show ^ showingBackButton))
+        return;
     
     if (show)
     {

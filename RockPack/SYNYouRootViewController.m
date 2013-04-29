@@ -834,9 +834,6 @@
     Channel* channelToDelete = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     
-    
-    
-    
     [appDelegate.oAuthNetworkEngine deleteChannelForUserId:appDelegate.currentUser.uniqueId
                                                  channelId:channelToDelete.uniqueId
                                          completionHandler:^(id response) {
