@@ -242,11 +242,7 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    if([[SYNDeviceManager sharedInstance] isIPad])
-    {
-        [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-        [self.subscriptionsViewController.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-    }
+    
 }
 
 
@@ -271,6 +267,12 @@
     CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;
     subSize.height = thumbSize.height;
     self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(subSize.width, 1800.0);
+    
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+        [self.subscriptionsViewController.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    }
     
     [self reloadCollectionViews];
 }
