@@ -775,6 +775,8 @@
     
     [appDelegate.currentUser setChannels:channelsSet];
     
+    [appDelegate saveContext:YES];
+    
     self.deleteCellModeOn = NO;
     
     [self.channelThumbnailCollectionView reloadData];
