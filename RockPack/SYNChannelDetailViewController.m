@@ -104,13 +104,14 @@
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
     layout.itemSize = isIPhone?CGSizeMake(158.0f , 86.0f):CGSizeMake(256.0f , 179.0f);
     layout.minimumInteritemSpacing = 0.0f;
-    layout.minimumLineSpacing = 4.0f;
-    layout.sectionInset = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, 2.0f);
+    layout.minimumLineSpacing = isIPhone ? 4.0f : 0.0f;
+    
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
-    if(isIPhone)
-    { 
+    if (isIPhone)
+    {
+        layout.sectionInset = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, 2.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(self.view.frame.size.height - 90.0f, 0.0f, 0.0f, 0.0f);
     }
     
