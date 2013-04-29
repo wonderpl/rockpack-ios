@@ -167,6 +167,7 @@
                                             channel.viewId = kChannelsViewId;
                                             
                                             
+                                            
                                         } errorHandler: ^(NSDictionary* errorDictionary) {
                                                  DebugLog(@"Update action failed");
                                              }];
@@ -189,12 +190,21 @@
                                        channel.position = savedPosition;
                                        channel.viewId = kChannelsViewId;
                                        
+                                       if([channel.managedObjectContext hasChanges])
+                                       {
+                                           NSError* error;
+                                           [channel.managedObjectContext save:&error];
+                                           
+                                       }
+                                       
                                         } errorHandler: ^(NSDictionary* errorDictionary) {
                                             DebugLog(@"Update action failed");
                                         }];
         }
     }
 }
+
+
 
 
 

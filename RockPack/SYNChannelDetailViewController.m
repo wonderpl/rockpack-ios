@@ -179,7 +179,7 @@
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)
                                                  name: NSManagedObjectContextDidSaveNotification
-                                               object: appDelegate.mainManagedObjectContext];
+                                               object: self.channel.managedObjectContext];
     
     // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
     [self.videoThumbnailCollectionView addObserver: self
@@ -232,7 +232,7 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: NSManagedObjectContextDidSaveNotification
-                                                  object: appDelegate.mainManagedObjectContext];
+                                                  object: self.channel.managedObjectContext];
     [super viewWillDisappear: animated];
 }
 
@@ -241,7 +241,7 @@
     if(!notification)
         return;
     
-    if(notification.object == appDelegate.mainManagedObjectContext)
+    if(notification.object == self.channel.managedObjectContext)
     {
         [self reloadCollectionViews];
     }

@@ -209,9 +209,6 @@
 {
     [super viewWillAppear: animated];
     
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForItem:0 inSection:0]];
-    
-    NSLog(@"channel.videoInstances: %@", channel.videoInstances);
     
     self.touchedChannelButton = NO;
 }
