@@ -49,6 +49,8 @@
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsLandscapeLayout;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
 
+@property (nonatomic, weak) Channel* channelDeleteCandidate;
+
 @property (nonatomic) BOOL deleteCellModeOn;
 
 @property (nonatomic, strong) UILongPressGestureRecognizer* longPressGestureRecogniser;
@@ -573,7 +575,7 @@
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate:self];
     
-    
+    channelThumbnailCell.deleteButton.hidden = YES;
     
     return channelThumbnailCell;
     
@@ -816,18 +818,43 @@
     
     UIView *v = sender.superview.superview;
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    Channel* channelToDelete = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.channelDeleteCandidate = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    NSString* message = [NSString stringWithFormat:@"You are about to delete %@", _channelDeleteCandidate.title];
+    
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Delete?"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"OK", nil];
+    
+    [alertView show];
     
     
+    
+}
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        [self deleteChannel];
+    }
+    else
+    {
+        // Cancel Clicked
+    }
+}
+-(void)deleteChannel
+{
     [appDelegate.oAuthNetworkEngine deleteChannelForUserId:appDelegate.currentUser.uniqueId
-                                                 channelId:channelToDelete.uniqueId
+                                                 channelId:self.channelDeleteCandidate.uniqueId
                                          completionHandler:^(id response) {
                                              
                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                  
                                                  NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
                                                  
-                                                 [channelsSet removeObject:channelToDelete];
+                                                 [channelsSet removeObject:self.channelDeleteCandidate];
                                                  
                                                  [appDelegate.currentUser setChannels:channelsSet];
                                                  
@@ -849,10 +876,6 @@
                                              DebugLog(@"Delete channel NOT succeed");
                                              
                                          }];
-    
-    
-    
-    
 }
 
 
