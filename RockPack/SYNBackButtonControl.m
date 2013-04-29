@@ -8,6 +8,7 @@
 
 #import "SYNBackButtonControl.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 
 @implementation SYNBackButtonControl
 
@@ -33,36 +34,37 @@
         button.frame = CGRectMake(0.0, 0.0, normalImage.size.width, normalImage.size.height);
         [self addSubview:button];
         
-        
-        // == UIView == //
-        
-        titleBGView = [[UIView alloc] init];
-        titleBGView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ButtonBackLabel"]];
-        CGRect titleBGRect = CGRectZero;
-        titleBGRect.origin.x = button.frame.origin.x + button.frame.size.width;
-        titleBGRect.size.height = button.frame.size.height;
-        titleBGView.frame = titleBGRect;
-        
-        
-        
-        
-        
-        // == UILabel == //
-        
-        titleLabel = [[UILabel alloc] init];
-        CGRect titleRect = CGRectZero;
-        titleRect.origin.x = 10.0;
-        titleRect.origin.y = 10.0;
-        titleLabel.frame = titleRect;
-        titleLabel.font = [UIFont rockpackFontOfSize:20.0];
-        titleLabel.textColor = [UIColor lightGrayColor];
-        titleLabel.textAlignment = NSTextAlignmentLeft;
-        titleLabel.backgroundColor = [UIColor clearColor];
-        [titleBGView addSubview:titleLabel];
-        
-        self.frame = button.frame;
-        [self addSubview:titleBGView];
-        
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            // == UIView == //
+            
+            titleBGView = [[UIView alloc] init];
+            titleBGView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ButtonBackLabel"]];
+            CGRect titleBGRect = CGRectZero;
+            titleBGRect.origin.x = button.frame.origin.x + button.frame.size.width;
+            titleBGRect.size.height = button.frame.size.height;
+            titleBGView.frame = titleBGRect;
+            
+            
+            
+            
+            
+            // == UILabel == //
+            
+            titleLabel = [[UILabel alloc] init];
+            CGRect titleRect = CGRectZero;
+            titleRect.origin.x = 10.0;
+            titleRect.origin.y = 10.0;
+            titleLabel.frame = titleRect;
+            titleLabel.font = [UIFont rockpackFontOfSize:20.0];
+            titleLabel.textColor = [UIColor lightGrayColor];
+            titleLabel.textAlignment = NSTextAlignmentLeft;
+            titleLabel.backgroundColor = [UIColor clearColor];
+            [titleBGView addSubview:titleLabel];
+            
+            self.frame = button.frame;
+            [self addSubview:titleBGView];
+        }
         
     }
     

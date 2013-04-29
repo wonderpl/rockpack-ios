@@ -102,7 +102,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
         sideNavigationFrame.origin.x = 1024.0;
         NSLog(@"Current width: %f", sideNavigationFrame.origin.x);
-        sideNavigationFrame.origin.y = 74.0;
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            sideNavigationFrame.origin.y = 74.0f;
+        }
+        else
+        {
+            sideNavigationFrame.origin.y = 55.0f;
+        }
+        
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
         self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -443,8 +451,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      animations: ^{
                          
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
-                         
-                         sideNavigationFrame.origin.x = 1024.0 - 192.0;
+                         if([[SYNDeviceManager sharedInstance] isIPad])
+                         {
+                            sideNavigationFrame.origin.x = 1024.0 - 192.0;
+                         }
+                         else
+                         {
+                             sideNavigationFrame.origin.x = 704.0f;
+                         }
                          self.sideNavigationViewController.view.frame =  sideNavigationFrame;
                          
                      } completion: ^(BOOL finished) {

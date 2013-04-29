@@ -12,6 +12,8 @@
 #import "AppConstants.h"
 #import "GAI.h"
 #import "SYNDeviceManager.h"
+#import "SYNSideNavigationIphoneCell.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -27,7 +29,6 @@ typedef enum {
 
 @property (nonatomic, strong) IBOutlet UIButton* settingsButton;
 @property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
-@property (nonatomic, strong) IBOutlet UILabel* serchLabel;
 @property (nonatomic, strong) IBOutlet UILabel* userNameLabel;
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, strong) IBOutlet UIView* containerView;
@@ -36,6 +37,9 @@ typedef enum {
 @property (nonatomic, strong) UIColor* navItemColor;
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
 @property (nonatomic, strong) NSMutableDictionary* cellByPageName;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UIImageView *searchBackground;
 
 @property (nonatomic, strong) UIView* bottomExtraView;
 
@@ -63,9 +67,12 @@ typedef enum {
         
         self.state = SideNavigationStateHidden;
         
-        self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.origin.y + self.view.frame.size.height, self.view.frame.size.width, 300.0)];
-        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
-        [self.view addSubview:self.bottomExtraView];
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.origin.y + self.view.frame.size.height, self.view.frame.size.width, 300.0)];
+            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+            [self.view addSubview:self.bottomExtraView];
+        }
         
     }
         
@@ -90,6 +97,20 @@ typedef enum {
                                         alpha: (1.0)];
     
     self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
+    
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        CGRect newFrame = self.view.frame;
+        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 75.0f;
+        self.view.frame = newFrame;
+        self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 72.0f, 0.0f, 72.0f ,0.0f)];
+        self.searchBackground.image = [[UIImage imageNamed:@"FieldSearch"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
+        self.searchTextField.font = [UIFont rockpackFontOfSize:self.searchTextField.font.pointSize];
+        self.searchTextField.textColor = [UIColor colorWithWhite:166.0f/255.0f alpha:1.0f];
+        self.searchTextField.layer.shadowOpacity=0.8;
+        self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
+        self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
+    }
 }
 
 
@@ -119,13 +140,25 @@ typedef enum {
 - (UITableViewCell *) tableView: (UITableView *) tableView
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
     static NSString *CellIdentifier = @"NavigationCell";
     UITableViewCell *cell;
     
     if (indexPath.section == 0)
     { 
-        cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if(!cell)
+        {
+            if(isIPad)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault
                                       reuseIdentifier: CellIdentifier];
+            }
+            else
+            {
+                cell = [[SYNSideNavigationIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            }
+        }
         
         NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
         
@@ -133,10 +166,6 @@ typedef enum {
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
         
-        
-        UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
-        selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
-        cell.selectedBackgroundView = selectedView;
         
         
         if(navigationType == kSideNavigationTypePage)
@@ -151,17 +180,23 @@ typedef enum {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
         }
-            
-        cell.textLabel.font = [UIFont rockpackFontOfSize: 15.0];
         
-        cell.textLabel.textColor = self.navItemColor;
+        if(isIPad)
+        {
+            cell.textLabel.font = [UIFont rockpackFontOfSize: 15.0];
+            
+            UIView* selectedView = [[UIView alloc] initWithFrame:cell.frame];
+            selectedView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavSelected"]];
+            cell.selectedBackgroundView = selectedView;
+            cell.textLabel.textColor = self.navItemColor;
+        }
+    
         
         
     } 
     
     return cell;
 }
-
 
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
@@ -192,8 +227,9 @@ typedef enum {
         
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
-        
-        [UIView animateWithDuration: 0.5f
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                          animations: ^{
@@ -208,6 +244,25 @@ typedef enum {
                              self.state = SideNavigationStateFull;
                              
                          }];
+        }
+        else
+        {
+            CGRect startFrame = self.containerView.frame;
+            startFrame.origin.x = self.view.frame.size.width;
+            self.containerView.frame = startFrame;
+            self.containerView.hidden = NO;
+            [UIView animateWithDuration: 0.5f
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseInOut
+                             animations: ^{
+                                 self.containerView.frame = self.view.bounds;
+                                 
+                             } completion: ^(BOOL finished) {
+                                 
+                                 self.state = SideNavigationStateFull;
+                                 
+                             }];
+        }
         
     }
     else

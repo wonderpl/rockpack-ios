@@ -189,7 +189,7 @@
 						<string key="NSFrameSize">{320, 548}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1048790499"/>
+						<reference key="NSNextKeyView" ref="1006154483"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="102018180"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -199,10 +199,10 @@
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">273</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrameSize">{320, 548}</string>
+						<string key="NSFrame">{{-704, 0}, {1024, 548}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1006154483"/>
+						<reference key="NSNextKeyView" ref="735144547"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="102018180"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -214,6 +214,7 @@
 						<string key="NSFrame">{{80, 137}, {160, 274}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="102018180"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -223,7 +224,7 @@
 				<string key="NSFrame">{{0, 20}, {320, 548}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="735144547"/>
+				<reference key="NSNextKeyView" ref="1048790499"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0NTA5ODAzOTIAA</bytes>
@@ -438,7 +439,6 @@
 					<string key="className">SYNMasterViewController</string>
 					<string key="superclassName">GAITrackedViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="addToChannelButton">UIButton</string>
 						<string key="closeSearchButton">UIButton</string>
 						<string key="containerView">UIView</string>
 						<string key="dotsView">UIView</string>
@@ -452,10 +452,6 @@
 						<string key="sideNavigationButton">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="addToChannelButton">
-							<string key="name">addToChannelButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="closeSearchButton">
 							<string key="name">closeSearchButton</string>
 							<string key="candidateClassName">UIButton</string>
