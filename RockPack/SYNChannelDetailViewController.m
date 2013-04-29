@@ -172,9 +172,8 @@
 {
     [super viewWillAppear: animated];
     
-    [self updateVideoInstanceArray];
     
-    // Look out for update notifications
+    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)
                                                  name: NSManagedObjectContextDidSaveNotification
@@ -242,29 +241,10 @@
     
     if(notification.object == appDelegate.mainManagedObjectContext)
     {
-        
+        [self reloadCollectionViews];
     }
 }
 
-- (void) updateVideoInstanceArray
-{
-    
-    
-    // There are some intricacies here with regards to NSOrderedSetProxies being returned, so we have to do this the hard way
-    
-    // First, sort the array in 'position' order
-//    NSArray *sortedArray = [self.channel.videoInstances.array sortedArrayUsingComparator: ^NSComparisonResult(id a, id b) {
-//        NSNumber *first = [(VideoInstance *)a position];
-//        NSNumber *second = [(VideoInstance *)b position];
-//        return [first compare: second];
-//    }];
-//    
-//    // Now add those videoinstances to our own mutable array
-//    for (VideoInstance *videoInstance in sortedArray)
-//    {
-//        [self.videoInstances addObject: videoInstance];
-//    }
-}
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller
 {
@@ -559,9 +539,6 @@
         [(VideoInstance *)obj setPositionValue : index];
     }];
     
-//    [self.videoInstances enumerateObjectsUsingBlock: ^(id obj, NSUInteger index, BOOL *stop) {
-//        [(VideoInstance *)obj setPositionValue : index];
-//    }];
 }
 
 
@@ -569,22 +546,15 @@
 
 - (void) collectionView: (UICollectionView *) collectionView
         itemAtIndexPath: (NSIndexPath *) fromIndexPath
-    willMoveToIndexPath: (NSIndexPath *) toIndexPath
-{
-//    id fromItem = [self.videoInstances objectAtIndex: fromIndexPath.item];
-//    
-//    [self.videoInstances removeObjectAtIndex: fromIndexPath.item];
-//    
-//    [self.videoInstances insertObject: fromItem
-//                              atIndex: toIndexPath.item];
+    willMoveToIndexPath: (NSIndexPath *) toIndexPath {
+
     
     NSMutableOrderedSet* mutableInstance = [[NSMutableOrderedSet alloc] initWithOrderedSet:self.channel.videoInstances];
     [mutableInstance exchangeObjectAtIndex: fromIndexPath.item
                          withObjectAtIndex: toIndexPath.item];
     self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet:mutableInstance];
     
-//    [self.videoInstances exchangeObjectAtIndex: fromIndexPath.item
-//                             withObjectAtIndex: toIndexPath.item];
+
     
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
@@ -751,7 +721,6 @@
     UIView *v = addButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex:indexPath.row];
-//    [self.videoInstances removeObjectAtIndex: indexPath.row];
     
     NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.channel.videoInstances];
     [channelsSet removeObject:instanceToDelete];

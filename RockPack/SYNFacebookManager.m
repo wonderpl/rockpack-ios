@@ -305,6 +305,32 @@ typedef enum
 }
 
 
+// How to User
+
+//    [[SYNFacebookManager sharedFBManager] postMessageToWall:@"This is my second post"
+//                                                  onSuccess:^{
+//
+//
+//
+//                                                } onFailure:^(NSError* error) {
+//
+//
+//                                                    NSDictionary* errorRoot = [error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"];
+//                                                    NSDictionary* errorBody = [errorRoot objectForKey:@"body"];
+//                                                    NSDictionary* errorError = [errorBody objectForKey:@"error"];
+//                                                    NSNumber* errorCode = [errorError objectForKey:@"code"];
+//
+//                                                    switch ([errorCode integerValue]) {
+//                                                        case 2500: // An active access token must be used
+//                                                            DebugLog(@"Facebook Posting Needs an Active Session");
+//                                                            break;
+//
+//                                                        default:
+//                                                            break;
+//                                                    }
+//
+//                                                }];
+
 // Helper method to extract a user readable string from an NSError returned by a Facebook API call
 - (NSString *) parsedErrorMessage: (NSError *) facebookError
 {

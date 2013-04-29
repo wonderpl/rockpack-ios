@@ -48,8 +48,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic) BOOL isDragging;
 @property (nonatomic) BOOL showingBackButton;
 @property (nonatomic) CGFloat sideNavigationOriginCenterX;
-@property (nonatomic) CGRect addToChannelFrame;
-@property (nonatomic, strong) IBOutlet UIButton* addToChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton* closeSearchButton;
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
 @property (nonatomic, strong) IBOutlet UIButton* sideNavigationButton;
@@ -82,7 +80,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @synthesize containerViewController;
 @synthesize pageTitleLabel;
 @synthesize showingBackButton;
-@synthesize addToChannelFrame;
 @synthesize sideNavigationOriginCenterX;
 @synthesize isDragging, buttonLocked;
 @synthesize overlayNavigationController = _overlayNavigationController;
@@ -218,10 +215,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.reachability = [Reachability reachabilityWithHostname:appDelegate.networkEngine.hostName];
     
-    // == Add to Channel Button == //
-    
-    originalAddButtonX = self.addToChannelButton.frame.origin.x;
-    addToChannelFrame = self.addToChannelButton.frame;
     
     
     // == Set up Dots View == //
@@ -255,6 +248,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonShow object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backButtonRequested:) name:kNoteBackButtonHide object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
@@ -341,22 +336,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
     }
     
-    originalAddButtonX = self.addToChannelButton.frame.origin.x;
     
     self.pageTitleLabel.text = [self.containerViewController.showingViewController.title uppercaseString];
     
-    if(self.containerViewController.showingViewController.needsAddButton)
-    {
-        [UIView animateWithDuration:0.2 animations:^{
-            self.addToChannelButton.alpha = 1.0;
-        }];
-    }
-    else
-    {
-        [UIView animateWithDuration:0.2 animations:^{
-            self.addToChannelButton.alpha = 0.0;
-        }];
-    }
     
     if(self.sideNavigationViewController.state == SideNavigationStateFull)
     {
@@ -374,37 +356,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Channel Creation Methods
 
--(IBAction)addToChannelPressed:(id)sender
+-(void)addToChannelRequested:(NSNotification*)notification
 {
     
-//    [[SYNFacebookManager sharedFBManager] postMessageToWall:@"This is my second post"
-//                                                  onSuccess:^{
-//                                                      
-//                                                      
-//        
-//                                                } onFailure:^(NSError* error) {
-//                                                    
-//                                                    
-//                                                    NSDictionary* errorRoot = [error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"];
-//                                                    NSDictionary* errorBody = [errorRoot objectForKey:@"body"];
-//                                                    NSDictionary* errorError = [errorBody objectForKey:@"error"];
-//                                                    NSNumber* errorCode = [errorError objectForKey:@"code"];
-//                                                    
-//                                                    switch ([errorCode integerValue]) {
-//                                                        case 2500: // An active access token must be used
-//                                                            DebugLog(@"Facebook Posting Needs an Active Session");
-//                                                            break;
-//                                                            
-//                                                        default:
-//                                                            break;
-//                                                    }
-//        
-//                                                }];
-    
-    
-    
-    [self.view addSubview:self.existingChannelsController.view];
     [self addChildViewController:self.existingChannelsController];
+    [self.view addSubview:self.existingChannelsController.view];
     
     self.existingChannelsController.view.alpha = 0.0;
     
@@ -615,7 +571,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)searchTyped:(NSNotification*)notification
 {
     
-    
     NSString* termString = (NSString*)[[notification userInfo] objectForKey:kSearchTerm];
     
     if(!termString)
@@ -624,20 +579,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.closeSearchButton.hidden = YES;
     self.sideNavigationButton.hidden = NO;
     
-    [self showSearchViewControllerWithTerm:termString];
+    if(!self.overlayNavigationController)
+    {
+        
+        [self showBackButton:YES];
+        
+        
+        self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
+        self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
+    }
+    
+    
+    [self.searchViewController showSearchResultsForTerm: termString];
 }
 
-- (void) showSearchViewControllerWithTerm: (NSString*) searchTerm
-{
-    
-    [self showBackButton:YES];
-    
-    
-    self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-    self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
-    
-    [self.searchViewController showSearchResultsForTerm: searchTerm];
-}
+
 
 
 
@@ -912,21 +868,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [self alignErrorMessage];
     }
 
-    //[self.existingChannelsController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-}
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    originalAddButtonX = self.addToChannelButton.frame.origin.x;
-}
 
 -(void)alignErrorMessage
 {
@@ -968,27 +913,34 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
-        
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseIn
-                         animations: ^{
-                             self.overlayContainerView.alpha = 0.0;
-                         }
-                         completion: ^(BOOL finished) {
-                             [_overlayNavigationController.view removeFromSuperview];
-                             [_overlayNavigationController removeFromParentViewController];
-                             _overlayNavigationController = nil;
-                             self.containerView.hidden = NO;
-                             [UIView animateWithDuration: 0.7f
-                                                   delay: 0.2f
-                                                 options: UIViewAnimationOptionCurveEaseOut
-                                              animations: ^{
-                                                  self.containerView.alpha = 1.0;
-                                                  
-                                              }
-                                              completion: nil];
-                         }];
+        if(_overlayContainerView) // nil was passed and there was another on screen (remove)
+        {
+            [UIView animateWithDuration: 0.5f
+                                  delay: 0.0f
+                                options: UIViewAnimationOptionCurveEaseIn
+                             animations: ^{
+                                 self.overlayContainerView.alpha = 0.0;
+                             }
+                             completion: ^(BOOL finished) {
+                                 [_overlayNavigationController.view removeFromSuperview];
+                                 [_overlayNavigationController removeFromParentViewController];
+                                 _overlayNavigationController = nil;
+                                 self.containerView.hidden = NO;
+                                 [UIView animateWithDuration: 0.7f
+                                                       delay: 0.2f
+                                                     options: UIViewAnimationOptionCurveEaseOut
+                                                  animations: ^{
+                                                      self.containerView.alpha = 1.0;
+                                                      
+                                                  }
+                                                  completion: nil];
+                             }];
+        }
+        else // nil was passed while there was nothing on screen (it is already nil)
+        {
+            _overlayContainerView = nil;
+        }
+       
     }
     
     
