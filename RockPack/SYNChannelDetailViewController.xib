@@ -435,7 +435,7 @@
 										<array class="NSMutableArray" key="NSSubviews">
 											<object class="IBUICollectionView" id="186307923">
 												<reference key="NSNextResponder" ref="260102133"/>
-												<int key="NSvFlags">-2147483374</int>
+												<int key="NSvFlags">274</int>
 												<array class="NSMutableArray" key="NSSubviews"/>
 												<string key="NSFrame">{{98, 22}, {926, 121}}</string>
 												<reference key="NSSuperview" ref="260102133"/>
@@ -590,7 +590,6 @@
 						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
