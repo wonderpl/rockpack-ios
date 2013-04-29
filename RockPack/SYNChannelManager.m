@@ -41,6 +41,11 @@
                                                      name:kChannelUpdateRequest
                                                    object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(channelDeleteRequest:)
+                                                     name:kChannelDeleteRequest
+                                                   object:nil];
+        
         
         
     }
@@ -72,6 +77,18 @@
     
     [self updateChannel:channelToUpdate];
 }
+
+-(void)channelDeleteRequest:(NSNotification*)notification
+{
+    Channel* channelToUpdate = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    if(!channelToUpdate)
+        return;
+    
+    [self deleteChannel:channelToUpdate];
+}
+
+
+#pragma mark - Implementation Methods
 
 -(void)toggleSubscriptionToChannel:(Channel*)channel
 {
@@ -145,6 +162,30 @@
     
 }
 
+-(void)deleteChannel:(Channel*)channel
+{
+    [appDelegate.oAuthNetworkEngine deleteChannelForUserId:appDelegate.currentUser.uniqueId
+                                                 channelId:channel.uniqueId
+                                         completionHandler:^(id response) {
+                                             
+                                             NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
+                                             
+                                             
+                                             [channelsSet removeObject:channel];
+                                             
+                                             [appDelegate.currentUser setChannels:channelsSet];
+                                             
+                                             [appDelegate saveContext:YES];
+                                             
+                                             DebugLog(@"Delete channel succeed");
+                
+                                         } errorHandler:^(id error) {
+                                             
+                                             DebugLog(@"Delete channel NOT succeed");
+        
+                                         }];
+}
+
 -(void)updateChannel:(Channel*)channel
 {
     if (channel.resourceURL != nil && ![channel.resourceURL isEqualToString: @""])
@@ -162,9 +203,17 @@
                                                              ignoringObjectTypes: kIgnoreNothing
                                                                        andViewId: kChannelDetailsViewId];
                                             
-                                            // Back-patch a few things that may have been overwritten
+                                           
                                             channel.position = savedPosition;
                                             channel.viewId = kChannelsViewId;
+                                            
+                                            
+                                            if([channel.managedObjectContext hasChanges])
+                                            {
+                                                NSError* error;
+                                                [channel.managedObjectContext save:&error];
+                                                
+                                            }
                                             
                                             
                                             
@@ -186,7 +235,7 @@
                                                         ignoringObjectTypes: kIgnoreNothing
                                                                   andViewId: kChannelDetailsViewId];
                                        
-                                       // Back-patch a few things that may have been overwritten
+             
                                        channel.position = savedPosition;
                                        channel.viewId = kChannelsViewId;
                                        

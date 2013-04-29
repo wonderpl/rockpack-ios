@@ -15,6 +15,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, strong) IBOutlet UIButton *displayNameButton;
+@property (nonatomic, strong) IBOutlet UIButton* deleteButton;
 
 @property (nonatomic) BOOL shouldAnimate;
 

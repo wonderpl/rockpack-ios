@@ -255,6 +255,18 @@
     }
 }
 
+-(void)navigateToPageByName:(NSString *)pageName byPoppingNagivationController:(BOOL)pop
+{
+    if(!pop) {
+        [self navigateToPageByName:pageName];
+    } else {
+        [self.showingViewController animatedPopViewController];
+        [self navigateToPageByName:pageName];
+    }
+    
+    
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -348,6 +360,8 @@
                                                         object:self
                                                       userInfo:@{kCurrentPage:@(self.scrollView.page)}];
 }
+
+
 
 -(SYNContainerScrollView*)scrollView
 {

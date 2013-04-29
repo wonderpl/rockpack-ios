@@ -147,35 +147,6 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIButton" id="289097721">
-						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{954, 10}, {60, 61}}</string>
-						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIHighlightedTitleColor" ref="4391538"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="960150261"/>
-						<object class="NSCustomResource" key="IBUIHighlightedImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonNavHighlighted.png</string>
-						</object>
-						<object class="NSCustomResource" key="IBUINormalImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ButtonNav.png</string>
-						</object>
-						<reference key="IBUIFontDescription" ref="1042214128"/>
-						<reference key="IBUIFont" ref="82235693"/>
-					</object>
 					<object class="IBUIButton" id="468707721">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">289</int>
@@ -240,6 +211,35 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="210113303"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
+					<object class="IBUIButton" id="289097721">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">289</int>
+						<string key="NSFrame">{{954, 10}, {60, 61}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="4391538"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="960150261"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonNavHighlighted.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonNav.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="1042214128"/>
+						<reference key="IBUIFont" ref="82235693"/>
 					</object>
 					<object class="IBUIView" id="835901607">
 						<reference key="NSNextResponder" ref="766721923"/>
@@ -430,7 +430,6 @@
 						<reference key="object" ref="766721923"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="215609239"/>
-							<reference ref="289097721"/>
 							<reference ref="468707721"/>
 							<reference ref="430836750"/>
 							<reference ref="1039828572"/>
@@ -439,6 +438,7 @@
 							<reference ref="255490418"/>
 							<reference ref="1066454248"/>
 							<reference ref="835901607"/>
+							<reference ref="289097721"/>
 							<reference ref="180171305"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -576,7 +576,6 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="addToChannelButton">UIButton</string>
 						<string key="closeSearchButton">UIButton</string>
 						<string key="containerView">UIView</string>
 						<string key="dotsView">UIView</string>
@@ -590,10 +589,6 @@
 						<string key="sideNavigationButton">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="addToChannelButton">
-							<string key="name">addToChannelButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="closeSearchButton">
 							<string key="name">closeSearchButton</string>
 							<string key="candidateClassName">UIButton</string>
