@@ -13,7 +13,7 @@
 @interface SYNChannelThumbnailCell ()
 
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
-
+@property (nonatomic, strong) IBOutlet UIButton *deleteButton;
 
 @end
 
@@ -34,18 +34,18 @@
 }
 
 
+- (void) showDeleteButton: (BOOL) showDeleteButton
+{
+    self.deleteButton.hidden = showDeleteButton ? FALSE : TRUE;
+}
+
+
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {
     [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                                placeHolderImage: nil];
 }
 
-// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
-- (void) prepareForReuse
-{
-    self.imageView.image = nil;
-    
-}
 
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {
@@ -55,7 +55,12 @@
     [self.displayNameButton addTarget:self.viewControllerDelegate
                                action:@selector(displayNameButtonPressed:)
                      forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.deleteButton addTarget: self.viewControllerDelegate
+                          action: @selector(channelDeleteButtonTapped:)
+                forControlEvents: UIControlEventTouchUpInside];
 }
+
 
 - (void) setChannelTitle: (NSString*) titleString
 {
@@ -73,6 +78,15 @@
     
     
     self.titleLabel.text = titleString;
+    
+}
+
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+    self.imageView.image = nil;
+    self.deleteButton.hidden = TRUE;
     
 }
 
