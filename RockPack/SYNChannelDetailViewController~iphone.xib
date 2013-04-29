@@ -100,10 +100,10 @@
 										<reference key="NSNextResponder" ref="421928150"/>
 										<int key="NSvFlags">268</int>
 										<array class="NSMutableArray" key="NSSubviews"/>
-										<string key="NSFrame">{{20.5, 326}, {54, 54}}</string>
+										<string key="NSFrame">{{20, 326}, {54, 54}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="509232074"/>
+										<reference key="NSNextKeyView" ref="474614300"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">3</int>
@@ -120,7 +120,7 @@
 										<string key="NSFrame">{{20, 326}, {54, 54}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="859934816"/>
+										<reference key="NSNextKeyView" ref="509232074"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="905238541"/>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -170,8 +170,8 @@
 									</object>
 									<object class="IBUIButton" id="964655544">
 										<reference key="NSNextResponder" ref="421928150"/>
-										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{276, 418}, {44, 44}}</string>
+										<int key="NSvFlags">268</int>
+										<string key="NSFrame">{{276, 414}, {44, 42}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="574818441"/>
@@ -232,7 +232,7 @@
 									</object>
 									<object class="IBUILabel" id="220016949">
 										<reference key="NSNextResponder" ref="421928150"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{108, 324}, {486, 21}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
@@ -267,7 +267,7 @@
 									</object>
 									<object class="IBUILabel" id="509232074">
 										<reference key="NSNextResponder" ref="421928150"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{85, 324}, {25, 21}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
@@ -296,7 +296,7 @@
 									</object>
 									<object class="IBUILabel" id="260226906">
 										<reference key="NSNextResponder" ref="421928150"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">268</int>
 										<string key="NSFrame">{{20, 391}, {280, 21}}</string>
 										<reference key="NSSuperview" ref="421928150"/>
 										<reference key="NSWindow"/>
@@ -321,10 +321,10 @@
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
 								</array>
-								<string key="NSFrameSize">{320, 548}</string>
+								<string key="NSFrameSize">{320, 467}</string>
 								<reference key="NSSuperview" ref="793593682"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="474614300"/>
+								<reference key="NSNextKeyView" ref="859934816"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="905238541"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -539,6 +539,7 @@
 						<string key="NSFrameSize">{320, 548}</string>
 						<reference key="NSSuperview" ref="453930770"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="905238541"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -1021,7 +1022,7 @@
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="62.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="67.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="67.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="2" key="67.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="69.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="7.CustomClassName">SYNPassthroughView</string>
@@ -1097,6 +1098,7 @@
 						<string key="addButtonTapped:">id</string>
 						<string key="addCoverButtonTapped:">UIButton</string>
 						<string key="buyButtonTapped:">id</string>
+						<string key="createChannelPressed:">id</string>
 						<string key="selectCategoryButtonTapped:">UIButton</string>
 						<string key="shareChannelButtonTapped:">id</string>
 						<string key="subscribeButtonTapped:">id</string>
@@ -1112,6 +1114,10 @@
 						</object>
 						<object class="IBActionInfo" key="buyButtonTapped:">
 							<string key="name">buyButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="createChannelPressed:">
+							<string key="name">createChannelPressed:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="selectCategoryButtonTapped:">

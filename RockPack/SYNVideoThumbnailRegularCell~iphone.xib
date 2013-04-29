@@ -47,7 +47,7 @@
 								<string key="NSFrameSize">{158, 86}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="486650470"/>
+								<reference key="NSNextKeyView" ref="508424044"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -62,7 +62,7 @@
 								<string key="NSFrame">{{3, 0}, {152, 85}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="865164628"/>
+								<reference key="NSNextKeyView" ref="429279700"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -71,15 +71,16 @@
 							<object class="IBUIImageView" id="508424044">
 								<reference key="NSNextResponder" ref="301134111"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{6, 0}, {158, 86}}</string>
+								<string key="NSFrameSize">{158, 86}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="865164628"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">GlossVideo.png</string>
+									<string key="NSResourceName">GlossVideoThumbnailRegular.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="429279700">
@@ -88,7 +89,7 @@
 								<string key="NSFrame">{{5, 67}, {148, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="508424044"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -162,7 +163,7 @@
 								<string key="NSFrameSize">{64, 65}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="429279700"/>
+								<reference key="NSNextKeyView" ref="486650470"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">4</int>
@@ -407,7 +408,7 @@
 			<string key="ButtonVideoDelete.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteSelected.png">{16, 16}</string>
-			<string key="GlossVideo.png">{249, 140}</string>
+			<string key="GlossVideoThumbnailRegular.png">{256, 179}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
