@@ -572,6 +572,7 @@
 
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
+    self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
 }
 
 
@@ -751,6 +752,7 @@
 {
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
+        
         // Update the list of cover art
         [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
             DebugLog(@"Success");
