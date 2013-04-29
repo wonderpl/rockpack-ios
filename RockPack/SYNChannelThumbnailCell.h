@@ -22,6 +22,7 @@
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
 - (void) setChannelTitle: (NSString*) titleString;
+- (void) showDeleteButton: (BOOL) showDeleteButton;
 
 // This is used to indicate the UIViewController that
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
