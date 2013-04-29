@@ -13,7 +13,6 @@
 @interface SYNChannelThumbnailCell ()
 
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
-@property (nonatomic, strong) IBOutlet UIButton *deleteButton;
 
 @end
 
@@ -29,6 +28,8 @@
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: self.displayNameLabel.font.pointSize];
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
+    
+    self.deleteButton.hidden = YES;
     
     self.shouldAnimate = YES;
 }
