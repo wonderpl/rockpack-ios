@@ -576,13 +576,19 @@
     if(self.deleteCellModeOn)
     {
         DebugLog(@"");
+        if(indexPath.row != 0)
+        {
+            channelThumbnailCell.deleteButton.hidden = NO;
+        }
+        
     }
     else
     {
         DebugLog(@"");
+        channelThumbnailCell.deleteButton.hidden = YES;
     }
     
-    channelThumbnailCell.deleteButton.hidden = !self.deleteCellModeOn;
+
     
     
     return channelThumbnailCell;
@@ -827,29 +833,34 @@
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     Channel* channelToDelete = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
-     
+    
+    
+    
+    
     [appDelegate.oAuthNetworkEngine deleteChannelForUserId:appDelegate.currentUser.uniqueId
                                                  channelId:channelToDelete.uniqueId
                                          completionHandler:^(id response) {
                                              
-                                             _deleteCellModeOn = NO;
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 
+                                                 NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
+                                                 
+                                                 [channelsSet removeObject:channelToDelete];
+                                                 
+                                                 [appDelegate.currentUser setChannels:channelsSet];
+                                                 
+                                                 
+                                                 [appDelegate saveContext:YES];
+                                                 
+                                                 
+                                                 _deleteCellModeOn = NO;
+                                                 
+                                                 [_channelThumbnailCollectionView reloadData];
+                                                 [_channelThumbnailCollectionView setNeedsLayout];
+                                                 
+                                                 
+                                             });
                                              
-                                             [_channelThumbnailCollectionView reloadData];
-                                             
-                                             NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
-                                             
-                                             [channelsSet removeObject:channelToDelete];
-                                             
-                                             [appDelegate.currentUser setChannels:channelsSet];
-                                             
-                                             
-                                             [appDelegate saveContext:YES];
-                                             
-                                             [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:@[indexPath]];
-                                             
-                                             DebugLog(@"Delete channel succeed");
-                                             
-                                             //[self.channelThumbnailCollectionView reloadData];
                                              
                                          } errorHandler:^(id error) {
                                              
@@ -861,5 +872,7 @@
     
     
 }
+
+
 
 @end
