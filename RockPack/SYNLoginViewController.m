@@ -554,6 +554,8 @@
             
             [self placeSecondaryElements];
             
+            memberLabel.center = CGPointMake(loginButton.center.x, areYouNewLabel.center.y - 8.0);
+            
             
             CGRect faceRect = faceImageButton.frame;
             faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
