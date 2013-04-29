@@ -281,6 +281,8 @@
             
             SYNChannelMidCell *collectionViewCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
             
+            collectionViewCell.deleteButton.hidden = NO;
+            
             [UIView animateWithDuration: 0.2
                                   delay: 0.0
                                 options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
@@ -299,8 +301,6 @@
                                                     collectionViewCell.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
                                                     
                                                 } completion: ^(BOOL finished) {
-                                                    
-                                                    [self.channelThumbnailCollectionView reloadData];
                                                     
                                                 }];
                                
@@ -439,7 +439,7 @@
     if(self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
     {
         UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
-        if(visibleCell != nil){
+        if(visibleCell != nil) {
             indexPath = [self.channelThumbnailCollectionView indexPathForCell:visibleCell];
         }
     }
@@ -573,22 +573,6 @@
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate:self];
     
-    if(self.deleteCellModeOn)
-    {
-        DebugLog(@"");
-        if(indexPath.row != 0)
-        {
-            channelThumbnailCell.deleteButton.hidden = NO;
-        }
-        
-    }
-    else
-    {
-        DebugLog(@"");
-        channelThumbnailCell.deleteButton.hidden = YES;
-    }
-    
-
     
     
     return channelThumbnailCell;
@@ -739,6 +723,7 @@
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
