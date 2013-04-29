@@ -260,16 +260,57 @@
     switch (recogniser.state)
     {
         case UIGestureRecognizerStateBegan:
-            
+        {
             self.deleteCellModeOn = YES;
             
-            [self.channelThumbnailCollectionView reloadData];
+            //
             
-            break;
+            CGPoint pointClicked = [recogniser locationInView:self.channelThumbnailCollectionView];
+            NSIndexPath *currentIndexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint:pointClicked];
+            
+            for (SYNChannelMidCell* cell in self.channelThumbnailCollectionView.visibleCells)
+            {
+                
+                //cell.alpha = 0.0;
+                
+            }
+            
+            
+            SYNChannelMidCell *collectionViewCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
+            
+            [UIView animateWithDuration: 0.2
+                                  delay: 0.0
+                                options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
+                             animations: ^{
+                 
+                                 collectionViewCell.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
+                 
+                           } completion: ^(BOOL finished) {
+                 
+                               [UIView animateWithDuration: 0.2
+                                                     delay: 0.0
+                                                   options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                                                animations: ^{
+                                                    
+                                                    
+                                                    collectionViewCell.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                                                    
+                                                } completion: ^(BOOL finished) {
+                                                    
+                                                    [self.channelThumbnailCollectionView reloadData];
+                                                    
+                                                }];
+                               
+                           }];
+            
+            
+        }
+        break;
             
         default:
-            
             break;
+            
+            
     }
 }
 
