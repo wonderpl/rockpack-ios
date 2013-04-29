@@ -15,6 +15,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, strong) IBOutlet UIButton *displayNameButton;
+@property (nonatomic, strong) IBOutlet UIButton* deleteButton;
 
 @property (nonatomic) BOOL shouldAnimate;
 
@@ -22,6 +23,7 @@
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
 - (void) setChannelTitle: (NSString*) titleString;
+- (void) showDeleteButton: (BOOL) showDeleteButton;
 
 // This is used to indicate the UIViewController that
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;

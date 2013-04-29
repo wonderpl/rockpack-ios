@@ -20,6 +20,7 @@
 #import "SYNSubscriptionsViewController.h"
 #import "SYNChannelMidCell.h"
 #import "SYNYouHeaderView.h"
+#import "SYNOAuthNetworkEngine.h"
 
 #define kInterChannelSpacing 150.0
 #define kInterRowMarging 12.0
@@ -47,6 +48,12 @@
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* channelsPortraitLayout;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsLandscapeLayout;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
+
+@property (nonatomic, weak) Channel* channelDeleteCandidate;
+
+@property (nonatomic) BOOL deleteCellModeOn;
+
+@property (nonatomic, strong) UILongPressGestureRecognizer* longPressGestureRecogniser;
 
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, weak) UIButton* channelsTabButton;
@@ -243,8 +250,74 @@
 #endif
     
     
+    _longPressGestureRecogniser = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                action: @selector(longPressPerformed:)];
+    
+    [self.channelThumbnailCollectionView addGestureRecognizer:_longPressGestureRecogniser];
+    //_longPressGestureRecogniser.delegate = self;
+    
 }
 
+-(void)longPressPerformed:(UILongPressGestureRecognizer*)recogniser
+{
+    switch (recogniser.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            self.deleteCellModeOn = YES;
+            
+            
+            
+            //
+            
+            CGPoint pointClicked = [recogniser locationInView:self.channelThumbnailCollectionView];
+            NSIndexPath *currentIndexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint:pointClicked];
+            
+            for (SYNChannelMidCell* cell in self.channelThumbnailCollectionView.visibleCells)
+            {
+                
+                //cell.alpha = 0.0;
+                
+            }
+            
+            
+            SYNChannelMidCell *collectionViewCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
+            
+            collectionViewCell.deleteButton.hidden = NO;
+            
+            [UIView animateWithDuration: 0.2
+                                  delay: 0.0
+                                options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
+                             animations: ^{
+                 
+                                 collectionViewCell.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
+                 
+                           } completion: ^(BOOL finished) {
+                 
+                               [UIView animateWithDuration: 0.2
+                                                     delay: 0.0
+                                                   options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+                                                animations: ^{
+                                                    
+                                                    
+                                                    collectionViewCell.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                                                    
+                                                } completion: ^(BOOL finished) {
+                                                    
+                                                }];
+                               
+                           }];
+            
+            
+        }
+        break;
+            
+        default:
+            break;
+            
+            
+    }
+}
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -368,7 +441,7 @@
     if(self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
     {
         UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
-        if(visibleCell != nil){
+        if(visibleCell != nil) {
             indexPath = [self.channelThumbnailCollectionView indexPathForCell:visibleCell];
         }
     }
@@ -500,7 +573,9 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];
+    [channelThumbnailCell setViewControllerDelegate:self];
     
+    channelThumbnailCell.deleteButton.hidden = YES;
     
     return channelThumbnailCell;
     
@@ -510,6 +585,10 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    
+    if(self.deleteCellModeOn)
+        return;
+    
     Channel *channel;
     
     if(collectionView == self.channelThumbnailCollectionView)
@@ -646,6 +725,7 @@
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
@@ -731,5 +811,73 @@
     }
     
 }
+
+
+-(void)channelDeleteButtonTapped:(UIButton*)sender
+{
+    
+    UIView *v = sender.superview.superview;
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    self.channelDeleteCandidate = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    NSString* message = [NSString stringWithFormat:@"You are about to delete %@", _channelDeleteCandidate.title];
+    
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Delete?"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"OK", nil];
+    
+    [alertView show];
+    
+    
+    
+}
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        [self deleteChannel];
+    }
+    else
+    {
+        // Cancel Clicked
+    }
+}
+-(void)deleteChannel
+{
+    [appDelegate.oAuthNetworkEngine deleteChannelForUserId:appDelegate.currentUser.uniqueId
+                                                 channelId:self.channelDeleteCandidate.uniqueId
+                                         completionHandler:^(id response) {
+                                             
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 
+                                                 NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
+                                                 
+                                                 [channelsSet removeObject:self.channelDeleteCandidate];
+                                                 
+                                                 [appDelegate.currentUser setChannels:channelsSet];
+                                                 
+                                                 
+                                                 [appDelegate saveContext:YES];
+                                                 
+                                                 
+                                                 _deleteCellModeOn = NO;
+                                                 
+                                                 [_channelThumbnailCollectionView reloadData];
+                                                 [_channelThumbnailCollectionView setNeedsLayout];
+                                                 
+                                                 
+                                             });
+                                             
+                                             
+                                         } errorHandler:^(id error) {
+                                             
+                                             DebugLog(@"Delete channel NOT succeed");
+                                             
+                                         }];
+}
+
+
 
 @end

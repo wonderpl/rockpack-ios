@@ -386,6 +386,8 @@
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="containerView">UIView</string>
 						<string key="profilePictureImageView">UIImageView</string>
+						<string key="searchBackground">UIImageView</string>
+						<string key="searchTextField">UITextField</string>
 						<string key="settingsButton">UIButton</string>
 						<string key="tableView">UITableView</string>
 						<string key="userNameLabel">UILabel</string>
@@ -402,6 +404,14 @@
 						<object class="IBToOneOutletInfo" key="profilePictureImageView">
 							<string key="name">profilePictureImageView</string>
 							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="searchBackground">
+							<string key="name">searchBackground</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="searchTextField">
+							<string key="name">searchTextField</string>
+							<string key="candidateClassName">UITextField</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="settingsButton">
 							<string key="name">settingsButton</string>

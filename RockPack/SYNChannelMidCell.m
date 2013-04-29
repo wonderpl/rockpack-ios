@@ -22,6 +22,7 @@
     
     self.specialSelected = NO;
     
+    self.deleteButton.hidden = YES;
 }
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
@@ -47,6 +48,14 @@
     
     self.titleLabel.text = titleString;
     
+}
+
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
+{
+    
+    [self.deleteButton addTarget: viewControllerDelegate
+                          action: @selector(channelDeleteButtonTapped:)
+                forControlEvents: UIControlEventTouchUpInside];
 }
 
 -(void)setSpecialSelected:(BOOL)value

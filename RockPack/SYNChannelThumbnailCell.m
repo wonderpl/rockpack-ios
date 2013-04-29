@@ -14,7 +14,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* byLabel;
 
-
 @end
 
 @implementation SYNChannelThumbnailCell
@@ -30,7 +29,15 @@
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: self.displayNameLabel.font.pointSize];
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     
+    self.deleteButton.hidden = YES;
+    
     self.shouldAnimate = YES;
+}
+
+
+- (void) showDeleteButton: (BOOL) showDeleteButton
+{
+    self.deleteButton.hidden = showDeleteButton ? FALSE : TRUE;
 }
 
 
@@ -40,12 +47,6 @@
                                placeHolderImage: nil];
 }
 
-// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
-- (void) prepareForReuse
-{
-    self.imageView.image = nil;
-    
-}
 
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {
@@ -55,7 +56,12 @@
     [self.displayNameButton addTarget:self.viewControllerDelegate
                                action:@selector(displayNameButtonPressed:)
                      forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.deleteButton addTarget: self.viewControllerDelegate
+                          action: @selector(channelDeleteButtonTapped:)
+                forControlEvents: UIControlEventTouchUpInside];
 }
+
 
 - (void) setChannelTitle: (NSString*) titleString
 {
@@ -73,6 +79,15 @@
     
     
     self.titleLabel.text = titleString;
+    
+}
+
+
+// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
+- (void) prepareForReuse
+{
+    self.imageView.image = nil;
+    self.deleteButton.hidden = TRUE;
     
 }
 

@@ -108,6 +108,7 @@
 #define kUserDataChanged            @"kUserDataChanged"
 #define kChannelSubscribeRequest    @"kChannelSubscribeRequest"
 #define kChannelUpdateRequest       @"kChannelUpdateRequest"
+#define kChannelDeleteRequest       @"kChannelDeleteRequest"
 
 #define kRefresheComplete           @"kRefresheComplete"
 

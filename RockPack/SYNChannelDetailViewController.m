@@ -25,7 +25,7 @@
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
-@property (nonatomic, strong) Channel *channel;
+@property (nonatomic, weak) Channel *channel;
 @property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
@@ -59,10 +59,12 @@
              usingMode: (kChannelDetailsMode) mode
 {
 
-    if ((self = [super init]))
+    if ((self = [super initWithViewId:kChannelDetailsViewId]))
     {
 		self.channel = channel;
         self.mode = mode;
+        
+        
 	}
 
 	return self;
@@ -177,7 +179,7 @@
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)
                                                  name: NSManagedObjectContextDidSaveNotification
-                                               object: appDelegate.mainManagedObjectContext];
+                                               object: self.channel.managedObjectContext];
     
     // Use KVO on the collection view to detect user scrolling (to fade out overlaid controls)
     [self.videoThumbnailCollectionView addObserver: self
@@ -230,7 +232,7 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver: self
                                                     name: NSManagedObjectContextDidSaveNotification
-                                                  object: appDelegate.mainManagedObjectContext];
+                                                  object: self.channel.managedObjectContext];
     [super viewWillDisappear: animated];
 }
 
@@ -239,7 +241,7 @@
     if(!notification)
         return;
     
-    if(notification.object == appDelegate.mainManagedObjectContext)
+    if(notification.object == self.channel.managedObjectContext)
     {
         [self reloadCollectionViews];
     }
@@ -570,6 +572,7 @@
 
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
+    self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
 }
 
 
@@ -716,9 +719,9 @@
 }
 
 
-- (void) videoDeleteButtonTapped: (UIButton *) addButton
+- (void) videoDeleteButtonTapped: (UIButton *) deleteButton
 {
-    UIView *v = addButton.superview.superview;
+    UIView *v = deleteButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex:indexPath.row];
     
@@ -749,6 +752,7 @@
 {
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
+        
         // Update the list of cover art
         [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
             DebugLog(@"Success");
@@ -876,9 +880,12 @@
 
 -(IBAction)createChannelPressed:(id)sender
 {
+    self.channel.title = self.channelTitleTextView.text;
+    self.channel.channelDescription = @"Test Description";
+    
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
-                                               description: (self.channel.channelDescription ? self.channel.channelDescription : @"")
+                                               description: (self.channel.channelDescription)
                                                   category: @"222"
                                                      cover: @""
                                                   isPublic: YES
