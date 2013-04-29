@@ -48,6 +48,10 @@
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsLandscapeLayout;
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
 
+@property (nonatomic) BOOL deleteCellModeOn;
+
+@property (nonatomic, strong) UILongPressGestureRecognizer* longPressGestureRecogniser;
+
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
@@ -243,8 +247,31 @@
 #endif
     
     
+    _longPressGestureRecogniser = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                action: @selector(longPressPerformed:)];
+    
+    [self.channelThumbnailCollectionView addGestureRecognizer:_longPressGestureRecogniser];
+    //_longPressGestureRecogniser.delegate = self;
+    
 }
 
+-(void)longPressPerformed:(UILongPressGestureRecognizer*)recogniser
+{
+    switch (recogniser.state)
+    {
+        case UIGestureRecognizerStateBegan:
+            
+            self.deleteCellModeOn = YES;
+            
+            [self.channelThumbnailCollectionView reloadData];
+            
+            break;
+            
+        default:
+            
+            break;
+    }
+}
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -501,6 +528,11 @@
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];
     
+    if(self.deleteCellModeOn)
+    {
+        
+    }
+    
     
     return channelThumbnailCell;
     
@@ -729,6 +761,12 @@
         [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
         [self.headerChannelsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
     }
+    
+}
+
+
+-(void)removeChannelFromUser:(Channel*)channel
+{
     
 }
 

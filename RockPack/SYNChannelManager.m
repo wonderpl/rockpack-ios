@@ -162,9 +162,17 @@
                                                              ignoringObjectTypes: kIgnoreNothing
                                                                        andViewId: kChannelDetailsViewId];
                                             
-                                            // Back-patch a few things that may have been overwritten
+                                           
                                             channel.position = savedPosition;
                                             channel.viewId = kChannelsViewId;
+                                            
+                                            
+                                            if([channel.managedObjectContext hasChanges])
+                                            {
+                                                NSError* error;
+                                                [channel.managedObjectContext save:&error];
+                                                
+                                            }
                                             
                                             
                                             
@@ -186,7 +194,7 @@
                                                         ignoringObjectTypes: kIgnoreNothing
                                                                   andViewId: kChannelDetailsViewId];
                                        
-                                       // Back-patch a few things that may have been overwritten
+             
                                        channel.position = savedPosition;
                                        channel.viewId = kChannelsViewId;
                                        
