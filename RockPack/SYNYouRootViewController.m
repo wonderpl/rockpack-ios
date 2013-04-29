@@ -50,6 +50,8 @@
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
 
 @property (nonatomic, weak) Channel* channelDeleteCandidate;
+@property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
+@property (nonatomic, strong) UIGestureRecognizer* tapOnScreenRecogniser;
 
 @property (nonatomic) BOOL deleteCellModeOn;
 
@@ -284,24 +286,26 @@
             CGPoint pointClicked = [recogniser locationInView:self.channelThumbnailCollectionView];
             NSIndexPath *currentIndexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint:pointClicked];
             
-            for (SYNChannelMidCell* cell in self.channelThumbnailCollectionView.visibleCells)
-            {
-                
-                //cell.alpha = 0.0;
-                
-            }
+            if(currentIndexPath.row == 0) // favourites pressed (cannot delete)
+                return;
             
             
-            SYNChannelMidCell *collectionViewCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
             
-            collectionViewCell.deleteButton.hidden = NO;
+            self.cellDeleteCandidate = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
+            
+            self.cellDeleteCandidate.deleteButton.hidden = NO;
+            
+            self.tapOnScreenRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(tappedOnScreen:)];
+            
+            [self.view addGestureRecognizer:self.tapOnScreenRecogniser];
             
             [UIView animateWithDuration: 0.2
                                   delay: 0.0
                                 options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
                              animations: ^{
                  
-                                 collectionViewCell.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
+                                 self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
                  
                            } completion: ^(BOOL finished) {
                  
@@ -311,7 +315,7 @@
                                                 animations: ^{
                                                     
                                                     
-                                                    collectionViewCell.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                                                    self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
                                                     
                                                 } completion: ^(BOOL finished) {
                                                     
@@ -328,6 +332,13 @@
             
             
     }
+}
+
+-(void)tappedOnScreen:(UIGestureRecognizer*)recogniser
+{
+    self.cellDeleteCandidate.deleteButton.hidden = YES;
+    self.deleteCellModeOn = NO;
+    [self.view removeGestureRecognizer:self.tapOnScreenRecogniser];
 }
 
 - (void) viewWillAppear: (BOOL) animated
