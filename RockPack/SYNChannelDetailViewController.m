@@ -112,7 +112,7 @@
     if (isIPhone)
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, 2.0f);
-        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(self.view.frame.size.height - 90.0f, 0.0f, 0.0f, 0.0f);
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([[SYNDeviceManager sharedInstance] currentScreenHeight] - 110.0f, 0.0f, 0.0f, 0.0f);
     }
     
     // Regster video thumbnail cell
