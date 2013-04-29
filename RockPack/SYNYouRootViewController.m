@@ -20,6 +20,7 @@
 #import "SYNSubscriptionsViewController.h"
 #import "SYNChannelMidCell.h"
 #import "SYNYouHeaderView.h"
+#import "SYNOAuthNetworkEngine.h"
 
 #define kInterChannelSpacing 150.0
 #define kInterRowMarging 12.0
@@ -262,6 +263,8 @@
         case UIGestureRecognizerStateBegan:
         {
             self.deleteCellModeOn = YES;
+            
+            
             
             //
             
@@ -570,6 +573,15 @@
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate:self];
     
+    if(self.deleteCellModeOn)
+    {
+        DebugLog(@"");
+    }
+    else
+    {
+        DebugLog(@"");
+    }
+    
     channelThumbnailCell.deleteButton.hidden = !self.deleteCellModeOn;
     
     
@@ -581,6 +593,10 @@
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    
+    if(self.deleteCellModeOn)
+        return;
+    
     Channel *channel;
     
     if(collectionView == self.channelThumbnailCollectionView)
@@ -809,18 +825,41 @@
     
     UIView *v = sender.superview.superview;
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    Channel* instanceToDelete = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    Channel* channelToDelete = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    
      
-    NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
-    [channelsSet removeObject:instanceToDelete];
+    [appDelegate.oAuthNetworkEngine deleteChannelForUserId:appDelegate.currentUser.uniqueId
+                                                 channelId:channelToDelete.uniqueId
+                                         completionHandler:^(id response) {
+                                             
+                                             _deleteCellModeOn = NO;
+                                             
+                                             [_channelThumbnailCollectionView reloadData];
+                                             
+                                             NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
+                                             
+                                             [channelsSet removeObject:channelToDelete];
+                                             
+                                             [appDelegate.currentUser setChannels:channelsSet];
+                                             
+                                             
+                                             [appDelegate saveContext:YES];
+                                             
+                                             [self.channelThumbnailCollectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                             
+                                             DebugLog(@"Delete channel succeed");
+                                             
+                                             //[self.channelThumbnailCollectionView reloadData];
+                                             
+                                         } errorHandler:^(id error) {
+                                             
+                                             DebugLog(@"Delete channel NOT succeed");
+                                             
+                                         }];
     
-    [appDelegate.currentUser setChannels:channelsSet];
     
-    [appDelegate saveContext:YES];
     
-    self.deleteCellModeOn = NO;
     
-    [self.channelThumbnailCollectionView reloadData];
 }
 
 @end
