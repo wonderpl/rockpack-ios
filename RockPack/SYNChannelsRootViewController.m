@@ -344,7 +344,6 @@
         // nothing yet
     }
     
-    
     if (kind == UICollectionElementKindSectionFooter)
     {
         channelMoreFooter = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
@@ -377,7 +376,7 @@
         
         
         SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
-                                                                                                  usingMode: kChannelDetailsModeDisplay];
+                                                                                                  usingMode: kChannelDetailsModeEdit];
         
         [self animatedPushViewController: channelVC];
     }
