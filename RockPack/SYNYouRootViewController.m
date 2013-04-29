@@ -96,10 +96,20 @@
     }
 
     // Main Collection View
-    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0)];
+    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing)
+                                                                   minimumInterItemSpacing:0.0
+                                                                        minimumLineSpacing:5.0
+                                                                           scrollDirection:UICollectionViewScrollDirectionVertical
+                                                                              sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0)];
     
 
-    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0)];
+    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing)
+                                                                        minimumInterItemSpacing:0.0
+                                                                             minimumLineSpacing:5.0
+                                                                                scrollDirection:UICollectionViewScrollDirectionVertical
+                                                                                   sectionInset:UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0)];
+    
+    
     if(isIPhone)
     {
         self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
@@ -140,6 +150,7 @@
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: self.channelsLandscapeLayout];
+    
     
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
