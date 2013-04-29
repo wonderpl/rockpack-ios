@@ -100,14 +100,14 @@
                                                                    minimumInterItemSpacing:0.0
                                                                         minimumLineSpacing:5.0
                                                                            scrollDirection:UICollectionViewScrollDirectionVertical
-                                                                              sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0)];
+                                                                              sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 28.0)];
     
 
     self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing)
                                                                         minimumInterItemSpacing:0.0
                                                                              minimumLineSpacing:5.0
                                                                                 scrollDirection:UICollectionViewScrollDirectionVertical
-                                                                                   sectionInset:UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0)];
+                                                                                   sectionInset:UIEdgeInsetsMake(10.0, 30.0, kInterRowMarging, 8.0)];
     
     
     if(isIPhone)
@@ -389,7 +389,8 @@
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     //Setup the headers
     if(isIPhone)
-    {        
+    {
+        
         newFrame = self.headerChannelsView.frame;
         newFrame.size.width = 160.0f;
         self.headerChannelsView.frame = newFrame;
