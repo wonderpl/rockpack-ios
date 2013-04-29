@@ -527,11 +527,9 @@
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];
+    [channelThumbnailCell setViewControllerDelegate:self];
     
-    if(self.deleteCellModeOn)
-    {
-        
-    }
+    channelThumbnailCell.deleteButton.hidden = !self.deleteCellModeOn;
     
     
     return channelThumbnailCell;
@@ -765,9 +763,21 @@
 }
 
 
--(void)removeChannelFromUser:(Channel*)channel
+-(void)channelDeleteButtonTapped:(UIButton*)sender
 {
     
+    UIView *v = sender.superview.superview;
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    Channel* instanceToDelete = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+     
+    NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
+    [channelsSet removeObject:instanceToDelete];
+    
+    [appDelegate.currentUser setChannels:channelsSet];
+    
+    self.deleteCellModeOn = NO;
+    
+    [self.channelThumbnailCollectionView reloadData];
 }
 
 @end

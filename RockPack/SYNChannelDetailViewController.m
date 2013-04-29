@@ -718,9 +718,9 @@
 }
 
 
-- (void) videoDeleteButtonTapped: (UIButton *) addButton
+- (void) videoDeleteButtonTapped: (UIButton *) deleteButton
 {
-    UIView *v = addButton.superview.superview;
+    UIView *v = deleteButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex:indexPath.row];
     

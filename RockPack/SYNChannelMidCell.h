@@ -12,11 +12,14 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIImageView* panelSelectedImageView;
+@property (nonatomic, strong) IBOutlet UIButton* deleteButton;
 
 @property (nonatomic) BOOL specialSelected;
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString;
 - (void) setChannelTitle: (NSString*) titleString;
+
+- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate;
 
 
 @end
