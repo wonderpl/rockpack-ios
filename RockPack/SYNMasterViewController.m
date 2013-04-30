@@ -902,10 +902,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
          @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
         
         
-        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithTitle: @"Done"
-                                                                       style: UIBarButtonItemStylePlain
-                                                                      target: self
-                                                                      action: @selector(modalAccountContainerDismiss)];
+        
+        UIButton* doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage* doneImage = [UIImage imageNamed:@"ButtonSettingsDone"];
+        doneButton.frame = CGRectMake(0.0, 0.0, doneImage.size.width, doneImage.size.height);
+        [doneButton addTarget:self action:@selector(modalAccountContainerDismiss) forControlEvents:UIControlEventTouchUpInside];
+        [doneButton setImage:doneImage forState:UIControlStateNormal];
+        
+        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
         
         
         accountsTableController.navigationItem.rightBarButtonItem = buttonItem;
@@ -933,8 +937,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             
             
         }];
-        
-        
         
     }
 }

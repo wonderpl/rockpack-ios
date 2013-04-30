@@ -62,7 +62,8 @@
     
     UIImage* buttonImage = [UIImage imageNamed: @"ButtonAccountSaveDefault.png"];
     saveButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    saveButton.frame = CGRectMake(5.0, 0.0, buttonImage.size.width, buttonImage.size.height);
+    saveButton.frame = CGRectMake(0.0, 0.0, buttonImage.size.width, buttonImage.size.height);
+    saveButton.center = CGPointMake(self.view.center.x, saveButton.center.y);
     
     [saveButton setImage: buttonImage
                 forState: UIControlStateNormal];
