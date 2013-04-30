@@ -30,7 +30,10 @@
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
+@property (nonatomic, assign) CGRect originalFrame;
+@property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
@@ -42,11 +45,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *blackPanelView;
-@property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
-@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
+@property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
-@property (nonatomic, assign) CGRect originalFrame;
 
 @end
 
@@ -54,13 +55,13 @@
 
 #pragma mark - Initialisation
 
-- (id) initWithFetchedResultsController: (NSFetchedResultsController *) initFetchedResultsController
-                      selectedIndexPath: (NSIndexPath *) selectedIndexPath;
+- (id) initWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                    selectedIndex: (int) selectedIndex;
 {
   	if ((self = [super init]))
     {
-		self.fetchedResultsController = initFetchedResultsController;
-        self.currentSelectedIndexPath = selectedIndexPath;
+		self.videoInstanceArray = videoInstanceArray;
+        self.currentSelectedIndex = selectedIndex;
 	}
     
 	return self;
@@ -98,7 +99,10 @@
     self.layout.minimumInteritemSpacing = 2.0f;
     self.layout.minimumLineSpacing = 0.0f;
     self.layout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
-    self.layout.selectedItemIndexPath = self.currentSelectedIndexPath;
+    
+    // Fake up an index path from our selected array index
+    self.layout.selectedItemIndexPath = [NSIndexPath indexPathForItem: self.currentSelectedIndex
+                                                            inSection: 0];
     
     self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
     
@@ -148,7 +152,7 @@
     tapRecogniser.delegate = self;
     [self.swipeView addGestureRecognizer: tapRecogniser];
     
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
                                                placeHolderImage: nil];
@@ -159,18 +163,16 @@
 {
     [super viewWillAppear: animated];
     
-    // Set the video playlist (using the fetchedResults controller passed in)
-    [self.videoPlaybackViewController setPlaylistWithFetchedResultsController: self.fetchedResultsController
-                                                            selectedIndexPath: self.currentSelectedIndexPath
-                                                                     autoPlay: TRUE];
+    [self.videoPlaybackViewController setPlaylist: self.videoInstanceArray
+                                    selectedIndex: self.currentSelectedIndex
+                                         autoPlay: TRUE];
     
     // Update all the labels corresponding to the selected videos
-    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
+    [self updateVideoDetailsForIndex: self.currentSelectedIndex];
     
     // We need to scroll the current thumbnail before the view appears (with no animation)
-    [self.videoThumbnailCollectionView scrollToItemAtIndexPath: self.currentSelectedIndexPath
-                                              atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
-                                                      animated: NO];
+    [self scrollToCellAtIndex: self.currentSelectedIndex
+                     animated: YES];
     
 }
 
@@ -186,22 +188,24 @@
 }
 
 
-- (void) playVideoAtIndexPath: (NSIndexPath *) indexPath
+- (void) playVideoAtIndex: (int) index
 {
     // We should start playing the selected video and scroll the thumbnnail so that it appears under the arrow
-    [self.videoPlaybackViewController playVideoAtIndex: indexPath];
-    [self updateVideoDetailsForIndexPath: indexPath];
-    [self scrollToCellAtIndexPath: indexPath];
+    [self.videoPlaybackViewController playVideoAtIndex: index];
+    [self updateVideoDetailsForIndex: index];
     
-    self.currentSelectedIndexPath = indexPath;
+    [self scrollToCellAtIndex: index
+                     animated: YES];
+    
+    self.currentSelectedIndex = index;
 }
 
 
 #pragma mark - Update details
 
-- (void) updateVideoDetailsForIndexPath: (NSIndexPath *) indexPath
+- (void) updateVideoDetailsForIndex: (int) index
 {
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [index];
     self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
@@ -210,11 +214,15 @@
 
 
 // The built in UICollectionView scroll to index doesn't work correctly with contentOffset set to non-zero, so roll our own here
-- (void) scrollToCellAtIndexPath: (NSIndexPath *) indexPath
+- (void) scrollToCellAtIndex: (int) index
+                    animated: (BOOL) animated
 {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem: index
+                                                 inSection: 0];
+    
     [self.videoThumbnailCollectionView scrollToItemAtIndexPath: indexPath
                                               atScrollPosition: UICollectionViewScrollPositionCenteredHorizontally
-                                                      animated: YES];
+                                                      animated: animated];
 }
 
 
@@ -223,18 +231,14 @@
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    
-    DebugLog (@"Items in section %d", sectionInfo.numberOfObjects);
-    
-    return sectionInfo.numberOfObjects;
+    DebugLog (@"Items in section %d", self.videoInstanceArray.count);
+    return self.videoInstanceArray.count;
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    DebugLog (@"Section %d", self.fetchedResultsController.sections.count);
-    return self.fetchedResultsController.sections.count;
+    return 1;
 }
 
 
@@ -244,7 +248,8 @@
     SYNVideoThumbnailSmallCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"
                                                                                  forIndexPath: indexPath];
     
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [indexPath.item];
+    
     cell.titleLabel.text = videoInstance.title;
     
     SYNVideoViewerThumbnailLayoutAttributes* attributes = (SYNVideoViewerThumbnailLayoutAttributes *)[self.layout layoutAttributesForItemAtIndexPath: indexPath];
@@ -270,7 +275,7 @@
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
-    [self playVideoAtIndexPath: indexPath];
+    [self playVideoAtIndex: indexPath.item];
 }
 
 
@@ -281,33 +286,10 @@
                          layout: (UICollectionViewLayout*) collectionViewLayout
          insetForSectionAtIndex: (NSInteger)section
 {
-    int sectionCount = self.fetchedResultsController.sections.count;
-    
     CGFloat insetWidth = [[SYNDeviceManager sharedInstance] isIPhone] ? 81.0f : 438.0f;
-    
-    if (section == 0)
-    {
-        if (sectionCount > 1)
-        {
-            // Leading inset on first section
-            return UIEdgeInsetsMake (0, insetWidth, 0, 0);
-        }
-        else
-        {
-            // We only have one section, so add both trailing and leading insets
-            return UIEdgeInsetsMake (0, insetWidth, 0, insetWidth );
-        }
-    }
-    else if (section == (sectionCount - 1))
-    {
-        // Trailing inset on last section
-        return UIEdgeInsetsMake (0, 0, 0, insetWidth);
-    }
-    else
-    {
-        // No insets on other sections
-        return UIEdgeInsetsMake (0, 0, 0, 0);
-    }
+
+    // We only have one section, so add both trailing and leading insets
+    return UIEdgeInsetsMake (0, insetWidth, 0, insetWidth );
 }
 
 
@@ -315,24 +297,31 @@
 
 - (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
-    NSIndexPath *newIndexPath = [self.currentSelectedIndexPath previousIndexPathUsingFetchedResultsController: self.fetchedResultsController];
+    int index = (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
+
     
-    [self playVideoAtIndexPath: newIndexPath];
+    [self playVideoAtIndex: index];
 }
 
 
 - (IBAction) userTouchedNextVideoButton: (id) sender
 {
-    NSIndexPath *newIndexPath = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
+    int index = self.currentSelectedIndex -  1;
     
-    [self playVideoAtIndexPath: newIndexPath];
+    // wrap around if necessary
+    if (index < 0)
+    {
+        index = self.videoInstanceArray.count - 1;
+    }
+    
+    [self playVideoAtIndex: index];
 }
 
 
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
     
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueAdd
                                                         object: self
@@ -356,7 +345,7 @@
 {
     button.selected = !button.selected;
     
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     if (videoInstance.video.starredByUserValue == TRUE)
     {
@@ -371,35 +360,38 @@
         videoInstance.video.starCountValue += 1;
     }
 
-    [self updateVideoDetailsForIndexPath: self.currentSelectedIndexPath];
+    [self updateVideoDetailsForIndex: self.currentSelectedIndex];
     
     [appDelegate saveContext:YES];
 }
 
 
 // We need to override the standard setter so that we can update our flow layout for highlighting (colour / monochrome)
-- (void) setCurrentSelectedIndexPath: (NSIndexPath *) currentSelectedIndexPath
+- (void) setCurrentSelectedIndex: (int) currentSelectedIndex
 {
     // Deselect the old thumbnail (if there is one, and it is not the same as the new one)
-    if (_currentSelectedIndexPath && (_currentSelectedIndexPath != currentSelectedIndexPath))
+    if (_currentSelectedIndex && (_currentSelectedIndex != currentSelectedIndex))
     {
-        SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: _currentSelectedIndexPath];
+        SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: _currentSelectedIndex
+                                                                                                                                                           inSection: 0]];
         
         // This will trigger a nice face out animation to monochrome
         oldCell.colour = FALSE;
     }
     
     // Now fade up the new image to full colour
-    SYNVideoThumbnailSmallCell *newCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: currentSelectedIndexPath];
+   SYNVideoThumbnailSmallCell *newCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: currentSelectedIndex
+                                                                                                                                                      inSection: 0]];
 
     newCell.colour = TRUE;
     
-    _currentSelectedIndexPath = currentSelectedIndexPath;
-    self.layout.selectedItemIndexPath = currentSelectedIndexPath;
+    _currentSelectedIndex = currentSelectedIndex;
     
+    self.layout.selectedItemIndexPath = [NSIndexPath indexPathForItem: currentSelectedIndex
+                                                            inSection: 0];
     
     // Now set the channel thumbail for the new
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: currentSelectedIndexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
     
     [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
                                                placeHolderImage: nil];
@@ -425,7 +417,7 @@
     [self.overlayParent removeVideoOverlayController];
 
     // Get the video instance for the currently selected video
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     [(SYNAbstractViewController *)self.overlayParent.originViewController viewChannelDetails: videoInstance.channel];
 }
@@ -437,7 +429,7 @@
     [self.overlayParent removeVideoOverlayController];
     
     // Get the video instance for the currently selected video
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     [(SYNAbstractViewController *)self.overlayParent.originViewController viewProfileDetails: videoInstance.channel.channelOwner];
 }

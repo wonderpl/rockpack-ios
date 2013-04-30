@@ -59,12 +59,10 @@
              usingMode: (kChannelDetailsMode) mode
 {
 
-    if ((self = [super initWithViewId:kChannelDetailsViewId]))
+    if ((self = [super initWithViewId: kChannelDetailsViewId]))
     {
 		self.channel = channel;
         self.mode = mode;
-        
-        
 	}
 
 	return self;
@@ -107,7 +105,6 @@
     layout.itemSize = isIPhone?CGSizeMake(158.0f , 86.0f):CGSizeMake(256.0f , 179.0f);
     layout.minimumInteritemSpacing = 0.0f;
     layout.minimumLineSpacing = isIPhone ? 4.0f : 0.0f;
-    
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
@@ -155,8 +152,7 @@
     self.categoriesTabViewController.view.alpha = 0.0f;
     [self addChildViewController: self.categoriesTabViewController];
     
-    
-    if(self.mode == kChannelDetailsModeDisplay)
+    if (self.mode == kChannelDetailsModeDisplay)
     {
         self.addToChannelButton.hidden = NO;
         self.createChannelButton.hidden = YES;
@@ -173,8 +169,6 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
-    
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(mainContextDataChanged:)
@@ -219,8 +213,6 @@
 }
 
 
-
-
 - (void) viewWillDisappear: (BOOL) animated
 {
     
@@ -236,12 +228,12 @@
     [super viewWillDisappear: animated];
 }
 
--(void)mainContextDataChanged:(NSNotification*)notification
+- (void) mainContextDataChanged: (NSNotification*) notification
 {
-    if(!notification)
+    if (!notification)
         return;
     
-    if(notification.object == self.channel.managedObjectContext)
+    if (notification.object == self.channel.managedObjectContext)
     {
         [self reloadCollectionViews];
     }
@@ -265,6 +257,7 @@
     }
     
 }
+
 
 - (void) reloadCollectionViews
 {
@@ -436,7 +429,7 @@
         videoThumbnailCell.displayMode = (self.mode == kChannelDetailsModeDisplay) ?
                                                         kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         
-        VideoInstance *videoInstance = self.channel.videoInstances [indexPath.row];
+        VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
         videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         videoThumbnailCell.viewControllerDelegate = self;
@@ -460,8 +453,8 @@
     }
     else
     {
-        DebugLog (@"Selecting video cell does nothing");
-        [self displayVideoViewerWithSelectedIndexPath: indexPath];
+        [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                      andSelectedIndex: indexPath.item];
     }
 }
 
@@ -550,11 +543,11 @@
 
     
     NSMutableOrderedSet* mutableInstance = [[NSMutableOrderedSet alloc] initWithOrderedSet:self.channel.videoInstances];
+    
     [mutableInstance exchangeObjectAtIndex: fromIndexPath.item
                          withObjectAtIndex: toIndexPath.item];
-    self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet:mutableInstance];
     
-
+    self.channel.videoInstances = [[NSOrderedSet alloc] initWithOrderedSet: mutableInstance];
     
     // Now we need to update the 'position' for each of the objects (so that we can keep in step with getFetchedResultsController
     // Do this with block enumeration for speed
@@ -721,21 +714,25 @@
 {
     UIView *v = deleteButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex:indexPath.row];
     
-    NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.channel.videoInstances];
-    [channelsSet removeObject:instanceToDelete];
+    VideoInstance* instanceToDelete = (VideoInstance*)[self.channel.videoInstances objectAtIndex: indexPath.item];
     
-    [self.channel setVideoInstances:channelsSet];
+    NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: self.channel.videoInstances];
+    
+    [channelsSet removeObject: instanceToDelete];
+    
+    [self.channel setVideoInstances: channelsSet];
     
     [self reloadCollectionViews];
 }
+
 
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
     [self showCoverChooser];
     [self hideCategoryChooser];
 }
+
 
 - (IBAction) selectCategoryButtonTapped: (UIButton *) button
 {
@@ -876,7 +873,7 @@
 
 #pragma mark - Channel Creation (3 steps)
 
--(IBAction)createChannelPressed:(id)sender
+- (IBAction) createChannelPressed: (id) sender
 {
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
@@ -903,36 +900,41 @@
                                          }];
 }
 
--(void)addVideosToNewChannelForId:(NSString*)channelId
+- (void) addVideosToNewChannelForId: (NSString*) channelId
 {
-    
-    
-    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId:appDelegate.currentOAuth2Credentials.userId
-                                                          channelId:channelId
-                                                   videoInstanceSet:self.channel.videoInstances
-                                                  completionHandler:^(id response) {
-                                                      
+    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                          channelId: channelId
+                                                   videoInstanceSet: self.channel.videoInstances
+                                                  completionHandler: ^(id response) {
                                                       // a 204 returned
                                                       
                                                       [self getNewlyCreatedChannelForId:channelId];
-            
-                                                  } errorHandler:^(id err) {
-                                                      
-                                                      DebugLog(@"Error @ addVideosToNewChannelForId:");
-        
-                                                  }];
+                                                  }
+                                                       errorHandler:^(id err) {
+                                                           
+                                                           DebugLog(@"Error @ addVideosToNewChannelForId:");
+                                                           
+                                                       }];
     
     
 }
 
--(void)getNewlyCreatedChannelForId:(NSString*)channelId
+- (void) getNewlyCreatedChannelForId: (NSString*) channelId
 {
+
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId:appDelegate.currentOAuth2Credentials.userId
                                                   channelId:channelId
-                                          completionHandler:^(id res) {
+                                          completionHandler:^(id dictionary) {
                                               
                                               
-                                              [appDelegate.mainRegistry registerChannelFromDictionary:res];
+                                              Channel* createdChannel = [Channel instanceFromDictionary: dictionary
+                                                                              usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                           channelOwner: appDelegate.currentUser
+                                                                                              andViewId: kChannelDetailsViewId];
+                                              
+                                              DebugLog(@"Channel: %@", createdChannel);
+                                              
+                                              [appDelegate saveContext:YES];
                                               
                                               
                                           } errorHandler:^(id err) {
@@ -940,6 +942,7 @@
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
                                               
                                           }];
+
 }
 
 @end
