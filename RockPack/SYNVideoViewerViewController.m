@@ -296,7 +296,8 @@
 
 #pragma mark - User actions
 
-- (IBAction) userTouchedPreviousVideoButton: (id) sender
+
+- (IBAction) userTouchedNextVideoButton: (id) sender
 {
     int index = (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
 
@@ -305,7 +306,7 @@
 }
 
 
-- (IBAction) userTouchedNextVideoButton: (id) sender
+- (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
     int index = self.currentSelectedIndex -  1;
     
