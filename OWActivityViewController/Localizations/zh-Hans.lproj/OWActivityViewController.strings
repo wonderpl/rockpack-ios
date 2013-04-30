@@ -1,0 +1,51 @@
+/*
+ OWActivityViewController.strings
+ Created by Benoit Pereira da Silva on 02/13/13.
+ http://www.pereira-da-silva.com
+*/
+
+/////////////////////
+// ACTIVITIES
+/////////////////////
+
+/* Mail */
+"activity.Mail.title"="邮件";
+
+/* Copy */
+"activity.Copy.title"="拷贝";
+
+/* Facebook */
+"activity.Facebook.title"="Facebook";
+
+/* Sina Weibo */
+"activity.SinaWeibo.title"="微博";
+
+/* Open in Maps */
+"activity.Maps.title"="地图";
+
+/* Message */
+"activity.Message.title"="信息";
+
+/* Print */
+"activity.Print.title"="打印";
+"activity.Print.error.title"="错误.";
+"activity.Print.error.message"="打印的时候出错: %@";
+
+/* Open in Safari */
+"activity.Safari.title"="用 Safari 打开";
+
+/* Save to Camera Roll */
+"activity.CameraRoll.title"="保存到相册";
+
+/* Twitter */
+"activity.Twitter.title"="Twitter";
+
+/////////////////////
+// GENERIC
+/////////////////////
+
+/* Buttons */
+"button.cancel"="取消";
+"button.dismiss"="关闭";
+"button.login"="登陆";
+
