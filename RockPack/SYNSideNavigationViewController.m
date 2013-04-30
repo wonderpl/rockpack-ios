@@ -25,7 +25,7 @@ typedef enum {
 
 } kSideNavigationType;
 
-@interface SYNSideNavigationViewController ()
+@interface SYNSideNavigationViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton* settingsButton;
 @property (nonatomic, strong) IBOutlet UIImageView* profilePictureImageView;
@@ -40,6 +40,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *searchBackground;
+@property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 
 @property (nonatomic, strong) UIView* bottomExtraView;
 
@@ -89,7 +90,8 @@ typedef enum {
     // Google Analytics support
     self.trackedViewName = @"Navigation";
     
-    self.userNameLabel.font = [UIFont rockpackFontOfSize: 20.0];
+    self.userNameLabel.font = [UIFont rockpackFontOfSize: self.userNameLabel.font.pointSize];
+    self.nicknameLabel.font = [UIFont rockpackFontOfSize: self.nicknameLabel.font.pointSize];
     
     self.navItemColor = [UIColor colorWithRed: (40.0/255.0)
                                         green: (45.0/255.0)
@@ -290,8 +292,8 @@ typedef enum {
 - (void) setUser: (User *) user
 {
     _user = user;
-    self.userNameLabel.text = [NSString stringWithFormat: @"%@", self.user.fullName];
-    
+    self.userNameLabel.text = self.user.fullName;
+    self.nicknameLabel.text = self.user.username;
     [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.user.thumbnailURL]
                                              placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou.png"]];
 }
@@ -375,6 +377,13 @@ typedef enum {
     }
     
     
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField;
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end
