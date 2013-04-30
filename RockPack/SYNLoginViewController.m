@@ -16,6 +16,7 @@
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 #import "User.h"
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
@@ -214,6 +215,7 @@
 {
     
     // controls to hide initially
+    
 
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
@@ -226,22 +228,33 @@
         control.alpha = 0.0;
     }
     
-    dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
-    emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
-    faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
+        emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
+        faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
+        
+        facebookSignInButton.enabled = YES;
+        facebookSignInButton.frame = facebookButtonInitialFrame;
+        facebookSignInButton.alpha = 1.0;
+        
+        _facebookLoginIsInProcess = NO;
+        
+        
+    }
+    else
+    {
+        titleImageView.center = CGPointMake(self.view.center.x, 150.0);
+        facebookSignInButton.center = CGPointMake(self.view.center.x, 230.0);
+        signUpButton.center = CGPointMake(100.0, 300.0);
+        
+        loginButton.center = CGPointMake(950.0, 690.0);
+        memberLabel.center = CGPointMake(loginButton.center.x, loginButton.center.y - 80.0);
+    }
     
-    facebookSignInButton.enabled = YES;
-    facebookSignInButton.frame = facebookButtonInitialFrame;
-    facebookSignInButton.alpha = 1.0;
-    
-    
-    
-    _facebookLoginIsInProcess = NO;
     
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
-    signUpButton.frame = signUpButtonInitialFrame;
-    
     [activityIndicator stopAnimating];
     
     
