@@ -71,7 +71,7 @@
 
 @synthesize subscriptionsViewController;
 
-#pragma mark - View lifecycle
+
 
 - (id) initWithViewId: (NSString *) vid
 {
@@ -83,8 +83,6 @@
     return self;
 }
 
-
-#pragma mark - View lifecycle
 
 - (void) loadView
 {
@@ -156,8 +154,9 @@
     
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor greenColor];
+    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
+    self.channelThumbnailCollectionView.alwaysBounceVertical = YES;
 
     // Subscriptions Collection View
     
@@ -238,6 +237,8 @@
     }
     
 }
+
+#pragma mark - View Lifecycle
 
 
 - (void) viewDidLoad
@@ -333,12 +334,6 @@
     }
 }
 
--(void)tappedOnScreen:(UIGestureRecognizer*)recogniser
-{
-    self.cellDeleteCandidate.deleteButton.hidden = YES;
-    self.deleteCellModeOn = NO;
-    [self.view removeGestureRecognizer:self.tapOnScreenRecogniser];
-}
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -350,37 +345,27 @@
     
     [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
     
-}
-
-
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear: animated];
     
-    CGSize subSize = self.subscriptionsViewController.collectionView.contentSize;
-    CGSize thumbSize = self.channelThumbnailCollectionView.contentSize;
-    subSize.height = thumbSize.height;
-    self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(subSize.width, 1800.0);
-    
-    if([[SYNDeviceManager sharedInstance] isIPad])
-    {
-        [self.channelThumbnailCollectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-        [self.subscriptionsViewController.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
-    }
     
     [self reloadCollectionViews];
+    
 }
+
+
 
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    if([[SYNDeviceManager sharedInstance] isIPad])
-    {
-        [self.channelThumbnailCollectionView removeObserver:self forKeyPath:@"contentSize"];
-        [self.subscriptionsViewController.collectionView removeObserver:self forKeyPath:@"contentSize"];
-    }
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    //[self resizeScrollViews];
 }
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
@@ -446,7 +431,7 @@
             newFrame.size.width = 412.0f;
             self.headerSubscriptionsView.frame = newFrame;
             
-            viewHeight = 748;
+            viewHeight = 718;
             
             channelsLayout = self.channelsLandscapeLayout;
             subscriptionsLayout = self.subscriptionsLandscapeLayout;
@@ -458,6 +443,7 @@
         [self.headerChannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
         
     }
+    
 
     NSIndexPath* indexPath = nil;
     if(self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
@@ -569,7 +555,7 @@
 
 
 
-#pragma mark - UICollectionView DataSource
+#pragma mark - UICollectionView DataSource/Delegate
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
@@ -580,7 +566,7 @@
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return self.fetchedResultsController.sections.count;
+    return 1;
 }
 
 
@@ -599,6 +585,7 @@
     
     channelThumbnailCell.deleteButton.hidden = YES;
     
+    
     return channelThumbnailCell;
     
 }
@@ -610,6 +597,7 @@
     
     if(self.deleteCellModeOn)
         return;
+    
     
     Channel *channel;
     
@@ -781,24 +769,27 @@
 #endif
 
 
-- (void) observeValueForKeyPath: (NSString *) keyPath
-                       ofObject: (id) object
-                         change: (NSDictionary *) change
-                        context: (void *)context
+
+
+-(void)resizeScrollViews
 {
-    if ([keyPath isEqualToString: @"contentSize"])
-    {
-        // CGSize newContentSize = [[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue];
-        
-        //        CGSize s1Size = self.channelThumbnailCollectionView.contentSize;
-        //        CGSize s2Size = self.subscriptionsViewController.collectionView.contentSize;
-        //
-        //        if(s1Size.height == s2Size.height)
-        //            return;
-        //
-        //
-        //        self.subscriptionsViewController.collectionView.contentSize = CGSizeMake(s2Size.width, s1Size.height);
-    }
+    CGSize channelViewSize = self.channelThumbnailCollectionView.contentSize;
+    CGSize subscriptionsViewSize = self.subscriptionsViewController.collectionView.contentSize;
+    
+    if(channelViewSize.height == subscriptionsViewSize.height)
+        return;
+    
+    CGRect paddingRect = CGRectZero;
+    paddingRect.origin.x = 0.0;
+    paddingRect.origin.y = channelViewSize.height;
+    paddingRect.size.width = channelViewSize.width;
+    paddingRect.size.height = 600.0;
+    UIView* paddingView = [[UIView alloc] initWithFrame:paddingRect];
+    paddingView.backgroundColor = [UIColor blueColor];
+    
+    [self.channelThumbnailCollectionView addSubview:paddingView];
+    channelViewSize.height = 2000.0;
+    [self.channelThumbnailCollectionView setContentSize:CGSizeMake(channelViewSize.width, 1000)];
 }
 
 #pragma mark - tab button actions
@@ -833,6 +824,16 @@
     }
     
 }
+
+-(void)tappedOnScreen:(UIGestureRecognizer*)recogniser
+{
+    self.cellDeleteCandidate.deleteButton.hidden = YES;
+    self.deleteCellModeOn = NO;
+    [self.view removeGestureRecognizer:self.tapOnScreenRecogniser];
+    
+    
+}
+
 
 
 -(void)channelDeleteButtonTapped:(UIButton*)sender
