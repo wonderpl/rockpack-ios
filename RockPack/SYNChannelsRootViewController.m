@@ -344,7 +344,6 @@
         // nothing yet
     }
     
-    
     if (kind == UICollectionElementKindSectionFooter)
     {
         channelMoreFooter = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
