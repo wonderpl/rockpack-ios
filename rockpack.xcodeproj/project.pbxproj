@@ -405,12 +405,6 @@
 		388CAF57172EA1C900721372 /* NavSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF38172EA1C900721372 /* NavSelected~iphone.png */; };
 		388CAF58172EA1C900721372 /* NotificationBubble@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF39172EA1C900721372 /* NotificationBubble@2x~iphone.png */; };
 		388CAF59172EA1C900721372 /* NotificationBubble~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF3A172EA1C900721372 /* NotificationBubble~iphone.png */; };
-		388CAF5A172EA1C900721372 /* PanelMenu-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF3C172EA1C900721372 /* PanelMenu-568h@2x~iphone.png */; };
-		388CAF5B172EA1C900721372 /* PanelMenu@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF3D172EA1C900721372 /* PanelMenu@2x~iphone.png */; };
-		388CAF5C172EA1C900721372 /* PanelMenuSecondLevel-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF3E172EA1C900721372 /* PanelMenuSecondLevel-568h@2x~iphone.png */; };
-		388CAF5D172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF3F172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png */; };
-		388CAF5E172EA1C900721372 /* PanelMenuSecondLevel~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF40172EA1C900721372 /* PanelMenuSecondLevel~iphone.png */; };
-		388CAF5F172EA1C900721372 /* PanelMenu~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF41172EA1C900721372 /* PanelMenu~iphone.png */; };
 		388CAF60172EA1C900721372 /* PanelMenu@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF42172EA1C900721372 /* PanelMenu@2x~iphone.png */; };
 		388CAF61172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF43172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png */; };
 		388CAF62172EA1C900721372 /* PanelMenuSecondLevel~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF44172EA1C900721372 /* PanelMenuSecondLevel~iphone.png */; };
@@ -1251,12 +1245,6 @@
 		388CAF38172EA1C900721372 /* NavSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NavSelected~iphone.png"; sourceTree = "<group>"; };
 		388CAF39172EA1C900721372 /* NotificationBubble@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBubble@2x~iphone.png"; sourceTree = "<group>"; };
 		388CAF3A172EA1C900721372 /* NotificationBubble~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBubble~iphone.png"; sourceTree = "<group>"; };
-		388CAF3C172EA1C900721372 /* PanelMenu-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenu-568h@2x~iphone.png"; sourceTree = "<group>"; };
-		388CAF3D172EA1C900721372 /* PanelMenu@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenu@2x~iphone.png"; sourceTree = "<group>"; };
-		388CAF3E172EA1C900721372 /* PanelMenuSecondLevel-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenuSecondLevel-568h@2x~iphone.png"; sourceTree = "<group>"; };
-		388CAF3F172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenuSecondLevel@2x~iphone.png"; sourceTree = "<group>"; };
-		388CAF40172EA1C900721372 /* PanelMenuSecondLevel~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenuSecondLevel~iphone.png"; sourceTree = "<group>"; };
-		388CAF41172EA1C900721372 /* PanelMenu~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenu~iphone.png"; sourceTree = "<group>"; };
 		388CAF42172EA1C900721372 /* PanelMenu@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenu@2x~iphone.png"; sourceTree = "<group>"; };
 		388CAF43172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenuSecondLevel@2x~iphone.png"; sourceTree = "<group>"; };
 		388CAF44172EA1C900721372 /* PanelMenuSecondLevel~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelMenuSecondLevel~iphone.png"; sourceTree = "<group>"; };
@@ -2835,26 +2823,12 @@
 				388CAF38172EA1C900721372 /* NavSelected~iphone.png */,
 				388CAF39172EA1C900721372 /* NotificationBubble@2x~iphone.png */,
 				388CAF3A172EA1C900721372 /* NotificationBubble~iphone.png */,
-				388CAF3B172EA1C900721372 /* PanelMenu Full images */,
 				388CAF42172EA1C900721372 /* PanelMenu@2x~iphone.png */,
 				388CAF43172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png */,
 				388CAF44172EA1C900721372 /* PanelMenuSecondLevel~iphone.png */,
 				388CAF45172EA1C900721372 /* PanelMenu~iphone.png */,
 			);
 			path = accountSettings;
-			sourceTree = "<group>";
-		};
-		388CAF3B172EA1C900721372 /* PanelMenu Full images */ = {
-			isa = PBXGroup;
-			children = (
-				388CAF3C172EA1C900721372 /* PanelMenu-568h@2x~iphone.png */,
-				388CAF3D172EA1C900721372 /* PanelMenu@2x~iphone.png */,
-				388CAF3E172EA1C900721372 /* PanelMenuSecondLevel-568h@2x~iphone.png */,
-				388CAF3F172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png */,
-				388CAF40172EA1C900721372 /* PanelMenuSecondLevel~iphone.png */,
-				388CAF41172EA1C900721372 /* PanelMenu~iphone.png */,
-			);
-			path = "PanelMenu Full images";
 			sourceTree = "<group>";
 		};
 		388CAF64172EBD8E00721372 /* iPhoneCell */ = {
@@ -4189,12 +4163,6 @@
 				388CAF57172EA1C900721372 /* NavSelected~iphone.png in Resources */,
 				388CAF58172EA1C900721372 /* NotificationBubble@2x~iphone.png in Resources */,
 				388CAF59172EA1C900721372 /* NotificationBubble~iphone.png in Resources */,
-				388CAF5A172EA1C900721372 /* PanelMenu-568h@2x~iphone.png in Resources */,
-				388CAF5B172EA1C900721372 /* PanelMenu@2x~iphone.png in Resources */,
-				388CAF5C172EA1C900721372 /* PanelMenuSecondLevel-568h@2x~iphone.png in Resources */,
-				388CAF5D172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png in Resources */,
-				388CAF5E172EA1C900721372 /* PanelMenuSecondLevel~iphone.png in Resources */,
-				388CAF5F172EA1C900721372 /* PanelMenu~iphone.png in Resources */,
 				388CAF60172EA1C900721372 /* PanelMenu@2x~iphone.png in Resources */,
 				388CAF61172EA1C900721372 /* PanelMenuSecondLevel@2x~iphone.png in Resources */,
 				388CAF62172EA1C900721372 /* PanelMenuSecondLevel~iphone.png in Resources */,
