@@ -27,11 +27,7 @@
             responseBlock(@{@"response":@"NO CONTENT"});
             return;
         }
-        if (completedOperation.HTTPStatusCode == 201)
-        {
-            responseBlock(@{@"response":@"CREATED"});
-            return;
-        }
+        
          
         [completedOperation responseJSONWithOptions: NSJSONReadingAllowFragments
                                   completionHandler: ^(id jsonObject) {
