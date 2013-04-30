@@ -108,12 +108,14 @@ typedef enum {
         CGRect newFrame = self.view.frame;
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 75.0f;
         self.view.frame = newFrame;
-        self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 72.0f, 0.0f, 72.0f ,0.0f)];
+        self.mainContentView.frame = self.view.bounds;
+        self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 70.0f, 0.0f, 70.0f ,0.0f)];
         
         self.searchViewController = [[SYNSearchBoxViewController alloc] init];
         [self addChildViewController:self.searchViewController];
         [self.view addSubview:self.searchViewController.view];
         self.searchViewController.searchBoxView.searchTextField.delegate = self;
+        [self.searchViewController.searchBoxView.integratedCloseButton addTarget:self action:@selector(closeSearch:) forControlEvents:UIControlEventTouchUpInside];
         
         
     }
@@ -388,16 +390,42 @@ typedef enum {
 {
     [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.mainContentView.alpha = 0.0f;
-        CGRect endFrame = self.searchViewController.view.frame;
-        endFrame.origin.y = -55.0f;
-        self.searchViewController.view.frame = endFrame;
-        [self.searchViewController.searchBoxView revealCloseButton];
+        
+        CGRect endFrame = self.view.frame;
+        endFrame.size.height +=55;
+        endFrame.origin.y -=55;
+        self.view.frame = endFrame;
+        
     } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [self.searchViewController.searchBoxView revealCloseButton];
+        } completion:nil];
         self.mainContentView.hidden = YES;
         
     }];
     self.searchViewController.searchBoxView.searchTextField.delegate = self.searchViewController;
     return YES;
+}
+
+#pragma mark - close search callback
+-(void)closeSearch:(id)sender
+{
+    [self.searchViewController.searchBoxView.searchTextField resignFirstResponder];
+    self.searchViewController.searchBoxView.searchTextField.delegate = self;
+    [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [self.searchViewController.searchBoxView hideCloseButton];
+    } completion:^(BOOL finished) {
+        self.mainContentView.hidden = NO;
+        [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.mainContentView.alpha = 1.0f;
+            CGRect endFrame = self.view.frame;
+            endFrame.size.height -=55;
+            endFrame.origin.y +=55;
+            self.view.frame = endFrame;
+        } completion:^(BOOL finished) {
+        }];
+                
+    }];
 }
 
 @end
