@@ -21,15 +21,22 @@
          
         if(ignore && completedOperation.isCachedResponse)
             return;
+        
+        if (completedOperation.HTTPStatusCode == 204)
+        {
+            responseBlock(@{@"response":@"NO CONTENT"});
+            return;
+        }
+        
          
-         [completedOperation responseJSONWithOptions: NSJSONReadingAllowFragments
-                                   completionHandler: ^(id jsonObject) {
+        [completedOperation responseJSONWithOptions: NSJSONReadingAllowFragments
+                                  completionHandler: ^(id jsonObject) {
                                        
             // We need to check to see if the response is signalled as blank
-             if(!jsonObject && (completedOperation.HTTPStatusCode != 204))
+             if(!jsonObject)
              {
                  // check whether an object is returned before calling the completeBlock
-                 NSLog(@"The JSON Object could not be parsed!");
+                 NSLog(@"[SYNNetworkOperationJsonObject]: 'The JSON Object could not be parsed'");
                  NSError* noObjectParsedError = [NSError errorWithDomain: @"JSON Object Not Parsed"
                                                                     code: 0
                                                                 userInfo: nil];
@@ -38,6 +45,7 @@
              }
             
              responseBlock(jsonObject);
+        
          }];
      }
      errorHandler: ^(MKNetworkOperation *errorOp, NSError* error)

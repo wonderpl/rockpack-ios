@@ -21,6 +21,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "VideoInstance.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "SYNDeviceManager.h"
@@ -295,7 +296,8 @@
 
 #pragma mark - User actions
 
-- (IBAction) userTouchedPreviousVideoButton: (id) sender
+
+- (IBAction) userTouchedNextVideoButton: (id) sender
 {
     int index = (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
 
@@ -304,7 +306,7 @@
 }
 
 
-- (IBAction) userTouchedNextVideoButton: (id) sender
+- (IBAction) userTouchedPreviousVideoButton: (id) sender
 {
     int index = self.currentSelectedIndex -  1;
     
@@ -343,26 +345,43 @@
 
 - (IBAction) toggleStarButton: (UIButton *) button
 {
-    button.selected = !button.selected;
-    
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    if (videoInstance.video.starredByUserValue == TRUE)
-    {
-        // Currently highlighted, so decrement
-        videoInstance.video.starredByUserValue = FALSE;
-        videoInstance.video.starCountValue -= 1;
-    }
-    else
-    {
-        // Currently highlighted, so increment
-        videoInstance.video.starredByUserValue = TRUE;
-        videoInstance.video.starCountValue += 1;
-    }
-
-    [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId:appDelegate.currentUser.uniqueId
+                                                     action: @"star" videoInstanceId:videoInstance.uniqueId
+                                          completionHandler:^(id response) {
+                                              
+                                              
+                                              
+                                              button.selected = !button.selected;
+                                              
+                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              {
+                                                  // Currently highlighted, so decrement
+                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.video.starCountValue -= 1;
+                                              }
+                                              else
+                                              {
+                                                  // Currently highlighted, so increment
+                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.video.starCountValue += 1;
+                                              }
+                                              
+                                              [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                              
+                                              [appDelegate saveContext:YES];
+        
+                                          } errorHandler:^(id error) {
+                                              
+                                              NSLog(@"Could not star video");
+        
+                                          }];
     
-    [appDelegate saveContext:YES];
+    
+    
+    
+    
 }
 
 
