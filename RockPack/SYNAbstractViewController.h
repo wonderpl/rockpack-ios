@@ -64,7 +64,10 @@
 - (BOOL) hasTabBar;
 - (BOOL) isVideoQueueVisibleOnStart;
 - (void) highlightVideoQueue: (BOOL) showHighlight;
-- (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) indexPath;
+
+- (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                                 andSelectedIndex: (int) selectedIndex;
+
 - (void) viewChannelDetails: (Channel *) channel;
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) refresh;

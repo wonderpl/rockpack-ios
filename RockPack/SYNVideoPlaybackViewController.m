@@ -7,7 +7,6 @@
 //
 
 #import "AppConstants.h"
-#import "NSIndexPath+Arithmetic.h"
 #import "NSString+Timecode.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
@@ -27,8 +26,8 @@
 @property (nonatomic, assign, getter = isNextVideoWebViewReadyToPlay) BOOL nextVideoWebViewReadyToPlay;
 @property (nonatomic, strong) CABasicAnimation *placeholderBottomLayerAnimation;
 @property (nonatomic, strong) CABasicAnimation *placeholderMiddleLayerAnimation;
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
+@property (nonatomic, strong) NSArray *videoInstanceArray;
+@property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, strong) NSString *source;
 @property (nonatomic, strong) NSString *sourceId;
 @property (nonatomic, strong) NSTimer *bufferMonitoringTimer;
@@ -423,68 +422,58 @@
 
 #pragma mark - Source / Playlist management
 
-- (void) incrementVideoIndexPath
+- (void) incrementVideoIndex
 {
-//    self.currentSelectedIndexPath = [self nextIndexPath: self.currentSelectedIndexPath];
-    self.currentSelectedIndexPath = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
+    // Calculate new index, wrapping around if necessary
+    self.currentSelectedIndex = (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
 }
 
 
-- (void) decrementVideoIndexPath
+- (void) decrementVideoIndex
 {
-    self.currentSelectedIndexPath = [self.currentSelectedIndexPath previousIndexPathUsingFetchedResultsController: self.fetchedResultsController];
-}
-
-
-- (NSIndexPath *) nextVideoIndexPath
-{
-    NSIndexPath *index = nil;
+    // Calculate new index
+    self.currentSelectedIndex = self.currentSelectedIndex -  1;
     
-    // Don't bother incrementing index if we only have a single video
-    if (self.isUsingPlaylist)
+    // wrap around if necessary
+    if (self.currentSelectedIndex < 0)
     {
-        // make sure we wrap around at the end of the video playlist
-        index = [self.currentSelectedIndexPath nextIndexPathUsingFetchedResultsController: self.fetchedResultsController];
+        self.currentSelectedIndex = self.videoInstanceArray.count - 1;
+    }
+}
+
+
+- (int) nextVideoIndex
+{
+    return (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
+}
+
+
+- (int) previousVideoIndex
+{
+    int index = self.currentSelectedIndex -  1;
+        
+    // wrap around if necessary
+    if (index < 0)
+    {
+        index = self.videoInstanceArray.count - 1;
     }
     
     return index;
 }
 
 
-- (NSIndexPath *) previousVideoIndexPath
-{
-    NSIndexPath *index = nil;
-    
-    // Don't bother incrementing index if we only have a single video
-    if (self.isUsingPlaylist)
-    {
-        // make sure we wrap around at the end of the video playlist
-        index = [self.currentSelectedIndexPath previousIndexPathUsingFetchedResultsController: self.fetchedResultsController];
-    }
-    
-    return index;
-}
-
-
-- (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
-                               selectedIndexPath: (NSIndexPath *) selectedIndexPath
-                                        autoPlay: (BOOL) autoPlay
+- (void) setPlaylist: (NSArray *) playlistArray
+       selectedIndex: (int) selectedIndex
+            autoPlay: (BOOL) autoPlay;
 {
     // Init our ivars
     self.source = nil;
     self.sourceId = nil;
-    self.fetchedResultsController = fetchedResultsController;
-    self.currentSelectedIndexPath = selectedIndexPath;
+    self.videoInstanceArray = playlistArray;
+    self.currentSelectedIndex = selectedIndex;
     self.autoPlay = autoPlay;
     
     [self loadCurrentVideoWebView];
-}
-
-
-// Returns true if we have a playlist
-- (BOOL) isUsingPlaylist
-{
-    return self.fetchedResultsController ? TRUE : FALSE;
 }
 
 
@@ -499,10 +488,10 @@
 }
 
 
-- (void) playVideoAtIndex: (NSIndexPath *) newIndexPath
+- (void) playVideoAtIndex: (int) index
 {
     // If we are already at this index, but not playing, then play
-    if ([newIndexPath isEqual: self.currentSelectedIndexPath] == TRUE)
+    if (index == self.currentSelectedIndex)
     {
         if (!self.isPlaying)
         {
@@ -514,10 +503,9 @@
     {
         // OK, we are not currently playing this index, so segue to the next video
         [self fadeOutVideoPlayerInWebView: self.currentVideoWebView];
-        self.currentSelectedIndexPath = newIndexPath;
+        self.currentSelectedIndex = index;
         [self loadCurrentVideoWebView];
     }
-    
 }
 
 
@@ -545,13 +533,13 @@
 
 - (void) loadNextVideo
 {
-    [self incrementVideoIndexPath];
+    [self incrementVideoIndex];
     [self loadCurrentVideoWebView];
 }
 
 - (void) loadPreviousVideo
 {
-    [self decrementVideoIndexPath];
+    [self decrementVideoIndex];
     [self loadCurrentVideoWebView];
 }
 
@@ -617,20 +605,12 @@
 {
     [self resetPlayerAttributes];
     
-    // Assume that we just have a single video as opposed to a playlist
-    
-    NSString *currentSource = self.source;
-    NSString *currentSourceId = self.sourceId;
-    
     self.currentVideoViewedFlag = FALSE;
+
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    // But if we do have a playlist, then load up the source and sourceId for the current video index
-    if (self.isUsingPlaylist)
-    {
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.currentSelectedIndexPath];
-        currentSource = videoInstance.video.source;
-        currentSourceId = videoInstance.video.sourceId;
-    }
+    NSString *currentSource = videoInstance.video.source;
+    NSString *currentSourceId = videoInstance.video.sourceId;
     
     [self loadWebView: self.currentVideoWebView
            withSource: currentSource
@@ -639,17 +619,10 @@
 
 - (void) loadNextVideoWebView
 {
-    // Assume that we just have a single video as opposed to a playlist
-    NSString *nextSource = self.source;
-    NSString *nextSourceId = self.sourceId;
+    VideoInstance *videoInstance = self.videoInstanceArray [self.nextVideoIndex];
     
-    // But if we do have a playlist, then load up the source and sourceId for the current video index
-    if (self.isUsingPlaylist)
-    {
-        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: self.nextVideoIndexPath];
-        nextSource = videoInstance.video.source;
-        nextSourceId = videoInstance.video.sourceId;
-    }
+    NSString *nextSource = videoInstance.video.source;
+    NSString *nextSourceId = videoInstance.video.sourceId;
     
     [self loadWebView: self.nextVideoWebView
            withSource: nextSource
@@ -1197,7 +1170,7 @@
 
 - (VideoInstance*) currentVideoInstance
 {
-    return (VideoInstance*)[self.fetchedResultsController objectAtIndexPath:self.currentSelectedIndexPath];
+    return (VideoInstance*)self.videoInstanceArray [self.currentSelectedIndex];
 }
 
 @end

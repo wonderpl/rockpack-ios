@@ -25,12 +25,12 @@
 // Initialisation
 - (id) initWithFrame: (CGRect) frame;
 
-- (void) setPlaylistWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
-                               selectedIndexPath: (NSIndexPath *) selectedIndexPath
-                                        autoPlay: (BOOL) autoPlay;
+- (void) setPlaylist: (NSArray *) playlistArray
+       selectedIndex: (int) selectedIndex
+            autoPlay: (BOOL) autoPlay;
 
 // Player control
-- (void) playVideoAtIndex: (NSIndexPath *) newIndexPath;
+- (void) playVideoAtIndex: (int) index;
 - (void) loadNextVideo;
 - (void) loadPreviousVideo;
 

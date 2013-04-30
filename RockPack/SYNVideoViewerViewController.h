@@ -12,8 +12,8 @@
 
 @interface SYNVideoViewerViewController : SYNAbstractViewController
 
-- (id) initWithFetchedResultsController: (NSFetchedResultsController *) fetchedResultsController
-                      selectedIndexPath: (NSIndexPath *) selectedIndexPath;
+- (id) initWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                    selectedIndex: (int) selectedIndex;
 
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) SYNMasterViewController *overlayParent;
