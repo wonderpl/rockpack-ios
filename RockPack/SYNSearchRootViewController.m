@@ -49,9 +49,8 @@
 -(void)loadView
 {
     
-    CGRect frame = CGRectMake(0.0, 0.0,
-                              [[SYNDeviceManager sharedInstance] currentScreenWidth],
-                              [[SYNDeviceManager sharedInstance] currentScreenHeight]);
+    CGRect frame = CGRectMake(0.0, 0.0,[[SYNDeviceManager sharedInstance] currentScreenWidth],
+                               [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame:frame];
     self.view.backgroundColor = [UIColor clearColor];
@@ -85,7 +84,7 @@
     [self.videoSearchTabView addTarget:self action:@selector(videoTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.channelsSearchTabView addTarget:self action:@selector(channelTabPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    tabsContainer.center = CGPointMake(self.view.center.x, 84.0);
+    tabsContainer.center = CGPointMake(self.view.center.x, self.channelsSearchTabView.frame.size.height/2 + 65.0f);
     tabsContainer.frame = CGRectIntegral(tabsContainer.frame);
     
     
@@ -134,6 +133,11 @@
         [self.currentController.view removeFromSuperview];
     
     self.currentController = newController;
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        CGRect collectionViewFrame = CGRectMake(0,108.0f,320.0f,self.view.frame.size.height - 108.0f);
+        self.currentController.videoThumbnailCollectionView.frame = collectionViewFrame;
+    }
     
 }
 -(void)showChannelsSearchResult
@@ -146,6 +150,11 @@
         [self.currentController.view removeFromSuperview];
     
     self.currentController = newController;
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        CGRect collectionViewFrame = CGRectMake(0,108.0f,320.0f,self.view.frame.size.height - 108.0f);
+        self.currentController.videoThumbnailCollectionView.frame = collectionViewFrame;
+    }
 }
 
 
@@ -189,7 +198,6 @@
     self.searchChannelsController.itemToUpdate = self.channelsSearchTabView;
     self.searchChannelsController.parent = self;
     [self addChildViewController:self.searchChannelsController];
-    
     
     viewIsOnScreen = YES;
     

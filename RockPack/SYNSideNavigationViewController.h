@@ -10,6 +10,10 @@
 #import "User.h"
 #import <UIKit/UIKit.h>
 
+@class SYNSearchBoxViewController;
+
+#define kSideNavigationSearchCloseNotification @"SideNavigationSearchCloseNotification"
+
 typedef enum {
     SideNavigationStateHidden = 0,
     SideNavigationStateHalf,
@@ -24,6 +28,9 @@ typedef enum {
 @property (nonatomic) SideNavigationState state;
 @property (nonatomic, weak) User* user;
 @property (nonatomic, strong) NSString* keyForSelectedPage;
+
+//iPhone specific
+@property (nonatomic, strong) SYNSearchBoxViewController* searchViewController;
 
 -(void)reset;
 -(void)deselectAllCells;

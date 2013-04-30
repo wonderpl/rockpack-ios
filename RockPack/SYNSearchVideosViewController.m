@@ -181,13 +181,20 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    if([[SYNDeviceManager sharedInstance] isLandscape])
+    if([[SYNDeviceManager sharedInstance]isIPad])
     {
-        return CGSizeMake(497, 170);
+        if([[SYNDeviceManager sharedInstance] isLandscape])
+        {
+            return CGSizeMake(497, 170);
+        }
+        else
+        {
+            return CGSizeMake(370, 170);
+        }
     }
     else
     {
-        return CGSizeMake(370, 170);
+        return CGSizeMake(310,251);
     }
 }
 

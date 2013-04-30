@@ -9,6 +9,12 @@
 #import "SYNSearchBoxView.h"
 #import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
+
+@interface SYNSearchBoxView ()
+//iPhone specific
+@property (nonatomic, strong)IBOutlet UIImageView* searchFieldFrameImageView;
+@end
 
 @implementation SYNSearchBoxView
 
@@ -87,8 +93,23 @@
     return self;
 }
 
+-(void)awakeFromNib
+{
+    self.searchFieldFrameImageView.image = [[UIImage imageNamed:@"FieldSearch"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
+    self.searchTextField.font = [UIFont rockpackFontOfSize:self.searchTextField.font.pointSize];
+    self.searchTextField.textColor = [UIColor colorWithWhite:166.0f/255.0f alpha:1.0f];
+    self.searchTextField.layer.shadowOpacity=0.8;
+    self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
+    self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
+    [self hideCloseButton];
+}
+
 -(void)resizeForHeight:(CGFloat)height
 {
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        
+    
     CGRect panelFrame = backgroundPanel.frame;
     panelFrame.size.height = initialPanelHeight + height + (height > 0.0 ? 10.0 : 0.0);
     backgroundPanel.frame = panelFrame;
@@ -99,16 +120,57 @@
     panelFrame.size.height -= kGrayPanelBorderWidth * 2;
     grayPanel.frame = panelFrame;
     
-    
     CGRect selfFrame = self.frame;
     selfFrame.size.height = panelFrame.size.height;
     self.frame = selfFrame;
+    }
+    else
+    {
+        CGRect selfFrame = self.frame;
+        selfFrame.size.height = MIN(65.05 + height, 548.0f);
+        self.frame = selfFrame;
+    }
 }
 
 +(id)searchBoxView
 {
     return [[self alloc] initWithFrame:CGRectZero];
 }
+
+#pragma mark - reveal closebutton (iPhone)
+-(void)revealCloseButton
+{
+    CGRect newFrame = self.integratedCloseButton.frame;
+    newFrame.origin.x = self.frame.size.width - newFrame.size.width - 10.0f;
+    self.integratedCloseButton.frame = newFrame;
+    
+    newFrame = self.searchTextField.frame;
+    newFrame.size.width = self.integratedCloseButton.frame.origin.x - 10.0f - newFrame.origin.x;
+    self.searchTextField.frame = newFrame;
+    
+    newFrame = self.searchFieldFrameImageView.frame;
+    newFrame.size.width = self.integratedCloseButton.frame.origin.x - 10.0f - newFrame.origin.x;
+    self.searchFieldFrameImageView.frame = newFrame;
+}
+
+-(void)hideCloseButton
+{
+    CGRect newFrame = self.integratedCloseButton.frame;
+    newFrame.origin.x = self.frame.size.width;
+    self.integratedCloseButton.frame = newFrame;
+    
+    newFrame = self.searchTextField.frame;
+    newFrame.size.width = self.frame.size.width -10.0f - newFrame.origin.x;
+    self.searchTextField.frame = newFrame;
+    
+    newFrame = self.searchFieldFrameImageView.frame;
+    newFrame.size.width = self.frame.size.width -10.0f - newFrame.origin.x;
+    self.searchFieldFrameImageView.frame = newFrame;
+    
+    
+}
+
+
 
 
 @end

@@ -42,11 +42,14 @@
 
 -(void)loadView
 {
-    
-    self.view = [SYNSearchBoxView searchBoxView];
-    
-    
-    
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        self.view = [SYNSearchBoxView searchBoxView];
+    }
+    else
+    {
+        self.view = [[[NSBundle mainBundle] loadNibNamed:@"SYNSearchBoxIphoneView" owner:self options:nil] objectAtIndex:0];
+    }    
 }
 
 
@@ -80,8 +83,10 @@
     
     isOnScreen = YES;
     
-    
-    [self.searchTextField becomeFirstResponder];
+    if([[ SYNDeviceManager sharedInstance] isIPad])
+    {
+        [self.searchTextField becomeFirstResponder];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -98,7 +103,6 @@
     
     
     [self.autoSuggestionController clearWords];
-    
     [self resizeTableView];
     
 }
