@@ -20,10 +20,10 @@
 
 @interface SYNSearchBoxViewController ()
 
-@property (nonatomic, strong) UITextField* searchTextField;
+@property (nonatomic, weak) UITextField* searchTextField;
+
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
-@property (nonatomic) CGRect originalFrame;
 @property (nonatomic, strong) UIView* backgroundPanel;
 @property (nonatomic, strong) UIView* grayPanel;
 
@@ -38,77 +38,19 @@
 
 @synthesize searchTextField;
 @synthesize appDelegate;
-@synthesize originalFrame;
 @synthesize backgroundPanel;
 @synthesize initialPanelHeight;
 @synthesize grayPanel;
 @synthesize isOnScreen;
+@synthesize searchBoxView;
 
 -(void)loadView
 {
     
-    
-    CGFloat barWidth = [[SYNDeviceManager sharedInstance] currentScreenWidth] - 90.0;
-    
-    self.backgroundPanel = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0,
-                                                                      barWidth, 61.0)];
-    backgroundPanel.backgroundColor = [UIColor whiteColor];
-    
-    backgroundPanel.autoresizesSubviews = YES;
-    
-    initialPanelHeight = self.backgroundPanel.frame.size.height;
-    
-    // == Gray Panel == //
-    
-    self.grayPanel = [[UIView alloc] initWithFrame:CGRectMake(kGrayPanelBorderWidth,
-                                                              kGrayPanelBorderWidth,
-                                                              backgroundPanel.frame.size.width - kGrayPanelBorderWidth * 2,
-                                                              backgroundPanel.frame.size.height - kGrayPanelBorderWidth * 2)];
-    
-    grayPanel.backgroundColor = [UIColor colorWithRed:(249.0/255.0) green:(249.0/255.0) blue:(249.0/255.0) alpha:(1.0)];
-    grayPanel.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    [backgroundPanel addSubview:grayPanel];
-    
-    backgroundPanel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+    self.view = [SYNSearchBoxView searchBoxView];
     
     
-    // == Loop == //
     
-    UIImage* loopImage = [UIImage imageNamed:@"IconSearch"];
-    UIImageView* loopImageView = [[UIImageView alloc] initWithImage:loopImage];
-    loopImageView.frame = CGRectMake(10.0, 14.0, loopImage.size.width, loopImage.size.height);
-    loopImageView.image = loopImage;
-    grayPanel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-    [grayPanel addSubview:loopImageView];
-    
-    
-    // == Label == //
-    
-    CGRect fieldRect = grayPanel.frame;
-    fieldRect.origin.x += 18.0 + loopImage.size.width;
-    fieldRect.origin.y += 14.0;
-    fieldRect.size.width -= 28.0 * 2;
-    fieldRect.size.height -= 14.0 * 2;
-    self.searchTextField = [[UITextField alloc] initWithFrame:fieldRect];
-    self.searchTextField.font = [UIFont rockpackFontOfSize:26.0];
-    self.searchTextField.backgroundColor = [UIColor clearColor];
-    self.searchTextField.textAlignment = NSTextAlignmentLeft;
-    self.searchTextField.delegate = self;
-    self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-    self.searchTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    //self.searchTextField.backgroundColor = [UIColor greenColor];
-    
-    CGRect finalFrame = backgroundPanel.frame;
-    
-    
-    self.view = [[UIView alloc] initWithFrame:finalFrame];
-    [self.view addSubview:backgroundPanel];
-    [self.view addSubview:self.searchTextField];
-    
-    self.view.autoresizesSubviews = YES;
-    
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
 }
 
 
@@ -116,7 +58,12 @@
 {
     [super viewDidLoad];
     
+    
+    
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    self.searchTextField = self.searchBoxView.searchTextField;
+    self.searchTextField.delegate = self;
 	
     self.autoSuggestionController = [[SYNAutocompleteSuggestionsController alloc] init];
     self.autoSuggestionController.tableView.delegate = self;
@@ -244,25 +191,12 @@
 
 -(void)resizeTableView
 {
-    originalFrame = self.view.frame;
+    
     
     CGFloat tableViewHeight = self.autoSuggestionController.tableHeight;
     
+    [self.searchBoxView resizeForHeight:tableViewHeight];
     
-    CGRect panelFrame = self.backgroundPanel.frame;
-    panelFrame.size.height = initialPanelHeight + tableViewHeight + (tableViewHeight > 0.0 ? 10.0 : 0.0);
-    backgroundPanel.frame = panelFrame;
-    
-    panelFrame.origin.x += kGrayPanelBorderWidth;
-    panelFrame.origin.y += kGrayPanelBorderWidth;
-    panelFrame.size.width -= kGrayPanelBorderWidth * 2;
-    panelFrame.size.height -= kGrayPanelBorderWidth * 2;
-    self.grayPanel.frame = panelFrame;
-    
-    
-    CGRect selfFrame = self.view.frame;
-    selfFrame.size.height = panelFrame.size.height;
-    self.view.frame = selfFrame;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -302,6 +236,13 @@
     [self textFieldShouldReturn: self.searchTextField];
     
 }
+
+-(SYNSearchBoxView*)searchBoxView
+{
+    return (SYNSearchBoxView*)self.view;
+}
+
+
 
 
 

@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SYNSearchBoxView.h"
+
 @interface SYNSearchBoxViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate>
 
 @property (nonatomic, readonly) BOOL isOnScreen;
+
+@property (nonatomic, readonly) SYNSearchBoxView* searchBoxView;
+
 
 - (void) clear;
 
