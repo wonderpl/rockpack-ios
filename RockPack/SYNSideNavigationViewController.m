@@ -14,6 +14,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNSideNavigationIphoneCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNSearchBoxViewController.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -38,11 +39,13 @@ typedef enum {
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
 @property (nonatomic, strong) NSMutableDictionary* cellByPageName;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
-@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
-@property (weak, nonatomic) IBOutlet UIImageView *searchBackground;
 @property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 
 @property (nonatomic, strong) UIView* bottomExtraView;
+
+//iPhone specific
+@property (nonatomic, strong) SYNSearchBoxViewController* searchViewController;
+@property (weak, nonatomic) IBOutlet UIView *mainContentView;
 
 @end
 
@@ -106,12 +109,13 @@ typedef enum {
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 75.0f;
         self.view.frame = newFrame;
         self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 72.0f, 0.0f, 72.0f ,0.0f)];
-        self.searchBackground.image = [[UIImage imageNamed:@"FieldSearch"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
-        self.searchTextField.font = [UIFont rockpackFontOfSize:self.searchTextField.font.pointSize];
-        self.searchTextField.textColor = [UIColor colorWithWhite:166.0f/255.0f alpha:1.0f];
-        self.searchTextField.layer.shadowOpacity=0.8;
-        self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
-        self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
+        
+        self.searchViewController = [[SYNSearchBoxViewController alloc] init];
+        [self addChildViewController:self.searchViewController];
+        [self.view addSubview:self.searchViewController.view];
+        self.searchViewController.searchBoxView.searchTextField.delegate = self;
+        
+        
     }
 }
 
@@ -380,9 +384,19 @@ typedef enum {
 }
 
 #pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField;
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.mainContentView.alpha = 0.0f;
+        CGRect endFrame = self.searchViewController.view.frame;
+        endFrame.origin.y = -55.0f;
+        self.searchViewController.view.frame = endFrame;
+        [self.searchViewController.searchBoxView revealCloseButton];
+    } completion:^(BOOL finished) {
+        self.mainContentView.hidden = YES;
+        
+    }];
+    self.searchViewController.searchBoxView.searchTextField.delegate = self.searchViewController;
     return YES;
 }
 
