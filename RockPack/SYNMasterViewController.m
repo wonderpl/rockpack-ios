@@ -72,6 +72,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 @property (strong, nonatomic) Reachability *reachability;
 
+@property (nonatomic, strong) UIView* accountSettingsCoverView;
+
 @property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 
 
@@ -224,6 +226,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                                     alpha:(1.0)];
     
     self.reachability = [Reachability reachabilityWithHostname:appDelegate.networkEngine.hostName];
+    
+    self.accountSettingsCoverView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.accountSettingsCoverView.backgroundColor = [UIColor darkGrayColor];
+    self.accountSettingsCoverView.alpha = 0.5;
+    self.accountSettingsCoverView.hidden = YES;
     
     
     
@@ -855,10 +862,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(self.accountSettingsPopover)
         return;
     
-    SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
-    mainTable.view.backgroundColor = [UIColor clearColor];
+    SYNAccountSettingsMainTableViewController* accountsTableController = [[SYNAccountSettingsMainTableViewController alloc] init];
+    accountsTableController.view.backgroundColor = [UIColor clearColor];
     
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
     navigationController.view.backgroundColor = [UIColor clearColor];
     
     
@@ -885,7 +892,25 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else
     {
+        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"ButtonProfileChannels"]
+                                           forBarMetrics:UIBarMetricsDefault];
         
+        [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+        
+        
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
+        
+        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithTitle: @"Done"
+                                                                       style: UIBarButtonItemStylePlain
+                                                                      target: self
+                                                                      action: @selector(modalAccountContainerDismiss)];
+        
+        
+        accountsTableController.navigationItem.rightBarButtonItem = buttonItem;
+        
+
         
         self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
         
@@ -893,12 +918,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         self.modalAccountContainer.view.frame = modalFrame;
         
+        self.accountSettingsCoverView.alpha = 0.0;
+        self.accountSettingsCoverView.hidden = NO;
+        [self.view addSubview:self.accountSettingsCoverView];
+        
         [self.view addSubview:self.modalAccountContainer.view];
         
         modalFrame.origin.y = 60.0;
         
         [UIView animateWithDuration:0.5 animations:^{
            
+            self.accountSettingsCoverView.alpha = 0.8;
             self.modalAccountContainer.view.frame = modalFrame;
             
             
@@ -907,6 +937,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         
     }
+}
+
+-(void)modalAccountContainerDismiss
+{
+    
+    CGRect hiddenFrame = self.modalAccountContainer.view.frame;
+    hiddenFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        self.accountSettingsCoverView.alpha = 0.0;
+        self.modalAccountContainer.view.frame = hiddenFrame;
+        
+        
+    } completion:^(BOOL finished) {
+        
+        self.accountSettingsCoverView.hidden = YES;
+        
+        [self.modalAccountContainer.view removeFromSuperview];
+        
+        
+    }];
+    
 }
 
 
