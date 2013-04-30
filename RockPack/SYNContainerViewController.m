@@ -187,9 +187,14 @@
     }
     
     // pack replacement
+    //get page before resizing scrollview
+    int showingPage = self.currentPage;
     
+    //resize scrollview
     self.scrollView.contentSize = CGSizeMake(newFrame.origin.x, newFrame.size.height);
-    self.currentPageOffset = CGPointMake(self.currentPage * newFrame.size.width,0);
+    
+    //adjust offset
+    self.currentPageOffset = CGPointMake(showingPage * newFrame.size.width,0);
     [self.scrollView setContentOffset:self.currentPageOffset];
     
     scrollingDirection = ScrollingDirectionNone;
