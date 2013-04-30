@@ -44,7 +44,6 @@ typedef enum {
 @property (nonatomic, strong) UIView* bottomExtraView;
 
 //iPhone specific
-@property (nonatomic, strong) SYNSearchBoxViewController* searchViewController;
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
 
 @end
@@ -109,7 +108,7 @@ typedef enum {
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 75.0f;
         self.view.frame = newFrame;
         self.mainContentView.frame = self.view.bounds;
-        self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 70.0f, 0.0f, 70.0f ,0.0f)];
+        self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 68.0f, 0.0f, 65.0f ,0.0f)];
         
         self.searchViewController = [[SYNSearchBoxViewController alloc] init];
         [self addChildViewController:self.searchViewController];
@@ -410,6 +409,8 @@ typedef enum {
 #pragma mark - close search callback
 -(void)closeSearch:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSideNavigationSearchCloseNotification object:self userInfo:nil];
+    
     [self.searchViewController.searchBoxView.searchTextField resignFirstResponder];
     self.searchViewController.searchBoxView.searchTextField.delegate = self;
     [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{

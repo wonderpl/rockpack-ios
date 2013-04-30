@@ -106,6 +106,10 @@
 
 -(void)resizeForHeight:(CGFloat)height
 {
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        
+    
     CGRect panelFrame = backgroundPanel.frame;
     panelFrame.size.height = initialPanelHeight + height + (height > 0.0 ? 10.0 : 0.0);
     backgroundPanel.frame = panelFrame;
@@ -116,10 +120,16 @@
     panelFrame.size.height -= kGrayPanelBorderWidth * 2;
     grayPanel.frame = panelFrame;
     
-    
     CGRect selfFrame = self.frame;
     selfFrame.size.height = panelFrame.size.height;
     self.frame = selfFrame;
+    }
+    else
+    {
+        CGRect selfFrame = self.frame;
+        selfFrame.size.height = MIN(65.05 + height, 548.0f);
+        self.frame = selfFrame;
+    }
 }
 
 +(id)searchBoxView

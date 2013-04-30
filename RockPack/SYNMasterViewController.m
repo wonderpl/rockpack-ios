@@ -275,6 +275,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
+    
     
     [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
     
@@ -596,25 +598,30 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if(!termString)
         return;
-    
-    self.closeSearchButton.hidden = YES;
-    self.sideNavigationButton.hidden = NO;
+    BOOL isIPad =[[SYNDeviceManager sharedInstance] isIPad];
+    if(isIPad)
+    {
+        self.closeSearchButton.hidden = YES;
+        self.sideNavigationButton.hidden = NO;
+        [self showBackButton:YES];
+    }
     
     if(!self.overlayNavigationController)
-    {
-        
-        [self showBackButton:YES];
-        
-        
+    {        
         self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
         self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
     }
     
-    
     [self.searchViewController showSearchResultsForTerm: termString];
 }
 
-
+-(void)searchCancelledIPhone:(NSNotification*)notification
+{
+    [self cancelButtonPressed:nil];
+    [self.sideNavigationViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
+    self.overlayNavigationController = nil;
+    
+}
 
 
 
@@ -930,6 +937,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(overlayNavigationController) // if we did not pass nil
     {
         [self.overlayContainerView addSubview:overlayNavigationController.view];
+
+        if([[SYNDeviceManager sharedInstance] isIPhone])
+        {
+            overlayNavigationController.view.frame = self.overlayContainerView.bounds;
+        }
+        self.overlayContainerView.userInteractionEnabled = YES;
         self.overlayContainerView.alpha = 0.0;
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
@@ -939,22 +952,35 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          }
                          completion: ^(BOOL finished) {
                              self.containerView.hidden = YES;
+                             [self addChildViewController:overlayNavigationController];
                              _overlayNavigationController = overlayNavigationController;
-                             [self addChildViewController:_overlayNavigationController];
                              [UIView animateWithDuration: 0.7f
                                                    delay: 0.2f
                                                  options: UIViewAnimationOptionCurveEaseOut
                                               animations: ^{
                                                   self.overlayContainerView.alpha = 1.0;
                                               }
-                                              completion: nil];
+                                              completion:^(BOOL finished) {
+                                                  if([[SYNDeviceManager sharedInstance] isIPhone])
+                                                  {
+                                                   
+                                                      // The search overlay sits on the side navigation on iPhone, move it into the overlay temporarily
+                                                     [self.overlayContainerView addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+                                                  }
+                                              }];
                          }];
     }
     else
     {
         if(_overlayContainerView) // nil was passed and there was another on screen (remove)
         {
-            [UIView animateWithDuration: 0.5f
+            NSTimeInterval animationDuration = 0.5f;
+            if([[SYNDeviceManager sharedInstance] isIPhone])
+            {
+                animationDuration = 0.1f;
+            }
+             self.overlayContainerView.userInteractionEnabled = NO;
+            [UIView animateWithDuration: animationDuration
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseIn
                              animations: ^{
@@ -965,6 +991,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                                  [_overlayNavigationController removeFromParentViewController];
                                  _overlayNavigationController = nil;
                                  self.containerView.hidden = NO;
+                                 self.overlayContainerView.userInteractionEnabled = YES;
                                  [UIView animateWithDuration: 0.7f
                                                        delay: 0.2f
                                                      options: UIViewAnimationOptionCurveEaseOut
