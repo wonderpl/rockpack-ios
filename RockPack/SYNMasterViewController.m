@@ -72,7 +72,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (strong, nonatomic) Reachability *reachability;
 
 
-
 @end
 
 @implementation SYNMasterViewController
@@ -298,6 +297,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillAppear:animated];
     
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -656,7 +662,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
     else if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        [self presentNetworkErrorViewWithMesssage: @"NO NETWORK CONNECTION"];
+        NSString* message = [[SYNDeviceManager sharedInstance] isIPad] ? @"NO NETWORK CONNECTION" : @"NO NETWORK" ;
+        [self presentNetworkErrorViewWithMesssage: message];
     }
 }
 
@@ -678,7 +685,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [UIView animateWithDuration:0.3 animations:^{
         CGRect erroViewFrame = self.networkErrorView.frame;
-        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 70.0;
+        erroViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - ([[SYNDeviceManager sharedInstance] isIPad] ? 70.0 : 60.0);
         
         self.networkErrorView.frame = erroViewFrame;
     }];
