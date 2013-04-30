@@ -15,6 +15,7 @@
 @interface SYNAccountSettingsTextInputController ()
 
 @property (nonatomic) CGFloat lastTextFieldY;
+
 @property (nonatomic) CGFloat sizeInContainer;
 
 @end
@@ -26,6 +27,7 @@
 @synthesize appDelegate;
 @synthesize lastTextFieldY;
 @synthesize spinner;
+@synthesize sizeInContainer;
 
 - (id) initWithUserFieldType: (UserFieldType) userFieldType
 {
@@ -77,17 +79,13 @@
     
     switch (currentFieldType)
     {
-        case UserFieldTypeFirstName:
+        case UserFieldTypeFullName:
             self.inputField.text = appDelegate.currentUser.firstName;
             self.inputField.leftViewMode = UITextFieldViewModeAlways;
             self.inputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
             break;
             
-        case UserFieldTypeLastName:
-            self.inputField.text = appDelegate.currentUser.lastName;
-            self.inputField.leftViewMode = UITextFieldViewModeAlways;
-            self.inputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
-            break;
+        
             
         case UserFieldTypeUsername:
             self.inputField.text = appDelegate.currentUser.username;
@@ -166,9 +164,8 @@
     
     CGRect saveButtonFrame = saveButton.frame;
     saveButtonFrame.origin.y = newInputField.frame.origin.y + newInputField.frame.size.height + 10.0;
-    saveButton.frame = saveButtonFrame;
+    self.saveButton.frame = saveButtonFrame;
     
-    saveButton.frame = CGRectIntegral(saveButtonFrame);
     
     CGRect errorTextFrame = errorTextField.frame;
     errorTextFrame.origin.y = saveButtonFrame.origin.y + saveButtonFrame.size.height + 10.0;
@@ -195,14 +192,10 @@
     
     switch (currentFieldType)
     {
-        case UserFieldTypeFirstName: 
+        case UserFieldTypeFullName:
             isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
             break;
-            
-        case UserFieldTypeLastName: 
-            isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
-            break;
-            
+        
         case UserFieldTypeUsername:
             isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z0-9\\._]+$"];
             break;

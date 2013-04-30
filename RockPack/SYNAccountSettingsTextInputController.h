@@ -14,8 +14,7 @@
 
 typedef enum
 {
-    UserFieldTypeFirstName = 0,
-    UserFieldTypeLastName,
+    UserFieldTypeFullName = 0,
     UserFieldTypeUsername,
     UserFieldTypeEmail,
     UserFieldPassword
@@ -32,6 +31,7 @@ typedef enum
 @property (nonatomic, strong) SYNAppDelegate *appDelegate;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
+@property (nonatomic, readonly) CGFloat sizeInContainer;
 
 - (id) initWithUserFieldType: (UserFieldType) userFieldType;
 

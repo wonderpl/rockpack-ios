@@ -574,7 +574,7 @@
 		BE13E38C16FC85E60098F23C /* SYNAccountSettingsAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13E38B16FC85E50098F23C /* SYNAccountSettingsAbout.m */; };
 		BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */; };
 		BE21EE8316FA108E0067223B /* SYNAccountSettingsPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */; };
-		BE21EE8716FA202F0067223B /* SYNAccountSettingsFirstNameInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE8616FA202F0067223B /* SYNAccountSettingsFirstNameInput.m */; };
+		BE21EE8716FA202F0067223B /* SYNAccountSettingsFullNameInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BE21EE8616FA202F0067223B /* SYNAccountSettingsFullNameInput.m */; };
 		BE21EE9516FA28680067223B /* IconBirthday.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8916FA28680067223B /* IconBirthday.png */; };
 		BE21EE9616FA28680067223B /* IconBirthday@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8A16FA28680067223B /* IconBirthday@2x.png */; };
 		BE21EE9716FA28680067223B /* IconEmail.png in Resources */ = {isa = PBXBuildFile; fileRef = BE21EE8B16FA28680067223B /* IconEmail.png */; };
@@ -643,7 +643,6 @@
 		BE285DA717258A0A00D995AB /* ButtonConfirm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */; };
 		BE285DA817258A0A00D995AB /* ButtonConfirmHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */; };
 		BE285DA917258A0A00D995AB /* ButtonConfirmHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */; };
-		BE285DAC1725978F00D995AB /* SYNAccountSettingsLastNameInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DAB1725978F00D995AB /* SYNAccountSettingsLastNameInput.m */; };
 		BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */; };
 		BE285DB31725A85600D995AB /* ChannelCreationCoverNone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */; };
 		BE285DB41725A85600D995AB /* ChannelCreationCoverNone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */; };
@@ -1469,8 +1468,8 @@
 		BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsTextInputController.m; sourceTree = "<group>"; };
 		BE21EE8116FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsPopoverBackgroundView.h; sourceTree = "<group>"; };
 		BE21EE8216FA108D0067223B /* SYNAccountSettingsPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsPopoverBackgroundView.m; sourceTree = "<group>"; };
-		BE21EE8516FA202F0067223B /* SYNAccountSettingsFirstNameInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsFirstNameInput.h; sourceTree = "<group>"; };
-		BE21EE8616FA202F0067223B /* SYNAccountSettingsFirstNameInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsFirstNameInput.m; sourceTree = "<group>"; };
+		BE21EE8516FA202F0067223B /* SYNAccountSettingsFullNameInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsFullNameInput.h; sourceTree = "<group>"; };
+		BE21EE8616FA202F0067223B /* SYNAccountSettingsFullNameInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsFullNameInput.m; sourceTree = "<group>"; };
 		BE21EE8916FA28680067223B /* IconBirthday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconBirthday.png; path = Assets/Images/IconBirthday.png; sourceTree = "<group>"; };
 		BE21EE8A16FA28680067223B /* IconBirthday@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IconBirthday@2x.png"; path = "Assets/Images/IconBirthday@2x.png"; sourceTree = "<group>"; };
 		BE21EE8B16FA28680067223B /* IconEmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IconEmail.png; path = Assets/Images/IconEmail.png; sourceTree = "<group>"; };
@@ -1548,8 +1547,6 @@
 		BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirm@2x.png"; path = "Assets/Images/ButtonConfirm@2x.png"; sourceTree = "<group>"; };
 		BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirmHighlighted.png; path = Assets/Images/ButtonConfirmHighlighted.png; sourceTree = "<group>"; };
 		BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirmHighlighted@2x.png"; path = "Assets/Images/ButtonConfirmHighlighted@2x.png"; sourceTree = "<group>"; };
-		BE285DAA1725978F00D995AB /* SYNAccountSettingsLastNameInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsLastNameInput.h; sourceTree = "<group>"; };
-		BE285DAB1725978F00D995AB /* SYNAccountSettingsLastNameInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsLastNameInput.m; sourceTree = "<group>"; };
 		BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkErrorView.h; sourceTree = "<group>"; };
 		BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkErrorView.m; sourceTree = "<group>"; };
 		BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCreationCoverNone.png; path = Assets/Images/ChannelCreationCoverNone.png; sourceTree = "<group>"; };
@@ -3266,10 +3263,8 @@
 		BE21EE8416FA200C0067223B /* Specific Fields */ = {
 			isa = PBXGroup;
 			children = (
-				BE21EE8516FA202F0067223B /* SYNAccountSettingsFirstNameInput.h */,
-				BE21EE8616FA202F0067223B /* SYNAccountSettingsFirstNameInput.m */,
-				BE285DAA1725978F00D995AB /* SYNAccountSettingsLastNameInput.h */,
-				BE285DAB1725978F00D995AB /* SYNAccountSettingsLastNameInput.m */,
+				BE21EE8516FA202F0067223B /* SYNAccountSettingsFullNameInput.h */,
+				BE21EE8616FA202F0067223B /* SYNAccountSettingsFullNameInput.m */,
 				BEE4A6C0170B563D008F9D05 /* SYNAccountSettingsEmail.h */,
 				BEE4A6C1170B563E008F9D05 /* SYNAccountSettingsEmail.m */,
 				BEE4A6C3170B56B3008F9D05 /* SYNAccountSettingsUsername.h */,
@@ -4436,7 +4431,7 @@
 				014D514F16F738C500B82B00 /* SYNAbstractNetworkEngine.m in Sources */,
 				BE21EE7C16F9FF520067223B /* SYNAccountSettingsTextInputController.m in Sources */,
 				BE21EE8316FA108E0067223B /* SYNAccountSettingsPopoverBackgroundView.m in Sources */,
-				BE21EE8716FA202F0067223B /* SYNAccountSettingsFirstNameInput.m in Sources */,
+				BE21EE8716FA202F0067223B /* SYNAccountSettingsFullNameInput.m in Sources */,
 				BE21EEA316FB1E750067223B /* SYNAccountSettingsDOB.m in Sources */,
 				BE21EEA616FB39030067223B /* SYNAccountSettingsOnOffField.m in Sources */,
 				BE21EEA916FB422A0067223B /* SYNAccountSettingsPushNotifications.m in Sources */,
@@ -4465,7 +4460,6 @@
 				BEFAE89C1725485B009B2F66 /* SYNVideoQueue.m in Sources */,
 				BE285D9B1725726300D995AB /* SYNExistingChannelsViewController.m in Sources */,
 				BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */,
-				BE285DAC1725978F00D995AB /* SYNAccountSettingsLastNameInput.m in Sources */,
 				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
 				BE285DBC1726828F00D995AB /* SYNChannelManager.m in Sources */,
 				BEE732B71727D81A0083E1B9 /* SYNObjectFactory.m in Sources */,
