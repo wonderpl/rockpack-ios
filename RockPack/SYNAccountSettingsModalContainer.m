@@ -36,7 +36,6 @@
     
     self.view.frame = CGRectMake(0.0, 0.0, 320.0, 600.0);
     
-    self.view.backgroundColor = [UIColor greenColor];
     
     [self.view addSubview:childNavigationController.view];
 	

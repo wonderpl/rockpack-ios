@@ -9,11 +9,13 @@
 #import "RegexKitLite.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAccountSettingsTextInputController ()
 
 @property (nonatomic) CGFloat lastTextFieldY;
+@property (nonatomic) CGFloat sizeInContainer;
 
 @end
 
@@ -50,7 +52,9 @@
     
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
     
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [[SYNDeviceManager sharedInstance] isIPad] ? [UIColor clearColor] : [UIColor whiteColor];
+    
+    self.sizeInContainer = [[SYNDeviceManager sharedInstance] isIPad] ? self.contentSizeForViewInPopover.width - 20.0 : [[SYNDeviceManager sharedInstance] currentScreenWidth] - 20.0 ;
     
     lastTextFieldY = 10.0;
     
@@ -132,6 +136,8 @@
     errorTextField.font = [UIFont rockpackFontOfSize: 18];
     errorTextField.textAlignment = NSTextAlignmentCenter;
     
+    
+    
     [self.view addSubview: errorTextField];
 }
 
@@ -147,9 +153,11 @@
 
 - (SYNPaddedUITextField *) createInputField
 {
+    
+    
     SYNPaddedUITextField *newInputField = [[SYNPaddedUITextField alloc] initWithFrame: CGRectMake(10.0,
                                                                                                   lastTextFieldY,
-                                                                                                  self.contentSizeForViewInPopover.width - 20.0,
+                                                                                                  self.sizeInContainer,
                                                                                                   40.0)];
     
     newInputField.backgroundColor = [UIColor colorWithRed:(239.0/255.0) green:(239.0/255.0) blue:(239.0/255.0) alpha:(1.0)];

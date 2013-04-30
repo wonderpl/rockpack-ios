@@ -72,6 +72,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 @property (strong, nonatomic) Reachability *reachability;
 
+@property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
+
 
 @end
 
@@ -886,23 +888,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        SYNAccountSettingsModalContainer* modalContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
+        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
         
-        CGRect modalFrame = modalContainer.view.frame;
+        CGRect modalFrame = self.modalAccountContainer.view.frame;
         modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
-        modalContainer.view.frame = modalFrame;
+        self.modalAccountContainer.view.frame = modalFrame;
         
-        [self.view addSubview:modalContainer.view];
+        [self.view addSubview:self.modalAccountContainer.view];
         
         modalFrame.origin.y = 60.0;
         
         [UIView animateWithDuration:0.5 animations:^{
            
-            modalContainer.view.frame = modalFrame;
+            self.modalAccountContainer.view.frame = modalFrame;
             
             
         }];
-        
         
         
         
