@@ -175,11 +175,6 @@
 }
 
 
-
-
-
-
-
 // This can be overridden if updating star may cause the videoFetchedResults
 - (BOOL) shouldUpdateStarStatus
 {
@@ -220,28 +215,30 @@
 }
 
 
-- (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
+- (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
-//    NSString *messageString = kChannelShareMessage;
-//    
-//    //  TODO: Put in cover art image?
-//    //  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
-//    
-//    // TODO: Put in real link
-//    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
-//    
-//    [self shareURL: messageURL
-//       withMessage: messageString
-//          fromRect: self.shareButton.frame
-//   arrowDirections: UIPopoverArrowDirectionDown];
+    UIView *v = button.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    
+    return indexPath;
+}
+
+- (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
+    
+    // TODO: Put in video URL herer
+    [self shareURL: [NSURL URLWithString: @"http://localhost"]
+       withMessage: @""
+          andImage: [UIImage imageNamed: @"Icon.png"]
+          fromRect: videoShareButton.frame
+   arrowDirections: UIPopoverArrowDirectionDown];
 }
 
 
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
-//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
-    UIView *v = videoViewButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
 
     [self displayVideoViewerWithVideoInstanceArray: self.fetchedResultsController.fetchedObjects
                                   andSelectedIndex: indexPath.item];
@@ -268,11 +265,13 @@
 
 
 
-#pragma mark - UICollectionView Data Source Stubb
+#pragma mark - UICollectionView Data Source Stubs
 
+// To be implemented by subclasses
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
+    AssertOrLog(@"Shouldn't be calling abstract class method");
     return 0;
 }
 
@@ -280,31 +279,29 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = nil;
-    // to be implemented by subview
-    return cell;
+    AssertOrLog(@"Shouldn't be calling abstract class method");
+    return nil;
 }
 
 
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
 {
+    AssertOrLog(@"Shouldn't be calling abstract class method");
     return NO;
 }
 
 
 - (void) refresh
 {
-    // to implement in subclass
+    AssertOrLog(@"Shouldn't be calling abstract class method");
 }
 
 
 // User touched the channel thumbnail in a video cell
 - (IBAction) channelButtonTapped: (UIButton *) channelButton
 {
-    // Get to cell it self (from button subview)
-    UIView *v = channelButton.superview.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
     
     // Bail if we don't have an index path
     if (indexPath)
@@ -327,9 +324,7 @@
 
 - (IBAction) profileButtonTapped: (UIButton *) profileButton
 {
-    // Get to cell it self (from button subview)
-    UIView *v = profileButton.superview.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
     
     // Bail if we don't have an index path
     if (indexPath)
@@ -343,31 +338,9 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-
     [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
                                                         object: self
                                                       userInfo :@{@"ChannelOwner" : channelOwner}];
-}
-
-
-- (BOOL) hasTabBar
-{
-    return TRUE;
-}
-
-
-#pragma mark - Video Queue Methods
-
-- (BOOL) isVideoQueueVisibleOnStart;
-{
-    return FALSE;
-}
-
-
-
-- (void) highlightVideoQueue: (BOOL) showHighlight
-{
-    
 }
 
 
@@ -380,12 +353,6 @@
 
 
 #pragma mark - Tab View Methods
-
-- (void) highlightTab: (int) tabIndex
-{
-    
-}
-
 
 - (void) setTabViewController: (SYNTabViewController *) newTabViewController
 {

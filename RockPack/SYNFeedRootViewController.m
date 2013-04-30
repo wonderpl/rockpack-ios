@@ -152,12 +152,6 @@
 }
 
 
-- (BOOL) hasVideoQueue
-{
-    return TRUE;
-}
-
-
 - (void) refreshVideoThumbnails
 {
     
