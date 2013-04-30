@@ -284,15 +284,7 @@
     return YES;
 }
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    
-}
 
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    
-}
 
 
 #pragma mark - TableView Delegate
@@ -305,7 +297,6 @@
     [self.autoSuggestionController clearWords];
     
     [self resizeTableView];
-    
     
     
     [self textFieldShouldReturn: self.searchTextField];
