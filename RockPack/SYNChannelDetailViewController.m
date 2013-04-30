@@ -929,10 +929,17 @@
 {
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId:appDelegate.currentOAuth2Credentials.userId
                                                   channelId:channelId
-                                          completionHandler:^(id res) {
+                                          completionHandler:^(id dictionary) {
                                               
                                               
-                                              [appDelegate.mainRegistry registerChannelFromDictionary:res];
+                                              Channel* createdChannel = [Channel instanceFromDictionary: dictionary
+                                                                              usingManagedObjectContext: appDelegate.mainManagedObjectContext
+                                                                                           channelOwner: appDelegate.currentUser
+                                                                                              andViewId: kChannelDetailsViewId];
+                                              
+                                              DebugLog(@"Channel: %@", createdChannel);
+                                              
+                                              [appDelegate saveContext:YES];
                                               
                                               
                                           } errorHandler:^(id err) {

@@ -550,6 +550,7 @@
                              andNumber: totalChannels];
     
     [self.subscriptionsViewController reloadCollectionViews];
+    [self.channelThumbnailCollectionView reloadData];
 }
 
 
