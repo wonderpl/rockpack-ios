@@ -9,11 +9,14 @@
 #import "RegexKitLite.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAccountSettingsTextInputController ()
 
 @property (nonatomic) CGFloat lastTextFieldY;
+
+@property (nonatomic) CGFloat sizeInContainer;
 
 @end
 
@@ -24,6 +27,7 @@
 @synthesize appDelegate;
 @synthesize lastTextFieldY;
 @synthesize spinner;
+@synthesize sizeInContainer;
 
 - (id) initWithUserFieldType: (UserFieldType) userFieldType
 {
@@ -50,7 +54,9 @@
     
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
     
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [[SYNDeviceManager sharedInstance] isIPad] ? [UIColor clearColor] : [UIColor whiteColor];
+    
+    self.sizeInContainer = [[SYNDeviceManager sharedInstance] isIPad] ? self.contentSizeForViewInPopover.width - 20.0 : [[SYNDeviceManager sharedInstance] currentScreenWidth] - 20.0 ;
     
     lastTextFieldY = 10.0;
     
@@ -73,17 +79,13 @@
     
     switch (currentFieldType)
     {
-        case UserFieldTypeFirstName:
+        case UserFieldTypeFullName:
             self.inputField.text = appDelegate.currentUser.firstName;
             self.inputField.leftViewMode = UITextFieldViewModeAlways;
             self.inputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
             break;
             
-        case UserFieldTypeLastName:
-            self.inputField.text = appDelegate.currentUser.lastName;
-            self.inputField.leftViewMode = UITextFieldViewModeAlways;
-            self.inputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
-            break;
+        
             
         case UserFieldTypeUsername:
             self.inputField.text = appDelegate.currentUser.username;
@@ -132,6 +134,8 @@
     errorTextField.font = [UIFont rockpackFontOfSize: 18];
     errorTextField.textAlignment = NSTextAlignmentCenter;
     
+    
+    
     [self.view addSubview: errorTextField];
 }
 
@@ -147,9 +151,11 @@
 
 - (SYNPaddedUITextField *) createInputField
 {
+    
+    
     SYNPaddedUITextField *newInputField = [[SYNPaddedUITextField alloc] initWithFrame: CGRectMake(10.0,
                                                                                                   lastTextFieldY,
-                                                                                                  self.contentSizeForViewInPopover.width - 20.0,
+                                                                                                  self.sizeInContainer,
                                                                                                   40.0)];
     
     newInputField.backgroundColor = [UIColor colorWithRed:(239.0/255.0) green:(239.0/255.0) blue:(239.0/255.0) alpha:(1.0)];
@@ -158,9 +164,8 @@
     
     CGRect saveButtonFrame = saveButton.frame;
     saveButtonFrame.origin.y = newInputField.frame.origin.y + newInputField.frame.size.height + 10.0;
-    saveButton.frame = saveButtonFrame;
+    self.saveButton.frame = saveButtonFrame;
     
-    saveButton.frame = CGRectIntegral(saveButtonFrame);
     
     CGRect errorTextFrame = errorTextField.frame;
     errorTextFrame.origin.y = saveButtonFrame.origin.y + saveButtonFrame.size.height + 10.0;
@@ -187,14 +192,10 @@
     
     switch (currentFieldType)
     {
-        case UserFieldTypeFirstName: 
+        case UserFieldTypeFullName:
             isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
             break;
-            
-        case UserFieldTypeLastName: 
-            isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
-            break;
-            
+        
         case UserFieldTypeUsername:
             isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z0-9\\._]+$"];
             break;

@@ -28,7 +28,7 @@
 #import "SYNDeviceManager.h"
 
 #import "SYNSearchRootViewController.h"
-
+#import "SYNAccountSettingsModalContainer.h"
 #import "SYNNetworkErrorView.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -71,6 +71,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) VideoOverlayDismissBlock videoOverlayDismissBlock;
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 @property (strong, nonatomic) Reachability *reachability;
+
+@property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 
 
 @end
@@ -733,17 +735,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
-    if(showingBackButton)
-    {
-        
-        [self.containerViewController.showingViewController animatedPopViewController];
-        
-    }
+    
     
     if(self.overlayNavigationController)
     {
         [self showBackButton:NO];
         self.overlayNavigationController = nil;
+    }
+    else if(showingBackButton)
+    {
+        [self.containerViewController.showingViewController animatedPopViewController];
     }
     
     [self.containerViewController navigateToPageByName:pageName];
@@ -855,15 +856,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
+    mainTable.view.backgroundColor = [UIColor clearColor];
+    
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
     navigationController.view.backgroundColor = [UIColor clearColor];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:
-     @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+    
     
     
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
         self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
         self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
         self.accountSettingsPopover.delegate = self;
@@ -882,11 +887,22 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        [self presentViewController:navigationController animated:YES completion:^{
+        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
         
+        CGRect modalFrame = self.modalAccountContainer.view.frame;
+        modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        self.modalAccountContainer.view.frame = modalFrame;
         
+        [self.view addSubview:self.modalAccountContainer.view];
+        
+        modalFrame.origin.y = 60.0;
+        
+        [UIView animateWithDuration:0.5 animations:^{
+           
+            self.modalAccountContainer.view.frame = modalFrame;
+            
+            
         }];
-        
         
         
         
