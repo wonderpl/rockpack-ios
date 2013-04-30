@@ -80,6 +80,7 @@
 // Share
 - (void) shareURL: (NSURL *) shareURL
       withMessage: (NSString *) shareString
+         andImage: (UIImage *) shareImage
          fromRect: (CGRect) rect
   arrowDirections: (UIPopoverArrowDirection) arrowDirections;
 

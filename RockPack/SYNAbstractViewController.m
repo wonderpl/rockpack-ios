@@ -11,12 +11,14 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
+#import "OWActivityViewController.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNContainerViewController.h"
 #import "SYNChannelDetailViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
@@ -24,7 +26,6 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "Channel.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -431,23 +432,43 @@
 
 - (void) shareURL: (NSURL *) shareURL
       withMessage: (NSString *) shareString
+         andImage: (UIImage *) shareImage
          fromRect: (CGRect) rect
-  arrowDirections: (UIPopoverArrowDirection) arrowDirections {
+  arrowDirections: (UIPopoverArrowDirection) arrowDirections
+{
+//    if (_activityPopoverController && _activityPopoverController.isPopoverVisible)
+//    {
+//        [_activityPopoverController dismissPopoverAnimated: YES];
+//        _activityPopoverController =  nil;
+//        return;
+//    }
     
-    NSArray *activityItems = @[shareString, shareURL];
+    // Prepare activities
+    OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
+    OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
+    OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
+    OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
     
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems: activityItems
-                                                                                         applicationActivities: nil];
+    // Compile activities into an array, we will pass that array to
+    // OWActivityViewController on the next step
+
+    NSArray *activities = @[facebookActivity, twitterActivity, messageActivity, mailActivity];
+
+    // Create OWActivityViewController controller and assign data source
+    //
+    OWActivityViewController *activityViewController = [[OWActivityViewController alloc] initWithViewController: self
+                                                                                                     activities: activities];
     
-    activityViewController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
-                                                     UIActivityTypePrint,
-                                                     UIActivityTypeCopyToPasteboard,
-                                                     UIActivityTypeSaveToCameraRoll];
+    activityViewController.userInfo = @{@"image": shareImage,
+                                        @"text": shareString,
+                                        @"url": shareURL};
     
     // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
         self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+        
+        activityViewController.presentingPopoverController = _activityPopoverController;
         
         [self.activityPopoverController presentPopoverFromRect: rect
                                                         inView: self.view

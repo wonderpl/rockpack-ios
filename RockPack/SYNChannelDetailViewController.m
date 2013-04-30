@@ -655,6 +655,7 @@
     
     [self shareURL: messageURL
        withMessage: messageString
+          andImage: [UIImage imageNamed: @"Icon.png"]
           fromRect: self.shareButton.frame
    arrowDirections: UIPopoverArrowDirectionDown];
 }
