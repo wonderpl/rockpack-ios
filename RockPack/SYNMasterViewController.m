@@ -507,8 +507,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 #pragma mark - Video Overlay View
 
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
-            withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
-                            andIndexPath: (NSIndexPath *) indexPath
+                  withVideoInstanceArray: (NSArray*) videoInstanceArray
+                        andSelectedIndex: (int) selectedIndex
                                onDismiss: (VideoOverlayDismissBlock) dismissBlock
 {
     self.videoOverlayDismissBlock = dismissBlock;
@@ -516,10 +516,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // Remember the view controller that we came from
     self.originViewController = originViewController;
     
-    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithFetchedResultsController: fetchedResultsController
-                                                                                          selectedIndexPath: (NSIndexPath *) indexPath];
+    self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstanceArray: videoInstanceArray
+                                                                                        selectedIndex: selectedIndex];
+    
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
-    [self.overlayView addSubview:self.videoViewerViewController.view];
+    [self.overlayView addSubview: self.videoViewerViewController.view];
     
     self.videoViewerViewController.view.alpha = 0.0f;
     self.videoViewerViewController.overlayParent = self;

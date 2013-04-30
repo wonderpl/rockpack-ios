@@ -34,8 +34,8 @@ typedef void (^VideoOverlayDismissBlock)(void);
 - (id) initWithContainerViewController: (UIViewController*) root;
 
 - (void) addVideoOverlayToViewController: (UIViewController *) originViewController
-            withFetchedResultsController: (NSFetchedResultsController*) fetchedResultsController
-                            andIndexPath: (NSIndexPath *) indexPath
+                  withVideoInstanceArray: (NSArray*) videoInstanceArray
+                        andSelectedIndex: (int) selectedIndex
                                onDismiss: (VideoOverlayDismissBlock) dismissBlock;
 
 - (void) removeVideoOverlayController;

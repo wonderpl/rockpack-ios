@@ -242,11 +242,13 @@
     UIView *v = videoViewButton.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
 
-    [self displayVideoViewerWithSelectedIndexPath: indexPath];
+    [self displayVideoViewerWithVideoInstanceArray: self.fetchedResultsController.fetchedObjects
+                                  andSelectedIndex: indexPath.item];
 }
 
 
-- (void) displayVideoViewerWithSelectedIndexPath: (NSIndexPath *) selectedIndexPath
+- (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
+                                 andSelectedIndex: (int) selectedIndex
 {
     SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
     
@@ -255,8 +257,8 @@
     self.videoThumbnailCollectionView.userInteractionEnabled = NO;
     
     [masterViewController addVideoOverlayToViewController: self
-                             withFetchedResultsController: self.fetchedResultsController
-                                             andIndexPath: selectedIndexPath
+                                   withVideoInstanceArray: videoInstanceArray
+                                         andSelectedIndex: selectedIndex
                                                 onDismiss: ^{
                                                     self.videoThumbnailCollectionView.userInteractionEnabled = YES;
                                                 }];
