@@ -112,14 +112,13 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    return sectionInfo.numberOfObjects;
+    return self.fetchedResultsController.fetchedObjects.count + 1; // add one for the 'create new channel' cell
 }
 
 
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
-    return self.fetchedResultsController.sections.count;
+    return 1;
 }
 
 
@@ -127,28 +126,35 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    SYNChannelMidCell *channelThumbnailCell;
-    SYNChannelCreateNewCell* createCell;
+    UICollectionViewCell* cell;
+    
+    
     if(indexPath.row == 0) // first row (create)
     {
-        createCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelCreateNewCell"
+        SYNChannelCreateNewCell* createCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelCreateNewCell"
                                                                forIndexPath: indexPath];
         
-        return createCell;
-        
+        cell = createCell;
         
     }
+    else
+    {
+        Channel *channel = (Channel*)self.fetchedResultsController.fetchedObjects[indexPath.row-1];
+        
+        SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
+                                                                                            forIndexPath: indexPath];
+        
+        channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
+        [channelThumbnailCell setChannelTitle:channel.title];
+        
+        cell = channelThumbnailCell;
+    }
     
-    channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
-                                                                                        forIndexPath: indexPath];
-    
-    channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    [channelThumbnailCell setChannelTitle:channel.title];
     
     
-    return channelThumbnailCell;
+    
+    return cell;
     
 }
 

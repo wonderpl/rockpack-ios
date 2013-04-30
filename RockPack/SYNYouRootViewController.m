@@ -156,7 +156,7 @@
     
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    self.channelThumbnailCollectionView.backgroundColor = [UIColor greenColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
 
     // Subscriptions Collection View
@@ -167,7 +167,6 @@
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
-    
     [self.subscriptionsViewController setViewFrame:subColViewFrame];
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
