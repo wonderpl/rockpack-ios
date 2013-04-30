@@ -29,6 +29,10 @@
     
     self.lastNameInputField = [self createInputField];
     
+    self.lastNameInputField.text = self.appDelegate.currentUser.lastName;
+    self.lastNameInputField.leftViewMode = UITextFieldViewModeAlways;
+    self.lastNameInputField.leftView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"IconFullname.png"]];
+    
     [self.view addSubview:self.lastNameInputField];
     
     CGRect tableViewFrame = CGRectMake(10.0, self.lastNameInputField.frame.origin.y + 42.0, self.sizeInContainer, 120.0);
@@ -94,7 +98,7 @@
     
     [super saveButtonPressed:button];
     
-    if(![self formIsValid]) {
+    if(![self inputIsValid:self.inputField.text] || ![self inputIsValid:self.lastNameInputField.text]) {
         self.errorTextField.text = @"You Have Entered Invalid Characters";
         [self.spinner stopAnimating];
         self.saveButton.hidden = NO;
@@ -105,13 +109,18 @@
     
     [self updateField:@"first_name" forValue:self.inputField.text withCompletionHandler:^{
         
-        
         self.appDelegate.currentUser.firstName = self.inputField.text;
         
         
-        [self.appDelegate saveContext:YES];
-        
-        [self.navigationController popViewControllerAnimated:YES];
+        [self updateField:@"last_name" forValue:self.lastNameInputField.text withCompletionHandler:^{
+            
+            self.appDelegate.currentUser.lastName = self.lastNameInputField.text;
+            
+            [self.appDelegate saveContext:YES];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }];
         
     }];
 }

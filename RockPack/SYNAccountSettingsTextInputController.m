@@ -189,24 +189,29 @@
 
 - (BOOL) formIsValid
 {
+    return [self inputIsValid:self.inputField.text];
+}
+
+- (BOOL) inputIsValid:(NSString*)input
+{
     BOOL isMatched = NO;
     
     switch (currentFieldType)
     {
         case UserFieldTypeFullName:
-            isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
+            isMatched = [input isMatchedByRegex: @"^[a-zA-Z\\.]+$"];
             break;
-        
+            
         case UserFieldTypeUsername:
-            isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z0-9\\._]+$"];
+            isMatched = [input isMatchedByRegex: @"^[a-zA-Z0-9\\._]+$"];
             break;
             
         case UserFieldTypeEmail:
-            isMatched = [self.inputField.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
+            isMatched = [input isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
             break;
             
         case UserFieldPassword:
-            isMatched = [self.inputField.text isMatchedByRegex: @"^[a-zA-Z0-9\\._]+$"];
+            isMatched = [input isMatchedByRegex: @"^[a-zA-Z0-9\\._]+$"];
             break;
     }
     return isMatched;

@@ -43,5 +43,6 @@ typedef enum
 - (void) saveButtonPressed: (UIButton *) button;
 
 - (BOOL) formIsValid;
+- (BOOL) inputIsValid:(NSString*)input;
 
 @end
