@@ -25,6 +25,7 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNObjectFactory.h"
 #import "SYNFacebookManager.h"
+#import "SYNDeviceManager.h"
 
 #import "SYNSearchRootViewController.h"
 
@@ -310,7 +311,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillDisappear:animated];
     
-    [self.containerViewController.scrollView removeObserver:self forKeyPath:@"contentOffset"];
 }
 
 -(void)refreshButtonPressed
@@ -861,19 +861,36 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[UINavigationBar appearance] setTitleTextAttributes:
      @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
     
-    self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-    self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
-    self.accountSettingsPopover.delegate = self;
     
-    self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-    
-    CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
-                             [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
-    
-    [self.accountSettingsPopover presentPopoverFromRect: rect
-                                                 inView: self.view
-                               permittedArrowDirections: 0
-                                               animated: YES];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+        self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
+        self.accountSettingsPopover.delegate = self;
+        
+        self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        
+        CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
+                                 [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
+        
+        [self.accountSettingsPopover presentPopoverFromRect: rect
+                                                     inView: self.view
+                                   permittedArrowDirections: 0
+                                                   animated: YES];
+    }
+    else
+    {
+        
+        
+        [self presentViewController:navigationController animated:YES completion:^{
+        
+        
+        }];
+        
+        
+        
+        
+    }
 }
 
 
