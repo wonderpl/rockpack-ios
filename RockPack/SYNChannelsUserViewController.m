@@ -58,14 +58,14 @@
 }
 
 
--(void)fetchUserChannels:(ChannelOwner *)channelOwner
+- (void) fetchUserChannels: (ChannelOwner *) channelOwner
 {
     
     owner = channelOwner;
     
-    [appDelegate.searchRegistry clearImportContextFromEntityName:@"Channel"];
+    [appDelegate.searchRegistry clearImportContextFromEntityName: @"Channel"];
     
-    [appDelegate.networkEngine userPublicChannelsByOwner:owner];
+    [appDelegate.networkEngine userPublicChannelsByOwner: owner];
     
     // TODO: Put Owner Data
 }

@@ -50,6 +50,8 @@
 @property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout* subscriptionsPortraitLayout;
 
 @property (nonatomic, weak) Channel* channelDeleteCandidate;
+@property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
+@property (nonatomic, strong) UIGestureRecognizer* tapOnScreenRecogniser;
 
 @property (nonatomic) BOOL deleteCellModeOn;
 
@@ -96,10 +98,20 @@
     }
 
     // Main Collection View
-    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 12.0)];
+    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing)
+                                                                   minimumInterItemSpacing:0.0
+                                                                        minimumLineSpacing:5.0
+                                                                           scrollDirection:UICollectionViewScrollDirectionVertical
+                                                                              sectionInset:UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 28.0)];
     
 
-    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 25.0, kInterRowMarging, 8.0)];
+    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing)
+                                                                        minimumInterItemSpacing:0.0
+                                                                             minimumLineSpacing:5.0
+                                                                                scrollDirection:UICollectionViewScrollDirectionVertical
+                                                                                   sectionInset:UIEdgeInsetsMake(10.0, 30.0, kInterRowMarging, 8.0)];
+    
+    
     if(isIPhone)
     {
         self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
@@ -140,6 +152,7 @@
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: self.channelsLandscapeLayout];
+    
     
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
@@ -273,24 +286,26 @@
             CGPoint pointClicked = [recogniser locationInView:self.channelThumbnailCollectionView];
             NSIndexPath *currentIndexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint:pointClicked];
             
-            for (SYNChannelMidCell* cell in self.channelThumbnailCollectionView.visibleCells)
-            {
-                
-                //cell.alpha = 0.0;
-                
-            }
+            if(currentIndexPath.row == 0) // favourites pressed (cannot delete)
+                return;
             
             
-            SYNChannelMidCell *collectionViewCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
             
-            collectionViewCell.deleteButton.hidden = NO;
+            self.cellDeleteCandidate = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
+            
+            self.cellDeleteCandidate.deleteButton.hidden = NO;
+            
+            self.tapOnScreenRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(tappedOnScreen:)];
+            
+            [self.view addGestureRecognizer:self.tapOnScreenRecogniser];
             
             [UIView animateWithDuration: 0.2
                                   delay: 0.0
                                 options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
                              animations: ^{
                  
-                                 collectionViewCell.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
+                                 self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
                  
                            } completion: ^(BOOL finished) {
                  
@@ -300,7 +315,7 @@
                                                 animations: ^{
                                                     
                                                     
-                                                    collectionViewCell.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+                                                    self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
                                                     
                                                 } completion: ^(BOOL finished) {
                                                     
@@ -317,6 +332,13 @@
             
             
     }
+}
+
+-(void)tappedOnScreen:(UIGestureRecognizer*)recogniser
+{
+    self.cellDeleteCandidate.deleteButton.hidden = YES;
+    self.deleteCellModeOn = NO;
+    [self.view removeGestureRecognizer:self.tapOnScreenRecogniser];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -378,7 +400,8 @@
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
     //Setup the headers
     if(isIPhone)
-    {        
+    {
+        
         newFrame = self.headerChannelsView.frame;
         newFrame.size.width = 160.0f;
         self.headerChannelsView.frame = newFrame;
