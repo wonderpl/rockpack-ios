@@ -25,9 +25,10 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNObjectFactory.h"
 #import "SYNFacebookManager.h"
+#import "SYNDeviceManager.h"
 
 #import "SYNSearchRootViewController.h"
-
+#import "SYNAccountSettingsModalContainer.h"
 #import "SYNNetworkErrorView.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -70,6 +71,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) VideoOverlayDismissBlock videoOverlayDismissBlock;
 @property (strong, nonatomic) IBOutlet UIView *overlayContainerView;
 @property (strong, nonatomic) Reachability *reachability;
+
+@property (nonatomic, strong) UIView* accountSettingsCoverView;
+
+@property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 
 
 @end
@@ -222,6 +227,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.reachability = [Reachability reachabilityWithHostname:appDelegate.networkEngine.hostName];
     
+    self.accountSettingsCoverView = [[UIView alloc] initWithFrame:self.view.frame];
+    self.accountSettingsCoverView.backgroundColor = [UIColor darkGrayColor];
+    self.accountSettingsCoverView.alpha = 0.5;
+    self.accountSettingsCoverView.hidden = YES;
+    
     
     
     // == Set up Dots View == //
@@ -312,7 +322,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewWillDisappear:animated];
     
-    [self.containerViewController.scrollView removeObserver:self forKeyPath:@"contentOffset"];
 }
 
 -(void)refreshButtonPressed
@@ -740,17 +749,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!pageName)
         return;
     
-    if(showingBackButton)
-    {
-        
-        [self.containerViewController.showingViewController animatedPopViewController];
-        
-    }
+    
     
     if(self.overlayNavigationController)
     {
         [self showBackButton:NO];
         self.overlayNavigationController = nil;
+    }
+    else if(showingBackButton)
+    {
+        [self.containerViewController.showingViewController animatedPopViewController];
     }
     
     [self.containerViewController navigateToPageByName:pageName];
@@ -861,26 +869,105 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(self.accountSettingsPopover)
         return;
     
-    SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
+    SYNAccountSettingsMainTableViewController* accountsTableController = [[SYNAccountSettingsMainTableViewController alloc] init];
+    accountsTableController.view.backgroundColor = [UIColor clearColor];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: accountsTableController];
     navigationController.view.backgroundColor = [UIColor clearColor];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:
-     @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
     
-    self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-    self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
-    self.accountSettingsPopover.delegate = self;
     
-    self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
     
-    CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
-                             [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
+        self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+        self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
+        self.accountSettingsPopover.delegate = self;
+        
+        self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        
+        CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
+                                 [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
+        
+        [self.accountSettingsPopover presentPopoverFromRect: rect
+                                                     inView: self.view
+                                   permittedArrowDirections: 0
+                                                   animated: YES];
+    }
+    else
+    {
+        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"ButtonProfileChannels"]
+                                           forBarMetrics:UIBarMetricsDefault];
+        
+        [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+        
+        
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
+        
+        
+        UIButton* doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage* doneImage = [UIImage imageNamed:@"ButtonSettingsDone"];
+        doneButton.frame = CGRectMake(0.0, 0.0, doneImage.size.width, doneImage.size.height);
+        [doneButton addTarget:self action:@selector(modalAccountContainerDismiss) forControlEvents:UIControlEventTouchUpInside];
+        [doneButton setImage:doneImage forState:UIControlStateNormal];
+        
+        UIBarButtonItem* buttonItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+        
+        
+        accountsTableController.navigationItem.rightBarButtonItem = buttonItem;
+        
+
+        
+        self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
+        
+        CGRect modalFrame = self.modalAccountContainer.view.frame;
+        modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        self.modalAccountContainer.view.frame = modalFrame;
+        
+        self.accountSettingsCoverView.alpha = 0.0;
+        self.accountSettingsCoverView.hidden = NO;
+        [self.view addSubview:self.accountSettingsCoverView];
+        
+        [self.view addSubview:self.modalAccountContainer.view];
+        
+        modalFrame.origin.y = 60.0;
+        
+        [UIView animateWithDuration:0.5 animations:^{
+           
+            self.accountSettingsCoverView.alpha = 0.8;
+            self.modalAccountContainer.view.frame = modalFrame;
+            
+            
+        }];
+        
+    }
+}
+
+-(void)modalAccountContainerDismiss
+{
     
-    [self.accountSettingsPopover presentPopoverFromRect: rect
-                                                 inView: self.view
-                               permittedArrowDirections: 0
-                                               animated: YES];
+    CGRect hiddenFrame = self.modalAccountContainer.view.frame;
+    hiddenFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        self.accountSettingsCoverView.alpha = 0.0;
+        self.modalAccountContainer.view.frame = hiddenFrame;
+        
+        
+    } completion:^(BOOL finished) {
+        
+        self.accountSettingsCoverView.hidden = YES;
+        
+        [self.modalAccountContainer.view removeFromSuperview];
+        
+        
+    }];
+    
 }
 
 

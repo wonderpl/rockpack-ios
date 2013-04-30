@@ -6,17 +6,19 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNAccountSettingsFirstNameInput.h"
+#import "SYNAccountSettingsFullNameInput.h"
 #import "UIFont+SYNFont.h"
 #import "SYNOAuthNetworkEngine.h"
 
-@interface SYNAccountSettingsFirstNameInput ()
+@interface SYNAccountSettingsFullNameInput ()
 
 @property (nonatomic, strong) UITableView* tableView;
 
+@property (nonatomic, strong) SYNPaddedUITextField* lastNameInputField;
+
 @end
 
-@implementation SYNAccountSettingsFirstNameInput
+@implementation SYNAccountSettingsFullNameInput
 
 
 
@@ -25,9 +27,11 @@
 {
     [super viewDidLoad];
     
+    self.lastNameInputField = [self createInputField];
     
+    [self.view addSubview:self.lastNameInputField];
     
-    CGRect tableViewFrame = CGRectMake(10.0, 50.0, self.contentSizeForViewInPopover.width - 10.0, 120.0);
+    CGRect tableViewFrame = CGRectMake(10.0, self.lastNameInputField.frame.origin.y + 42.0, self.sizeInContainer, 120.0);
     self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.opaque = NO;
@@ -35,6 +39,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
+    
+    
     
     CGRect saveButtonRect = self.saveButton.frame;
     saveButtonRect.origin.y = self.tableView.frame.origin.y + self.tableView.frame.size.height + 10.0;

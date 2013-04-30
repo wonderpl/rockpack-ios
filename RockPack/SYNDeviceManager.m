@@ -74,6 +74,11 @@
     return result;
 }
 
+-(CGRect)currentScreenRect
+{
+    return [[UIScreen mainScreen] bounds];
+}
+
 -(CGFloat)currentScreenWidth
 {
     if(UIDeviceOrientationIsPortrait([self orientation]))

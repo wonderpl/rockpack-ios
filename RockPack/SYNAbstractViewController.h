@@ -45,7 +45,6 @@
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
-- (void) highlightTab: (int) tabIndex;
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
 
 
@@ -59,11 +58,6 @@
 - (IBAction) animatedPopViewController;
 
 - (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
-
-// Video Queue
-- (BOOL) hasTabBar;
-- (BOOL) isVideoQueueVisibleOnStart;
-- (void) highlightVideoQueue: (BOOL) showHighlight;
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex;
@@ -80,6 +74,7 @@
 // Share
 - (void) shareURL: (NSURL *) shareURL
       withMessage: (NSString *) shareString
+         andImage: (UIImage *) shareImage
          fromRect: (CGRect) rect
   arrowDirections: (UIPopoverArrowDirection) arrowDirections;
 

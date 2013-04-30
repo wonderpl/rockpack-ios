@@ -1,0 +1,46 @@
+/*
+ OWActivityViewController.strings
+ Created by Roman Efimov on 02/14/13.
+*/
+
+/////////////////////
+// ACTIVITIES
+/////////////////////
+
+/* Mail */
+"activity.Mail.title"="Mail";
+
+/* Copy */
+"activity.Copy.title"="Скопировать";
+
+/* Facebook */
+"activity.Facebook.title"="Facebook";
+
+/* Open in Maps */
+"activity.Maps.title"="Открыть в Картах";
+
+/* Message */
+"activity.Message.title"="Сообщение";
+
+/* Print */
+"activity.Print.title"="Печать";
+"activity.Print.error.title"="Ошибка.";
+"activity.Print.error.message"="Произошла ошибка при печати: %@";
+
+/* Open in Safari */
+"activity.Safari.title"="Открыть в Safari";
+
+/* Save to Camera Roll */
+"activity.CameraRoll.title"="Фотопоток";
+
+/* Twitter */
+"activity.Twitter.title"="Twitter";
+
+/////////////////////
+// GENERIC
+/////////////////////
+
+/* Buttons */
+"button.cancel"="Отмена";
+"button.dismiss"="ОК";
+"button.login"="Войти";

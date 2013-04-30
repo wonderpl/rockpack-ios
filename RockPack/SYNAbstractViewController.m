@@ -11,12 +11,14 @@
 
 #import "AppConstants.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSObject+Blocks.h"
+#import "OWActivityViewController.h"
 #import "SYNAbstractViewController.h"
 #import "SYNAppDelegate.h"
-#import "SYNContainerViewController.h"
 #import "SYNChannelDetailViewController.h"
+#import "SYNContainerViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
@@ -24,7 +26,6 @@
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "Channel.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate>
@@ -174,11 +175,6 @@
 }
 
 
-
-
-
-
-
 // This can be overridden if updating star may cause the videoFetchedResults
 - (BOOL) shouldUpdateStarStatus
 {
@@ -219,28 +215,30 @@
 }
 
 
-- (IBAction) userTouchedVideoShareItButton: (UIButton *) addItButton
+- (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
-//    NSString *messageString = kChannelShareMessage;
-//    
-//    //  TODO: Put in cover art image?
-//    //  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
-//    
-//    // TODO: Put in real link
-//    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
-//    
-//    [self shareURL: messageURL
-//       withMessage: messageString
-//          fromRect: self.shareButton.frame
-//   arrowDirections: UIPopoverArrowDirectionDown];
+    UIView *v = button.superview.superview;
+    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    
+    return indexPath;
+}
+
+- (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
+    
+    // TODO: Put in video URL herer
+    [self shareURL: [NSURL URLWithString: @"http://localhost"]
+       withMessage: @""
+          andImage: [UIImage imageNamed: @"Icon.png"]
+          fromRect: videoShareButton.frame
+   arrowDirections: UIPopoverArrowDirectionDown];
 }
 
 
 - (void) displayVideoViewerFromView: (UIButton *) videoViewButton
 {
-//    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: [sender locationInView: self.videoThumbnailCollectionView]];
-    UIView *v = videoViewButton.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
 
     [self displayVideoViewerWithVideoInstanceArray: self.fetchedResultsController.fetchedObjects
                                   andSelectedIndex: indexPath.item];
@@ -267,11 +265,13 @@
 
 
 
-#pragma mark - UICollectionView Data Source Stubb
+#pragma mark - UICollectionView Data Source Stubs
 
+// To be implemented by subclasses
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
+    AssertOrLog(@"Shouldn't be calling abstract class method");
     return 0;
 }
 
@@ -279,31 +279,29 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    UICollectionViewCell *cell = nil;
-    // to be implemented by subview
-    return cell;
+    AssertOrLog(@"Shouldn't be calling abstract class method");
+    return nil;
 }
 
 
 - (BOOL) collectionView: (UICollectionView *) cv
          didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
 {
+    AssertOrLog(@"Shouldn't be calling abstract class method");
     return NO;
 }
 
 
 - (void) refresh
 {
-    // to implement in subclass
+    AssertOrLog(@"Shouldn't be calling abstract class method");
 }
 
 
 // User touched the channel thumbnail in a video cell
 - (IBAction) channelButtonTapped: (UIButton *) channelButton
 {
-    // Get to cell it self (from button subview)
-    UIView *v = channelButton.superview.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
     
     // Bail if we don't have an index path
     if (indexPath)
@@ -326,9 +324,7 @@
 
 - (IBAction) profileButtonTapped: (UIButton *) profileButton
 {
-    // Get to cell it self (from button subview)
-    UIView *v = profileButton.superview.superview.superview;
-    NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
     
     // Bail if we don't have an index path
     if (indexPath)
@@ -342,31 +338,9 @@
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner
 {
-
     [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
                                                         object: self
                                                       userInfo :@{@"ChannelOwner" : channelOwner}];
-}
-
-
-- (BOOL) hasTabBar
-{
-    return TRUE;
-}
-
-
-#pragma mark - Video Queue Methods
-
-- (BOOL) isVideoQueueVisibleOnStart;
-{
-    return FALSE;
-}
-
-
-
-- (void) highlightVideoQueue: (BOOL) showHighlight
-{
-    
 }
 
 
@@ -379,12 +353,6 @@
 
 
 #pragma mark - Tab View Methods
-
-- (void) highlightTab: (int) tabIndex
-{
-    
-}
-
 
 - (void) setTabViewController: (SYNTabViewController *) newTabViewController
 {
@@ -431,23 +399,43 @@
 
 - (void) shareURL: (NSURL *) shareURL
       withMessage: (NSString *) shareString
+         andImage: (UIImage *) shareImage
          fromRect: (CGRect) rect
-  arrowDirections: (UIPopoverArrowDirection) arrowDirections {
+  arrowDirections: (UIPopoverArrowDirection) arrowDirections
+{
+//    if (_activityPopoverController && _activityPopoverController.isPopoverVisible)
+//    {
+//        [_activityPopoverController dismissPopoverAnimated: YES];
+//        _activityPopoverController =  nil;
+//        return;
+//    }
     
-    NSArray *activityItems = @[shareString, shareURL];
+    // Prepare activities
+    OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
+    OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
+    OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
+    OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
     
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems: activityItems
-                                                                                         applicationActivities: nil];
+    // Compile activities into an array, we will pass that array to
+    // OWActivityViewController on the next step
+
+    NSArray *activities = @[facebookActivity, twitterActivity, messageActivity, mailActivity];
+
+    // Create OWActivityViewController controller and assign data source
+    //
+    OWActivityViewController *activityViewController = [[OWActivityViewController alloc] initWithViewController: self
+                                                                                                     activities: activities];
     
-    activityViewController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
-                                                     UIActivityTypePrint,
-                                                     UIActivityTypeCopyToPasteboard,
-                                                     UIActivityTypeSaveToCameraRoll];
+    activityViewController.userInfo = @{@"image": shareImage,
+                                        @"text": shareString,
+                                        @"url": shareURL};
     
     // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
         self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+        
+        activityViewController.presentingPopoverController = _activityPopoverController;
         
         [self.activityPopoverController presentPopoverFromRect: rect
                                                         inView: self.view

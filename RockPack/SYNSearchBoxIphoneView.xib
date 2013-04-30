@@ -37,12 +37,12 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIImageView" id="374474206">
+					<object class="IBUIImageView" id="967278798">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{320, 65}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="1057801914"/>
+						<reference key="NSNextKeyView" ref="70691938"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -51,22 +51,22 @@
 							<string key="NSResourceName">PanelSearch~iphone.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="1057801914">
+					<object class="IBUIImageView" id="70691938">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{10, 10}, {300, 45}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="700274013"/>
+						<reference key="NSNextKeyView" ref="147407969"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUITextField" id="499068015">
+					<object class="IBUITextField" id="888649379">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{52, 18}, {248, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="677605492"/>
+						<reference key="NSNextKeyView" ref="235235860"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -76,7 +76,7 @@
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MAA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="871605834">
+							<object class="NSColorSpace" key="NSCustomColorSpace" id="1024219372">
 								<int key="NSID">2</int>
 							</object>
 						</object>
@@ -95,12 +95,12 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="700274013">
+					<object class="IBUIImageView" id="147407969">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{10, 10}, {34, 45}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="499068015"/>
+						<reference key="NSNextKeyView" ref="888649379"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -109,7 +109,7 @@
 							<string key="NSResourceName">IconSearch~iphone.png</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="677605492">
+					<object class="IBUIButton" id="235235860">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{266, 10}, {44, 44}}</string>
@@ -152,11 +152,11 @@
 				</array>
 				<string key="NSFrameSize">{320, 65}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="374474206"/>
+				<reference key="NSNextKeyView" ref="967278798"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
-					<reference key="NSCustomColorSpace" ref="871605834"/>
+					<reference key="NSCustomColorSpace" ref="1024219372"/>
 				</object>
 				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
 					<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
@@ -171,7 +171,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">searchTextField</string>
 						<reference key="source" ref="191373211"/>
-						<reference key="destination" ref="499068015"/>
+						<reference key="destination" ref="888649379"/>
 					</object>
 					<int key="connectionID">15</int>
 				</object>
@@ -179,7 +179,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">integratedCloseButton</string>
 						<reference key="source" ref="191373211"/>
-						<reference key="destination" ref="677605492"/>
+						<reference key="destination" ref="235235860"/>
 					</object>
 					<int key="connectionID">16</int>
 				</object>
@@ -187,7 +187,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">searchFieldFrameImageView</string>
 						<reference key="source" ref="191373211"/>
-						<reference key="destination" ref="1057801914"/>
+						<reference key="destination" ref="70691938"/>
 					</object>
 					<int key="connectionID">17</int>
 				</object>
@@ -204,11 +204,11 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="374474206"/>
-							<reference ref="1057801914"/>
-							<reference ref="499068015"/>
-							<reference ref="700274013"/>
-							<reference ref="677605492"/>
+							<reference ref="967278798"/>
+							<reference ref="70691938"/>
+							<reference ref="888649379"/>
+							<reference ref="147407969"/>
+							<reference ref="235235860"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -225,28 +225,28 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
-						<reference key="object" ref="374474206"/>
+						<reference key="object" ref="967278798"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="1057801914"/>
+						<reference key="object" ref="70691938"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">SearchFieldBackground</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
-						<reference key="object" ref="499068015"/>
+						<reference key="object" ref="888649379"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">13</int>
-						<reference key="object" ref="700274013"/>
+						<reference key="object" ref="147407969"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="677605492"/>
+						<reference key="object" ref="235235860"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">CloseButton</string>
 					</object>
@@ -277,10 +277,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonCloseSearchHighlighted~iphone.png">{44, 45}</string>
-			<string key="ButtonCloseSearch~iphone.png">{44, 45}</string>
-			<string key="IconSearch~iphone.png">{34, 45}</string>
-			<string key="PanelSearch~iphone.png">{320, 65}</string>
+			<string key="ButtonCloseSearchHighlighted~iphone.png">{16, 16}</string>
+			<string key="ButtonCloseSearch~iphone.png">{16, 16}</string>
+			<string key="IconSearch~iphone.png">{16, 16}</string>
+			<string key="PanelSearch~iphone.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

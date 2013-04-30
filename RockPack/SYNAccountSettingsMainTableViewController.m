@@ -12,8 +12,7 @@
 #import "SYNAccountSettingsAbout.h"
 #import "SYNAccountSettingsDOB.h"
 #import "SYNAccountSettingsEmail.h"
-#import "SYNAccountSettingsFirstNameInput.h"
-#import "SYNAccountSettingsLastNameInput.h"
+#import "SYNAccountSettingsFullNameInput.h"
 #import "SYNAccountSettingsGender.h"
 #import "SYNAccountSettingsLocation.h"
 #import "SYNAccountSettingsMainTableViewController.h"
@@ -22,6 +21,8 @@
 #import "SYNAccountSettingsShareSettings.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsUsername.h"
+
+#import "SYNDeviceManager.h"
 
 #import "SYNAppDelegate.h"
 #import "UIFont+SYNFont.h"
@@ -67,6 +68,9 @@
 
     self.tableView.scrollEnabled = NO;
     
+    
+    
+    
 }
 
 - (void) forcePopoverSize {
@@ -80,6 +84,11 @@
 {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+    
+    self.tableView.backgroundView = nil;
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -93,13 +102,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    
     return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0) { // first section
-        return 7;
+        return 6;
     } else { // second section
         return dataItems2ndSection.count;
     }
@@ -125,21 +135,15 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 1:
-                cell.imageView.image = [UIImage imageNamed:@"IconFullname.png"];
-                cell.textLabel.text = user.lastName;
-                cell.detailTextLabel.text = @"Public";
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
                 
-            case 2:
+            case 1:
                 cell.imageView.image = [UIImage imageNamed:@"IconUsername.png"];
                 cell.textLabel.text = user.username;
                 cell.detailTextLabel.text = @"Public";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 3:
+            case 2:
                 if([user.emailAddress isEqualToString:@""]) {
                     cell.textLabel.text = @"Email Address";
                 } else {
@@ -150,7 +154,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 4:
+            case 3:
                 if([user.locale isEqualToString:@"en-gb"]) {
                     cell.textLabel.text = @"United Kingdom";
                 } else {
@@ -162,7 +166,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 5:
+            case 4:
                 if([user.gender isEqual:@(GenderUndecided)]) {
                     cell.textLabel.text = @"Gender";
                 } else {
@@ -174,7 +178,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
                 
-            case 6:
+            case 5:
                 if(!user.dateOfBirth)
                     cell.textLabel.text = @"Date of Birth";
                 else
@@ -221,31 +225,29 @@
         switch (indexPath.row) {
                 
             case 0:
-                [self.navigationController pushViewController:[[SYNAccountSettingsFirstNameInput alloc] initWithUserFieldType:UserFieldTypeFirstName] animated:YES];
+                [self.navigationController pushViewController:[[SYNAccountSettingsFullNameInput alloc] initWithUserFieldType:UserFieldTypeFullName] animated:YES];
                 break;
+                
+            
                 
             case 1:
-                [self.navigationController pushViewController:[[SYNAccountSettingsLastNameInput alloc] initWithUserFieldType:UserFieldTypeLastName] animated:YES];
-                break;
-                
-            case 2:
                 [self.navigationController pushViewController:[[SYNAccountSettingsUsername alloc] initWithUserFieldType:UserFieldTypeUsername] animated:YES];
                 
                 break;
                 
-            case 3:
+            case 2:
                 [self.navigationController pushViewController:[[SYNAccountSettingsEmail alloc] initWithUserFieldType:UserFieldTypeEmail] animated:YES];
                 break;
                 
-            case 4:
+            case 3:
                 [self.navigationController pushViewController:[[SYNAccountSettingsLocation alloc] init] animated:YES];
                 break;
             
-            case 5:
+            case 4:
                 [self.navigationController pushViewController:[[SYNAccountSettingsGender alloc] init] animated:YES];
                 break;
                 
-            case 6:
+            case 5:
                 [self showDOBPopover];
                 break;
                 
@@ -281,11 +283,11 @@
 -(void)showLogoutAlert
 {
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle: @"Logout"
-                          message: @"Are you sure you want to log out?"
-                          delegate: self
-                          cancelButtonTitle:@"Cancel"
-                          otherButtonTitles:@"Logout", nil];
+                            initWithTitle: @"Logout"
+                            message: @"Are you sure you want to log out?"
+                            delegate: self
+                            cancelButtonTitle:@"Cancel"
+                            otherButtonTitles:@"Logout", nil];
     [alert show];
 }
 

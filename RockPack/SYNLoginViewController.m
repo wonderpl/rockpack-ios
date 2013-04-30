@@ -16,6 +16,7 @@
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 #import "User.h"
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
@@ -214,7 +215,7 @@
 {
     
     // controls to hide initially
-
+    
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
@@ -226,22 +227,41 @@
         control.alpha = 0.0;
     }
     
-    dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
-    emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
-    faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
+        emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
+        faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
+        
+        facebookSignInButton.enabled = YES;
+        facebookSignInButton.frame = facebookButtonInitialFrame;
+        facebookSignInButton.alpha = 1.0;
+        
+        _facebookLoginIsInProcess = NO;
+        
+        if([[SYNDeviceManager sharedInstance] isPortrait])
+        {
+            signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+            faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
+            passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
+        }
+        
+        
+    }
+    else
+    {
+        titleImageView.center = CGPointMake(self.view.center.x, 150.0);
+        facebookSignInButton.center = CGPointMake(self.view.center.x, 230.0);
+        
+        loginButton.center = CGPointMake(950.0, 690.0);
+        memberLabel.center = CGPointMake(loginButton.center.x, loginButton.center.y - 80.0);
+       
+        signUpButton.center = CGPointMake(200.0, signUpButton.center.y - 40.0);
+    }
     
-    facebookSignInButton.enabled = YES;
-    facebookSignInButton.frame = facebookButtonInitialFrame;
-    facebookSignInButton.alpha = 1.0;
-    
-    
-    
-    _facebookLoginIsInProcess = NO;
     
     signUpButton.enabled = YES;
     signUpButton.alpha = 1.0;
-    signUpButton.frame = signUpButtonInitialFrame;
-    
     [activityIndicator stopAnimating];
     
     
@@ -324,7 +344,15 @@
                              animations:^{
                                  
                                  control.alpha = 1.0;
-                                 control.center = CGPointMake(control.center.x, control.center.y - self.elementsOffsetY);
+                                 if(control == facebookSignInButton && [[SYNDeviceManager sharedInstance] isIPhone])
+                                 {
+                                     control.center = CGPointMake(control.center.x, control.center.y - 188.0);
+                                 }
+                                 else
+                                 {
+                                     control.center = CGPointMake(control.center.x, control.center.y - self.elementsOffsetY);
+                                 }
+                                 
                                  
                              } completion:^(BOOL finished) {
                                  
@@ -1359,16 +1387,7 @@
 {
     [super viewWillAppear:animated];
     
-    if([[SYNDeviceManager sharedInstance] isLandscape])
-    {
-        signUpButton.center = CGPointMake(signUpButton.center.x, signUpButton.center.y);
-    }
-    else
-    {
-        signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
-        faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
-        passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
-    }
+    
     
 }
 
@@ -1408,6 +1427,7 @@
         memberLabel.center = CGPointMake(loginButton.center.x, loginButton.center.y - 54.0);
     }
     
+    
     loginButton.frame = CGRectIntegral(loginButton.frame);
     registerButton.frame = CGRectIntegral(registerButton.frame);
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
@@ -1418,10 +1438,18 @@
 
 -(CGFloat)elementsOffsetY
 {
-    if([[SYNDeviceManager sharedInstance] isLandscape])
-        return 284.0;
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        if([[SYNDeviceManager sharedInstance] isLandscape])
+            return 284.0;
+        else
+            return 284.0;
+    }
     else
-        return 284.0;
+    {
+        return 320.0;
+    }
+   
 }
 
 -(void)placeSecondaryElements

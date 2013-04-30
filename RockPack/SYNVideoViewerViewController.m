@@ -26,9 +26,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "SYNDeviceManager.h"
 
-#define kThumbnailContentOffset 438
-#define kThumbnailCellWidth 147
-
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) CGRect originalFrame;
@@ -51,6 +48,7 @@
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 
 @end
+
 
 @implementation SYNVideoViewerViewController 
 
@@ -93,8 +91,6 @@
                         forCellWithReuseIdentifier: @"SYNVideoThumbnailSmallCell"];
     
     // Set custom flow layout to handle the chroma highlighting
-    
-    // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     self.layout = [[SYNVideoViewerThumbnailLayout alloc] init];
     self.layout.itemSize = isIPhone?CGSizeMake(162.0f , 114.0f):CGSizeMake(147.0f , 106.0f);
     self.layout.minimumInteritemSpacing = 2.0f;
@@ -110,23 +106,23 @@
     self.blackPanelView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
     self.blackPanelView.backgroundColor = [UIColor blackColor];
     self.blackPanelView.alpha = 0.0f;
-
     
     [self.view insertSubview: self.blackPanelView
                 aboveSubview: self.panelImageView];
     
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
     CGRect videoFrame;
-    if(isIPhone)
+    
+    if (isIPhone)
     {
         videoFrame = self.swipeView.frame;
         videoFrame.size.height = 180.0f;
-            
     }
     else
     {
         videoFrame = CGRectMake(142, 71, 739, 416);
     }
+    
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
     self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 
@@ -189,6 +185,8 @@
 }
 
 
+#pragma mark - Video playback control
+
 - (void) playVideoAtIndex: (int) index
 {
     // We should start playing the selected video and scroll the thumbnnail so that it appears under the arrow
@@ -202,7 +200,38 @@
 }
 
 
-#pragma mark - Update details
+#pragma mark - Update index and details
+
+// We need to override the standard setter so that we can update our flow layout for highlighting (colour / monochrome)
+- (void) setCurrentSelectedIndex: (int) currentSelectedIndex
+{
+    // Deselect the old thumbnail (if there is one, and it is not the same as the new one)
+    if (_currentSelectedIndex && (_currentSelectedIndex != currentSelectedIndex))
+    {
+        SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: _currentSelectedIndex
+                                                                                                                                                           inSection: 0]];
+        
+        // This will trigger a nice face out animation to monochrome
+        oldCell.colour = FALSE;
+    }
+    
+    // Now fade up the new image to full colour
+    SYNVideoThumbnailSmallCell *newCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: currentSelectedIndex
+                                                                                                                                                       inSection: 0]];
+    
+    newCell.colour = TRUE;
+    
+    _currentSelectedIndex = currentSelectedIndex;
+    
+    self.layout.selectedItemIndexPath = [NSIndexPath indexPathForItem: currentSelectedIndex
+                                                            inSection: 0];
+    
+    // Now set the channel thumbail for the new
+    VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
+    
+    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                               placeHolderImage: nil];
+}
 
 - (void) updateVideoDetailsForIndex: (int) index
 {
@@ -296,7 +325,6 @@
 
 #pragma mark - User actions
 
-
 - (IBAction) userTouchedNextVideoButton: (id) sender
 {
     int index = (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
@@ -331,28 +359,13 @@
 }
 
 
-- (BOOL) hasVideoQueue
-{
-    return TRUE;
-}
-
-// Required to ensure that the video queue bar appears in the right (vertical) place
-- (BOOL) hasTabBar
-{
-    return FALSE;
-}
-
-
 - (IBAction) toggleStarButton: (UIButton *) button
 {
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    [appDelegate.oAuthNetworkEngine recordActivityForUserId:appDelegate.currentUser.uniqueId
-                                                     action: @"star" videoInstanceId:videoInstance.uniqueId
-                                          completionHandler:^(id response) {
-                                              
-                                              
-                                              
+    [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
+                                                     action: @"star" videoInstanceId: videoInstance.uniqueId
+                                          completionHandler: ^(id response) {
                                               button.selected = !button.selected;
                                               
                                               if (videoInstance.video.starredByUserValue == TRUE)
@@ -371,57 +384,11 @@
                                               [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
                                               [appDelegate saveContext:YES];
-        
-                                          } errorHandler:^(id error) {
                                               
+                                          } errorHandler: ^(id error) {
                                               NSLog(@"Could not star video");
-        
                                           }];
-    
-    
-    
-    
-    
 }
-
-
-// We need to override the standard setter so that we can update our flow layout for highlighting (colour / monochrome)
-- (void) setCurrentSelectedIndex: (int) currentSelectedIndex
-{
-    // Deselect the old thumbnail (if there is one, and it is not the same as the new one)
-    if (_currentSelectedIndex && (_currentSelectedIndex != currentSelectedIndex))
-    {
-        SYNVideoThumbnailSmallCell *oldCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: _currentSelectedIndex
-                                                                                                                                                           inSection: 0]];
-        
-        // This will trigger a nice face out animation to monochrome
-        oldCell.colour = FALSE;
-    }
-    
-    // Now fade up the new image to full colour
-   SYNVideoThumbnailSmallCell *newCell = (SYNVideoThumbnailSmallCell *)[self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: currentSelectedIndex
-                                                                                                                                                      inSection: 0]];
-
-    newCell.colour = TRUE;
-    
-    _currentSelectedIndex = currentSelectedIndex;
-    
-    self.layout.selectedItemIndexPath = [NSIndexPath indexPathForItem: currentSelectedIndex
-                                                            inSection: 0];
-    
-    // Now set the channel thumbail for the new
-    VideoInstance *videoInstance = self.videoInstanceArray [currentSelectedIndex];
-    
-    [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                               placeHolderImage: nil];
-}
-
-
-- (void) userCreatedNewChannel
-{
-    [self.overlayParent removeVideoOverlayController];
-}
-
 
 - (IBAction) userTouchedCloseButton: (id) sender
 {
@@ -434,7 +401,7 @@
 - (IBAction) userTouchedChannelButton: (id) sender
 {
     [self.overlayParent removeVideoOverlayController];
-
+    
     // Get the video instance for the currently selected video
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
@@ -535,11 +502,10 @@
                             }
                             completion: nil];
         }
-
+        
     }
     
     self.videoExpanded = !self.videoExpanded;
 }
-
 
 @end
