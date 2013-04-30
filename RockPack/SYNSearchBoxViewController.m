@@ -24,8 +24,6 @@
 
 @property (nonatomic, strong) SYNAutocompleteSuggestionsController* autoSuggestionController;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
-@property (nonatomic, strong) UIView* backgroundPanel;
-@property (nonatomic, strong) UIView* grayPanel;
 
 
 @property (nonatomic, strong) NSTimer* autocompleteTimer;
@@ -38,9 +36,7 @@
 
 @synthesize searchTextField;
 @synthesize appDelegate;
-@synthesize backgroundPanel;
 @synthesize initialPanelHeight;
-@synthesize grayPanel;
 @synthesize isOnScreen;
 @synthesize searchBoxView;
 
