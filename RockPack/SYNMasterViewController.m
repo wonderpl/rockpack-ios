@@ -28,7 +28,7 @@
 #import "SYNDeviceManager.h"
 
 #import "SYNSearchRootViewController.h"
-
+#import "SYNAccountSettingsModalContainer.h"
 #import "SYNNetworkErrorView.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -855,15 +855,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     
     SYNAccountSettingsMainTableViewController* mainTable = [[SYNAccountSettingsMainTableViewController alloc] init];
+    mainTable.view.backgroundColor = [UIColor clearColor];
+    
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: mainTable];
     navigationController.view.backgroundColor = [UIColor clearColor];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:
-     @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+    
     
     
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];
+        
         self.accountSettingsPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
         self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
         self.accountSettingsPopover.delegate = self;
@@ -882,9 +886,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        [self presentViewController:navigationController animated:YES completion:^{
+        SYNAccountSettingsModalContainer* modalContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
         
+        CGRect modalFrame = modalContainer.view.frame;
+        modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        modalContainer.view.frame = modalFrame;
         
+        [self.view addSubview:modalContainer.view];
+        
+        modalFrame.origin.y = 60.0;
+        
+        [UIView animateWithDuration:0.5 animations:^{
+           
+            modalContainer.view.frame = modalFrame;
+            
+            
         }];
         
         

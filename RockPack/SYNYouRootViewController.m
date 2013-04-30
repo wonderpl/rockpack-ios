@@ -273,6 +273,9 @@
 
 -(void)longPressPerformed:(UILongPressGestureRecognizer*)recogniser
 {
+    if(self.deleteCellModeOn)
+        return;
+    
     switch (recogniser.state)
     {
         case UIGestureRecognizerStateBegan:

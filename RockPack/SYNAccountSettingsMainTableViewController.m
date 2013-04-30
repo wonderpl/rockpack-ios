@@ -23,6 +23,8 @@
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsUsername.h"
 
+#import "SYNDeviceManager.h"
+
 #import "SYNAppDelegate.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
@@ -67,6 +69,9 @@
 
     self.tableView.scrollEnabled = NO;
     
+    
+    
+    
 }
 
 - (void) forcePopoverSize {
@@ -80,6 +85,11 @@
 {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+    
+    self.tableView.backgroundView = nil;
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -93,6 +103,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    
     return 2;
 }
 
