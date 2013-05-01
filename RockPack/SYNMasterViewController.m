@@ -535,6 +535,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.videoViewerViewController = [[SYNVideoViewerViewController alloc] initWithVideoInstanceArray: videoInstanceArray
                                                                                         selectedIndex: selectedIndex];
+    [self addChildViewController: self.videoViewerViewController];
     
     self.videoViewerViewController.view.frame = self.overlayView.bounds;
     [self.overlayView addSubview: self.videoViewerViewController.view];
@@ -569,6 +570,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          [child removeFromSuperview];
                          
                          self.videoOverlayDismissBlock();
+                         
+                         [self.videoViewerViewController removeFromParentViewController];
                      }];
 }
 
