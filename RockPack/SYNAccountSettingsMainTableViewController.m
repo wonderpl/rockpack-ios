@@ -67,7 +67,7 @@
     
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
 
-    self.tableView.scrollEnabled = NO;
+    self.tableView.scrollEnabled = [[SYNDeviceManager sharedInstance] isIPhone];
     
     
     
