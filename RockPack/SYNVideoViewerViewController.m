@@ -32,6 +32,7 @@
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *passthroughView;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
@@ -42,7 +43,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView *blackPanelView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *blackPanelView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
@@ -77,6 +78,7 @@
     self.trackedViewName = @"Video Viewer";
     
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+        BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
     
     // Set custom fonts
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: self.channelTitleLabel.font.pointSize];
@@ -103,31 +105,48 @@
     
     self.videoThumbnailCollectionView.collectionViewLayout = self.layout;
     
-    self.blackPanelView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 1024, 768)];
-    self.blackPanelView.backgroundColor = [UIColor blackColor];
-    self.blackPanelView.alpha = 0.0f;
-    
-    [self.view insertSubview: self.blackPanelView
-                aboveSubview: self.panelImageView];
-    
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
-    CGRect videoFrame;
+    CGRect videoFrame, blackPanelFrame;
     
     if (isIPhone)
     {
+        // iPhone
         videoFrame = self.swipeView.frame;
         videoFrame.size.height = 180.0f;
     }
     else
     {
+        // iPad
         videoFrame = CGRectMake(142, 71, 739, 416);
+
+        if (isLandscape)
+        {
+            // Landscape
+            
+            blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+        }
+        else
+        {
+            // Portrait
+            blackPanelFrame = CGRectMake(128, -128, 768, 1024);
+        }
     }
     
+//    blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+    
+    self.blackPanelView = [[SYNPassthroughView alloc] initWithFrame: blackPanelFrame];
+    self.blackPanelView.backgroundColor = [UIColor blackColor];
+    self.blackPanelView.alpha = 0.0f;
+    self.blackPanelView.autoresizingMask = UIViewAutoresizingNone;
+    
+    [self.passthroughView insertSubview: self.blackPanelView
+                           aboveSubview: self.panelImageView];
+    
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
-    self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingNone;
 
-    [self.view insertSubview: self.videoPlaybackViewController.view
-                aboveSubview: self.blackPanelView];
+    [self.passthroughView insertSubview: self.videoPlaybackViewController.view
+                           aboveSubview: self.blackPanelView];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                action: @selector(userTouchedPreviousVideoButton:)];
@@ -185,6 +204,39 @@
 }
 
 
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
+{
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
+    
+    CGRect blackPanelFrame = self.blackPanelView.frame;
+    
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        // Landscape
+        blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+        
+        if (self.isVideoExpanded)
+        {
+            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
+        }
+    }
+    else
+    {
+        // Portrait
+        blackPanelFrame = CGRectMake(128, -128, 768, 1024);
+        if (self.isVideoExpanded)
+        {
+            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
+            self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+        }
+    }
+    
+    self.blackPanelView.frame = blackPanelFrame;
+}
+
+
 #pragma mark - Video playback control
 
 - (void) playVideoAtIndex: (int) index
@@ -232,6 +284,7 @@
     [self.channelThumbnailImageView setAsynchronousImageFromURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
                                                placeHolderImage: nil];
 }
+
 
 - (void) updateVideoDetailsForIndex: (int) index
 {
@@ -317,7 +370,7 @@
          insetForSectionAtIndex: (NSInteger)section
 {
     CGFloat insetWidth = [[SYNDeviceManager sharedInstance] isIPhone] ? 81.0f : 438.0f;
-
+    
     // We only have one section, so add both trailing and leading insets
     return UIEdgeInsetsMake (0, insetWidth, 0, insetWidth );
 }
@@ -423,42 +476,87 @@
 
 - (void) userTappedVideo
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if ([[SYNDeviceManager sharedInstance] isIPad])
     {
+        // iPad
         if (self.isVideoExpanded)
         {
-            [UIView transitionWithView: self.view
-                              duration: 0.5f
-                               options: UIViewAnimationOptionCurveEaseInOut
-                            animations: ^ {
-                                self.blackPanelView.alpha = 0.0f;
-                                self.chromeView.alpha = 1.0f;
-                                self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
-                                self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
-                                self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
-                                self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
-                            }
-                            completion: nil];
+            if ([[SYNDeviceManager sharedInstance] isLandscape])
+            {
+                // Landscape
+                [UIView transitionWithView: self.view
+                                  duration: 0.5f
+                                   options: UIViewAnimationOptionCurveEaseInOut
+                                animations: ^ {
+                                    self.blackPanelView.alpha = 0.0f;
+                                    self.chromeView.alpha = 1.0f;
+                                    self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
+                                    self.blackPanelView.frame = CGRectMake(0, 0, 1024, 768);
+                                    self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                                    self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
+                                    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                                }
+                                completion: nil];
+            }
+            else
+            {
+                // Portrait
+                [UIView transitionWithView: self.view
+                                  duration: 0.5f
+                                   options: UIViewAnimationOptionCurveEaseInOut
+                                animations: ^ {
+                                    self.blackPanelView.alpha = 0.0f;
+                                    self.chromeView.alpha = 1.0f;
+                                    self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
+                                    self.blackPanelView.frame = CGRectMake(128, -128, 768, 1024);
+                                    self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                                    self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
+                                    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                                }
+                                completion: nil];
+            }
         }
         else
         {
-            [UIView transitionWithView: self.view
-                              duration: 0.5f
-                               options: UIViewAnimationOptionCurveEaseInOut
-                            animations: ^ {
-                                self.blackPanelView.alpha = 1.0f;
-                                self.chromeView.alpha = 0.0f;
-                                self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
-                                self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
-                                self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
-                                self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
-                            }
-                            completion: nil];
+            if ([[SYNDeviceManager sharedInstance] isLandscape])
+            {
+                // Landscape
+                [UIView transitionWithView: self.view
+                                  duration: 0.5f
+                                   options: UIViewAnimationOptionCurveEaseInOut
+                                animations: ^ {
+                                    self.blackPanelView.alpha = 1.0f;
+                                    self.chromeView.alpha = 0.0f;
+                                    self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
+                                    self.blackPanelView.frame = CGRectMake(0, 0, 1024, 768);
+                                    self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
+                                    self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+                                    self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                                }
+                                completion: nil];
+            }
+            else
+            {
+                // Portrait
+                [UIView transitionWithView: self.view
+                                  duration: 0.5f
+                                   options: UIViewAnimationOptionCurveEaseInOut
+                                animations: ^ {
+                                    self.blackPanelView.alpha = 1.0f;
+                                    self.chromeView.alpha = 0.0f;
+                                    self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
+                                    self.blackPanelView.frame = CGRectMake(128, -128, 768, 1024);
+                                    self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
+                                    self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+                                    self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
+                                }
+                                completion: nil];
+            }
         }
     }
     else
     {
-        
+        // iPhone
         if (self.isVideoExpanded)
         {
             [UIView transitionWithView: self.view

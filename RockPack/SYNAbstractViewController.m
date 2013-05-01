@@ -426,7 +426,7 @@
     OWActivityViewController *activityViewController = [[OWActivityViewController alloc] initWithViewController: self
                                                                                                      activities: activities];
     
-    activityViewController.userInfo = @{@"image": shareImage,
+    activityViewController.userInfo = @{
                                         @"text": shareString,
                                         @"url": shareURL};
     
