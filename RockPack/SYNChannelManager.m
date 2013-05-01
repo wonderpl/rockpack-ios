@@ -168,7 +168,7 @@
                                                  channelId:channel.uniqueId
                                          completionHandler:^(id response) {
                                              
-                                             NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
+                                             NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:appDelegate.currentUser.channels];
                                              
                                              
                                              [channelsSet removeObject:channel];

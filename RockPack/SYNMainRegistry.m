@@ -43,7 +43,7 @@
     if(!newUser)
         return NO;
     
-    newUser.current = @(YES);
+    newUser.currentValue = YES;
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -81,17 +81,16 @@
         // must use the main context so as to be able to link it with the channel owner
         
         Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
-                                 usingManagedObjectContext:appDelegate.mainManagedObjectContext
-                                       ignoringObjectTypes:kIgnoreChannelOwnerObject
+                                 usingManagedObjectContext:currentUser.managedObjectContext
+                                       ignoringObjectTypes:kIgnoreNothing
                                                  andViewId:kProfileViewId];
         
         if (!channel)
             continue;
         
-        channel.channelOwner = currentUser;
         channel.subscribedByUserValue = YES;
         
-        [currentUser addSubscriptionsObject: channel];
+        [currentUser.subscriptionsSet addObject:channel];
         
     }
     
@@ -267,7 +266,7 @@
 
 
 - (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
-                                   byAppending: (BOOL) append {
+                                     byAppending: (BOOL) append {
     
     
     // == Check for Validity == //

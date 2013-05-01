@@ -120,26 +120,34 @@ static NSEntityDescription *channelOwnerEntity = nil;
     self.displayName = [dictionary upperCaseStringForKey: @"display_name"
                                       withDefault: @""];
     
-    NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
-    NSArray* channelItemsArray;
-    if(!channelsArray && (channelItemsArray = [channelsArray objectForKey:@"items"]))
+    if(!(ignoringObjects & kIgnoreChannelObjects))
     {
-        for (NSDictionary* channelDictionary in channelItemsArray)
+        NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
+        NSArray* channelItemsArray;
+        if(channelsArray && (channelItemsArray = [channelsArray objectForKey:@"items"]))
         {
-            
-            Channel* channel = [Channel instanceFromDictionary:channelDictionary
-                                     usingManagedObjectContext:managedObjectContex
-                                           ignoringObjectTypes:kIgnoreChannelOwnerObject
-                                                     andViewId:viewId];
-            channel.channelOwner = self;
-            
-            
-            [self addChannelsObject:channel];
-            
+            for (NSDictionary* channelDictionary in channelItemsArray)
+            {
+                
+                Channel* channel = [Channel instanceFromDictionary:channelDictionary
+                                         usingManagedObjectContext:managedObjectContex
+                                               ignoringObjectTypes:kIgnoreChannelOwnerObject
+                                                         andViewId:viewId];
+                channel.channelOwner = self;
+                
+                
+                [self.channelsSet addObject:channel];
+                
+            }
         }
     }
     
+    
+    
 }
+
+#pragma mark - Channels
+
 
 
 #pragma mark - Helper methods

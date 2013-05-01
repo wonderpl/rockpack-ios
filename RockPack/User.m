@@ -91,6 +91,9 @@
     
     NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
     NSArray* channelItemsArray = [channelsArray objectForKey:@"items"];
+    
+    
+    
     for (NSDictionary* channelDictionary in channelItemsArray)
     {
         
@@ -133,42 +136,35 @@
                    ignoringObjectTypes: ignoringObjects
                              andViewId: viewId];
     
-    self.username = [dictionary objectForKey: @"username"];
-    if(self.username && [self.username isEqualToString:@""])
-        self.username = @"";
+    self.username = [dictionary objectForKey: @"username" withDefault:@""];
 
-    self.emailAddress = [dictionary objectForKey: @"email"];
-    if(self.emailAddress && [self.emailAddress isEqualToString:@""])
-        self.emailAddress = @"";
+    self.emailAddress = [dictionary objectForKey: @"email" withDefault:@""];
     
-    self.firstName = [dictionary objectForKey: @"first_name"];
-    if(self.firstName && [self.firstName isEqualToString:@""])
-        self.firstName = @"";
-
+    self.firstName = [dictionary objectForKey: @"first_name" withDefault:@""];
     
-    self.lastName = [dictionary objectForKey: @"last_name"];
-    if(self.lastName && [self.firstName isEqualToString:@""])
-        self.lastName = @"";
+    self.lastName = [dictionary objectForKey: @"last_name" withDefault:@""];
+    
+    
+    
+    
+    
     
     NSDictionary* activity_url_dict = [dictionary objectForKey: @"activity"];
-    NSDictionary* coverart_url_dict = [dictionary objectForKey: @"cover_art"];
-    NSDictionary* subscriptions_url_dict = [dictionary objectForKey: @"subscriptions"];
-    
-    if(activity_url_dict) {
+    if(activity_url_dict)
         self.activityUrl = [activity_url_dict objectForKey:@"resource_url"];
-    }
     
-    if(coverart_url_dict) {
+    NSDictionary* coverart_url_dict = [dictionary objectForKey: @"cover_art"];
+    if(coverart_url_dict) 
         self.coverartUrl = [coverart_url_dict objectForKey:@"resource_url"];
-    }
     
-    if(subscriptions_url_dict) {
+    NSDictionary* subscriptions_url_dict = [dictionary objectForKey: @"subscriptions"];
+    if(subscriptions_url_dict) 
         self.subscriptionsUrl = [coverart_url_dict objectForKey:@"resource_url"];
-    }
+    
     
     // == Gender == //
     
-    self.gender = @(GenderUndecided);
+    self.genderValue = GenderUndecided;
     
     
     
@@ -192,7 +188,6 @@
     
     // == Locale == //
     
-    // NSString* localeFromDevice = [[NSLocale currentLocale] localeIdentifier]; // en_GB | en_US
     
     NSString* localeFromDict = [dictionary objectForKey:@"locale" withDefault:@""];
     
@@ -219,14 +214,19 @@
 
 - (NSString *) description
 {
-    NSMutableString* userDescription = [NSMutableString stringWithFormat:
-                                        @"User (%i) - username: '%@'",
-                                        [self.uniqueId intValue], self.username];
-    [userDescription appendFormat:@"\nUser Channels:"];
-    for (Channel* channel in self.channels)
-    {
-        [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+    NSMutableString* userDescription = [NSMutableString stringWithFormat:@"User (%i) - username: '%@'", [self.uniqueId intValue], self.username];
+    
+    [userDescription appendFormat:@"\nUser Channels (%i)", self.channels.count];
+    
+    if(self.channels.count == 0) {
+        [userDescription appendString:@"."];
+    } else {
+        [userDescription appendString:@":"];
+        for (Channel* channel in self.channels) {
+            [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+        }
     }
+    
     
     return userDescription;
 }

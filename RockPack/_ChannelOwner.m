@@ -66,10 +66,10 @@ const struct ChannelOwnerFetchedProperties ChannelOwnerFetchedProperties = {
 @dynamic channels;
 
 	
-- (NSMutableSet*)channelsSet {
+- (NSMutableOrderedSet*)channelsSet {
 	[self willAccessValueForKey:@"channels"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"channels"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"channels"];
   
 	[self didAccessValueForKey:@"channels"];
 	return result;
@@ -79,10 +79,10 @@ const struct ChannelOwnerFetchedProperties ChannelOwnerFetchedProperties = {
 @dynamic subscriptions;
 
 	
-- (NSMutableSet*)subscriptionsSet {
+- (NSMutableOrderedSet*)subscriptionsSet {
 	[self willAccessValueForKey:@"subscriptions"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"subscriptions"];
+	NSMutableOrderedSet *result = (NSMutableOrderedSet*)[self mutableOrderedSetValueForKey:@"subscriptions"];
   
 	[self didAccessValueForKey:@"subscriptions"];
 	return result;

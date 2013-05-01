@@ -60,7 +60,7 @@
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
-
+@property (nonatomic, weak) User* user;
 
 
 
@@ -70,7 +70,7 @@
 @implementation SYNYouRootViewController
 
 @synthesize subscriptionsViewController;
-
+@synthesize user;
 
 
 - (id) initWithViewId: (NSString *) vid
@@ -78,6 +78,7 @@
     if(self = [super initWithViewId: vid])
     {
         self.title = kProfileTitle;
+        
     }
     
     return self;
@@ -244,6 +245,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.user = appDelegate.currentUser;
     
     self.trackedViewName = @"You - Root";
     
@@ -503,42 +506,7 @@
 }
 
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    NSError *error = nil;
-    
-    // Return cached version if we have already created one
-    if (fetchedResultsController != nil)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    ChannelOwner* meAsOwner = (ChannelOwner*)appDelegate.currentUser;
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
-    
-    
-    fetchRequest.predicate = ownedByUserPredicate;
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title"
-                                                                 ascending: YES]];
-    
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"YouRootViewController failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    
-    return fetchedResultsController;
-}
+
 
 
 
@@ -547,7 +515,7 @@
 {
     [super reloadCollectionViews];
     
-    NSInteger totalChannels = self.fetchedResultsController.fetchedObjects.count;
+    NSInteger totalChannels = user.channels.count;
     NSString* title = [[SYNDeviceManager sharedInstance] isIPhone] ? NSLocalizedString(@"CHANNELS",nil): NSLocalizedString(@"YOUR CHANNELS",nil);
     [self.headerChannelsView setTitle: title
                              andNumber: totalChannels];
@@ -563,8 +531,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    return sectionInfo.numberOfObjects;
+    return user.channels.count;
 }
 
 
@@ -578,7 +545,7 @@
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = (Channel*)user.channels[indexPath.row];
     
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
@@ -608,12 +575,12 @@
     if(collectionView == self.channelThumbnailCollectionView)
     {
         
-        channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        channel = user.channels[indexPath.row];
         
     }
     else
     {
-        channel = [self.subscriptionsViewController channelAtIndexPath:indexPath];
+        channel = user.subscriptions[indexPath.row];
     }
     
     
@@ -652,7 +619,7 @@
     
     NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
     
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = user.channels[indexPath.row];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
                                                         object: self
@@ -681,7 +648,7 @@
         
         self.pinchedIndexPath = indexPath;
         
-        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        Channel *channel = user.channels[indexPath.row];
         SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
         
         // Get the various frames we need to calculate the actual position
@@ -740,7 +707,7 @@
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = user.channels[indexPath.row];
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
@@ -845,7 +812,7 @@
     
     UIView *v = sender.superview.superview;
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    self.channelDeleteCandidate = (Channel*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.channelDeleteCandidate = (Channel*)user.channels[indexPath.row];
     
     NSString* message = [NSString stringWithFormat:@"You are about to delete %@", _channelDeleteCandidate.title];
     
@@ -879,7 +846,7 @@
                                              
                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                  
-                                                 NSMutableSet *channelsSet = [NSMutableSet setWithSet:appDelegate.currentUser.channels];
+                                                 NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:appDelegate.currentUser.channels];
                                                  
                                                  [channelsSet removeObject:self.channelDeleteCandidate];
                                                  
