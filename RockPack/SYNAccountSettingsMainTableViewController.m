@@ -21,6 +21,7 @@
 #import "SYNAccountSettingsShareSettings.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsUsername.h"
+#import "SYNDeviceManager.h"
 
 #import "SYNDeviceManager.h"
 
@@ -248,7 +249,24 @@
                 break;
                 
             case 5:
-                [self showDOBPopover];
+                if([[SYNDeviceManager sharedInstance] isIPad])
+                {
+                    [self showDOBPopover];
+                }
+                else
+                {
+                    
+                    SYNAccountSettingsDOB* dobController = [[SYNAccountSettingsDOB alloc] init];
+                    
+                    [dobController.datePicker addTarget:self
+                                                 action:@selector(datePickerValueChanged:)
+                                       forControlEvents:UIControlEventValueChanged];
+                    
+                    [self.navigationController pushViewController:dobController animated:YES];
+                
+                }
+                
+                
                 break;
                 
             default:
@@ -314,18 +332,24 @@
                                  action:@selector(datePickerValueChanged:)
                        forControlEvents:UIControlEventValueChanged];
     
+    
+    
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:dobController];
-    
-    
+        
+        
     self.dobPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
     self.dobPopover.popoverContentSize = dobController.datePicker.frame.size;
     self.dobPopover.delegate = self;
-    
-    
+        
+        
     [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
                                      inView: self.view
                    permittedArrowDirections: UIPopoverArrowDirectionAny
                                    animated: YES];
+    
+    
+    
+    
     
     
     

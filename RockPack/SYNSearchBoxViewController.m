@@ -57,8 +57,6 @@
 {
     [super viewDidLoad];
     
-    
-    
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     self.searchTextField = self.searchBoxView.searchTextField;

@@ -11,6 +11,7 @@
 #import "SYNAccountSettingsGender.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNAccountSettingsGender ()
 
@@ -28,11 +29,11 @@
     if ((self = [super init]))
     {
         self.contentSizeForViewInPopover = CGSizeMake(380, 476);
-        CGRect tableViewFrame = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 100.0);
         
-        self.tableView = [[UITableView alloc] initWithFrame: tableViewFrame
-                                                      style: UITableViewStyleGrouped];
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
         
+        
+        self.tableView = [[UITableView alloc] initWithFrame: CGRectMake(0.0, 0.0, (isIpad ? 380 : 320.0), 100.0) style: UITableViewStyleGrouped];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.opaque = NO;
         self.tableView.delegate = self;
@@ -57,7 +58,10 @@
 {
     [super viewDidLoad];
 
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     [self.view addSubview:self.tableView];
+    
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier: @"Cell"];
     
     UIButton *backButton = [UIButton buttonWithType: UIButtonTypeCustom];

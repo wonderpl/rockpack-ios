@@ -35,6 +35,9 @@
     
     [super saveButtonPressed:button];
     
+    if([self.inputField.text isEqualToString:self.appDelegate.currentUser.emailAddress])
+        return;
+    
     if(![self formIsValid]) {
         self.errorTextField.text = @"You Have Entered Invalid Characters";
         return;
