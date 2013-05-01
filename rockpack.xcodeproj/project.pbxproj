@@ -2831,13 +2831,13 @@
 		01B7F75B164FB7A7009C5CCD /* Channels */ = {
 			isa = PBXGroup;
 			children = (
-				38A201061731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib */,
 				014A456D166A39E60091E4E5 /* SYNChannelsRootViewController.h */,
 				014A456E166A39E60091E4E5 /* SYNChannelsRootViewController.m */,
 				BEE4A69D17021DB4008F9D05 /* SYNChannelsUserViewController.h */,
 				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
 				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
 				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
+				38A201061731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib */,
 				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
 				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,

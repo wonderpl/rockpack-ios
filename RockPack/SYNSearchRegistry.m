@@ -72,7 +72,7 @@
 }
 
 -(BOOL)registerChannelsFromDictionary:(NSDictionary *)dictionary
-                            andOwner:(ChannelOwner*)owner
+                             andOwner:(ChannelOwner*)owner
 {
     NSDictionary *channelsDictionary = [dictionary objectForKey: @"channels"];
     if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
@@ -83,7 +83,8 @@
     ChannelOwner* copiedChannelOwner;
     if(owner)
     {
-        copiedChannelOwner = [ChannelOwner instanceFromChannelOwner:owner usingManagedObjectContext:importManagedObjectContext];
+        copiedChannelOwner = [ChannelOwner instanceFromChannelOwner:owner // importManagedContext == searchManagedContext
+                                          usingManagedObjectContext:importManagedObjectContext];
         if(!copiedChannelOwner)
             return NO;
     }

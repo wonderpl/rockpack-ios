@@ -272,8 +272,26 @@
     [self.channelThumbnailCollectionView addGestureRecognizer:_longPressGestureRecogniser];
     //_longPressGestureRecogniser.delegate = self;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDataModelChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:appDelegate.mainManagedObjectContext];
+
+    
     
     [self reloadCollectionViews];
+    
+}
+
+-(void)handleDataModelChange:(NSNotification*)notification
+{
+    NSArray* updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
+    [updatedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        if ([obj isKindOfClass:[User class]]) {
+            [self reloadCollectionViews];
+        }
+    }];
     
 }
 
