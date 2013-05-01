@@ -8,6 +8,13 @@
 
 #import "SYNSearchTabView.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
+
+@interface SYNSearchTabView ()
+@property (nonatomic,strong) UIColor* parenthesesColor;
+@property (nonatomic,strong) UIColor* numberColor;
+
+@end
 
 @implementation SYNSearchTabView
 @synthesize selected;
@@ -31,19 +38,24 @@
                 break;
         }
         
+        BOOL isIPad = [[SYNDeviceManager sharedInstance] isIPad];
         
         
         onColor = [UIColor whiteColor];
-        offColor = [UIColor darkGrayColor];
-        
+        offColor = isIPad?[UIColor darkGrayColor]:[UIColor colorWithRed:40.0f/255.0f green:45.0f/255.0f blue:51.0f/255.0f alpha:1.0f];
+        self.parenthesesColor = [UIColor colorWithWhite:170.0f/255.0f alpha:1.0f];
+        self.numberColor = [UIColor colorWithRed:46.0f/255.0f green:192.0f/255.0f blue:197.0f/255.0f alpha:1.0f];
         bgImageView = [[UIImageView alloc] initWithImage:backgroundImageOff];
         
         [self addSubview:bgImageView];
         
         CGRect labelFrame = self.frame;
-        labelFrame.origin.y += 4.0f;
+        if(isIPad)
+        {
+            labelFrame.origin.y += 4.0f;
+        }
         titleLabel = [[UILabel alloc] initWithFrame:labelFrame];
-        titleLabel.font = [UIFont rockpackFontOfSize:16.0];
+        titleLabel.font = [UIFont rockpackFontOfSize:isIPad?16.0f:12.0f];
         titleLabel.textColor = offColor;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -70,7 +82,7 @@
 -(void)setNumberOfItems:(NSInteger)numberOfItems animated:(BOOL)animated
 {
     
-    titleLabel.text = [NSString stringWithFormat:@"%@ (%i)", typeTitle, numberOfItems];
+    [self refreshLabelWithString:[NSString stringWithFormat:@"%@ (%i)", typeTitle, numberOfItems]];
 }
 
 #pragma mark - Control Methods
@@ -98,6 +110,22 @@
         bgImageView.image = backgroundImageOff;
         titleLabel.textColor = offColor;
     }
+    [self refreshLabelWithString:titleLabel.attributedText.string];
+}
+
+-(void)refreshLabelWithString:(NSString*)originalString
+{
+    NSMutableAttributedString* repaintedString = [[NSMutableAttributedString alloc] initWithString:originalString];
+    if(!selected)
+    {
+        NSRange leftParentheseRange = [originalString rangeOfString:@"("];
+        NSRange rightParentheseRange = [originalString rangeOfString:@")"];
+        NSRange numberRange = NSMakeRange(leftParentheseRange.location+1, rightParentheseRange.location - (leftParentheseRange.location+1));
+        [repaintedString addAttribute: NSForegroundColorAttributeName value: self.parenthesesColor range: leftParentheseRange];
+        [repaintedString addAttribute: NSForegroundColorAttributeName value: self.parenthesesColor range: rightParentheseRange];
+        [repaintedString addAttribute: NSForegroundColorAttributeName value: self.numberColor range: numberRange];
+    }
+    titleLabel.attributedText = repaintedString;
 }
 
 @end

@@ -85,7 +85,7 @@
     
     if(!cell)
     {
-        cell = [[UITableViewCell alloc] init];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         cell.accessoryType = UITableViewCellAccessoryNone;
         
