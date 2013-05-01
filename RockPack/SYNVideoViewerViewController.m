@@ -119,13 +119,12 @@
         if (isLandscape)
         {
             // Landscape
-            videoFrame = CGRectMake(142, 71, 739, 416);
+
             blackPanelFrame = CGRectMake(0, 0, 1024, 768);
         }
         else
         {
             // Portrait
-            videoFrame = CGRectMake(14, 199, 739, 416);
             blackPanelFrame = CGRectMake(0, 0, 768, 1024);
         }
     }
@@ -136,6 +135,8 @@
     
     [self.passthroughView insertSubview: self.blackPanelView
                            aboveSubview: self.panelImageView];
+    
+    videoFrame = CGRectMake(142, 71, 739, 416);
     
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
     self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingNone;
@@ -211,13 +212,11 @@
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         // Landscape
-        videoFrame = CGRectMake(142, 71, 739, 416);
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
     }
     else
     {
         // Portrait
-        videoFrame = CGRectMake(14, 199, 739, 416);
         blackPanelFrame = CGRectMake(0, 0, 768, 1024);
     }
     
