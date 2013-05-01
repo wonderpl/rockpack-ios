@@ -136,22 +136,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString* oldLocale = self.user.locale;
-    NSString* newLocale;
-    if(indexPath.row == 1) {
-        newLocale = @"en-gb";
-    } else {
-        newLocale = @"en-us";
-    }
     
-    if(![oldLocale isEqualToString:newLocale]) {
-      
-        [appDelegate clearUserBoundData];
-    }
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath: indexPath];
+    if(cell.accessoryType == UITableViewCellAccessoryCheckmark) // if it is already selected, return.
+        return;
     
-    [self changeUserLocaleForValue:newLocale];
     
-    [self.tableView reloadData];
+    [appDelegate clearUserBoundData];
+    
+    [[self.tableView visibleCells] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        ((UITableViewCell*)obj).accessoryType = UITableViewCellAccessoryNone;
+    }];
+    
+    [self changeUserLocaleForValue:(indexPath.row == 1) ? @"en-gb" : @"en-us"];
+    
+    
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
