@@ -259,6 +259,27 @@
 
 #pragma mark - User Data
 
+- (void) notificationsFromUserId: (NSString *) userId
+               completionHandler: (MKNKUserErrorBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIGetUserNotifications stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: @{@"locale" : self.localeString}
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 
 
 - (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials

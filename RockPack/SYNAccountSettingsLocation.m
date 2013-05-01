@@ -10,6 +10,7 @@
 #import "User.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNAccountSettingsLocation ()
 
@@ -26,8 +27,15 @@
 -(id)init
 {
     if(self = [super init]) {
+        
+        
+        
         self.contentSizeForViewInPopover = CGSizeMake(380, 476);
-        CGRect tableViewFrame = CGRectMake(10.0, 10.0, self.contentSizeForViewInPopover.width - 10.0, 100.0);
+        
+        BOOL isIpad = [[SYNDeviceManager sharedInstance] isIPad];
+        
+        
+        CGRect tableViewFrame = CGRectMake(0.0, 0.0, (isIpad ? 380.0 : 320.0), 100.0);
         self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStyleGrouped];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.opaque = NO;
@@ -52,6 +60,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     
     [self.view addSubview:self.tableView];
 	
@@ -125,22 +136,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString* oldLocale = self.user.locale;
-    NSString* newLocale;
-    if(indexPath.row == 1) {
-        newLocale = @"en-gb";
-    } else {
-        newLocale = @"en-us";
-    }
     
-    if(![oldLocale isEqualToString:newLocale]) {
-      
-        [appDelegate clearUserBoundData];
-    }
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath: indexPath];
+    if(cell.accessoryType == UITableViewCellAccessoryCheckmark) // if it is already selected, return.
+        return;
     
-    [self changeUserLocaleForValue:newLocale];
     
-    [self.tableView reloadData];
+    [appDelegate clearUserBoundData];
+    
+    [[self.tableView visibleCells] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        ((UITableViewCell*)obj).accessoryType = UITableViewCellAccessoryNone;
+    }];
+    
+    [self changeUserLocaleForValue:(indexPath.row == 1) ? @"en-gb" : @"en-us"];
+    
+    
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     

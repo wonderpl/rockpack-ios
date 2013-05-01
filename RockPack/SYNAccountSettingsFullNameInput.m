@@ -98,6 +98,12 @@
     
     [super saveButtonPressed:button];
     
+    if([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
+       [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName]) {
+        
+        return;
+    }
+    
     if(![self inputIsValid:self.inputField.text] || ![self inputIsValid:self.lastNameInputField.text]) {
         self.errorTextField.text = @"You Have Entered Invalid Characters";
         [self.spinner stopAnimating];
