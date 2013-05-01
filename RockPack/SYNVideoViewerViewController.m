@@ -43,7 +43,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *videoTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView *blackPanelView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *blackPanelView;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) NSArray *videoInstanceArray;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
@@ -78,7 +78,7 @@
     self.trackedViewName = @"Video Viewer";
     
     BOOL isIPhone = [[SYNDeviceManager sharedInstance] isIPhone];
-    BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
+        BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
     
     // Set custom fonts
     self.channelTitleLabel.font = [UIFont rockpackFontOfSize: self.channelTitleLabel.font.pointSize];
@@ -116,27 +116,31 @@
     }
     else
     {
+        // iPad
+        videoFrame = CGRectMake(142, 71, 739, 416);
+
         if (isLandscape)
         {
             // Landscape
-
+            
             blackPanelFrame = CGRectMake(0, 0, 1024, 768);
         }
         else
         {
             // Portrait
-            blackPanelFrame = CGRectMake(0, 0, 768, 1024);
+            blackPanelFrame = CGRectMake(128, -128, 768, 1024);
         }
     }
     
-    self.blackPanelView = [[UIView alloc] initWithFrame: blackPanelFrame];
+//    blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+    
+    self.blackPanelView = [[SYNPassthroughView alloc] initWithFrame: blackPanelFrame];
     self.blackPanelView.backgroundColor = [UIColor blackColor];
     self.blackPanelView.alpha = 0.0f;
+    self.blackPanelView.autoresizingMask = UIViewAutoresizingNone;
     
     [self.passthroughView insertSubview: self.blackPanelView
                            aboveSubview: self.panelImageView];
-    
-    videoFrame = CGRectMake(142, 71, 739, 416);
     
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
     self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingNone;
@@ -206,21 +210,29 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
-    CGRect videoFrame = self.videoPlaybackViewController.view.frame;
     CGRect blackPanelFrame = self.blackPanelView.frame;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         // Landscape
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+        
+        if (self.isVideoExpanded)
+        {
+            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
+        }
     }
     else
     {
         // Portrait
-        blackPanelFrame = CGRectMake(0, 0, 768, 1024);
+        blackPanelFrame = CGRectMake(128, -128, 768, 1024);
+        if (self.isVideoExpanded)
+        {
+            self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
+            self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+        }
     }
     
-    self.videoPlaybackViewController.view.frame = videoFrame;
     self.blackPanelView.frame = blackPanelFrame;
 }
 
@@ -495,9 +507,9 @@
                                     self.blackPanelView.alpha = 0.0f;
                                     self.chromeView.alpha = 1.0f;
                                     self.swipeView.frame =  CGRectMake(172, 142, 676, 295);
-                                    self.blackPanelView.frame = CGRectMake(0, 0, 768, 1024);
+                                    self.blackPanelView.frame = CGRectMake(128, -128, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
-                                    self.videoPlaybackViewController.view.center = CGPointMake(279, 512);
+                                    self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
                                     self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                                 }
                                 completion: nil];
@@ -532,7 +544,7 @@
                                     self.blackPanelView.alpha = 1.0f;
                                     self.chromeView.alpha = 0.0f;
                                     self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
-                                    self.blackPanelView.frame = CGRectMake(0, 0, 768, 1024);
+                                    self.blackPanelView.frame = CGRectMake(128, -128, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
                                     self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
