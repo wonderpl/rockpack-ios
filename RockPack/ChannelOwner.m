@@ -1,6 +1,7 @@
 #import "ChannelOwner.h"
 #import "Channel.h"
 #import "NSDictionary+Validation.h"
+#import "AppConstants.h"
 
 static NSEntityDescription *channelOwnerEntity = nil;
 
@@ -36,8 +37,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
 
 + (ChannelOwner *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                      ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                                andViewId: (NSString *) viewId;
+                      ignoringObjectTypes: (IgnoringObjects) ignoringObjects;
 {
     NSError *error = nil;
     
@@ -72,36 +72,25 @@ static NSEntityDescription *channelOwnerEntity = nil;
     ChannelOwner *instance;
     
     if (matchingChannelOwnerEntries.count > 0)
-    {
         instance = matchingChannelOwnerEntries[0];
-        // NSLog(@"Using existing ChannelOwner instance with id %@", instance.uniqueId);
-        
-        return instance;
-    }
     else
-    {
         instance = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
         
-        // As we have a new object, we need to set all the attributes (from the dictionary passed in)
-        // We have already obtained the uniqueId, so pass it in as an optimisation
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext
-                           ignoringObjectTypes: ignoringObjects
-                                    andViewId: viewId];
-        
-        // DebugLog(@"Created ChannelOwner instance with id %@", instance.uniqueId);
-        
-        return instance;
-    }
+    
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext
+                      ignoringObjectTypes: ignoringObjects];
+    
+    
+    return instance;
 }
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContex
-                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId {
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
     
     // Is we are not actually a dictionary, then bail
@@ -132,7 +121,7 @@ static NSEntityDescription *channelOwnerEntity = nil;
                 Channel* channel = [Channel instanceFromDictionary:channelDictionary
                                          usingManagedObjectContext:managedObjectContex
                                                ignoringObjectTypes:kIgnoreChannelOwnerObject
-                                                         andViewId:viewId];
+                                                         andViewId:kProfileViewId];
                 channel.channelOwner = self;
                 
                 

@@ -288,8 +288,6 @@
         {
             self.deleteCellModeOn = YES;
             
-            
-            
             //
             
             CGPoint pointClicked = [recogniser locationInView:self.channelThumbnailCollectionView];

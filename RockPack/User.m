@@ -16,7 +16,9 @@
 
 #pragma mark - Object factory
 
-+ (User*) instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
++ (User*) instanceFromDictionary: (NSDictionary *) dictionary
+       usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+             ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     NSError *error = nil;
     
@@ -41,11 +43,7 @@
     {
         instance = matchingCategoryInstanceEntries[0];
         
-        [instance updateAttributesFromDictionary:dictionary
-                                          withId:uniqueId
-                       usingManagedObjectContext:managedObjectContext];
         
-        return instance;
     }
     else
     {
@@ -53,100 +51,47 @@
         
         instance.uniqueId = uniqueId;
         
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext
-                          ignoringObjectTypes: kIgnoreNothing
-                                    andViewId: @"Users"];
         
-        return instance;
     }
+    
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext
+                      ignoringObjectTypes: ignoringObjects];
+    
+    return instance;
 }
 
--(void)updateAttributesFromDictionary: (NSDictionary*) dictionary
-                               withId: (NSString*)uniqueId
-            usingManagedObjectContext: (NSManagedObjectContext*)managedObjectContext {
-    
-    
-    
-    if (![dictionary isKindOfClass: [NSDictionary class]])
-    {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
-        return;
-    }
-    
-    if(self.uniqueId != uniqueId)
-    {
-        DebugLog(@"The 'User' you're trying to update does not match the data");
-        return;
-    }
-    
-    self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
-                                     withDefault: @"http://"];
-    
-    self.displayName = [dictionary upperCaseStringForKey: @"display_name"
-                                             withDefault: @""];
-    
-    NSDictionary* channelsDictionary = [self channelsDictionary];
-    
-    NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
-    NSArray* channelItemsArray = [channelsArray objectForKey:@"items"];
-    
-    
-    
-    for (NSDictionary* channelDictionary in channelItemsArray)
-    {
-        
-        NSString* channelId = [dictionary objectForKey:@"id"];
-        if(!channelId || [channelId isEqualToString:@""])
-            continue;
-        
-        NSString* existingChannel = [channelsDictionary objectForKey:channelId];
-        if(existingChannel)
-            continue;
-        
-        
-        
-        Channel* channel = [Channel instanceFromDictionary:channelDictionary
-                                 usingManagedObjectContext:managedObjectContext
-                                       ignoringObjectTypes:(kIgnoreChannelOwnerObject)
-                                                 andViewId:kProfileViewId];
-        
-        channel.channelOwner = self;
-        
-        [self addChannelsObject:channel];
-        
-    }
-    
-    
-    
-}
+
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId {
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
-    // As we are a subclass of ChannelOwner, set its attributes as well
+    
+    
+    // Sets attributes for ChannelOwner (superclass) AND adds Channels
+    
     [super setAttributesFromDictionary: dictionary
                                 withId: uniqueId
              usingManagedObjectContext: managedObjectContext
-                   ignoringObjectTypes: ignoringObjects
-                             andViewId: viewId];
+                   ignoringObjectTypes: ignoringObjects];
     
-    self.username = [dictionary objectForKey: @"username" withDefault:@""];
+    // Then set the rest
+    
+    NSString* n_username = [dictionary objectForKey: @"username"];
+    self.username = n_username ? n_username : self.username;
 
-    self.emailAddress = [dictionary objectForKey: @"email" withDefault:@""];
+    NSString* n_emailAddress = [dictionary objectForKey:@"email"];
+    self.emailAddress = n_emailAddress ? n_emailAddress : self.emailAddress;
     
-    self.firstName = [dictionary objectForKey: @"first_name" withDefault:@""];
+    NSString* n_firstName = [dictionary objectForKey:@"first_name" ];
+    self.firstName = n_firstName ? n_firstName : self.firstName;
     
-    self.lastName = [dictionary objectForKey: @"last_name" withDefault:@""];
-    
-    
-    
-    
+    NSString* n_lastName = [dictionary objectForKey: @"last_name"];
+    self.lastName = n_lastName ? n_lastName : self.lastName;
     
     
     NSDictionary* activity_url_dict = [dictionary objectForKey: @"activity"];

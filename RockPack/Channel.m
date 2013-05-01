@@ -122,8 +122,7 @@ static NSEntityDescription *channelEntity = nil;
     {
         self.channelOwner = [ChannelOwner instanceFromDictionary: [dictionary objectForKey: @"owner"]
                                        usingManagedObjectContext: managedObjectContext
-                                             ignoringObjectTypes: ignoringObjects
-                                                       andViewId: viewId];
+                                             ignoringObjectTypes: kIgnoreChannelObjects];
     }
     
     
