@@ -32,6 +32,7 @@
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
 @property (nonatomic, strong) IBOutlet SYNPassthroughView *chromeView;
+@property (nonatomic, strong) IBOutlet SYNPassthroughView *passthroughView;
 @property (nonatomic, strong) IBOutlet SYNVideoPlaybackViewController *videoPlaybackViewController;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
@@ -133,14 +134,14 @@
     self.blackPanelView.backgroundColor = [UIColor blackColor];
     self.blackPanelView.alpha = 0.0f;
     
-    [self.view insertSubview: self.blackPanelView
-                aboveSubview: self.panelImageView];
+    [self.passthroughView insertSubview: self.blackPanelView
+                           aboveSubview: self.panelImageView];
     
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
     self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingNone;
 
-    [self.view insertSubview: self.videoPlaybackViewController.view
-                aboveSubview: self.blackPanelView];
+    [self.passthroughView insertSubview: self.videoPlaybackViewController.view
+                           aboveSubview: self.blackPanelView];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                action: @selector(userTouchedPreviousVideoButton:)];
