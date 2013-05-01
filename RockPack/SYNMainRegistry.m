@@ -35,6 +35,8 @@
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
+    // dictionary also contains the set of user channels
+    
     User* newUser = [User instanceFromDictionary: dictionary
                        usingManagedObjectContext: importManagedObjectContext];
     
@@ -75,11 +77,19 @@
     
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
-        Channel* channel = [Channel subscriberInstanceFromDictionary: subscriptionChannel
-                                           usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                           andViewId: kProfileViewId];
         
-        if (!channel) continue;
+        // must use the main context so as to be able to link it with the channel owner
+        
+        Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
+                                 usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                       ignoringObjectTypes:kIgnoreChannelOwnerObject
+                                                 andViewId:kProfileViewId];
+        
+        if (!channel)
+            continue;
+        
+        channel.channelOwner = currentUser;
+        channel.subscribedByUserValue = YES;
         
         [currentUser addSubscriptionsObject: channel];
         

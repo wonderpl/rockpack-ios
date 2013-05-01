@@ -51,6 +51,7 @@
     {
         instance = [User insertInManagedObjectContext: managedObjectContext];
         
+        instance.uniqueId = uniqueId;
         
         [instance setAttributesFromDictionary: dictionary
                                        withId: uniqueId
@@ -76,7 +77,7 @@
     
     if(self.uniqueId != uniqueId)
     {
-        DebugLog(@"The user you re trying to update does not match the data");
+        DebugLog(@"The 'User' you're trying to update does not match the data");
         return;
     }
     
@@ -101,10 +102,14 @@
         if(existingChannel)
             continue;
         
+        
+        
         Channel* channel = [Channel instanceFromDictionary:channelDictionary
                                  usingManagedObjectContext:managedObjectContext
-                                              channelOwner:self
-                                                 andViewId:@"You"];
+                                       ignoringObjectTypes:(kIgnoreChannelOwnerObject)
+                                                 andViewId:kProfileViewId];
+        
+        channel.channelOwner = self;
         
         [self addChannelsObject:channel];
         

@@ -253,7 +253,7 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *dictionary) {
         
-        BOOL registryResultOk = [self.searchRegistry registerChannelFromDictionary:dictionary];
+        BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:dictionary andOwner:nil];
         if (!registryResultOk)
             return;
         
@@ -325,8 +325,9 @@
     
     [networkOperation addJSONCompletionHandler:^(NSDictionary *responseDictionary) {
          
-         
-         BOOL registryResultOk = [self.searchRegistry registerChannelFromDictionary:responseDictionary withViewId:@"UserChannels" andOwner:channelOwner];
+        
+        
+         BOOL registryResultOk = [self.searchRegistry registerChannelsFromDictionary:responseDictionary andOwner:channelOwner];
          if (!registryResultOk)
              return;
          

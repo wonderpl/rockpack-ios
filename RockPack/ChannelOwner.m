@@ -121,18 +121,24 @@ static NSEntityDescription *channelOwnerEntity = nil;
                                       withDefault: @""];
     
     NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
-    NSArray* channelItemsArray = [channelsArray objectForKey:@"items"];
-    for (NSDictionary* channelDictionary in channelItemsArray)
+    NSArray* channelItemsArray;
+    if(!channelsArray && (channelItemsArray = [channelsArray objectForKey:@"items"]))
     {
-        
-        Channel* channel = [Channel instanceFromDictionary:channelDictionary
-                                 usingManagedObjectContext:managedObjectContex
-                                              channelOwner:self
-                                                 andViewId:@"You"];
-        
-        [self addChannelsObject:channel];
-        
+        for (NSDictionary* channelDictionary in channelItemsArray)
+        {
+            
+            Channel* channel = [Channel instanceFromDictionary:channelDictionary
+                                     usingManagedObjectContext:managedObjectContex
+                                           ignoringObjectTypes:kIgnoreChannelOwnerObject
+                                                     andViewId:viewId];
+            channel.channelOwner = self;
+            
+            
+            [self addChannelsObject:channel];
+            
+        }
     }
+    
 }
 
 

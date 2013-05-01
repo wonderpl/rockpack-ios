@@ -928,10 +928,12 @@
                                           completionHandler:^(id dictionary) {
                                               
                                               
-                                              Channel* createdChannel = [Channel instanceFromDictionary: dictionary
-                                                                              usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                                                           channelOwner: appDelegate.currentUser
-                                                                                              andViewId: kChannelDetailsViewId];
+                                              Channel* createdChannel = [Channel instanceFromDictionary:dictionary
+                                                                              usingManagedObjectContext:appDelegate.mainManagedObjectContext
+                                                                                    ignoringObjectTypes:(kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
+                                                                                              andViewId:kProfileViewId];
+                                              
+                                              createdChannel.channelOwner = appDelegate.currentUser;
                                               
                                               DebugLog(@"Channel: %@", createdChannel);
                                               
