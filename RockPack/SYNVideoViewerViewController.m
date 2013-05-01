@@ -285,6 +285,7 @@
                                                placeHolderImage: nil];
 }
 
+
 - (void) updateVideoDetailsForIndex: (int) index
 {
     VideoInstance *videoInstance = self.videoInstanceArray [index];
