@@ -101,6 +101,7 @@
     self.searchTextField.layer.shadowOpacity=0.8;
     self.searchTextField.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.searchTextField.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
+    self.searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     [self hideCloseButton];
 }
 

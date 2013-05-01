@@ -11,8 +11,30 @@
 
 @interface SYNRockpackNotification : NSObject
 
-@property (nonatomic, strong) NSString* message;
-@property (nonatomic, strong) User* user;
+@property (nonatomic) NSInteger identifier;
+@property (nonatomic, strong) NSString* messageType;
+@property (nonatomic, strong) NSDate* dateCreated;
+@property (nonatomic) BOOL read;
+
+// Video Message
+
+@property (nonatomic, strong) NSString* videoId;
+@property (nonatomic, strong) NSString* videoThumbnailUrl;
+@property (nonatomic, strong) NSString* channelId;
+@property (nonatomic, strong) NSString* channelResourceUrl;
+
+// User Data
+
+@property (nonatomic, strong) NSString* userId;
+@property (nonatomic, strong) NSString* userResourceUrl;
+@property (nonatomic, strong) NSString* userDisplayName;
+@property (nonatomic, strong) NSString* userThumbnailUrl;
+
+
+
 @property (nonatomic) NSInteger timeElapsesd;
+
+-(id)initWithNotificationData:(NSDictionary*)data;
++(id)notificationWithData:(NSDictionary*)data;
 
 @end

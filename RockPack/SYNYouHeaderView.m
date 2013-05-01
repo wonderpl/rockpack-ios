@@ -30,7 +30,7 @@
         label.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.1f];
         label.shadowOffset = CGSizeMake(0.0f, 1.0f);
         self.parenthesesColor = label.textColor;
-        self.numberColor = [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)];
+        self.numberColor = [UIColor colorWithRed:(46.0/255.0) green:(192.0/255.0) blue:(197.0/255.0) alpha:(1.0)];
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 1;
         

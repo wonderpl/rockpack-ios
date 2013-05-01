@@ -21,6 +21,7 @@
 #import "SYNAccountSettingsShareSettings.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsUsername.h"
+#import "SYNDeviceManager.h"
 
 #import "SYNDeviceManager.h"
 
@@ -66,7 +67,7 @@
     
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);
 
-    self.tableView.scrollEnabled = NO;
+    self.tableView.scrollEnabled = [[SYNDeviceManager sharedInstance] isIPhone];
     
     
     
@@ -248,8 +249,45 @@
                 break;
                 
             case 5:
-                [self showDOBPopover];
-                break;
+            {
+                SYNAccountSettingsDOB* dobController = [[SYNAccountSettingsDOB alloc] init];
+                
+                [dobController.datePicker addTarget:self
+                                             action:@selector(datePickerValueChanged:)
+                                   forControlEvents:UIControlEventValueChanged];
+                
+                [dobController.datePicker setDate:appDelegate.currentUser.dateOfBirth];
+                
+                if([[SYNDeviceManager sharedInstance] isIPad])
+                {
+                    if(self.dobPopover)
+                        return;
+                    
+                    
+                    
+                    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:dobController];
+                    
+                    
+                    self.dobPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
+                    self.dobPopover.popoverContentSize = dobController.datePicker.frame.size;
+                    self.dobPopover.delegate = self;
+                    
+                    
+                    [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
+                                                     inView: self.view
+                                   permittedArrowDirections: UIPopoverArrowDirectionAny
+                                                   animated: YES];
+                }
+                else
+                {
+                    
+                    
+                    [self.navigationController pushViewController:dobController animated:YES];
+                
+                }
+                
+            }
+            break;
                 
             default:
                 break;
@@ -303,33 +341,6 @@
 	}
 }
 
--(void)showDOBPopover
-{
-    if(self.dobPopover)
-        return;
-    
-    SYNAccountSettingsDOB* dobController = [[SYNAccountSettingsDOB alloc] init];
-    
-    [dobController.datePicker addTarget:self
-                                 action:@selector(datePickerValueChanged:)
-                       forControlEvents:UIControlEventValueChanged];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:dobController];
-    
-    
-    self.dobPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-    self.dobPopover.popoverContentSize = dobController.datePicker.frame.size;
-    self.dobPopover.delegate = self;
-    
-    
-    [self.dobPopover presentPopoverFromRect: [self getDOBTableViewCell].frame
-                                     inView: self.view
-                   permittedArrowDirections: UIPopoverArrowDirectionAny
-                                   animated: YES];
-    
-    
-    
-}
 
 -(UITableViewCell*)getDOBTableViewCell
 {

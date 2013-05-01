@@ -10,6 +10,6 @@
 
 @interface SYNNotificationsViewController : UITableViewController
 
-
+@property (nonatomic, weak) NSArray* notifications;
 
 @end

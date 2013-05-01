@@ -11,14 +11,20 @@
 #import "UIImageView+ImageProcessing.h"
 #import "AppConstants.h"
 #import "GAI.h"
+#import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNSideNavigationIphoneCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNSearchBoxViewController.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "SYNRockpackNotification.h"
+#import "SYNNotificationsViewController.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
 #define kSideNavAction @"kSideNavAction"
+
+#define kNotificationsRowIndex 3
 
 typedef enum {
     kSideNavigationTypeLoad = 0,
@@ -35,14 +41,18 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) NSArray* navigationData;
 @property (nonatomic, strong) NSIndexPath* currentlySelectedIndexPath;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, strong) UIColor* navItemColor;
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
 @property (nonatomic, strong) NSMutableDictionary* cellByPageName;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 
+@property (nonatomic, strong) NSMutableArray* notifications;
+
 @property (nonatomic, strong) UIView* bottomExtraView;
 
+@property (nonatomic) NSInteger unreadNotifications;
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
 
@@ -55,6 +65,8 @@ typedef enum {
 @synthesize user = _user;
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 @synthesize keyForSelectedPage;
+@synthesize appDelegate;
+@synthesize unreadNotifications;
 
 - (id) init
 {
@@ -63,12 +75,13 @@ typedef enum {
         self.navigationData = @[
                                 @{kSideNavTitle: @"FEED", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kFeedTitle},
                                 @{kSideNavTitle: @"CHANNELS", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kChannelsTitle},
-                                @{kSideNavTitle: @"MY ROCKPACK", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kProfileTitle},
-                                @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"},
-                                @{kSideNavTitle: @"ACCOUNTS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @""}
+                                @{kSideNavTitle: @"PROFILE", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kProfileTitle},
+                                @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"}
                                 ];
         
         self.state = SideNavigationStateHidden;
+        
+        self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         if([[SYNDeviceManager sharedInstance] isIPad])
         {
@@ -76,6 +89,8 @@ typedef enum {
             self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
             [self.view addSubview:self.bottomExtraView];
         }
+        
+        self.unreadNotifications = 0;
         
     }
         
@@ -118,8 +133,84 @@ typedef enum {
         
         
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notificationMarkedRead:)
+                                                 name:kNotificationMarkedRead
+                                               object:nil];
+    
+    [self getNotifications];
 }
 
+
+
+#pragma mark - Notifications
+
+-(void)getNotifications
+{
+    [appDelegate.oAuthNetworkEngine notificationsFromUserId:appDelegate.currentUser.uniqueId completionHandler:^(id response) {
+        
+        if(![response isKindOfClass:[NSDictionary class]])
+            return;
+        
+        NSDictionary* responseDictionary = (NSDictionary*)response;
+        
+        NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
+        if(!notificationsDictionary)
+            return;
+        
+        NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
+        if(!totalNumber)
+            return;
+        
+        NSInteger total = [totalNumber integerValue];
+        
+        if(total == 0)
+        {
+            
+            
+            [self.tableView reloadData];
+            return;
+        }
+        
+        
+        NSArray* itemsArray = [responseDictionary objectForKey:@"items"];
+        if(!itemsArray)
+        {
+            // TODO: handle erro in parsing items
+            return;
+            
+        }
+        
+        self.notifications = [NSMutableArray arrayWithCapacity:unreadNotifications];
+        
+        for (NSDictionary* itemData in itemsArray)
+        {
+            if(!itemData) continue;
+            
+            SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+            
+            if(notification.read)
+                self.unreadNotifications++;
+            
+            [self.notifications addObject:notification];
+            
+        }
+        
+        [self.tableView reloadData];
+        
+    } errorHandler:^(id error) {
+        
+        DebugLog(@"Could not load notifications");
+        
+        
+    }];
+}
+
+-(void)notificationMarkedRead:(NSNotification*)notification
+{
+    
+}
 
 #pragma mark - Button Actions
 
@@ -169,11 +260,13 @@ typedef enum {
         
         NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
         
-        cell.textLabel.text = [navigationElement objectForKey: kSideNavTitle];
+        
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
         
+        // == Type == //
         
+        NSString* cellTitle = [navigationElement objectForKey: kSideNavTitle];
         
         if(navigationType == kSideNavigationTypePage)
         {
@@ -184,9 +277,29 @@ typedef enum {
         }
         else
         {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+            if(indexPath.row == kNotificationsRowIndex)
+            {
+                cellTitle = [NSString stringWithFormat:@"%@       %i", cellTitle, self.unreadNotifications];
+                if(self.unreadNotifications == 0)
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                else
+                    cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+                
+            }
+            else
+            {
+                
+                cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+            }
+            
+            
         }
+        
+        // == Title == //
+        
+        
+        cell.textLabel.text = cellTitle;
+        
         
         if(isIPad)
         {
@@ -200,7 +313,7 @@ typedef enum {
     
         
         
-    } 
+    }
     
     return cell;
 }
@@ -208,15 +321,27 @@ typedef enum {
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
     
-    if([indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
+    // if notifications cell is clicked and there are no notifications, deselect it.
+    if(indexPath.row == kNotificationsRowIndex && self.notifications.count == 0) 
+    {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
+    }
+    
+    // if we are re-clicking a cell, return without deselecting
+    if([indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
+    {
+        
+        return;
+    }
+        
     
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath:self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected:NO];
     
     if(self.currentlySelectedIndexPath.row > 3)
     {
-        
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     
     self.currentlySelectedIndexPath = indexPath;
@@ -234,6 +359,16 @@ typedef enum {
         
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
+        
+        // == NOTIFICATIONS == //
+        
+        if(indexPath.row == kNotificationsRowIndex )
+        {
+            
+            ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
+        }
+        
+        
         if([[SYNDeviceManager sharedInstance] isIPad])
         {
             [UIView animateWithDuration: 0.5f
@@ -289,6 +424,14 @@ typedef enum {
                         withAction: @"mainNavClick"
                          withLabel: navigationAction
                          withValue: nil];
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([indexPath isEqual:self.currentlySelectedIndexPath] )
+    {
+        [cell setSelected:YES];
+    }
 }
 
 
@@ -412,7 +555,8 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] postNotificationName:kSideNavigationSearchCloseNotification object:self userInfo:nil];
     
     [self.searchViewController.searchBoxView.searchTextField resignFirstResponder];
-    self.searchViewController.searchBoxView.searchTextField.text=@"";
+    self.searchViewController.searchBoxView.searchTextField.text = @"";
+    [self.searchViewController clear];
     self.searchViewController.searchBoxView.searchTextField.delegate = self;
     [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.searchViewController.searchBoxView hideCloseButton];

@@ -259,6 +259,54 @@
 
 #pragma mark - User Data
 
+- (void) notificationsFromUserId: (NSString *) userId
+               completionHandler: (MKNKUserErrorBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIGetUserNotifications stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: @{@"locale" : self.localeString}
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: TRUE];
+    
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+- (void) markAdReadForNotificationIndexes: (NSArray*) indexes
+                               fromUserId: (NSString*)userId
+                        completionHandler: (MKNKUserErrorBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIGetUserNotifications stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSDictionary *params = @{@"mark_read" : indexes,
+                             @"locale" : self.localeString};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 
 
 - (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials

@@ -907,6 +907,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
         
+        [[UINavigationBar appearance] setFrame:CGRectMake(0.0, 0.0, 320.0, 300.0)];
+        
         
         [[UINavigationBar appearance] setTitleTextAttributes:
          @{UITextAttributeTextColor:[UIColor darkGrayColor], UITextAttributeFont:[UIFont rockpackFontOfSize:22.0]}];

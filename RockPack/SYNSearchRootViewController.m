@@ -53,7 +53,7 @@
                                [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame:frame];
-    self.view.backgroundColor = [[SYNDeviceManager sharedInstance] isIPad]?[UIColor clearColor]:[UIColor colorWithWhite:0.97f alpha:1.0f];
+    self.view.backgroundColor = [UIColor clearColor];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     
 }
@@ -125,6 +125,7 @@
 -(void)showVideoSearchResults
 {
     SYNAbstractViewController* newController;
+    BOOL hasLaidOut = self.searchVideosController.videoThumbnailCollectionView != nil;
     [self.view insertSubview:self.searchVideosController.view belowSubview:tabsContainer];
     newController = self.searchVideosController;
     
@@ -133,27 +134,40 @@
         [self.currentController.view removeFromSuperview];
     
     self.currentController = newController;
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    if(!hasLaidOut && [[SYNDeviceManager sharedInstance] isIPhone])
     {
         CGRect collectionViewFrame = CGRectMake(0,108.0f,320.0f,self.view.frame.size.height - 108.0f);
-        self.currentController.videoThumbnailCollectionView.frame = collectionViewFrame;
+        self.searchVideosController.videoThumbnailCollectionView.frame = collectionViewFrame;
+        self.searchVideosController.videoThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
+        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.currentController.videoThumbnailCollectionView.collectionViewLayout;
+        UIEdgeInsets insets= layout.sectionInset;
+        insets.top = 10.0f;
+        insets.bottom = 10.0f;
+        layout.sectionInset = insets;
     }
     
 }
 -(void)showChannelsSearchResult
 {
     SYNAbstractViewController* newController;
+    BOOL hasLaidOut = self.searchChannelsController.channelThumbnailCollectionView != nil;
     [self.view insertSubview:self.searchChannelsController.view belowSubview:tabsContainer];
     newController = self.searchChannelsController;
     
     if(self.currentController)
         [self.currentController.view removeFromSuperview];
-    
     self.currentController = newController;
-    if([[SYNDeviceManager sharedInstance] isIPhone])
+    
+    if(!hasLaidOut && [[SYNDeviceManager sharedInstance] isIPhone])
     {
-        CGRect collectionViewFrame = CGRectMake(0,108.0f,320.0f,self.view.frame.size.height - 108.0f);
-        self.currentController.videoThumbnailCollectionView.frame = collectionViewFrame;
+        CGRect collectionViewFrame = CGRectMake(0,48.0f,320.0f,self.view.frame.size.height - 108.0f);
+        self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
+        self.searchChannelsController.channelThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
+        UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.searchChannelsController.channelThumbnailCollectionView.collectionViewLayout;
+        UIEdgeInsets insets= layout.sectionInset;
+        insets.top = 10.0f;
+        insets.bottom = 10.0f;
+        layout.sectionInset = insets;
     }
 }
 

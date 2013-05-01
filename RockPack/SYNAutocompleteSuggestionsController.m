@@ -9,6 +9,8 @@
 #import "SYNAutocompleteSuggestionsController.h"
 #import "UIFont+SYNFont.h"
 #import "UIColor+SYNColor.h"
+#import "SYNDeviceManager.h"
+#import "SYNAutocompleteIphoneCell.h"
 
 #define kDataCutOffPoint 8
 
@@ -38,7 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorColor = [UIColor rockpacLedColor];
     self.tableView.backgroundColor = [UIColor clearColor];
@@ -74,7 +76,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
+    
     return (wordsArray.count < kDataCutOffPoint) ? wordsArray.count : kDataCutOffPoint;
 }
 
@@ -85,21 +87,28 @@
     
     if(!cell)
     {
-        cell = [[UITableViewCell alloc] init];
-        
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        
-        cell.contentView.backgroundColor = [UIColor clearColor];
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        cell.backgroundColor = [UIColor clearColor];
-        
-        
-        // Text
-        
-        cell.textLabel.font = rockpackFont;
-        cell.textLabel.textColor = textColor;
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.backgroundColor = [UIColor clearColor];
+            
+            
+            // Text
+            
+            cell.textLabel.font = rockpackFont;
+            cell.textLabel.textColor = textColor;
+        }
+        else
+        {
+            cell = [[SYNAutocompleteIphoneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
         
         
     }
