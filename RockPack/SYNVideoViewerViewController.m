@@ -107,15 +107,19 @@
     
     // Create the video playback view controller, and insert it in the right place in the view hierarchy
     CGRect videoFrame, blackPanelFrame;
+    UIView *videoView;
     
     if (isIPhone)
     {
         // iPhone
-        videoFrame = self.swipeView.frame;
+        videoView = self.view;
+        videoFrame = CGRectMake(0, 59, 320, 180);
         videoFrame.size.height = 180.0f;
+        blackPanelFrame = CGRectMake(0, 0, 1024, 768);
     }
     else
     {
+        videoView = self.passthroughView;
         // iPad
         videoFrame = CGRectMake(142, 71, 739, 416);
 
@@ -132,21 +136,20 @@
         }
     }
     
-//    blackPanelFrame = CGRectMake(0, 0, 1024, 768);
     
     self.blackPanelView = [[SYNPassthroughView alloc] initWithFrame: blackPanelFrame];
     self.blackPanelView.backgroundColor = [UIColor blackColor];
     self.blackPanelView.alpha = 0.0f;
     self.blackPanelView.autoresizingMask = UIViewAutoresizingNone;
     
-    [self.passthroughView insertSubview: self.blackPanelView
-                           aboveSubview: self.panelImageView];
+    [videoView insertSubview: self.blackPanelView
+                aboveSubview: self.panelImageView];
     
     self.videoPlaybackViewController = [[SYNVideoPlaybackViewController alloc] initWithFrame: videoFrame];
     self.videoPlaybackViewController.view.autoresizingMask = UIViewAutoresizingNone;
 
-    [self.passthroughView insertSubview: self.videoPlaybackViewController.view
-                           aboveSubview: self.blackPanelView];
+    [videoView insertSubview: self.videoPlaybackViewController.view
+                     aboveSubview: self.blackPanelView];
     
     UISwipeGestureRecognizer* rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                                                action: @selector(userTouchedPreviousVideoButton:)];
