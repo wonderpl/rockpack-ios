@@ -316,7 +316,33 @@
                          layout: (UICollectionViewLayout*) collectionViewLayout
          insetForSectionAtIndex: (NSInteger)section
 {
-    CGFloat insetWidth = [[SYNDeviceManager sharedInstance] isIPhone] ? 81.0f : 438.0f;
+    CGFloat insetWidth;
+    
+    // Determing our inset dependent on device and orientation
+    BOOL isPhone = [[SYNDeviceManager sharedInstance] isIPhone];
+    
+    if (isPhone)
+    {
+        // We are running on an iPhone
+        insetWidth = 81.0f;
+    }
+    else
+    {
+        // We are running on an iPad
+        BOOL isLandscape = [[SYNDeviceManager sharedInstance] isLandscape];
+        
+        if (isLandscape)
+        {
+            // In Landscape orientation
+            insetWidth = 438.0f; 
+        }
+        else
+        {
+            // In portrait orientation
+            insetWidth = 310.0f;
+        }
+        
+    }
 
     // We only have one section, so add both trailing and leading insets
     return UIEdgeInsetsMake (0, insetWidth, 0, insetWidth );
