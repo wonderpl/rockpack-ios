@@ -50,6 +50,7 @@ typedef enum {
 
 @property (nonatomic, strong) UIView* bottomExtraView;
 
+@property (nonatomic) NSInteger totalNotifications;
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
 
@@ -63,6 +64,7 @@ typedef enum {
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 @synthesize keyForSelectedPage;
 @synthesize appDelegate;
+@synthesize totalNotifications;
 
 - (id) init
 {
@@ -134,6 +136,7 @@ typedef enum {
     [self getNotifications];
 }
 
+#pragma mark - Notifications
 
 -(void)getNotifications
 {
@@ -152,11 +155,13 @@ typedef enum {
         if(!totalNumber)
             return;
         
-        NSInteger total = [totalNumber integerValue];
+        self.totalNotifications = [totalNumber integerValue];
         
-        if(total == 0)
+        if(totalNotifications == 0)
         {
-            // TODO: Handle no notifications currently
+            
+            
+            [self.tableView reloadData];
             return;
         }
         
@@ -169,7 +174,7 @@ typedef enum {
             
         }
         
-        self.notifications = [NSMutableArray arrayWithCapacity:total];
+        self.notifications = [NSMutableArray arrayWithCapacity:totalNotifications];
         
         for (NSDictionary* itemData in itemsArray)
         {
@@ -181,6 +186,7 @@ typedef enum {
             
         }
         
+        [self.tableView reloadData];
         
     } errorHandler:^(id error) {
         
@@ -239,7 +245,16 @@ typedef enum {
         
         NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
         
-        cell.textLabel.text = [navigationElement objectForKey: kSideNavTitle];
+        NSString* cellTitle = [navigationElement objectForKey: kSideNavTitle];
+        
+        if([cellTitle isEqualToString:@"NOTIFICATIONS"])
+        {
+            cell.textLabel.text = [NSString stringWithFormat:@"%@  (%d)", cellTitle, self.totalNotifications];
+        }
+        else
+        {
+            cell.textLabel.text = cellTitle;
+        }
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
         
