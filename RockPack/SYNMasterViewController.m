@@ -112,7 +112,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         else
         {
-            sideNavigationFrame.origin.y = 55.0f;
+            sideNavigationFrame.origin.y = 58.0f;
         }
         
         self.sideNavigationViewController.view.frame = sideNavigationFrame;

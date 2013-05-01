@@ -105,7 +105,7 @@ typedef enum {
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
         CGRect newFrame = self.view.frame;
-        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 75.0f;
+        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
         self.mainContentView.frame = self.view.bounds;
         self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 68.0f, 0.0f, 65.0f ,0.0f)];

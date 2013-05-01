@@ -405,6 +405,7 @@
 		3862E8BC172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3862E8BB172979A40066E8E7 /* SYNVideoViewerViewController~iphone.xib */; };
 		388CAF25172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */; };
 		388CAF67172EBDC100721372 /* SYNSideNavigationIphoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */; };
+		38A2FF171730828100FB9F57 /* SYNSearchBoxIphoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF161730828100FB9F57 /* SYNSearchBoxIphoneView.xib */; };
 		38AB47BF17303764000F3CEA /* ButtonMenuBack@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AB478C17303764000F3CEA /* ButtonMenuBack@2x~iphone.png */; };
 		38AB47C017303764000F3CEA /* ButtonMenuBackHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AB478D17303764000F3CEA /* ButtonMenuBackHighlighted@2x~iphone.png */; };
 		38AB47C117303764000F3CEA /* ButtonMenuBackHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AB478E17303764000F3CEA /* ButtonMenuBackHighlighted~iphone.png */; };
@@ -1310,6 +1311,7 @@
 		388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNSideNavigationViewController~iphone.xib"; sourceTree = "<group>"; };
 		388CAF65172EBDC100721372 /* SYNSideNavigationIphoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigationIphoneCell.h; sourceTree = "<group>"; };
 		388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigationIphoneCell.m; sourceTree = "<group>"; };
+		38A2FF161730828100FB9F57 /* SYNSearchBoxIphoneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSearchBoxIphoneView.xib; sourceTree = "<group>"; };
 		38AB478C17303764000F3CEA /* ButtonMenuBack@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonMenuBack@2x~iphone.png"; sourceTree = "<group>"; };
 		38AB478D17303764000F3CEA /* ButtonMenuBackHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonMenuBackHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		38AB478E17303764000F3CEA /* ButtonMenuBackHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonMenuBackHighlighted~iphone.png"; sourceTree = "<group>"; };
@@ -3342,6 +3344,7 @@
 				BE0AAD2816E6534300DA958E /* SYNAutocompleteSuggestionsController.m */,
 				BEF3448C172FCB78008F98FF /* SYNSearchBoxView.h */,
 				BEF3448D172FCB79008F98FF /* SYNSearchBoxView.m */,
+				38A2FF161730828100FB9F57 /* SYNSearchBoxIphoneView.xib */,
 			);
 			name = "Search Box";
 			sourceTree = "<group>";
@@ -4399,6 +4402,7 @@
 				38AB47EE17303764000F3CEA /* SearchTabSelected@2x~iphone.png in Resources */,
 				38AB47EF17303764000F3CEA /* SearchTabSelected~iphone.png in Resources */,
 				38AB47F017303764000F3CEA /* SearchTab~iphone.png in Resources */,
+				38A2FF171730828100FB9F57 /* SYNSearchBoxIphoneView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
