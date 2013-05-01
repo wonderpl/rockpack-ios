@@ -11,10 +11,14 @@
 #import "UIImageView+ImageProcessing.h"
 #import "AppConstants.h"
 #import "GAI.h"
+#import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNSideNavigationIphoneCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNSearchBoxViewController.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "SYNRockpackNotification.h"
+#import "SYNNotificationsViewController.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -35,11 +39,14 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UIView* containerView;
 @property (nonatomic, strong) NSArray* navigationData;
 @property (nonatomic, strong) NSIndexPath* currentlySelectedIndexPath;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, strong) UIColor* navItemColor;
 @property (nonatomic, strong) UIViewController* currentlyLoadedViewController;
 @property (nonatomic, strong) NSMutableDictionary* cellByPageName;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
+
+@property (nonatomic, strong) NSMutableArray* notifications;
 
 @property (nonatomic, strong) UIView* bottomExtraView;
 
@@ -55,6 +62,7 @@ typedef enum {
 @synthesize user = _user;
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 @synthesize keyForSelectedPage;
+@synthesize appDelegate;
 
 - (id) init
 {
@@ -70,12 +78,16 @@ typedef enum {
         
         self.state = SideNavigationStateHidden;
         
+        self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
         if([[SYNDeviceManager sharedInstance] isIPad])
         {
             self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.origin.y + self.view.frame.size.height, self.view.frame.size.width, 300.0)];
             self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
             [self.view addSubview:self.bottomExtraView];
         }
+        
+        
         
     }
         
@@ -118,6 +130,64 @@ typedef enum {
         
         
     }
+    
+    [self getNotifications];
+}
+
+
+-(void)getNotifications
+{
+    [appDelegate.oAuthNetworkEngine notificationsFromUserId:appDelegate.currentUser.uniqueId completionHandler:^(id response) {
+        
+        if(![response isKindOfClass:[NSDictionary class]])
+            return;
+        
+        NSDictionary* responseDictionary = (NSDictionary*)response;
+        
+        NSDictionary* notificationsDictionary = [responseDictionary objectForKey:@"notifications"];
+        if(!notificationsDictionary)
+            return;
+        
+        NSNumber* totalNumber = [notificationsDictionary objectForKey:@"total"];
+        if(!totalNumber)
+            return;
+        
+        NSInteger total = [totalNumber integerValue];
+        
+        if(total == 0)
+        {
+            // TODO: Handle no notifications currently
+            return;
+        }
+        
+        
+        NSArray* itemsArray = [responseDictionary objectForKey:@"items"];
+        if(!itemsArray)
+        {
+            // TODO: handle erro in parsing items
+            return;
+            
+        }
+        
+        self.notifications = [NSMutableArray arrayWithCapacity:total];
+        
+        for (NSDictionary* itemData in itemsArray)
+        {
+            if(!itemData) continue;
+            
+            SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+            
+            [self.notifications addObject:notification];
+            
+        }
+        
+        
+    } errorHandler:^(id error) {
+        
+        DebugLog(@"Could not load notifications");
+        
+        
+    }];
 }
 
 
@@ -228,12 +298,20 @@ typedef enum {
     NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
     kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
     NSString* navigationAction = (NSString*)[navigationElement objectForKey: kSideNavAction];
+    NSString* navigationTitle = (NSString*)[navigationElement objectForKey: kSideNavTitle];
     
     if (navigationType == kSideNavigationTypeLoad)
     {
         
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
+        
+        if([navigationTitle isEqualToString:@"NOTIFICATIONS"])
+        {
+            ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
+        }
+        
+        
         if([[SYNDeviceManager sharedInstance] isIPad])
         {
             [UIView animateWithDuration: 0.5f

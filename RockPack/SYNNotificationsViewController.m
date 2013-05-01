@@ -9,16 +9,19 @@
 #import "SYNNotificationsViewController.h"
 #import "SYNNotificationsTableViewCell.h"
 #import "SYNRockpackNotification.h"
+#import "UIImageView+ImageProcessing.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
 @interface SYNNotificationsViewController ()
 
-@property (nonatomic, strong) NSArray* notifications;
+
 
 @end
 
 @implementation SYNNotificationsViewController
+
+@synthesize notifications = _notifications;
 
 
 
@@ -57,21 +60,28 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 
-    return 5;
+    return _notifications ? _notifications.count : 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNotificationsCellIdent forIndexPath:indexPath];
+    SYNNotificationsTableViewCell *notificationCell = [tableView dequeueReusableCellWithIdentifier:kNotificationsCellIdent forIndexPath:indexPath];
     
+    SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
-    cell.textLabel.text = @"LUCY KERRIGHAN has subscribed to your channel.";
-    cell.imageView.image = [UIImage imageNamed:@"NotFoundAvatarYou.png"];
+    NSString* constructedMessage = [NSString stringWithFormat:@"%@ has %@", notification.userDisplayName, notification.messageType];
+    notificationCell.textLabel.text = constructedMessage;
     
-    cell.detailTextLabel.text = @"8 Mins";
+    NSURL* thumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
+    [notificationCell.imageView setAsynchronousImageFromURL:thumbnailUrl placeHolderImage:[UIImage imageNamed:@""]];
     
-    return cell;
+//    NSURL* thumbnailChannelUrl = [NSURL URLWithString:notification.channelResourceUrl];
+//    notificationCell.thumbnailImageView setAsynchronousImageFromURL:thumbnailUrl placeHolderImage:[UIImage imageNamed:@""]];
+    
+    notificationCell.detailTextLabel.text = @"8 Mins";
+    
+    return notificationCell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -85,6 +95,14 @@
 {
     // TODO: Get the notification and do something with it
     // SYNRockpackNotification* notificationSelected = (SYNRockpackNotification*)[self.notifications objectAtIndex:indexPath.row];
+}
+
+#pragma mark - Accessors
+
+-(void)setNotifications:(NSArray *)notifications
+{
+    _notifications = notifications;
+    [self.tableView reloadData];
 }
 
 @end
