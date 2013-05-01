@@ -75,9 +75,8 @@ typedef enum {
         self.navigationData = @[
                                 @{kSideNavTitle: @"FEED", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kFeedTitle},
                                 @{kSideNavTitle: @"CHANNELS", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kChannelsTitle},
-                                @{kSideNavTitle: @"MY ROCKPACK", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kProfileTitle},
-                                @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"},
-                                @{kSideNavTitle: @"ACCOUNTS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @""}
+                                @{kSideNavTitle: @"PROFILE", kSideNavType: @(kSideNavigationTypePage), kSideNavAction: kProfileTitle},
+                                @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"}
                                 ];
         
         self.state = SideNavigationStateHidden;
@@ -314,7 +313,7 @@ typedef enum {
     
         
         
-    } 
+    }
     
     return cell;
 }
@@ -425,6 +424,14 @@ typedef enum {
                         withAction: @"mainNavClick"
                          withLabel: navigationAction
                          withValue: nil];
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([indexPath isEqual:self.currentlySelectedIndexPath] )
+    {
+        [cell setSelected:YES];
+    }
 }
 
 

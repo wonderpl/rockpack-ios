@@ -11,6 +11,7 @@
 #import "VideoInstance.h"
 #import "Video.h"
 #import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
 
 @interface SYNVideoQueue ()
 
@@ -159,6 +160,10 @@
     
     [self.currentlyCreatingChannel.videoInstancesSet addObject: copyOfVideoInstance];
     
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    }
     
     
     

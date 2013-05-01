@@ -253,7 +253,7 @@
     }
     else
     {
-        AssertOrLog(@"Received update from unexpected fetched results controller")
+        AssertOrLog(@"Received update from unexpected fetched results controller");
     }
     
 }
