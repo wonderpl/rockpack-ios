@@ -115,6 +115,11 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                completionHandler: (MKNKUserErrorBlock) completionBlock
                     errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+- (void) markAdReadForNotificationIndexes: (NSArray*) indexes
+                               fromUserId: (NSString*)userId
+                        completionHandler: (MKNKUserErrorBlock) completionBlock
+                             errorHandler: (MKNKUserErrorBlock) errorBlock;
+
 // Cover art
 
 - (void) coverArtForUserId: (NSString *) userId

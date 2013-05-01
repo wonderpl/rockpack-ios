@@ -335,6 +335,8 @@ typedef enum {
 #define kNoteAddedToChannel         @"kNoteAddedToChannel"
 #define kNoteCreateNewChannel       @"kNoteCreateNewChannel"
 
+#define kNotificationMarkedRead     @"kNoteAddedToChannel"
+
 
 //
 // Tracking

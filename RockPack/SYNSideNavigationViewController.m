@@ -24,6 +24,8 @@
 #define kSideNavType @"kSideNavType"
 #define kSideNavAction @"kSideNavAction"
 
+#define kNotificationsRowIndex 3
+
 typedef enum {
     kSideNavigationTypeLoad = 0,
     kSideNavigationTypePage
@@ -50,7 +52,7 @@ typedef enum {
 
 @property (nonatomic, strong) UIView* bottomExtraView;
 
-@property (nonatomic) NSInteger totalNotifications;
+@property (nonatomic) NSInteger unreadNotifications;
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIView *mainContentView;
 
@@ -64,7 +66,7 @@ typedef enum {
 @synthesize currentlyLoadedViewController = _currentlyLoadedViewController;
 @synthesize keyForSelectedPage;
 @synthesize appDelegate;
-@synthesize totalNotifications;
+@synthesize unreadNotifications;
 
 - (id) init
 {
@@ -89,7 +91,7 @@ typedef enum {
             [self.view addSubview:self.bottomExtraView];
         }
         
-        
+        self.unreadNotifications = 0;
         
     }
         
@@ -133,8 +135,15 @@ typedef enum {
         
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notificationMarkedRead:)
+                                                 name:kNotificationMarkedRead
+                                               object:nil];
+    
     [self getNotifications];
 }
+
+
 
 #pragma mark - Notifications
 
@@ -155,9 +164,9 @@ typedef enum {
         if(!totalNumber)
             return;
         
-        self.totalNotifications = [totalNumber integerValue];
+        NSInteger total = [totalNumber integerValue];
         
-        if(totalNotifications == 0)
+        if(total == 0)
         {
             
             
@@ -174,13 +183,16 @@ typedef enum {
             
         }
         
-        self.notifications = [NSMutableArray arrayWithCapacity:totalNotifications];
+        self.notifications = [NSMutableArray arrayWithCapacity:unreadNotifications];
         
         for (NSDictionary* itemData in itemsArray)
         {
             if(!itemData) continue;
             
             SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
+            
+            if(notification.read)
+                self.unreadNotifications++;
             
             [self.notifications addObject:notification];
             
@@ -196,6 +208,10 @@ typedef enum {
     }];
 }
 
+-(void)notificationMarkedRead:(NSNotification*)notification
+{
+    
+}
 
 #pragma mark - Button Actions
 
@@ -245,20 +261,13 @@ typedef enum {
         
         NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
         
-        NSString* cellTitle = [navigationElement objectForKey: kSideNavTitle];
         
-        if([cellTitle isEqualToString:@"NOTIFICATIONS"])
-        {
-            cell.textLabel.text = [NSString stringWithFormat:@"%@  (%d)", cellTitle, self.totalNotifications];
-        }
-        else
-        {
-            cell.textLabel.text = cellTitle;
-        }
         
         kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
         
+        // == Type == //
         
+        NSString* cellTitle = [navigationElement objectForKey: kSideNavTitle];
         
         if(navigationType == kSideNavigationTypePage)
         {
@@ -269,9 +278,29 @@ typedef enum {
         }
         else
         {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+            if(indexPath.row == kNotificationsRowIndex)
+            {
+                cellTitle = [NSString stringWithFormat:@"%@       %i", cellTitle, self.unreadNotifications];
+                if(self.unreadNotifications == 0)
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                else
+                    cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+                
+            }
+            else
+            {
+                
+                cell.accessoryView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"NavArrow"]];
+            }
+            
+            
         }
+        
+        // == Title == //
+        
+        
+        cell.textLabel.text = cellTitle;
+        
         
         if(isIPad)
         {
@@ -293,15 +322,27 @@ typedef enum {
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     
     
-    if([indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
+    // if notifications cell is clicked and there are no notifications, deselect it.
+    if(indexPath.row == kNotificationsRowIndex && self.notifications.count == 0) 
+    {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
+    }
+    
+    // if we are re-clicking a cell, return without deselecting
+    if([indexPath compare:self.currentlySelectedIndexPath] == NSOrderedSame)
+    {
+        
+        return;
+    }
+        
     
     UITableViewCell* previousSelectedCell = [self.tableView cellForRowAtIndexPath:self.currentlySelectedIndexPath];
     [previousSelectedCell setSelected:NO];
     
     if(self.currentlySelectedIndexPath.row > 3)
     {
-        
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     
     self.currentlySelectedIndexPath = indexPath;
@@ -313,7 +354,6 @@ typedef enum {
     NSDictionary* navigationElement = (NSDictionary*)[self.navigationData objectAtIndex: indexPath.row];
     kSideNavigationType navigationType = [((NSNumber*)[navigationElement objectForKey: kSideNavType]) integerValue];
     NSString* navigationAction = (NSString*)[navigationElement objectForKey: kSideNavAction];
-    NSString* navigationTitle = (NSString*)[navigationElement objectForKey: kSideNavTitle];
     
     if (navigationType == kSideNavigationTypeLoad)
     {
@@ -321,8 +361,11 @@ typedef enum {
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
         
-        if([navigationTitle isEqualToString:@"NOTIFICATIONS"])
+        // == NOTIFICATIONS == //
+        
+        if(indexPath.row == kNotificationsRowIndex )
         {
+            
             ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
         

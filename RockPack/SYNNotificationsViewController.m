@@ -10,19 +10,21 @@
 #import "SYNNotificationsTableViewCell.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+ImageProcessing.h"
+#import "SYNAppDelegate.h"
+#import "SYNOAuthNetworkEngine.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
 @interface SYNNotificationsViewController ()
 
 
-
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @end
 
 @implementation SYNNotificationsViewController
 
 @synthesize notifications = _notifications;
-
+@synthesize appDelegate;
 
 
 - (id)init
@@ -37,6 +39,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
@@ -93,8 +97,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: Get the notification and do something with it
-    // SYNRockpackNotification* notificationSelected = (SYNRockpackNotification*)[self.notifications objectAtIndex:indexPath.row];
+    NSArray* array = @[@(indexPath.row)];
+    [appDelegate.oAuthNetworkEngine markAdReadForNotificationIndexes:array
+                                                          fromUserId:appDelegate.currentUser.uniqueId
+                                                   completionHandler:^(id responce) {
+                                                       
+                                                       [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationMarkedRead
+                                                                                                           object:self];
+        
+                                                   } errorHandler:^(id error) {
+        
+                                                   }];
 }
 
 #pragma mark - Accessors
