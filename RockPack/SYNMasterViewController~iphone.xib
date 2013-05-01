@@ -43,7 +43,7 @@
 						<string key="NSFrameSize">{320, 548}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="163453737"/>
+						<reference key="NSNextKeyView" ref="709298577"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="102018180">
 							<int key="NSColorSpace">3</int>
@@ -146,7 +146,6 @@
 						<string key="NSFrame">{{267, 5}, {48, 49}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="709298577"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -201,6 +200,7 @@
 						<string key="NSFrameSize">{320, 548}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="163453737"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -242,8 +242,8 @@
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1048790499"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0NTA5ODAzOTIAA</bytes>
+					<int key="NSColorSpace">2</int>
+					<bytes key="NSRGB">MC45NzI1NDkwODA4IDAuOTcyNTQ5MDgwOCAwLjk3MjU0OTA4MDgAA</bytes>
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<reference key="IBUISimulatedDestinationMetrics" ref="704670977"/>

@@ -391,8 +391,8 @@ typedef enum {
         self.mainContentView.alpha = 0.0f;
         
         CGRect endFrame = self.view.frame;
-        endFrame.size.height +=55;
-        endFrame.origin.y -=55;
+        endFrame.size.height +=58;
+        endFrame.origin.y -=58;
         self.view.frame = endFrame;
         
     } completion:^(BOOL finished) {
@@ -412,6 +412,7 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] postNotificationName:kSideNavigationSearchCloseNotification object:self userInfo:nil];
     
     [self.searchViewController.searchBoxView.searchTextField resignFirstResponder];
+    self.searchViewController.searchBoxView.searchTextField.text=@"";
     self.searchViewController.searchBoxView.searchTextField.delegate = self;
     [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.searchViewController.searchBoxView hideCloseButton];
@@ -420,8 +421,8 @@ typedef enum {
         [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
             self.mainContentView.alpha = 1.0f;
             CGRect endFrame = self.view.frame;
-            endFrame.size.height -=55;
-            endFrame.origin.y +=55;
+            endFrame.size.height -=58;
+            endFrame.origin.y +=58;
             self.view.frame = endFrame;
         } completion:^(BOOL finished) {
         }];
