@@ -314,7 +314,7 @@ typedef enum {
     
         
         
-    } 
+    }
     
     return cell;
 }
@@ -425,6 +425,14 @@ typedef enum {
                         withAction: @"mainNavClick"
                          withLabel: navigationAction
                          withValue: nil];
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([indexPath isEqual:self.currentlySelectedIndexPath] )
+    {
+        [cell setSelected:YES];
+    }
 }
 
 
