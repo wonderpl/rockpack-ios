@@ -160,6 +160,7 @@
     
     [self changeUserGenderForValue:( indexPath.row == 0 ? @"m" : @"f")];
     
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     
     [self.spinner startAnimating];
