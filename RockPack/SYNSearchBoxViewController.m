@@ -66,8 +66,15 @@
     self.autoSuggestionController.tableView.delegate = self;
     
     CGRect tableViewFrame = self.autoSuggestionController.tableView.frame;
-    tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
-    tableViewFrame.origin.y = 66.0;
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
+        tableViewFrame.origin.y = 66.0;
+    }
+    else
+    {
+        tableViewFrame.origin.y = self.searchBoxView.frame.size.height;
+    }
     self.autoSuggestionController.tableView.frame = tableViewFrame;
     self.autoSuggestionController.tableView.alpha = 0.0;
     [self.view addSubview:self.autoSuggestionController.tableView];

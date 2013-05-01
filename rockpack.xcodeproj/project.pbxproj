@@ -397,6 +397,7 @@
 		388CAF25172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 388CAF24172E8F0C00721372 /* SYNSideNavigationViewController~iphone.xib */; };
 		388CAF67172EBDC100721372 /* SYNSideNavigationIphoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */; };
 		38A2FF171730828100FB9F57 /* SYNSearchBoxIphoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FF161730828100FB9F57 /* SYNSearchBoxIphoneView.xib */; };
+		38A2FF1B17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A2FF1A17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m */; };
 		38AB47BF17303764000F3CEA /* ButtonMenuBack@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AB478C17303764000F3CEA /* ButtonMenuBack@2x~iphone.png */; };
 		38AB47C017303764000F3CEA /* ButtonMenuBackHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AB478D17303764000F3CEA /* ButtonMenuBackHighlighted@2x~iphone.png */; };
 		38AB47C117303764000F3CEA /* ButtonMenuBackHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AB478E17303764000F3CEA /* ButtonMenuBackHighlighted~iphone.png */; };
@@ -1292,6 +1293,8 @@
 		388CAF65172EBDC100721372 /* SYNSideNavigationIphoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSideNavigationIphoneCell.h; sourceTree = "<group>"; };
 		388CAF66172EBDC100721372 /* SYNSideNavigationIphoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSideNavigationIphoneCell.m; sourceTree = "<group>"; };
 		38A2FF161730828100FB9F57 /* SYNSearchBoxIphoneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNSearchBoxIphoneView.xib; sourceTree = "<group>"; };
+		38A2FF1917314B3E00FB9F57 /* SYNAutocompleteIphoneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAutocompleteIphoneCell.h; sourceTree = "<group>"; };
+		38A2FF1A17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAutocompleteIphoneCell.m; sourceTree = "<group>"; };
 		38AB478C17303764000F3CEA /* ButtonMenuBack@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonMenuBack@2x~iphone.png"; sourceTree = "<group>"; };
 		38AB478D17303764000F3CEA /* ButtonMenuBackHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonMenuBackHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		38AB478E17303764000F3CEA /* ButtonMenuBackHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonMenuBackHighlighted~iphone.png"; sourceTree = "<group>"; };
@@ -2919,6 +2922,15 @@
 			name = iPhoneCell;
 			sourceTree = "<group>";
 		};
+		38A2FF1817314B0200FB9F57 /* iPhoneSearchResultCell */ = {
+			isa = PBXGroup;
+			children = (
+				38A2FF1917314B3E00FB9F57 /* SYNAutocompleteIphoneCell.h */,
+				38A2FF1A17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m */,
+			);
+			name = iPhoneSearchResultCell;
+			sourceTree = "<group>";
+		};
 		38AB478B17303764000F3CEA /* accountSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -3282,6 +3294,7 @@
 		BE0AAD2616E6521300DA958E /* Search Box */ = {
 			isa = PBXGroup;
 			children = (
+				38A2FF1817314B0200FB9F57 /* iPhoneSearchResultCell */,
 				BE2D2143171C5A0600B4B755 /* SYNSearchBoxViewController.h */,
 				BE2D2144171C5A0600B4B755 /* SYNSearchBoxViewController.m */,
 				BE0AAD2716E6534300DA958E /* SYNAutocompleteSuggestionsController.h */,
@@ -4550,6 +4563,7 @@
 				011C1683173003E800CF50B9 /* OWSinaWeiboActivity.m in Sources */,
 				011C1684173003E800CF50B9 /* OWTwitterActivity.m in Sources */,
 				BE3A771117300D3C008ED81F /* SYNAccountSettingsModalContainer.m in Sources */,
+				38A2FF1B17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
