@@ -14,6 +14,8 @@
 
 @interface SYNSubscriptionsViewController ()
 
+@property (nonatomic, weak) User* user;
+
 
 @end
 
@@ -21,6 +23,7 @@
 
 @synthesize collectionView;
 @synthesize headerView;
+@synthesize user;
 
 - (void) loadView
 {
@@ -49,6 +52,8 @@
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    user = appDelegate.currentUser;
+    
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
@@ -70,42 +75,10 @@
 }
 
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    
-    
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"subscribedByUser == YES"]];
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title" ascending: YES]];
-    
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
-    fetchedResultsController.delegate = self;
-    
-    NSError *error;
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"Channels FetchedResultsController Failed: %@\n%@",
-            [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
-
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = user.subscriptions[indexPath.row];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
@@ -125,7 +98,7 @@
     
     if(self.headerView)
     {
-        NSInteger totalChannels = self.fetchedResultsController.fetchedObjects.count;
+        NSInteger totalChannels = user.subscriptions.count;
         [self.headerView setTitle:@"SUBSCRIPTIONS" andNumber:totalChannels];
     }
     
@@ -144,9 +117,5 @@
     return self.channelThumbnailCollectionView;
 }
 
--(Channel*)channelAtIndexPath:(NSIndexPath*)indexPath
-{
-    return [self.fetchedResultsController objectAtIndexPath:indexPath];
-}
 
 @end

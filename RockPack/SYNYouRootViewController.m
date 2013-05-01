@@ -272,6 +272,9 @@
     [self.channelThumbnailCollectionView addGestureRecognizer:_longPressGestureRecogniser];
     //_longPressGestureRecogniser.delegate = self;
     
+    
+    [self reloadCollectionViews];
+    
 }
 
 -(void)longPressPerformed:(UILongPressGestureRecognizer*)recogniser
@@ -353,26 +356,10 @@
     
     
     
-    [self reloadCollectionViews];
-    
 }
 
 
 
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    //[self resizeScrollViews];
-}
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
@@ -531,6 +518,7 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
+    // NSLog(@"%@", user);
     return user.channels.count;
 }
 
@@ -544,6 +532,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    
     
     Channel *channel = (Channel*)user.channels[indexPath.row];
     

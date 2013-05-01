@@ -16,6 +16,5 @@
 @property (nonatomic, weak) SYNYouHeaderView* headerView;
 
 -(void)setViewFrame:(CGRect)frame;
--(Channel*)channelAtIndexPath:(NSIndexPath*)indexPath;
 
 @end
