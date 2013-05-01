@@ -53,7 +53,7 @@
                                [[SYNDeviceManager sharedInstance] currentScreenHeight]);
     
     self.view = [[UIView alloc] initWithFrame:frame];
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [[SYNDeviceManager sharedInstance] isIPad]?[UIColor clearColor]:[UIColor colorWithWhite:0.97f alpha:1.0f];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
     
 }

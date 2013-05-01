@@ -127,7 +127,7 @@
     else
     {
         CGRect selfFrame = self.frame;
-        selfFrame.size.height = MIN(65.05 + height, 548.0f);
+        selfFrame.size.height = MIN(65.0 + height, 548.0f);
         self.frame = selfFrame;
     }
 }
