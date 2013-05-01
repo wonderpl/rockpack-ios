@@ -316,15 +316,6 @@
 		01E427F11664EE52009B941F /* _Video.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427EF1664EE52009B941F /* _Video.m */; };
 		01E427FF16664EB3009B941F /* ButtonThumbnailShareHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E427FB16664EB2009B941F /* ButtonThumbnailShareHighlighted.png */; };
 		01E4280016664EB3009B941F /* ButtonThumbnailShareHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E427FC16664EB2009B941F /* ButtonThumbnailShareHighlighted@2x.png */; };
-		01E428121666671D009B941F /* CBetterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E428071666671D009B941F /* CBetterCollectionViewCell.m */; };
-		01E428131666671D009B941F /* CBetterCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E428091666671D009B941F /* CBetterCollectionViewLayoutAttributes.m */; };
-		01E428141666671D009B941F /* CCoverflowCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280B1666671D009B941F /* CCoverflowCollectionViewLayout.m */; };
-		01E428151666671D009B941F /* CInterpolator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280D1666671D009B941F /* CInterpolator.mm */; };
-		01E428161666671D009B941F /* Interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01E4280E1666671D009B941F /* Interpolator.cpp */; };
-		01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E4281916666F09009B941F /* SYNChannelSelectorCell.m */; };
-		01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */; };
-		01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */; };
-		01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E5670416B5E2F400B8B218 /* HPTextViewInternal.m */; };
 		01E98D8C165C146B0079FD7A /* SliderBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D88165C146B0079FD7A /* SliderBackground.png */; };
 		01E98D8D165C146B0079FD7A /* SliderBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D89165C146B0079FD7A /* SliderBackground@2x.png */; };
 		01E98D8E165C146B0079FD7A /* SliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 01E98D8A165C146B0079FD7A /* SliderThumb.png */; };
@@ -1201,23 +1192,6 @@
 		01E427EF1664EE52009B941F /* _Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Video.m; sourceTree = "<group>"; };
 		01E427FB16664EB2009B941F /* ButtonThumbnailShareHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonThumbnailShareHighlighted.png; path = Assets/Images/ButtonThumbnailShareHighlighted.png; sourceTree = "<group>"; };
 		01E427FC16664EB2009B941F /* ButtonThumbnailShareHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonThumbnailShareHighlighted@2x.png"; path = "Assets/Images/ButtonThumbnailShareHighlighted@2x.png"; sourceTree = "<group>"; };
-		01E428061666671D009B941F /* CBetterCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBetterCollectionViewCell.h; sourceTree = "<group>"; };
-		01E428071666671D009B941F /* CBetterCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBetterCollectionViewCell.m; sourceTree = "<group>"; };
-		01E428081666671D009B941F /* CBetterCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBetterCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
-		01E428091666671D009B941F /* CBetterCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBetterCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
-		01E4280A1666671D009B941F /* CCoverflowCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoverflowCollectionViewLayout.h; sourceTree = "<group>"; };
-		01E4280B1666671D009B941F /* CCoverflowCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoverflowCollectionViewLayout.m; sourceTree = "<group>"; };
-		01E4280C1666671D009B941F /* CInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInterpolator.h; sourceTree = "<group>"; };
-		01E4280D1666671D009B941F /* CInterpolator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CInterpolator.mm; sourceTree = "<group>"; };
-		01E4280E1666671D009B941F /* Interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Interpolator.cpp; sourceTree = "<group>"; };
-		01E4280F1666671D009B941F /* Interpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interpolator.h; sourceTree = "<group>"; };
-		01E4281816666F09009B941F /* SYNChannelSelectorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelSelectorCell.h; sourceTree = "<group>"; };
-		01E4281916666F09009B941F /* SYNChannelSelectorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelSelectorCell.m; sourceTree = "<group>"; };
-		01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelSelectorCell.xib; sourceTree = "<group>"; };
-		01E5670116B5E2F400B8B218 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
-		01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
-		01E5670316B5E2F400B8B218 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
-		01E5670416B5E2F400B8B218 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
 		01E98D88165C146B0079FD7A /* SliderBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SliderBackground.png; path = Assets/Images/SliderBackground.png; sourceTree = "<group>"; };
 		01E98D89165C146B0079FD7A /* SliderBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SliderBackground@2x.png"; path = "Assets/Images/SliderBackground@2x.png"; sourceTree = "<group>"; };
 		01E98D8A165C146B0079FD7A /* SliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SliderThumb.png; path = Assets/Images/SliderThumb.png; sourceTree = "<group>"; };
@@ -1826,9 +1800,6 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				011C16891730047300CF50B9 /* AssetsLibrary.framework */,
-				011C16871730046700CF50B9 /* MessageUI.framework */,
-				011C16851730043000CF50B9 /* Twitter.framework */,
 				010DEFDA1629BDC40080F26B /* Source */,
 				019824DD1629CA3700216900 /* Resources */,
 				010DEFD31629BDC40080F26B /* Frameworks */,
@@ -1853,6 +1824,7 @@
 				019824F11629CE1600216900 /* libz.dylib */,
 				012502C416CA99710029C7C8 /* Accounts.framework */,
 				012502C216CA99630029C7C8 /* AdSupport.framework */,
+				011C16891730047300CF50B9 /* AssetsLibrary.framework */,
 				01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */,
 				011CC67F164AA42300F02B6D /* AVFoundation.framework */,
 				01E427BB1664C5F1009B941F /* CoreData.framework */,
@@ -1863,10 +1835,12 @@
 				015487D016DCE35D002A41A2 /* FacebookSDK.framework */,
 				010DEFD61629BDC40080F26B /* Foundation.framework */,
 				0126331E162E2A060009FF9C /* MediaPlayer.framework */,
+				011C16871730046700CF50B9 /* MessageUI.framework */,
 				01982575162AFB9600216900 /* QuartzCore.framework */,
 				0170717F165550BE00A3C7C4 /* Security.framework */,
 				012502C616CA99790029C7C8 /* Social.framework */,
 				0170717D165550A900A3C7C4 /* SystemConfiguration.framework */,
+				011C16851730043000CF50B9 /* Twitter.framework */,
 				010DEFD41629BDC40080F26B /* UIKit.framework */,
 				3685246F69AA4C9B93DDEDAC /* libPods.a */,
 			);
@@ -2213,14 +2187,6 @@
 			name = Networking;
 			sourceTree = "<group>";
 		};
-		0170715E16554E9B00A3C7C4 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Categories;
-			path = MKNetworkKit/MKNetworkKit/Categories;
-			sourceTree = SOURCE_ROOT;
-		};
 		0173E6C5171822BF00EEE76B /* Google Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -2388,9 +2354,6 @@
 				BED4312816F20CC50051465B /* RegexKitLite */,
 				011A162016EF5E96008CF25E /* Image Picker */,
 				BEF9E5AD16DCBAA300286113 /* Sound */,
-				0170715E16554E9B00A3C7C4 /* Categories */,
-				01E566FA16B5E2AA00B8B218 /* Resizeable Text View */,
-				01E42805166666F4009B941F /* Coverflow */,
 				019E6A5E165FD958002B312A /* OAuth2 */,
 				011CC679164A9E9C00F02B6D /* Camera Overlay */,
 				019824ED1629CC6600216900 /* TestFlight */,
@@ -2691,9 +2654,6 @@
 				01B7F762164FC88A009C5CCD /* SYNChannelThumbnailCell.m */,
 				01B7F764164FC8A8009C5CCD /* SYNChannelThumbnailCell.xib */,
 				3862E8B0172979410066E8E7 /* SYNChannelThumbnailCell~iphone.xib */,
-				01E4281816666F09009B941F /* SYNChannelSelectorCell.h */,
-				01E4281916666F09009B941F /* SYNChannelSelectorCell.m */,
-				01E4281B166670CC009B941F /* SYNChannelSelectorCell.xib */,
 				BE86BF18171F07B10006DC8A /* SYNChannelMidCell.h */,
 				BE86BF19171F07B10006DC8A /* SYNChannelMidCell.m */,
 				BE86BF1B171F07C70006DC8A /* SYNChannelMidCell.xib */,
@@ -2835,34 +2795,6 @@
 				015CB01516AE039900FEB8E7 /* User.m */,
 			);
 			name = "Editable files";
-			sourceTree = "<group>";
-		};
-		01E42805166666F4009B941F /* Coverflow */ = {
-			isa = PBXGroup;
-			children = (
-				01E428061666671D009B941F /* CBetterCollectionViewCell.h */,
-				01E428071666671D009B941F /* CBetterCollectionViewCell.m */,
-				01E428081666671D009B941F /* CBetterCollectionViewLayoutAttributes.h */,
-				01E428091666671D009B941F /* CBetterCollectionViewLayoutAttributes.m */,
-				01E4280A1666671D009B941F /* CCoverflowCollectionViewLayout.h */,
-				01E4280B1666671D009B941F /* CCoverflowCollectionViewLayout.m */,
-				01E4280C1666671D009B941F /* CInterpolator.h */,
-				01E4280D1666671D009B941F /* CInterpolator.mm */,
-				01E4280F1666671D009B941F /* Interpolator.h */,
-				01E4280E1666671D009B941F /* Interpolator.cpp */,
-			);
-			name = Coverflow;
-			sourceTree = "<group>";
-		};
-		01E566FA16B5E2AA00B8B218 /* Resizeable Text View */ = {
-			isa = PBXGroup;
-			children = (
-				01E5670116B5E2F400B8B218 /* HPGrowingTextView.h */,
-				01E5670216B5E2F400B8B218 /* HPGrowingTextView.m */,
-				01E5670316B5E2F400B8B218 /* HPTextViewInternal.h */,
-				01E5670416B5E2F400B8B218 /* HPTextViewInternal.m */,
-			);
-			name = "Resizeable Text View";
 			sourceTree = "<group>";
 		};
 		01E98D6E165C13610079FD7A /* Slider */ = {
@@ -3836,7 +3768,6 @@
 				01E98D8F165C146B0079FD7A /* SliderThumb@2x.png in Resources */,
 				01E427FF16664EB3009B941F /* ButtonThumbnailShareHighlighted.png in Resources */,
 				01E4280016664EB3009B941F /* ButtonThumbnailShareHighlighted@2x.png in Resources */,
-				01E4281C166670CD009B941F /* SYNChannelSelectorCell.xib in Resources */,
 				01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */,
 				01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */,
 				01B0A96D166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png in Resources */,
@@ -4467,12 +4398,6 @@
 				01E427E51664DF21009B941F /* Channel.m in Sources */,
 				01E427F01664EE52009B941F /* _Channel.m in Sources */,
 				01E427F11664EE52009B941F /* _Video.m in Sources */,
-				01E428121666671D009B941F /* CBetterCollectionViewCell.m in Sources */,
-				01E428131666671D009B941F /* CBetterCollectionViewLayoutAttributes.m in Sources */,
-				01E428141666671D009B941F /* CCoverflowCollectionViewLayout.m in Sources */,
-				01E428151666671D009B941F /* CInterpolator.mm in Sources */,
-				01E428161666671D009B941F /* Interpolator.cpp in Sources */,
-				01E4281A16666F0A009B941F /* SYNChannelSelectorCell.m in Sources */,
 				014A456816691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m in Sources */,
 				014A4570166A39E60091E4E5 /* SYNChannelsRootViewController.m in Sources */,
 				01B0A963166CE1EE00CAA235 /* SYNVideoThumbnailRegularCell.m in Sources */,
@@ -4494,8 +4419,6 @@
 				01A3EC2E16AECE4B008DCE08 /* SYNActivityPopoverViewController.m in Sources */,
 				01F8E77F16B03A7C000D44B9 /* SYNVideoViewerViewController.m in Sources */,
 				0142ED8C16B1B39D008694DA /* SYNYouRootViewController.m in Sources */,
-				01E5670516B5E2F400B8B218 /* HPGrowingTextView.m in Sources */,
-				01E5670616B5E2F400B8B218 /* HPTextViewInternal.m in Sources */,
 				015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */,
 				012502B116C958FA0029C7C8 /* UIView+Toast.m in Sources */,
 				BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */,
