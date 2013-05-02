@@ -54,7 +54,6 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    [super saveButtonPressed:button];
     
     if(![self formIsValid]) {
         self.errorLabel.text = @"You Have Entered Invalid Characters";

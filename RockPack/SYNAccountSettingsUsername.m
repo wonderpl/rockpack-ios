@@ -33,7 +33,6 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    [super saveButtonPressed:button];
     
     if([self.inputField.text isEqualToString:self.appDelegate.currentUser.username])
         return;

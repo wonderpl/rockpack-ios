@@ -35,7 +35,7 @@
     {
         currentFieldType = userFieldType;
         appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
-        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhiteLarge];
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     }
     
     return self;
@@ -182,10 +182,7 @@
 
 - (void) saveButtonPressed: (UIButton *) button
 {
-    self.saveButton.hidden = YES;
     
-    self.spinner.center = self.saveButton.center;
-    [self.spinner startAnimating];
 }
 
 #pragma mark - Validating
@@ -232,12 +229,17 @@
             forValue: (NSString *) newValue
             withCompletionHandler: (MKNKBasicSuccessBlock) successBlock
 {
-    self.saveButton.enabled = NO;
+    self.saveButton.hidden = YES;
+    
+    self.spinner.center = self.saveButton.center;
+    
+    [self.spinner startAnimating];
     
     [self.appDelegate.oAuthNetworkEngine changeUserField: field
                                                  forUser: self.appDelegate.currentUser
                                             withNewValue: newValue
                                        completionHandler: ^{
+                                           
                                            [self.spinner stopAnimating];
                                            self.saveButton.hidden = NO;
                                            self.saveButton.enabled = YES;
@@ -247,8 +249,12 @@
                                            [[NSNotificationCenter defaultCenter]  postNotificationName: kUserDataChanged
                                                                                                 object: self
                                                                                               userInfo: @{@"user": appDelegate.currentUser}];
+                                           
+                                           [self.spinner stopAnimating];
+                                           
                                        } errorHandler: ^(id errorInfo) {
-                                                [self.spinner stopAnimating];
+                                           
+                                           
                                                 self.saveButton.hidden = NO;
                                                 self.saveButton.enabled = YES;
                                                 
