@@ -1008,7 +1008,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self alignErrorMessage];
     }
-
+    if(self.accountSettingsPopover)
+    {
+        CGRect rect = CGRectMake([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5,
+                                 [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5, 1, 1);
+        
+        [self.accountSettingsPopover presentPopoverFromRect: rect
+                                                     inView: self.view
+                                   permittedArrowDirections: 0
+                                                   animated: YES];
+    }
     
 }
 
