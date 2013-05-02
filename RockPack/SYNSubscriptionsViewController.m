@@ -70,11 +70,20 @@
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
     
-    
-    
+}
+
+#pragma mark - UICollectionView Delegate Methods
+
+- (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
+{
+    return user.subscriptions.count;
 }
 
 
+- (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
+{
+    return 1;
+}
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
