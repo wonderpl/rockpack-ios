@@ -265,7 +265,7 @@
 									<object class="IBUILabel" id="787184779">
 										<reference key="NSNextResponder" ref="76609695"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{10, 28}, {228, 35}}</string>
+										<string key="NSFrame">{{10, 23}, {228, 35}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="260730617"/>
@@ -351,7 +351,7 @@
 									<object class="IBUILabel" id="918817103">
 										<reference key="NSNextResponder" ref="76609695"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{10, 10}, {47, 21}}</string>
+										<string key="NSFrame">{{10, 6}, {47, 21}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="787184779"/>
@@ -424,7 +424,7 @@
 							<object class="IBUIButton" id="182689996">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{185, 0}, {64, 65}}</string>
+								<string key="NSFrame">{{195, 10}, {44, 45}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="863100514"/>
@@ -459,7 +459,7 @@
 							<object class="IBUILabel" id="863100514">
 								<reference key="NSNextResponder" ref="92173708"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{6, 113}, {243, 21}}</string>
+								<string key="NSFrame">{{10, 119}, {232, 18}}</string>
 								<reference key="NSSuperview" ref="92173708"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="239537915"/>
@@ -678,12 +678,12 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="111552951"/>
 							<reference ref="886759980"/>
-							<reference ref="182689996"/>
 							<reference ref="76609695"/>
 							<reference ref="239537915"/>
 							<reference ref="556723432"/>
 							<reference ref="863100514"/>
 							<reference ref="940332637"/>
+							<reference ref="182689996"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -735,13 +735,13 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="260730617"/>
 							<reference ref="787184779"/>
-							<reference ref="918817103"/>
 							<reference ref="757200317"/>
 							<reference ref="193032629"/>
 							<reference ref="1047662222"/>
 							<reference ref="804857251"/>
 							<reference ref="469209956"/>
 							<reference ref="939668471"/>
+							<reference ref="918817103"/>
 						</array>
 						<reference key="parent" ref="182925985"/>
 						<string key="objectName">Channel Info View</string>
@@ -991,7 +991,7 @@
 			<string key="ButtonAddSelected.png">{44, 45}</string>
 			<string key="GlossChannelSmall.png">{80, 60}</string>
 			<string key="GlossVideo.png">{249, 140}</string>
-			<string key="PanelVideoFeedLandscape.png">{497, 170}</string>
+			<string key="PanelVideoFeedLandscape.png">{497, 141}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
