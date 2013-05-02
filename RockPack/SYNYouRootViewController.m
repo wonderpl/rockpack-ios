@@ -85,17 +85,17 @@
 
     // Main Collection View
     self.channelsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0f, 184.0f)
-                                                       minimumInterItemSpacing: 5.0f
+                                                       minimumInterItemSpacing: kInterRowMargin
                                                             minimumLineSpacing: kInterRowMargin
                                                                scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                  sectionInset: UIEdgeInsetsMake(kInterRowMargin, 8.0, kInterRowMargin, 28.0)];
+                                                                  sectionInset: UIEdgeInsetsMake(kInterRowMargin, kInterRowMargin, kInterRowMargin, kInterRowMargin + 12.0f)];
     
 
     self.subscriptionsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(184.0, 184.0f)
-                                                                        minimumInterItemSpacing: 5.0f
+                                                                        minimumInterItemSpacing: kInterRowMargin - 2
                                                                              minimumLineSpacing: kInterRowMargin
                                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                                   sectionInset: UIEdgeInsetsMake(kInterRowMargin, 20.0f, kInterRowMargin, 15.0f)];
+                                                                                   sectionInset: UIEdgeInsetsMake(kInterRowMargin, kInterRowMargin + 6.0f, kInterRowMargin, kInterRowMargin + 2)];
     
     
     if (isIPhone)
@@ -164,7 +164,6 @@
     self.channelThumbnailCollectionView.dataSource = self;
     self.channelThumbnailCollectionView.delegate = self;
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-//    self.channelThumbnailCollectionView.backgroundColor = [UIColor redColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     self.channelThumbnailCollectionView.alwaysBounceVertical = YES;
     
