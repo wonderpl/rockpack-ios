@@ -51,8 +51,8 @@
     self.saveButton.frame = saveButtonRect;
     
     
-    self.errorTextField.center = CGPointMake(self.errorTextField.center.x, self.saveButton.center.y + 60.0);
-    self.errorTextField.frame = CGRectIntegral(self.errorTextField.frame);
+    self.errorLabel.center = CGPointMake(self.errorLabel.center.x, self.saveButton.center.y + 60.0);
+    self.errorLabel.frame = CGRectIntegral(self.errorLabel.frame);
     
     
     
@@ -96,7 +96,6 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    [super saveButtonPressed:button];
     
     if([self.inputField.text isEqualToString:self.appDelegate.currentUser.firstName] && // user did not change anything
        [self.lastNameInputField.text isEqualToString:self.appDelegate.currentUser.lastName]) {
@@ -105,7 +104,7 @@
     }
     
     if(![self inputIsValid:self.inputField.text] || ![self inputIsValid:self.lastNameInputField.text]) {
-        self.errorTextField.text = @"You Have Entered Invalid Characters";
+        self.errorLabel.text = @"You Have Entered Invalid Characters";
         [self.spinner stopAnimating];
         self.saveButton.hidden = NO;
         return;
