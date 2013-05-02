@@ -36,6 +36,7 @@
     [super viewDidLoad];
     self.inputField.text = @"";
     self.inputField.placeholder = @"Old Password";
+    self.inputField.secureTextEntry = YES;
     
     passwordField = [self createInputField];
     passwordField.placeholder = @"New Password";
@@ -56,12 +57,17 @@
     [super saveButtonPressed:button];
     
     if(![self formIsValid]) {
-        self.errorTextField.text = @"You Have Entered Invalid Characters";
+        self.errorLabel.text = @"You Have Entered Invalid Characters";
         return;
     }
     
     if(![passwordField.text isEqualToString:passwordConfirmField.text]) {
-        self.errorTextField.text = @"Passwords do not match";
+        self.errorLabel.text = @"Passwords do not match";
+        return;
+    }
+    
+    if([self.inputField.text isEqualToString:passwordField.text]) {
+        self.errorLabel.text = @"The new password typed is the same with old";
         return;
     }
     
@@ -84,12 +90,39 @@
                         appDelegate.currentOAuth2Credentials = newOAuth2Credentials;
                                                      
                                                      
+                                                     
+            [self.navigationController popViewControllerAnimated:YES];
+                                                     
+                                                     
         
                         } errorHandler:^(id error) {
                             
+                            if(![error isKindOfClass:[NSDictionary class]])
+                                return;
                             
-                                                     
-                                                     
+                            
+                            NSString* errorType = [error objectForKey:@"error"];
+                            
+                            if([errorType isEqualToString:@"invalid_request"])
+                            {
+                                NSArray* errorMessage = [error objectForKey:@"message"];
+                                
+                                if(errorMessage.count > 0)
+                                {
+                                    self.errorLabel.text = (NSString*)[errorMessage objectAtIndex:0];
+                                }
+                                else
+                                {
+                                    self.errorLabel.text = @"Could not change password";
+                                }
+                            }
+                            else
+                            {
+                                self.errorLabel.text = @"Could not change password";
+                            }
+                            
+                            self.saveButton.hidden = NO;
+     
     
                         }];
     

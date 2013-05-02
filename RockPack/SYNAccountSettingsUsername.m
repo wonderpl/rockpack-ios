@@ -39,7 +39,7 @@
         return;
     
     if(![self formIsValid]) {
-        self.errorTextField.text = @"You Have Entered Invalid Characters";
+        self.errorLabel.text = @"You Have Entered Invalid Characters";
         return;
     }
     
