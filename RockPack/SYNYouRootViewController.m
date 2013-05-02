@@ -319,10 +319,10 @@
     [self.channelThumbnailCollectionView addGestureRecognizer: longPress];
     
     // Tap for exiting delete mode
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget: self
-//                                                                          action: @selector(endDeletionMode:)];
-//    tap.delegate = self;
-//    [self.channelThumbnailCollectionView addGestureRecognizer: tap];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                          action: @selector(endDeletionMode:)];
+    tap.delegate = self;
+    [self.channelThumbnailCollectionView addGestureRecognizer: tap];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(handleDataModelChange:)
@@ -428,7 +428,7 @@
     
     if (indexPath && [gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]])
     {
-        return YES;
+        return NO;
     }
     
     return YES;
@@ -657,31 +657,35 @@
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate: self];
     
-    channelThumbnailCell.deleteButton.hidden = YES;
-    
     return channelThumbnailCell;
 }
 
 
-- (BOOL) collectionView: (UICollectionView *) collectionView
-         shouldSelectItemAtIndexPath: (NSIndexPath *) indexPath
-{
-    if (self.isDeletionModeActive)
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
-}
+//- (BOOL) collectionView: (UICollectionView *) collectionView
+//         shouldSelectItemAtIndexPath: (NSIndexPath *) indexPath
+//{
+//    if (self.isDeletionModeActive)
+//    {
+//        return NO;
+//    }
+//    else
+//    {
+//        return YES;
+//    }
+//}
 
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (self.deleteCellModeOn)
+    {
+        self.deletionModeActive = NO;
+        SYNDeletionWobbleLayout *layout = (SYNDeletionWobbleLayout *)self.channelThumbnailCollectionView.collectionViewLayout;
+        [layout invalidateLayout];
         return;
+    }
+
     
     Channel *channel;
     
