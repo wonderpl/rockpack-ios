@@ -1360,67 +1360,51 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 -(void) decompressedResponseImageOfSize:(CGSize) size completionHandler:(void (^)(UIImage *decompressedImage)) imageDecompressionHandler {
-  
-  static float scale = 1.0f;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    scale = [[UIScreen mainScreen] scale];
-  });
-  
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     
-    __block CGSize targetSize = CGSizeMake(size.width * scale, size.height * scale);
-    UIImage *image = [self responseImage];
-    CGImageRef imageRef = image.CGImage;
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(imageRef);
-
-    size_t imageWidth = (size_t)targetSize.width;
-    size_t imageHeight = (size_t)targetSize.height;
-    CGContextRef context = CGBitmapContextCreate(NULL,
-                                                 imageWidth,
-                                                 imageHeight,
-                                                 8,
-                                                 // Just always return width * 4 will be enough
-                                                 imageWidth * 4,
-                                                 // System only supports RGB, set explicitly
-                                                 colorSpace,
-                                                 // Makes system don't need to do extra conversion when displayed.
-                                                 alphaInfo | kCGBitmapByteOrder32Little);
-    CGColorSpaceRelease(colorSpace);
-    if (!context) {
-      DLog(@"Image decompression failed. Context is nil. Could happen if your image view size is CGSizeZero");
-      return;
-    }
-    
-      // Code to implement aspect fit
-      
-    float hfactor = image.size.width / imageWidth;
-    float vfactor = image.size.height / imageHeight;
-
-    float factor = fmax(hfactor, vfactor);
-
-    // Divide the size by the greater of the vertical or horizontal shrinkage factor
-    float newWidth = image.size.width / factor;
-    float newHeight = image.size.height / factor;
-
-    // Then figure out if you need to offset it to center vertically or horizontally
-    float leftOffset = (imageWidth - newWidth) / 2;
-    float topOffset = (imageHeight - newHeight) / 2;
-
-    CGRect rect = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
-    
-//    CGRect rect = (CGRect){CGPointZero, {imageWidth, imageHeight}};
-    CGContextDrawImage(context, rect, imageRef);
-    CGImageRef decompressedImageRef = CGBitmapContextCreateImage(context);
-    CGContextRelease(context);
-        
-    UIImage *decompressedImage = [[UIImage alloc] initWithCGImage:decompressedImageRef scale:scale orientation:image.imageOrientation];
-    CGImageRelease(decompressedImageRef);
-    dispatch_async(dispatch_get_main_queue(), ^{
-      imageDecompressionHandler(decompressedImage);
+    static float scale = 1.0f;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        scale = [[UIScreen mainScreen] scale];
     });
-  });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        __block CGSize targetSize = CGSizeMake(size.width * scale, size.height * scale);
+        UIImage *image = [self responseImage];
+        CGImageRef imageRef = image.CGImage;
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(imageRef);
+        
+        size_t imageWidth = (size_t)targetSize.width;
+        size_t imageHeight = (size_t)targetSize.height;
+        CGContextRef context = CGBitmapContextCreate(NULL,
+                                                     imageWidth,
+                                                     imageHeight,
+                                                     8,
+                                                     // Just always return width * 4 will be enough
+                                                     imageWidth * 4,
+                                                     // System only supports RGB, set explicitly
+                                                     colorSpace,
+                                                     // Makes system don't need to do extra conversion when displayed.
+                                                     alphaInfo | kCGBitmapByteOrder32Little);
+        CGColorSpaceRelease(colorSpace);
+        if (!context) {
+            DLog(@"Image decompression failed. Context is nil. Could happen if your image view size is CGSizeZero");
+            return;
+        }
+        
+        
+        CGRect rect = (CGRect){CGPointZero, {imageWidth, imageHeight}};
+        CGContextDrawImage(context, rect, imageRef);
+        CGImageRef decompressedImageRef = CGBitmapContextCreateImage(context);
+        CGContextRelease(context);
+        
+        UIImage *decompressedImage = [[UIImage alloc] initWithCGImage:decompressedImageRef scale:scale orientation:image.imageOrientation];
+        CGImageRelease(decompressedImageRef);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imageDecompressionHandler(decompressedImage);
+        });
+    });
 }
 
 #elif TARGET_OS_MAC

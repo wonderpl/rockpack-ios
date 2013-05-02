@@ -40,7 +40,7 @@
     self.videoTitle.font = [UIFont boldRockpackFontOfSize: self.videoTitle.font.pointSize];
     
     self.fromLabel.font = [UIFont rockpackFontOfSize: self.fromLabel.font.pointSize];
-    self.channelName.font = [UIFont rockpackFontOfSize: self.channelName.font.pointSize];
+    self.channelName.font = [UIFont boldRockpackFontOfSize: self.channelName.font.pointSize];
     
     self.usernameLabel.font = [UIFont rockpackFontOfSize: self.usernameLabel.font.pointSize];
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
@@ -131,22 +131,35 @@
 
 - (void) setUsernameText: (NSString *) text
 {
-    if([[SYNDeviceManager sharedInstance]isIPad])
+    if ([[SYNDeviceManager sharedInstance] isIPad])
     {
-        CGSize bySize = [self.byLabel.text sizeWithFont:self.byLabel.font];
-        CGFloat maxWidth = self.channelInfoView.frame.size.width - 19.0f - bySize.width;
-        CGSize stringSize = [text sizeWithFont:self.usernameLabel.font];
-        CGRect currentFrame = self.usernameLabel.frame;
-        currentFrame.size = stringSize;
-        currentFrame.size.width = MIN(currentFrame.size.width, maxWidth);
-        currentFrame.origin.x = self.channelInfoView.frame.size.width - 15.0 - currentFrame.size.width;
-        self.usernameLabel.frame = currentFrame;
-        self.usernameLabel.text = text;
-        
         CGRect byFrame = self.byLabel.frame;
-        byFrame.size = bySize;
-        byFrame.origin.x = currentFrame.origin.x - byFrame.size.width - 4.0;
+        CGRect usernameFrame = self.usernameLabel.frame;
+        
+        if ([[SYNDeviceManager sharedInstance] isLandscape])
+        {
+            // Landscape
+            byFrame.origin.x = 78.0f;
+            usernameFrame.origin.x = 78.0f;
+            byFrame.origin.y = 66.0f;
+            usernameFrame.origin.y = 77.0f;
+            usernameFrame.size.width = 160.0f;
+        }
+        else
+        {
+            // Portrait
+            byFrame.origin.x = 10.0f;
+            usernameFrame.origin.x = 10.0f;
+            byFrame.origin.y = 86.0f;
+            usernameFrame.origin.y = 97.0f;
+            usernameFrame.size.width = 108.0f;
+        }
+        
+        // Update label positions
         self.byLabel.frame = byFrame;
+        self.usernameLabel.frame = usernameFrame;
+        
+        self.usernameLabel.text = [NSString stringWithFormat: @"%@\n\n", text]; 
     }
     else
     {
@@ -154,9 +167,10 @@
     }
 }
 
+
 - (void) setChannelNameText:(NSString *)channelNameText
 {
-    if([[SYNDeviceManager sharedInstance]isIPad])
+    if ([[SYNDeviceManager sharedInstance]isIPad])
     {
         CGRect currentFrame = self.channelName.frame;
         CGFloat defaultWidth = currentFrame.size.width;
