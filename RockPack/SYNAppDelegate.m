@@ -23,6 +23,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <XRay/XRay.h>
 #import <objc/runtime.h>
+#import "SYNDeviceManager.h"
+#import "SYNLoginViewControllerIphone.h"
 
 extern void instrumentObjcMessageSends(BOOL);
 
@@ -175,8 +177,14 @@ extern void instrumentObjcMessageSends(BOOL);
 
 -(UIViewController*)createAndReturnLoginViewController
 {
-    
-    self.loginViewController = [[SYNLoginViewController alloc] init];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        self.loginViewController = [[SYNLoginViewController alloc] init];
+    }
+    else
+    {
+        self.loginViewController = [[SYNLoginViewControllerIphone alloc] init];
+    }
     
     return self.loginViewController;
 }

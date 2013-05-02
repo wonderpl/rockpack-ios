@@ -61,7 +61,7 @@
     }
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout =
     [SYNIntegralCollectionViewFlowLayout
-        layoutWithItemSize:CGSizeMake(497.0f , 182.0f)
+        layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
         minimumInterItemSpacing:0.0f
         minimumLineSpacing:10.0f
         scrollDirection:UICollectionViewScrollDirectionVertical
@@ -235,11 +235,11 @@
     }
     else if([[SYNDeviceManager sharedInstance] isLandscape])
     {
-        return CGSizeMake(497, 170);
+        return CGSizeMake(497, 140);
     }
     else
     {
-        return CGSizeMake(370, 170);
+        return CGSizeMake(370, 140);
     }
 }
 

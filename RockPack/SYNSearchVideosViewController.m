@@ -185,11 +185,11 @@
     {
         if([[SYNDeviceManager sharedInstance] isLandscape])
         {
-            return CGSizeMake(497, 170);
+            return CGSizeMake(497, 140);
         }
         else
         {
-            return CGSizeMake(370, 170);
+            return CGSizeMake(370, 140);
         }
     }
     else

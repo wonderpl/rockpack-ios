@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -44,7 +44,7 @@
 							<object class="IBUIImageView" id="108227339">
 								<reference key="NSNextResponder" ref="301134111"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{256, 170}</string>
+								<string key="NSFrameSize">{256, 141}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="486650470"/>
@@ -86,9 +86,10 @@
 							<object class="IBUILabel" id="429279700">
 								<reference key="NSNextResponder" ref="301134111"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{12, 144}, {230, 26}}</string>
+								<string key="NSFrame">{{12, 114}, {230, 26}}</string>
 								<reference key="NSSuperview" ref="301134111"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="456240611">
 									<int key="NSColorSpace">3</int>
@@ -100,14 +101,14 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">HARRY POTTER: MAGIC WANDS</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuMTI5NDExNzY0NyAwLjEyOTQxMTc2NDcAA</bytes>
+								<object class="NSColor" key="IBUITextColor" id="309290553">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<object class="NSColor" key="IBUIShadowColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC45MzMzMzMzMzMzIDAuOTMzMzMzMzMzMyAwLjkzMzMzMzMzMzMAA</bytes>
+									<bytes key="NSRGB">MC4xNTY4NjI3NDUxIDAuMTc2NDcwNTg4MiAwLjIAA</bytes>
 								</object>
 								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">0</int>
@@ -135,10 +136,7 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<object class="NSColor" key="IBUIHighlightedTitleColor" id="309290553">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
+								<reference key="IBUIHighlightedTitleColor" ref="309290553"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
@@ -228,7 +226,7 @@
 								<reference key="IBUIFont" ref="887648909"/>
 							</object>
 						</array>
-						<string key="NSFrameSize">{256, 170}</string>
+						<string key="NSFrameSize">{256, 141}</string>
 						<reference key="NSSuperview" ref="274337159"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="108227339"/>
@@ -240,7 +238,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{256, 170}</string>
+				<string key="NSFrameSize">{256, 141}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="301134111"/>
@@ -326,8 +324,8 @@
 							<reference ref="508424044"/>
 							<reference ref="429279700"/>
 							<reference ref="865164628"/>
-							<reference ref="596320206"/>
 							<reference ref="716427388"/>
+							<reference ref="596320206"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
