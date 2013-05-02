@@ -8,7 +8,6 @@
 
 #import "RegexKitLite.h"
 #import "SYNActivityManager.h"
-#import "SYNAppDelegate.h"
 #import "SYNFacebookManager.h"
 #import "SYNLoginErrorArrow.h"
 #import "SYNLoginViewController.h"
@@ -32,8 +31,6 @@
 
 @property (nonatomic, strong) IBOutlet UIButton* finalLoginButton;
 
-@property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
-
 @property (nonatomic, strong) IBOutlet UIButton* sendEmailButton;
 
 
@@ -47,15 +44,6 @@
 
 
 @property (nonatomic, strong) NSMutableDictionary* labelsToErrorArrows;
-
-@property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
-@property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
-@property (nonatomic, strong) IBOutlet UITextField* emailInputField;
-@property (nonatomic, strong) IBOutlet UIView* dobView;
-@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
-@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
-@property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
-@property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 
 @property (nonatomic, strong) NSArray* mainFormElements;
 
@@ -71,7 +59,6 @@
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 
-@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
@@ -83,8 +70,6 @@
 @property (nonatomic, readonly) CGFloat elementsOffsetY;
 
 @property (nonatomic) BOOL isAnimating;
-
-@property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 
 
@@ -125,62 +110,62 @@
     
     activityIndicator.hidesWhenStopped = YES;
     
-    
-    
-    // == Setup Fonts for labels (except Input Fields)
-    
-    UIFont* rockpackBigLabelFont = [UIFont rockpackFontOfSize:20];
-    
-    memberLabel.font = rockpackBigLabelFont;
-    areYouNewLabel.font = rockpackBigLabelFont;
-    
-    passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
-    secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
-    termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:14.0];
-    termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
-    
-    NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY USING ROCKPACK, YOU AGREE TO OUR TERMS & SERVICES AND PRIVACY POLICY"];
-    
-    
-    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(32, 20)];
-    [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(57, 14)];
-    
-    // add terms buttons
-    
-    termsAndConditionsLabel.attributedText = termsString;
-    termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
-    
-    labelsToErrorArrows = [[NSMutableDictionary alloc] init];
-    
-    ddInputField.keyboardType = UIKeyboardTypeNumberPad;
-    mmInputField.keyboardType = UIKeyboardTypeNumberPad;
-    yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
-    
-    passwordInputField.secureTextEntry = YES;
-    
-    facebookButtonInitialFrame = facebookSignInButton.frame;
-    signUpButtonInitialFrame = signUpButton.frame;
-    
-    emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
-    
-    self.mainFormElements = @[];
-    
-    // == Setup Input Fields
-    
-    UIFont* rockpackInputFont = [UIFont rockpackFontOfSize:20];
-    NSArray* textFieldsToSetup = @[emailInputField, userNameInputField, passwordInputField,
-                                   ddInputField, mmInputField, yyyyInputField];
-    for (UITextField* tf in textFieldsToSetup)
+    if([[SYNDeviceManager sharedInstance] isIPad])
     {
-        tf.font = rockpackInputFont;
-        // -- this is to create the left padding for the text fields (hack) -- //
-        tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
-        tf.leftViewMode = UITextFieldViewModeAlways;
+        
+        // == Setup Fonts for labels (except Input Fields)
+        
+        UIFont* rockpackBigLabelFont = [UIFont rockpackFontOfSize:20];
+        
+        memberLabel.font = rockpackBigLabelFont;
+        areYouNewLabel.font = rockpackBigLabelFont;
+        
+        passwordForgottenLabel.font = [UIFont rockpackFontOfSize:14];
+        secondaryFacebookMessage.font = [UIFont rockpackFontOfSize:20];
+        termsAndConditionsLabel.font = [UIFont rockpackFontOfSize:14.0];
+        termsAndConditionsLabelSide.font = termsAndConditionsLabel.font;
+        
+        NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY USING ROCKPACK, YOU AGREE TO OUR TERMS & SERVICES AND PRIVACY POLICY"];
+        
+        
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(32, 20)];
+        [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(57, 14)];
+        
+        // add terms buttons
+        
+        termsAndConditionsLabel.attributedText = termsString;
+        termsAndConditionsLabelSide.attributedText = termsAndConditionsLabel.attributedText;
+        
+        labelsToErrorArrows = [[NSMutableDictionary alloc] init];
+        
+        ddInputField.keyboardType = UIKeyboardTypeNumberPad;
+        mmInputField.keyboardType = UIKeyboardTypeNumberPad;
+        yyyyInputField.keyboardType = UIKeyboardTypeNumberPad;
+        
+        passwordInputField.secureTextEntry = YES;
+        
+        facebookButtonInitialFrame = facebookSignInButton.frame;
+        signUpButtonInitialFrame = signUpButton.frame;
+        
+        emailInputField.keyboardType = UIKeyboardTypeEmailAddress;
+        
+        self.mainFormElements = @[];
+        
+        // == Setup Input Fields
+        
+        UIFont* rockpackInputFont = [UIFont rockpackFontOfSize:20];
+        NSArray* textFieldsToSetup = @[emailInputField, userNameInputField, passwordInputField,
+                                       ddInputField, mmInputField, yyyyInputField];
+        for (UITextField* tf in textFieldsToSetup)
+        {
+            tf.font = rockpackInputFont;
+            // -- this is to create the left padding for the text fields (hack) -- //
+            tf.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 57)];
+            tf.leftViewMode = UITextFieldViewModeAlways;
+        }
+    
+        self.state = kLoginScreenStateInitial;
     }
-    
-    
-    
-    self.state = kLoginScreenStateInitial;
     
     
 }
@@ -223,7 +208,7 @@
                                 wellSendYouLabel, termsAndConditionsLabelSide];
     
     for (UIView* control in controlsToHide) {
-       
+        
         control.alpha = 0.0;
     }
     
@@ -294,11 +279,11 @@
     } completion:^(BOOL finished) {
         dividerImageView.frame = CGRectIntegral(dividerImageView.frame);
         [UIView animateWithDuration:0.3 animations:^{
-        
+            
             wellSendYouLabel.alpha = 1.0;
-        
+            
         }];
-    
+        
     }];
     
     
@@ -516,7 +501,7 @@
     if(previousState == kLoginScreenStateInitial)
     {
         
-       
+        
         emailInputField.center = CGPointMake(userNameInputField.center.x,
                                              emailInputField.center.y);
         emailInputField.frame = CGRectIntegral(emailInputField.frame);
@@ -621,16 +606,16 @@
                                                       facebookSignInButton.center.y);
             
             
-        
+            
         } completion:^(BOOL finished) {
             [emailInputField becomeFirstResponder];
         }];
     }
-
+    
     [UIView animateWithDuration:0.4 animations:^{
         
         facebookSignInButton.alpha = 0.0;
-    
+        
         titleImageView.alpha = 0.0;
         registerNewUserButton.alpha = 1.0;
         
@@ -641,16 +626,16 @@
         
         
         termsAndConditionsLabel.alpha = 0.0;
-    
+        
         
         passwordForgottenButton.alpha = 0.0;
         passwordForgottenLabel.alpha = 0.0;
-    
+        
         
         finalLoginButton.alpha = 0.0;
         finalLoginButton.center = CGPointMake(finalLoginButton.center.x + 50.0,
-                                          finalLoginButton.center.y);
-    
+                                              finalLoginButton.center.y);
+        
         registerButton.alpha = 0.0;
         areYouNewLabel.alpha = 0.0;
         
@@ -660,7 +645,7 @@
     }];
     
     
-
+    
 }
 
 
@@ -719,9 +704,9 @@
     finalLoginButton.enabled = NO;
     
     [UIView animateWithDuration: 0.1 animations:^
-    {
-        finalLoginButton.alpha = 0.0;
-    }];
+     {
+         finalLoginButton.alpha = 0.0;
+     }];
     
     activityIndicator.center = CGPointMake(finalLoginButton.center.x, finalLoginButton.center.y);
     [activityIndicator startAnimating];
@@ -734,23 +719,23 @@
                                                
                                                [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
                                                                                             completionHandler:^(NSDictionary* dictionary) {
-                                                                                          
-                                                                                          NSString* username = [dictionary objectForKey:@"username"];
-                                                                                          DebugLog(@"User Registerd: %@", username);
-                                                  
-                                                                                          [self checkAndSaveRegisteredUser:credential];
-                                                                                          
-                                                                                          [activityIndicator stopAnimating];
-                                                                                          
-                                                                                          [self completeLoginProcess:credential];
-                                                   
-                                                                                      } errorHandler:^(NSDictionary* errorDictionary) {
-                                                   
-                                                                                          [activityIndicator stopAnimating];
-                                                                                          
-                                                                                          self.finalLoginButton.alpha = 1.0;
-                                                   
-                                                                                      }];
+                                                                                                
+                                                                                                NSString* username = [dictionary objectForKey:@"username"];
+                                                                                                DebugLog(@"User Registerd: %@", username);
+                                                                                                
+                                                                                                [self checkAndSaveRegisteredUser:credential];
+                                                                                                
+                                                                                                [activityIndicator stopAnimating];
+                                                                                                
+                                                                                                [self completeLoginProcess:credential];
+                                                                                                
+                                                                                            } errorHandler:^(NSDictionary* errorDictionary) {
+                                                                                                
+                                                                                                [activityIndicator stopAnimating];
+                                                                                                
+                                                                                                self.finalLoginButton.alpha = 1.0;
+                                                                                                
+                                                                                            }];
                                                
                                                
                                                
@@ -758,20 +743,20 @@
                                            } errorHandler: ^(NSDictionary* errorDictionary) {
                                                
                                                NSDictionary* errors = errorDictionary [@"error"];
-         
+                                               
                                                if (errors)
                                                {
                                                    [self placeErrorLabel: @"Username could be incorrect"
                                                               NextToView: userNameInputField];
-             
+                                                   
                                                    [self placeErrorLabel: @"Password could be incorrect"
                                                               NextToView: passwordInputField];
                                                }
-         
+                                               
                                                finalLoginButton.enabled = YES;
                                                
                                                [activityIndicator stopAnimating];
-         
+                                               
                                                [UIView animateWithDuration:0.3 animations:^{
                                                    
                                                    finalLoginButton.alpha = 1.0;
@@ -863,51 +848,51 @@
                                                                                                           [self checkAndSaveRegisteredUser:credential];
                                                                                                           [activityIndicator stopAnimating];
                                                                                                           [self completeLoginProcess:credential];
-                  
+                                                                                                          
                                                                                                       } errorHandler: ^(NSDictionary* errorDictionary) {
-                  
+                                                                                                          
                                                                                                       }];
                                                          
                                                          
-                                                        } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                    
-
-                                                            signUpButton.alpha = 1.0;
-
-                                                            signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
-                                                            [activityIndicator stopAnimating];
-
-                                                            NSDictionary* formErrors = errorDictionary [@"form_errors"];
-
-                                                            userNameInputField.enabled = YES;
-                                                            passwordForgottenButton.enabled = YES;
-                                                            finalLoginButton.enabled = YES;
-                                                            loginButton.enabled = YES;
-
-                                                            passwordForgottenButton.enabled = YES;
-
-                                                            if (formErrors)
-                                                            {
-                                                                facebookSignInButton.enabled = YES;
-                                                                secondaryFacebookMessage.text = @"Could not log in through facebook";
-                                                                secondaryFacebookMessage.alpha = 1.0;
-                                                            }
-                                                        }];
+                                                     } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                         
+                                                         
+                                                         signUpButton.alpha = 1.0;
+                                                         
+                                                         signUpButton.center = CGPointMake(signUpButton.center.x + 20.0, signUpButton.center.y);
+                                                         [activityIndicator stopAnimating];
+                                                         
+                                                         NSDictionary* formErrors = errorDictionary [@"form_errors"];
+                                                         
+                                                         userNameInputField.enabled = YES;
+                                                         passwordForgottenButton.enabled = YES;
+                                                         finalLoginButton.enabled = YES;
+                                                         loginButton.enabled = YES;
+                                                         
+                                                         passwordForgottenButton.enabled = YES;
+                                                         
+                                                         if (formErrors)
+                                                         {
+                                                             facebookSignInButton.enabled = YES;
+                                                             secondaryFacebookMessage.text = @"Could not log in through facebook";
+                                                             secondaryFacebookMessage.alpha = 1.0;
+                                                         }
+                                                     }];
     }
-    onFailure: ^(NSString* errorString)
-    {
-        _facebookLoginIsInProcess = NO;
-        facebookSignInButton.enabled = YES;
-        
-        // TODO: Use custom alert box here
-        [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
-                                    message: errorString
-                                   delegate: nil
-                          cancelButtonTitle: @"OK"
-                          otherButtonTitles: nil] show];
-        
-        DebugLog(@"Log in failed!"); 
-    }];
+                          onFailure: ^(NSString* errorString)
+     {
+         _facebookLoginIsInProcess = NO;
+         facebookSignInButton.enabled = YES;
+         
+         // TODO: Use custom alert box here
+         [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
+                                     message: errorString
+                                    delegate: nil
+                           cancelButtonTitle: @"OK"
+                           otherButtonTitles: nil] show];
+         
+         DebugLog(@"Log in failed!");
+     }];
     
 }
 
@@ -920,15 +905,15 @@
 -(void)showAutologinWithCredentials:(SYNOAuth2Credential*)credentials
 {
     
-//    activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
-//                                           facebookSignInButton.center.y);
-//    
-//    [UIView animateWithDuration:0.3 animations:^{
-//        signUpButton.alpha = 0.0;
-//    } completion:^(BOOL finished) {
-//        [activityIndicator startAnimating];
-//        [self completeLoginProcess:credentials];
-//    }];
+    //    activityIndicator.center = CGPointMake(facebookSignInButton.frame.origin.x + facebookSignInButton.frame.size.width + 35.0,
+    //                                           facebookSignInButton.center.y);
+    //
+    //    [UIView animateWithDuration:0.3 animations:^{
+    //        signUpButton.alpha = 0.0;
+    //    } completion:^(BOOL finished) {
+    //        [activityIndicator startAnimating];
+    //        [self completeLoginProcess:credentials];
+    //    }];
     
     
 }
@@ -959,7 +944,7 @@
         return NO;
     }
     
-    // == Username must be 
+    // == Username must be
     if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"]) {
         [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
         [userNameInputField becomeFirstResponder];
@@ -999,7 +984,7 @@
         [self placeErrorLabel:@"The Date is not Valid" NextToView:dobView];
         return NO;
     }
-        
+    
     
     
     
@@ -1062,36 +1047,36 @@
                                            
                                            [appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
                                                                                         completionHandler: ^(NSDictionary* dictionary) {
-                                                                                      
-                                                                                      
+                                                                                            
+                                                                                            
                                                                                             [self checkAndSaveRegisteredUser:credential];
-             
+                                                                                            
                                                                                             [activityIndicator stopAnimating];
-             
+                                                                                            
                                                                                             [self completeLoginProcess: credential];
-             
+                                                                                            
                                                                                         } errorHandler:^(NSDictionary* errorDictionary) {
-             
+                                                                                            
                                                                                         }];
-         
+                                           
                                            registerNewUserButton.enabled = YES;
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
                                            
                                            NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
-         
+                                           
                                            if (formErrors)
                                            {
                                                [self showRegistrationError:formErrors];
                                            }
-         
+                                           
                                            registerNewUserButton.enabled = YES;
-         
+                                           
                                            [activityIndicator stopAnimating];
                                            registerNewUserButton.alpha = 1.0;
-         
+                                           
                                        }];
-
+    
     return;
 }
 
@@ -1195,14 +1180,14 @@
     [UIView animateWithDuration: 0.3
                      animations: ^{
                          splashView.alpha = 1.0;
-    }
-    completion: ^(BOOL finished)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName: kLoginCompleted
-                                                            object: self];
-        
-        
-    }];
+                     }
+                     completion: ^(BOOL finished)
+     {
+         [[NSNotificationCenter defaultCenter] postNotificationName: kLoginCompleted
+                                                             object: self];
+         
+         
+     }];
 }
 
 
@@ -1231,7 +1216,7 @@
     if(textField == ddInputField || textField == mmInputField || textField == yyyyInputField)
         if(![numberFormatter numberFromString:newCharacter] && newCharacter.length != 0) // is backspace, length is 0
             return NO;
-        
+    
     
     NSValue* key = [NSValue valueWithPointer:(__bridge const void *)(textField)];
     SYNLoginErrorArrow* possibleErrorArrow =
@@ -1426,7 +1411,7 @@
     {
         return 320.0;
     }
-   
+    
 }
 
 -(void)placeSecondaryElements

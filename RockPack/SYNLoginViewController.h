@@ -10,13 +10,16 @@
 #import "GAITrackedViewController.h"
 #import "GKImagePicker.h"
 #import <UIKit/UIKit.h>
+#import "SYNOAuth2Credential.h"
+#import "SYNAppDelegate.h"
 
 typedef enum {
     kLoginScreenStateNull = 0,
     kLoginScreenStateInitial,
     kLoginScreenStateLogin,
     kLoginScreenStateRegister,
-    kLoginScreenStatePasswordRetrieve
+    kLoginScreenStatePasswordRetrieve,
+    kLoginScreenStateRegisterStepTwo
 } kLoginScreenState;
 
 
@@ -25,6 +28,22 @@ typedef enum {
 
 @property (nonatomic) kLoginScreenState state;
 @property (nonatomic) BOOL facebookLoginIsInProcess;
+@property (nonatomic, weak) SYNAppDelegate* appDelegate;
+
+@property (nonatomic, strong) IBOutlet UITextField* userNameInputField;
+@property (nonatomic, strong) IBOutlet UITextField* passwordInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserNameInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserEmailInputField;
+@property (nonatomic, strong) IBOutlet UITextField* registeringUserPasswordInputField;
+@property (nonatomic, strong) IBOutlet UITextField* emailInputField;
+@property (nonatomic, strong) IBOutlet UIView* dobView;
+@property (nonatomic, strong) IBOutlet UITextField* ddInputField;
+@property (nonatomic, strong) IBOutlet UITextField* mmInputField;
+@property (nonatomic, strong) IBOutlet UITextField* yyyyInputField;
+@property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
+@property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
+
+@property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
 -(void)showAutologinWithCredentials:(SYNOAuth2Credential*)credentials;
 
@@ -41,5 +60,7 @@ typedef enum {
 -(IBAction)signInWithFacebook:(id)sender;
 -(IBAction)sendEmailButtonPressed:(id)sender;
 - (IBAction) doLogin: (id) sender;
+
+-(BOOL)checkAndSaveRegisteredUser:(SYNOAuth2Credential*)credential;
 
 @end
