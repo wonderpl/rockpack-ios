@@ -42,6 +42,7 @@
     return CGSizeMake(0.0, 0.0);
 }
 
+
 - (void) viewDidLoad
 {
 
@@ -108,7 +109,7 @@
     Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
-                                                                                        forIndexPath: indexPath];
+                                                                            forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];

@@ -88,6 +88,8 @@
 		011C16861730043000CF50B9 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011C16851730043000CF50B9 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		011C16881730046700CF50B9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011C16871730046700CF50B9 /* MessageUI.framework */; };
 		011C168A1730047300CF50B9 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011C16891730047300CF50B9 /* AssetsLibrary.framework */; };
+		011C168D173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 011C168C173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m */; };
+		011C16901731782800CF50B9 /* SYNDeletionWobbleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011C168F1731782800CF50B9 /* SYNDeletionWobbleLayout.m */; };
 		011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */; };
 		011CC67E164AA41800F02B6D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67D164AA41700F02B6D /* CoreMedia.framework */; };
 		011CC680164AA42300F02B6D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67F164AA42300F02B6D /* AVFoundation.framework */; };
@@ -987,6 +989,10 @@
 		011C16851730043000CF50B9 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		011C16871730046700CF50B9 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		011C16891730047300CF50B9 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		011C168B173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDeletionWobbleLayoutAttributes.h; sourceTree = "<group>"; };
+		011C168C173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDeletionWobbleLayoutAttributes.m; sourceTree = "<group>"; };
+		011C168E1731782800CF50B9 /* SYNDeletionWobbleLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDeletionWobbleLayout.h; sourceTree = "<group>"; };
+		011C168F1731782800CF50B9 /* SYNDeletionWobbleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDeletionWobbleLayout.m; sourceTree = "<group>"; };
 		011CC67A164A9EC300F02B6D /* SYNCaptureSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCaptureSessionManager.h; sourceTree = "<group>"; };
 		011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCaptureSessionManager.m; sourceTree = "<group>"; };
 		011CC67D164AA41700F02B6D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -2388,6 +2394,8 @@
 				014A456716691A680091E4E5 /* LXReorderableCollectionViewFlowLayout.m */,
 				0173F70616E0C56A005B3ECA /* SYNVideoViewerThumbnailLayout.h */,
 				0173F70716E0C56B005B3ECA /* SYNVideoViewerThumbnailLayout.m */,
+				011C168E1731782800CF50B9 /* SYNDeletionWobbleLayout.h */,
+				011C168F1731782800CF50B9 /* SYNDeletionWobbleLayout.m */,
 			);
 			name = Layouts;
 			sourceTree = "<group>";
@@ -2399,6 +2407,8 @@
 				011CC682164BB94D00F02B6D /* SYNUserCollectionViewLayoutAttributes.m */,
 				0173F70916E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.h */,
 				0173F70A16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m */,
+				011C168B173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.h */,
+				011C168C173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m */,
 			);
 			name = Attributes;
 			sourceTree = "<group>";
@@ -4884,6 +4894,8 @@
 				011C1684173003E800CF50B9 /* OWTwitterActivity.m in Sources */,
 				BE3A771117300D3C008ED81F /* SYNAccountSettingsModalContainer.m in Sources */,
 				38A2FF1B17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m in Sources */,
+				011C168D173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m in Sources */,
+				011C16901731782800CF50B9 /* SYNDeletionWobbleLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

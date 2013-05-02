@@ -1,0 +1,29 @@
+//
+//  SYNDeletionWobbleLayout.h
+//  rockpack
+//
+//  Created by Nick Banks on 01/05/2013.
+//  Copyright (c) 2013 Nick Banks. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "SYNIntegralCollectionViewFlowLayout.h"
+
+@protocol SYNDeletionWobbleLayoutDelegate <UICollectionViewDelegateFlowLayout>
+
+@required
+
+- (BOOL) isDeletionModeActiveForCollectionView: (UICollectionView *) collectionView
+                                        layout: (UICollectionViewLayout*) collectionViewLayout;
+
+@end
+
+@interface SYNDeletionWobbleLayout : SYNIntegralCollectionViewFlowLayout
+
++ (SYNDeletionWobbleLayout*) layoutWithItemSize: (CGSize) itemSize
+                        minimumInterItemSpacing: (CGFloat) minSpace
+                             minimumLineSpacing: (CGFloat) lineSpace
+                                scrollDirection: (UICollectionViewScrollDirection) scrollDirection
+                                   sectionInset: (UIEdgeInsets) insets;
+
+@end
