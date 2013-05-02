@@ -449,7 +449,7 @@
 - (void) changeUserPasswordWithOldValue: (NSString*) oldPassword
                             andNewValue: (NSString*) newValue
                               forUserId: (NSString *) userId
-                      completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                      completionHandler: (MKNKUserSuccessBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
@@ -467,9 +467,9 @@
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     
-    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
-                                           completionHandler: completionBlock
-                                                errorHandler: errorBlock];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
 }

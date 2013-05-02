@@ -699,15 +699,10 @@
         return NO;
     }
     
-    [credential removeFromKeychainForService: kOAuth2Service
-                                     account: newUser.uniqueId];
-    
-    [credential saveToKeychainForService: kOAuth2Service
-                                 account: newUser.uniqueId];
+    appDelegate.currentOAuth2Credentials = credential;
     
     [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
     
-//    DebugLog(@"Registered:\n%@", newUser);
     
     return YES;
 }

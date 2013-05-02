@@ -9,6 +9,7 @@
 #import "SYNAccountSettingsPassword.h"
 #import "SYNAppDelegate.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNOAuth2Credential.h"
 
 @interface SYNAccountSettingsPassword ()
 
@@ -69,17 +70,28 @@
     [appDelegate.oAuthNetworkEngine changeUserPasswordWithOldValue:self.inputField.text
                                                        andNewValue:passwordField.text
                                                          forUserId:appDelegate.currentUser.uniqueId
-                                                 completionHandler:^(SYNOAuth2Credential* credential) {
+                                                 completionHandler:^(id credentialInfo) {
                                                      
                                                      
+                        SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: credentialInfo[@"access_token"]
+                                                                                                         expiresIn: credentialInfo[@"expires_in"]
+                                                                                                      refreshToken: credentialInfo[@"refresh_token"]
+                                                                                                       resourceURL: credentialInfo[@"resource_url"]
+                                                                                                         tokenType: credentialInfo[@"token_type"]
+                                                                                                            userId: credentialInfo[@"user_id"]];
+                                                     
+                                                     
+                        appDelegate.currentOAuth2Credentials = newOAuth2Credentials;
                                                      
                                                      
         
-                                                 } errorHandler:^(id error) {
+                        } errorHandler:^(id error) {
+                            
+                            
                                                      
                                                      
-        
-                                                 }];
+    
+                        }];
     
 }
 

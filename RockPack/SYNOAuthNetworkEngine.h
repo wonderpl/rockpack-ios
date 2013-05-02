@@ -129,7 +129,7 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
 - (void) changeUserPasswordWithOldValue: (NSString*) oldPassword
                             andNewValue: (NSString*)newValue
                               forUserId: (NSString *) userid
-                      completionHandler: (MKNKLoginCompleteBlock) successBlock
+                      completionHandler: (MKNKUserSuccessBlock) successBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 // Cover art
