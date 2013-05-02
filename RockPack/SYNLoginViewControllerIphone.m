@@ -11,10 +11,15 @@
 #import "UIFont+SYNFont.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "RegexKitLite.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import "SYNFacebookManager.h"
 
 #define kLoginAnimationTransitionDuration 0.3f
 
 @interface SYNLoginViewControllerIphone () <UITextFieldDelegate>
+{
+    BOOL facebookLoginIsInProgress;
+}
 @property (weak, nonatomic) IBOutlet UIView *defaultView;
 @property (weak, nonatomic) IBOutlet UIView *loginView;
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
@@ -27,6 +32,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UIButton *signupButton;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -128,6 +136,70 @@
 #pragma mark - button IBActions
 
 - (IBAction)facebookTapped:(id)sender {
+    
+    facebookLoginIsInProgress = NO;
+    FBSession* facebookSession = [FBSession activeSession];
+    
+    if(facebookSession.state == FBSessionStateCreatedTokenLoaded) {
+        facebookLoginIsInProgress = YES;
+        //[self doFacebookLoginAnimation];
+    }
+    
+    
+    
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
+    
+    [facebookManager loginOnSuccess:^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        if(!facebookLoginIsInProgress) {
+            
+            //[self doFacebookLoginAnimation];
+        }
+        
+        
+        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+        
+        [self.appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken:accessTokenData.accessToken
+                                                     completionHandler: ^(SYNOAuth2Credential* credential) {
+                                                         
+                                                         [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+                                                                                                      completionHandler: ^(NSDictionary* dictionary) {
+                                                                                                          
+                                                                                                          [self checkAndSaveRegisteredUser:credential];
+                                                                                                          
+                                                                                                          [self completeLoginProcess:credential];
+                                                                                                          
+                                                                                                      } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                                                                    
+                                                                                                      }];
+                                                         
+                                                         
+                                                     } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                         
+                                                         
+                                                        [self doFacebookFailedAnimation];                                                  
+                                                         NSDictionary* formErrors = errorDictionary [@"form_errors"];
+                                                         
+                                                         if (formErrors)
+                                                         {
+                                                             
+                                                         }
+                                                     }];
+    }
+                          onFailure: ^(NSString* errorString)
+     {
+         facebookLoginIsInProgress= NO;
+         
+         
+         // TODO: Use custom alert box here
+         [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
+                                     message: errorString
+                                    delegate: nil
+                           cancelButtonTitle: @"OK"
+                           otherButtonTitles: nil] show];
+         [self doFacebookFailedAnimation];
+         DebugLog(@"Log in failed!");
+     }];
 }
 
 - (IBAction)signupTapped:(id)sender {
@@ -303,6 +375,9 @@
         {
             [self turnOffButton:self.backButton];
             [self turnOffButton:self.confirmButton];
+            self.activityIndicator.hidden = NO;
+            self.activityIndicator.center = self.confirmButton.center;
+            [self.activityIndicator startAnimating];
             
             [self.appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: self.userNameInputField.text
                                                          forPassword: self.passwordInputField.text
@@ -324,6 +399,7 @@
                                                                                                         
                                                                                                     } errorHandler:^(NSDictionary* errorDictionary) {
                                                                                                         
+                                                                                                        [self.activityIndicator stopAnimating];
                                                                                                         [self turnOnButton:self.backButton];
                                                                                                         [self turnOnButton:self.confirmButton];
                                                                                                         
@@ -344,6 +420,7 @@
 //                                                           [self placeErrorLabel: @"Password could be incorrect"
 //                                                                      NextToView: passwordInputField];
 //                                                       }
+                                                       [self.activityIndicator stopAnimating];
                                                        [self turnOnButton:self.backButton];
                                                        [self turnOnButton:self.confirmButton];
                                                    }];
@@ -391,12 +468,50 @@
 - (IBAction)privacyPolicyTapped:(id)sender {
 }
 
+#pragma mark - facebook UI animation
+-(void)doFacebookLoginAnimation
+{
+    self.activityIndicator.center = self.defaultView.center;
+    self.activityIndicator.hidden = NO;
+    [self.activityIndicator startAnimating];
+    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
+        self.signupButton.alpha = 0.0f;
+        self.loginButton.alpha = 0.0f;
+        self.facebookButton.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        if(finished)
+        {
+            self.signupButton.enabled = NO;
+            self.loginButton.enabled = NO;
+            self.facebookButton.enabled = NO;
+        }
+    }];
+}
+
+-(void)doFacebookFailedAnimation
+{
+    [self.activityIndicator stopAnimating];
+    [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
+        self.signupButton.alpha = 1.0f;
+        self.loginButton.alpha = 1.0f;
+        self.facebookButton.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+        if(finished)
+        {
+            self.signupButton.enabled = YES;
+            self.loginButton.enabled = YES;
+            self.facebookButton.enabled = YES;
+        }
+    }];
+}
+
+#pragma mark - login completion
 -(void) completeLoginProcess: (SYNOAuth2Credential *) credential
 {
     
     
     
-//    [activityIndicator stopAnimating];
+    [self.activityIndicator stopAnimating];
     
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
     splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];

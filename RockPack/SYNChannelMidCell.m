@@ -23,7 +23,7 @@
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
     self.specialSelected = NO;
-    self.deleteButton.layer.opacity = 1.0f;
+    self.deleteButton.layer.opacity = 0.0f;
     
     // Required to make cells look good when wobbling (delete)
     self.layer.shouldRasterize = YES;

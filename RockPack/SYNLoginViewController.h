@@ -43,6 +43,8 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UILabel* wellSendYouLabel;
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabel;
 
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
+
 @property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
 -(void)showAutologinWithCredentials:(SYNOAuth2Credential*)credentials;

@@ -61,8 +61,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* termsAndConditionsLabelSide;
 
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
-
 @property (nonatomic) CGRect facebookButtonInitialFrame;
 @property (nonatomic) CGRect signUpButtonInitialFrame;
 @property (nonatomic) CGRect initialUsernameFrame;
