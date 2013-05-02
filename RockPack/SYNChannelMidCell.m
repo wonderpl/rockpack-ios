@@ -7,8 +7,10 @@
 //
 
 #import "SYNChannelMidCell.h"
+#import "SYNDeletionWobbleLayoutAttributes.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation SYNChannelMidCell
 
@@ -21,15 +23,19 @@
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
     self.specialSelected = NO;
+    self.deleteButton.layer.opacity = 1.0f;
     
-    self.deleteButton.hidden = YES;
+    // Required to make cells look good when wobbling (delete)
+    self.layer.shouldRasterize = YES;
 }
+
 
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {
     [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
                                placeHolderImage: nil];
 }
+
 
 - (void) setChannelTitle: (NSString*) titleString
 {
@@ -50,6 +56,7 @@
     
 }
 
+
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {
     
@@ -58,9 +65,9 @@
                 forControlEvents: UIControlEventTouchUpInside];
 }
 
--(void)setSpecialSelected:(BOOL)value
+
+- (void) setSpecialSelected: (BOOL)value
 {
-    
     if(value)
     {
         self.panelSelectedImageView.hidden = NO;
@@ -71,9 +78,70 @@
     }
 }
 
--(BOOL)specialSelected
+
+- (BOOL) specialSelected
 {
     return !self.panelSelectedImageView.hidden;
 }
+
+
+#pragma mark - Cell deletion support
+#pragma mark Attributes
+
+- (void) applyLayoutAttributes: (SYNDeletionWobbleLayoutAttributes *) layoutAttributes
+{
+    if (layoutAttributes.isDeleteButtonHidden)
+    {
+        self.deleteButton.layer.opacity = 0.0;
+        [self stopWobbling];
+    }
+    else
+    {
+        self.deleteButton.layer.opacity = 1.0;
+        [self startWobbling];
+    }
+}
+
+
+#pragma mark Wobble animations
+
+- (void) startWobbling
+{
+    // Rotation maths
+    CABasicAnimation *quiverAnim = [CABasicAnimation animationWithKeyPath: @"transform.rotation"];
+    float startAngle = M_PI/180.0;
+    float stopAngle = -startAngle;
+    
+    // Setup animation
+    quiverAnim.fromValue = [NSNumber numberWithFloat: startAngle];
+    quiverAnim.toValue = [NSNumber numberWithFloat: stopAngle];
+    quiverAnim.autoreverses = YES;
+    quiverAnim.duration = 0.2;
+    quiverAnim.repeatCount = HUGE_VALF;
+    
+    // Add a random time offset to stop all cells wobbling in harmony
+    float timeOffset = (float)(arc4random() % 100)/100 - 0.50;
+    quiverAnim.timeOffset = timeOffset;
+    CALayer *layer = self.layer;
+    
+    // Add the animation to our layer
+    [layer addAnimation: quiverAnim
+                 forKey: @"wobbling"];
+}
+
+
+- (void) stopWobbling
+{
+    // Remove the animation from the layer
+    CALayer *layer = self.layer;
+    [layer removeAnimationForKey: @"wobbling"];
+}
+
+
+//- (void) prepareForReuse
+//{
+//    [self stopWobbling];
+//    self.imageView.image = nil;
+//}
 
 @end

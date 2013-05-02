@@ -25,11 +25,12 @@
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
-@property (nonatomic, weak) Channel *channel;
 @property (nonatomic, strong) IBOutlet UIButton *addToChannelButton;
-@property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
+@property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
+@property (nonatomic, strong) IBOutlet UIButton* addCoverButton;
+@property (nonatomic, strong) IBOutlet UIButton* selectCategoryButton;
 @property (nonatomic, strong) IBOutlet UIButton* subscribeButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *coverThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
@@ -45,6 +46,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *channelCoverFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *userChannelCoverFetchedResultsController;
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
+@property (nonatomic, weak) Channel *channel;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
 @end
@@ -163,6 +165,38 @@
         self.createChannelButton.hidden = NO;
         
     }
+    
+    // Set text on add cover and select category buttons
+    [self.addCoverButton setTitle: @"ADD A COVER"
+                         forState: UIControlStateNormal];
+    
+    [self.addCoverButton setTitleColor: [UIColor blackColor]
+                              forState: UIControlStateNormal];
+    
+    self.addCoverButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    
+    // Now do fancy attributed string
+    NSString *originalString = @"SELECT A CATEGORY (Optional)";
+    
+    NSMutableAttributedString* repaintedString = [[NSMutableAttributedString alloc] initWithString: originalString];
+    
+    NSRange leftParentheseRange = [originalString rangeOfString: @"("];
+    NSRange rightParentheseRange = [originalString rangeOfString: @")"];
+    
+    NSRange numberRange = NSMakeRange(leftParentheseRange.location+1, rightParentheseRange.location - (leftParentheseRange.location+1));
+    
+    [repaintedString addAttribute: NSForegroundColorAttributeName
+                            value: [UIColor grayColor]
+                            range: numberRange];
+    
+    // Set text on add cover and select category buttons
+    [self.selectCategoryButton setAttributedTitle: repaintedString
+                                         forState: UIControlStateNormal];
+    
+    [self.selectCategoryButton setTitleColor: [UIColor blackColor]
+                                    forState: UIControlStateNormal];
+    
+    self.selectCategoryButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
 }
 
 
@@ -385,7 +419,7 @@
         {
             case 0:
             {               
-                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
+                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone2.png"];
                 return coverThumbnailCell;
             }
             break;

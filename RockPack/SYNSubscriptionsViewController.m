@@ -16,43 +16,40 @@
 
 @property (nonatomic, weak) User* user;
 
-
 @end
 
-@implementation SYNSubscriptionsViewController
 
-@synthesize collectionView;
-@synthesize headerView;
-@synthesize user;
+@implementation SYNSubscriptionsViewController
 
 - (void) loadView
 {
     [super loadView];
     
-    
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
-    
 }
 
--(CGSize)itemSize
+
+- (CGSize) itemSize
 {
-    return CGSizeMake(184.0, 138.0);
+    return CGSizeMake(184.0, 184.0);
 }
 
--(CGSize)footerSize
+
+- (CGSize) footerSize
 {
     return CGSizeMake(0.0, 0.0);
 }
 
+
 - (void) viewDidLoad
 {
-
+    // FIXME: Why no call to super, is this a mistake?
     //[super viewDidLoad];
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    user = appDelegate.currentUser;
+    self.user = appDelegate.currentUser;
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
@@ -68,15 +65,14 @@
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
-    
-    
 }
+
 
 #pragma mark - UICollectionView Delegate Methods
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return user.subscriptions.count;
+    return self.user.subscriptions.count;
 }
 
 
@@ -85,43 +81,43 @@
     return 1;
 }
 
+
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
-    Channel *channel = user.subscriptions[indexPath.row];
+    Channel *channel = self.user.subscriptions[indexPath.row];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
-                                                                                        forIndexPath: indexPath];
+                                                                            forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    [channelThumbnailCell setChannelTitle:channel.title];
-    
+    [channelThumbnailCell setChannelTitle: channel.title];
     
     return channelThumbnailCell;
-    
 }
 
--(void)reloadCollectionViews
+
+- (void) reloadCollectionViews
 {
     [super reloadCollectionViews];
     
-    
-    if(self.headerView)
+    if (self.headerView)
     {
-        NSInteger totalChannels = user.subscriptions.count;
-        [self.headerView setTitle:@"SUBSCRIPTIONS" andNumber:totalChannels];
+        NSInteger totalChannels = self.user.subscriptions.count;
+        
+        [self.headerView setTitle: @"SUBSCRIPTIONS"
+                        andNumber: totalChannels];
     }
-    
 }
 
--(void)setViewFrame:(CGRect)frame
+
+- (void) setViewFrame: (CGRect) frame
 {
     self.view.frame = frame;
     self.channelThumbnailCollectionView.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
-
-
 }
 
--(UICollectionView*)collectionView
+
+- (UICollectionView *) collectionView
 {
     return self.channelThumbnailCollectionView;
 }
