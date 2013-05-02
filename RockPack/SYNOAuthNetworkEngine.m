@@ -446,6 +446,34 @@
 }
 
 
+- (void) changeUserPasswordWithOldValue: (NSString*) oldPassword
+                            andNewValue: (NSString*) newValue
+                              forUserId: (NSString *) userId
+                      completionHandler: (MKNKLoginCompleteBlock) completionBlock
+                           errorHandler: (MKNKUserErrorBlock) errorBlock;
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    
+    NSString *apiString = [kAPIChangeuserPassword stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    NSDictionary *params = @{@"old" : oldPassword,
+                             @"new" : newValue};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"PUT"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    
+    [self addCommonOAuthPropertiesToUnsignedNetworkOperation: networkOperation
+                                           completionHandler: completionBlock
+                                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 #pragma mark - Avatars
 
 - (void) updateAvatarForUserId: (NSString *) userId

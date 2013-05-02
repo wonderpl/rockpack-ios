@@ -61,6 +61,7 @@
 // User details
 #define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
 #define kAPIChangeUserName          @"/ws/USERID/username/"                     /* PUT */
+#define kAPIChangeuserPassword      @"/ws/USERID/password/"                     /* PUT */
 #define kAPIChangeUserFields        @"/ws/USERID/ATTRIBUTE/"
 #define kAPIGetUserNotifications    @"/ws/USERID/notifications/"                /* GET */
 

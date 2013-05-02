@@ -7,6 +7,8 @@
 //
 
 #import "SYNAccountSettingsPassword.h"
+#import "SYNAppDelegate.h"
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNAccountSettingsPassword ()
 
@@ -62,9 +64,23 @@
         return;
     }
     
-    [self updateField:@"password" forValue:self.passwordField.text withCompletionHandler:^{
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.oAuthNetworkEngine changeUserPasswordWithOldValue:self.inputField.text
+                                                       andNewValue:passwordField.text
+                                                         forUserId:appDelegate.currentUser.uniqueId
+                                                 completionHandler:^(SYNOAuth2Credential* credential) {
+                                                     
+                                                     
+                                                     
+                                                     
+        
+                                                 } errorHandler:^(id error) {
+                                                     
+                                                     
+        
+                                                 }];
+    
 }
 
 - (void)didReceiveMemoryWarning

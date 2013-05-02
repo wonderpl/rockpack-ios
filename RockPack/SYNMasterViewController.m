@@ -926,11 +926,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         accountsTableController.navigationItem.rightBarButtonItem = buttonItem;
         
-
+        
         
         self.modalAccountContainer = [[SYNAccountSettingsModalContainer alloc] initWithNavigationController:navigationController];
         
         CGRect modalFrame = self.modalAccountContainer.view.frame;
+        modalFrame.size.height = 520.0;
+        self.modalAccountContainer.view.frame = modalFrame;
+        
         modalFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         self.modalAccountContainer.view.frame = modalFrame;
         
