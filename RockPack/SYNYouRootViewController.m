@@ -28,7 +28,6 @@
 
 @interface SYNYouRootViewController () <SYNDeletionWobbleLayoutDelegate, UIGestureRecognizerDelegate>
 
-
 // Enable to allow the user to 'pinch out' on thumbnails
 #ifdef ALLOWS_PINCH_GESTURES
 
@@ -38,46 +37,30 @@
 
 #endif
 
+@property (nonatomic) BOOL deleteCellModeOn;
+@property (nonatomic, assign) BOOL subscriptionsTabActive;
+@property (nonatomic, assign, getter = isDeletionModeActive) BOOL deletionModeActive;
 @property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
-
-@property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
-@property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
-@property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
-@property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
-
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsLandscapeLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* channelsPortraitLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsLandscapeLayout;
 @property (nonatomic, strong) SYNDeletionWobbleLayout* subscriptionsPortraitLayout;
-
+@property (nonatomic, strong) SYNSubscriptionsViewController* subscriptionsViewController;
+@property (nonatomic, strong) SYNUserProfileViewController* userProfileController;
+@property (nonatomic, strong) SYNYouHeaderView* headerChannelsView;
+@property (nonatomic, strong) SYNYouHeaderView* headerSubscriptionsView;
+@property (nonatomic, strong) UIGestureRecognizer* tapOnScreenRecogniser;
+@property (nonatomic, strong) UILongPressGestureRecognizer* longPressGestureRecogniser;
 @property (nonatomic, weak) Channel* channelDeleteCandidate;
 @property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
-@property (nonatomic, strong) UIGestureRecognizer* tapOnScreenRecogniser;
-
-@property (nonatomic) BOOL deleteCellModeOn;
-
-@property (nonatomic, strong) UILongPressGestureRecognizer* longPressGestureRecogniser;
-
-@property (nonatomic, assign) BOOL subscriptionsTabActive;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
-<<<<<<< HEAD
-@property (nonatomic, assign, getter = isDeletionModeActive) BOOL deletionModeActive;
-
-=======
 @property (nonatomic, weak) User* user;
->>>>>>> origin/develop
-
-
 
 @end
 
 
 @implementation SYNYouRootViewController
-
-@synthesize subscriptionsViewController;
-@synthesize user;
-
 
 - (id) initWithViewId: (NSString *) vid
 {
@@ -93,7 +76,6 @@
 
 - (void) loadView
 {
-    
     BOOL isIPhone =  [[SYNDeviceManager sharedInstance] isIPhone];
     
     // User Profile
@@ -103,51 +85,72 @@
     }
 
     // Main Collection View
-    self.channelsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0, kInterChannelSpacing)
-                                                       minimumInterItemSpacing: 0.0
-                                                            minimumLineSpacing: 5.0
+    self.channelsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0f, 184.0f)
+                                                       minimumInterItemSpacing: 5.0f
+                                                            minimumLineSpacing: 12.0f
                                                                scrollDirection: UICollectionViewScrollDirectionVertical
                                                                   sectionInset: UIEdgeInsetsMake(10.0, 8.0, kInterRowMarging, 28.0)];
     
 
-    self.subscriptionsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing)
-                                                                        minimumInterItemSpacing:0.0
-                                                                             minimumLineSpacing:5.0
+    self.subscriptionsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(184.0, 184.0f)
+                                                                        minimumInterItemSpacing: 5.0f
+                                                                             minimumLineSpacing: 12.0f
                                                                                 scrollDirection:UICollectionViewScrollDirectionVertical
-                                                                                   sectionInset:UIEdgeInsetsMake(10.0, 30.0, kInterRowMarging, 8.0)];
+                                                                                   sectionInset:UIEdgeInsetsMake(10.0f, 30.0f, kInterRowMarging, 8.0f)];
     
     
     if (isIPhone)
     {
-        self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(152.0f, 152.0f)
+                                                          minimumInterItemSpacing: 0.0f
+                                                               minimumLineSpacing: 6.0f
+                                                                  scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                     sectionInset: UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
 
-        self.subscriptionsPortraitLayout= [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:CGSizeMake(152.0f, 152.0f) minimumInterItemSpacing:0.0 minimumLineSpacing:6.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
+        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(152.0f, 152.0f)
+                                                               minimumInterItemSpacing: 0.0f
+                                                                    minimumLineSpacing: 6.0f
+                                                                       scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                          sectionInset: UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)];
     }
     else
     {
-        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
+        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0, kInterChannelSpacing)
+                                                          minimumInterItemSpacing :0.0f
+                                                               minimumLineSpacing: 10.0f
+                                                                  scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                     sectionInset: UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
         
-        self.subscriptionsPortraitLayout= [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(184.0, kInterChannelSpacing) minimumInterItemSpacing:0.0 minimumLineSpacing:10.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
-    }
-                                                                                                                                                                                                                                                                             
-                                                                                                                                                                                                                                                                             
+        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(184.0, kInterChannelSpacing)
+                                                               minimumInterItemSpacing: 0.0f
+                                                                    minimumLineSpacing: 10.0f
+                                                                       scrollDirection: UICollectionViewScrollDirectionVertical
+                                                                          sectionInset: UIEdgeInsetsMake(10.0, 4.0, kInterRowMarging, 4.0)];
+    }                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                    
     CGFloat correctWidth = [[SYNDeviceManager sharedInstance] isLandscape] ? 600.0 : 400.0;
     
-    self.headerChannelsView = [SYNYouHeaderView headerViewForWidth:correctWidth];
-    if(isIPhone)
+    self.headerChannelsView = [SYNYouHeaderView headerViewForWidth: correctWidth];
+    
+    if (isIPhone)
     {
         CGRect newFrame = self.headerChannelsView.frame;
         newFrame.origin.y = 59.0f;
         newFrame.size.height = 44.0f;
         self.headerChannelsView.frame = newFrame;
-        [self.headerChannelsView setFontSize:12.0f];
-        [self.headerChannelsView setTitle:NSLocalizedString(@"CHANNELS",nil) andNumber:2];
+        [self.headerChannelsView setFontSize: 12.0f];
+        
+        [self.headerChannelsView setTitle: NSLocalizedString(@"CHANNELS",nil)
+                                andNumber: 2];
+        
         self.headerChannelsView.userInteractionEnabled = NO;
     }
     else
     {
-        [self.headerChannelsView setTitle:@"YOUR CHANNELS" andNumber:2];
-        [self.headerChannelsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileChannelsLandscape"] : [UIImage imageNamed:@"HeaderProfilePortraitBoth"])];
+        [self.headerChannelsView setTitle: @"YOUR CHANNELS"
+                                andNumber: 2];
+        
+        [self.headerChannelsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
     
     CGRect collectionViewFrame = CGRectMake(0.0,
@@ -165,34 +168,38 @@
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
     self.channelThumbnailCollectionView.alwaysBounceVertical = YES;
     
-//    SYNDeletionWobbleLayout
-
     // Subscriptions Collection View
-    
     self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
     CGRect subColViewFrame = self.subscriptionsViewController.view.frame;
     subColViewFrame.origin.x = isIPhone ? 0.0f : collectionViewFrame.origin.x + collectionViewFrame.size.width + 10.0;
     subColViewFrame.origin.y = collectionViewFrame.origin.y;
     subColViewFrame.size.height = collectionViewFrame.size.height;
     subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
-    [self.subscriptionsViewController setViewFrame:subColViewFrame];
+    [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
-    if(isIPhone)
+    
+    if (isIPhone)
     {
         CGRect newFrame = self.headerSubscriptionsView.frame;
         newFrame.origin.y = 59.0f;
         newFrame.size.height = 44.0f;
         self.headerSubscriptionsView.frame = newFrame;
-        [self.headerSubscriptionsView setFontSize:12.0f];
-        [self.headerSubscriptionsView setTitle:NSLocalizedString(@"SUBSCRIPTIONS",nil) andNumber:2];
+        [self.headerSubscriptionsView setFontSize: 12.0f];
+        
+        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"SUBSCRIPTIONS",nil)
+                                     andNumber: 2];
+        
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
     else
     {
-        [self.headerSubscriptionsView setTitle:@"YOUR SUBSCRIPTIONS" andNumber: 2];
-        [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        [self.headerSubscriptionsView setTitle: @"YOUR SUBSCRIPTIONS"
+                                     andNumber: 2];
+        
+        [self.headerSubscriptionsView setBackgroundImage: ([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
+    
     CGRect headerSubFrame = self.headerSubscriptionsView.frame;
     headerSubFrame.origin.x = subColViewFrame.origin.x;
     self.headerSubscriptionsView.frame = headerSubFrame;
@@ -204,48 +211,76 @@
     
     self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
     
-    [self.view addSubview:self.headerChannelsView];
-    
-    [self.view addSubview:self.headerSubscriptionsView];
-    
-    [self.view addSubview:self.userProfileController.view];
-    
-    [self.view addSubview:self.channelThumbnailCollectionView];
-    
-    [self.view addSubview:self.subscriptionsViewController.view];
+    [self.view addSubview: self.headerChannelsView];
+    [self.view addSubview: self.headerSubscriptionsView];
+    [self.view addSubview: self.userProfileController.view];
+    [self.view addSubview: self.channelThumbnailCollectionView];
+    [self.view addSubview: self.subscriptionsViewController.view];
     
     CGRect userProfileFrame = self.userProfileController.view.frame;
     userProfileFrame.origin.y = 80.0;
     self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     self.userProfileController.view.frame = userProfileFrame;
-    [self.view addSubview:self.userProfileController.view];
     
-    if(isIPhone)
+    [self.view addSubview: self.userProfileController.view];
+    
+    if (isIPhone)
     {
-        UIImage* tabButtonImage = [UIImage imageNamed:@"ButtonProfileChannels"];
-        UIButton* tabButton = [[UIButton alloc]initWithFrame:CGRectMake(0.0f,self.headerChannelsView.frame.origin.y,tabButtonImage.size.width, tabButtonImage.size.height)];
-        [tabButton setImage:tabButtonImage forState:UIControlStateNormal];
-        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsHighlighted"] forState:UIControlStateHighlighted];
-        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsSelected"] forState:UIControlStateSelected];
-        [self.view insertSubview:tabButton belowSubview:self.headerChannelsView];
-        [tabButton addTarget:self action:@selector(channelsTabTapped:) forControlEvents:UIControlEventTouchUpInside];
+        UIImage* tabButtonImage = [UIImage imageNamed: @"ButtonProfileChannels"];
+        
+        UIButton* tabButton = [[UIButton alloc] initWithFrame: CGRectMake(0.0f,
+                                                                          self.headerChannelsView.frame.origin.y,
+                                                                          tabButtonImage.size.width,
+                                                                          tabButtonImage.size.height)];
+        
+        [tabButton setImage: tabButtonImage
+                   forState: UIControlStateNormal];
+        
+        [tabButton setImage: [UIImage imageNamed: @"ButtonProfileChannelsHighlighted"]
+                   forState: UIControlStateHighlighted];
+        
+        [tabButton setImage: [UIImage imageNamed: @"ButtonProfileChannelsSelected"]
+                   forState: UIControlStateSelected];
+        
+        [self.view insertSubview: tabButton
+                    belowSubview: self.headerChannelsView];
+        
+        [tabButton addTarget: self
+                      action: @selector(channelsTabTapped:)
+            forControlEvents: UIControlEventTouchUpInside];
+        
         tabButton.showsTouchWhenHighlighted = NO;
         self.channelsTabButton = tabButton;
         
-        tabButton = [[UIButton alloc]initWithFrame:CGRectMake(160.0f,self.headerSubscriptionsView.frame.origin.y,tabButtonImage.size.width, tabButtonImage.size.height)];
-        [tabButton setImage:tabButtonImage forState:UIControlStateNormal];
-        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsHighlighted"] forState:UIControlStateHighlighted];
-        [tabButton setImage:[UIImage imageNamed:@"ButtonProfileChannelsSelected"] forState:UIControlStateSelected];
-        [self.view insertSubview:tabButton belowSubview:self.headerChannelsView];
+        tabButton = [[UIButton alloc]initWithFrame: CGRectMake(160.0f,
+                                                               self.headerSubscriptionsView.frame.origin.y,
+                                                               tabButtonImage.size.width,
+                                                               tabButtonImage.size.height)];
+        
+        [tabButton setImage: tabButtonImage
+                   forState: UIControlStateNormal];
+        
+        [tabButton setImage: [UIImage imageNamed: @"ButtonProfileChannelsHighlighted"]
+                   forState: UIControlStateHighlighted];
+        
+        [tabButton setImage: [UIImage imageNamed: @"ButtonProfileChannelsSelected"]
+                   forState: UIControlStateSelected];
+        
+        [self.view insertSubview: tabButton
+                    belowSubview: self.headerChannelsView];
+        
         tabButton.showsTouchWhenHighlighted = NO;
-        [tabButton addTarget:self action:@selector(subscriptionsTabTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [tabButton addTarget: self
+                      action: @selector(subscriptionsTabTapped:)
+            forControlEvents: UIControlEventTouchUpInside];
+        
         self.subscriptionsTabButton = tabButton;
         
         [self updateTabStates];
-
     }
-    
 }
+
 
 #pragma mark - View Lifecycle
 
@@ -292,27 +327,24 @@
     tap.delegate = self;
     [self.channelThumbnailCollectionView addGestureRecognizer: tap];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleDataModelChange:)
-                                                 name:NSManagedObjectContextObjectsDidChangeNotification
-                                               object:appDelegate.mainManagedObjectContext];
-
-    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(handleDataModelChange:)
+                                                 name: NSManagedObjectContextObjectsDidChangeNotification
+                                               object: appDelegate.mainManagedObjectContext];
     
     [self reloadCollectionViews];
-    
 }
 
--(void)handleDataModelChange:(NSNotification*)notification
+
+- (void) handleDataModelChange: (NSNotification*) notification
 {
-    NSArray* updatedObjects = [[notification userInfo] objectForKey:NSUpdatedObjectsKey];
-    [updatedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        
+    NSArray* updatedObjects = [[notification userInfo] objectForKey: NSUpdatedObjectsKey];
+    
+    [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[User class]]) {
             [self reloadCollectionViews];
         }
     }];
-    
 }
 
 //-(void)longPressPerformed:(UILongPressGestureRecognizer*)recogniser
@@ -381,6 +413,13 @@
 //    }
 //}
 
+//- (void) tappedOnScreen: (UIGestureRecognizer*) recogniser
+//{
+//    self.cellDeleteCandidate.deleteButton.hidden = YES;
+//    self.deleteCellModeOn = NO;
+//    [self.view removeGestureRecognizer: self.tapOnScreenRecogniser];
+//}
+
 #pragma mark - gesture-recognition action methods
 
 
@@ -407,60 +446,13 @@
         
         if (indexPath)
         {
-<<<<<<< HEAD
             self.deletionModeActive = YES;
             SYNDeletionWobbleLayout *layout = (SYNDeletionWobbleLayout *)self.channelThumbnailCollectionView.collectionViewLayout;
             [layout invalidateLayout];
-=======
-            self.deleteCellModeOn = YES;
-            
-            //
-            
-            CGPoint pointClicked = [recogniser locationInView:self.channelThumbnailCollectionView];
-            NSIndexPath *currentIndexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint:pointClicked];
-            
-            if(currentIndexPath.row == 0) // favourites pressed (cannot delete)
-                return;
-            
-            
-            
-            self.cellDeleteCandidate = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath: currentIndexPath];
-            
-            self.cellDeleteCandidate.deleteButton.hidden = NO;
-            
-            self.tapOnScreenRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                 action:@selector(tappedOnScreen:)];
-            
-            [self.view addGestureRecognizer:self.tapOnScreenRecogniser];
-            
-            [UIView animateWithDuration: 0.2
-                                  delay: 0.0
-                                options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
-                             animations: ^{
-                 
-                                 self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.05f, 1.05f);
-                 
-                           } completion: ^(BOOL finished) {
-                 
-                               [UIView animateWithDuration: 0.2
-                                                     delay: 0.0
-                                                   options: UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                                                animations: ^{
-                                                    
-                                                    
-                                                    self.cellDeleteCandidate.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
-                                                    
-                                                } completion: ^(BOOL finished) {
-                                                    
-                                                }];
-                               
-                           }];
-            
-            
->>>>>>> origin/develop
         }
     }
 }
+
 
 - (void) endDeletionMode: (UITapGestureRecognizer *) recognizer
 {
@@ -495,34 +487,14 @@
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
-    [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
-    
-    
-    
+    [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]]; 
 }
-
-
-<<<<<<< HEAD
-- (void) viewWillDisappear: (BOOL) animated
-{
-    [super viewWillDisappear: animated];
-}
-
-
-- (void) viewDidAppear: (BOOL) animated
-{
-    [super viewDidAppear: animated];
-    
-    //[self resizeScrollViews];
-}
-=======
->>>>>>> origin/develop
 
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
 {
-    [self updateLayoutForOrientation:toInterfaceOrientation];
+    [self updateLayoutForOrientation: toInterfaceOrientation];
 }
 
 
@@ -555,7 +527,6 @@
     {
         if (UIDeviceOrientationIsPortrait(orientation))
         {
-            
             newFrame = self.headerChannelsView.frame;
             newFrame.size.width = 384.0f;
             self.headerChannelsView.frame = newFrame;
@@ -569,7 +540,6 @@
             
             channelsLayout = self.channelsPortraitLayout;
             subscriptionsLayout = self.subscriptionsPortraitLayout;
-            
         }
         else
         {
@@ -592,15 +562,14 @@
         [self.headerSubscriptionsView setBackgroundImage:([[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed:@"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
         
         [self.headerChannelsView setBackgroundImage:[[SYNDeviceManager sharedInstance] isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
-        
     }
-    
 
     NSIndexPath* indexPath = nil;
-    if(self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
+    if (self.channelThumbnailCollectionView.contentOffset.y > self.subscriptionsViewController.channelThumbnailCollectionView.contentOffset.y)
     {
-        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex:0] : nil;
-        if(visibleCell != nil) {
+        UICollectionViewCell* visibleCell = ([[self.channelThumbnailCollectionView visibleCells] count] > 0) ? [[self.channelThumbnailCollectionView visibleCells] objectAtIndex: 0] : nil;
+        if (visibleCell != nil)
+        {
             indexPath = [self.channelThumbnailCollectionView indexPathForCell:visibleCell];
         }
     }
@@ -651,16 +620,11 @@
 }
 
 
-
-
-
-
-
 - (void) reloadCollectionViews
 {
     [super reloadCollectionViews];
     
-    NSInteger totalChannels = user.channels.count;
+    NSInteger totalChannels = self.user.channels.count;
     NSString* title = [[SYNDeviceManager sharedInstance] isIPhone] ? NSLocalizedString(@"CHANNELS",nil): NSLocalizedString(@"YOUR CHANNELS",nil);
     [self.headerChannelsView setTitle: title
                              andNumber: totalChannels];
@@ -670,14 +634,12 @@
 }
 
 
-
-
 #pragma mark - UICollectionView DataSource/Delegate
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
     // NSLog(@"%@", user);
-    return user.channels.count;
+    return self.user.channels.count;
 }
 
 
@@ -690,58 +652,48 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
-    Channel *channel = (Channel*)user.channels[indexPath.row];
+    Channel *channel = (Channel*)self.user.channels[indexPath.row];
     
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
     [channelThumbnailCell setChannelTitle:channel.title];
-    [channelThumbnailCell setViewControllerDelegate:self];
+    [channelThumbnailCell setViewControllerDelegate: self];
     
     channelThumbnailCell.deleteButton.hidden = YES;
     
-    
     return channelThumbnailCell;
-    
 }
 
 
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    if(self.deleteCellModeOn)
+    if (self.deleteCellModeOn)
         return;
-    
     
     Channel *channel;
     
-    if(collectionView == self.channelThumbnailCollectionView)
+    if (collectionView == self.channelThumbnailCollectionView)
     {
-        
-        channel = user.channels[indexPath.row];
-        
+        channel = self.user.channels[indexPath.row];
     }
     else
     {
-        channel = user.subscriptions[indexPath.row];
+        channel = self.user.subscriptions[indexPath.row];
     }
-    
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
     
     [self animatedPushViewController: channelVC];
-    
 }
 
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if ([[SYNDeviceManager sharedInstance] isIPad])
     {
         CGPoint offset;
         if ([scrollView isEqual: self.channelThumbnailCollectionView])
@@ -766,7 +718,7 @@
     
     NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
     
-    Channel *channel = user.channels[indexPath.row];
+    Channel *channel = self.user.channels[indexPath.row];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
                                                         object: self
@@ -887,9 +839,7 @@
 #endif
 
 
-
-
--(void)resizeScrollViews
+- (void) resizeScrollViews
 {
     CGSize channelViewSize = self.channelThumbnailCollectionView.contentSize;
     CGSize subscriptionsViewSize = self.subscriptionsViewController.collectionView.contentSize;
@@ -902,35 +852,35 @@
     paddingRect.origin.y = channelViewSize.height;
     paddingRect.size.width = channelViewSize.width;
     paddingRect.size.height = 600.0;
-    UIView* paddingView = [[UIView alloc] initWithFrame:paddingRect];
+    UIView* paddingView = [[UIView alloc] initWithFrame: paddingRect];
     paddingView.backgroundColor = [UIColor blueColor];
     
-    [self.channelThumbnailCollectionView addSubview:paddingView];
+    [self.channelThumbnailCollectionView addSubview: paddingView];
     channelViewSize.height = 2000.0;
-    [self.channelThumbnailCollectionView setContentSize:CGSizeMake(channelViewSize.width, 1000)];
+    [self.channelThumbnailCollectionView setContentSize: CGSizeMake(channelViewSize.width, 1000)];
 }
 
 #pragma mark - tab button actions
--(IBAction)channelsTabTapped:(id)sender
+- (IBAction) channelsTabTapped: (id) sender
 {
     self.subscriptionsTabActive = NO;
     [self updateTabStates];
 }
 
--(IBAction)subscriptionsTabTapped:(id)sender
+- (IBAction) subscriptionsTabTapped: (id) sender
 {
     self.subscriptionsTabActive = YES;
     [self updateTabStates];
 }
 
--(void)updateTabStates
+- (void )updateTabStates
 {
     self.channelsTabButton.selected = !self.subscriptionsTabActive;
     self.subscriptionsTabButton.selected = self.subscriptionsTabActive;
     self.channelThumbnailCollectionView.hidden = self.subscriptionsTabActive;
     self.subscriptionsViewController.view.hidden = !self.subscriptionsTabActive;
     
-    if(self.subscriptionsTabActive)
+    if (self.subscriptionsTabActive)
     {
         [self.headerChannelsView setColorsForText:[UIColor colorWithRed:106.0f/255.0f green:114.0f/255.0f blue:122.0f/255.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
         [self.headerSubscriptionsView setColorsForText:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f] parentheses:[UIColor colorWithRed:187.0f/255.0f green:187.0f/255.0f blue:187.0f/255.0f alpha:1.0f] number:[UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f]];
@@ -943,82 +893,59 @@
     
 }
 
--(void)tappedOnScreen:(UIGestureRecognizer*)recogniser
+
+- (void) channelDeleteButtonTapped: (UIButton*) sender
 {
-    self.cellDeleteCandidate.deleteButton.hidden = YES;
-    self.deleteCellModeOn = NO;
-    [self.view removeGestureRecognizer:self.tapOnScreenRecogniser];
-    
-    
-}
-
-
-
--(void)channelDeleteButtonTapped:(UIButton*)sender
-{
-    
     UIView *v = sender.superview.superview;
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
-    self.channelDeleteCandidate = (Channel*)user.channels[indexPath.row];
+    self.channelDeleteCandidate = (Channel*)self.user.channels[indexPath.row];
     
-    NSString* message = [NSString stringWithFormat:@"You are about to delete %@", _channelDeleteCandidate.title];
+    NSString* message = [NSString stringWithFormat: @"You are about to delete %@", _channelDeleteCandidate.title];
     
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Delete?"
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"OK", nil];
-    
-    [alertView show];
-    
-    
-    
+    [[[UIAlertView alloc] initWithTitle: @"Delete?"
+                                message: message
+                               delegate: self
+                      cancelButtonTitle: @"Cancel"
+                      otherButtonTitles: @"OK", nil] show];
 }
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+
+
+- (void) alertView: (UIAlertView *) alertView
+         willDismissWithButtonIndex: (NSInteger) buttonIndex
 {
-    if(buttonIndex == 1)
+    if (buttonIndex == 1)
     {
         [self deleteChannel];
     }
     else
     {
-        // Cancel Clicked
+        // Cancel Clicked, do nothing
     }
 }
--(void)deleteChannel
+
+
+- (void) deleteChannel
 {
-    [appDelegate.oAuthNetworkEngine deleteChannelForUserId:appDelegate.currentUser.uniqueId
-                                                 channelId:self.channelDeleteCandidate.uniqueId
-                                         completionHandler:^(id response) {
-                                             
+    [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
+                                                 channelId: self.channelDeleteCandidate.uniqueId
+                                         completionHandler: ^(id response) {
                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                 
-                                                 NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet:appDelegate.currentUser.channels];
+                                                 NSMutableOrderedSet *channelsSet = [NSMutableOrderedSet orderedSetWithOrderedSet: appDelegate.currentUser.channels];
                                                  
                                                  [channelsSet removeObject:self.channelDeleteCandidate];
                                                  
                                                  [appDelegate.currentUser setChannels:channelsSet];
-                                                 
-                                                 
                                                  [appDelegate saveContext:YES];
-                                                 
                                                  
                                                  _deleteCellModeOn = NO;
                                                  
                                                  [_channelThumbnailCollectionView reloadData];
                                                  [_channelThumbnailCollectionView setNeedsLayout];
-                                                 
-                                                 
-                                             });
-                                             
-                                             
-                                         } errorHandler:^(id error) {
-                                             
-                                             DebugLog(@"Delete channel NOT succeed");
-                                             
-                                         }];
+                                             });  
+                                         }
+                                              errorHandler: ^(id error) {
+                                                  DebugLog(@"Delete channel NOT succeed");
+                                              }];
 }
-
-
 
 @end

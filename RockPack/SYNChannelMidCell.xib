@@ -44,7 +44,7 @@
 							<object class="IBUIImageView" id="308581837">
 								<reference key="NSNextResponder" ref="582525683"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 2}, {184, 136}}</string>
+								<string key="NSFrameSize">{184, 184}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1069176426"/>
@@ -62,7 +62,7 @@
 							<object class="IBUIImageView" id="1069176426">
 								<reference key="NSNextResponder" ref="582525683"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{184, 140}</string>
+								<string key="NSFrameSize">{184, 184}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="933051206"/>
@@ -77,7 +77,7 @@
 							<object class="IBUILabel" id="933051206">
 								<reference key="NSNextResponder" ref="582525683"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{8, 84}, {168, 47}}</string>
+								<string key="NSFrame">{{8, 130}, {168, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -123,6 +123,7 @@
 								<string key="NSFrame">{{-3, -3}, {64, 65}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="308581837"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -164,10 +165,10 @@
 								</object>
 							</object>
 						</array>
-						<string key="NSFrameSize">{184, 138}</string>
+						<string key="NSFrameSize">{184, 184}</string>
 						<reference key="NSSuperview" ref="411706856"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="308581837"/>
+						<reference key="NSNextKeyView" ref="529939275"/>
 						<reference key="IBUIBackgroundColor" ref="427251072"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -176,7 +177,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{184, 138}</string>
+				<string key="NSFrameSize">{184, 184}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="582525683"/>
@@ -362,7 +363,7 @@
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteSelected.png">{16, 16}</string>
 			<string key="ChannelCreationCoverNone.png">{160, 121}</string>
-			<string key="PanelChannelCreationCoverSelected.png">{160, 121}</string>
+			<string key="PanelChannelCreationCoverSelected.png">{184, 184}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

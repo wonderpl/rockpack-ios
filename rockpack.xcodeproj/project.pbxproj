@@ -90,6 +90,8 @@
 		011C168A1730047300CF50B9 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011C16891730047300CF50B9 /* AssetsLibrary.framework */; };
 		011C168D173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 011C168C173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m */; };
 		011C16901731782800CF50B9 /* SYNDeletionWobbleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011C168F1731782800CF50B9 /* SYNDeletionWobbleLayout.m */; };
+		011C16931732834F00CF50B9 /* PanelChannelCreateNew.png in Resources */ = {isa = PBXBuildFile; fileRef = 011C16911732834F00CF50B9 /* PanelChannelCreateNew.png */; };
+		011C16941732834F00CF50B9 /* PanelChannelCreateNew@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011C16921732834F00CF50B9 /* PanelChannelCreateNew@2x.png */; };
 		011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */; };
 		011CC67E164AA41800F02B6D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67D164AA41700F02B6D /* CoreMedia.framework */; };
 		011CC680164AA42300F02B6D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67F164AA42300F02B6D /* AVFoundation.framework */; };
@@ -988,6 +990,8 @@
 		011C168C173176FD00CF50B9 /* SYNDeletionWobbleLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDeletionWobbleLayoutAttributes.m; sourceTree = "<group>"; };
 		011C168E1731782800CF50B9 /* SYNDeletionWobbleLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNDeletionWobbleLayout.h; sourceTree = "<group>"; };
 		011C168F1731782800CF50B9 /* SYNDeletionWobbleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDeletionWobbleLayout.m; sourceTree = "<group>"; };
+		011C16911732834F00CF50B9 /* PanelChannelCreateNew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelCreateNew.png; path = Assets/Images/PanelChannelCreateNew.png; sourceTree = "<group>"; };
+		011C16921732834F00CF50B9 /* PanelChannelCreateNew@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelChannelCreateNew@2x.png"; path = "Assets/Images/PanelChannelCreateNew@2x.png"; sourceTree = "<group>"; };
 		011CC67A164A9EC300F02B6D /* SYNCaptureSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCaptureSessionManager.h; sourceTree = "<group>"; };
 		011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCaptureSessionManager.m; sourceTree = "<group>"; };
 		011CC67D164AA41700F02B6D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -2789,6 +2793,8 @@
 		01B34C9516A99D40002AD8FB /* Channel Thumbnail */ = {
 			isa = PBXGroup;
 			children = (
+				011C16911732834F00CF50B9 /* PanelChannelCreateNew.png */,
+				011C16921732834F00CF50B9 /* PanelChannelCreateNew@2x.png */,
 				01B34C9616A99D6A002AD8FB /* GlossChannelThumbnail.png */,
 				01B34C9716A99D6A002AD8FB /* GlossChannelThumbnail@2x.png */,
 			);
@@ -2847,8 +2853,8 @@
 				BEE4A69E17021DB4008F9D05 /* SYNChannelsUserViewController.m */,
 				BE285D981725726300D995AB /* SYNExistingChannelsViewController.h */,
 				BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */,
-				38A201061731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib */,
 				BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */,
+				38A201061731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib */,
 				01EC6234166EAAA5003154B1 /* SYNChannelDetailViewController.h */,
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
@@ -4681,6 +4687,8 @@
 				38A201041731607F00FB9F57 /* PanelVideoScreenVideoMainOverlay@2x~iphone.png in Resources */,
 				38A201051731607F00FB9F57 /* PanelVideoScreenVideoMainOverlay~iphone.png in Resources */,
 				38A201071731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib in Resources */,
+				011C16931732834F00CF50B9 /* PanelChannelCreateNew.png in Resources */,
+				011C16941732834F00CF50B9 /* PanelChannelCreateNew@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

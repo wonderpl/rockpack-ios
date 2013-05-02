@@ -35,12 +35,14 @@
     
 }
 
--(CGSize)itemSize
+
+- (CGSize) itemSize
 {
-    return CGSizeMake(184.0, 138.0);
+    return CGSizeMake(184.0, 184.0);
 }
 
--(CGSize)footerSize
+
+- (CGSize) footerSize
 {
     return CGSizeMake(0.0, 0.0);
 }
@@ -86,6 +88,7 @@
     return 1;
 }
 
+
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
     Channel *channel = user.subscriptions[indexPath.row];
@@ -94,35 +97,34 @@
                                                                             forIndexPath: indexPath];
     
     channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
-    [channelThumbnailCell setChannelTitle:channel.title];
-    
+    [channelThumbnailCell setChannelTitle: channel.title];
     
     return channelThumbnailCell;
-    
 }
 
--(void)reloadCollectionViews
+
+- (void) reloadCollectionViews
 {
     [super reloadCollectionViews];
-    
     
     if(self.headerView)
     {
         NSInteger totalChannels = user.subscriptions.count;
-        [self.headerView setTitle:@"SUBSCRIPTIONS" andNumber:totalChannels];
+        
+        [self.headerView setTitle: @"SUBSCRIPTIONS"
+                        andNumber: totalChannels];
     }
-    
 }
 
--(void)setViewFrame:(CGRect)frame
+
+- (void) setViewFrame: (CGRect) frame
 {
     self.view.frame = frame;
     self.channelThumbnailCollectionView.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
-
-
 }
 
--(UICollectionView*)collectionView
+
+- (UICollectionView *) collectionView
 {
     return self.channelThumbnailCollectionView;
 }
