@@ -188,11 +188,10 @@ extern void instrumentObjcMessageSends(BOOL);
     if(!self.currentUser || !self.currentUser.current)
         return;
     
-    self.currentUser.current = @(NO);
+    self.currentUser.currentValue = NO;
     
     [self clearUserBoundData];
     
-    [self.currentOAuth2Credentials removeFromKeychain];
     
     self.currentOAuth2Credentials = nil;
     _currentUser = nil;
@@ -566,6 +565,30 @@ extern void instrumentObjcMessageSends(BOOL);
     }
     
     return _currentUser;
+}
+
+-(void)setCurrentOAuth2Credentials:(SYNOAuth2Credential *)nCurrentOAuth2Credentials
+{
+    [_currentOAuth2Credentials removeFromKeychain];
+    
+    if(!self.currentUser)
+    {
+        _currentOAuth2Credentials = nil;
+        DebugLog(@"Tried to save credentials without an active user");
+        return;
+    }
+    
+    _currentOAuth2Credentials = nCurrentOAuth2Credentials;
+    
+    if(_currentOAuth2Credentials != nil)
+    {
+        [_currentOAuth2Credentials saveToKeychainForService:kOAuth2Service
+                                                    account:self.currentUser.uniqueId];
+    }
+    
+    
+    
+    
 }
 
 -(SYNOAuth2Credential*)currentOAuth2Credentials

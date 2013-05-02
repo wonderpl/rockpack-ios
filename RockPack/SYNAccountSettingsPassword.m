@@ -7,6 +7,9 @@
 //
 
 #import "SYNAccountSettingsPassword.h"
+#import "SYNAppDelegate.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "SYNOAuth2Credential.h"
 
 @interface SYNAccountSettingsPassword ()
 
@@ -33,6 +36,7 @@
     [super viewDidLoad];
     self.inputField.text = @"";
     self.inputField.placeholder = @"Old Password";
+    self.inputField.secureTextEntry = YES;
     
     passwordField = [self createInputField];
     passwordField.placeholder = @"New Password";
@@ -50,21 +54,77 @@
 -(void)saveButtonPressed:(UIButton*)button
 {
     
-    [super saveButtonPressed:button];
     
     if(![self formIsValid]) {
-        self.errorTextField.text = @"You Have Entered Invalid Characters";
+        self.errorLabel.text = @"You Have Entered Invalid Characters";
         return;
     }
     
     if(![passwordField.text isEqualToString:passwordConfirmField.text]) {
-        self.errorTextField.text = @"Passwords do not match";
+        self.errorLabel.text = @"Passwords do not match";
         return;
     }
     
-    [self updateField:@"password" forValue:self.passwordField.text withCompletionHandler:^{
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
+    if([self.inputField.text isEqualToString:passwordField.text]) {
+        self.errorLabel.text = @"The new password typed is the same with old";
+        return;
+    }
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.oAuthNetworkEngine changeUserPasswordWithOldValue:self.inputField.text
+                                                       andNewValue:passwordField.text
+                                                         forUserId:appDelegate.currentUser.uniqueId
+                                                 completionHandler:^(id credentialInfo) {
+                                                     
+                                                     
+                        SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: credentialInfo[@"access_token"]
+                                                                                                         expiresIn: credentialInfo[@"expires_in"]
+                                                                                                      refreshToken: credentialInfo[@"refresh_token"]
+                                                                                                       resourceURL: credentialInfo[@"resource_url"]
+                                                                                                         tokenType: credentialInfo[@"token_type"]
+                                                                                                            userId: credentialInfo[@"user_id"]];
+                                                     
+                                                     
+                        appDelegate.currentOAuth2Credentials = newOAuth2Credentials;
+                                                     
+                                                     
+                                                     
+            [self.navigationController popViewControllerAnimated:YES];
+                                                     
+                                                     
+        
+                        } errorHandler:^(id error) {
+                            
+                            if(![error isKindOfClass:[NSDictionary class]])
+                                return;
+                            
+                            
+                            NSString* errorType = [error objectForKey:@"error"];
+                            
+                            if([errorType isEqualToString:@"invalid_request"])
+                            {
+                                NSArray* errorMessage = [error objectForKey:@"message"];
+                                
+                                if(errorMessage.count > 0)
+                                {
+                                    self.errorLabel.text = (NSString*)[errorMessage objectAtIndex:0];
+                                }
+                                else
+                                {
+                                    self.errorLabel.text = @"Could not change password";
+                                }
+                            }
+                            else
+                            {
+                                self.errorLabel.text = @"Could not change password";
+                            }
+                            
+                            self.saveButton.hidden = NO;
+     
+    
+                        }];
+    
 }
 
 - (void)didReceiveMemoryWarning

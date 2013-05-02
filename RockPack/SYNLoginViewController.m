@@ -227,37 +227,23 @@
         control.alpha = 0.0;
     }
     
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
+    emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
+    faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
+    
+    facebookSignInButton.enabled = YES;
+    facebookSignInButton.frame = facebookButtonInitialFrame;
+    facebookSignInButton.alpha = 1.0;
+    
+    _facebookLoginIsInProcess = NO;
+    
+    if([[SYNDeviceManager sharedInstance] isPortrait])
     {
-        dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
-        emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
-        faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
-        
-        facebookSignInButton.enabled = YES;
-        facebookSignInButton.frame = facebookButtonInitialFrame;
-        facebookSignInButton.alpha = 1.0;
-        
-        _facebookLoginIsInProcess = NO;
-        
-        if([[SYNDeviceManager sharedInstance] isPortrait])
-        {
-            signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
-            faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
-            passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
-        }
-        
-        
+        signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
+        faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
+        passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
     }
-    else
-    {
-        titleImageView.center = CGPointMake(self.view.center.x, 150.0);
-        facebookSignInButton.center = CGPointMake(self.view.center.x, 230.0);
-        
-        loginButton.center = CGPointMake(950.0, 690.0);
-        memberLabel.center = CGPointMake(loginButton.center.x, loginButton.center.y - 80.0);
-       
-        signUpButton.center = CGPointMake(200.0, signUpButton.center.y - 40.0);
-    }
+    
     
     
     signUpButton.enabled = YES;
@@ -344,14 +330,7 @@
                              animations:^{
                                  
                                  control.alpha = 1.0;
-                                 if(control == facebookSignInButton && [[SYNDeviceManager sharedInstance] isIPhone])
-                                 {
-                                     control.center = CGPointMake(control.center.x, control.center.y - 188.0);
-                                 }
-                                 else
-                                 {
-                                     control.center = CGPointMake(control.center.x, control.center.y - self.elementsOffsetY);
-                                 }
+                                 control.center = CGPointMake(control.center.x, control.center.y - self.elementsOffsetY);
                                  
                                  
                              } completion:^(BOOL finished) {
@@ -720,12 +699,10 @@
         return NO;
     }
     
-    [credential saveToKeychainForService: kOAuth2Service
-                                 account: newUser.uniqueId];
+    appDelegate.currentOAuth2Credentials = credential;
     
     [SYNActivityManager.sharedInstance updateActivityForCurrentUser];
     
-//    DebugLog(@"Registered:\n%@", newUser);
     
     return YES;
 }
@@ -756,7 +733,7 @@
                                                // Case where the user is a member of Rockpack but has not signing in this device
                                                
                                                [appDelegate.oAuthNetworkEngine userInformationFromCredentials:credential
-                                                                                      completionHandler:^(NSDictionary* dictionary) {
+                                                                                            completionHandler:^(NSDictionary* dictionary) {
                                                                                           
                                                                                           NSString* username = [dictionary objectForKey:@"username"];
                                                                                           DebugLog(@"User Registerd: %@", username);

@@ -23,7 +23,7 @@
 
 @implementation SYNAccountSettingsTextInputController
 
-@synthesize inputField, saveButton, errorTextField;
+@synthesize inputField, saveButton, errorLabel;
 @synthesize appDelegate;
 @synthesize lastTextFieldY;
 @synthesize spinner;
@@ -35,7 +35,7 @@
     {
         currentFieldType = userFieldType;
         appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
-        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhiteLarge];
+        self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     }
     
     return self;
@@ -63,7 +63,7 @@
     UIImage* buttonImage = [UIImage imageNamed: @"ButtonAccountSaveDefault.png"];
     saveButton = [UIButton buttonWithType: UIButtonTypeCustom];
     saveButton.frame = CGRectMake(0.0, 0.0, buttonImage.size.width, buttonImage.size.height);
-    saveButton.center = CGPointMake(self.view.center.x, saveButton.center.y);
+    saveButton.center = CGPointMake(([[SYNDeviceManager sharedInstance] isIPad] ? 190.0 : 160.0), saveButton.center.y);
     
     [saveButton setImage: buttonImage
                 forState: UIControlStateNormal];
@@ -128,16 +128,18 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
     
-    errorTextField = [[UITextField alloc] initWithFrame: CGRectMake(10.0, saveButton.frame.origin.y + saveButton.frame.size.height + 10.0,
-                                                                    self.contentSizeForViewInPopover.width - 10.0, 30)];
+    errorLabel = [[UILabel alloc] initWithFrame: CGRectMake(10.0,
+                                                                saveButton.frame.origin.y + saveButton.frame.size.height + 10.0,
+                                                                self.contentSizeForViewInPopover.width - 10.0,
+                                                                30)];
     
-    errorTextField.textColor = [UIColor redColor];
-    errorTextField.font = [UIFont rockpackFontOfSize: 18];
-    errorTextField.textAlignment = NSTextAlignmentCenter;
+    errorLabel.textColor = [UIColor colorWithRed:(46.0/255.0) green:(192.0/255.0) blue:(197.0/255.0) alpha:(1.0)];
+    errorLabel.font = [UIFont rockpackFontOfSize: 18];
+    errorLabel.textAlignment = NSTextAlignmentCenter;
     
     
     
-    [self.view addSubview: errorTextField];
+    [self.view addSubview: errorLabel];
 }
 
 
@@ -168,9 +170,10 @@
     self.saveButton.frame = saveButtonFrame;
     
     
-    CGRect errorTextFrame = errorTextField.frame;
+    CGRect errorTextFrame = errorLabel.frame;
     errorTextFrame.origin.y = saveButtonFrame.origin.y + saveButtonFrame.size.height + 10.0;
-    errorTextField.frame = CGRectIntegral(errorTextFrame);
+    errorLabel.frame = CGRectIntegral(errorTextFrame);
+    
     
     lastTextFieldY += newInputField.frame.size.height + 10.0;
     
@@ -179,10 +182,7 @@
 
 - (void) saveButtonPressed: (UIButton *) button
 {
-    self.saveButton.hidden = YES;
     
-    self.spinner.center = self.saveButton.center;
-    [self.spinner startAnimating];
 }
 
 #pragma mark - Validating
@@ -229,12 +229,17 @@
             forValue: (NSString *) newValue
             withCompletionHandler: (MKNKBasicSuccessBlock) successBlock
 {
-    self.saveButton.enabled = NO;
+    self.saveButton.hidden = YES;
+    
+    self.spinner.center = self.saveButton.center;
+    
+    [self.spinner startAnimating];
     
     [self.appDelegate.oAuthNetworkEngine changeUserField: field
                                                  forUser: self.appDelegate.currentUser
                                             withNewValue: newValue
                                        completionHandler: ^{
+                                           
                                            [self.spinner stopAnimating];
                                            self.saveButton.hidden = NO;
                                            self.saveButton.enabled = YES;
@@ -244,8 +249,12 @@
                                            [[NSNotificationCenter defaultCenter]  postNotificationName: kUserDataChanged
                                                                                                 object: self
                                                                                               userInfo: @{@"user": appDelegate.currentUser}];
+                                           
+                                           [self.spinner stopAnimating];
+                                           
                                        } errorHandler: ^(id errorInfo) {
-                                                [self.spinner stopAnimating];
+                                           
+                                           
                                                 self.saveButton.hidden = NO;
                                                 self.saveButton.enabled = YES;
                                                 
@@ -260,11 +269,11 @@
                                                 {
                                                     if ([message isKindOfClass: [NSArray class]])
                                                     {
-                                                        self.errorTextField.text = (NSString *) [((NSArray *) message)objectAtIndex : 0];
+                                                        self.errorLabel.text = (NSString *) [((NSArray *) message)objectAtIndex : 0];
                                                     }
                                                     else if ([message isKindOfClass: [NSString class]])
                                                     {
-                                                        self.errorTextField.text = message;
+                                                        self.errorLabel.text = message;
                                                     }
                                                 }
                                             }];

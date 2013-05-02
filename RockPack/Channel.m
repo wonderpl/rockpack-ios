@@ -181,9 +181,10 @@ static NSEntityDescription *channelEntity = nil;
     for (VideoInstance* videoInstance in channel.videoInstances)
     {
         VideoInstance* copyOfVideoInstance = [VideoInstance instanceFromVideoInstance:videoInstance
-                                                                           forChannel:self
-                                                            usingManagedObjectContext:self.managedObjectContext
-                                                                            andViewId:@"ChannelDetails"];
+                                                            usingManagedObjectContext:self.managedObjectContext];
+        
+        copyOfVideoInstance.viewId = channel.viewId;
+        copyOfVideoInstance.channel = self;
         [self.videoInstancesSet addObject: copyOfVideoInstance];
         
     }
