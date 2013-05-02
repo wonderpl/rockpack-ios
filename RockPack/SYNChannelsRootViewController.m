@@ -87,7 +87,7 @@
     }
     else
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:[self itemSize] minimumInterItemSpacing:0.0 minimumLineSpacing:30.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(30.0, 6.0, 5.0, 6.0)];
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize:[self itemSize] minimumInterItemSpacing:0.0 minimumLineSpacing:0.0 scrollDirection:UICollectionViewScrollDirectionVertical sectionInset:UIEdgeInsetsMake(6.0, 6.0, 5.0, 6.0)];
         flowLayout.footerReferenceSize = [self footerSize];
     }
     
@@ -219,7 +219,7 @@
 
 -(CGSize)itemSize
 {
-    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 212.0);
+    return [[SYNDeviceManager sharedInstance] isIPhone]? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
 -(CGSize)footerSize
