@@ -103,7 +103,7 @@
     fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
-    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
+    NSPredicate* ownedByUserPredicate = [NSPredicate predicateWithFormat:   [NSString stringWithFormat: @"channelOwner.uniqueId == '%@'", meAsOwner.uniqueId]];
     
     fetchRequest.predicate = ownedByUserPredicate;
     fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"title"

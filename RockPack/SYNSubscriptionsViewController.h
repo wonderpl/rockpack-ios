@@ -15,6 +15,6 @@
 @property (nonatomic, readonly) UICollectionView* collectionView;
 @property (nonatomic, weak) SYNYouHeaderView* headerView;
 
--(void)setViewFrame:(CGRect)frame;
+- (void) setViewFrame: (CGRect) frame;
 
 @end

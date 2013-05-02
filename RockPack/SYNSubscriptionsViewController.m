@@ -16,23 +16,17 @@
 
 @property (nonatomic, weak) User* user;
 
-
 @end
 
-@implementation SYNSubscriptionsViewController
 
-@synthesize collectionView;
-@synthesize headerView;
-@synthesize user;
+@implementation SYNSubscriptionsViewController
 
 - (void) loadView
 {
     [super loadView];
     
-    
     self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
-    
 }
 
 
@@ -50,12 +44,12 @@
 
 - (void) viewDidLoad
 {
-
+    // FIXME: Why no call to super, is this a mistake?
     //[super viewDidLoad];
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    user = appDelegate.currentUser;
+    self.user = appDelegate.currentUser;
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
@@ -71,15 +65,14 @@
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
-    
-    
 }
+
 
 #pragma mark - UICollectionView Delegate Methods
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return user.subscriptions.count;
+    return self.user.subscriptions.count;
 }
 
 
@@ -91,7 +84,7 @@
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv cellForItemAtIndexPath: (NSIndexPath *) indexPath {
     
-    Channel *channel = user.subscriptions[indexPath.row];
+    Channel *channel = self.user.subscriptions[indexPath.row];
     
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                             forIndexPath: indexPath];
@@ -107,9 +100,9 @@
 {
     [super reloadCollectionViews];
     
-    if(self.headerView)
+    if (self.headerView)
     {
-        NSInteger totalChannels = user.subscriptions.count;
+        NSInteger totalChannels = self.user.subscriptions.count;
         
         [self.headerView setTitle: @"SUBSCRIPTIONS"
                         andNumber: totalChannels];
