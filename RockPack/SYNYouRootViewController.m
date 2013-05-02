@@ -846,7 +846,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteBackButtonShow
                                                         object: self];
 }
-
 #endif
 
 
@@ -880,13 +879,15 @@
     [self updateTabStates];
 }
 
+
 - (IBAction) subscriptionsTabTapped: (id) sender
 {
     self.subscriptionsTabActive = YES;
     [self updateTabStates];
 }
 
-- (void )updateTabStates
+
+- (void ) updateTabStates
 {
     self.channelsTabButton.selected = !self.subscriptionsTabActive;
     self.subscriptionsTabButton.selected = self.subscriptionsTabActive;

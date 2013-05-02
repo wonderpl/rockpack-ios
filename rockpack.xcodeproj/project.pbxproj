@@ -92,6 +92,8 @@
 		011C16901731782800CF50B9 /* SYNDeletionWobbleLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 011C168F1731782800CF50B9 /* SYNDeletionWobbleLayout.m */; };
 		011C16931732834F00CF50B9 /* PanelChannelCreateNew.png in Resources */ = {isa = PBXBuildFile; fileRef = 011C16911732834F00CF50B9 /* PanelChannelCreateNew.png */; };
 		011C16941732834F00CF50B9 /* PanelChannelCreateNew@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011C16921732834F00CF50B9 /* PanelChannelCreateNew@2x.png */; };
+		011C169B1732B65400CF50B9 /* NoCover184.png in Resources */ = {isa = PBXBuildFile; fileRef = 011C16991732B65400CF50B9 /* NoCover184.png */; };
+		011C169C1732B65400CF50B9 /* NoCover184@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 011C169A1732B65400CF50B9 /* NoCover184@2x.png */; };
 		011CC67C164A9EC300F02B6D /* SYNCaptureSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */; };
 		011CC67E164AA41800F02B6D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67D164AA41700F02B6D /* CoreMedia.framework */; };
 		011CC680164AA42300F02B6D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011CC67F164AA42300F02B6D /* AVFoundation.framework */; };
@@ -992,6 +994,8 @@
 		011C168F1731782800CF50B9 /* SYNDeletionWobbleLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNDeletionWobbleLayout.m; sourceTree = "<group>"; };
 		011C16911732834F00CF50B9 /* PanelChannelCreateNew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelCreateNew.png; path = Assets/Images/PanelChannelCreateNew.png; sourceTree = "<group>"; };
 		011C16921732834F00CF50B9 /* PanelChannelCreateNew@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelChannelCreateNew@2x.png"; path = "Assets/Images/PanelChannelCreateNew@2x.png"; sourceTree = "<group>"; };
+		011C16991732B65400CF50B9 /* NoCover184.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoCover184.png; path = Assets/Images/NoCover184.png; sourceTree = "<group>"; };
+		011C169A1732B65400CF50B9 /* NoCover184@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NoCover184@2x.png"; path = "Assets/Images/NoCover184@2x.png"; sourceTree = "<group>"; };
 		011CC67A164A9EC300F02B6D /* SYNCaptureSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCaptureSessionManager.h; sourceTree = "<group>"; };
 		011CC67B164A9EC300F02B6D /* SYNCaptureSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCaptureSessionManager.m; sourceTree = "<group>"; };
 		011CC67D164AA41700F02B6D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -2065,6 +2069,8 @@
 		0111CE091729537300612186 /* Cover Thumbnail */ = {
 			isa = PBXGroup;
 			children = (
+				011C16991732B65400CF50B9 /* NoCover184.png */,
+				011C169A1732B65400CF50B9 /* NoCover184@2x.png */,
 				0111CE0A172954E900612186 /* PanelChannelCreationCover.png */,
 				0111CE0B172954E900612186 /* PanelChannelCreationCover@2x.png */,
 				BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */,
@@ -4689,6 +4695,8 @@
 				38A201071731738F00FB9F57 /* SYNExistingChannelsViewController~iphone.xib in Resources */,
 				011C16931732834F00CF50B9 /* PanelChannelCreateNew.png in Resources */,
 				011C16941732834F00CF50B9 /* PanelChannelCreateNew@2x.png in Resources */,
+				011C169B1732B65400CF50B9 /* NoCover184.png in Resources */,
+				011C169C1732B65400CF50B9 /* NoCover184@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

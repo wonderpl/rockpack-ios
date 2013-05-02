@@ -419,7 +419,7 @@
         {
             case 0:
             {               
-                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
+                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone2.png"];
                 return coverThumbnailCell;
             }
             break;
