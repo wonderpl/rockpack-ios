@@ -41,7 +41,7 @@
 					<object class="IBUIButton" id="602539174">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">297</int>
-						<string key="NSFrame">{{874, 29}, {130, 45}}</string>
+						<string key="NSFrame">{{170, 20}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSNextKeyView" ref="339448384"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -84,9 +84,9 @@
 					<object class="IBUIButton" id="754349621">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">300</int>
-						<string key="NSFrame">{{14, 11}, {60, 61}}</string>
+						<string key="NSFrame">{{14, 7}, {60, 61}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="339488041"/>
+						<reference key="NSNextKeyView" ref="602539174"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -111,10 +111,11 @@
 					</object>
 					<object class="IBUICollectionView" id="339448384">
 						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">309</int>
+						<int key="NSvFlags">277</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
-						<string key="NSFrame">{{127, 150}, {769, 578}}</string>
+						<string key="NSFrame">{{0, 76}, {320, 472}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -127,18 +128,22 @@
 						<float key="IBUIMaximumZoomScale">0.0</float>
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="746757458">
 							<reference key="IBUICollectionView" ref="339448384"/>
-							<string key="IBUIItemSize">{184, 138}</string>
-							<float key="IBUIMinimumLineSpacing">10</float>
-							<float key="IBUIMinimumInteritemSpacing">10</float>
+							<string key="IBUIItemSize">{152, 152}</string>
+							<float key="IBUIMinimumLineSpacing">5</float>
+							<float key="IBUIMinimumInteritemSpacing">6</float>
+							<double key="IBUISectionInset.top">5</double>
+							<double key="IBUISectionInset.bottom">5</double>
+							<double key="IBUISectionInset.left">5</double>
+							<double key="IBUISectionInset.right">5</double>
 						</object>
 						<array key="IBUICells" id="0"/>
 					</object>
 					<object class="IBUILabel" id="339488041">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{326, 25}, {373, 52}}</string>
+						<string key="NSFrame">{{0, 25}, {373, 52}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSNextKeyView" ref="602539174"/>
+						<reference key="NSNextKeyView" ref="754349621"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -168,9 +173,9 @@
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 				</array>
-				<string key="NSFrame">{{0, 20}, {1024, 748}}</string>
+				<string key="NSFrame">{{0, 20}, {320, 548}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="754349621"/>
+				<reference key="NSNextKeyView" ref="339488041"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC4xNDExNzY0NzA2IDAuMTUyOTQxMTc2NSAwLjE2MDc4NDMxMzcAA</bytes>

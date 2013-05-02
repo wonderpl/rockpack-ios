@@ -9,14 +9,7 @@
                            andViewId: (NSString *) viewId;
 
 
-+ (Channel *) instanceFromDictionary: (NSDictionary *) dictionary
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                        channelOwner: (ChannelOwner*)owner
-                           andViewId: (NSString *) viewId;
 
-+ (Channel *) subscriberInstanceFromDictionary: (NSDictionary*)dictionary
-           usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                           andViewId:(NSString*)viewId;
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId

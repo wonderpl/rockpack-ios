@@ -113,7 +113,7 @@
     {
         // iPhone
         videoView = self.view;
-        videoFrame = CGRectMake(0, 59, 320, 180);
+        videoFrame = self.swipeView.frame;
         videoFrame.size.height = 180.0f;
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
     }

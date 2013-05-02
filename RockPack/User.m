@@ -16,7 +16,9 @@
 
 #pragma mark - Object factory
 
-+ (User*) instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
++ (User*) instanceFromDictionary: (NSDictionary *) dictionary
+       usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
+             ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
     NSError *error = nil;
     
@@ -41,129 +43,73 @@
     {
         instance = matchingCategoryInstanceEntries[0];
         
-        [instance updateAttributesFromDictionary:dictionary
-                                          withId:uniqueId
-                       usingManagedObjectContext:managedObjectContext];
         
-        return instance;
     }
     else
     {
         instance = [User insertInManagedObjectContext: managedObjectContext];
         
+        instance.uniqueId = uniqueId;
         
-        [instance setAttributesFromDictionary: dictionary
-                                       withId: uniqueId
-                    usingManagedObjectContext: managedObjectContext
-                          ignoringObjectTypes: kIgnoreNothing
-                                    andViewId: @"Users"];
         
-        return instance;
     }
+    
+    [instance setAttributesFromDictionary: dictionary
+                                   withId: uniqueId
+                usingManagedObjectContext: managedObjectContext
+                      ignoringObjectTypes: ignoringObjects];
+    
+    return instance;
 }
 
--(void)updateAttributesFromDictionary: (NSDictionary*) dictionary
-                               withId: (NSString*)uniqueId
-            usingManagedObjectContext: (NSManagedObjectContext*)managedObjectContext {
-    
-    
-    
-    if (![dictionary isKindOfClass: [NSDictionary class]])
-    {
-        AssertOrLog (@"setAttributesFromDictionary: not a dictionary, unable to construct object");
-        return;
-    }
-    
-    if(self.uniqueId != uniqueId)
-    {
-        DebugLog(@"The user you re trying to update does not match the data");
-        return;
-    }
-    
-    self.thumbnailURL = [dictionary objectForKey: @"avatar_thumbnail_url"
-                                     withDefault: @"http://"];
-    
-    self.displayName = [dictionary upperCaseStringForKey: @"display_name"
-                                             withDefault: @""];
-    
-    NSDictionary* channelsDictionary = [self channelsDictionary];
-    
-    NSDictionary* channelsArray = [dictionary objectForKey:@"channels"];
-    NSArray* channelItemsArray = [channelsArray objectForKey:@"items"];
-    for (NSDictionary* channelDictionary in channelItemsArray)
-    {
-        
-        NSString* channelId = [dictionary objectForKey:@"id"];
-        if(!channelId || [channelId isEqualToString:@""])
-            continue;
-        
-        NSString* existingChannel = [channelsDictionary objectForKey:channelId];
-        if(existingChannel)
-            continue;
-        
-        Channel* channel = [Channel instanceFromDictionary:channelDictionary
-                                 usingManagedObjectContext:managedObjectContext
-                                              channelOwner:self
-                                                 andViewId:@"You"];
-        
-        [self addChannelsObject:channel];
-        
-    }
-    
-    
-    
-}
+
 
 
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects
-                           andViewId: (NSString *) viewId {
+                 ignoringObjectTypes: (IgnoringObjects) ignoringObjects {
     
-    // As we are a subclass of ChannelOwner, set its attributes as well
+    
+    
+    // Sets attributes for ChannelOwner (superclass) AND adds Channels
+    
     [super setAttributesFromDictionary: dictionary
                                 withId: uniqueId
              usingManagedObjectContext: managedObjectContext
-                   ignoringObjectTypes: ignoringObjects
-                             andViewId: viewId];
+                   ignoringObjectTypes: ignoringObjects];
     
-    self.username = [dictionary objectForKey: @"username"];
-    if(self.username && [self.username isEqualToString:@""])
-        self.username = @"";
+    // Then set the rest
+    
+    NSString* n_username = [dictionary objectForKey: @"username"];
+    self.username = n_username ? n_username : self.username;
 
-    self.emailAddress = [dictionary objectForKey: @"email"];
-    if(self.emailAddress && [self.emailAddress isEqualToString:@""])
-        self.emailAddress = @"";
+    NSString* n_emailAddress = [dictionary objectForKey:@"email"];
+    self.emailAddress = n_emailAddress ? n_emailAddress : self.emailAddress;
     
-    self.firstName = [dictionary objectForKey: @"first_name"];
-    if(self.firstName && [self.firstName isEqualToString:@""])
-        self.firstName = @"";
-
+    NSString* n_firstName = [dictionary objectForKey:@"first_name" ];
+    self.firstName = n_firstName ? n_firstName : self.firstName;
     
-    self.lastName = [dictionary objectForKey: @"last_name"];
-    if(self.lastName && [self.firstName isEqualToString:@""])
-        self.lastName = @"";
+    NSString* n_lastName = [dictionary objectForKey: @"last_name"];
+    self.lastName = n_lastName ? n_lastName : self.lastName;
+    
     
     NSDictionary* activity_url_dict = [dictionary objectForKey: @"activity"];
-    NSDictionary* coverart_url_dict = [dictionary objectForKey: @"cover_art"];
-    NSDictionary* subscriptions_url_dict = [dictionary objectForKey: @"subscriptions"];
-    
-    if(activity_url_dict) {
+    if(activity_url_dict)
         self.activityUrl = [activity_url_dict objectForKey:@"resource_url"];
-    }
     
-    if(coverart_url_dict) {
+    NSDictionary* coverart_url_dict = [dictionary objectForKey: @"cover_art"];
+    if(coverart_url_dict) 
         self.coverartUrl = [coverart_url_dict objectForKey:@"resource_url"];
-    }
     
-    if(subscriptions_url_dict) {
+    NSDictionary* subscriptions_url_dict = [dictionary objectForKey: @"subscriptions"];
+    if(subscriptions_url_dict) 
         self.subscriptionsUrl = [coverart_url_dict objectForKey:@"resource_url"];
-    }
+    
     
     // == Gender == //
     
-    self.gender = @(GenderUndecided);
+    self.genderValue = GenderUndecided;
     
     
     
@@ -187,7 +133,6 @@
     
     // == Locale == //
     
-    // NSString* localeFromDevice = [[NSLocale currentLocale] localeIdentifier]; // en_GB | en_US
     
     NSString* localeFromDict = [dictionary objectForKey:@"locale" withDefault:@""];
     
@@ -214,14 +159,19 @@
 
 - (NSString *) description
 {
-    NSMutableString* userDescription = [NSMutableString stringWithFormat:
-                                        @"User (%i) - username: '%@'",
-                                        [self.uniqueId intValue], self.username];
-    [userDescription appendFormat:@"\nUser Channels:"];
-    for (Channel* channel in self.channels)
-    {
-        [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+    NSMutableString* userDescription = [NSMutableString stringWithFormat:@"User (%i) - username: '%@'", [self.uniqueId intValue], self.username];
+    
+    [userDescription appendFormat:@"\nUser Channels (%i)", self.channels.count];
+    
+    if(self.channels.count == 0) {
+        [userDescription appendString:@"."];
+    } else {
+        [userDescription appendString:@":"];
+        for (Channel* channel in self.channels) {
+            [userDescription appendFormat:@"\n - %@ (%@)", channel.title, [channel.subscribedByUser boolValue] ? @"Subscribed" : @"-"];
+        }
     }
+    
     
     return userDescription;
 }

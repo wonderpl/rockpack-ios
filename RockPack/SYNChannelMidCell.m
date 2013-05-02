@@ -23,10 +23,10 @@
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
     self.specialSelected = NO;
+    self.deleteButton.layer.opacity = 0.0f;
     
-    self.deleteButton.hidden = YES;
-    
-//    self.layer.shouldRasterize = YES;
+    // Required to make cells look good when wobbling (delete)
+    self.layer.shouldRasterize = YES;
 }
 
 
@@ -113,8 +113,8 @@
     float stopAngle = -startAngle;
     
     // Setup animation
-    quiverAnim.fromValue = [NSNumber numberWithFloat:startAngle];
-    quiverAnim.toValue = [NSNumber numberWithFloat: 3 * stopAngle];
+    quiverAnim.fromValue = [NSNumber numberWithFloat: startAngle];
+    quiverAnim.toValue = [NSNumber numberWithFloat: stopAngle];
     quiverAnim.autoreverses = YES;
     quiverAnim.duration = 0.2;
     quiverAnim.repeatCount = HUGE_VALF;
@@ -129,11 +129,19 @@
                  forKey: @"wobbling"];
 }
 
+
 - (void) stopWobbling
 {
     // Remove the animation from the layer
     CALayer *layer = self.layer;
     [layer removeAnimationForKey: @"wobbling"];
+}
+
+
+- (void) prepareForReuse
+{
+    [self stopWobbling];
+    self.imageView.image = nil;
 }
 
 @end

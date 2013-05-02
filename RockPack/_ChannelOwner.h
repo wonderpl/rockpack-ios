@@ -56,16 +56,16 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *channels;
+@property (nonatomic, strong) NSOrderedSet *channels;
 
-- (NSMutableSet*)channelsSet;
-
-
+- (NSMutableOrderedSet*)channelsSet;
 
 
-@property (nonatomic, strong) NSSet *subscriptions;
 
-- (NSMutableSet*)subscriptionsSet;
+
+@property (nonatomic, strong) NSOrderedSet *subscriptions;
+
+- (NSMutableOrderedSet*)subscriptionsSet;
 
 
 
@@ -75,13 +75,13 @@ extern const struct ChannelOwnerFetchedProperties {
 
 @interface _ChannelOwner (CoreDataGeneratedAccessors)
 
-- (void)addChannels:(NSSet*)value_;
-- (void)removeChannels:(NSSet*)value_;
+- (void)addChannels:(NSOrderedSet*)value_;
+- (void)removeChannels:(NSOrderedSet*)value_;
 - (void)addChannelsObject:(Channel*)value_;
 - (void)removeChannelsObject:(Channel*)value_;
 
-- (void)addSubscriptions:(NSSet*)value_;
-- (void)removeSubscriptions:(NSSet*)value_;
+- (void)addSubscriptions:(NSOrderedSet*)value_;
+- (void)removeSubscriptions:(NSOrderedSet*)value_;
 - (void)addSubscriptionsObject:(Channel*)value_;
 - (void)removeSubscriptionsObject:(Channel*)value_;
 
@@ -103,13 +103,13 @@ extern const struct ChannelOwnerFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveChannels;
-- (void)setPrimitiveChannels:(NSMutableSet*)value;
+- (NSMutableOrderedSet*)primitiveChannels;
+- (void)setPrimitiveChannels:(NSMutableOrderedSet*)value;
 
 
 
-- (NSMutableSet*)primitiveSubscriptions;
-- (void)setPrimitiveSubscriptions:(NSMutableSet*)value;
+- (NSMutableOrderedSet*)primitiveSubscriptions;
+- (void)setPrimitiveSubscriptions:(NSMutableOrderedSet*)value;
 
 
 @end

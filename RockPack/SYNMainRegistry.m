@@ -35,13 +35,16 @@
     if (!dictionary || ![dictionary isKindOfClass: [NSDictionary class]])
         return NO;
     
+    // dictionary also contains the set of user channels
+    
     User* newUser = [User instanceFromDictionary: dictionary
-                       usingManagedObjectContext: importManagedObjectContext];
+                       usingManagedObjectContext: importManagedObjectContext
+                             ignoringObjectTypes: kIgnoreNothing];
     
     if(!newUser)
         return NO;
     
-    newUser.current = @(YES);
+    newUser.currentValue = YES;
     
     BOOL saveResult = [self saveImportContext];
     if(!saveResult)
@@ -75,13 +78,20 @@
     
     for (NSDictionary* subscriptionChannel in itemsArray)
     {
-        Channel* channel = [Channel subscriberInstanceFromDictionary: subscriptionChannel
-                                           usingManagedObjectContext: appDelegate.mainManagedObjectContext
-                                                           andViewId: kProfileViewId];
         
-        if (!channel) continue;
+        // must use the main context so as to be able to link it with the channel owner
         
-        [currentUser addSubscriptionsObject: channel];
+        Channel* channel = [Channel instanceFromDictionary:subscriptionChannel
+                                 usingManagedObjectContext:currentUser.managedObjectContext
+                                       ignoringObjectTypes:kIgnoreNothing
+                                                 andViewId:kProfileViewId];
+        
+        if (!channel)
+            continue;
+        
+        channel.subscribedByUserValue = YES;
+        
+        [currentUser.subscriptionsSet addObject:channel];
         
     }
     
@@ -257,7 +267,7 @@
 
 
 - (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
-                                   byAppending: (BOOL) append {
+                                     byAppending: (BOOL) append {
     
     
     // == Check for Validity == //
