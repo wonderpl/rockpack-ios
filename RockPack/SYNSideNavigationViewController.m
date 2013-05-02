@@ -174,7 +174,7 @@ typedef enum {
         }
         
         
-        NSArray* itemsArray = [responseDictionary objectForKey:@"items"];
+        NSArray* itemsArray = (NSArray*)[notificationsDictionary objectForKey:@"items"];
         if(!itemsArray)
         {
             // TODO: handle erro in parsing items
@@ -190,7 +190,7 @@ typedef enum {
             
             SYNRockpackNotification* notification = [SYNRockpackNotification notificationWithData:itemData];
             
-            if(notification.read)
+            if(!notification.read)
                 self.unreadNotifications++;
             
             [self.notifications addObject:notification];

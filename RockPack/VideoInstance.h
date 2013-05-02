@@ -9,9 +9,7 @@
                                  andViewId: (NSString *) viewId;
 
 +(VideoInstance*) instanceFromVideoInstance:(VideoInstance*)existingInstance
-                                 forChannel:(Channel*)channel
-                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-                                  andViewId: (NSString *) viewId;
+                  usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 
 - (NSNumber *) daysAgo;
 - (NSDate *) dateAddedIgnoringTime;
