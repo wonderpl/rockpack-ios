@@ -406,6 +406,13 @@
                                                                                                         [self turnOnButton:self.backButton];
                                                                                                         [self turnOnButton:self.confirmButton];
                                                                                                         
+                                                                                                        self.userNameInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
+                                                                                                        self.passwordInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
+                                                                                                        [UIView animateWithDuration:4*kLoginAnimationTransitionDuration delay:kLoginAnimationTransitionDuration options:UIViewAnimationCurveEaseIn animations:^{
+                                                                                                            self.userNameInputField.backgroundColor = [UIColor clearColor];
+                                                                                                            self.passwordInputField.backgroundColor = [UIColor clearColor];
+                                                                                                        } completion:nil];
+                                                                                                        
                                                                                                     }];
                                                        
                                                        
@@ -415,23 +422,29 @@
                                                        
                                                        NSDictionary* errors = errorDictionary [@"error"];
                                                        
-//                                                       if (errors)
-//                                                       {
-//                                                           [self placeErrorLabel: @"Username could be incorrect"
-//                                                                      NextToView: userNameInputField];
-//                                                           
-//                                                           [self placeErrorLabel: @"Password could be incorrect"
-//                                                                      NextToView: passwordInputField];
-//                                                       }
+                                                       if (errors)
+                                                       {
+                                                           self.userNameInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
+                                                           self.passwordInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
+                                                       }
                                                        [self.activityIndicator stopAnimating];
                                                        [self turnOnButton:self.backButton];
                                                        [self turnOnButton:self.confirmButton];
+                                                       
+                                                       self.userNameInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
+                                                       self.passwordInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
+                                                       [UIView animateWithDuration:4*kLoginAnimationTransitionDuration delay:kLoginAnimationTransitionDuration options:UIViewAnimationCurveEaseIn animations:^{
+                                                           self.userNameInputField.backgroundColor = [UIColor clearColor];
+                                                           self.passwordInputField.backgroundColor = [UIColor clearColor];
+                                                       } completion:nil];
                                                    }];
 
             break;
         }
         case kLoginScreenStateRegisterStepTwo:
         {
+            [self.registeringUserEmailInputField resignFirstResponder];
+            [self.registeringUserPasswordInputField resignFirstResponder];
             self.activityIndicator.center = self.confirmButton.center;
             self.activityIndicator.hidden = NO;
             [self.activityIndicator startAnimating];
