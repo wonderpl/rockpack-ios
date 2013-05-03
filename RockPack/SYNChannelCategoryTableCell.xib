@@ -45,21 +45,19 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{245, 44}</string>
 								<reference key="NSSuperview" ref="444759109"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="559075809"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">SubCategorySlide~iphone.png</string>
-								</object>
 							</object>
 							<object class="IBUILabel" id="559075809">
 								<reference key="NSNextResponder" ref="444759109"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{16, 15}, {215, 21}}</string>
 								<reference key="NSSuperview" ref="444759109"/>
+								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -95,6 +93,7 @@
 						</array>
 						<string key="NSFrameSize">{245, 43}</string>
 						<reference key="NSSuperview" ref="802185896"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="915969651"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -110,6 +109,7 @@
 				</array>
 				<string key="NSFrameSize">{245, 44}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="444759109"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -167,14 +167,13 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">3</int>
-						<reference key="object" ref="915969651"/>
-						<array class="NSMutableArray" key="children"/>
+						<int key="objectID">9</int>
+						<reference key="object" ref="559075809"/>
 						<reference key="parent" ref="802185896"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">9</int>
-						<reference key="object" ref="559075809"/>
+						<int key="objectID">3</int>
+						<reference key="object" ref="915969651"/>
 						<reference key="parent" ref="802185896"/>
 					</object>
 				</array>
@@ -194,15 +193,36 @@
 			<nil key="sourceID"/>
 			<int key="maxID">11</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">SYNChannelCategoryTableCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="backgroundImage">UIImageView</string>
+						<string key="titleLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="backgroundImage">
+							<string key="name">backgroundImage</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="titleLabel">
+							<string key="name">titleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNChannelCategoryTableCell.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">SubCategorySlide~iphone.png</string>
-			<string key="NS.object.0">{245, 44}</string>
-		</object>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

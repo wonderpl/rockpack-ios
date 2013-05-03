@@ -21,15 +21,25 @@
 @property NSMutableArray* transientDatasource;
 @property NSIndexPath* lastSelectedIndexpath;
 @property NSMutableDictionary* headerRegister;
+@property (strong, nonatomic) IBOutlet UIImageView *shadowImageView;
 
 @end
 
 @implementation SYNChannelCategoryTableViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+-(id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithStyle:style];
+    self = [super initWithCoder:aDecoder];
     if (self) {
+        _headerRegister = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
         _headerRegister = [NSMutableDictionary dictionary];
     }
     return self;
@@ -54,7 +64,6 @@
     
     
     [self loadCategories];
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"CategorySlideBackground"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -229,13 +238,13 @@
 
 -(void)pressedHeader:(UIButton*)header;
 {
-    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:header.tag];
+    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(header.tag)];
     headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideHighlighted"];
 }
 
 -(void)releasedHeader:(UIButton*)header
 {
-    SYNChannelCategoryTableHeader* headerView = (SYNChannelCategoryTableHeader*)[self.tableView headerViewForSection:header.tag];
+    SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(header.tag)];
     NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:header.tag];
     NSArray* subCategories = [sectionDictionary objectForKey:kSubCategoriesKey];
     if(subCategories)
@@ -313,7 +322,7 @@
     
     SYNChannelCategoryTableHeader* headerView = [self.headerRegister objectForKey:@(section)];
     [UIView transitionWithView:headerView duration:0.25 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-        headerView.titleLabel.textColor = [UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f];
+        headerView.titleLabel.textColor = [UIColor whiteColor];
         headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
         headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
