@@ -57,8 +57,16 @@
     }
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage* backButtonImage = [UIImage imageNamed:@"ButtonAccountBackDefault.png"];
-    [backButton setImage:backButtonImage forState:UIControlStateNormal];
+    UIImage* backButtonImage = [UIImage imageNamed: @"ButtonAccountBackDefault.png"];
+    UIImage* backButtonHighlightedImage = [UIImage imageNamed: @"ButtonAccountBackHighlighted.png"];
+    
+    
+    [backButton setImage: backButtonImage
+                forState: UIControlStateNormal];
+    
+    [backButton setImage: backButtonHighlightedImage
+                forState: UIControlStateHighlighted];
+    
     [backButton addTarget:self action:@selector(didTapBackButton:) forControlEvents:UIControlEventTouchUpInside];
     backButton.frame = CGRectMake(0.0, 0.0, backButtonImage.size.width, backButtonImage.size.height);
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];

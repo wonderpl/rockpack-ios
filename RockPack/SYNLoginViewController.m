@@ -782,6 +782,31 @@
 -(IBAction)sendEmailButtonPressed:(id)sender
 {
     
+    [self.appDelegate.oAuthNetworkEngine doRequestPasswordResetForUsername:self.userNameInputField.text completionHandler:^(NSDictionary * completionInfo) {
+        if ([completionInfo valueForKey:@"error"])
+        {
+            [self placeErrorLabel: @"User unknown"
+                       NextToView: self.userNameInputField];
+            
+        }
+        else
+        {
+            [[[UIAlertView alloc] initWithTitle: @"Password Reset"
+                                        message: @"Check your email for instructions"
+                                       delegate: nil
+                              cancelButtonTitle: @"OK"
+                              otherButtonTitles: nil] show];
+            
+        }
+    } errorHandler:^(NSError *error) {
+        [[[UIAlertView alloc] initWithTitle: @"Password Reset"
+                                    message: @"Error, request failed..."
+                                   delegate: nil
+                          cancelButtonTitle: @"OK"
+                          otherButtonTitles: nil] show];
+        
+    }];
+
     
     
 }

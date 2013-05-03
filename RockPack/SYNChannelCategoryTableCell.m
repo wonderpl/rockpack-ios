@@ -31,15 +31,30 @@
 
     if(selected)
     {
-        self.titleLabel.textColor = [UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f];
-        self.backgroundImage.image = [UIImage imageNamed:@"SubCategorySlideSelected"];
+        self.titleLabel.textColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlideSelected"]];
     }
     else
     {
-        self.titleLabel.textColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
-        self.backgroundImage.image = [UIImage imageNamed:@"SubCategorySlide"];
+        self.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
+        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
     }
     
+}
+
+-(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+    if(highlighted)
+    {
+        self.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
+        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlideHighlighted"]];
+    }
+    else
+    {
+        self.titleLabel.textColor = [UIColor colorWithRed:14.0f/255.0f green:67.0f/255.0f blue:86.0f/255.0f alpha:1.0f];
+        self.backgroundImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"SubCategorySlide"]];
+    }
 }
 
 @end
