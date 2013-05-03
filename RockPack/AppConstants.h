@@ -51,7 +51,7 @@
 #define kAPISecureLogin             @"/ws/login/"
 #define kAPISecureExternalLogin     @"/ws/login/external/"
 #define kAPISecureRegister          @"/ws/register/"
-#define kAPIPasswordReset           @"/ws/reset-password/"
+#define kAPIPasswordReset           @"/ws/reset-password/"                      /* POST */
 
 
 // Search according to term, currently a wrapper around YouTube

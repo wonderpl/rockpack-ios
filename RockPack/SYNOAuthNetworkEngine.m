@@ -256,11 +256,11 @@
     [self enqueueOperation: networkOperation];
 }
 
--(void) doRequestPasswordResetForUsername:(NSString*) username
-                        completionHandler:(MKNKJSONCompleteBlock) completionBlock
+-(void) doRequestPasswordResetForUsername: (NSString*) username
+                        completionHandler: (MKNKJSONCompleteBlock) completionBlock
                              errorHandler: (MKNKErrorBlock) errorBlock
 {
-    NSDictionary* requestData = @{@"username":username};
+    NSDictionary* requestData = @{@"username" : username};
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIPasswordReset
                                                                                                        params: requestData
                                                                                                    httpMethod: @"POST"
@@ -272,7 +272,8 @@
                          password: @""
                         basicAuth: YES];
     
-    [networkOperation addJSONCompletionHandler:completionBlock errorHandler:errorBlock];
+    [networkOperation addJSONCompletionHandler: completionBlock
+                                  errorHandler :errorBlock];
     
     [self enqueueOperation: networkOperation];
 
