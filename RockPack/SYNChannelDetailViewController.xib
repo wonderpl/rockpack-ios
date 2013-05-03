@@ -277,11 +277,11 @@
 										<nil key="IBUIHighlightedColor"/>
 										<string key="IBUIShadowOffset">{0, 0}</string>
 										<int key="IBUIBaselineAdjustment">0</int>
-										<object class="IBUIFontDescription" key="IBUIFontDescription" id="722651782">
+										<object class="IBUIFontDescription" key="IBUIFontDescription" id="1049849674">
 											<int key="type">2</int>
 											<double key="pointSize">18</double>
 										</object>
-										<object class="NSFont" key="IBUIFont" id="547770185">
+										<object class="NSFont" key="IBUIFont" id="162430573">
 											<string key="NSName">Helvetica-Bold</string>
 											<double key="NSSize">18</double>
 											<int key="NSfFlags">16</int>
@@ -389,8 +389,8 @@
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">ButtonCover.png</string>
 										</object>
-										<reference key="IBUIFontDescription" ref="722651782"/>
-										<reference key="IBUIFont" ref="547770185"/>
+										<reference key="IBUIFontDescription" ref="1049849674"/>
+										<reference key="IBUIFont" ref="162430573"/>
 									</object>
 									<object class="IBUIButton" id="334620750">
 										<reference key="NSNextResponder" ref="574818441"/>
@@ -417,8 +417,8 @@
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">ButtonCategory.png</string>
 										</object>
-										<reference key="IBUIFontDescription" ref="722651782"/>
-										<reference key="IBUIFont" ref="547770185"/>
+										<reference key="IBUIFontDescription" ref="1049849674"/>
+										<reference key="IBUIFont" ref="162430573"/>
 									</object>
 									<object class="IBUIView" id="260102133">
 										<reference key="NSNextResponder" ref="574818441"/>
