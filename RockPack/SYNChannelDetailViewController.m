@@ -22,7 +22,7 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNChannelDetailViewController ()
+@interface SYNChannelDetailViewController () <UITextViewDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -106,7 +106,6 @@
                                                                      green: 0.909
                                                                       blue: 0.909
                                                                      alpha: 1.0f];
-    
     // Set delegate so that we can respond to events
     self.channelTitleTextView.delegate = self;
     
@@ -155,8 +154,7 @@
     [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                                      placeHolderImage: nil];
     
-    // Store the initial content offset, so that we can fade out the control if the user scrolls away from this
-    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+
     
     // Create categories tab, but make invisible (alpha = 0) for now
     self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] init];
@@ -171,11 +169,17 @@
     
     if (self.mode == kChannelDetailsModeDisplay)
     {
+        // Store the initial content offset, so that we can fade out the control if the user scrolls away from this
+        self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
         self.addToChannelButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
     else
     {
+        // Store the initial content offset, so that we can fade out the control if the user scrolls away from this
+        CGPoint offset = self.videoThumbnailCollectionView.contentOffset;
+        offset.y += 40;
+        self.originalContentOffset = offset;
         self.addToChannelButton.hidden = YES;
         self.createChannelButton.hidden = NO;
         
@@ -621,6 +625,21 @@
     self.displayControlsView.alpha = (visible) ? 1.0f : 0.0f;
     self.editControlsView.alpha = (visible) ? 0.0f : 1.0f;
     self.coverChooserMasterView.hidden = (visible) ? TRUE : FALSE;
+    
+    if (visible)
+    {
+        // Move the video collections to the standard place
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY, 0, 0, 0);
+        
+        self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY));
+    }
+    else
+    {
+        // slide up the video collection view a bit to show the choose category and show covers buttons
+        self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY - 40.0f, 0, 0, 0);
+        
+        self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY - 40.0f));
+    }
 }
 
 
@@ -822,7 +841,7 @@
                                                             DebugLog(@"%@", [error debugDescription]);
                                                         }];
 
-        self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY +
+        self.originalContentOffset = CGPointMake (0, kChannelCreationCollectionViewOffsetY - 40 +
                                                      kChannelCreationCategoryAdditionalOffsetY);
         
         [UIView animateWithDuration: kChannelEditModeAnimationDuration
@@ -831,10 +850,10 @@
                              self.coverChooserMasterView.alpha = 1.0f;
                              
                              // slide down the video collection view a bit
-                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
+                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY - 40 +
                                                                                                kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
                              
-                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
+                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY - 40 +
                                                                                                  kChannelCreationCategoryAdditionalOffsetY));
                          }
                          completion: nil];
@@ -867,10 +886,10 @@
                              self.categoriesTabViewController.view.alpha = 1.0f;
                              
                              // slide down the video collection view a bit
-                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY +
+                             self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake(kChannelCreationCollectionViewOffsetY - 40 +
                                                                                                kChannelCreationCategoryAdditionalOffsetY, 0, 0, 0);
                              
-                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY +
+                             self.videoThumbnailCollectionView.contentOffset = CGPointMake (0, -(kChannelCreationCollectionViewOffsetY - 40 +
                                                                                                  kChannelCreationCategoryAdditionalOffsetY));
                          }
                          completion: nil];
