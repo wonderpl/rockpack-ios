@@ -264,7 +264,7 @@
     
     for (SYNCategoryItemView* tab in [self.secondaryTabsView subviews])
     {
-        [tab resizeForOrientation:orientation withHeight:self.secondaryTabsView.frame.size.height -2.0f];
+        [tab resizeForOrientation:orientation withHeight:self.secondaryTabsView.frame.size.height -1.0f];
         CGRect tabFrame = tab.frame;
         tabFrame.origin.x = nextOrigin;
         tab.frame = tabFrame;

@@ -104,9 +104,9 @@
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = isIPhone?CGSizeMake(158.0f , 86.0f):CGSizeMake(256.0f , 179.0f);
-    layout.minimumInteritemSpacing = 0.0f;
-    layout.minimumLineSpacing = isIPhone ? 4.0f : 0.0f;
+    layout.itemSize = isIPhone?CGSizeMake(158.0f , 86.0f):CGSizeMake(249.0f , 141.0f);
+    layout.minimumInteritemSpacing = isIPhone ? 0.0f : 6.0f;
+    layout.minimumLineSpacing = isIPhone ? 4.0f : 6.0f;
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
@@ -114,6 +114,10 @@
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, 2.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([[SYNDeviceManager sharedInstance] currentScreenHeight] - 110.0f, 0.0f, 0.0f, 0.0f);
+    }
+    else
+    {
+        layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
     }
     
     // Regster video thumbnail cell
@@ -167,36 +171,33 @@
     }
     
     // Set text on add cover and select category buttons
-    [self.addCoverButton setTitle: @"ADD A COVER"
-                         forState: UIControlStateNormal];
+    NSString *coverString = @"ADD A COVER";
     
-    [self.addCoverButton setTitleColor: [UIColor blackColor]
-                              forState: UIControlStateNormal];
-    
-    self.addCoverButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
+                                                                                        attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                              NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+
+    [self.addCoverButton setAttributedTitle: attributedCoverString
+                                   forState: UIControlStateNormal];
     
     // Now do fancy attributed string
-    NSString *originalString = @"SELECT A CATEGORY (Optional)";
+    NSString *categoryString = @"SELECT A CATEGORY (Optional)";
     
-    NSMutableAttributedString* repaintedString = [[NSMutableAttributedString alloc] initWithString: originalString];
+    NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
+                                                                                                 attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                                       NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
     
-    NSRange leftParentheseRange = [originalString rangeOfString: @"("];
-    NSRange rightParentheseRange = [originalString rangeOfString: @")"];
+    NSRange leftParentheseRange = [categoryString rangeOfString: @"("];
+    NSRange rightParentheseRange = [categoryString rangeOfString: @")"];
     
-    NSRange numberRange = NSMakeRange(leftParentheseRange.location+1, rightParentheseRange.location - (leftParentheseRange.location+1));
-    
-    [repaintedString addAttribute: NSForegroundColorAttributeName
-                            value: [UIColor grayColor]
-                            range: numberRange];
-    
+    NSRange numberRange = NSMakeRange(leftParentheseRange.location, rightParentheseRange.location - (leftParentheseRange.location) + 1);
+
+    [attributedCategoryString addAttributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 187.0f/255.0f green: 187.0f/255.0f blue: 187.0f/255.0f alpha: 1.0f], NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
+                                      range: numberRange];
+ 
     // Set text on add cover and select category buttons
-    [self.selectCategoryButton setAttributedTitle: repaintedString
+    [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                          forState: UIControlStateNormal];
-    
-    [self.selectCategoryButton setTitleColor: [UIColor blackColor]
-                                    forState: UIControlStateNormal];
-    
-    self.selectCategoryButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
 }
 
 
@@ -261,6 +262,17 @@
                                                   object: self.channel.managedObjectContext];
     [super viewWillDisappear: animated];
 }
+
+
+- (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                 duration: (NSTimeInterval) duration
+{
+    [super willRotateToInterfaceOrientation: toInterfaceOrientation
+                                   duration: duration];
+
+    [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
+}
+
 
 - (void) mainContextDataChanged: (NSNotification*) notification
 {

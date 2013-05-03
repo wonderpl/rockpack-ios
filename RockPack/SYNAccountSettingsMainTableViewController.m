@@ -55,7 +55,7 @@
         
         user = appDelegate.currentUser;
         
-        self.title = @"Account Settings";
+        self.title = @"ACCOUNT SETTINGS";
         
     }
     return self;
