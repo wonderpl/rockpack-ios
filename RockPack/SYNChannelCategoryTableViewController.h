@@ -23,7 +23,7 @@
 
 @end
 
-@interface SYNChannelCategoryTableViewController : UIViewController
+@interface SYNChannelCategoryTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) id<SYNChannelCategoryTableViewDelegate> categoryTableControllerDelegate;
 
