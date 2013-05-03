@@ -266,6 +266,17 @@
     [super viewWillDisappear: animated];
 }
 
+
+- (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                 duration: (NSTimeInterval) duration
+{
+    [super willRotateToInterfaceOrientation: toInterfaceOrientation
+                                   duration: duration];
+
+    [self.self.videoThumbnailCollectionView.collectionViewLayout invalidateLayout];
+}
+
+
 - (void) mainContextDataChanged: (NSNotification*) notification
 {
     if (!notification)
