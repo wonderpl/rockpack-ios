@@ -1256,6 +1256,13 @@
     
     return YES;
 }
+//
+//- (BOOL) textFieldShouldReturn: (UITextField *) textField
+//{
+//    [[self.view viewWithTag: textField.tag + 1] becomeFirstResponder];
+//    
+//    return YES;
+//}
 
 
 #pragma mark - CoreData Access

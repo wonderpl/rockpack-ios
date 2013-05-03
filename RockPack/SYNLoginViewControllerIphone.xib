@@ -247,6 +247,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUITag">1</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
@@ -281,6 +282,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUITag">2</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
@@ -564,6 +566,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUITag">100</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
@@ -593,6 +596,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUITag">101</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
@@ -622,6 +626,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUITag">103</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
@@ -651,6 +656,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUITag">104</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
@@ -680,6 +686,7 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUITag">102</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
@@ -807,7 +814,7 @@
 						<string key="NSFrame">{{247, 15}, {58, 58}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="257506740"/>
+						<reference key="NSNextKeyView" ref="31982143"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -862,6 +869,7 @@
 								<string key="NSFrame">{{166, 11}, {154, 44}}</string>
 								<reference key="NSSuperview" ref="179032073"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -922,6 +930,7 @@
 						<string key="NSFrame">{{266, 34}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="257506740"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1905,6 +1914,70 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNLoginViewControllerIphone</string>
 					<string key="superclassName">SYNLoginViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="backbuttonTapped:">id</string>
+						<string key="cancelTapped:">id</string>
+						<string key="confirmTapped:">id</string>
+						<string key="facebookTapped:">id</string>
+						<string key="forgotPasswordTapped:">id</string>
+						<string key="loginTapped:">id</string>
+						<string key="nextTapped:">id</string>
+						<string key="photoButtonTapped:">id</string>
+						<string key="privacyPolicyTapped:">id</string>
+						<string key="signupTapped:">id</string>
+						<string key="termsTapped:">id</string>
+						<string key="textfieldDidChange:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="backbuttonTapped:">
+							<string key="name">backbuttonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="cancelTapped:">
+							<string key="name">cancelTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="confirmTapped:">
+							<string key="name">confirmTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="facebookTapped:">
+							<string key="name">facebookTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="forgotPasswordTapped:">
+							<string key="name">forgotPasswordTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="loginTapped:">
+							<string key="name">loginTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="nextTapped:">
+							<string key="name">nextTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="photoButtonTapped:">
+							<string key="name">photoButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="privacyPolicyTapped:">
+							<string key="name">privacyPolicyTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="signupTapped:">
+							<string key="name">signupTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="termsTapped:">
+							<string key="name">termsTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="textfieldDidChange:">
+							<string key="name">textfieldDidChange:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backButton">UIButton</string>
 						<string key="cancelButton">UIButton</string>
