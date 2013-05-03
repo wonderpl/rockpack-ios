@@ -231,7 +231,7 @@
 {
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        return CGSizeMake(310,251);
+        return CGSizeMake(310,221);
     }
     else if([[SYNDeviceManager sharedInstance] isLandscape])
     {

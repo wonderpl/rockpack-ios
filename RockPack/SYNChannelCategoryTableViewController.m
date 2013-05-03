@@ -152,6 +152,14 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath isEqual:self.lastSelectedIndexpath])
+    {
+        [cell setSelected:YES];
+    }
+}
+
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSDictionary* dictionary = [self.transientDatasource objectAtIndex:section];
@@ -166,7 +174,7 @@
     {
         header.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
         header.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
-        header.titleLabel.textColor = [UIColor colorWithRed:32.0f/255.0f green:195.0f/255.0f blue:226.0f/255.0f alpha:1.0f];
+        header.titleLabel.textColor = [UIColor whiteColor];
         header.titleLabel.shadowColor = [UIColor colorWithWhite:1.0f alpha:0.15f];
     }
     else
@@ -232,7 +240,10 @@
     if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
     {
         [self.categoryTableControllerDelegate categoryTableController:self didSelectSubCategoryWithId:subCategory.uniqueId categoryTitle:subCategory.category.name subCategoryTitle:subCategory.name];
-    }}
+    }
+    self.lastSelectedIndexpath = indexPath;
+}
+
 
 #pragma mark - Table header tap callback
 
