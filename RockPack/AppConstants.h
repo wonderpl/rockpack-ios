@@ -326,7 +326,7 @@ typedef enum {
 
 #define kChannelCreationCollectionViewOffsetY           540.0f
 #define kChannelCreationCategoryTabOffsetY              444.0f
-#define kChannelCreationCategoryAdditionalOffsetY       91.0f
+#define kChannelCreationCategoryAdditionalOffsetY       51.0f
 
 // Notifications
 
