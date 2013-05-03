@@ -104,9 +104,9 @@
     
     // Add a custom flow layout to our thumbail collection view (with the right size and spacing)
     LXReorderableCollectionViewFlowLayout *layout = [[LXReorderableCollectionViewFlowLayout alloc] init];
-    layout.itemSize = isIPhone?CGSizeMake(158.0f , 86.0f):CGSizeMake(256.0f , 179.0f);
-    layout.minimumInteritemSpacing = 0.0f;
-    layout.minimumLineSpacing = isIPhone ? 4.0f : 0.0f;
+    layout.itemSize = isIPhone?CGSizeMake(158.0f , 86.0f):CGSizeMake(249.0f , 141.0f);
+    layout.minimumInteritemSpacing = isIPhone ? 0.0f : 6.0f;
+    layout.minimumLineSpacing = isIPhone ? 4.0f : 6.0f;
     
     self.videoThumbnailCollectionView.collectionViewLayout = layout;
     
@@ -114,6 +114,10 @@
     {
         layout.sectionInset = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, 2.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([[SYNDeviceManager sharedInstance] currentScreenHeight] - 110.0f, 0.0f, 0.0f, 0.0f);
+    }
+    else
+    {
+        layout.sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 5.0f);
     }
     
     // Regster video thumbnail cell

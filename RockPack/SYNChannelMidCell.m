@@ -27,6 +27,7 @@
     
     // Required to make cells look good when wobbling (delete)
     self.layer.shouldRasterize = YES;
+    self.layer.rasterizationScale = UIScreen.mainScreen.scale;
 }
 
 
