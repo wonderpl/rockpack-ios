@@ -35,6 +35,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+
+@property (strong, nonatomic) NSDateFormatter * dateFormatter;
 @end
 
 @implementation SYNLoginViewControllerIphone 
@@ -265,6 +267,7 @@
 
 }
 - (IBAction)photoButtonTapped:(id)sender {
+    
 }
 
 - (IBAction)backbuttonTapped:(id)sender {
@@ -427,7 +430,59 @@
 
             break;
         }
+        case kLoginScreenStateRegisterStepTwo:
+        {
+            self.activityIndicator.center = self.confirmButton.center;
+            self.activityIndicator.hidden = NO;
+            [self.activityIndicator startAnimating];
+            [self turnOffButton:self.backButton];
+            [self turnOffButton:self.confirmButton];
+            NSDictionary* userData = @{@"username": self.registeringUserNameInputField.text,
+                                       @"password": self.registeringUserPasswordInputField.text,
+                                       @"date_of_birth": [NSString stringWithFormat:@"%@-%@-%@", self.yyyyInputField.text, self.mmInputField.text, self.ddInputField.text],
+                                       @"locale":@"en-US",
+                                       @"email": self.registeringUserEmailInputField.text};
             
+            [self.appDelegate.oAuthNetworkEngine registerUserWithData:userData
+                                               completionHandler: ^(SYNOAuth2Credential* credential) {
+                                                   
+                                                   // Case where the user registers
+                                                   
+                                                   [self.appDelegate.oAuthNetworkEngine userInformationFromCredentials: credential
+                                                                                                completionHandler: ^(NSDictionary* dictionary) {
+                                                                                                    
+                                                                                                    
+                                                                                                    [self checkAndSaveRegisteredUser:credential];
+                                                                                                    
+                                                                                                    [self.activityIndicator stopAnimating];
+                                                                                                    
+                                                                                                    [self completeLoginProcess: credential];
+                                                                                                    
+                                                                                                } errorHandler:^(NSDictionary* errorDictionary) {
+                                                                                                    [self.activityIndicator stopAnimating];
+                                                                                                    [self turnOnButton:self.backButton];
+                                                                                                    [self turnOnButton:self.confirmButton];
+                                                                                                }];
+                                                   
+                                                   
+                                                   
+                                               } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                   
+                                                   NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
+                                                   
+                                                   if (formErrors)
+                                                   {
+                                                       
+                                                   }
+                                                   
+                                                   [self.activityIndicator stopAnimating];
+                                                   [self turnOnButton:self.backButton];
+                                                   [self turnOnButton:self.confirmButton];
+                                                   
+                                               }];
+
+            break;
+        }
         case kLoginScreenStatePasswordRetrieve:
         {
             break;
