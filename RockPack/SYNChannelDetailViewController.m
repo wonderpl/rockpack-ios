@@ -1011,7 +1011,7 @@
 // Try and force everything to uppercase
 - (BOOL) textView: (UITextView *) textView
          shouldChangeTextInRange: (NSRange) range
-  replacementText: (NSString *) text
+         replacementText: (NSString *) text
 {
     // Stop editing when the return key is pressed
     if ([text isEqualToString: @"\n"])
