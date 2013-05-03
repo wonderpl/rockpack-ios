@@ -174,33 +174,41 @@
     [self.addCoverButton setTitle: @"ADD A COVER"
                          forState: UIControlStateNormal];
     
-    [self.addCoverButton setTitleColor: [UIColor blackColor]
+    [self.addCoverButton setTitleColor:  [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f]
                               forState: UIControlStateNormal];
     
-    self.addCoverButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    [self.addCoverButton setTitleColor:  [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f]
+                              forState: UIControlStateHighlighted];
+    
+    self.addCoverButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
     
     // Now do fancy attributed string
     NSString *originalString = @"SELECT A CATEGORY (Optional)";
     
-    NSMutableAttributedString* repaintedString = [[NSMutableAttributedString alloc] initWithString: originalString];
+    NSMutableAttributedString* repaintedString = [[NSMutableAttributedString alloc] initWithString: originalString
+                                                                                        attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                                                      NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
     
     NSRange leftParentheseRange = [originalString rangeOfString: @"("];
     NSRange rightParentheseRange = [originalString rangeOfString: @")"];
     
-    NSRange numberRange = NSMakeRange(leftParentheseRange.location+1, rightParentheseRange.location - (leftParentheseRange.location+1));
-    
-    [repaintedString addAttribute: NSForegroundColorAttributeName
-                            value: [UIColor grayColor]
-                            range: numberRange];
-    
+    NSRange numberRange = NSMakeRange(leftParentheseRange.location, rightParentheseRange.location - (leftParentheseRange.location) + 1);
+
+    [repaintedString addAttributes: @{NSForegroundColorAttributeName : [UIColor grayColor],
+                                      NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
+                             range: numberRange];
+ 
     // Set text on add cover and select category buttons
     [self.selectCategoryButton setAttributedTitle: repaintedString
                                          forState: UIControlStateNormal];
     
-    [self.selectCategoryButton setTitleColor: [UIColor blackColor]
+    [self.selectCategoryButton setTitleColor: [UIColor colorWithWhite: 232.0f/255.0f alpha: 1.0f]
                                     forState: UIControlStateNormal];
     
-    self.selectCategoryButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 17.0f];
+    [self.selectCategoryButton setTitleColor: [UIColor colorWithWhite: 232.0f/255.0f alpha: 1.0f]
+                                    forState: UIControlStateHighlighted];
+    
+    self.selectCategoryButton.titleLabel.font = [UIFont boldRockpackFontOfSize: 19.0f];
 }
 
 
