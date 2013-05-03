@@ -256,6 +256,27 @@
     [self enqueueOperation: networkOperation];
 }
 
+-(void) doRequestPasswordResetForUsername:(NSString*) username
+                        completionHandler:(MKNKJSONCompleteBlock) completionBlock
+                             errorHandler: (MKNKErrorBlock) errorBlock
+{
+    NSDictionary* requestData = @{@"username":username};
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: kAPIPasswordReset
+                                                                                                       params: requestData
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/x-www-form-urlencoded"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeURL;
+    
+    [networkOperation setUsername: kOAuth2ClientId
+                         password: @""
+                        basicAuth: YES];
+    
+    [networkOperation addJSONCompletionHandler:completionBlock errorHandler:errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+
+}
 
 #pragma mark - User Data
 

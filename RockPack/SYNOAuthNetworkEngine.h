@@ -29,6 +29,9 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                       completionHandler: (MKNKLoginCompleteBlock) completionBlock
                            errorHandler: (MKNKUserErrorBlock) errorBlock;
 
+-(void) doRequestPasswordResetForUsername:(NSString*) username
+                        completionHandler:(MKNKJSONCompleteBlock) completionBlock
+                            errorHandler: (MKNKErrorBlock) errorBlock;
 // User information
 
 - (void) userInformationFromCredentials: (SYNOAuth2Credential *) credentials

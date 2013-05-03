@@ -36,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *loginErrorLabel;
+@property (weak, nonatomic) IBOutlet UILabel *passwordResetErrorLabel;
+@property (weak, nonatomic) IBOutlet UILabel *signupErrorLabel;
 @property (strong, nonatomic) NSDateFormatter * dateFormatter;
 @end
 
@@ -116,6 +119,10 @@
     self.yyyyInputField.font = [UIFont rockpackFontOfSize:self.yyyyInputField.font.pointSize];
     self.yyyyInputField.delegate = self;
     
+    self.loginErrorLabel.font = [UIFont rockpackFontOfSize:self.loginErrorLabel.font.pointSize];
+    self.passwordResetErrorLabel.font = [UIFont rockpackFontOfSize:self.passwordResetErrorLabel.font.pointSize];
+    self.signupErrorLabel.font = [UIFont rockpackFontOfSize:self.signupErrorLabel.font.pointSize];
+    
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString:@"BY SIGNING INTO ROCKPACK, YOU AGREE TO OUR TERMS OF SERVICE AND PRIVACY POLICY"];
     [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(42, 17)];
     [termsString addAttribute: NSForegroundColorAttributeName value: [UIColor colorWithRed:(32.0/255.0) green:(195.0/255.0) blue:(226.0/255.0) alpha:(1.0)] range: NSMakeRange(64, 14)];
@@ -144,7 +151,7 @@
     
     if(facebookSession.state == FBSessionStateCreatedTokenLoaded) {
         facebookLoginIsInProgress = YES;
-        //[self doFacebookLoginAnimation];
+        [self doFacebookLoginAnimation];
     }
     
     
@@ -155,7 +162,7 @@
         
         if(!facebookLoginIsInProgress) {
             
-            //[self doFacebookLoginAnimation];
+            [self doFacebookLoginAnimation];
         }
         
         
@@ -179,12 +186,16 @@
                                                      } errorHandler: ^(NSDictionary* errorDictionary) {
                                                          
                                                          
-                                                        [self doFacebookFailedAnimation];                                                  
                                                          NSDictionary* formErrors = errorDictionary [@"form_errors"];
                                                          
                                                          if (formErrors)
                                                          {
-                                                             
+                                                             [[[UIAlertView alloc] initWithTitle: @"Facebook Login"
+                                                                                         message: NSLocalizedString(@"Could not log in through facebook", nil)
+                                                                                        delegate: nil
+                                                                               cancelButtonTitle: @"OK"
+                                                                               otherButtonTitles: nil] show];
+                                                             [self doFacebookFailedAnimation];
                                                          }
                                                      }];
     }
@@ -372,6 +383,9 @@
     [self.ddInputField resignFirstResponder];
     [self.yyyyInputField resignFirstResponder];
     [self.mmInputField resignFirstResponder];
+    [self.userNameInputField resignFirstResponder];
+    [self.passwordInputField resignFirstResponder];
+    [self.emailInputField resignFirstResponder];
     
     switch (self.loginScreenState) {
         case kLoginScreenStateLogin:
@@ -406,12 +420,7 @@
                                                                                                         [self turnOnButton:self.backButton];
                                                                                                         [self turnOnButton:self.confirmButton];
                                                                                                         
-                                                                                                        self.userNameInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
-                                                                                                        self.passwordInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
-                                                                                                        [UIView animateWithDuration:4*kLoginAnimationTransitionDuration delay:kLoginAnimationTransitionDuration options:UIViewAnimationCurveEaseIn animations:^{
-                                                                                                            self.userNameInputField.backgroundColor = [UIColor clearColor];
-                                                                                                            self.passwordInputField.backgroundColor = [UIColor clearColor];
-                                                                                                        } completion:nil];
+                                                                                                        self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
                                                                                                         
                                                                                                     }];
                                                        
@@ -424,27 +433,19 @@
                                                        
                                                        if (errors)
                                                        {
-                                                           self.userNameInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
-                                                           self.passwordInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
+                                                          self.loginErrorLabel.text = NSLocalizedString(@"CHECK USERNAME AND PASSWORD", nil);
                                                        }
                                                        [self.activityIndicator stopAnimating];
                                                        [self turnOnButton:self.backButton];
                                                        [self turnOnButton:self.confirmButton];
                                                        
-                                                       self.userNameInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
-                                                       self.passwordInputField.backgroundColor = [UIColor colorWithRed:1.0f green:0.0f blue:0.0f alpha:0.7f];
-                                                       [UIView animateWithDuration:4*kLoginAnimationTransitionDuration delay:kLoginAnimationTransitionDuration options:UIViewAnimationCurveEaseIn animations:^{
-                                                           self.userNameInputField.backgroundColor = [UIColor clearColor];
-                                                           self.passwordInputField.backgroundColor = [UIColor clearColor];
-                                                       } completion:nil];
+                                                       
                                                    }];
 
             break;
         }
         case kLoginScreenStateRegisterStepTwo:
         {
-            [self.registeringUserEmailInputField resignFirstResponder];
-            [self.registeringUserPasswordInputField resignFirstResponder];
             self.activityIndicator.center = self.confirmButton.center;
             self.activityIndicator.hidden = NO;
             [self.activityIndicator startAnimating];
@@ -482,10 +483,54 @@
                                                } errorHandler: ^(NSDictionary* errorDictionary) {
                                                    
                                                    NSDictionary* formErrors = [errorDictionary objectForKey:@"form_errors"];
-                                                   
+                                                   NSString* errorString;
+                                                   BOOL append = NO;
                                                    if (formErrors)
                                                    {
+                                                       NSArray* usernameError = [formErrors objectForKey:@"username"];
+                                                       if(usernameError)
+                                                       {
+                                                           errorString = [NSString stringWithFormat:NSLocalizedString(@"Username: %@", nil), [usernameError objectAtIndex:0]];
+                                                           append = YES;
+                                                       }
                                                        
+                                                       NSArray* emailError = [formErrors objectForKey:@"email"];
+                                                       if (emailError)
+                                                       {
+                                                           NSString* emailErrorString = [NSString stringWithFormat:NSLocalizedString(@"Email: %@", nil), [emailError objectAtIndex:0]];
+                                                           if(append)
+                                                           {
+                                                               errorString = [NSString stringWithFormat:@"%@\n%@",errorString, emailErrorString];
+                                                           }
+                                                           else
+                                                           {
+                                                               errorString = emailErrorString;
+                                                           }
+                                                       }
+                                                       
+                                                       NSArray* passwordError = [formErrors objectForKey:@"password"];
+                                                       if (passwordError)
+                                                       {
+                                                           NSString* passwordErrorString = [NSString stringWithFormat:NSLocalizedString(@"Password: %@", nil), [passwordError objectAtIndex:0]];
+                                                           if(append)
+                                                           {
+                                                               errorString = [NSString stringWithFormat:@"%@\n%@",errorString, passwordErrorString];
+                                                           }
+                                                           else
+                                                           {
+                                                               errorString = passwordErrorString;
+                                                           }
+                                                       }
+                                                                                            
+                                                       if(errorString)
+                                                       {
+                                                           self.signupErrorLabel.text = errorString;
+                                                           CGFloat width = self.signupErrorLabel.frame.size.width;
+                                                           [self.signupErrorLabel sizeToFit];
+                                                           CGRect newFrame = self.signupErrorLabel.frame;
+                                                           newFrame.size.width = width;
+                                                           self.signupErrorLabel.frame = newFrame;
+                                                       }
                                                    }
                                                    
                                                    [self.activityIndicator stopAnimating];
@@ -498,6 +543,28 @@
         }
         case kLoginScreenStatePasswordRetrieve:
         {
+            [self turnOffButton:self.backButton];
+            [self turnOffButton:self.confirmButton];
+            [self.appDelegate.oAuthNetworkEngine doRequestPasswordResetForUsername:self.emailInputField.text completionHandler:^(NSDictionary * completionInfo) {
+                if ([completionInfo valueForKey:@"error"])
+                {
+                    self.passwordResetErrorLabel.text = NSLocalizedString(@"USER UNKNOWN", nil);
+                    [self turnOnButton:self.backButton];
+                    [self turnOnButton:self.confirmButton];
+
+                }
+                else
+                {
+                    self.passwordResetErrorLabel.text = NSLocalizedString(@"CHECK YOUR EMAIL FOR INSTRUCTIONS", nil);
+                    [self turnOnButton:self.backButton];
+
+                }
+            } errorHandler:^(NSError *error) {
+                self.passwordResetErrorLabel.text = NSLocalizedString(@"REQUEST FAILED", nil);
+                [self turnOnButton:self.backButton];
+                [self turnOnButton:self.confirmButton];
+
+            }];
             break;
         }
         default:
@@ -621,6 +688,9 @@
 
 -(IBAction)textfieldDidChange:(id)sender
 {
+    self.signupErrorLabel.text = @"";
+    self.loginErrorLabel.text = @"";
+    self.passwordResetErrorLabel.text = @"";
     switch (self.loginScreenState) {
         case kLoginScreenStateLogin:
             self.confirmButton.enabled = [self validateLogin];
