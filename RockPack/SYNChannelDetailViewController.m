@@ -192,7 +192,7 @@
     
     NSRange numberRange = NSMakeRange(leftParentheseRange.location, rightParentheseRange.location - (leftParentheseRange.location) + 1);
 
-    [attributedCategoryString addAttributes: @{NSForegroundColorAttributeName : [UIColor grayColor], NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
+    [attributedCategoryString addAttributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 187.0f/255.0f green: 187.0f/255.0f blue: 187.0f/255.0f alpha: 1.0f], NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
                                       range: numberRange];
  
     // Set text on add cover and select category buttons
