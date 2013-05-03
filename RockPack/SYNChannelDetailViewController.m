@@ -7,19 +7,20 @@
 //
 
 #import "Channel.h"
-#import "ChannelOwner.h"
 #import "ChannelCover.h"
+#import "ChannelOwner.h"
+#import "SSTextView.h"
 #import "SYNCategoriesTabViewController.h"
 #import "SYNChannelDetailViewController.h"
+#import "SYNCoverThumbnailCell.h"
+#import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNVideoThumbnailRegularCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import "SYNCoverThumbnailCell.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNDeviceManager.h"
 
 @interface SYNChannelDetailViewController ()
 
@@ -37,7 +38,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *channelCoverImageView;
 @property (nonatomic, strong) IBOutlet UILabel *channelDetailsLabel;
 @property (nonatomic, strong) IBOutlet UILabel *channelOwnerLabel;
-@property (nonatomic, strong) IBOutlet UITextView *channelTitleTextView;
+@property (nonatomic, strong) IBOutlet SSTextView *channelTitleTextView;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *coverChooserMasterView;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
@@ -98,6 +99,16 @@
     
     // Needed for shadows to work
     self.channelTitleTextView.backgroundColor = [UIColor clearColor];
+
+    self.channelTitleTextView.placeholder = @"ENTER CHANNEL NAME";
+    
+    self.channelTitleTextView.placeholderTextColor = [UIColor colorWithRed: 0.909
+                                                                     green: 0.909
+                                                                      blue: 0.909
+                                                                     alpha: 1.0f];
+    
+    // Set delegate so that we can respond to events
+    self.channelTitleTextView.delegate = self;
     
     // Shadow for avatar background
     [self addShadowToLayer: self.avatarBackgroundView.layer];
@@ -993,5 +1004,40 @@
                                           }];
 
 }
+
+
+#pragma mark - UITextView delegate
+
+// Try and force everything to uppercase
+- (BOOL) textView: (UITextView *) textView
+         shouldChangeTextInRange: (NSRange) range
+         replacementText: (NSString *) text
+{
+    // Stop editing when the return key is pressed
+    if ([text isEqualToString: @"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    NSRange lowercaseCharRange = [text rangeOfCharacterFromSet: [NSCharacterSet lowercaseLetterCharacterSet]];
+    
+    if (lowercaseCharRange.location != NSNotFound)
+    {
+        textView.text = [textView.text stringByReplacingCharactersInRange: range
+                                                               withString: [text uppercaseString]];
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+// Big invisible buttong to cancel title entry
+- (IBAction) cancelTitleEntry
+{
+    [self.channelTitleTextView resignFirstResponder];
+}
+
 
 @end

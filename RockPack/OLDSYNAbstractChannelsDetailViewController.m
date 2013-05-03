@@ -710,7 +710,7 @@
 - (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
 {
     self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(256, 176);
+    self.imagePicker.cropSize = CGSizeMake(256, 256);
     self.imagePicker.delegate = self;
     self.imagePicker.imagePickerController.sourceType = sourceType;
     
