@@ -521,6 +521,7 @@
 													<reference key="IBUICollectionView" ref="186307923"/>
 													<int key="IBUIScrollDirection">1</int>
 													<string key="IBUIItemSize">{160, 121}</string>
+													<string key="IBUIFooterReferenceSize">{10, 0}</string>
 													<float key="IBUIMinimumLineSpacing">10</float>
 												</object>
 												<reference key="IBUICells" ref="0"/>
