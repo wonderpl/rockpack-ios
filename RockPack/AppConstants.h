@@ -114,7 +114,7 @@
 #define kChannelUpdateRequest       @"kChannelUpdateRequest"
 #define kChannelDeleteRequest       @"kChannelDeleteRequest"
 
-#define kRefresheComplete           @"kRefresheComplete"
+#define kRefreshComplete           @"kRefreshComplete"
 
 #define kClearAllAddedCells         @"kClearAllAddedCells"
 
