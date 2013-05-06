@@ -19,14 +19,27 @@
 @interface SYNCategoriesTabViewController ()
 
 @property (nonatomic, strong) NSString *currentTopLevelCategoryName;
+@property (nonatomic, assign) BOOL useHomeButton;
 @end
 
 
 @implementation SYNCategoriesTabViewController
 
+- (id) initWithHomeButton: (BOOL) useHomeButton
+{
+    if ((self = [super init]))
+    {
+        self.useHomeButton = useHomeButton;
+    }
+    
+    return self;
+}
+
+
 - (void) loadView
 {
-    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]];
+    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]
+                                                                           andHomeButton: self.useHomeButton];
     categoriesTabView.tapDelegate = self;
     
     self.view = categoriesTabView;
@@ -80,8 +93,8 @@
 
 #pragma mark - Orientation Change
 
--(void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
-                                         duration: (NSTimeInterval) duration
+- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                          duration: (NSTimeInterval) duration
 {
     [self.tabView refreshViewForOrientation: toInterfaceOrientation];
 }
@@ -91,21 +104,26 @@
 
 - (void) handleMainTap: (UITapGestureRecognizer *) recogniser
 {
-    if (recogniser == nil)
+    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
+    
+    if (recogniser == nil || tab.tag == 0)
     {
         // home button pressed
         [self.delegate handleMainTap: recogniser];
         
         [self.delegate handleNewTabSelectionWithId: @"all"];
-        [self.delegate handleNewTabSelectionWithName: @"All"];
+        [self.delegate handleNewTabSelectionWithName: @"OTHER"];
+        
+        if (tab.tag == 0)
+        {
+            [(SYNCategoriesTabView *)self.view hideSecondaryTabs];
+        }
         
         return;   
     }
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
-    
+
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     

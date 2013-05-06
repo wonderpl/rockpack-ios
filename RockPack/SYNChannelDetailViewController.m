@@ -157,7 +157,7 @@
 
     
     // Create categories tab, but make invisible (alpha = 0) for now
-    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] init];
+    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
     self.categoriesTabViewController.delegate = self;
     CGRect tabFrame = self.categoriesTabViewController.view.frame;
     tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;

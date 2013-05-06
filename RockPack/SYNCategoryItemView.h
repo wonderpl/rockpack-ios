@@ -24,6 +24,10 @@ typedef enum {
 @property (nonatomic, strong) UILabel* label;
 
 - (id) initWithTabItemModel: (TabItem*) tabItemModel;
+
+- (id) initWithLabel: (NSString *) label
+              andTag: (int) tag;
+
 - (void) makeHighlighted;
 - (void) makeFaded;
 - (void) makeStandard;

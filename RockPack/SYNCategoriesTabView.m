@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UIView* secondaryTabsBGView;
 @property (nonatomic, strong) UIView* secondaryTabsView;
 @property (nonatomic, weak) UIButton* homeButton;
+@property (nonatomic, assign) BOOL useHomeButton;
 
 @end
 
@@ -31,12 +32,13 @@
 
 
 - (id) initWithSize: (CGFloat) totalWidth
+      andHomeButton: (BOOL) useHomeButton;
 {
-    
     if ((self = [super init]))
     {
-        // == Tob Bar == //
+        self.useHomeButton = useHomeButton;
         
+        // == Tob Bar == //
         UIImage* mainTabsBGImage = [UIImage imageNamed: @"CategoryBar"];
         CGRect mainFrame = CGRectMake(0.0, 0.0, totalWidth, mainTabsBGImage.size.height);
         self.mainTabsView = [[UIView alloc] initWithFrame:mainFrame];
@@ -52,7 +54,6 @@
         bgMainTabsView.layer.shadowRadius = 1.0;
         
         // == Bottom Bar == //
-        
         UIImage* secondaryTabsBGImage = [UIImage imageNamed: @"SubCategoryBar"];
         CGRect secondaryFrame = CGRectMake(0.0, 0.0, totalWidth, secondaryTabsBGImage.size.height);
         self.secondaryTabsView = [[UIView alloc] initWithFrame: secondaryFrame];
@@ -70,7 +71,6 @@
         
         CGRect masterFrame = CGRectMake(0.0, 0.0, totalWidth, mainFrame.size.height + secondaryFrame.size.height);
         self.frame = masterFrame;
-        
         
         [self addSubview:self.secondaryTabsBGView];
         [self addSubview:self.secondaryTabsView];
@@ -94,31 +94,46 @@
     
     CGFloat nextOrigin = 0.0;
     
-    self.homeButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    UIImage* homeButtonImage = [UIImage imageNamed: @"IconCategoryAll"];
-    self.homeButton.frame = CGRectMake(nextOrigin, 0.0, homeButtonImage.size.width, self.mainTabsView.frame.size.height);
-    [self.homeButton setImage:homeButtonImage forState: UIControlStateNormal];
-    
-    [self.homeButton addTarget: self
-                        action: @selector(homeButtonPressed)
-              forControlEvents: UIControlEventTouchUpInside];
-    
-    [self addSubview: self.homeButton];
-    
-    nextOrigin += self.homeButton.frame.size.width;
-    
+    if (self.useHomeButton == TRUE)
+    {
+        self.homeButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        UIImage* homeButtonImage = [UIImage imageNamed: @"IconCategoryAll"];
+        self.homeButton.frame = CGRectMake(nextOrigin, 0.0, homeButtonImage.size.width, self.mainTabsView.frame.size.height);
+        [self.homeButton setImage: homeButtonImage forState: UIControlStateNormal];
+        
+        [self.homeButton addTarget: self
+                            action: @selector(homeButtonPressed)
+                  forControlEvents: UIControlEventTouchUpInside];
+        
+        [self addSubview: self.homeButton];
+    }
+    else
+    {
+        // Create a special Other tab with tag id 0
+        tab = [[SYNCategoryItemView alloc] initWithLabel: @"OTHER"
+                                                  andTag: 0];
+        
+        [self.mainTabsView addSubview: tab];
+        
+        [tab addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                           action: @selector(handleMainTap:)]];
+    }
+
+
     for (Category* category in categories)
     {
         tab = [[SYNCategoryItemView alloc] initWithTabItemModel: category];
+        
         [self.mainTabsView addSubview: tab];
         
         [tab addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                            action: @selector(handleMainTap:)]];
     }
     
-    [self addSubview:self.dividerOverlayView];
+    [self addSubview: self.dividerOverlayView];
+    
     //Layout tabs according to orientation
-    [self refreshViewForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self refreshViewForOrientation: [[UIApplication sharedApplication] statusBarOrientation]];
 }
 
 
@@ -130,6 +145,7 @@
     dividerImageView.frame = dividerFrame;
     return dividerImageView;
 }
+
 
 - (void) createSubcategoriesTab: (NSSet*) subcategories
 {
@@ -160,6 +176,7 @@
     //Layout tabs according to orientation
     [self refreshViewForOrientation: [[UIApplication sharedApplication] statusBarOrientation]];    
 }
+
 
 - (void) showSecondaryTabs
 {
@@ -201,8 +218,8 @@
 
 - (void) homeButtonPressed
 {
-    for (SYNCategoryItemView* itemView in self.mainTabsView.subviews)
-        [itemView makeFaded];
+//    for (SYNCategoryItemView* itemView in self.mainTabsView.subviews)
+//        [itemView makeFaded];
     
     [self hideSecondaryTabs];
     
@@ -246,13 +263,18 @@
     //Layout Main tabs
     
     [[self.dividerOverlayView subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
-    CGFloat nextOrigin = self.homeButton.frame.size.width;
-    [self.dividerOverlayView addSubview: [self createDividerAtOffset: nextOrigin]];
+    CGFloat nextOrigin = 0;
+    
+    if (self.useHomeButton == TRUE)
+    {
+        nextOrigin += self.homeButton.frame.size.width;
+        [self.dividerOverlayView addSubview: [self createDividerAtOffset: nextOrigin]];
+    }
     
     for (SYNCategoryItemView* tab in [self.mainTabsView subviews])
     {
-        [tab resizeForOrientation :orientation
-                        withHeight: self.mainTabsView.frame.size.height];
+        [tab resizeForOrientation: orientation
+                       withHeight: self.mainTabsView.frame.size.height];
         
         CGRect tabFrame = tab.frame;
         tabFrame.origin.x = nextOrigin;
