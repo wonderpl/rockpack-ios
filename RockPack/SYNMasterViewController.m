@@ -56,7 +56,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
-@property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
+@property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
@@ -194,7 +194,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          [splashView removeFromSuperview];
                      }];
     
-    self.navigatioContainerView.userInteractionEnabled = YES;
+    self.navigationContainerView.userInteractionEnabled = YES;
     
     
     
@@ -288,7 +288,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
     
     
-    [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
+    [self.navigationContainerView addSubview:self.sideNavigationViewController.view];
     
     
 }
@@ -597,7 +597,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
-    [self.navigatioContainerView addSubview:self.searchBoxController.view];
+    [self.navigationContainerView addSubview:self.searchBoxController.view];
     
 }
 
