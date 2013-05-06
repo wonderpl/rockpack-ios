@@ -210,6 +210,17 @@
                                          forState: UIControlStateNormal];
 }
 
+- (void) updateCategoryButtonText: (NSString *) buttonText
+{    
+    NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
+                                                                                                 attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                                       NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+    // Set text on add cover and select category buttons
+    [self.selectCategoryButton setAttributedTitle: attributedCategoryString
+                                         forState: UIControlStateNormal];
+}
+
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -908,23 +919,33 @@
                      completion: nil];
 }
 
+
+#pragma mark - Tab delegates
+
 - (BOOL) showSubcategories
 {
     return YES;
 }
 
+
+- (void) handleNewTabSelectionWithId: (NSString*) itemId
+{
+    
+}
+
+- (void) handleNewTabSelectionWithName: (NSString*) name
+{
+    [self updateCategoryButtonText: name];
+}
+
+
 - (void) handleMainTap: (UITapGestureRecognizer*) recogniser
 {
-    
+
 }
+
 
 - (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
-{
-    
-}
-
-// general
-- (void) handleNewTabSelectionWithId: (NSString*) temId
 {
     
 }

@@ -100,12 +100,15 @@
     // override with empty functiokn
 }
 
+
 - (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
     // override with emtpy function
 }
 
-
-
+- (void) handleNewTabSelectionWithName: (NSString*) name
+{
+    // override with emtpy function
+}
 
 @end

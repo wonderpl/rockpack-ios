@@ -385,6 +385,12 @@
     DebugLog(@"WARNING: Abstract method called");
 }
 
+- (void) handleNewTabSelectionWithName: (NSString*) name
+{
+    // to be implemented by child
+    DebugLog(@"WARNING: Abstract method called");
+}
+
 - (BOOL) showSubcategories
 {
     return YES;

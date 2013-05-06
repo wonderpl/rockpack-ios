@@ -592,6 +592,11 @@
                                                        }];
 }
 
+- (void) handleNewTabSelectionWithName: (NSString *) name
+{
+    // Nothing to do here
+}
+
 #pragma mark - categories tableview
 
 -(void)layoutChannelsCategoryTable
@@ -698,6 +703,7 @@
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;
     [self handleNewTabSelectionWithId:uniqueId];
+    [self handleNewTabSelectionWithName: title];
 }
 
 -(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
@@ -718,6 +724,7 @@
     self.subCategoryNameLabel.frame = newFrame;
     
     [self handleNewTabSelectionWithId:uniqueId];
+    [self handleNewTabSelectionWithName: subCategoryTitle];
     [self toggleChannelsCategoryTable:nil];
 }
 
@@ -728,7 +735,9 @@
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;
     
-    [self handleNewTabSelectionWithId:@"all"];
+    [self handleNewTabSelectionWithId: @"all"];
+    [self handleNewTabSelectionWithName: @"all"];
+    
     [self toggleChannelsCategoryTable:nil];
 }
 

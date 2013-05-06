@@ -14,34 +14,49 @@
 
 @implementation SYNTabViewController
 
-
 @synthesize delegate;
 @dynamic tabView;
 
 #pragma mark - Tab View Delegate Methods
 
 
--(void)handleMainTap:(UITapGestureRecognizer*)recogniser {
+- (void) handleMainTap: (UITapGestureRecognizer*) recogniser
+{
     // implement in subclass
 }
--(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser {
+
+
+- (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
+{
     // implement in subclass
 }
 
--(void)handleNewTabSelectionWithId:(NSString*)itemId {
-    // implement in cubclass
+
+- (void) handleNewTabSelectionWithId: (NSString*) itemId
+{
+    // implement in subclass
 }
 
--(void)setSelectedWithId:(NSString*)selectedId {
-    [self.tabView setSelectedWithId:selectedId];
+
+- (void) handleNewTabSelectionWithName: (NSString*) name
+{
+    // implement in subclass
 }
 
--(SYNTabView*)tabView
+
+- (void) setSelectedWithId: (NSString*) selectedId
+{
+    [self.tabView setSelectedWithId: selectedId];
+}
+
+
+- (SYNTabView*) tabView
 {
     return (SYNTabView*)self.view;
 }
 
--(BOOL)showSubcategories
+
+- (BOOL) showSubcategories
 {
     return YES;
 }

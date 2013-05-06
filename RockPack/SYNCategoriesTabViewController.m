@@ -18,6 +18,7 @@
 
 @interface SYNCategoriesTabViewController ()
 
+@property (nonatomic, strong) NSString *currentTopLevelCategoryName;
 @end
 
 
@@ -25,8 +26,7 @@
 
 - (void) loadView
 {
-    
-    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize:[[SYNDeviceManager sharedInstance] currentScreenWidth]];
+    SYNCategoriesTabView* categoriesTabView = [[SYNCategoriesTabView alloc] initWithSize: [[SYNDeviceManager sharedInstance] currentScreenWidth]];
     categoriesTabView.tapDelegate = self;
     
     self.view = categoriesTabView;
@@ -36,40 +36,37 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     [self loadCategories];
-
-    
 }
 
 
 - (void) loadCategories
 {
+    NSError* error;
+    
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity:categoryEntity];
+    [categoriesFetchRequest setEntity: categoryEntity];
     
-    NSPredicate* excludePredicate = [NSPredicate predicateWithFormat:@"priority >= 0"];
-    [categoriesFetchRequest setPredicate:excludePredicate];
+    NSPredicate* excludePredicate = [NSPredicate predicateWithFormat: @"priority >= 0"];
+    [categoriesFetchRequest setPredicate: excludePredicate];
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority" ascending:NO];
-    [categoriesFetchRequest setSortDescriptors:@[sortDescriptor]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"priority"
+                                                                   ascending: NO];
     
-    
-    NSError* error;
-    
+    [categoriesFetchRequest setSortDescriptors: @[sortDescriptor]];
+
     NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                                    error: &error];
     
     if (matchingCategoryInstanceEntries.count <= 0)
     {
         
-        [appDelegate.networkEngine updateCategoriesOnCompletion:^{
-            
+        [appDelegate.networkEngine updateCategoriesOnCompletion: ^{
             [self loadCategories];
-            
         } onError:^(NSError* error) {
             DebugLog(@"%@", [error debugDescription]);
         }];
@@ -78,15 +75,17 @@
     }
     
     [self.tabView createCategoriesTab:matchingCategoryInstanceEntries];
-
 }
+
 
 #pragma mark - Orientation Change
 
--(void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+-(void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+                                         duration: (NSTimeInterval) duration
 {
-    [self.tabView refreshViewForOrientation:toInterfaceOrientation];
+    [self.tabView refreshViewForOrientation: toInterfaceOrientation];
 }
+
 
 #pragma mark - TabView Delagate methods
 
@@ -95,9 +94,10 @@
     if (recogniser == nil)
     {
         // home button pressed
-        [self.delegate handleMainTap:recogniser];
+        [self.delegate handleMainTap: recogniser];
         
-        [self.delegate handleNewTabSelectionWithId:@"all"];
+        [self.delegate handleNewTabSelectionWithId: @"all"];
+        [self.delegate handleNewTabSelectionWithName: @"All"];
         
         return;   
     }
@@ -107,10 +107,10 @@
     SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
     NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
-                                                      inManagedObjectContext:appDelegate.mainManagedObjectContext];
+                                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity:categoryEntity];
+    [categoriesFetchRequest setEntity: categoryEntity];
     
     //DebugLog(@"Tag clicked : %d", tab.tag);
     
@@ -122,7 +122,7 @@
     NSArray *matchingCategoryInstanceEntries = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
                                                                                                    error: &error];
     
-    if(matchingCategoryInstanceEntries.count == 0)
+    if (matchingCategoryInstanceEntries.count == 0)
     {
         DebugLog(@"WARNING: Found NO Category for Tab %d", tab.tag);
         return;
@@ -131,27 +131,29 @@
     if (matchingCategoryInstanceEntries.count > 1)
     {
         DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
-        
     }
     
     Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
+    
     for (Subcategory* subcategory in categoryTapped.subcategories)
     {
         if ([subcategory.priority integerValue] < 0)
         {
             continue;
         }
-        [filteredSet addObject:subcategory];
+        
+        [filteredSet addObject: subcategory];
     }
     
     if (self.delegate && [self.delegate showSubcategories])
-        [self.tabView createSubcategoriesTab:filteredSet];
+        [self.tabView createSubcategoriesTab: filteredSet];
     
     [self.delegate handleMainTap: recogniser];
-    
     [self.delegate handleNewTabSelectionWithId: categoryTapped.uniqueId];
+    [self.delegate handleNewTabSelectionWithName: categoryTapped.name];
+    self.currentTopLevelCategoryName = categoryTapped.name;
     
     // Log Category in Google Analytics
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
@@ -177,7 +179,7 @@
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
-    [categoriesFetchRequest setEntity:categoryEntity];
+    [categoriesFetchRequest setEntity: categoryEntity];
     
     //DebugLog(@"Tag clicked : %d", tab.tag);
     
@@ -205,6 +207,7 @@
     
     [self.delegate handleSecondaryTap: recogniser];
     [self.delegate handleNewTabSelectionWithId: subcategoryTapped.uniqueId];
+    [self.delegate handleNewTabSelectionWithName: [NSString stringWithFormat: @"%@ / %@", self.currentTopLevelCategoryName, subcategoryTapped.name]];
     
     // Log subcategory in Google Analytics
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
@@ -218,7 +221,6 @@
     [tracker setCustom: kGADimensionCategory
              dimension: subcategoryTapped.name];
 }
-
 
 
 @end

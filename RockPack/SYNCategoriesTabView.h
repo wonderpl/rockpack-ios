@@ -10,16 +10,8 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNTabView.h"
 
-@interface SYNCategoriesTabView : SYNTabView {
-    
-    
-}
+@interface SYNCategoriesTabView : SYNTabView
 
-
-
-
-
--(id)initWithSize:(CGFloat)totalWidth;
-
+- (id) initWithSize: (CGFloat) totalWidth;
 
 @end

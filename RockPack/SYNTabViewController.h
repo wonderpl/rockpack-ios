@@ -14,11 +14,9 @@
 
 @interface SYNTabViewController : GAITrackedViewController <SYNTabViewDelegate>
 
-
 @property (nonatomic, weak) id <SYNTabViewDelegate> delegate;
-
 @property (nonatomic, readonly) SYNTabView* tabView;
 
--(void)setSelectedWithId:(NSString*)selectedId;
+- (void) setSelectedWithId: (NSString*) selectedId;
 
 @end
