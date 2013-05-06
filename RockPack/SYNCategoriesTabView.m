@@ -161,7 +161,7 @@
     [self refreshViewForOrientation: [[UIApplication sharedApplication] statusBarOrientation]];    
 }
 
--(void)showSecondaryTabs
+- (void) showSecondaryTabs
 {
     [UIView animateWithDuration: 0.3
                           delay: 0.0
@@ -206,7 +206,7 @@
     
     [self hideSecondaryTabs];
     
-    [self.tapDelegate handleMainTap:nil];
+    [self.tapDelegate handleMainTap: nil];
 }
 
 

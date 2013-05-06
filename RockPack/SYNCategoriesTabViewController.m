@@ -112,8 +112,6 @@
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
     [categoriesFetchRequest setEntity: categoryEntity];
     
-    //DebugLog(@"Tag clicked : %d", tab.tag);
-    
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %d", tab.tag];
     [categoriesFetchRequest setPredicate: predicate];
     
