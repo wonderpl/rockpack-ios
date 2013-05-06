@@ -597,7 +597,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
-    [self.view addSubview:self.searchBoxController.view];
+    [self.navigatioContainerView addSubview:self.searchBoxController.view];
     
 }
 
