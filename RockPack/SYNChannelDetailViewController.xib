@@ -1120,6 +1120,7 @@
 						<int key="objectID">90</int>
 						<reference key="object" ref="335485472"/>
 						<reference key="parent" ref="260102133"/>
+						<string key="objectName">Button - Camera</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">88</int>
@@ -1260,6 +1261,40 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="addButtonTapped:">id</string>
+						<string key="addCoverButtonTapped:">UIButton</string>
+						<string key="buyButtonTapped:">id</string>
+						<string key="createChannelPressed:">id</string>
+						<string key="selectCategoryButtonTapped:">UIButton</string>
+						<string key="subscribeButtonTapped:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="addButtonTapped:">
+							<string key="name">addButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="addCoverButtonTapped:">
+							<string key="name">addCoverButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="buyButtonTapped:">
+							<string key="name">buyButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="createChannelPressed:">
+							<string key="name">createChannelPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
+							<string key="name">selectCategoryButtonTapped:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="subscribeButtonTapped:">
+							<string key="name">subscribeButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addCoverButton">UIButton</string>
 						<string key="addToChannelButton">UIButton</string>
