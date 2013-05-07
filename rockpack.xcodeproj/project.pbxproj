@@ -33,12 +33,12 @@
 		0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */; };
 		0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */; };
 		0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */; };
-		0111CDF317292F3B00612186 /* ButtonCameraHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDED17292F3B00612186 /* ButtonCameraHighlighted.png */; };
-		0111CDF417292F3B00612186 /* ButtonCameraHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEE17292F3B00612186 /* ButtonCameraHighlighted@2x.png */; };
-		0111CDF517292F3B00612186 /* ButtonCameraSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEF17292F3B00612186 /* ButtonCameraSelected.png */; };
-		0111CDF617292F3B00612186 /* ButtonCameraSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF017292F3B00612186 /* ButtonCameraSelected@2x.png */; };
-		0111CDF717292F3B00612186 /* ButtonCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF117292F3B00612186 /* ButtonCamera.png */; };
-		0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF217292F3B00612186 /* ButtonCamera@2x.png */; };
+		0111CDF317292F3B00612186 /* ButtonCameraPadHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */; };
+		0111CDF417292F3B00612186 /* ButtonCameraPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */; };
+		0111CDF517292F3B00612186 /* ButtonCameraPadSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */; };
+		0111CDF617292F3B00612186 /* ButtonCameraPadSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF017292F3B00612186 /* ButtonCameraPadSelected@2x.png */; };
+		0111CDF717292F3B00612186 /* ButtonCameraPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF117292F3B00612186 /* ButtonCameraPad.png */; };
+		0111CDF817292F3B00612186 /* ButtonCameraPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF217292F3B00612186 /* ButtonCameraPad@2x.png */; };
 		0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */; };
 		0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */; };
 		0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE0A172954E900612186 /* PanelChannelCreationCover.png */; };
@@ -114,6 +114,15 @@
 		012502C716CA997A0029C7C8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C616CA99790029C7C8 /* Social.framework */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
 		0129690B16E024DF00895469 /* NSIndexPath+Arithmetic.m in Sources */ = {isa = PBXBuildFile; fileRef = 0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */; };
+		012B4C9D17393A080019DA4C /* SYNPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */; };
+		012B4CA617393CA10019DA4C /* ButtonChooseExistingDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4C9E17393CA10019DA4C /* ButtonChooseExistingDefault.png */; };
+		012B4CA717393CA10019DA4C /* ButtonChooseExistingDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4C9F17393CA10019DA4C /* ButtonChooseExistingDefault@2x.png */; };
+		012B4CA817393CA10019DA4C /* ButtonChooseExistingHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4CA017393CA10019DA4C /* ButtonChooseExistingHighlighted.png */; };
+		012B4CA917393CA10019DA4C /* ButtonChooseExistingHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4CA117393CA10019DA4C /* ButtonChooseExistingHighlighted@2x.png */; };
+		012B4CAA17393CA10019DA4C /* ButtonTakePhotoDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4CA217393CA10019DA4C /* ButtonTakePhotoDefault.png */; };
+		012B4CAB17393CA10019DA4C /* ButtonTakePhotoDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4CA317393CA10019DA4C /* ButtonTakePhotoDefault@2x.png */; };
+		012B4CAC17393CA10019DA4C /* ButtonTakePhotoHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4CA417393CA10019DA4C /* ButtonTakePhotoHighlighted.png */; };
+		012B4CAD17393CA10019DA4C /* ButtonTakePhotoHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012B4CA517393CA10019DA4C /* ButtonTakePhotoHighlighted@2x.png */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */; };
@@ -955,12 +964,12 @@
 		0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteHighlighted@2x.png"; path = "Assets/Images/ButtonVideoDeleteHighlighted@2x.png"; sourceTree = "<group>"; };
 		0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteSelectedted.png; path = Assets/Images/ButtonVideoDeleteSelectedted.png; sourceTree = "<group>"; };
 		0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteSelectedted@2x.png"; path = "Assets/Images/ButtonVideoDeleteSelectedted@2x.png"; sourceTree = "<group>"; };
-		0111CDED17292F3B00612186 /* ButtonCameraHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraHighlighted.png; path = Assets/Images/ButtonCameraHighlighted.png; sourceTree = "<group>"; };
-		0111CDEE17292F3B00612186 /* ButtonCameraHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraHighlighted@2x.png"; path = "Assets/Images/ButtonCameraHighlighted@2x.png"; sourceTree = "<group>"; };
-		0111CDEF17292F3B00612186 /* ButtonCameraSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraSelected.png; path = Assets/Images/ButtonCameraSelected.png; sourceTree = "<group>"; };
-		0111CDF017292F3B00612186 /* ButtonCameraSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraSelected@2x.png"; path = "Assets/Images/ButtonCameraSelected@2x.png"; sourceTree = "<group>"; };
-		0111CDF117292F3B00612186 /* ButtonCamera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCamera.png; path = Assets/Images/ButtonCamera.png; sourceTree = "<group>"; };
-		0111CDF217292F3B00612186 /* ButtonCamera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCamera@2x.png"; path = "Assets/Images/ButtonCamera@2x.png"; sourceTree = "<group>"; };
+		0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPadHighlighted.png; path = Assets/Images/ButtonCameraPadHighlighted.png; sourceTree = "<group>"; };
+		0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraPadHighlighted@2x.png"; path = "Assets/Images/ButtonCameraPadHighlighted@2x.png"; sourceTree = "<group>"; };
+		0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPadSelected.png; path = Assets/Images/ButtonCameraPadSelected.png; sourceTree = "<group>"; };
+		0111CDF017292F3B00612186 /* ButtonCameraPadSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraPadSelected@2x.png"; path = "Assets/Images/ButtonCameraPadSelected@2x.png"; sourceTree = "<group>"; };
+		0111CDF117292F3B00612186 /* ButtonCameraPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPad.png; path = Assets/Images/ButtonCameraPad.png; sourceTree = "<group>"; };
+		0111CDF217292F3B00612186 /* ButtonCameraPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraPad@2x.png"; path = "Assets/Images/ButtonCameraPad@2x.png"; sourceTree = "<group>"; };
 		0111CDFA1729314E00612186 /* SYNCoverThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverThumbnailCell.h; sourceTree = "<group>"; };
 		0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverThumbnailCell.m; sourceTree = "<group>"; };
 		0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverThumbnailCell.xib; sourceTree = "<group>"; };
@@ -1071,6 +1080,16 @@
 		0126331E162E2A060009FF9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		0129690916E024DF00895469 /* NSIndexPath+Arithmetic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+Arithmetic.h"; sourceTree = "<group>"; };
 		0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+Arithmetic.m"; sourceTree = "<group>"; };
+		012B4C9B17393A080019DA4C /* SYNPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNPopoverBackgroundView.h; sourceTree = "<group>"; };
+		012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNPopoverBackgroundView.m; sourceTree = "<group>"; };
+		012B4C9E17393CA10019DA4C /* ButtonChooseExistingDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonChooseExistingDefault.png; path = Assets/Images/ButtonChooseExistingDefault.png; sourceTree = "<group>"; };
+		012B4C9F17393CA10019DA4C /* ButtonChooseExistingDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChooseExistingDefault@2x.png"; path = "Assets/Images/ButtonChooseExistingDefault@2x.png"; sourceTree = "<group>"; };
+		012B4CA017393CA10019DA4C /* ButtonChooseExistingHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonChooseExistingHighlighted.png; path = Assets/Images/ButtonChooseExistingHighlighted.png; sourceTree = "<group>"; };
+		012B4CA117393CA10019DA4C /* ButtonChooseExistingHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonChooseExistingHighlighted@2x.png"; path = "Assets/Images/ButtonChooseExistingHighlighted@2x.png"; sourceTree = "<group>"; };
+		012B4CA217393CA10019DA4C /* ButtonTakePhotoDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonTakePhotoDefault.png; path = Assets/Images/ButtonTakePhotoDefault.png; sourceTree = "<group>"; };
+		012B4CA317393CA10019DA4C /* ButtonTakePhotoDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonTakePhotoDefault@2x.png"; path = "Assets/Images/ButtonTakePhotoDefault@2x.png"; sourceTree = "<group>"; };
+		012B4CA417393CA10019DA4C /* ButtonTakePhotoHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonTakePhotoHighlighted.png; path = Assets/Images/ButtonTakePhotoHighlighted.png; sourceTree = "<group>"; };
+		012B4CA517393CA10019DA4C /* ButtonTakePhotoHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonTakePhotoHighlighted@2x.png"; path = "Assets/Images/ButtonTakePhotoHighlighted@2x.png"; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
@@ -2158,6 +2177,8 @@
 		0111CDFF1729321500612186 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				012B4C9B17393A080019DA4C /* SYNPopoverBackgroundView.h */,
+				012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */,
 				011CC6A7164D19D800F02B6D /* SYNPassthroughView.h */,
 				011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */,
 				01BE7B70173413CF00EFE0EF /* SSTextView.h */,
@@ -2302,6 +2323,14 @@
 		012632F6162E18310009FF9C /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				012B4C9E17393CA10019DA4C /* ButtonChooseExistingDefault.png */,
+				012B4C9F17393CA10019DA4C /* ButtonChooseExistingDefault@2x.png */,
+				012B4CA017393CA10019DA4C /* ButtonChooseExistingHighlighted.png */,
+				012B4CA117393CA10019DA4C /* ButtonChooseExistingHighlighted@2x.png */,
+				012B4CA217393CA10019DA4C /* ButtonTakePhotoDefault.png */,
+				012B4CA317393CA10019DA4C /* ButtonTakePhotoDefault@2x.png */,
+				012B4CA417393CA10019DA4C /* ButtonTakePhotoHighlighted.png */,
+				012B4CA517393CA10019DA4C /* ButtonTakePhotoHighlighted@2x.png */,
 				BE7D353C17170F530085AB81 /* ButtonRefresh.png */,
 				BE7D353D17170F530085AB81 /* ButtonRefresh@2x.png */,
 				BE7D353E17170F530085AB81 /* ButtonRefreshArrow.png */,
@@ -2406,12 +2435,12 @@
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
 			isa = PBXGroup;
 			children = (
-				0111CDED17292F3B00612186 /* ButtonCameraHighlighted.png */,
-				0111CDEE17292F3B00612186 /* ButtonCameraHighlighted@2x.png */,
-				0111CDEF17292F3B00612186 /* ButtonCameraSelected.png */,
-				0111CDF017292F3B00612186 /* ButtonCameraSelected@2x.png */,
-				0111CDF117292F3B00612186 /* ButtonCamera.png */,
-				0111CDF217292F3B00612186 /* ButtonCamera@2x.png */,
+				0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */,
+				0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */,
+				0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */,
+				0111CDF017292F3B00612186 /* ButtonCameraPadSelected@2x.png */,
+				0111CDF117292F3B00612186 /* ButtonCameraPad.png */,
+				0111CDF217292F3B00612186 /* ButtonCameraPad@2x.png */,
 				01BCD1CF172560FB00F459BF /* ButtonCategory.png */,
 				01BCD1D0172560FB00F459BF /* ButtonCategory@2x.png */,
 				01BCD1D1172560FB00F459BF /* ButtonCategoryHighlighted.png */,
@@ -4547,12 +4576,12 @@
 				0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */,
 				0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */,
 				0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */,
-				0111CDF317292F3B00612186 /* ButtonCameraHighlighted.png in Resources */,
-				0111CDF417292F3B00612186 /* ButtonCameraHighlighted@2x.png in Resources */,
-				0111CDF517292F3B00612186 /* ButtonCameraSelected.png in Resources */,
-				0111CDF617292F3B00612186 /* ButtonCameraSelected@2x.png in Resources */,
-				0111CDF717292F3B00612186 /* ButtonCamera.png in Resources */,
-				0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */,
+				0111CDF317292F3B00612186 /* ButtonCameraPadHighlighted.png in Resources */,
+				0111CDF417292F3B00612186 /* ButtonCameraPadHighlighted@2x.png in Resources */,
+				0111CDF517292F3B00612186 /* ButtonCameraPadSelected.png in Resources */,
+				0111CDF617292F3B00612186 /* ButtonCameraPadSelected@2x.png in Resources */,
+				0111CDF717292F3B00612186 /* ButtonCameraPad.png in Resources */,
+				0111CDF817292F3B00612186 /* ButtonCameraPad@2x.png in Resources */,
 				0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */,
 				0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */,
 				0111CE0D172954E900612186 /* PanelChannelCreationCover@2x.png in Resources */,
@@ -4899,6 +4928,14 @@
 				38BACE58173415DF00406597 /* PanelChannelSelected~iphone.png in Resources */,
 				1F59ED161738F68800430C24 /* ButtonBackHighlighted@2x~iphone.png in Resources */,
 				1F59ED171738F68800430C24 /* ButtonBackHighlighted~iphone.png in Resources */,
+				012B4CA617393CA10019DA4C /* ButtonChooseExistingDefault.png in Resources */,
+				012B4CA717393CA10019DA4C /* ButtonChooseExistingDefault@2x.png in Resources */,
+				012B4CA817393CA10019DA4C /* ButtonChooseExistingHighlighted.png in Resources */,
+				012B4CA917393CA10019DA4C /* ButtonChooseExistingHighlighted@2x.png in Resources */,
+				012B4CAA17393CA10019DA4C /* ButtonTakePhotoDefault.png in Resources */,
+				012B4CAB17393CA10019DA4C /* ButtonTakePhotoDefault@2x.png in Resources */,
+				012B4CAC17393CA10019DA4C /* ButtonTakePhotoHighlighted.png in Resources */,
+				012B4CAD17393CA10019DA4C /* ButtonTakePhotoHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5096,6 +5133,7 @@
 				011C16901731782800CF50B9 /* SYNDeletionWobbleLayout.m in Sources */,
 				38BACE001732CCFB00406597 /* SYNLoginViewControllerIphone.m in Sources */,
 				01BE7B72173413CF00EFE0EF /* SSTextView.m in Sources */,
+				012B4C9D17393A080019DA4C /* SYNPopoverBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

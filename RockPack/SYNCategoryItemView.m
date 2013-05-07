@@ -71,10 +71,17 @@
 {
     self.backgroundColor = [UIColor clearColor];
     
+    if (type == TabItemTypeMain)
     grayColor = [UIColor colorWithRed: (40.0/255.0)
                                 green: (45.0/255.0)
                                  blue: (51.0/255.0)
                                 alpha: (1.0)];
+    else
+        grayColor = [UIColor colorWithRed: (113.0/255.0)
+                                    green: (124.0/255.0)
+                                     blue: (126.0/255.0)
+                                    alpha: (1.0)];
+    
     UIFont* fontToUse;
     if (type == TabItemTypeMain)
         fontToUse = [UIFont rockpackFontOfSize: 15.0f];
