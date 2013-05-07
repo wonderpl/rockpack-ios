@@ -722,19 +722,9 @@
 
 - (IBAction) shareChannelButtonTapped: (id) sender
 {
-    NSString *messageString = kChannelShareMessage;
-    
-    //  TODO: Put in cover art image?
-    //  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
-    
-    // TODO: Put in real link
-    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
-    
-    [self shareURL: messageURL
-       withMessage: messageString
-          andImage: [UIImage imageNamed: @"Icon.png"]
-          fromRect: self.shareButton.frame
-   arrowDirections: UIPopoverArrowDirectionDown];
+    [self shareChannel: self.channel
+              fromRect: self.shareButton.frame
+       arrowDirections: UIPopoverArrowDirectionDown];
 }
 
 
@@ -1133,7 +1123,7 @@
 - (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
 {
     self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(256, 176);
+    self.imagePicker.cropSize = CGSizeMake(280, 280);
     self.imagePicker.delegate = self;
     self.imagePicker.imagePickerController.sourceType = sourceType;
     

@@ -107,6 +107,9 @@
 #define kAPIPopularChannels         @"ws/channels/"
 #define kAPICategories              @"ws/categories/"
 
+// Share link
+#define kAPIShareLink               @"/ws/share/link/"    /* POST */
+
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"
 #define kUserDataChanged            @"kUserDataChanged"

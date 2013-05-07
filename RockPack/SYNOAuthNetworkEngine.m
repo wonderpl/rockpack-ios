@@ -256,7 +256,8 @@
     [self enqueueOperation: networkOperation];
 }
 
--(void) doRequestPasswordResetForUsername: (NSString*) username
+
+- (void) doRequestPasswordResetForUsername: (NSString*) username
                         completionHandler: (MKNKJSONCompleteBlock) completionBlock
                              errorHandler: (MKNKErrorBlock) errorBlock
 {
@@ -850,6 +851,7 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
+
 // Cover art
 
 - (void) updateCoverArtForUserId: (NSString *) userId
@@ -880,6 +882,7 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
+
 - (void) coverArtForUserId: (NSString *) userId
                      start: (unsigned int) start
                       size: (unsigned int) size
@@ -903,6 +906,7 @@
     
     [self enqueueSignedOperation: networkOperation];
 }
+
 
 - (void) uploadCoverArtForUserId: (NSString *) userId
                            image: (UIImage *) image
@@ -1087,20 +1091,36 @@
          }
      }
      errorHandler: errorBlock];
-    
-    
-    
-    [self enqueueSignedOperation: networkOperation];
-    
 
-    
-    
-    
-    
-    
+    [self enqueueSignedOperation: networkOperation];  
 }
 
 
+
+- (void) shareLinkWithObjectType: (NSString *) objectType
+                        objectId: (NSString *) objectId
+               completionHandler: (MKNKUserSuccessBlock) completionBlock
+                    errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    // We need to handle locale differently (so add the locale to the URL) as opposed to the other parameters which are in the POST body
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIShareLink, self.localeString];
+    
+    NSDictionary *params = @{@"object_type" : objectType,
+                             @"object_id" : objectId};
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: params
+                                                                                                   httpMethod: @"POST"
+                                                                                                          ssl: TRUE];
+    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
 
 
 @end
