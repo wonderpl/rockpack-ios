@@ -62,7 +62,7 @@
     CGRect textRect = CGRectZero;
     textRect.size = [self.fullNameLabel.text sizeWithFont:self.fullNameLabel.font];
     CGRect referenceRect = self.profileImageView.frame;
-    textRect.origin = CGPointMake(referenceRect.origin.x + referenceRect.size.width + 15.0,
+    textRect.origin = CGPointMake(referenceRect.origin.x + referenceRect.size.width + 10.0,
                                   referenceRect.origin.y + 10.0);
     self.fullNameLabel.frame = textRect;
     
