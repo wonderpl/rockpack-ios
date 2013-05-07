@@ -11,7 +11,7 @@
 #import "ChannelOwner.h"
 #import "GKImagePicker.h"
 #import "SSTextView.h"
-#import "SYNAccountSettingsPopoverBackgroundView.h"
+#import "SYNPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
 #import "SYNCategoriesTabViewController.h"
 #import "SYNChannelDetailViewController.h"
@@ -1087,7 +1087,7 @@
         self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
         self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
         self.cameraMenuPopoverController.delegate = self;
-        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
         [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
                                                           inView: self.coverChooserMasterView
@@ -1100,6 +1100,11 @@
 - (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
     if (popoverController == self.cameraMenuPopoverController)
+    {
+        self.cameraButton.selected = NO;
+        self.cameraPopoverController = nil;
+    }
+    else if (popoverController == self.cameraPopoverController)
     {
         self.cameraButton.selected = NO;
         self.cameraPopoverController = nil;
@@ -1148,6 +1153,8 @@
                                                       inView: self.coverChooserMasterView
                                     permittedArrowDirections: UIPopoverArrowDirectionLeft
                                                     animated: YES];
+        
+//        self.cameraMenuPopoverController.delegate = self;
     }
     else
     {

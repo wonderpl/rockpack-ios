@@ -114,6 +114,7 @@
 		012502C716CA997A0029C7C8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 012502C616CA99790029C7C8 /* Social.framework */; };
 		0126331F162E2A060009FF9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0126331E162E2A060009FF9C /* MediaPlayer.framework */; };
 		0129690B16E024DF00895469 /* NSIndexPath+Arithmetic.m in Sources */ = {isa = PBXBuildFile; fileRef = 0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */; };
+		012B4C9D17393A080019DA4C /* SYNPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */; };
@@ -1071,6 +1072,8 @@
 		0126331E162E2A060009FF9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		0129690916E024DF00895469 /* NSIndexPath+Arithmetic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+Arithmetic.h"; sourceTree = "<group>"; };
 		0129690A16E024DF00895469 /* NSIndexPath+Arithmetic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+Arithmetic.m"; sourceTree = "<group>"; };
+		012B4C9B17393A080019DA4C /* SYNPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNPopoverBackgroundView.h; sourceTree = "<group>"; };
+		012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNPopoverBackgroundView.m; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		01363EB3162FDEA600FFAA09 /* NSObject+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Blocks.h"; sourceTree = "<group>"; };
 		01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Blocks.m"; sourceTree = "<group>"; };
@@ -2158,6 +2161,8 @@
 		0111CDFF1729321500612186 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				012B4C9B17393A080019DA4C /* SYNPopoverBackgroundView.h */,
+				012B4C9C17393A080019DA4C /* SYNPopoverBackgroundView.m */,
 				011CC6A7164D19D800F02B6D /* SYNPassthroughView.h */,
 				011CC6A8164D19D800F02B6D /* SYNPassthroughView.m */,
 				01BE7B70173413CF00EFE0EF /* SSTextView.h */,
@@ -5096,6 +5101,7 @@
 				011C16901731782800CF50B9 /* SYNDeletionWobbleLayout.m in Sources */,
 				38BACE001732CCFB00406597 /* SYNLoginViewControllerIphone.m in Sources */,
 				01BE7B72173413CF00EFE0EF /* SSTextView.m in Sources */,
+				012B4C9D17393A080019DA4C /* SYNPopoverBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,6 @@
 
 @interface SYNPassthroughView : UIView
 
--(BOOL) pointInside: (CGPoint) point
-          withEvent: (UIEvent *) event;
+- (BOOL) pointInside: (CGPoint) point
+           withEvent: (UIEvent *) event;
 @end
