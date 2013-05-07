@@ -63,7 +63,7 @@
     [SYNIntegralCollectionViewFlowLayout
         layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
         minimumInterItemSpacing:0.0f
-        minimumLineSpacing:10.0f
+        minimumLineSpacing:30.0f
         scrollDirection:UICollectionViewScrollDirectionVertical
         sectionInset:insets];
     

@@ -652,7 +652,7 @@
 		38A2FF1B17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A2FF1A17314B3E00FB9F57 /* SYNAutocompleteIphoneCell.m */; };
 		38BACE001732CCFB00406597 /* SYNLoginViewControllerIphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BACDFE1732CCFB00406597 /* SYNLoginViewControllerIphone.m */; };
 		38BACE011732CCFB00406597 /* SYNLoginViewControllerIphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACDFF1732CCFB00406597 /* SYNLoginViewControllerIphone.xib */; };
-		38BACE031734151A00406597 /* SYNChannelCreateNewCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE021734151A00406597 /* SYNChannelCreateNewCell~iphone.xib */; };
+		38BACE031734151A00406597 /* SYNChannelCreateNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE021734151A00406597 /* SYNChannelCreateNewCell.xib */; };
 		38BACE2F173415DF00406597 /* ButtonCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE05173415DE00406597 /* ButtonCamera.png */; };
 		38BACE30173415DF00406597 /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE06173415DE00406597 /* ButtonCamera@2x.png */; };
 		38BACE31173415DF00406597 /* ButtonCameraHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE07173415DE00406597 /* ButtonCameraHighlighted.png */; };
@@ -790,7 +790,7 @@
 		BE285D9B1725726300D995AB /* SYNExistingChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285D991725726300D995AB /* SYNExistingChannelsViewController.m */; };
 		BE285D9C1725726300D995AB /* SYNExistingChannelsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */; };
 		BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */; };
-		BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */; };
+		BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell~iphone.xib */; };
 		BE285DA617258A0A00D995AB /* ButtonConfirm.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA217258A0A00D995AB /* ButtonConfirm.png */; };
 		BE285DA717258A0A00D995AB /* ButtonConfirm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */; };
 		BE285DA817258A0A00D995AB /* ButtonConfirmHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */; };
@@ -1679,7 +1679,7 @@
 		38BACDFD1732CCFB00406597 /* SYNLoginViewControllerIphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNLoginViewControllerIphone.h; sourceTree = "<group>"; };
 		38BACDFE1732CCFB00406597 /* SYNLoginViewControllerIphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewControllerIphone.m; sourceTree = "<group>"; };
 		38BACDFF1732CCFB00406597 /* SYNLoginViewControllerIphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewControllerIphone.xib; sourceTree = "<group>"; };
-		38BACE021734151A00406597 /* SYNChannelCreateNewCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelCreateNewCell~iphone.xib"; sourceTree = "<group>"; };
+		38BACE021734151A00406597 /* SYNChannelCreateNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCreateNewCell.xib; sourceTree = "<group>"; };
 		38BACE05173415DE00406597 /* ButtonCamera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonCamera.png; sourceTree = "<group>"; };
 		38BACE06173415DE00406597 /* ButtonCamera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCamera@2x.png"; sourceTree = "<group>"; };
 		38BACE07173415DE00406597 /* ButtonCameraHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonCameraHighlighted.png; sourceTree = "<group>"; };
@@ -1842,7 +1842,7 @@
 		BE285D9A1725726300D995AB /* SYNExistingChannelsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNExistingChannelsViewController.xib; sourceTree = "<group>"; };
 		BE285D9D172584E200D995AB /* SYNChannelCreateNewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCreateNewCell.h; sourceTree = "<group>"; };
 		BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCreateNewCell.m; sourceTree = "<group>"; };
-		BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCreateNewCell.xib; sourceTree = "<group>"; };
+		BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelCreateNewCell~iphone.xib"; sourceTree = "<group>"; };
 		BE285DA217258A0A00D995AB /* ButtonConfirm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirm.png; path = Assets/Images/ButtonConfirm.png; sourceTree = "<group>"; };
 		BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirm@2x.png"; path = "Assets/Images/ButtonConfirm@2x.png"; sourceTree = "<group>"; };
 		BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirmHighlighted.png; path = Assets/Images/ButtonConfirmHighlighted.png; sourceTree = "<group>"; };
@@ -2941,8 +2941,8 @@
 				3862E8AF172979410066E8E7 /* SYNChannelMidCell~iphone.xib */,
 				BE285D9D172584E200D995AB /* SYNChannelCreateNewCell.h */,
 				BE285D9E172584E200D995AB /* SYNChannelCreateNewCell.m */,
-				BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell.xib */,
-				38BACE021734151A00406597 /* SYNChannelCreateNewCell~iphone.xib */,
+				BE285DA0172584FF00D995AB /* SYNChannelCreateNewCell~iphone.xib */,
+				38BACE021734151A00406597 /* SYNChannelCreateNewCell.xib */,
 				3862E8A6172979410066E8E7 /* SYNChannelCategoryTableCell.h */,
 				3862E8A7172979410066E8E7 /* SYNChannelCategoryTableCell.m */,
 				3862E8A8172979410066E8E7 /* SYNChannelCategoryTableCell.xib */,
@@ -4533,7 +4533,7 @@
 				01BCD1DD172560FB00F459BF /* ButtonCoverHighlighted.png in Resources */,
 				01BCD1DE172560FB00F459BF /* ButtonCoverHighlighted@2x.png in Resources */,
 				BE285D9C1725726300D995AB /* SYNExistingChannelsViewController.xib in Resources */,
-				BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell.xib in Resources */,
+				BE285DA1172584FF00D995AB /* SYNChannelCreateNewCell~iphone.xib in Resources */,
 				BE285DA617258A0A00D995AB /* ButtonConfirm.png in Resources */,
 				BE285DA717258A0A00D995AB /* ButtonConfirm@2x.png in Resources */,
 				BE285DA817258A0A00D995AB /* ButtonConfirmHighlighted.png in Resources */,
@@ -4859,7 +4859,7 @@
 				38BACE011732CCFB00406597 /* SYNLoginViewControllerIphone.xib in Resources */,
 				1FC8FEA817340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png in Resources */,
 				1FC8FEA917340708000FF0B2 /* ShadowCategorySlide~iphone.png in Resources */,
-				38BACE031734151A00406597 /* SYNChannelCreateNewCell~iphone.xib in Resources */,
+				38BACE031734151A00406597 /* SYNChannelCreateNewCell.xib in Resources */,
 				38BACE2F173415DF00406597 /* ButtonCamera.png in Resources */,
 				38BACE30173415DF00406597 /* ButtonCamera@2x.png in Resources */,
 				38BACE31173415DF00406597 /* ButtonCameraHighlighted.png in Resources */,

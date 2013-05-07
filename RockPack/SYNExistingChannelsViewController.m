@@ -68,7 +68,7 @@
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
     
-    self.titleLabel.font = [UIFont rockpackFontOfSize:28.0];
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
 }
 
 
@@ -246,9 +246,8 @@
     else
     {
         self.selectedCell = (SYNChannelMidCell*)[self.channelThumbnailCollectionView cellForItemAtIndexPath:indexPath];
-        
-        self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: indexPath];
-    }
+        //Compensate for the extra "create new" cell
+        self.selectedChannel = (Channel*)[self.fetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]];     }
 }
 
 

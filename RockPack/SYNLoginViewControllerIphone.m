@@ -708,7 +708,30 @@
 
 - (BOOL) textFieldShouldReturn: (UITextField *) textField
 {
-    [[self.view viewWithTag: textField.tag + 1] becomeFirstResponder];
+    UIView* nextView = [self.view viewWithTag: textField.tag + 1];
+    if (nextView)
+    {
+        [nextView becomeFirstResponder];
+    }
+    else
+    {
+        switch (textField.tag) {
+            case 2:
+            case 4:
+            case 12:
+                //Last field on a form. Confirm!
+                [self confirmTapped:nil];
+                break;
+            case 6:
+                //First page of Sign Up. Go next!
+                [self nextTapped:nil];
+                break;
+            default:
+                [textField resignFirstResponder];
+                break;
+        }
+    }
+    
     
     return YES;
 }
