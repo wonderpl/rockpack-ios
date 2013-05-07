@@ -601,7 +601,6 @@
 						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{884, 80}, {130, 45}}</string>
 						<reference key="NSSuperview" ref="453930770"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -801,6 +800,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">cameraButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="335485472"/>
+					</object>
+					<int key="connectionID">113</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="1042878543"/>
 						<reference key="destination" ref="841351856"/>
@@ -875,6 +882,15 @@
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">93</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">userTouchedCameraButton:</string>
+						<reference key="source" ref="335485472"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">112</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -1174,7 +1190,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">111</int>
+			<int key="maxID">113</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
@@ -1187,7 +1203,7 @@
 			<string key="ButtonBuy.png">{61, 61}</string>
 			<string key="ButtonBuyHighlighted.png">{61, 61}</string>
 			<string key="ButtonCamera.png">{60, 61}</string>
-			<string key="ButtonCameraHighlighted.png">{60, 61}</string>
+			<string key="ButtonCameraHighlighted.png">{58, 58}</string>
 			<string key="ButtonCameraSelected.png">{60, 61}</string>
 			<string key="ButtonCategory.png">{295, 45}</string>
 			<string key="ButtonCategoryHighlighted.png">{295, 45}</string>

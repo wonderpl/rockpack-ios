@@ -6,11 +6,19 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "GAITrackedViewController.h"
 #import <UIKit/UIKit.h>
 
-@interface SYNCameraPopoverViewController : GAITrackedViewController
+@protocol SYNCameraPopoverViewControllerDelegate;
 
-@property (nonatomic, assign) id delegate;
+@interface SYNCameraPopoverViewController : UIViewController
+
+@property (nonatomic, weak) id<SYNCameraPopoverViewControllerDelegate> delegate;
+
+@end
+
+@protocol SYNCameraPopoverViewControllerDelegate <NSObject>
+
+- (void) userTouchedTakePhotoButton;
+- (void) userTouchedChooseExistingPhotoButton;
 
 @end
