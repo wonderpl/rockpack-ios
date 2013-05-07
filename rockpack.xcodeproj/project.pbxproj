@@ -33,12 +33,12 @@
 		0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */; };
 		0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */; };
 		0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */; };
-		0111CDF317292F3B00612186 /* ButtonCameraHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDED17292F3B00612186 /* ButtonCameraHighlighted.png */; };
-		0111CDF417292F3B00612186 /* ButtonCameraHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEE17292F3B00612186 /* ButtonCameraHighlighted@2x.png */; };
-		0111CDF517292F3B00612186 /* ButtonCameraSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEF17292F3B00612186 /* ButtonCameraSelected.png */; };
-		0111CDF617292F3B00612186 /* ButtonCameraSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF017292F3B00612186 /* ButtonCameraSelected@2x.png */; };
-		0111CDF717292F3B00612186 /* ButtonCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF117292F3B00612186 /* ButtonCamera.png */; };
-		0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF217292F3B00612186 /* ButtonCamera@2x.png */; };
+		0111CDF317292F3B00612186 /* ButtonCameraPadHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */; };
+		0111CDF417292F3B00612186 /* ButtonCameraPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */; };
+		0111CDF517292F3B00612186 /* ButtonCameraPadSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */; };
+		0111CDF617292F3B00612186 /* ButtonCameraPadSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF017292F3B00612186 /* ButtonCameraPadSelected@2x.png */; };
+		0111CDF717292F3B00612186 /* ButtonCameraPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF117292F3B00612186 /* ButtonCameraPad.png */; };
+		0111CDF817292F3B00612186 /* ButtonCameraPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDF217292F3B00612186 /* ButtonCameraPad@2x.png */; };
 		0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */; };
 		0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */; };
 		0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CE0A172954E900612186 /* PanelChannelCreationCover.png */; };
@@ -964,12 +964,12 @@
 		0111CDE417284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteHighlighted@2x.png"; path = "Assets/Images/ButtonVideoDeleteHighlighted@2x.png"; sourceTree = "<group>"; };
 		0111CDE517284DD700612186 /* ButtonVideoDeleteSelectedted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteSelectedted.png; path = Assets/Images/ButtonVideoDeleteSelectedted.png; sourceTree = "<group>"; };
 		0111CDE617284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDeleteSelectedted@2x.png"; path = "Assets/Images/ButtonVideoDeleteSelectedted@2x.png"; sourceTree = "<group>"; };
-		0111CDED17292F3B00612186 /* ButtonCameraHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraHighlighted.png; path = Assets/Images/ButtonCameraHighlighted.png; sourceTree = "<group>"; };
-		0111CDEE17292F3B00612186 /* ButtonCameraHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraHighlighted@2x.png"; path = "Assets/Images/ButtonCameraHighlighted@2x.png"; sourceTree = "<group>"; };
-		0111CDEF17292F3B00612186 /* ButtonCameraSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraSelected.png; path = Assets/Images/ButtonCameraSelected.png; sourceTree = "<group>"; };
-		0111CDF017292F3B00612186 /* ButtonCameraSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraSelected@2x.png"; path = "Assets/Images/ButtonCameraSelected@2x.png"; sourceTree = "<group>"; };
-		0111CDF117292F3B00612186 /* ButtonCamera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCamera.png; path = Assets/Images/ButtonCamera.png; sourceTree = "<group>"; };
-		0111CDF217292F3B00612186 /* ButtonCamera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCamera@2x.png"; path = "Assets/Images/ButtonCamera@2x.png"; sourceTree = "<group>"; };
+		0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPadHighlighted.png; path = Assets/Images/ButtonCameraPadHighlighted.png; sourceTree = "<group>"; };
+		0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraPadHighlighted@2x.png"; path = "Assets/Images/ButtonCameraPadHighlighted@2x.png"; sourceTree = "<group>"; };
+		0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPadSelected.png; path = Assets/Images/ButtonCameraPadSelected.png; sourceTree = "<group>"; };
+		0111CDF017292F3B00612186 /* ButtonCameraPadSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraPadSelected@2x.png"; path = "Assets/Images/ButtonCameraPadSelected@2x.png"; sourceTree = "<group>"; };
+		0111CDF117292F3B00612186 /* ButtonCameraPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCameraPad.png; path = Assets/Images/ButtonCameraPad.png; sourceTree = "<group>"; };
+		0111CDF217292F3B00612186 /* ButtonCameraPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCameraPad@2x.png"; path = "Assets/Images/ButtonCameraPad@2x.png"; sourceTree = "<group>"; };
 		0111CDFA1729314E00612186 /* SYNCoverThumbnailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverThumbnailCell.h; sourceTree = "<group>"; };
 		0111CDFB1729314E00612186 /* SYNCoverThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverThumbnailCell.m; sourceTree = "<group>"; };
 		0111CDFD1729317100612186 /* SYNCoverThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverThumbnailCell.xib; sourceTree = "<group>"; };
@@ -2435,12 +2435,12 @@
 		0142EDB016B2E992008694DA /* Channel viewer */ = {
 			isa = PBXGroup;
 			children = (
-				0111CDED17292F3B00612186 /* ButtonCameraHighlighted.png */,
-				0111CDEE17292F3B00612186 /* ButtonCameraHighlighted@2x.png */,
-				0111CDEF17292F3B00612186 /* ButtonCameraSelected.png */,
-				0111CDF017292F3B00612186 /* ButtonCameraSelected@2x.png */,
-				0111CDF117292F3B00612186 /* ButtonCamera.png */,
-				0111CDF217292F3B00612186 /* ButtonCamera@2x.png */,
+				0111CDED17292F3B00612186 /* ButtonCameraPadHighlighted.png */,
+				0111CDEE17292F3B00612186 /* ButtonCameraPadHighlighted@2x.png */,
+				0111CDEF17292F3B00612186 /* ButtonCameraPadSelected.png */,
+				0111CDF017292F3B00612186 /* ButtonCameraPadSelected@2x.png */,
+				0111CDF117292F3B00612186 /* ButtonCameraPad.png */,
+				0111CDF217292F3B00612186 /* ButtonCameraPad@2x.png */,
 				01BCD1CF172560FB00F459BF /* ButtonCategory.png */,
 				01BCD1D0172560FB00F459BF /* ButtonCategory@2x.png */,
 				01BCD1D1172560FB00F459BF /* ButtonCategoryHighlighted.png */,
@@ -4576,12 +4576,12 @@
 				0111CDEA17284DD700612186 /* ButtonVideoDeleteHighlighted@2x.png in Resources */,
 				0111CDEB17284DD700612186 /* ButtonVideoDeleteSelectedted.png in Resources */,
 				0111CDEC17284DD700612186 /* ButtonVideoDeleteSelectedted@2x.png in Resources */,
-				0111CDF317292F3B00612186 /* ButtonCameraHighlighted.png in Resources */,
-				0111CDF417292F3B00612186 /* ButtonCameraHighlighted@2x.png in Resources */,
-				0111CDF517292F3B00612186 /* ButtonCameraSelected.png in Resources */,
-				0111CDF617292F3B00612186 /* ButtonCameraSelected@2x.png in Resources */,
-				0111CDF717292F3B00612186 /* ButtonCamera.png in Resources */,
-				0111CDF817292F3B00612186 /* ButtonCamera@2x.png in Resources */,
+				0111CDF317292F3B00612186 /* ButtonCameraPadHighlighted.png in Resources */,
+				0111CDF417292F3B00612186 /* ButtonCameraPadHighlighted@2x.png in Resources */,
+				0111CDF517292F3B00612186 /* ButtonCameraPadSelected.png in Resources */,
+				0111CDF617292F3B00612186 /* ButtonCameraPadSelected@2x.png in Resources */,
+				0111CDF717292F3B00612186 /* ButtonCameraPad.png in Resources */,
+				0111CDF817292F3B00612186 /* ButtonCameraPad@2x.png in Resources */,
 				0111CDFE1729317100612186 /* SYNCoverThumbnailCell.xib in Resources */,
 				0111CE0C172954E900612186 /* PanelChannelCreationCover.png in Resources */,
 				0111CE0D172954E900612186 /* PanelChannelCreationCover@2x.png in Resources */,
