@@ -15,6 +15,7 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "UIFont+SYNFont.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SYNExistingChannelsViewController ()
 
@@ -219,6 +220,8 @@
 {
     if (indexPath.row == 0)
     {
+        if([[SYNDeviceManager sharedInstance] isIPad])
+        {
         if (!appDelegate.videoQueue.currentlyCreatingChannel)
             return;
         
@@ -241,7 +244,29 @@
                                                                                  object: self
                                                                                userInfo: @{kChannel:appDelegate.videoQueue.currentlyCreatingChannel}];
                          }];
-        
+        }
+        else
+        {
+            //On iPhone we want a different navigation structure. Slide the view in.
+            SYNChannelDetailViewController *channelCreationVC =
+            [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
+                                                          usingMode: kChannelDetailsModeEdit] ;
+            CATransition *animation = [CATransition animation];
+            
+            [animation setType:kCATransitionMoveIn];
+            [animation setSubtype:kCATransitionFromRight];
+            
+            [animation setDuration:0.30];
+            [animation setTimingFunction:
+             [CAMediaTimingFunction functionWithName:
+              kCAMediaTimingFunctionEaseInEaseOut]];
+            
+            [self.view.window.layer addAnimation:animation forKey:nil];
+            [self presentViewController:channelCreationVC animated:NO completion:^{
+                
+            }];
+            
+        }
     }
     else
     {

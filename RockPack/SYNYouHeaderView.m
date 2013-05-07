@@ -55,7 +55,7 @@
 
 +(id)headerViewForWidth:(CGFloat)width
 {
-    return [[self alloc] initWithFrame:CGRectMake(0.0, 190.0f, width, 50.0)];
+    return [[self alloc] initWithFrame:CGRectMake(0.0, 165.0f, width, 50.0)];
 }
 
 -(void)setTitle:(NSString *)title andNumber:(NSInteger)number

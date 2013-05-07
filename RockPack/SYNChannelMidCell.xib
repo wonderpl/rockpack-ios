@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -64,7 +64,7 @@
 								<string key="NSFrameSize">{184, 184}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="933051206"/>
+								<reference key="NSNextKeyView" ref="729247233"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -73,12 +73,28 @@
 									<string key="NSResourceName">PanelChannelCreationCoverSelected.png</string>
 								</object>
 							</object>
+							<object class="IBUIImageView" id="729247233">
+								<reference key="NSNextResponder" ref="582525683"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrameSize">{184, 184}</string>
+								<reference key="NSSuperview" ref="582525683"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="933051206"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">GlossChannelMid.png</string>
+								</object>
+							</object>
 							<object class="IBUILabel" id="933051206">
 								<reference key="NSNextResponder" ref="582525683"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{8, 130}, {168, 47}}</string>
 								<reference key="NSSuperview" ref="582525683"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="427251072">
 									<int key="NSColorSpace">3</int>
@@ -253,6 +269,7 @@
 							<reference ref="308581837"/>
 							<reference ref="1069176426"/>
 							<reference ref="529939275"/>
+							<reference ref="729247233"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -281,6 +298,11 @@
 						<reference key="parent" ref="411706856"/>
 						<string key="objectName">Button - Delete</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">45</int>
+						<reference key="object" ref="729247233"/>
+						<reference key="parent" ref="411706856"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -292,6 +314,7 @@
 				<string key="41.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="43.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -299,7 +322,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">44</int>
+			<int key="maxID">45</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -361,6 +384,7 @@
 			<string key="ButtonVideoDelete.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteSelected.png">{16, 16}</string>
+			<string key="GlossChannelMid.png">{184, 184}</string>
 			<string key="NoCover184.png">{184, 184}</string>
 			<string key="PanelChannelCreationCoverSelected.png">{184, 184}</string>
 		</dictionary>

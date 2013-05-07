@@ -156,6 +156,36 @@
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
+							<object class="IBUIButton" id="847382299">
+								<reference key="NSNextResponder" ref="301134111"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{256, 10}, {44, 45}}</string>
+								<reference key="NSSuperview" ref="301134111"/>
+								<reference key="NSWindow"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<int key="IBUIContentMode">4</int>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<bool key="IBUIHighlighted">YES</bool>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<reference key="IBUIHighlightedTitleColor" ref="309290553"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="377196620"/>
+								<object class="NSCustomResource" key="IBUIHighlightedImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonAddHighlighted.png</string>
+								</object>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonAdd.png</string>
+								</object>
+								<reference key="IBUIFontDescription" ref="259640192"/>
+								<reference key="IBUIFont" ref="887648909"/>
+							</object>
 							<object class="IBUIButton" id="716427388">
 								<reference key="NSNextResponder" ref="301134111"/>
 								<int key="NSvFlags">-2147483356</int>
@@ -253,6 +283,14 @@
 					</object>
 					<int key="connectionID">65</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">addButton</string>
+						<reference key="source" ref="274337159"/>
+						<reference key="destination" ref="847382299"/>
+					</object>
+					<int key="connectionID">84</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -283,6 +321,7 @@
 							<reference ref="429279700"/>
 							<reference ref="716427388"/>
 							<reference ref="865164628"/>
+							<reference ref="847382299"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -319,6 +358,12 @@
 						<reference key="parent" ref="274337159"/>
 						<string key="objectName">Button - Delete</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">83</int>
+						<reference key="object" ref="847382299"/>
+						<reference key="parent" ref="274337159"/>
+						<string key="objectName">Button - Add</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -334,12 +379,14 @@
 				<string key="56.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="63.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="63.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="83.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="83.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">82</int>
+			<int key="maxID">84</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -404,6 +451,8 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="BackgroundVideoThumbnailRegular.png">{249, 141}</string>
+			<string key="ButtonAdd.png">{44, 45}</string>
+			<string key="ButtonAddHighlighted.png">{44, 45}</string>
 			<string key="ButtonVideoDelete.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteHighlighted.png">{44, 45}</string>
 			<string key="ButtonVideoDeleteSelected.png">{16, 16}</string>
