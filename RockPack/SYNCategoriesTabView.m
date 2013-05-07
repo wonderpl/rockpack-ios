@@ -47,11 +47,12 @@
         UIView* bgMainTabsView = [[UIView alloc] initWithFrame: mainFrame];
         bgMainTabsView.backgroundColor = [UIColor colorWithPatternImage: mainTabsBGImage];
         bgMainTabsView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        
-        bgMainTabsView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
-        bgMainTabsView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
-        bgMainTabsView.layer.shadowOpacity = 0.2;
-        bgMainTabsView.layer.shadowRadius = 1.0;
+
+        //No Shadow - but it may come back
+        //bgMainTabsView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
+        //bgMainTabsView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+        //bgMainTabsView.layer.shadowOpacity = 0.2;
+        //bgMainTabsView.layer.shadowRadius = 1.0;
         
         // == Bottom Bar == //
         UIImage* secondaryTabsBGImage = [UIImage imageNamed: @"SubCategoryBar"];
