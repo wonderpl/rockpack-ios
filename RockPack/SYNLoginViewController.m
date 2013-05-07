@@ -730,7 +730,7 @@
         if ([completionInfo valueForKey:@"error"])
         {
             [self placeErrorLabel: @"User unknown"
-                       NextToView: self.userNameInputField];
+                       nextToView: self.userNameInputField];
             
         }
         else
@@ -892,7 +892,7 @@
     
     
     if(emailInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter an email address" NextToView:emailInputField];
+        [self placeErrorLabel:@"Please enter an email address" nextToView:emailInputField];
         [emailInputField becomeFirstResponder];
         return NO;
     }
@@ -900,33 +900,33 @@
     // == Regular expression through RegexKitLite.h (not arc compatible) == //
     
     if(![emailInputField.text isMatchedByRegex:@"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"]) {
-        [self placeErrorLabel:@"Email Address Not Valid" NextToView:emailInputField];
+        [self placeErrorLabel:@"Email Address Not Valid" nextToView:emailInputField];
         [emailInputField becomeFirstResponder];
         return NO;
     }
     
     if(userNameInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter a user name" NextToView:userNameInputField];
+        [self placeErrorLabel:@"Please enter a user name" nextToView:userNameInputField];
         [userNameInputField becomeFirstResponder];
         return NO;
     }
     
     // == Username must be
     if(![userNameInputField.text isMatchedByRegex:@"^[a-zA-Z0-9\\._]+$"]) {
-        [self placeErrorLabel:@"Username has invalid characters" NextToView:userNameInputField];
+        [self placeErrorLabel:@"Username has invalid characters" nextToView:userNameInputField];
         [userNameInputField becomeFirstResponder];
         return NO;
     }
     
     
     if(passwordInputField.text.length < 1) {
-        [self placeErrorLabel:@"Please enter a password" NextToView:passwordInputField];
+        [self placeErrorLabel:@"Please enter a password" nextToView:passwordInputField];
         [passwordInputField becomeFirstResponder];
         return NO;
     }
     
     if(ddInputField.text.length != 2 || mmInputField.text.length != 2 || yyyyInputField.text.length != 4) {
-        [self placeErrorLabel:@"Date Invalid" NextToView:dobView];
+        [self placeErrorLabel:@"Date Invalid" nextToView:dobView];
         [ddInputField becomeFirstResponder];
         return NO;
     }
@@ -937,7 +937,7 @@
     NSArray* dobTextFields = @[mmInputField, ddInputField, yyyyInputField];
     for (UITextField* dobField in dobTextFields) {
         if(![numberFormatter numberFromString:dobField.text]) {
-            [self placeErrorLabel:@"Only enter numbers" NextToView:dobView];
+            [self placeErrorLabel:@"Only enter numbers" nextToView:dobView];
             [dobField becomeFirstResponder];
             return NO;
         }
