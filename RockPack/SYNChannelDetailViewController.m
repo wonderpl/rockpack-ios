@@ -9,7 +9,9 @@
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
+#import "GKImagePicker.h"
 #import "SSTextView.h"
+#import "SYNCameraPopoverViewController.h"
 #import "SYNCategoriesTabViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNCoverThumbnailCell.h"
@@ -22,7 +24,7 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNChannelDetailViewController () <UITextViewDelegate>
+@interface SYNChannelDetailViewController () <UITextViewDelegate, GKImagePickerDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -1060,6 +1062,91 @@
 {
     [self.channelTitleTextView resignFirstResponder];
 }
+
+//- (IBAction) faceButtonImagePressed: (UIButton*) sender
+//{
+//    
+//    SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
+//    actionPopoverController.delegate = self;
+//    
+//    // Need show the popover controller
+//    self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+//    self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
+//    self.cameraMenuPopoverController.delegate = self;
+//    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+//    
+//    [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
+//                                                      inView: self.view
+//                                    permittedArrowDirections: UIPopoverArrowDirectionUp
+//                                                    animated: YES];
+//}
+//
+//
+//- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+//{
+//    self.imagePicker = [[GKImagePicker alloc] init];
+//    self.imagePicker.cropSize = CGSizeMake(256, 176);
+//    self.imagePicker.delegate = self;
+//    self.imagePicker.imagePickerController.sourceType = sourceType;
+//    
+//    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+//    {
+//        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
+//        {
+//            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+//        }
+//    }
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.imagePicker.imagePickerController];
+//        
+//        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
+//                                                      inView: self.view
+//                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
+//                                                    animated: YES];
+//    }
+//    else
+//    {
+//        [self presentViewController: self.imagePicker.imagePickerController
+//                           animated: YES
+//                         completion: nil];
+//    }
+//}
+//
+//
+//- (void) userTouchedTakePhotoButton
+//{
+//    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
+//    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
+//}
+//
+//
+//- (void) imagePicker: (GKImagePicker *) imagePicker
+//         pickedImage: (UIImage *) image
+//{
+//    //    self.imgView.image = image;
+//    
+//    [self.faceImageButton setImage:image forState:UIControlStateNormal];
+//    
+//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+//    [self hideImagePicker];
+//}
+//
+//
+//- (void) hideImagePicker
+//{
+//    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
+//    {
+//        [self.cameraPopoverController dismissPopoverAnimated: YES];
+//        
+//    }
+//    else
+//    {
+//        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
+//                                                                   completion: nil];
+//    }
+//}
 
 
 @end

@@ -1318,7 +1318,6 @@
     if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
     {
         [self.cameraPopoverController dismissPopoverAnimated: YES];
-        
     }
     else
     {
