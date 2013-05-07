@@ -74,10 +74,12 @@
 
 // Share
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
+                     inView: (UIView *) inView
                    fromRect: (CGRect) rect
             arrowDirections: (UIPopoverArrowDirection) arrowDirections;
 
 - (void) shareChannel: (Channel *) channel
+               inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections;
 

@@ -229,6 +229,7 @@
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     [self shareVideoInstance: videoInstance
+                      inView: self.view
                     fromRect: videoShareButton.frame
              arrowDirections: UIPopoverArrowDirectionDown];
 }
@@ -402,22 +403,26 @@
 #pragma mark - Social network sharing
 
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
+                     inView: (UIView *) inView
                    fromRect: (CGRect) rect
             arrowDirections: (UIPopoverArrowDirection) arrowDirections
 {
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
+                   inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections];
 }
 
 
 - (void) shareChannel: (Channel *) channel
+               inView: (UIView *) inView
              fromRect: (CGRect) rect
       arrowDirections: (UIPopoverArrowDirection) arrowDirections
 {
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
+                   inView: inView
                  fromRect: rect
           arrowDirections: arrowDirections];
 }
@@ -425,6 +430,7 @@
 
 - (void) shareObjectType: (NSString *) objectType
                 objectId: (NSString *) objectId
+                  inView: (UIView *) inView
                 fromRect: (CGRect) rect
          arrowDirections: (UIPopoverArrowDirection) arrowDirections
 {
@@ -476,7 +482,7 @@
                                                   activityViewController.presentingPopoverController = _activityPopoverController;
                                                   
                                                   [self.activityPopoverController presentPopoverFromRect: rect
-                                                                                                  inView: self.view
+                                                                                                  inView: inView
                                                                                 permittedArrowDirections: arrowDirections
                                                                                                 animated: YES];
                                               }

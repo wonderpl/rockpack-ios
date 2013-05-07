@@ -723,6 +723,7 @@
 - (IBAction) shareChannelButtonTapped: (id) sender
 {
     [self shareChannel: self.channel
+                inView: self.view
               fromRect: self.shareButton.frame
        arrowDirections: UIPopoverArrowDirectionDown];
 }
