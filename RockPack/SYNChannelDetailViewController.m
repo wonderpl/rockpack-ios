@@ -1154,7 +1154,7 @@
                                     permittedArrowDirections: UIPopoverArrowDirectionLeft
                                                     animated: YES];
         
-//        self.cameraMenuPopoverController.delegate = self;
+        self.cameraPopoverController.delegate = self;
     }
     else
     {
