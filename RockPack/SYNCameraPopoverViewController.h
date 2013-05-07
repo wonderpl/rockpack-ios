@@ -18,7 +18,7 @@
 
 @protocol SYNCameraPopoverViewControllerDelegate <NSObject>
 
-- (void) userTouchedTakePhotoButton: (id) sender;
-- (void) userTouchedChooseExistingPhotoButton: (id) sender;
+- (void) userTouchedTakePhotoButton;
+- (void) userTouchedChooseExistingPhotoButton;
 
 @end

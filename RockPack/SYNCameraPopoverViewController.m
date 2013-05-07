@@ -18,18 +18,18 @@
 
 - (IBAction) userTouchedTakePhotoButton: (id) sender
 {
-    if ([self.delegate respondsToSelector: @selector(userTouchedTakePhotoButton:)])
+    if ([self.delegate respondsToSelector: @selector(userTouchedTakePhotoButton)])
     {
-        [self.delegate userTouchedTakePhotoButton: nil];
+        [self.delegate userTouchedTakePhotoButton];
     }
 }
 
 
 - (IBAction) userTouchedChooseExistingPhotoButton: (id) sender
 {
-    if ([self.delegate respondsToSelector: @selector(userTouchedChooseExistingPhotoButton:)])
+    if ([self.delegate respondsToSelector: @selector(userTouchedChooseExistingPhotoButton)])
     {
-        [self.delegate userTouchedChooseExistingPhotoButton: nil];
+        [self.delegate userTouchedChooseExistingPhotoButton];
     }
 }
 
