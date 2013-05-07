@@ -88,14 +88,14 @@
                                                        minimumInterItemSpacing: kInterRowMargin
                                                             minimumLineSpacing: kInterRowMargin
                                                                scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                  sectionInset: UIEdgeInsetsMake(kInterRowMargin, kInterRowMargin, kInterRowMargin, kInterRowMargin + 12.0f)];
+                                                                  sectionInset: UIEdgeInsetsMake(0.0f, kInterRowMargin, kInterRowMargin, kInterRowMargin + 12.0f)];
     
 
     self.subscriptionsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize:CGSizeMake(184.0, 184.0f)
                                                                         minimumInterItemSpacing: kInterRowMargin - 2
                                                                              minimumLineSpacing: kInterRowMargin
                                                                                 scrollDirection: UICollectionViewScrollDirectionVertical
-                                                                                   sectionInset: UIEdgeInsetsMake(kInterRowMargin, kInterRowMargin + 6.0f, kInterRowMargin, kInterRowMargin + 2)];
+                                                                                   sectionInset: UIEdgeInsetsMake(0.0f, kInterRowMargin + 6.0f, kInterRowMargin, kInterRowMargin + 2)];
     
     
     if (isIPhone)
