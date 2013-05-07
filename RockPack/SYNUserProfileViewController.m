@@ -67,7 +67,7 @@
     self.fullNameLabel.frame = textRect;
     
     textRect.origin = CGPointMake(textRect.origin.x,
-                                  textRect.origin.y + textRect.size.height - 2.0);
+                                  textRect.origin.y + textRect.size.height - 5.0);
     textRect.size = [self.userNameLabel.text sizeWithFont:self.userNameLabel.font];
     
     self.userNameLabel.frame = textRect;
