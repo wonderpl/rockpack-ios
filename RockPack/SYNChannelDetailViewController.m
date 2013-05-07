@@ -60,6 +60,10 @@
 @property (nonatomic, weak) Channel *channel;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 
+//iPhone specific
+@property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+
 @end
 
 
@@ -190,34 +194,57 @@
         self.createChannelButton.hidden = NO;
     }
     
-    // Set text on add cover and select category buttons
-    NSString *coverString = @"ADD A COVER";
-    
-    NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
-                                                                                        attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
-                                                                              NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
-
-    [self.addCoverButton setAttributedTitle: attributedCoverString
-                                   forState: UIControlStateNormal];
-    
-    // Now do fancy attributed string
-    NSString *categoryString = @"SELECT A CATEGORY (Optional)";
-    
-    NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
-                                                                                                 attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
-                                                                                       NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
-    
-    NSRange leftParentheseRange = [categoryString rangeOfString: @"("];
-    NSRange rightParentheseRange = [categoryString rangeOfString: @")"];
-    
-    NSRange numberRange = NSMakeRange(leftParentheseRange.location, rightParentheseRange.location - (leftParentheseRange.location) + 1);
-
-    [attributedCategoryString addAttributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 187.0f/255.0f green: 187.0f/255.0f blue: 187.0f/255.0f alpha: 1.0f], NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
-                                      range: numberRange];
- 
-    // Set text on add cover and select category buttons
-    [self.selectCategoryButton setAttributedTitle: attributedCategoryString
-                                         forState: UIControlStateNormal];
+    if(!isIPhone)
+    {
+        // Set text on add cover and select category buttons
+        NSString *coverString = @"ADD A COVER";
+        
+        NSMutableAttributedString* attributedCoverString = [[NSMutableAttributedString alloc] initWithString: coverString
+                                                                                                  attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                                        NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+        
+        [self.addCoverButton setAttributedTitle: attributedCoverString
+                                       forState: UIControlStateNormal];
+        
+        // Now do fancy attributed string
+        NSString *categoryString = @"SELECT A CATEGORY (Optional)";
+        
+        NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: categoryString
+                                                                                                     attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                                           NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+        
+        NSRange leftParentheseRange = [categoryString rangeOfString: @"("];
+        NSRange rightParentheseRange = [categoryString rangeOfString: @")"];
+        
+        NSRange numberRange = NSMakeRange(leftParentheseRange.location, rightParentheseRange.location - (leftParentheseRange.location) + 1);
+        
+        [attributedCategoryString addAttributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 187.0f/255.0f green: 187.0f/255.0f blue: 187.0f/255.0f alpha: 1.0f], NSFontAttributeName : [UIFont rockpackFontOfSize: 18.0f]}
+                                          range: numberRange];
+        
+        
+        // Set text on add cover and select category buttons
+        [self.selectCategoryButton setAttributedTitle: attributedCategoryString
+                                             forState: UIControlStateNormal];
+    }
+    else
+    {
+        self.textBackgroundImageView.image = [[UIImage imageNamed:@"FieldChannelTitle"] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 6, 6)];
+        
+        self.addCoverButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.addCoverButton.titleLabel.font.pointSize];
+        self.addCoverButton.titleLabel.numberOfLines = 2;
+        self.addCoverButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.addCoverButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+        
+        self.selectCategoryButton.titleLabel.font = [UIFont boldRockpackFontOfSize:self.selectCategoryButton.titleLabel.font.pointSize];
+        self.selectCategoryButton.titleLabel.numberOfLines = 2;
+        self.selectCategoryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.selectCategoryButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+        
+        if(self.mode == kChannelDetailsModeEdit)
+        {
+            self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
+        }
+    }
 }
 
 - (void) updateCategoryButtonText: (NSString *) buttonText
@@ -1028,6 +1055,7 @@
                                               
                                               [appDelegate saveContext:YES];
                                               
+                                              [self channelCreationComplete];
                                               
                                           } errorHandler:^(id err) {
                                               
@@ -1062,6 +1090,19 @@
     }
     
     return YES;
+}
+
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    self.createChannelButton.hidden = YES;
+    self.cancelTextInputButton.hidden = NO;
+    
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView
+{
+    self.createChannelButton.hidden = NO;
+    self.cancelTextInputButton.hidden = YES;
 }
 
 
@@ -1190,6 +1231,42 @@
     }
 }
 
+#pragma mark - iPhone viewcontroller dismissal
+- (IBAction)backButtonTapped:(id)sender {
+    CATransition *animation = [CATransition animation];
+    
+    [animation setType:kCATransitionReveal];
+    [animation setSubtype:kCATransitionFromLeft];
+    
+    [animation setDuration:0.30];
+    [animation setTimingFunction:
+     [CAMediaTimingFunction functionWithName:
+      kCAMediaTimingFunctionEaseInEaseOut]];
+    
+    [self.view.window.layer addAnimation:animation forKey:nil];
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+-(void)channelCreationComplete
+{
+    CATransition *animation = [CATransition animation];
+    
+    [animation setType:kCATransitionReveal];
+    [animation setSubtype:kCATransitionFromLeft];
+    
+    [animation setDuration:0.30];
+    [animation setTimingFunction:
+     [CAMediaTimingFunction functionWithName:
+      kCAMediaTimingFunctionEaseInEaseOut]];
+    
+    [self.view.window.layer addAnimation:animation forKey:nil];
+    
+    // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
+    // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
+    UIViewController *master = self.presentingViewController;
+    [[[[master childViewControllers] lastObject] view] removeFromSuperview];
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
 
 - (void) uploadChannelImage: (UIImage *) imageToUpload
 {
