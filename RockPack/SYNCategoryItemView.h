@@ -6,31 +6,31 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "TabItem.h"
+#import <UIKit/UIKit.h>
 
 typedef enum {
     TabItemTypeMain,
     TabItemTypeSub
 } TabItemType;
 
-@interface SYNCategoryItemView : UIView {
+@interface SYNCategoryItemView : UIView
+{
     @private TabItemType type;
-    @private UIColor* grayColor;
-    
-    
+    @private UIColor* grayColor; 
 }
 
 @property (nonatomic, strong) UIImageView* glowImageView;
-
 @property (nonatomic, strong) UILabel* label;
 
-- (id)initWithTabItemModel:(TabItem*)tabItemModel;
--(void)makeHighlighted;
+- (id) initWithTabItemModel: (TabItem*) tabItemModel;
 
--(void)makeFaded;
+- (id) initWithLabel: (NSString *) label
+              andTag: (int) tag;
 
--(void)makeStandard;
+- (void) makeHighlighted;
+- (void) makeFaded;
+- (void) makeStandard;
 
 /**
  Helper method for resizing the item view which is assumed to have flexible width depending on orientation and a fixed height.
@@ -38,7 +38,8 @@ typedef enum {
  @param orientation The orientation to adapt to
  @param height the fixed view height
  */
--(void)resizeForOrientation:(UIInterfaceOrientation)orientation withHeight:(CGFloat)height;
-
+ 
+-(void) resizeForOrientation: (UIInterfaceOrientation) orientation
+                  withHeight: (CGFloat) height;
 
 @end

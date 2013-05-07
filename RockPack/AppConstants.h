@@ -114,7 +114,7 @@
 #define kChannelUpdateRequest       @"kChannelUpdateRequest"
 #define kChannelDeleteRequest       @"kChannelDeleteRequest"
 
-#define kRefresheComplete           @"kRefresheComplete"
+#define kRefreshComplete           @"kRefreshComplete"
 
 #define kClearAllAddedCells         @"kClearAllAddedCells"
 
@@ -326,7 +326,7 @@ typedef enum {
 
 #define kChannelCreationCollectionViewOffsetY           540.0f
 #define kChannelCreationCategoryTabOffsetY              444.0f
-#define kChannelCreationCategoryAdditionalOffsetY       91.0f
+#define kChannelCreationCategoryAdditionalOffsetY       51.0f
 
 // Notifications
 

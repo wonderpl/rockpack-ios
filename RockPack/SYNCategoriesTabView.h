@@ -10,16 +10,11 @@
 #import "SYNTabViewDelegate.h"
 #import "SYNTabView.h"
 
-@interface SYNCategoriesTabView : SYNTabView {
-    
-    
-}
+@interface SYNCategoriesTabView : SYNTabView
 
+- (id) initWithSize: (CGFloat) totalWidth
+      andHomeButton: (BOOL) useHomeButton;
 
-
-
-
--(id)initWithSize:(CGFloat)totalWidth;
-
+- (void) hideSecondaryTabs;
 
 @end

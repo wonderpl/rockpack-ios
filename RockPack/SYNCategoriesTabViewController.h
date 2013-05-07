@@ -12,4 +12,6 @@
 
 @interface SYNCategoriesTabViewController : SYNTabViewController 
 
+- (id) initWithHomeButton: (BOOL) useHomeButton;
+
 @end

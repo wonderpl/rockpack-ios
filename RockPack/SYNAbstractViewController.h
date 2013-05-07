@@ -46,6 +46,7 @@
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
+- (void) handleNewTabSelectionWithName: (NSString*) name;
 
 
 - (void) reloadCollectionViews;

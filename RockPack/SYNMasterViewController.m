@@ -56,7 +56,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* dotsView;
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UIView* movableButtonsContainer;
-@property (nonatomic, strong) IBOutlet UIView* navigatioContainerView;
+@property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) IBOutlet UIView* overlayView;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
@@ -194,7 +194,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          [splashView removeFromSuperview];
                      }];
     
-    self.navigatioContainerView.userInteractionEnabled = YES;
+    self.navigationContainerView.userInteractionEnabled = YES;
     
     
     
@@ -288,7 +288,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchCancelledIPhone:) name:kSideNavigationSearchCloseNotification object:nil];
     
     
-    [self.navigatioContainerView addSubview:self.sideNavigationViewController.view];
+    [self.navigationContainerView addSubview:self.sideNavigationViewController.view];
     
     
 }
@@ -329,6 +329,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.refreshButton startRefreshCycle];
     
     [self.containerViewController.showingViewController refresh];
+}
+
+- (void) refreshCycleComplete
+{
+    [self.refreshButton endRefreshCycle];
 }
 
 #pragma mark - Scroller Changes
@@ -403,7 +408,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kClearAllAddedCells object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kClearAllAddedCells
+                                                        object:self];
     
     
     // TODO : Show confirm message
@@ -412,14 +418,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 -(void)createNewChannelAction:(NSNotification*)notification
 {
-    
-    Channel* channel = (Channel*)[[notification userInfo] objectForKey:kChannel];
+    Channel* channel = (Channel*)[[notification userInfo] objectForKey: kChannel];
     if(!channel)
         return;
     
-    // ** channel.managedObjectContext == appDelegate.chanelsContext ** //
-    
-    
+    // ** channel.managedObjectContext == appDelegate.chanelsContext ** //    
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                   usingMode: kChannelDetailsModeEdit] ;
@@ -429,37 +432,35 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-
 #pragma mark - Navigation Panel Methods
 
 -(IBAction)showAndHideSideNavigation:(UIButton*)sender
 {
-    if(buttonLocked)
+    if (buttonLocked)
         return;
     
-    if(self.sideNavigationViewController.state == SideNavigationStateFull
-       || self.sideNavigationViewController.state == SideNavigationStateHalf) {
+    if (self.sideNavigationViewController.state == SideNavigationStateFull
+       || self.sideNavigationViewController.state == SideNavigationStateHalf)
+    {
         [self hideSideNavigation];
         sender.highlighted = NO;
     }
-
-    else {
+    else
+    {
         [self showSideNavigation];
         sender.highlighted = YES;
     }
-        
 }
+
 
 - (void) showSideNavigation
 {
-    
-    
     NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
     [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
     
     
-    [[SYNSoundPlayer sharedInstance] playSoundByName:kSoundNewSlideIn];
+    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
     
     
     [UIView animateWithDuration: kRockieTalkieAnimationDuration
@@ -470,30 +471,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
                          if([[SYNDeviceManager sharedInstance] isIPad])
                          {
-                            sideNavigationFrame.origin.x = 1024.0 - 192.0;
+                             sideNavigationFrame.origin.x = 1024.0 - 192.0;
                          }
                          else
                          {
                              sideNavigationFrame.origin.x = 704.0f;
                          }
-                         self.sideNavigationViewController.view.frame =  sideNavigationFrame;
+                         self.sideNavigationViewController.view.frame = sideNavigationFrame;
                          
-                     } completion: ^(BOOL finished) {
+                     }
+                     completion: ^(BOOL finished) {
                          
                          self.sideNavigationViewController.state = SideNavigationStateHalf;
-                         
                      }];
-    
-    
 }
 
 
-
--(void)sideNavigationSwiped
+- (void) sideNavigationSwiped
 {
     [self hideSideNavigation];
 }
-
 
 
 - (void) hideSideNavigation
@@ -554,6 +551,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      }];
 }
 
+
 - (void) removeVideoOverlayController
 {  
     UIView* child = self.overlayView.subviews[0];
@@ -578,7 +576,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Search Delegate Methods
 
--(IBAction)showSearchBoxField:(id)sender
+- (IBAction) showSearchBoxField: (id) sender
 {
     
     self.sideNavigationButton.hidden = YES;
@@ -599,14 +597,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     sboxFrame.origin.y = 10.0;
     self.searchBoxController.view.frame = sboxFrame;
     
-    [self.view addSubview:self.searchBoxController.view];
+    [self.navigationContainerView addSubview:self.searchBoxController.view];
     
 }
 
--(void)searchTyped:(NSNotification*)notification
+- (void) searchTyped: (NSNotification*) notification
 {
     
-    NSString* termString = (NSString*)[[notification userInfo] objectForKey:kSearchTerm];
+    NSString* termString = (NSString*)[[notification userInfo] objectForKey: kSearchTerm];
     
     if(!termString)
         return;
@@ -615,26 +613,25 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         self.closeSearchButton.hidden = YES;
         self.sideNavigationButton.hidden = NO;
-        [self showBackButton:YES];
+        [self showBackButton: YES];
     }
     
     if(!self.overlayNavigationController)
     {        
         self.searchViewController = [[SYNSearchRootViewController alloc] initWithViewId: kSearchViewId];
-        self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController:self.searchViewController];
+        self.overlayNavigationController = [SYNObjectFactory wrapInNavigationController: self.searchViewController];
     }
     
     [self.searchViewController showSearchResultsForTerm: termString];
 }
 
--(void)searchCancelledIPhone:(NSNotification*)notification
-{
-    [self cancelButtonPressed:nil];
-    [self.sideNavigationViewController.view addSubview:self.sideNavigationViewController.searchViewController.searchBoxView];
-    self.overlayNavigationController = nil;
-    
-}
 
+- (void) searchCancelledIPhone: (NSNotification*) notification
+{
+    [self cancelButtonPressed: nil];
+    [self.sideNavigationViewController.view addSubview: self.sideNavigationViewController.searchViewController.searchBoxView];
+    self.overlayNavigationController = nil;
+}
 
 
 - (IBAction) cancelButtonPressed: (id) sender

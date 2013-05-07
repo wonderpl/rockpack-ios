@@ -10,12 +10,13 @@
 
 @protocol SYNTabViewDelegate <NSObject>
 
-
--(void)handleMainTap:(UITapGestureRecognizer*)recogniser;
--(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser;
+- (void) handleMainTap: (UITapGestureRecognizer*) recogniser;
+- (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser;
 
 // general
--(void)handleNewTabSelectionWithId:(NSString*)itemId;
--(BOOL)showSubcategories;
+- (void) handleNewTabSelectionWithId: (NSString*) itemId;
+- (void) handleNewTabSelectionWithName: (NSString*) name;
+
+- (BOOL) showSubcategories;
 
 @end

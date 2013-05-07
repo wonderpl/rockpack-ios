@@ -22,7 +22,7 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNChannelDetailViewController ()
+@interface SYNChannelDetailViewController () <UITextViewDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -106,7 +106,6 @@
                                                                      green: 0.909
                                                                       blue: 0.909
                                                                      alpha: 1.0f];
-    
     // Set delegate so that we can respond to events
     self.channelTitleTextView.delegate = self;
     
@@ -155,11 +154,10 @@
     [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
                                      placeHolderImage: nil];
     
-    // Store the initial content offset, so that we can fade out the control if the user scrolls away from this
-    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+
     
     // Create categories tab, but make invisible (alpha = 0) for now
-    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] init];
+    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
     self.categoriesTabViewController.delegate = self;
     CGRect tabFrame = self.categoriesTabViewController.view.frame;
     tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
@@ -168,6 +166,8 @@
     self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.categoriesTabViewController.view.alpha = 0.0f;
     [self addChildViewController: self.categoriesTabViewController];
+    
+    self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
     if (self.mode == kChannelDetailsModeDisplay)
     {
@@ -178,7 +178,6 @@
     {
         self.addToChannelButton.hidden = YES;
         self.createChannelButton.hidden = NO;
-        
     }
     
     // Set text on add cover and select category buttons
@@ -210,6 +209,17 @@
     [self.selectCategoryButton setAttributedTitle: attributedCategoryString
                                          forState: UIControlStateNormal];
 }
+
+- (void) updateCategoryButtonText: (NSString *) buttonText
+{    
+    NSMutableAttributedString* attributedCategoryString = [[NSMutableAttributedString alloc] initWithString: buttonText
+                                                                                                 attributes: @{NSForegroundColorAttributeName : [UIColor colorWithRed: 40.0f/255.0f green: 45.0f/255.0f blue: 51.0f/255.0f alpha: 1.0f],
+                                                                                       NSFontAttributeName : [UIFont boldRockpackFontOfSize: 18.0f]}];
+    // Set text on add cover and select category buttons
+    [self.selectCategoryButton setAttributedTitle: attributedCategoryString
+                                         forState: UIControlStateNormal];
+}
+
 
 
 - (void) viewWillAppear: (BOOL) animated
@@ -442,7 +452,7 @@
         {
             case 0:
             {               
-                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone2.png"];
+                coverThumbnailCell.coverImageView.image = [UIImage imageNamed: @"ChannelCreationCoverNone.png"];
                 return coverThumbnailCell;
             }
             break;
@@ -787,6 +797,7 @@
 
 - (IBAction) addCoverButtonTapped: (UIButton *) button
 {
+    [self.channelTitleTextView resignFirstResponder];
     [self showCoverChooser];
     [self hideCategoryChooser];
 }
@@ -794,6 +805,7 @@
 
 - (IBAction) selectCategoryButtonTapped: (UIButton *) button
 {
+    [self.channelTitleTextView resignFirstResponder];
     [self showCategoryChooser];
     [self hideCoverChooser];
 }
@@ -907,23 +919,33 @@
                      completion: nil];
 }
 
+
+#pragma mark - Tab delegates
+
 - (BOOL) showSubcategories
 {
     return YES;
 }
 
+
+- (void) handleNewTabSelectionWithId: (NSString*) itemId
+{
+    
+}
+
+- (void) handleNewTabSelectionWithName: (NSString*) name
+{
+    [self updateCategoryButtonText: name];
+}
+
+
 - (void) handleMainTap: (UITapGestureRecognizer*) recogniser
 {
-    
+
 }
+
 
 - (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
-{
-    
-}
-
-// general
-- (void) handleNewTabSelectionWithId: (NSString*) temId
 {
     
 }

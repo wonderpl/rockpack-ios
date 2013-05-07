@@ -14,53 +14,71 @@
 
 @synthesize tapDelegate;
 
--(id)initWithSize:(CGFloat)totalWidth
+- (id) initWithSize: (CGFloat) totalWidth
 {
-    self = [super initWithFrame:CGRectMake(0.0, 0.0, totalWidth, kDefaultTabsHeight)];
-    if (self) {
-        
-        
+    if ((self = [super initWithFrame:CGRectMake(0.0, 0.0, totalWidth, kDefaultTabsHeight)]))
+    {
+        // Custom init here
     }
+    
     return self;
 }
 
 
 #pragma mark - Tab View Delegate Methods
 
--(void)handleMainTap:(UITapGestureRecognizer*)recogniser {
-    // implement in subclass
-}
--(void)handleSecondaryTap:(UITapGestureRecognizer*)recogniser {
-    // implement in subclass
-}
-
--(void)handleNewTabSelectionWithId:(NSString *)itemId {
+- (void) handleMainTap: (UITapGestureRecognizer*) recogniser
+{
     // implement in subclass
 }
 
+
+- (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
+{
+    // implement in subclass
+}
+
+
+- (void) handleNewTabSelectionWithId: (NSString *) itemId
+{
+    // implement in subclass
+}
+
+
+- (void) handleNewTabSelectionWithName: (NSString*) name
+{
+    // implement in subclass
+}
 
 #pragma mark - Basic Categories creation
 
--(void)createCategoriesTab:(NSArray*)categories {
+- (void) createCategoriesTab: (NSArray*) categories
+{
     // implement in subclass
 }
 
--(void)createSubcategoriesTab:(NSSet*)subcategories {
+
+- (void) createSubcategoriesTab: (NSSet*) subcategories
+{
     // implement in subclass
 }
 
--(void)setSelectedWithId:(NSString*)selectedId {
+
+- (void) setSelectedWithId: (NSString*) selectedId
+{
     // implement in subclass
 }
 
--(BOOL)showSubcategories
+
+- (BOOL) showSubcategories
 {
     return YES;
 }
 
+
 #pragma mark - orientation layout update
 
--(void)refreshViewForOrientation:(UIInterfaceOrientation)orientation
+- (void) refreshViewForOrientation: (UIInterfaceOrientation) orientation
 {
     // implement in subclass
 }

@@ -239,7 +239,6 @@
 		01A79B9F16F32C3400B05084 /* ButtonShuttleBarPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A79B9016F32C3400B05084 /* ButtonShuttleBarPlay@2x.png */; };
 		01A79BA216F32C6900B05084 /* NSString+Timecode.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A79BA116F32C6900B05084 /* NSString+Timecode.m */; };
 		01A79BA516F34BBF00B05084 /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A79BA416F34BBF00B05084 /* NSString+Utils.m */; };
-		01ABBAD0171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBACD171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib */; };
 		01ABBAD6172002E6007E4462 /* ChannelDetailOverlayBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBAD4172002E6007E4462 /* ChannelDetailOverlayBackground.png */; };
 		01ABBAD7172002E6007E4462 /* ChannelDetailOverlayBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBAD5172002E6007E4462 /* ChannelDetailOverlayBackground@2x.png */; };
 		01ABBADC17200992007E4462 /* PanelVideoFeedLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 01ABBAD817200992007E4462 /* PanelVideoFeedLandscape.png */; };
@@ -1231,9 +1230,6 @@
 		01A79BA116F32C6900B05084 /* NSString+Timecode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Timecode.m"; sourceTree = "<group>"; };
 		01A79BA316F34BBF00B05084 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
 		01A79BA416F34BBF00B05084 /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
-		01ABBACB171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OLDSYNAbstractChannelsDetailViewController.h; sourceTree = "<group>"; };
-		01ABBACC171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OLDSYNAbstractChannelsDetailViewController.m; sourceTree = "<group>"; };
-		01ABBACD171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OLDSYNAbstractChannelsDetailViewController.xib; sourceTree = "<group>"; };
 		01ABBAD4172002E6007E4462 /* ChannelDetailOverlayBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelDetailOverlayBackground.png; path = Assets/Images/ChannelDetailOverlayBackground.png; sourceTree = "<group>"; };
 		01ABBAD5172002E6007E4462 /* ChannelDetailOverlayBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelDetailOverlayBackground@2x.png"; path = "Assets/Images/ChannelDetailOverlayBackground@2x.png"; sourceTree = "<group>"; };
 		01ABBAD817200992007E4462 /* PanelVideoFeedLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelVideoFeedLandscape.png; path = Assets/Images/PanelVideoFeedLandscape.png; sourceTree = "<group>"; };
@@ -2738,9 +2734,6 @@
 		01982563162ADEAD00216900 /* Abstract */ = {
 			isa = PBXGroup;
 			children = (
-				01ABBACB171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.h */,
-				01ABBACC171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.m */,
-				01ABBACD171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib */,
 				01E427D71664CDA5009B941F /* SYNAbstractViewController.h */,
 				01E427D81664CDA5009B941F /* SYNAbstractViewController.m */,
 			);
@@ -4479,7 +4472,6 @@
 				BE86BF29172011150006DC8A /* HeaderProfilePortraitBoth@2x.png in Resources */,
 				BE86BF2A172011150006DC8A /* HeaderProfileSubscriptionsLandscape.png in Resources */,
 				BE86BF2B172011150006DC8A /* HeaderProfileSubscriptionsLandscape@2x.png in Resources */,
-				01ABBAD0171FF618007E4462 /* OLDSYNAbstractChannelsDetailViewController.xib in Resources */,
 				BE86BF3017201BA70006DC8A /* ButtonResetPasswordDefault.png in Resources */,
 				BE86BF3117201BA70006DC8A /* ButtonResetPasswordDefault@2x.png in Resources */,
 				BE86BF3217201BA70006DC8A /* ButtonResetPasswordHighlighted.png in Resources */,

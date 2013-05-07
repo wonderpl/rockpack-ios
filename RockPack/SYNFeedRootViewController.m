@@ -130,12 +130,14 @@
     [self refreshVideoThumbnails];
 }
 
--(void)viewWillAppear:(BOOL)animated
+
+- (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear:animated];
     
     [self.videoThumbnailCollectionView reloadData];
 }
+
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                  duration: (NSTimeInterval) duration
@@ -154,21 +156,28 @@
 
 - (void) refreshVideoThumbnails
 {
-    
     [appDelegate.oAuthNetworkEngine subscriptionsUpdatesForUserId:  appDelegate.currentOAuth2Credentials.userId
                                                             start: 0
                                                              size: 0
                                                 completionHandler: ^(NSDictionary *responseDictionary) {
-                                                    //DebugLog(@"Refresh subscription updates successful");
+                                                    [self handleRefreshComplete];
+                                                    DebugLog(@"Refresh subscription updates successful");
                                                 } errorHandler: ^(NSDictionary* errorDictionary) {
+                                                    [self handleRefreshComplete];
                                                     DebugLog(@"Refresh subscription updates failed");
-         
                                                 }];
+}
+
+- (void) handleRefreshComplete
+{
+    self.refreshing = FALSE;
+    [self.refreshControl endRefreshing];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kRefreshComplete
+                                                        object: self];
 }
 
 
 #pragma mark - Fetched results
-
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
@@ -217,6 +226,7 @@
     }
 }
 
+
 - (NSInteger) collectionView: (UICollectionView *) collectionView
       numberOfItemsInSection: (NSInteger) section
 {
@@ -225,13 +235,14 @@
     
 }
 
+
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout*) collectionViewLayout
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        return CGSizeMake(310,251);
+        return CGSizeMake(310,221);
     }
     else if([[SYNDeviceManager sharedInstance] isLandscape])
     {
@@ -353,7 +364,7 @@
         headerSupplementaryView.viewControllerDelegate = self;
         headerSupplementaryView.focus = focus;
         headerSupplementaryView.sectionTitleLabel.text = sectionText.uppercaseString;
-        if([[SYNDeviceManager sharedInstance] isLandscape])
+        if ([[SYNDeviceManager sharedInstance] isLandscape])
         {
             headerSupplementaryView.sectionView.image = [UIImage imageNamed:@"PanelDay"];
         }
