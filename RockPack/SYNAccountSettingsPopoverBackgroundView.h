@@ -7,10 +7,10 @@
     UIImageView                *_popoverBackgroundImageView;   
 }
 
-@property (nonatomic, readwrite, strong)    UIImageView             *popoverBackgroundImageView;
+@property (nonatomic, readwrite, strong) UIImageView *popoverBackgroundImageView;
 
-+ (CGFloat)arrowHeight;
-+ (CGFloat)arrowBase;
-+ (UIEdgeInsets)contentViewInsets;
++ (CGFloat) arrowHeight;
++ (CGFloat) arrowBase;
++ (UIEdgeInsets) contentViewInsets;
 
 @end
