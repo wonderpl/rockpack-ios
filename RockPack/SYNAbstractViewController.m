@@ -402,8 +402,8 @@
 #pragma mark - Social network sharing
 
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
-                 fromRect: (CGRect) rect
-          arrowDirections: (UIPopoverArrowDirection) arrowDirections
+                   fromRect: (CGRect) rect
+            arrowDirections: (UIPopoverArrowDirection) arrowDirections
 {
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
