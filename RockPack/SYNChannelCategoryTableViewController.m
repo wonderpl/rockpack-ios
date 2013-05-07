@@ -21,7 +21,6 @@
 @property NSMutableArray* transientDatasource;
 @property NSIndexPath* lastSelectedIndexpath;
 @property NSMutableDictionary* headerRegister;
-@property (strong, nonatomic) IBOutlet UIImageView *shadowImageView;
 
 @end
 
@@ -31,7 +30,7 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        _headerRegister = [NSMutableDictionary dictionary];
+        [self commonSetup];
     }
     return self;
 }
@@ -40,28 +39,48 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        _headerRegister = [NSMutableDictionary dictionary];
+        [self commonSetup];
     }
     return self;
+}
+
+-(void)commonSetup
+{
+    _headerRegister = [NSMutableDictionary dictionary];
+    _showAllCategoriesHeader = YES;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"SYNChannelCategoryTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SYNChannelCategoryTableCell"];
     
-    SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
-    topHeader.titleLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
-    topHeader.headerButton.tag = -1;
-    topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
-    topHeader.frame = CGRectMake(0.0f, 0.0f, 245.0f, 45.0f);
-    [topHeader.headerButton addTarget:self action:@selector(tappedAllCategories:) forControlEvents:UIControlEventTouchUpInside];
-    [topHeader.headerButton addTarget:self action:@selector(pressedAllCategories:) forControlEvents:UIControlEventTouchDown];
-    [topHeader.headerButton addTarget:self action:@selector(releasedAllCategories:) forControlEvents:UIControlEventTouchUpOutside];
-    [topHeader.arrowImage removeFromSuperview];
-    self.tableView.tableHeaderView = topHeader;
+    if(self.showAllCategoriesHeader)
+    {
+        SYNChannelCategoryTableHeader* topHeader = [[SYNChannelCategoryTableHeader alloc] init];
+        topHeader.frame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 45.0f);
+        [topHeader layoutSubviews];
+        topHeader.titleLabel.text = NSLocalizedString(@"ALL CATEGORIES",nil);
+        topHeader.headerButton.tag = -1;
+        topHeader.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
+        [topHeader.headerButton addTarget:self action:@selector(tappedAllCategories:) forControlEvents:UIControlEventTouchUpInside];
+        [topHeader.headerButton addTarget:self action:@selector(pressedAllCategories:) forControlEvents:UIControlEventTouchDown];
+        [topHeader.headerButton addTarget:self action:@selector(releasedAllCategories:) forControlEvents:UIControlEventTouchUpOutside];
+        [topHeader.arrowImage removeFromSuperview];
+        self.tableView.tableHeaderView = topHeader;
+    }
     
+    if(self.closeButton)
+    {
+        [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    if(self.confirmButton)
+    {
+        [self.confirmButton addTarget:self action:@selector(confirmButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        self.confirmButton.enabled = NO;
+    }
     
     [self loadCategories];
 }
@@ -93,7 +112,7 @@
     NSError* error;
     
     self.categoriesDatasource = [appDelegate.mainManagedObjectContext executeFetchRequest: categoriesFetchRequest
-                                                                                                   error: &error];
+                                                                                    error: &error];
     
     if (self.categoriesDatasource.count <= 0)
     {
@@ -169,6 +188,7 @@
         header = [[SYNChannelCategoryTableHeader alloc] init];
         [self.headerRegister setObject:header forKey:@(section)];
     }
+    [header layoutSubviews];
     header.titleLabel.text = [dictionary objectForKey:kCategoryNameKey];
     if([dictionary valueForKey:kSubCategoriesKey])
     {
@@ -193,43 +213,43 @@
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - Table view delegate
 
@@ -237,9 +257,16 @@
 {
     Subcategory* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] objectForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
     //Callback to update content
-    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
+    if(!self.confirmButton)
     {
-        [self.categoryTableControllerDelegate categoryTableController:self didSelectSubCategoryWithId:subCategory.uniqueId categoryTitle:subCategory.category.name subCategoryTitle:subCategory.name];
+        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
+        {
+            [self.categoryTableControllerDelegate categoryTableController:self didSelectSubCategoryWithId:subCategory.uniqueId categoryTitle:subCategory.category.name subCategoryTitle:subCategory.name];
+        }
+    }
+    else
+    {
+        self.confirmButton.enabled = YES;
     }
     self.lastSelectedIndexpath = indexPath;
 }
@@ -268,7 +295,7 @@
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlide"];
         headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevron"];
     }
-
+    
 }
 
 -(void)tappedHeader:(UIButton*)header
@@ -277,7 +304,7 @@
     if(needToOpen)
     {
         [CATransaction begin];
-    
+        
         [CATransaction setCompletionBlock:^{
             NSIndexPath* topElement = [NSIndexPath indexPathForRow:0 inSection:header.tag];
             [self.tableView scrollToRowAtIndexPath:topElement atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -285,7 +312,7 @@
     }
     
     [self.tableView beginUpdates];
-   //close previously open section
+    //close previously open section
     if(self.lastSelectedIndexpath)
     {
         //close previously open section
@@ -304,7 +331,7 @@
         {
             [self.categoryTableControllerDelegate categoryTableController:self didSelectCategoryWithId:@"all" title:NSLocalizedString(@"ALL CATEGORIES", nil)];
         }
-
+        
     }
     
     [self.tableView endUpdates];
@@ -314,6 +341,7 @@
         [CATransaction commit];
     }
     
+    self.confirmButton.enabled = NO;
 }
 
 -(void)expandSection:(NSInteger)section
@@ -338,7 +366,7 @@
         headerView.backgroundImage.image = [UIImage imageNamed:@"CategorySlideSelected"];
         headerView.arrowImage.image = [UIImage imageNamed:@"IconCategorySlideChevronSelected"];
     } completion:nil];
-        
+    
     //Callback to update content
     if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategoryWithId:title:)])
     {
@@ -396,6 +424,21 @@
     self.lastSelectedIndexpath = nil;
     
 }
+- (IBAction)confirmButtonTapped:(id)sender {
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
+    {
+        Subcategory* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
+        [self.categoryTableControllerDelegate categoryTableController:self didSelectSubCategoryWithId:subCategory.uniqueId categoryTitle:subCategory.category.name subCategoryTitle:subCategory.name];
+    }
+    
+}
 
+- (IBAction)closeButtonTapped:(id)sender {
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableControllerDeselectedAll:)])
+    {
+        [self.categoryTableControllerDelegate categoryTableControllerDeselectedAll:self];
+    }
+
+}
 
 @end

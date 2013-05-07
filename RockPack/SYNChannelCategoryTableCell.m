@@ -22,6 +22,7 @@
 
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
     self.titleLabel.font = [UIFont rockpackFontOfSize:self.titleLabel.font.pointSize];
 }
 

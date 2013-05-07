@@ -24,11 +24,12 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNChannelCategoryTableViewController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate>
+                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -59,10 +60,12 @@
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (nonatomic, weak) Channel *channel;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic,strong) NSString* selectedCategoryId;
 
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+@property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 
 @end
 
@@ -169,17 +172,19 @@
                                      placeHolderImage: nil];
     
 
-    
-    // Create categories tab, but make invisible (alpha = 0) for now
-    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
-    self.categoriesTabViewController.delegate = self;
-    CGRect tabFrame = self.categoriesTabViewController.view.frame;
-    tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
-    self.categoriesTabViewController.view.frame = tabFrame;
-    [self.view addSubview: self.categoriesTabViewController.view];
-    self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.categoriesTabViewController.view.alpha = 0.0f;
-    [self addChildViewController: self.categoriesTabViewController];
+    if(!isIPhone)
+    {
+        // Create categories tab, but make invisible (alpha = 0) for now
+        self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
+        self.categoriesTabViewController.delegate = self;
+        CGRect tabFrame = self.categoriesTabViewController.view.frame;
+        tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
+        self.categoriesTabViewController.view.frame = tabFrame;
+        [self.view addSubview: self.categoriesTabViewController.view];
+        self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.categoriesTabViewController.view.alpha = 0.0f;
+        [self addChildViewController: self.categoriesTabViewController];
+    }
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
@@ -245,6 +250,7 @@
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
         }
     }
+    self.selectedCategoryId = @"";
 }
 
 - (void) updateCategoryButtonText: (NSString *) buttonText
@@ -908,6 +914,8 @@
 
 - (void) showCategoryChooser
 {
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
     if (self.categoriesTabViewController.view.alpha == 0.0f)
     {
         [UIView animateWithDuration: kChannelEditModeAnimationDuration
@@ -923,6 +931,24 @@
                                                                                                  kChannelCreationCategoryAdditionalOffsetY));
                          }
                          completion: nil];
+    }
+    }
+    else
+    {
+        if(!self.categoryTableViewController)
+        {
+            self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle:[NSBundle mainBundle]];
+            self.categoryTableViewController.categoryTableControllerDelegate = self;
+            self.categoryTableViewController.showAllCategoriesHeader = NO;
+        }
+        CGRect startFrame = self.categoryTableViewController.view.frame;
+        startFrame.origin.y = self.view.frame.size.height;
+        [self.view addSubview:self.categoryTableViewController.view];
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            CGRect endFrame = self.categoryTableViewController.view.frame;
+            endFrame.origin.y = 0.0f;
+            self.categoryTableViewController.view.frame = endFrame;
+        } completion:nil];
     }
 
 }
@@ -967,7 +993,7 @@
 
 - (void) handleNewTabSelectionWithId: (NSString*) itemId
 {
-    
+    self.selectedCategoryId = itemId;
 }
 
 - (void) handleNewTabSelectionWithName: (NSString*) name
@@ -978,13 +1004,13 @@
 
 - (void) handleMainTap: (UITapGestureRecognizer*) recogniser
 {
-
+    self.selectedCategoryId = @"";
 }
 
 
 - (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
 {
-    
+    [self hideCategoryChooser];
 }
 
 
@@ -998,7 +1024,7 @@
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
                                                description: (self.channel.channelDescription)
-                                                  category: @"222"
+                                                  category: self.selectedCategoryId
                                                      cover: @""
                                                   isPublic: YES
                                          completionHandler:^(NSDictionary* resourceCreated) {
@@ -1272,4 +1298,29 @@
 {
     // TODO: Put some networking code in here
 }
+
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
+{
+    self.selectedCategoryId = uniqueId;
+    [self.selectCategoryButton setTitle:[NSString stringWithFormat:@"%@/\n%@", categoryTitle, subCategoryTitle] forState:UIControlStateNormal];
+    [self hideCategoriesTable];
+}
+
+-(void)categoryTableControllerDeselectedAll:(SYNChannelCategoryTableViewController *)tableController
+{
+    [self.selectCategoryButton setTitle:@"SELECT A\nCATEGORY" forState:UIControlStateNormal];
+    [self hideCategoriesTable];
+}
+
+-(void) hideCategoriesTable
+{
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGRect endFrame = self.categoryTableViewController.view.frame;
+        endFrame.origin.y = self.view.frame.size.height;
+        self.categoryTableViewController.view.frame = endFrame;
+    } completion:^(BOOL finished) {
+        [self.categoryTableViewController.view removeFromSuperview];
+    }];
+}
+
 @end
