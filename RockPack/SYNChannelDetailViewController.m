@@ -116,6 +116,8 @@
     [self addShadowToLayer: self.channelDetailsLabel.layer];
     
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
+    [self addShadowToLayer: self.byLabel.layer];
+
     
     // Add Rockpack font and shadow to UITextView
     self.channelTitleTextView.font = [UIFont rockpackFontOfSize: self.channelTitleTextView.font.pointSize];
