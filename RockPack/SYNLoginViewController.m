@@ -21,7 +21,7 @@
 #import "User.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface SYNLoginViewController ()  <UITextFieldDelegate>
+@interface SYNLoginViewController ()  <UITextFieldDelegate, SYNCameraPopoverViewControllerDelegate>
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) CGRect facebookButtonInitialFrame;
