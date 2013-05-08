@@ -1201,7 +1201,7 @@
 			<string key="ButtonShareHighlighted.png">{61, 61}</string>
 			<string key="ButtonSubscribe.png">{120, 45}</string>
 			<string key="ButtonSubscribeHighlighted.png">{120, 45}</string>
-			<string key="ButtonSubscribeSelected.png">{110, 45}</string>
+			<string key="ButtonSubscribeSelected.png">{120, 45}</string>
 			<string key="ChannelDetailOverlayBackground.png">{1024, 748}</string>
 			<string key="LogoRockpack.png">{148, 27}</string>
 		</dictionary>
