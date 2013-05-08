@@ -38,6 +38,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* registerNewUserButton;
 @property (nonatomic, strong) IBOutlet UIButton* sendEmailButton;
 @property (nonatomic, strong) IBOutlet UIButton* signUpButton;
+@property (nonatomic, strong) IBOutlet UIImage* avatarImage;
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
@@ -676,7 +677,6 @@
                                                                                                 [activityIndicator stopAnimating];
                                                                                                 
                                                                                                 [self completeLoginProcess: credential];
-                                                                                                
                                                                                             }
                                                                                                  errorHandler:^(NSDictionary* errorDictionary) {
                                                                                                      
@@ -1040,6 +1040,14 @@
                                                                                             
                                                                                             [self completeLoginProcess: credential];
                                                                                             
+                                                                                            // TODO: Hack for testing, remove ASAP
+                                                                                            self.avatarImage = [UIImage imageNamed: @"Icon@2x.png"];
+                                                                                            
+                                                                                            if (self.avatarImage)
+                                                                                            {
+                                                                                                [self uploadAvatar: self.avatarImage];
+                                                                                            }
+                                                                                            
                                                                                         }
                                                                                              errorHandler: ^(NSDictionary* errorDictionary) {
                                                                                              }];
@@ -1063,6 +1071,19 @@
     
     return;
 }
+
+- (void) uploadAvatar: (UIImage *) avatarImage;
+{
+    [appDelegate.oAuthNetworkEngine updateAvatarForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                    image: avatarImage
+                                        completionHandler: ^(NSDictionary* errorDictionary) {
+                                            DebugLog(@"Avatar uploaded successfully");
+                                        }
+                                             errorHandler: ^(NSDictionary* errorDictionary) {
+                                                 DebugLog(@"Avatar upload failed");
+                                             }];
+}
+
 
 - (void) showRegistrationError: (NSDictionary*) errorDictionary
 {
@@ -1253,95 +1274,7 @@
 //}
 
 
-#pragma mark - CoreData Access
-
-//#pragma mark - Face Image and Camera
-//
-//- (IBAction) faceButtonImagePressed: (UIButton*) sender
-//{
-//    
-//    SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-//    actionPopoverController.delegate = self;
-//    
-//    // Need show the popover controller
-//    self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-//    self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
-//    self.cameraMenuPopoverController.delegate = self;
-//    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-//    
-//    [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
-//                                                      inView: self.view
-//                                    permittedArrowDirections: UIPopoverArrowDirectionUp
-//                                                    animated: YES];
-//}
-//
-//
-//- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
-//{
-//    self.imagePicker = [[GKImagePicker alloc] init];
-//    self.imagePicker.cropSize = CGSizeMake(256, 176);
-//    self.imagePicker.delegate = self;
-//    self.imagePicker.imagePickerController.sourceType = sourceType;
-//    
-//    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
-//    {
-//        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-//        {
-//            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-//        }
-//    }
-//    
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-//    {
-//        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.imagePicker.imagePickerController];
-//        
-//        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
-//                                                      inView: self.view
-//                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
-//                                                    animated: YES];
-//    }
-//    else
-//    {
-//        [self presentViewController: self.imagePicker.imagePickerController
-//                           animated: YES
-//                         completion: nil];
-//    }
-//}
-//
-//
-//- (void) userTouchedTakePhotoButton
-//{
-//    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
-//    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
-//}
-//
-//
-//- (void) imagePicker: (GKImagePicker *) imagePicker
-//         pickedImage: (UIImage *) image
-//{
-//    //    self.imgView.image = image;
-//    
-//    [self.faceImageButton setImage:image forState:UIControlStateNormal];
-//    
-//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
-//    [self hideImagePicker];
-//}
-//
-//
-//- (void) hideImagePicker
-//{
-//    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
-//    {
-//        [self.cameraPopoverController dismissPopoverAnimated: YES];
-//    }
-//    else
-//    {
-//        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
-//                                                                   completion: nil];
-//    }
-//}
-
-#pragma mark - Cover selection and upload support
+#pragma mark - Avatar image selection
 
 - (IBAction) faceButtonImagePressed: (UIButton*) button
 {
@@ -1441,9 +1374,11 @@
 {
     DebugLog(@"width %f, height %f", image.size.width, image.size.height);
     
-    self.avatarImageView.image = image;
+    // Save our avatar
+    self.avatarImage = image;
     
-    [self uploadAvatarImage: image];
+    // And update on-screen avatar
+    self.avatarImageView.image = image;
     
     [self hideImagePicker];
 }
@@ -1462,32 +1397,6 @@
     }
 }
 
-#pragma mark - Upload channel cover image
-
-- (void) uploadAvatarImage: (UIImage *) imageToUpload
-{
-    // TODO: Add avatoar uploading
-    
-//    // Upload the image for this user
-//    [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
-//                                                      image: imageToUpload
-//                                          completionHandler: ^(NSDictionary *dictionary){
-//                                              NSString *wallpaperURL = dictionary [@"background_url"];
-//                                              
-//                                              if (wallpaperURL)
-//                                              {
-//                                                  self.channel.wallpaperURL = wallpaperURL;
-//                                                  DebugLog(@"Success");
-//                                              }
-//                                              else
-//                                              {
-//                                                  DebugLog(@"Failed to get wallpaper URL");
-//                                              }
-//                                          }
-//                                               errorHandler: ^(NSError* error) {
-//                                                   DebugLog(@"%@", [error debugDescription]);
-//                                               }];
-}
 
 #pragma mark - Rotation support
 
