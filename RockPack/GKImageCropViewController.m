@@ -6,15 +6,16 @@
 //  Copyright (c) 2012 Aurora Apps. All rights reserved.
 //
 
-#import "GKImageCropViewController.h"
 #import "GKImageCropView.h"
+#import "GKImageCropViewController.h"
+#import "UIFont+SYNFont.h"
 
 @interface GKImageCropViewController ()
 
 @property (nonatomic, strong) GKImageCropView *imageCropView;
-@property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, strong) UIButton *useButton;
+@property (nonatomic, strong) UIToolbar *toolbar;
 
 - (void)_actionCancel;
 - (void)_actionUse;
@@ -48,16 +49,56 @@
 }
 
 
-- (void)_setupNavigationBar{
+- (void)_setupNavigationBar
+{
+    UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 200, 28)];
+    containerView.backgroundColor = [UIColor clearColor];
+    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 200, 28)];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont rockpackFontOfSize: 20.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor blackColor];
+    label.text = self.navigationItem.title;
+    [containerView addSubview: label];
+    self.navigationItem.titleView = containerView;
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-                                                                                          target:self 
-                                                                                          action:@selector(_actionCancel)];
+    UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
+    UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"")
-                                                                              style:UIBarButtonItemStyleBordered 
-                                                                             target:self 
-                                                                             action:@selector(_actionUse)];
+    [customCancelButton setImage: customCancelButtonImage
+                        forState: UIControlStateNormal];
+    
+    [customCancelButton setImage: customCancelButtonHighlightedImage
+                        forState: UIControlStateHighlighted];
+    
+    [customCancelButton addTarget: self
+                           action: @selector(_actionCancel)
+                 forControlEvents: UIControlEventTouchUpInside];
+    
+    customCancelButton.frame = CGRectMake(0.0, 0.0, customCancelButtonImage.size.width, customCancelButtonImage.size.height);
+    UIBarButtonItem *customCancelButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customCancelButton];
+    
+    self.navigationItem.leftBarButtonItem = customCancelButtonItem;
+    
+    UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleUse.png"];
+    UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonMoveAndScaleUse.png"];
+    
+    [customUseButton setImage: customUseButtonImage
+                     forState: UIControlStateNormal];
+    
+    [customUseButton setImage: customUseButtonHighlightedImage
+                     forState: UIControlStateHighlighted];
+    
+    [customUseButton addTarget: self
+                        action: @selector(_actionUse)
+              forControlEvents: UIControlEventTouchUpInside];
+    
+    customUseButton.frame = CGRectMake(0.0, 0.0, customUseButtonImage.size.width, customUseButtonImage.size.height);
+    UIBarButtonItem *customUseButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customUseButton];
+    
+    self.navigationItem.rightBarButtonItem = customUseButtonItem;
 }
 
 
@@ -77,11 +118,10 @@
     [self.cancelButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetButton.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
     [self.cancelButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetButtonPressed.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateHighlighted];
     
-    [[self.cancelButton titleLabel] setFont:[UIFont boldSystemFontOfSize:11]];
+    [[self.cancelButton titleLabel] setFont: [UIFont boldRockpackFontOfSize: 11.0]];
     [[self.cancelButton titleLabel] setShadowOffset:CGSizeMake(0, 1)];
     [self.cancelButton setFrame:CGRectMake(0, 0, 50, 30)];
-    [self.cancelButton setTitle:NSLocalizedString(@"Cancel",@"") forState:UIControlStateNormal];
-    [self.cancelButton setTitleColor:[UIColor colorWithRed:0.173 green:0.176 blue:0.176 alpha:1] forState:UIControlStateNormal];
+    [self.cancelButton setTitle:NSLocalizedString(@"CANCEL",@"") forState:UIControlStateNormal];
     [self.cancelButton setTitleShadowColor:[UIColor colorWithRed:0.827 green:0.831 blue:0.839 alpha:1] forState:UIControlStateNormal];
     [self.cancelButton  addTarget:self action:@selector(_actionCancel) forControlEvents:UIControlEventTouchUpInside];
     
@@ -94,10 +134,10 @@
     [self.useButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetDoneButton.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
     [self.useButton setBackgroundImage:[[UIImage imageNamed:@"PLCameraSheetDoneButtonPressed.png"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateHighlighted];
     
-    [[self.useButton titleLabel] setFont:[UIFont boldSystemFontOfSize:11]];
+    [[self.useButton titleLabel] setFont:[UIFont boldRockpackFontOfSize:11]];
     [[self.useButton titleLabel] setShadowOffset:CGSizeMake(0, -1)];
     [self.useButton setFrame:CGRectMake(0, 0, 50, 30)];
-    [self.useButton setTitle:NSLocalizedString(@"Use",@"") forState:UIControlStateNormal];
+    [self.useButton setTitle:NSLocalizedString(@"USE",@"") forState:UIControlStateNormal];
     [self.useButton setTitleShadowColor:[UIColor colorWithRed:0.118 green:0.247 blue:0.455 alpha:1] forState:UIControlStateNormal];
     [self.useButton  addTarget:self action:@selector(_actionUse) forControlEvents:UIControlEventTouchUpInside];
     
@@ -136,7 +176,7 @@
         [self _setupUseButton];
         
         UILabel *info = [[UILabel alloc] initWithFrame:CGRectZero];
-        info.text = NSLocalizedString(@"Move and Scale", @"");
+        info.text = NSLocalizedString(@"MOVE AND SCALE", @"");
         info.textColor = [UIColor colorWithRed:0.173 green:0.173 blue:0.173 alpha:1];
         info.backgroundColor = [UIColor clearColor];
         info.shadowColor = [UIColor colorWithRed:0.827 green:0.831 blue:0.839 alpha:1];
@@ -168,7 +208,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.title = NSLocalizedString(@"Choose Photo", @"");
+    self.title = NSLocalizedString(@"MOVE AND SCALE", @"");
 
     [self _setupNavigationBar];
     [self _setupCropView];
