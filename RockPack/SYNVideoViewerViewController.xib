@@ -1064,22 +1064,22 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAddToChannelInactive.png">{130, 45}</string>
-			<string key="ButtonAddToChannelInactiveHighlighted.png">{130, 45}</string>
-			<string key="ButtonClose.png">{44, 45}</string>
-			<string key="ButtonVideoOverlayAdd.png">{70, 69}</string>
-			<string key="ButtonVideoOverlayAddHighlighted.png">{70, 69}</string>
-			<string key="ButtonVideoOverlayAddSelected.png">{70, 69}</string>
-			<string key="ButtonVideoOverlayLike.png">{70, 69}</string>
-			<string key="ButtonVideoOverlayLikeHighlighted.png">{70, 69}</string>
-			<string key="ButtonVideoOverlayLikeSelected.png">{70, 69}</string>
-			<string key="ButtonVideoOverlayNext.png">{53, 96}</string>
-			<string key="ButtonVideoOverlayNextHighlighted.png">{53, 96}</string>
-			<string key="ButtonVideoOverlayPrevious.png">{53, 96}</string>
-			<string key="ButtonVideoOverlayPreviousHighlighted.png">{53, 96}</string>
-			<string key="ButtonVideoOverlayShare.png">{70, 69}</string>
-			<string key="ButtonVideoOverlayShareHighlighted.png">{70, 69}</string>
-			<string key="PanelVideoScreenVideoMainOverlay.png">{1024, 748}</string>
+			<string key="ButtonAddToChannelInactive.png">{16, 16}</string>
+			<string key="ButtonAddToChannelInactiveHighlighted.png">{16, 16}</string>
+			<string key="ButtonClose.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayAdd.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayAddHighlighted.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayAddSelected.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayLike.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayLikeHighlighted.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayLikeSelected.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayNext.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayNextHighlighted.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayPrevious.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayPreviousHighlighted.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayShare.png">{16, 16}</string>
+			<string key="ButtonVideoOverlayShareHighlighted.png">{16, 16}</string>
+			<string key="PanelVideoScreenVideoMainOverlay.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
