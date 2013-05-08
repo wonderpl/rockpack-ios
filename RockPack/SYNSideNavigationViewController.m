@@ -49,6 +49,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 
+
 @property (nonatomic, strong) NSMutableArray* notifications;
 
 @property (nonatomic, strong) UIView* bottomExtraView;
@@ -134,14 +135,15 @@ typedef enum {
     }
     else // isIPad == TRUE
     {
+        CGFloat bgHeight = (self.backgroundImageView.frame.origin.y + self.backgroundImageView.frame.size.height);
         self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
-                                                                        self.view.frame.origin.y + self.view.frame.size.height,
-                                                                        self.view.frame.size.width,
-                                                                        350.0)];
+                                                                        bgHeight,
+                                                                        self.backgroundImageView.frame.size.width,
+                                                                        [[SYNDeviceManager sharedInstance] currentScreenHeight] - bgHeight)];
         
         self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
         
-        [self.view insertSubview:self.bottomExtraView belowSubview:self.settingsButton];
+        [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
         
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         self.view.frame = newFrame;
@@ -520,7 +522,11 @@ typedef enum {
     settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
 
-    
+    CGFloat bgHeight = (self.backgroundImageView.frame.origin.y + self.backgroundImageView.frame.size.height);
+    self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
+                                                                    bgHeight,
+                                                                    self.backgroundImageView.frame.size.width,
+                                                                    [[SYNDeviceManager sharedInstance] currentScreenHeight] - bgHeight)];
     
     if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
