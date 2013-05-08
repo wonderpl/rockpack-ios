@@ -19,6 +19,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "SYNNotificationsViewController.h"
+#import "SYNSoundPlayer.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -67,6 +68,7 @@ typedef enum {
 @synthesize keyForSelectedPage;
 @synthesize appDelegate;
 @synthesize unreadNotifications;
+@synthesize state = _state;
 
 - (id) init
 {
@@ -79,7 +81,7 @@ typedef enum {
                                 @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"}
                                 ];
         
-        self.state = SideNavigationStateHidden;
+        _state = SideNavigationStateHidden;
         
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -138,6 +140,16 @@ typedef enum {
                                              selector:@selector(notificationMarkedRead:)
                                                  name:kNotificationMarkedRead
                                                object:nil];
+    
+    // == settings button == //
+    
+    CGRect settingsButtonFrame = self.settingsButton.frame;
+    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 10.0 - settingsButtonFrame.size.height;
+    self.settingsButton.frame = settingsButtonFrame;
+    
+    // == User Name Label == //
+    
+    self.userNameLabel.alpha = 0.0;
     
     [self getNotifications];
 }
@@ -362,52 +374,14 @@ typedef enum {
         
         // == NOTIFICATIONS == //
         
-        if(indexPath.row == kNotificationsRowIndex )
+        if(indexPath.row == kNotificationsRowIndex)
         {
             
             ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
         
         
-        if([[SYNDeviceManager sharedInstance] isIPad])
-        {
-            [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                         animations: ^{
-                             
-                             CGRect sideNavigationFrame = self.view.frame;
-                             
-                             sideNavigationFrame.origin.x = 1024.0 - self.view.frame.size.width;
-                             self.view.frame =  sideNavigationFrame;
-                             
-                         } completion: ^(BOOL finished) {
-                             
-                             self.state = SideNavigationStateFull;
-                             
-                         }];
-        }
-        else
-        {
-            CGRect startFrame = self.containerView.frame;
-            startFrame.origin.x = self.view.frame.size.width;
-            self.containerView.frame = startFrame;
-            self.containerView.hidden = NO;
-            [UIView animateWithDuration: 0.5f
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^{
-                                 
-                                 CGRect selfBounds = self.view.bounds;
-                                 selfBounds.origin.y = self.containerView.frame.origin.y;
-                                 self.containerView.frame = selfBounds;
-                                 
-                             } completion: ^(BOOL finished) {
-                                 
-                                 self.state = SideNavigationStateFull;
-                                 
-                             }];
-        }
+        self.state = SideNavigationStateFull;
         
     }
     else
@@ -443,7 +417,7 @@ typedef enum {
 - (void) setUser: (User *) user
 {
     _user = user;
-    self.userNameLabel.text = self.user.fullName;
+    self.userNameLabel.text = [self.user.fullName uppercaseString];
     self.nicknameLabel.text = self.user.username;
     [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.user.thumbnailURL]
                                              placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou.png"]];
@@ -576,5 +550,128 @@ typedef enum {
                 
     }];
 }
+
+#pragma mark - Accessor & Animation
+
+-(void)setState:(SideNavigationState)state
+{
+    if (state == _state)
+        return;
+    
+    _state = state;
+    
+    switch (_state) {
+        case SideNavigationStateHidden:
+            [self showHiddenNavigation];
+            break;
+            
+        case SideNavigationStateHalf:
+            [self showHalfNavigation];
+            break;
+            
+        case SideNavigationStateFull:
+            [self showFullNavigation];
+            break;
+            
+    }
+}
+
+-(void)showHalfNavigation
+{
+    
+    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
+    
+    [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations: ^{
+                         
+                         CGRect sideNavigationFrame = self.view.frame;
+                         if([[SYNDeviceManager sharedInstance] isIPad])
+                         {
+                             sideNavigationFrame.origin.x = 1024.0 - 192.0;
+                         }
+                         else
+                         {
+                             sideNavigationFrame.origin.x = 704.0f;
+                         }
+                         self.view.frame = sideNavigationFrame;
+                         
+                         self.userNameLabel.alpha = 0.0;
+                         
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                     }];
+}
+
+-(void)showFullNavigation
+{
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations: ^{
+                             
+                             CGRect sideNavigationFrame = self.view.frame;
+                             
+                             sideNavigationFrame.origin.x = 1024.0 - self.view.frame.size.width;
+                             self.view.frame =  sideNavigationFrame;
+                             
+                             self.userNameLabel.alpha = 1.0;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             
+                             
+                         }];
+    }
+    
+    else
+    {
+        CGRect startFrame = self.containerView.frame;
+        startFrame.origin.x = self.view.frame.size.width;
+        self.containerView.frame = startFrame;
+        self.containerView.hidden = NO;
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
+                             
+                             CGRect selfBounds = self.view.bounds;
+                             selfBounds.origin.y = self.containerView.frame.origin.y;
+                             self.containerView.frame = selfBounds;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             
+                         }];
+    }
+}
+
+-(void)showHiddenNavigation
+{
+    
+    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
+    
+    [UIView animateWithDuration: 0.2f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations: ^ {
+                         
+                         CGRect sideNavigationFrame = self.view.frame;
+                         sideNavigationFrame.origin.x = 1024;
+                         self.view.frame =  sideNavigationFrame;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         [self reset];
+                         [self deselectAllCells];
+                         
+                         
+                     }];
+}
+
 
 @end

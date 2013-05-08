@@ -105,23 +105,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
         sideNavigationFrame.origin.x = 1024.0;
-        NSLog(@"Current width: %f", sideNavigationFrame.origin.x);
-        if([[SYNDeviceManager sharedInstance] isIPad])
-        {
-            sideNavigationFrame.origin.y = 74.0f;
-        }
-        else
-        {
-            sideNavigationFrame.origin.y = 58.0f;
-        }
+        
+        sideNavigationFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad] ? 0.0 : 58.0f;
+        
         
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
         self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         
         
-//        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sideNavigationPanned:)];
-//        [self.sideNavigationViewController.view addGestureRecognizer:panGesture];
         
         
         // == Search Box == //
@@ -450,7 +442,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if (self.sideNavigationViewController.state == SideNavigationStateFull
        || self.sideNavigationViewController.state == SideNavigationStateHalf)
     {
-        [self hideSideNavigation];
+        self.sideNavigationViewController.state = SideNavigationStateHidden;
         sender.highlighted = NO;
     }
     else
@@ -468,62 +460,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [self.sideNavigationViewController setSelectedCellByPageName:controllerTitle];
     
     
-    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
+    self.sideNavigationViewController.state = SideNavigationStateHalf;
     
-    
-    [UIView animateWithDuration: kRockieTalkieAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^{
-                         
-                         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
-                         if([[SYNDeviceManager sharedInstance] isIPad])
-                         {
-                             sideNavigationFrame.origin.x = 1024.0 - 192.0;
-                         }
-                         else
-                         {
-                             sideNavigationFrame.origin.x = 704.0f;
-                         }
-                         self.sideNavigationViewController.view.frame = sideNavigationFrame;
-                         
-                     }
-                     completion: ^(BOOL finished) {
-                         
-                         self.sideNavigationViewController.state = SideNavigationStateHalf;
-                     }];
 }
 
 
-- (void) sideNavigationSwiped
-{
-    [self hideSideNavigation];
-}
-
-
-- (void) hideSideNavigation
-{
-
-    
-    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
-    
-    [UIView animateWithDuration: 0.2f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                     animations: ^ {
-                         
-                         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
-                         sideNavigationFrame.origin.x = 1024;
-                         self.sideNavigationViewController.view.frame =  sideNavigationFrame;
-                         
-                     } completion: ^(BOOL finished) {
-                         
-                         [self.sideNavigationViewController reset];
-                         [self.sideNavigationViewController deselectAllCells];
-                         self.sideNavigationViewController.state = SideNavigationStateHidden;
-                         
-                     }];
-}
 
 
 #pragma mark - Video Overlay View
@@ -771,8 +712,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.containerViewController navigateToPageByName:pageName];
     
-    if(self.sideNavigationViewController.state != SideNavigationStateHidden)
-        [self hideSideNavigation]; 
+    self.sideNavigationViewController.state = SideNavigationStateHidden;
+        
 }
 
 #pragma mark - Navigation Methods
