@@ -96,7 +96,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
-        self.sideNavigationViewController.user = appDelegate.currentUser;
+        
         
         self.containerViewController = root;
         [self addChildViewController:root];
@@ -105,6 +105,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         // == Side Navigation == //
         
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
+        
+        self.sideNavigationViewController.user = appDelegate.currentUser;
         
         self.sideNavigationViewController.view.frame = CGRectMake(1024.0,
                                                                   ([[SYNDeviceManager sharedInstance] isIPad] ? 0.0 : 58.0f),
