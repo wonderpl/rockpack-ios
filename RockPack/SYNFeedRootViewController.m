@@ -53,19 +53,33 @@
     UIEdgeInsets insets;
     if(isIPhone)
     {
-        insets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
     }
     else
     {
-        insets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+        insets = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
     }
-    SYNIntegralCollectionViewFlowLayout *standardFlowLayout =
-    [SYNIntegralCollectionViewFlowLayout
-        layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
-        minimumInterItemSpacing:0.0f
-        minimumLineSpacing:30.0f
-        scrollDirection:UICollectionViewScrollDirectionVertical
-        sectionInset:insets];
+    
+    
+    SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
+    if(isIPhone)
+    {
+        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
+                              layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
+                              minimumInterItemSpacing:0.0f
+                              minimumLineSpacing:10.0f
+                              scrollDirection:UICollectionViewScrollDirectionVertical
+                              sectionInset:insets];
+    }
+    else
+    {
+        standardFlowLayout = [SYNIntegralCollectionViewFlowLayout
+                              layoutWithItemSize:CGSizeMake(497.0f , 141.0f)
+                              minimumInterItemSpacing:0.0f
+                              minimumLineSpacing:30.0f
+                              scrollDirection:UICollectionViewScrollDirectionVertical
+                              sectionInset:insets];
+    }
     
     CGRect videoCollectionViewFrame, selfFrame;
     if(isIPhone)

@@ -609,4 +609,15 @@
     self.videoExpanded = !self.videoExpanded;
 }
 
+
+- (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
+{
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    
+    [self shareVideoInstance: videoInstance
+                     inView: self.chromeView
+                    fromRect: videoShareButton.frame
+             arrowDirections: UIPopoverArrowDirectionDown];
+}
+
 @end

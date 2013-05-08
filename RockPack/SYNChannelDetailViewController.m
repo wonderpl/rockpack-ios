@@ -561,6 +561,52 @@
         [self.coverThumbnailCollectionView scrollToItemAtIndexPath: indexPath
                                                   atScrollPosition: UICollectionViewScrollPositionNone
                                                           animated: YES];
+        
+        NSString *imageURLString = @"";
+        
+        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+
+            }
+            break;
+                
+            case 1:
+            {
+                // User channel covers
+                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                                  inSection: 0]];
+                imageURLString = channelCover.backgroundURL;
+            }
+            break;
+                
+            case 2:
+            {
+                // Rockpack channel covers
+                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                              inSection: 0]];
+                imageURLString = channelCover.backgroundURL;
+            }
+            break;
+                
+            default:
+            {
+                AssertOrLog(@"Shouldn't have more than three sections");
+            }
+            break;
+        }
+        
+        if ([imageURLString isEqualToString: @""])
+        {
+            self.channelCoverImageView.image = nil;
+        }
+        else
+        {
+            [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                                   placeHolderImage: nil];
+        }
     }
     else
     {
@@ -569,10 +615,8 @@
     }
 }
 
+
 #pragma mark - Fetched results controller
-
-
-
 
 - (NSFetchedResultsController *) channelCoverFetchedResultsController
 {
@@ -603,6 +647,7 @@
     return _channelCoverFetchedResultsController;
 }
 
+
 - (NSFetchedResultsController *) userChannelCoverFetchedResultsController
 {
     if (_userChannelCoverFetchedResultsController)
@@ -632,6 +677,7 @@
     
     return _userChannelCoverFetchedResultsController;
 }
+
 
 #pragma mark - Helper methods
 
@@ -756,19 +802,10 @@
 
 - (IBAction) shareChannelButtonTapped: (id) sender
 {
-    NSString *messageString = kChannelShareMessage;
-    
-    //  TODO: Put in cover art image?
-    //  UIImage *messageImage = [UIImage imageNamed: @"xyz.png"];
-    
-    // TODO: Put in real link
-    NSURL *messageURL = [NSURL URLWithString: @"http://www.rockpack.com"];
-    
-    [self shareURL: messageURL
-       withMessage: messageString
-          andImage: [UIImage imageNamed: @"Icon.png"]
-          fromRect: self.shareButton.frame
-   arrowDirections: UIPopoverArrowDirectionDown];
+    [self shareChannel: self.channel
+                inView: self.view
+              fromRect: self.shareButton.frame
+       arrowDirections: UIPopoverArrowDirectionDown];
 }
 
 
@@ -897,6 +934,7 @@
     }
 }
 
+
 - (void) hideCoverChooser
 {
     if (self.coverChooserMasterView.alpha == 1.0f)
@@ -969,6 +1007,7 @@
     }
 }
 
+
 - (void) resetVideoCollectionViewPosition
 {
     [UIView animateWithDuration: kChannelEditModeAnimationDuration
@@ -1035,15 +1074,14 @@
                                                   category: self.selectedCategoryId
                                                      cover: @""
                                                   isPublic: YES
-                                         completionHandler:^(NSDictionary* resourceCreated) {
-                                             
-            
+                                         completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey:@"id"];
                                              
                                              [self addVideosToNewChannelForId:channelId];
                                              
                                              
-                                         } errorHandler:^(id error) {
+                                         }
+                                              errorHandler: ^(id error) {
                                              
                                              DebugLog(@"Error @ createChannelPressed:");
                                              NSString* errorMessage = @"Could not create channel. Please try again later.";
@@ -1058,6 +1096,7 @@
                                          }];
 }
 
+
 - (void) addVideosToNewChannelForId: (NSString*) channelId
 {
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentOAuth2Credentials.userId
@@ -1068,23 +1107,19 @@
                                                       
                                                       [self getNewlyCreatedChannelForId:channelId];
                                                   }
-                                                       errorHandler:^(id err) {
+                                                       errorHandler: ^(id err) {
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
                                                            [self showError:@"Could not create channel. Please try again later."];
                                                        }];
-    
-    
 }
+
 
 - (void) getNewlyCreatedChannelForId: (NSString*) channelId
 {
-
-    [appDelegate.oAuthNetworkEngine channelCreatedForUserId:appDelegate.currentOAuth2Credentials.userId
-                                                  channelId:channelId
-                                          completionHandler:^(id dictionary) {
-                                              
-                                              
+    [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                  channelId: channelId
+                                          completionHandler: ^(id dictionary) {
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
                                                                                     ignoringObjectTypes:(kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
@@ -1097,13 +1132,11 @@
                                               [appDelegate saveContext:YES];
                                               
                                               [self channelCreationComplete];
-                                              
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
                                               [self showError:@"Could not create channel. Please try again later."];
                                           }];
-
 }
 
 -(void)showError:(NSString*)errorMessage
@@ -1144,14 +1177,14 @@
     return YES;
 }
 
--(void)textViewDidBeginEditing:(UITextView *)textView
+- (void) textViewDidBeginEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = YES;
     self.cancelTextInputButton.hidden = NO;
     
 }
 
--(void)textViewDidEndEditing:(UITextView *)textView
+- (void) textViewDidEndEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = NO;
     self.cancelTextInputButton.hidden = YES;
@@ -1226,7 +1259,7 @@
 - (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
 {
     self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(256, 176);
+    self.imagePicker.cropSize = CGSizeMake(280, 280);
     self.imagePicker.delegate = self;
     self.imagePicker.imagePickerController.sourceType = sourceType;
     

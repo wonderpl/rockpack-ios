@@ -73,11 +73,15 @@
 - (BOOL) needsAddButton;
 
 // Share
-- (void) shareURL: (NSURL *) shareURL
-      withMessage: (NSString *) shareString
-         andImage: (UIImage *) shareImage
-         fromRect: (CGRect) rect
-  arrowDirections: (UIPopoverArrowDirection) arrowDirections;
+- (void) shareVideoInstance: (VideoInstance *) videoInstance
+                     inView: (UIView *) inView
+                   fromRect: (CGRect) rect
+            arrowDirections: (UIPopoverArrowDirection) arrowDirections;
+
+- (void) shareChannel: (Channel *) channel
+               inView: (UIView *) inView
+             fromRect: (CGRect) rect
+      arrowDirections: (UIPopoverArrowDirection) arrowDirections;
 
 // Purchase
 

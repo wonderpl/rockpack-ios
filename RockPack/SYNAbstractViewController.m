@@ -226,13 +226,12 @@
 - (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
 {
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    // TODO: Put in video URL herer
-    [self shareURL: [NSURL URLWithString: @"http://localhost"]
-       withMessage: @""
-          andImage: [UIImage imageNamed: @"Icon.png"]
-          fromRect: videoShareButton.frame
-   arrowDirections: UIPopoverArrowDirectionDown];
+    [self shareVideoInstance: videoInstance
+                      inView: self.view
+                    fromRect: videoShareButton.frame
+             arrowDirections: UIPopoverArrowDirectionDown];
 }
 
 
@@ -403,57 +402,101 @@
 
 #pragma mark - Social network sharing
 
-- (void) shareURL: (NSURL *) shareURL
-      withMessage: (NSString *) shareString
-         andImage: (UIImage *) shareImage
-         fromRect: (CGRect) rect
-  arrowDirections: (UIPopoverArrowDirection) arrowDirections
+- (void) shareVideoInstance: (VideoInstance *) videoInstance
+                     inView: (UIView *) inView
+                   fromRect: (CGRect) rect
+            arrowDirections: (UIPopoverArrowDirection) arrowDirections
 {
-//    if (_activityPopoverController && _activityPopoverController.isPopoverVisible)
-//    {
-//        [_activityPopoverController dismissPopoverAnimated: YES];
-//        _activityPopoverController =  nil;
-//        return;
-//    }
-    
-    // Prepare activities
-    OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
-    OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
-    OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
-    OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
-    
-    // Compile activities into an array, we will pass that array to
-    // OWActivityViewController on the next step
+    [self shareObjectType: @"video_instance"
+                 objectId: videoInstance.uniqueId
+                   inView: inView
+                 fromRect: rect
+          arrowDirections: arrowDirections];
+}
 
-    NSArray *activities = @[facebookActivity, twitterActivity, messageActivity, mailActivity];
 
-    // Create OWActivityViewController controller and assign data source
-    //
-    OWActivityViewController *activityViewController = [[OWActivityViewController alloc] initWithViewController: self
-                                                                                                     activities: activities];
-    
-    activityViewController.userInfo = @{
-                                        @"text": shareString,
-                                        @"url": shareURL};
-    
-    // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
-        
-        activityViewController.presentingPopoverController = _activityPopoverController;
-        
-        [self.activityPopoverController presentPopoverFromRect: rect
-                                                        inView: self.view
-                                      permittedArrowDirections: arrowDirections
-                                                      animated: YES];
-    }
-    else
-    {
-        [self presentViewController: activityViewController
-                           animated: YES
-                         completion: nil];
-    }
+- (void) shareChannel: (Channel *) channel
+               inView: (UIView *) inView
+             fromRect: (CGRect) rect
+      arrowDirections: (UIPopoverArrowDirection) arrowDirections
+{
+    [self shareObjectType: @"channel"
+                 objectId: channel.uniqueId
+                   inView: inView
+                 fromRect: rect
+          arrowDirections: arrowDirections];
+}
+
+
+- (void) shareObjectType: (NSString *) objectType
+                objectId: (NSString *) objectId
+                  inView: (UIView *) inView
+                fromRect: (CGRect) rect
+         arrowDirections: (UIPopoverArrowDirection) arrowDirections
+{
+    // Update the star/unstar status on the server
+    [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
+                                                   objectId: objectId
+                                          completionHandler: ^(NSDictionary *responseDictionary) {
+                                              DebugLog(@"Share link successful");
+                                              
+                                              // Prepare activities
+                                              OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
+                                              OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
+                                              OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
+                                              OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
+                                              
+                                              // Compile activities into an array, we will pass that array to
+                                              // OWActivityViewController on the next step
+                                              
+                                              NSArray *activities = @[facebookActivity, twitterActivity, messageActivity, mailActivity];
+                                              
+                                              // Create OWActivityViewController controller and assign data source
+                                              //
+                                              OWActivityViewController *activityViewController = [[OWActivityViewController alloc] initWithViewController: self
+                                                                                                                                               activities: activities];
+                                              
+                                              NSString *resourceURLString = responseDictionary[@"resource_url"];
+                                              NSString *message = responseDictionary[@"message"];
+                                              
+                                              if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
+                                              {
+                                                  resourceURLString = @"http://www.rockpack.com";
+                                              }
+                                              
+                                              if (message == nil)
+                                              {
+                                                  message = @"";
+                                              }
+                                              
+                                              NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
+                                              
+                                              activityViewController.userInfo = @{@"text": message,
+                                                                                  @"url": resourceURL};
+                                              
+                                              // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
+                                              if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                                              {
+                                                  self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+                                                  
+                                                  activityViewController.presentingPopoverController = _activityPopoverController;
+                                                  
+                                                  [self.activityPopoverController presentPopoverFromRect: rect
+                                                                                                  inView: inView
+                                                                                permittedArrowDirections: arrowDirections
+                                                                                                animated: YES];
+                                              }
+                                              else
+                                              {
+                                                  [self presentViewController: activityViewController
+                                                                     animated: YES
+                                                                   completion: nil];
+                                              }
+                                          }
+                                               errorHandler: ^(NSDictionary* errorDictionary) {
+                                                   DebugLog(@"Share link failed");
+                                               }];
+
 }
 
 
