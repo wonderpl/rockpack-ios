@@ -56,6 +56,13 @@
         [self addSubview:self.thumbnailImageView];
         
         
+        // == Divider Image View == //
+        
+        dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        
+        [self addSubview:dividerImageView];
+        
+        
         
     }
     return self;
@@ -95,6 +102,8 @@
     CGRect detailsFrame = self.detailTextLabel.frame;
     detailsFrame.origin.y = self.textLabel.frame.origin.y + self.textLabel.frame.size.height;
     self.detailTextLabel.frame = detailsFrame;
+    
+    dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height - 4.0);
 }
 
 #pragma mark - Accessors
