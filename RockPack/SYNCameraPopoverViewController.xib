@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -38,7 +38,7 @@
 					<object class="IBUIButton" id="820689329">
 						<reference key="NSNextResponder" ref="80548712"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrameSize">{206, 36}</string>
+						<string key="NSFrameSize">{206, 48}</string>
 						<reference key="NSSuperview" ref="80548712"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="645539527"/>
@@ -80,7 +80,7 @@
 					<object class="IBUIButton" id="645539527">
 						<reference key="NSNextResponder" ref="80548712"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{0, 34}, {206, 36}}</string>
+						<string key="NSFrame">{{0, 48}, {206, 48}}</string>
 						<reference key="NSSuperview" ref="80548712"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -106,12 +106,15 @@
 						<reference key="IBUIFont" ref="1021525219"/>
 					</object>
 				</array>
-				<string key="NSFrameSize">{206, 70}</string>
+				<string key="NSFrameSize">{206, 96}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="820689329"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
-				<reference key="IBUIBackgroundColor" ref="428154398"/>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0NTA5ODAzOTIAA</bytes>
+				</object>
 				<int key="IBUIContentMode">4</int>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="IBUIInterfaceOrientation">3</int>
@@ -227,10 +230,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonChooseExistingDefault.png">{206, 36}</string>
-			<string key="ButtonChooseExistingHighlighted.png">{206, 36}</string>
-			<string key="ButtonTakePhotoDefault.png">{206, 36}</string>
-			<string key="ButtonTakePhotoHighlighted.png">{206, 36}</string>
+			<string key="ButtonChooseExistingDefault.png">{206, 48}</string>
+			<string key="ButtonChooseExistingHighlighted.png">{206, 48}</string>
+			<string key="ButtonTakePhotoDefault.png">{206, 48}</string>
+			<string key="ButtonTakePhotoHighlighted.png">{206, 48}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
