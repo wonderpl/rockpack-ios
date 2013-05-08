@@ -176,6 +176,9 @@
     subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
+    if(self.user)
+        self.subscriptionsViewController.user = self.user;
+    
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
     if (isIPhone)
@@ -985,7 +988,8 @@
     
     [self.channelThumbnailCollectionView reloadData];
     
-    self.subscriptionsViewController.user = user;
+    if(self.subscriptionsViewController)
+        self.subscriptionsViewController.user = user;
 }
 -(ChannelOwner*)user
 {
