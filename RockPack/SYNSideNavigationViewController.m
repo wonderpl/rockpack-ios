@@ -437,7 +437,6 @@ typedef enum {
     _user = user;
     self.userNameLabel.text = [self.user.fullName uppercaseString];
     self.nicknameLabel.text = self.user.username;
-    NSLog(@"- %@", self.user.fullName);
     [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.user.thumbnailURL]
                                              placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou"]];
 }
@@ -491,6 +490,8 @@ typedef enum {
     
     CGSize containerSize = self.containerView.frame.size;
     CGRect vcRect = self.currentlyLoadedViewController.view.frame;
+    vcRect.origin.x = 0.0;
+    vcRect.origin.y = 2.0;
     vcRect.size = containerSize;
     self.currentlyLoadedViewController.view.frame = vcRect;
     

@@ -1137,6 +1137,7 @@
         
     
     MKNetworkOperation *op = [self operationWithURLString:[url absoluteString]];
+    NSLog(@"- %@", op.url);
     op.shouldCacheResponseEvenIfProtocolIsHTTPS = YES;
     
     [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {

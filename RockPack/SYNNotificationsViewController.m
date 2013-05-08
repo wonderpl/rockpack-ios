@@ -99,16 +99,26 @@
     
     notificationCell.messageTitle = constructedMessage;
     
-    NSURL* thumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
-    [notificationCell.imageView setAsynchronousImageFromURL:thumbnailUrl
+    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
+    [notificationCell.imageView setAsynchronousImageFromURL:userThumbnailUrl
                                            placeHolderImage:[UIImage imageNamed:@"AvatarProfile"]];
+    NSURL* thumbnaillUrl;
+    if([notification.messageType isEqualToString:@"starred"])
+    {
+        thumbnaillUrl = [NSURL URLWithString:notification.videoThumbnailUrl];
+        
+    }
+    else
+    {
+        thumbnaillUrl = [NSURL URLWithString:notification.channelThumbnailUrl];
+        
+    }
     
-    NSURL* thumbnailChannelUrl = [NSURL URLWithString:notification.channelResourceUrl];
+    // NSLog(@"%@", thumbnaillUrl);
+     
     
-    [notificationCell.thumbnailImageView setAsynchronousImageFromURL: thumbnailChannelUrl
-                                                    placeHolderImage: [UIImage imageNamed:@""]
-                                                         usingEngine: appDelegate.oAuthNetworkEngine
-                                                           animation: NO];
+    [notificationCell.thumbnailImageView setAsynchronousImageFromURL: thumbnaillUrl
+                                                    placeHolderImage: [UIImage imageNamed:@""]];
     
     notificationCell.detailTextLabel.text = @"8 Mins";
     
