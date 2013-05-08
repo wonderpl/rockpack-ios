@@ -100,7 +100,7 @@
 #define kAPIUserSubscriptionUpdates @"/ws/USERID/subscriptions/recent_videos/"  /* GET */
 
 // Cover art
-#define kAPIGetCoverArt             @"/ws/cover_art/"                    /* GET */
+#define kAPIGetCoverArt             @"/ws/cover_art/"                           /* GET */
 
 // Something
 #define kAPIPopularVideos           @"ws/videos/"
@@ -108,7 +108,11 @@
 #define kAPICategories              @"ws/categories/"
 
 // Share link
-#define kAPIShareLink               @"/ws/share/link/"    /* POST */
+#define kAPIShareLink               @"/ws/share/link/"                          /* POST */
+
+// Report concerns
+
+#define kAPIReportConcern           @"/ws/USERID/content_reports"               /* POST */
 
 #define kAccountSettingsPressed     @"kAccountSettingsPressed"
 #define kAccountSettingsLogout      @"kAccountSettingsLogout"

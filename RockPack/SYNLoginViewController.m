@@ -17,6 +17,7 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNPopoverBackgroundView.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
 #import <FacebookSDK/FacebookSDK.h>
@@ -1240,56 +1241,132 @@
 
 #pragma mark - CoreData Access
 
-#pragma mark - Face Image and Camera
+//#pragma mark - Face Image and Camera
+//
+//- (IBAction) faceButtonImagePressed: (UIButton*) sender
+//{
+//    
+//    SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
+//    actionPopoverController.delegate = self;
+//    
+//    // Need show the popover controller
+//    self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+//    self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
+//    self.cameraMenuPopoverController.delegate = self;
+//    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+//    
+//    [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
+//                                                      inView: self.view
+//                                    permittedArrowDirections: UIPopoverArrowDirectionUp
+//                                                    animated: YES];
+//}
+//
+//
+//- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+//{
+//    self.imagePicker = [[GKImagePicker alloc] init];
+//    self.imagePicker.cropSize = CGSizeMake(256, 176);
+//    self.imagePicker.delegate = self;
+//    self.imagePicker.imagePickerController.sourceType = sourceType;
+//    
+//    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+//    {
+//        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
+//        {
+//            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+//        }
+//    }
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.imagePicker.imagePickerController];
+//        
+//        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
+//                                                      inView: self.view
+//                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
+//                                                    animated: YES];
+//    }
+//    else
+//    {
+//        [self presentViewController: self.imagePicker.imagePickerController
+//                           animated: YES
+//                         completion: nil];
+//    }
+//}
+//
+//
+//- (void) userTouchedTakePhotoButton
+//{
+//    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
+//    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
+//}
+//
+//
+//- (void) imagePicker: (GKImagePicker *) imagePicker
+//         pickedImage: (UIImage *) image
+//{
+//    //    self.imgView.image = image;
+//    
+//    [self.faceImageButton setImage:image forState:UIControlStateNormal];
+//    
+//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+//    [self hideImagePicker];
+//}
+//
+//
+//- (void) hideImagePicker
+//{
+//    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
+//    {
+//        [self.cameraPopoverController dismissPopoverAnimated: YES];
+//    }
+//    else
+//    {
+//        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
+//                                                                   completion: nil];
+//    }
+//}
 
-- (IBAction) faceButtonImagePressed: (UIButton*) sender
+#pragma mark - Cover selection and upload support
+
+- (IBAction) faceButtonImagePressed: (UIButton*) button
 {
+    button.selected = !button.selected;
     
-    SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-    actionPopoverController.delegate = self;
-    
-    // Need show the popover controller
-    self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-    self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
-    self.cameraMenuPopoverController.delegate = self;
-    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-    
-    [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
-                                                      inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionUp
-                                                    animated: YES];
+    if (button.selected)
+    {
+        SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
+        actionPopoverController.delegate = self;
+        
+        // Need show the popover controller
+        self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
+        self.cameraMenuPopoverController.delegate = self;
+        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
+        [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
+                                                          inView: self.view
+                                        permittedArrowDirections: UIPopoverArrowDirectionLeft
+                                                        animated: YES];
+    }
 }
 
 
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(256, 176);
-    self.imagePicker.delegate = self;
-    self.imagePicker.imagePickerController.sourceType = sourceType;
-    
-    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+    if (popoverController == self.cameraMenuPopoverController)
     {
-        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-        {
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-        }
+        self.faceImageButton.selected = NO;
+        self.cameraPopoverController = nil;
     }
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    else if (popoverController == self.cameraPopoverController)
     {
-        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.imagePicker.imagePickerController];
-        
-        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
-                                                      inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                    animated: YES];
+        self.faceImageButton.selected = NO;
+        self.cameraPopoverController = nil;
     }
     else
     {
-        [self presentViewController: self.imagePicker.imagePickerController
-                           animated: YES
-                         completion: nil];
+        AssertOrLog(@"Unknown popup dismissed");
     }
 }
 
@@ -1301,31 +1378,106 @@
 }
 
 
+- (void) userTouchedChooseExistingPhotoButton
+{
+    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
+    [self showImagePicker: UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+
+- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+{
+    self.imagePicker = [[GKImagePicker alloc] init];
+    self.imagePicker.cropSize = CGSizeMake(280, 280);
+    self.imagePicker.delegate = self;
+    self.imagePicker.imagePickerController.sourceType = sourceType;
+    
+    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+    {
+        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
+        {
+            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+        }
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
+        
+        self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
+        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
+                                                      inView: self.view
+                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
+                                                    animated: YES];
+        
+        self.cameraPopoverController.delegate = self;
+    }
+    else
+    {
+        [self presentViewController: self.imagePicker.imagePickerController
+                           animated: YES
+                         completion: nil];
+    }
+}
+
+
+# pragma mark - GKImagePicker Delegate Methods
+
 - (void) imagePicker: (GKImagePicker *) imagePicker
          pickedImage: (UIImage *) image
 {
-    //    self.imgView.image = image;
-    
-    [self.faceImageButton setImage:image forState:UIControlStateNormal];
-    
     DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+    
+//    self.channelCoverImageView.image = image;
+    
+    [self uploadAvatarImage: image];
+    
     [self hideImagePicker];
 }
-
 
 - (void) hideImagePicker
 {
     if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
     {
+        
         [self.cameraPopoverController dismissPopoverAnimated: YES];
-    }
-    else
-    {
+        
+    } else {
+        
         [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
                                                                    completion: nil];
     }
 }
 
+#pragma mark - Upload channel cover image
+
+- (void) uploadAvatarImage: (UIImage *) imageToUpload
+{
+    // TODO: Add avatoar uploading
+    
+//    // Upload the image for this user
+//    [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
+//                                                      image: imageToUpload
+//                                          completionHandler: ^(NSDictionary *dictionary){
+//                                              NSString *wallpaperURL = dictionary [@"background_url"];
+//                                              
+//                                              if (wallpaperURL)
+//                                              {
+//                                                  self.channel.wallpaperURL = wallpaperURL;
+//                                                  DebugLog(@"Success");
+//                                              }
+//                                              else
+//                                              {
+//                                                  DebugLog(@"Failed to get wallpaper URL");
+//                                              }
+//                                          }
+//                                               errorHandler: ^(NSError* error) {
+//                                                   DebugLog(@"%@", [error debugDescription]);
+//                                               }];
+}
+
+#pragma mark - Rotation support
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
