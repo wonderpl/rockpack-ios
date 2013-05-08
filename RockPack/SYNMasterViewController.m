@@ -400,8 +400,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [UIView animateWithDuration:0.3
                      animations:^{
-        self.existingChannelsController.view.alpha = 1.0;
-    }];
+                         self.existingChannelsController.view.alpha = 1.0;
+                     } completion:^(BOOL finished) {
+                         if(self.overlayNavigationController)
+                             self.overlayNavigationController = nil;
+                     }];
     
 }
 
@@ -426,7 +429,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     if(!channel)
         return;
     
-    // ** channel.managedObjectContext == appDelegate.chanelsContext ** //    
+    // - note: channel.managedObjectContext == appDelegate.chanelsContext 
+    
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                   usingMode: kChannelDetailsModeEdit] ;

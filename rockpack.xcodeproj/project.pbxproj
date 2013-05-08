@@ -663,10 +663,6 @@
 		38BACE001732CCFB00406597 /* SYNLoginViewControllerIphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BACDFE1732CCFB00406597 /* SYNLoginViewControllerIphone.m */; };
 		38BACE011732CCFB00406597 /* SYNLoginViewControllerIphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACDFF1732CCFB00406597 /* SYNLoginViewControllerIphone.xib */; };
 		38BACE031734151A00406597 /* SYNChannelCreateNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE021734151A00406597 /* SYNChannelCreateNewCell.xib */; };
-		38BACE2F173415DF00406597 /* ButtonCamera~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE05173415DE00406597 /* ButtonCamera~iphone.png */; };
-		38BACE30173415DF00406597 /* ButtonCamera@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE06173415DE00406597 /* ButtonCamera@2x~iphone.png */; };
-		38BACE31173415DF00406597 /* ButtonCameraHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE07173415DE00406597 /* ButtonCameraHighlighted~iphone.png */; };
-		38BACE32173415DF00406597 /* ButtonCameraHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE08173415DE00406597 /* ButtonCameraHighlighted@2x~iphone.png */; };
 		38BACE33173415DF00406597 /* ButtonCancel@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE09173415DE00406597 /* ButtonCancel@2x~iphone.png */; };
 		38BACE34173415DF00406597 /* ButtonCancelHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE0A173415DE00406597 /* ButtonCancelHighlighted@2x~iphone.png */; };
 		38BACE35173415DF00406597 /* ButtonCancelHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE0B173415DE00406597 /* ButtonCancelHighlighted~iphone.png */; };
@@ -705,11 +701,15 @@
 		38BACE56173415DF00406597 /* PanelChannelCreateNew~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE2C173415DF00406597 /* PanelChannelCreateNew~iphone.png */; };
 		38BACE57173415DF00406597 /* PanelChannelSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE2D173415DF00406597 /* PanelChannelSelected@2x~iphone.png */; };
 		38BACE58173415DF00406597 /* PanelChannelSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE2E173415DF00406597 /* PanelChannelSelected~iphone.png */; };
-		38BACE5C173A51ED00406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE5B173A51ED00406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */; };
-		38BACE61173A532600406597 /* SYNChannelCoverImageSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BACE5F173A532600406597 /* SYNChannelCoverImageSelectorViewController.m */; };
-		38BACE62173A532600406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE60173A532600406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib */; };
-		38BACE68173A599C00406597 /* SYNChannelCoverImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE67173A599C00406597 /* SYNChannelCoverImageCell.xib */; };
-		38BACE6B173A691800406597 /* SYNChannelCoverImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BACE6A173A691700406597 /* SYNChannelCoverImageCell.m */; };
+		38BACE73173A779700406597 /* SYNChannelCoverImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BACE6E173A779700406597 /* SYNChannelCoverImageCell.m */; };
+		38BACE74173A779700406597 /* SYNChannelCoverImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE6F173A779700406597 /* SYNChannelCoverImageCell.xib */; };
+		38BACE75173A779700406597 /* SYNChannelCoverImageSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BACE71173A779700406597 /* SYNChannelCoverImageSelectorViewController.m */; };
+		38BACE76173A779700406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE72173A779700406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib */; };
+		38BACE78173A77C800406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE77173A77C800406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */; };
+		38BACE7D173A786500406597 /* ButtonCamera@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE79173A786500406597 /* ButtonCamera@2x~iphone.png */; };
+		38BACE7E173A786500406597 /* ButtonCamera~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE7A173A786500406597 /* ButtonCamera~iphone.png */; };
+		38BACE7F173A786500406597 /* ButtonCameraHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE7B173A786500406597 /* ButtonCameraHighlighted@2x~iphone.png */; };
+		38BACE80173A786500406597 /* ButtonCameraHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38BACE7C173A786500406597 /* ButtonCameraHighlighted~iphone.png */; };
 		38C3FA7417203D6600F126B1 /* PanelDayPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */; };
 		38C3FA7517203D6600F126B1 /* PanelDayPortrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */; };
 		38FD441F172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38FD441E172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib */; };
@@ -943,6 +943,8 @@
 		BEEB6F26172181FD00FEFA43 /* SearchTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F22172181FD00FEFA43 /* SearchTab@2x.png */; };
 		BEEB6F27172181FD00FEFA43 /* SearchTabHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F23172181FD00FEFA43 /* SearchTabHighlighted.png */; };
 		BEEB6F28172181FD00FEFA43 /* SearchTabHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F24172181FD00FEFA43 /* SearchTabHighlighted@2x.png */; };
+		BEECE41C173A479B0042941B /* LogoNotifications.png in Resources */ = {isa = PBXBuildFile; fileRef = BEECE41A173A479B0042941B /* LogoNotifications.png */; };
+		BEECE41D173A479B0042941B /* LogoNotifications@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEECE41B173A479B0042941B /* LogoNotifications@2x.png */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF34486172ABCF2008F98FF /* ButtonCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34484172ABCF2008F98FF /* ButtonCreate.png */; };
 		BEF34487172ABCF2008F98FF /* ButtonCreate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34485172ABCF2008F98FF /* ButtonCreate@2x.png */; };
@@ -1705,10 +1707,6 @@
 		38BACDFE1732CCFB00406597 /* SYNLoginViewControllerIphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNLoginViewControllerIphone.m; sourceTree = "<group>"; };
 		38BACDFF1732CCFB00406597 /* SYNLoginViewControllerIphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNLoginViewControllerIphone.xib; sourceTree = "<group>"; };
 		38BACE021734151A00406597 /* SYNChannelCreateNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCreateNewCell.xib; sourceTree = "<group>"; };
-		38BACE05173415DE00406597 /* ButtonCamera~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCamera~iphone.png"; sourceTree = "<group>"; };
-		38BACE06173415DE00406597 /* ButtonCamera@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCamera@2x~iphone.png"; sourceTree = "<group>"; };
-		38BACE07173415DE00406597 /* ButtonCameraHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCameraHighlighted~iphone.png"; sourceTree = "<group>"; };
-		38BACE08173415DE00406597 /* ButtonCameraHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCameraHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		38BACE09173415DE00406597 /* ButtonCancel@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCancel@2x~iphone.png"; sourceTree = "<group>"; };
 		38BACE0A173415DE00406597 /* ButtonCancelHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCancelHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		38BACE0B173415DE00406597 /* ButtonCancelHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCancelHighlighted~iphone.png"; sourceTree = "<group>"; };
@@ -1747,13 +1745,17 @@
 		38BACE2C173415DF00406597 /* PanelChannelCreateNew~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelChannelCreateNew~iphone.png"; sourceTree = "<group>"; };
 		38BACE2D173415DF00406597 /* PanelChannelSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelChannelSelected@2x~iphone.png"; sourceTree = "<group>"; };
 		38BACE2E173415DF00406597 /* PanelChannelSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PanelChannelSelected~iphone.png"; sourceTree = "<group>"; };
-		38BACE5B173A51ED00406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelCategoryTableViewControllerFullscreen~iphone.xib"; sourceTree = "<group>"; };
-		38BACE5E173A532600406597 /* SYNChannelCoverImageSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCoverImageSelectorViewController.h; sourceTree = "<group>"; };
-		38BACE5F173A532600406597 /* SYNChannelCoverImageSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCoverImageSelectorViewController.m; sourceTree = "<group>"; };
-		38BACE60173A532600406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelCoverImageSelectorViewController~iphone.xib"; sourceTree = "<group>"; };
-		38BACE67173A599C00406597 /* SYNChannelCoverImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCoverImageCell.xib; sourceTree = "<group>"; };
-		38BACE69173A691600406597 /* SYNChannelCoverImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCoverImageCell.h; sourceTree = "<group>"; };
-		38BACE6A173A691700406597 /* SYNChannelCoverImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCoverImageCell.m; sourceTree = "<group>"; };
+		38BACE6D173A779700406597 /* SYNChannelCoverImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCoverImageCell.h; sourceTree = "<group>"; };
+		38BACE6E173A779700406597 /* SYNChannelCoverImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCoverImageCell.m; sourceTree = "<group>"; };
+		38BACE6F173A779700406597 /* SYNChannelCoverImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNChannelCoverImageCell.xib; sourceTree = "<group>"; };
+		38BACE70173A779700406597 /* SYNChannelCoverImageSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNChannelCoverImageSelectorViewController.h; sourceTree = "<group>"; };
+		38BACE71173A779700406597 /* SYNChannelCoverImageSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNChannelCoverImageSelectorViewController.m; sourceTree = "<group>"; };
+		38BACE72173A779700406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelCoverImageSelectorViewController~iphone.xib"; sourceTree = "<group>"; };
+		38BACE77173A77C800406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelCategoryTableViewControllerFullscreen~iphone.xib"; sourceTree = "<group>"; };
+		38BACE79173A786500406597 /* ButtonCamera@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCamera@2x~iphone.png"; sourceTree = "<group>"; };
+		38BACE7A173A786500406597 /* ButtonCamera~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCamera~iphone.png"; sourceTree = "<group>"; };
+		38BACE7B173A786500406597 /* ButtonCameraHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCameraHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
+		38BACE7C173A786500406597 /* ButtonCameraHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonCameraHighlighted~iphone.png"; sourceTree = "<group>"; };
 		38C3FA7217203D6600F126B1 /* PanelDayPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelDayPortrait.png; path = Assets/Images/PanelDayPortrait.png; sourceTree = "<group>"; };
 		38C3FA7317203D6600F126B1 /* PanelDayPortrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelDayPortrait@2x.png"; path = "Assets/Images/PanelDayPortrait@2x.png"; sourceTree = "<group>"; };
 		38FD441E172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNChannelDetailViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -2053,6 +2055,8 @@
 		BEEB6F22172181FD00FEFA43 /* SearchTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTab@2x.png"; path = "Assets/Images/SearchTab@2x.png"; sourceTree = "<group>"; };
 		BEEB6F23172181FD00FEFA43 /* SearchTabHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchTabHighlighted.png; path = Assets/Images/SearchTabHighlighted.png; sourceTree = "<group>"; };
 		BEEB6F24172181FD00FEFA43 /* SearchTabHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTabHighlighted@2x.png"; path = "Assets/Images/SearchTabHighlighted@2x.png"; sourceTree = "<group>"; };
+		BEECE41A173A479B0042941B /* LogoNotifications.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LogoNotifications.png; path = Assets/Images/LogoNotifications.png; sourceTree = "<group>"; };
+		BEECE41B173A479B0042941B /* LogoNotifications@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LogoNotifications@2x.png"; path = "Assets/Images/LogoNotifications@2x.png"; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF34484172ABCF2008F98FF /* ButtonCreate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCreate.png; path = Assets/Images/ButtonCreate.png; sourceTree = "<group>"; };
@@ -2886,16 +2890,16 @@
 		01A3EC3416AED7F6008DCE08 /* Popover */ = {
 			isa = PBXGroup;
 			children = (
-				01AEFBDE1701ACFD0060467A /* popover-black-bcg-image.png */,
-				01AEFBDF1701ACFD0060467A /* popover-black-bcg-image@2x.png */,
-				01AEFBE01701ACFD0060467A /* popover-black-top-arrow-image.png */,
-				01AEFBE11701ACFD0060467A /* popover-black-top-arrow-image@2x.png */,
 				01AEFBDA1701ACE20060467A /* ArrowSearch.png */,
 				01AEFBDB1701ACE20060467A /* ArrowSearch@2x.png */,
 				01AEFBD61701ACD60060467A /* DividerSearch.png */,
 				01AEFBD71701ACD60060467A /* DividerSearch@2x.png */,
 				01A3EC3516AED804008DCE08 /* NotificationContent.png */,
 				01A3EC3616AED804008DCE08 /* NotificationContent@2x.png */,
+				01AEFBDE1701ACFD0060467A /* popover-black-bcg-image.png */,
+				01AEFBDF1701ACFD0060467A /* popover-black-bcg-image@2x.png */,
+				01AEFBE01701ACFD0060467A /* popover-black-top-arrow-image.png */,
+				01AEFBE11701ACFD0060467A /* popover-black-top-arrow-image@2x.png */,
 				011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */,
 				011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */,
 				011A160216EE4F79008CF25E /* popover-black-left-arrow-image.png */,
@@ -3013,7 +3017,7 @@
 				3862E8AC172979410066E8E7 /* SYNChannelCategoryTableViewController.h */,
 				3862E8AD172979410066E8E7 /* SYNChannelCategoryTableViewController.m */,
 				3862E8AE172979410066E8E7 /* SYNChannelCategoryTableViewController~iphone.xib */,
-				38BACE5B173A51ED00406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */,
+				38BACE77173A77C800406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -3570,10 +3574,10 @@
 		38BACE04173415DE00406597 /* channelCreate */ = {
 			isa = PBXGroup;
 			children = (
-				38BACE05173415DE00406597 /* ButtonCamera~iphone.png */,
-				38BACE06173415DE00406597 /* ButtonCamera@2x~iphone.png */,
-				38BACE07173415DE00406597 /* ButtonCameraHighlighted~iphone.png */,
-				38BACE08173415DE00406597 /* ButtonCameraHighlighted@2x~iphone.png */,
+				38BACE79173A786500406597 /* ButtonCamera@2x~iphone.png */,
+				38BACE7A173A786500406597 /* ButtonCamera~iphone.png */,
+				38BACE7B173A786500406597 /* ButtonCameraHighlighted@2x~iphone.png */,
+				38BACE7C173A786500406597 /* ButtonCameraHighlighted~iphone.png */,
 				38BACE09173415DE00406597 /* ButtonCancel@2x~iphone.png */,
 				38BACE0A173415DE00406597 /* ButtonCancelHighlighted@2x~iphone.png */,
 				38BACE0B173415DE00406597 /* ButtonCancelHighlighted~iphone.png */,
@@ -3616,15 +3620,15 @@
 			path = channelCreate;
 			sourceTree = "<group>";
 		};
-		38BACE5D173A528F00406597 /* ChannelCoverImageSelector */ = {
+		38BACE6C173A776B00406597 /* ChannelCoverImageSelector */ = {
 			isa = PBXGroup;
 			children = (
-				38BACE5E173A532600406597 /* SYNChannelCoverImageSelectorViewController.h */,
-				38BACE5F173A532600406597 /* SYNChannelCoverImageSelectorViewController.m */,
-				38BACE60173A532600406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib */,
-				38BACE69173A691600406597 /* SYNChannelCoverImageCell.h */,
-				38BACE6A173A691700406597 /* SYNChannelCoverImageCell.m */,
-				38BACE67173A599C00406597 /* SYNChannelCoverImageCell.xib */,
+				38BACE6D173A779700406597 /* SYNChannelCoverImageCell.h */,
+				38BACE6E173A779700406597 /* SYNChannelCoverImageCell.m */,
+				38BACE6F173A779700406597 /* SYNChannelCoverImageCell.xib */,
+				38BACE70173A779700406597 /* SYNChannelCoverImageSelectorViewController.h */,
+				38BACE71173A779700406597 /* SYNChannelCoverImageSelectorViewController.m */,
+				38BACE72173A779700406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib */,
 			);
 			name = ChannelCoverImageSelector;
 			sourceTree = "<group>";
@@ -4006,6 +4010,8 @@
 				BE7D34FC1715C68C0085AB81 /* NavArrow@2x.png */,
 				BE7D34FD1715C68C0085AB81 /* NavArrowSelected.png */,
 				BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */,
+				BEECE41A173A479B0042941B /* LogoNotifications.png */,
+				BEECE41B173A479B0042941B /* LogoNotifications@2x.png */,
 			);
 			name = "Navigation Panel";
 			sourceTree = "<group>";
@@ -4125,7 +4131,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				38BACE5D173A528F00406597 /* ChannelCoverImageSelector */,
+				38BACE6C173A776B00406597 /* ChannelCoverImageSelector */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				011C1650173002D000CF50B9 /* Activity controller */,
 				BE7D354E1718704C0085AB81 /* Back Button */,
@@ -4917,10 +4923,6 @@
 				1FC8FEA817340708000FF0B2 /* ShadowCategorySlide@2x~iphone.png in Resources */,
 				1FC8FEA917340708000FF0B2 /* ShadowCategorySlide~iphone.png in Resources */,
 				38BACE031734151A00406597 /* SYNChannelCreateNewCell.xib in Resources */,
-				38BACE2F173415DF00406597 /* ButtonCamera~iphone.png in Resources */,
-				38BACE30173415DF00406597 /* ButtonCamera@2x~iphone.png in Resources */,
-				38BACE31173415DF00406597 /* ButtonCameraHighlighted~iphone.png in Resources */,
-				38BACE32173415DF00406597 /* ButtonCameraHighlighted@2x~iphone.png in Resources */,
 				38BACE33173415DF00406597 /* ButtonCancel@2x~iphone.png in Resources */,
 				38BACE34173415DF00406597 /* ButtonCancelHighlighted@2x~iphone.png in Resources */,
 				38BACE35173415DF00406597 /* ButtonCancelHighlighted~iphone.png in Resources */,
@@ -4971,9 +4973,15 @@
 				012B4CAD17393CA10019DA4C /* ButtonTakePhotoHighlighted@2x.png in Resources */,
 				1F59ED1A17396E1D00430C24 /* GlossChannelMid.png in Resources */,
 				1F59ED1B17396E1D00430C24 /* GlossChannelMid@2x.png in Resources */,
-				38BACE5C173A51ED00406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib in Resources */,
-				38BACE62173A532600406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib in Resources */,
-				38BACE68173A599C00406597 /* SYNChannelCoverImageCell.xib in Resources */,
+				BEECE41C173A479B0042941B /* LogoNotifications.png in Resources */,
+				BEECE41D173A479B0042941B /* LogoNotifications@2x.png in Resources */,
+				38BACE74173A779700406597 /* SYNChannelCoverImageCell.xib in Resources */,
+				38BACE76173A779700406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib in Resources */,
+				38BACE78173A77C800406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib in Resources */,
+				38BACE7D173A786500406597 /* ButtonCamera@2x~iphone.png in Resources */,
+				38BACE7E173A786500406597 /* ButtonCamera~iphone.png in Resources */,
+				38BACE7F173A786500406597 /* ButtonCameraHighlighted@2x~iphone.png in Resources */,
+				38BACE80173A786500406597 /* ButtonCameraHighlighted~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5172,8 +5180,8 @@
 				38BACE001732CCFB00406597 /* SYNLoginViewControllerIphone.m in Sources */,
 				01BE7B72173413CF00EFE0EF /* SSTextView.m in Sources */,
 				012B4C9D17393A080019DA4C /* SYNPopoverBackgroundView.m in Sources */,
-				38BACE61173A532600406597 /* SYNChannelCoverImageSelectorViewController.m in Sources */,
-				38BACE6B173A691800406597 /* SYNChannelCoverImageCell.m in Sources */,
+				38BACE73173A779700406597 /* SYNChannelCoverImageCell.m in Sources */,
+				38BACE75173A779700406597 /* SYNChannelCoverImageSelectorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

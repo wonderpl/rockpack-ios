@@ -18,4 +18,9 @@
 + (CGFloat)arrowBase;
 + (UIEdgeInsets)contentViewInsets;
 
+// Used to turn off shadow
+
++ (BOOL) wantsDefaultContentAppearance;
+
+
 @end
