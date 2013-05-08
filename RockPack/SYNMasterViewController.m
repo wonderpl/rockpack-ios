@@ -737,7 +737,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          forControlEvents:UIControlEventTouchUpInside];
         
         //No More Back Title (For Now)
-        //[self.backButtonControl setBackTitle: self.pageTitleLabel.text];
+        [self.backButtonControl setBackTitle: self.pageTitleLabel.text];
+        
         if(self.searchBoxController.isOnScreen)
         {
             [UIView animateWithDuration:0.5 animations:^{
