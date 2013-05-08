@@ -1296,9 +1296,12 @@
 - (void) imagePicker: (GKImagePicker *) imagePicker
          pickedImage: (UIImage *) image
 {
-    //    self.imgView.image = image;
-    
     DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+    
+    self.channelCoverImageView.image = image;
+    
+    [self uploadChannelImage: image];
+    
     [self hideImagePicker];
 }
 
@@ -1316,35 +1319,57 @@
     }
 }
 
-#pragma mark - iPhone viewcontroller dismissal
-- (IBAction)backButtonTapped:(id)sender {
-    CATransition *animation = [CATransition animation];
-    
-    [animation setType:kCATransitionReveal];
-    [animation setSubtype:kCATransitionFromLeft];
-    
-    [animation setDuration:0.30];
-    [animation setTimingFunction:
-     [CAMediaTimingFunction functionWithName:
-      kCAMediaTimingFunctionEaseInEaseOut]];
-    
-    [self.view.window.layer addAnimation:animation forKey:nil];
-    [self dismissViewControllerAnimated:NO completion:nil];
+#pragma mark - Upload channel cover image
+
+- (void) uploadChannelImage: (UIImage *) imageToUpload
+{
+    // Upload the image for this user
+    [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                      image: imageToUpload
+                                          completionHandler: ^(NSDictionary *dictionary){
+                                              DebugLog(@"Success");
+                                          }
+                                               errorHandler: ^(NSError* error) {
+                                                   DebugLog(@"%@", [error debugDescription]);
+                                               }];
 }
 
--(void)channelCreationComplete
+
+#pragma mark - iPhone viewcontroller dismissal
+- (IBAction) backButtonTapped: (id) sender
 {
     CATransition *animation = [CATransition animation];
     
     [animation setType:kCATransitionReveal];
     [animation setSubtype:kCATransitionFromLeft];
     
-    [animation setDuration:0.30];
+    [animation setDuration: 0.30];
     [animation setTimingFunction:
      [CAMediaTimingFunction functionWithName:
       kCAMediaTimingFunctionEaseInEaseOut]];
     
-    [self.view.window.layer addAnimation:animation forKey:nil];
+    [self.view.window.layer addAnimation: animation
+                                  forKey:nil];
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+}
+
+
+- (void) channelCreationComplete
+{
+    CATransition *animation = [CATransition animation];
+    
+    [animation setType: kCATransitionReveal];
+    [animation setSubtype: kCATransitionFromLeft];
+    
+    [animation setDuration: 0.30];
+    [animation setTimingFunction:
+     [CAMediaTimingFunction functionWithName:
+      kCAMediaTimingFunctionEaseInEaseOut]];
+    
+    [self.view.window.layer addAnimation: animation
+                                  forKey: nil];
     
     // On iPad the existing channels viewcontroller's view is removed from the master view controller when a new channel is created.
     // On iPhone we want to be able to go back which means the existing channels view remains onscreen. Here we remove it as channel creation was complete.
@@ -1353,35 +1378,44 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (void) uploadChannelImage: (UIImage *) imageToUpload
-{
-    // TODO: Put some networking code in here
-}
 
 #pragma mark - iPhone Category Table delegate
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
+- (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
+      didSelectSubCategoryWithId: (NSString *) uniqueId
+                   categoryTitle: (NSString *)categoryTitle
+                subCategoryTitle: (NSString *) subCategoryTitle
 {
     self.selectedCategoryId = uniqueId;
-    [self.selectCategoryButton setTitle:[NSString stringWithFormat:@"%@/\n%@", categoryTitle, subCategoryTitle] forState:UIControlStateNormal];
+    
+    [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", categoryTitle, subCategoryTitle]
+                               forState: UIControlStateNormal];
+    
     [self hideCategoriesTable];
 }
 
--(void)categoryTableControllerDeselectedAll:(SYNChannelCategoryTableViewController *)tableController
+- (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
-    [self.selectCategoryButton setTitle:@"SELECT A\nCATEGORY" forState:UIControlStateNormal];
+    [self.selectCategoryButton setTitle: @"SELECT A\nCATEGORY"
+                               forState: UIControlStateNormal];
+    
     [self hideCategoriesTable];
 }
 
--(void) hideCategoriesTable
+
+- (void) hideCategoriesTable
 {
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-        CGRect endFrame = self.categoryTableViewController.view.frame;
-        endFrame.origin.y = self.view.frame.size.height;
-        self.categoryTableViewController.view.frame = endFrame;
-    } completion:^(BOOL finished) {
-        [self.categoryTableViewController.view removeFromSuperview];
-    }];
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseIn
+                     animations: ^{
+                         CGRect endFrame = self.categoryTableViewController.view.frame;
+                         endFrame.origin.y = self.view.frame.size.height;
+                         self.categoryTableViewController.view.frame = endFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         [self.categoryTableViewController.view removeFromSuperview];
+                     }];
 }
 
 @end
