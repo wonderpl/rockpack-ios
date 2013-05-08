@@ -32,6 +32,12 @@
 @synthesize arrowImageView = _arrowImageView;
 
 
+// Used to turn off shadow
++ (BOOL) wantsDefaultContentAppearance
+{
+    return NO;
+}
+
 #pragma mark - Overriden class methods
 
 // The width of the arrow triangle at its base.
