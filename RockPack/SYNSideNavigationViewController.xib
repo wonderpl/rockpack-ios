@@ -78,7 +78,7 @@
 					</object>
 					<object class="IBUIImageView" id="515784887">
 						<reference key="NSNextResponder" ref="1018200067"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{13, 7}, {60, 60}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
@@ -142,7 +142,7 @@
 					</object>
 					<object class="IBUIButton" id="898198165">
 						<reference key="NSNextResponder" ref="1018200067"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{13, 609}, {169, 50}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
@@ -240,7 +240,7 @@
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="898198165"/>
 					</object>
-					<int key="connectionID">23</int>
+					<int key="connectionID">28</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -265,7 +265,7 @@
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
-					<int key="connectionID">24</int>
+					<int key="connectionID">29</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -356,7 +356,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">25</int>
+			<int key="maxID">29</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -371,6 +371,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNSideNavigationViewController</string>
 					<string key="superclassName">GAITrackedViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">settingsButtonPressed:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">settingsButtonPressed:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">settingsButtonPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="containerView">UIView</string>

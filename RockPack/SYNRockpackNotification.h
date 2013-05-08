@@ -20,8 +20,10 @@
 
 @property (nonatomic, strong) NSString* videoId;
 @property (nonatomic, strong) NSString* videoThumbnailUrl;
+
 @property (nonatomic, strong) NSString* channelId;
 @property (nonatomic, strong) NSString* channelResourceUrl;
+@property (nonatomic, strong) NSString* channelThumbnailUrl;
 
 // User Data
 

@@ -55,6 +55,7 @@
                 {
                     self.channelId = [channelDictionary objectForKey:@"id"];
                     self.channelResourceUrl = [channelDictionary objectForKey:@"resource_url"];
+                    self.channelThumbnailUrl = [channelDictionary objectForKey:@"thumbnail_url"];
                 }
             }
             

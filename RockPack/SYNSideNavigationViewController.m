@@ -85,12 +85,7 @@ typedef enum {
         
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
-        if([[SYNDeviceManager sharedInstance] isIPad])
-        {
-            self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.origin.y + self.view.frame.size.height, self.view.frame.size.width, 300.0)];
-            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
-            [self.view addSubview:self.bottomExtraView];
-        }
+        
         
         self.unreadNotifications = 0;
         
@@ -119,9 +114,11 @@ typedef enum {
     
     self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
     
+    CGRect newFrame = self.view.frame;
+    
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        CGRect newFrame = self.view.frame;
+        
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
         self.mainContentView.frame = self.view.bounds;
@@ -135,21 +132,42 @@ typedef enum {
         
         
     }
+    else // isIPad == TRUE
+    {
+        self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
+                                                                        self.view.frame.origin.y + self.view.frame.size.height,
+                                                                        self.view.frame.size.width,
+                                                                        350.0)];
+        
+        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        
+        [self.view insertSubview:self.bottomExtraView belowSubview:self.settingsButton];
+        
+        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        self.view.frame = newFrame;
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notificationMarkedRead:)
                                                  name:kNotificationMarkedRead
                                                object:nil];
     
-    // == settings button == //
+    
+    
+    
+    // == Settings Button == //
     
     CGRect settingsButtonFrame = self.settingsButton.frame;
-    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 10.0 - settingsButtonFrame.size.height;
+    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
+    self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    
     
     // == User Name Label == //
     
     self.userNameLabel.alpha = 0.0;
+    
+    
     
     [self getNotifications];
 }
@@ -179,8 +197,6 @@ typedef enum {
         
         if(total == 0)
         {
-            
-            
             [self.tableView reloadData];
             return;
         }
@@ -488,18 +504,35 @@ typedef enum {
 
 #pragma mark - Orientation Change
 
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    CGRect newFrame = self.view.frame;
+    newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    self.view.frame = newFrame;
+}
+
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
+    CGRect settingsButtonFrame = self.settingsButton.frame;
+    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+    self.settingsButton.frame = settingsButtonFrame;
+
+    
+    
     if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
+        
         
     }
     else
     {
         
+        
     }
+    
+    
     
     
 }
