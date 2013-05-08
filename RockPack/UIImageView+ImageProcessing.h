@@ -21,6 +21,11 @@
 
 - (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
                                    placeHolderImage: (UIImage*) image
+                                        usingEngine: (MKNetworkEngine*) imageCacheEngine
+                                          animation: (BOOL) yesOrNo;
+
+- (MKNetworkOperation*) setAsynchronousImageFromURL: (NSURL*) url
+                                   placeHolderImage: (UIImage*) image
                                          monochrome: (BOOL) isMonochrome;
 
 

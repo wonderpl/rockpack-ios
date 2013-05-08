@@ -69,7 +69,7 @@
 	}
 	else
     {
-//		DLog(@"enqueueSignedOperation - Authenticated");
+        
         
         // We need to make a copy of the request first, so that we can re-submit on authentication error
 //        [request addCommonHandlerToNetworkOperation: networkOperation
@@ -1122,5 +1122,39 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
+
+#pragma mark - Image Loading
+
+- (MKNetworkOperation*)imageAtURL:(NSURL *)url
+                             size:(CGSize) size
+                completionHandler:(MKNKImageBlock) imageFetchedBlock
+                     errorHandler:(MKNKResponseErrorBlock) errorBlock {
+    
+        
+    if (url == nil)
+        return nil;
+        
+    
+    MKNetworkOperation *op = [self operationWithURLString:[url absoluteString]];
+    op.shouldCacheResponseEvenIfProtocolIsHTTPS = YES;
+    
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        [completedOperation decompressedResponseImageOfSize:size
+                                          completionHandler:^(UIImage *decompressedImage) {
+                                              if (imageFetchedBlock)
+                                                  imageFetchedBlock(decompressedImage,
+                                                                    url,
+                                                                    [completedOperation isCachedResponse]);
+                                          }];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        if (errorBlock)
+            errorBlock(completedOperation, error);
+        DLog(@"%@", error);
+    }];
+    
+    [self enqueueSignedOperation:op];
+    
+    return op;
+}
 
 @end
