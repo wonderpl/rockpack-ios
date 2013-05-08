@@ -106,7 +106,7 @@
     self.channelOwnerLabel.font = [UIFont boldRockpackFontOfSize: self.channelOwnerLabel.font.pointSize];
     [self addShadowToLayer: self.channelOwnerLabel.layer];
     
-    self.channelDetailsLabel.font = [UIFont rockpackFontOfSize: self.channelDetailsLabel.font.pointSize];
+    self.channelDetailsLabel.font = [UIFont boldRockpackFontOfSize: self.channelDetailsLabel.font.pointSize];
     [self addShadowToLayer: self.channelDetailsLabel.layer];
     
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
@@ -170,7 +170,7 @@
     
     // Set wallpaper
     [self.avatarImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.channelOwner.thumbnailURL]
-                                     placeHolderImage: nil];
+                                     placeHolderImage: [UIImage imageNamed:@"AvatarChannel.png"]];
     
 
     if(!isIPhone)
