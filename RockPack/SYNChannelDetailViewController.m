@@ -1059,6 +1059,13 @@
                      completion: nil];
 }
 
+-(IBAction)addItToChannelPresssed:(id)sender
+{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    
+}
+
 
 #pragma mark - Tab delegates
 
