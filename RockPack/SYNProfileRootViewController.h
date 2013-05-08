@@ -7,7 +7,11 @@
 //
 
 #import "SYNAbstractViewController.h"
+#import "ChannelOwner.h"
 
 @interface SYNProfileRootViewController : SYNAbstractViewController
+
+
+@property (nonatomic, weak) ChannelOwner* user;
 
 @end

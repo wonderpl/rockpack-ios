@@ -14,12 +14,13 @@
 
 @interface SYNSubscriptionsViewController ()
 
-@property (nonatomic, weak) User* user;
 
 @end
 
 
 @implementation SYNSubscriptionsViewController
+
+@synthesize user = _user;
 
 - (void) loadView
 {
@@ -49,7 +50,7 @@
     
     appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    self.user = appDelegate.currentUser;
+    
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
@@ -116,10 +117,31 @@
     self.channelThumbnailCollectionView.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
 }
 
+#pragma mark - Accessors
 
 - (UICollectionView *) collectionView
 {
     return self.channelThumbnailCollectionView;
+}
+
+
+
+-(void)setUser:(ChannelOwner*)user
+{
+    if(user == _user)
+        return;
+    
+    if([user.uniqueId isEqual:_user.uniqueId])
+        return;
+    
+    _user = user;
+    
+    
+    [self.channelThumbnailCollectionView reloadData];
+}
+-(ChannelOwner*)user
+{
+    return _user;
 }
 
 

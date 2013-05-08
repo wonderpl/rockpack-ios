@@ -10,10 +10,13 @@
 #import "Channel.h"
 #import "SYNYouHeaderView.h"
 
+
 @interface SYNSubscriptionsViewController : SYNChannelsRootViewController
 
 @property (nonatomic, readonly) UICollectionView* collectionView;
 @property (nonatomic, weak) SYNYouHeaderView* headerView;
+
+@property (nonatomic, weak) ChannelOwner* user;
 
 - (void) setViewFrame: (CGRect) frame;
 
