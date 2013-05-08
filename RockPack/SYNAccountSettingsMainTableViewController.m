@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+
 #import "AppConstants.h"
 #import "GAI.h"
 #import "SYNAccountSettingTableViewCell.h"
@@ -21,20 +22,17 @@
 #import "SYNAccountSettingsShareSettings.h"
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNAccountSettingsUsername.h"
-#import "SYNDeviceManager.h"
-
-#import "SYNDeviceManager.h"
-
 #import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
 
 @interface SYNAccountSettingsMainTableViewController ()
 
 @property (nonatomic, strong) NSArray* dataItems2ndSection;
+@property (nonatomic, strong) UIPopoverController* dobPopover;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic, weak) User* user;
-@property (nonatomic, strong) UIPopoverController* dobPopover;
 
 @end
 

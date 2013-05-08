@@ -397,7 +397,10 @@ typedef enum {
                                   delay: 0.0f
                                 options: UIViewAnimationOptionCurveEaseInOut
                              animations: ^{
-                                 self.containerView.frame = self.view.bounds;
+                                 
+                                 CGRect selfBounds = self.view.bounds;
+                                 selfBounds.origin.y = self.containerView.frame.origin.y;
+                                 self.containerView.frame = selfBounds;
                                  
                              } completion: ^(BOOL finished) {
                                  

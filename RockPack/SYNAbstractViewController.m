@@ -93,6 +93,8 @@
         [addToChannelButton setImage:buttonImageActive forState:UIControlStateSelected];
         [addToChannelButton setImage:buttonImageHighlighted forState:UIControlStateHighlighted];
         
+        addToChannelButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
         [addToChannelButton addTarget:self action:@selector(addToChannelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:addToChannelButton];

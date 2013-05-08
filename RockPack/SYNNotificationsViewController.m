@@ -82,7 +82,7 @@
     [notificationCell.imageView setAsynchronousImageFromURL:thumbnailUrl
                                            placeHolderImage:[UIImage imageNamed:@"AvatarProfile"]];
     
-    NSURL* thumbnailChannelUrl = [NSURL URLWithString:notification.channelResourceUrl];
+    // NSURL* thumbnailChannelUrl = [NSURL URLWithString:notification.channelResourceUrl];
 //    notificationCell.thumbnailImageView setAsynchronousImageFromURL:thumbnailUrl placeHolderImage:[UIImage imageNamed:@""]];
     
     notificationCell.detailTextLabel.text = @"8 Mins";
