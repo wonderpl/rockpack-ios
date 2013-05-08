@@ -200,7 +200,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="PanelChannelCreationCover.png">{160, 121}</string>
-			<string key="PanelChannelCreationCoverSelected.png">{160, 121}</string>
+			<string key="PanelChannelCreationCoverSelected.png">{184, 184}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

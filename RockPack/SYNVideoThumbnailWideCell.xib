@@ -383,7 +383,6 @@
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{78, 90}, {160, 40}}</string>
 										<reference key="NSSuperview" ref="76609695"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -844,12 +843,12 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAdd.png">{16, 16}</string>
-			<string key="ButtonAddHighlighted.png">{16, 16}</string>
-			<string key="ButtonAddSelected.png">{16, 16}</string>
-			<string key="GlossChannelSmall.png">{16, 16}</string>
-			<string key="GlossVideo.png">{16, 16}</string>
-			<string key="PanelVideoFeedLandscape.png">{16, 16}</string>
+			<string key="ButtonAdd.png">{44, 45}</string>
+			<string key="ButtonAddHighlighted.png">{44, 45}</string>
+			<string key="ButtonAddSelected.png">{44, 45}</string>
+			<string key="GlossChannelSmall.png">{80, 60}</string>
+			<string key="GlossVideo.png">{249, 140}</string>
+			<string key="PanelVideoFeedLandscape.png">{497, 141}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
