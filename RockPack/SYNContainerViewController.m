@@ -16,7 +16,7 @@
 #import "SYNChannelsUserViewController.h"
 #import "SYNFeedRootViewController.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "SYNYouRootViewController.h"
+#import "SYNProfileRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "SYNCategoriesTabViewController.h"
 #import <QuartzCore/QuartzCore.h>
@@ -110,7 +110,7 @@
     
     // == You Page == //
     
-    SYNYouRootViewController *myRockpackViewController = [[SYNYouRootViewController alloc] initWithViewId: kProfileViewId];
+    SYNProfileRootViewController *myRockpackViewController = [[SYNProfileRootViewController alloc] initWithViewId: kProfileViewId];
 
     
     

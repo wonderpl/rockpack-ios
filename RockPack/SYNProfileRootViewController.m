@@ -12,7 +12,7 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
-#import "SYNYouRootViewController.h"
+#import "SYNProfileRootViewController.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
 #import "Video.h"
@@ -26,7 +26,7 @@
 #define kInterChannelSpacing 150.0
 #define kInterRowMargin 12.0f
 
-@interface SYNYouRootViewController () <SYNDeletionWobbleLayoutDelegate, UIGestureRecognizerDelegate>
+@interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate, UIGestureRecognizerDelegate>
 
 // Enable to allow the user to 'pinch out' on thumbnails
 #ifdef ALLOWS_PINCH_GESTURES
@@ -60,7 +60,7 @@
 @end
 
 
-@implementation SYNYouRootViewController
+@implementation SYNProfileRootViewController
 
 - (id) initWithViewId: (NSString *) vid
 {

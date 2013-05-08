@@ -8,6 +8,6 @@
 
 #import "SYNAbstractViewController.h"
 
-@interface SYNYouRootViewController : SYNAbstractViewController
+@interface SYNProfileRootViewController : SYNAbstractViewController
 
 @end
