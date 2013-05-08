@@ -21,6 +21,7 @@
 #import "SYNContainerViewController.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
@@ -478,6 +479,7 @@
                                               if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
                                               {
                                                   self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: activityViewController];
+                                                  self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
                                                   
                                                   activityViewController.presentingPopoverController = _activityPopoverController;
                                                   

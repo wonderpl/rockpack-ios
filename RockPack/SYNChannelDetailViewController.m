@@ -24,11 +24,12 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SYNChannelCategoryTableViewController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate>
+                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -59,10 +60,13 @@
 @property (nonatomic, strong) SYNCategoriesTabViewController *categoriesTabViewController;
 @property (nonatomic, weak) Channel *channel;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
+@property (nonatomic,strong) NSString* selectedCategoryId;
 
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
+@property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -169,17 +173,19 @@
                                      placeHolderImage: nil];
     
 
-    
-    // Create categories tab, but make invisible (alpha = 0) for now
-    self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
-    self.categoriesTabViewController.delegate = self;
-    CGRect tabFrame = self.categoriesTabViewController.view.frame;
-    tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
-    self.categoriesTabViewController.view.frame = tabFrame;
-    [self.view addSubview: self.categoriesTabViewController.view];
-    self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.categoriesTabViewController.view.alpha = 0.0f;
-    [self addChildViewController: self.categoriesTabViewController];
+    if(!isIPhone)
+    {
+        // Create categories tab, but make invisible (alpha = 0) for now
+        self.categoriesTabViewController = [[SYNCategoriesTabViewController alloc] initWithHomeButton: FALSE];
+        self.categoriesTabViewController.delegate = self;
+        CGRect tabFrame = self.categoriesTabViewController.view.frame;
+        tabFrame.origin.y = kChannelCreationCategoryTabOffsetY;
+        self.categoriesTabViewController.view.frame = tabFrame;
+        [self.view addSubview: self.categoriesTabViewController.view];
+        self.categoriesTabViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.categoriesTabViewController.view.alpha = 0.0f;
+        [self addChildViewController: self.categoriesTabViewController];
+    }
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
@@ -245,6 +251,7 @@
             self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
         }
     }
+    self.selectedCategoryId = @"";
 }
 
 - (void) updateCategoryButtonText: (NSString *) buttonText
@@ -555,8 +562,51 @@
                                                   atScrollPosition: UICollectionViewScrollPositionNone
                                                           animated: YES];
         
-        [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                                               placeHolderImage: nil];
+        NSString *imageURLString = @"";
+        
+        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+
+            }
+            break;
+                
+            case 1:
+            {
+                // User channel covers
+                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                                  inSection: 0]];
+                imageURLString = channelCover.backgroundURL;
+            }
+            break;
+                
+            case 2:
+            {
+                // Rockpack channel covers
+                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                              inSection: 0]];
+                imageURLString = channelCover.backgroundURL;
+            }
+            break;
+                
+            default:
+            {
+                AssertOrLog(@"Shouldn't have more than three sections");
+            }
+            break;
+        }
+        
+        if ([imageURLString isEqualToString: @""])
+        {
+            self.channelCoverImageView.image = nil;
+        }
+        else
+        {
+            [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                                   placeHolderImage: nil];
+        }
     }
     else
     {
@@ -903,6 +953,8 @@
 
 - (void) showCategoryChooser
 {
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
     if (self.categoriesTabViewController.view.alpha == 0.0f)
     {
         [UIView animateWithDuration: kChannelEditModeAnimationDuration
@@ -918,6 +970,25 @@
                                                                                                  kChannelCreationCategoryAdditionalOffsetY));
                          }
                          completion: nil];
+    }
+    }
+    else
+    {
+        if(!self.categoryTableViewController)
+        {
+            self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] initWithNibName:@"SYNChannelCategoryTableViewControllerFullscreen~iphone" bundle:[NSBundle mainBundle]];
+            self.categoryTableViewController.categoryTableControllerDelegate = self;
+            self.categoryTableViewController.showAllCategoriesHeader = NO;
+        }
+        CGRect startFrame = self.categoryTableViewController.view.frame;
+        startFrame.origin.y = self.view.frame.size.height;
+        self.categoryTableViewController.view.frame = startFrame;
+        [self.view addSubview:self.categoryTableViewController.view];
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            CGRect endFrame = self.categoryTableViewController.view.frame;
+            endFrame.origin.y = 0.0f;
+            self.categoryTableViewController.view.frame = endFrame;
+        } completion:nil];
     }
 
 }
@@ -963,7 +1034,7 @@
 
 - (void) handleNewTabSelectionWithId: (NSString*) itemId
 {
-    
+    self.selectedCategoryId = itemId;
 }
 
 - (void) handleNewTabSelectionWithName: (NSString*) name
@@ -974,13 +1045,13 @@
 
 - (void) handleMainTap: (UITapGestureRecognizer*) recogniser
 {
-
+    self.selectedCategoryId = @"";
 }
 
 
 - (void) handleSecondaryTap: (UITapGestureRecognizer*) recogniser
 {
-    
+    [self hideCategoryChooser];
 }
 
 
@@ -988,13 +1059,19 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.createChannelButton.hidden = YES;
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+    }
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
     [appDelegate.oAuthNetworkEngine createChannelForUserId: appDelegate.currentOAuth2Credentials.userId
                                                      title: self.channel.title
                                                description: (self.channel.channelDescription)
-                                                  category: @"222"
+                                                  category: self.selectedCategoryId
                                                      cover: @""
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
@@ -1007,6 +1084,15 @@
                                               errorHandler: ^(id error) {
                                              
                                              DebugLog(@"Error @ createChannelPressed:");
+                                             NSString* errorMessage = @"Could not create channel. Please try again later.";
+                                             if([[error objectForKey:@"form_errors"] objectForKey:@"title"])
+                                             {
+                                                 errorMessage = NSLocalizedString(@"This channel name is already taken",nil);
+                                             };
+
+                                             [self showError:errorMessage];
+                                             
+                                             
                                          }];
 }
 
@@ -1024,7 +1110,7 @@
                                                        errorHandler: ^(id err) {
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
-                                                           
+                                                           [self showError:@"Could not create channel. Please try again later."];
                                                        }];
 }
 
@@ -1046,13 +1132,22 @@
                                               [appDelegate saveContext:YES];
                                               
                                               [self channelCreationComplete];
+                                          } errorHandler:^(id err) {
                                               
-                                          }
-                                               errorHandler:^(id err) {
-                                                   
-                                                   DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                                   
-                                               }];
+                                              DebugLog(@"Error @ getNewlyCreatedChannelForId:");
+                                              [self showError:@"Could not create channel. Please try again later."];
+                                          }];
+}
+
+-(void)showError:(NSString*)errorMessage
+{
+    self.createChannelButton.hidden = NO;
+    [self.activityIndicator stopAnimating];
+    [[[UIAlertView alloc] initWithTitle: @"Error"
+                                message: errorMessage
+                               delegate: nil
+                      cancelButtonTitle: @"OK"
+                      otherButtonTitles: nil] show];
 }
 
 
@@ -1116,7 +1211,7 @@
         
         // Need show the popover controller
         self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-        self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
+       self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
         self.cameraMenuPopoverController.delegate = self;
         self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
@@ -1262,4 +1357,31 @@
 {
     // TODO: Put some networking code in here
 }
+
+#pragma mark - iPhone Category Table delegate
+
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
+{
+    self.selectedCategoryId = uniqueId;
+    [self.selectCategoryButton setTitle:[NSString stringWithFormat:@"%@/\n%@", categoryTitle, subCategoryTitle] forState:UIControlStateNormal];
+    [self hideCategoriesTable];
+}
+
+-(void)categoryTableControllerDeselectedAll:(SYNChannelCategoryTableViewController *)tableController
+{
+    [self.selectCategoryButton setTitle:@"SELECT A\nCATEGORY" forState:UIControlStateNormal];
+    [self hideCategoriesTable];
+}
+
+-(void) hideCategoriesTable
+{
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGRect endFrame = self.categoryTableViewController.view.frame;
+        endFrame.origin.y = self.view.frame.size.height;
+        self.categoryTableViewController.view.frame = endFrame;
+    } completion:^(BOOL finished) {
+        [self.categoryTableViewController.view removeFromSuperview];
+    }];
+}
+
 @end
