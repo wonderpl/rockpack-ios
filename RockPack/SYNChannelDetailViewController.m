@@ -554,6 +554,9 @@
         [self.coverThumbnailCollectionView scrollToItemAtIndexPath: indexPath
                                                   atScrollPosition: UICollectionViewScrollPositionNone
                                                           animated: YES];
+        
+        [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
+                                               placeHolderImage: nil];
     }
     else
     {
@@ -562,10 +565,8 @@
     }
 }
 
+
 #pragma mark - Fetched results controller
-
-
-
 
 - (NSFetchedResultsController *) channelCoverFetchedResultsController
 {
@@ -596,6 +597,7 @@
     return _channelCoverFetchedResultsController;
 }
 
+
 - (NSFetchedResultsController *) userChannelCoverFetchedResultsController
 {
     if (_userChannelCoverFetchedResultsController)
@@ -625,6 +627,7 @@
     
     return _userChannelCoverFetchedResultsController;
 }
+
 
 #pragma mark - Helper methods
 
@@ -881,6 +884,7 @@
     }
 }
 
+
 - (void) hideCoverChooser
 {
     if (self.coverChooserMasterView.alpha == 1.0f)
@@ -931,6 +935,7 @@
                          completion: nil];
     }
 }
+
 
 - (void) resetVideoCollectionViewPosition
 {
@@ -992,21 +997,19 @@
                                                   category: @"222"
                                                      cover: @""
                                                   isPublic: YES
-                                         completionHandler:^(NSDictionary* resourceCreated) {
-                                             
-            
+                                         completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey:@"id"];
                                              
                                              [self addVideosToNewChannelForId:channelId];
                                              
                                              
-                                         } errorHandler:^(id error) {
+                                         }
+                                              errorHandler: ^(id error) {
                                              
                                              DebugLog(@"Error @ createChannelPressed:");
-                                             
-                                             
                                          }];
 }
+
 
 - (void) addVideosToNewChannelForId: (NSString*) channelId
 {
@@ -1018,23 +1021,19 @@
                                                       
                                                       [self getNewlyCreatedChannelForId:channelId];
                                                   }
-                                                       errorHandler:^(id err) {
+                                                       errorHandler: ^(id err) {
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
                                                            
                                                        }];
-    
-    
 }
+
 
 - (void) getNewlyCreatedChannelForId: (NSString*) channelId
 {
-
-    [appDelegate.oAuthNetworkEngine channelCreatedForUserId:appDelegate.currentOAuth2Credentials.userId
-                                                  channelId:channelId
-                                          completionHandler:^(id dictionary) {
-                                              
-                                              
+    [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                  channelId: channelId
+                                          completionHandler: ^(id dictionary) {
                                               Channel* createdChannel = [Channel instanceFromDictionary:dictionary
                                                                               usingManagedObjectContext:appDelegate.mainManagedObjectContext
                                                                                     ignoringObjectTypes:(kIgnoreStoredObjects | kIgnoreChannelOwnerObject)
@@ -1048,12 +1047,12 @@
                                               
                                               [self channelCreationComplete];
                                               
-                                          } errorHandler:^(id err) {
-                                              
-                                              DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                              
-                                          }];
-
+                                          }
+                                               errorHandler:^(id err) {
+                                                   
+                                                   DebugLog(@"Error @ getNewlyCreatedChannelForId:");
+                                                   
+                                               }];
 }
 
 
@@ -1083,14 +1082,14 @@
     return YES;
 }
 
--(void)textViewDidBeginEditing:(UITextView *)textView
+- (void) textViewDidBeginEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = YES;
     self.cancelTextInputButton.hidden = NO;
     
 }
 
--(void)textViewDidEndEditing:(UITextView *)textView
+- (void) textViewDidEndEditing: (UITextView *) textView
 {
     self.createChannelButton.hidden = NO;
     self.cancelTextInputButton.hidden = YES;
