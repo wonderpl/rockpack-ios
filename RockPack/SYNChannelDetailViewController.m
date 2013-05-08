@@ -1275,6 +1275,8 @@
     {
         self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
         
+        self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
         [self.cameraPopoverController presentPopoverFromRect: self.cameraButton.frame
                                                       inView: self.coverChooserMasterView
                                     permittedArrowDirections: UIPopoverArrowDirectionLeft
@@ -1327,7 +1329,17 @@
     [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
                                                       image: imageToUpload
                                           completionHandler: ^(NSDictionary *dictionary){
-                                              DebugLog(@"Success");
+                                              NSString *wallpaperURL = dictionary [@"background_url"];
+                                              
+                                              if (wallpaperURL)
+                                              {
+                                                  self.channel.wallpaperURL = wallpaperURL;
+                                                  DebugLog(@"Success");
+                                              }
+                                              else
+                                              {
+                                                  DebugLog(@"Failed to get wallpaper URL");
+                                              }
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"%@", [error debugDescription]);
