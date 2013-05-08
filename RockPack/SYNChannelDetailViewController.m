@@ -1211,7 +1211,7 @@
         
         // Need show the popover controller
         self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-       self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
+        self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 70);
         self.cameraMenuPopoverController.delegate = self;
         self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
@@ -1274,6 +1274,8 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
         self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
+        
+        self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
         [self.cameraPopoverController presentPopoverFromRect: self.cameraButton.frame
                                                       inView: self.coverChooserMasterView
