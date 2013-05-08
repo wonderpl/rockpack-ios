@@ -555,8 +555,51 @@
                                                   atScrollPosition: UICollectionViewScrollPositionNone
                                                           animated: YES];
         
-        [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.channel.wallpaperURL]
-                                               placeHolderImage: nil];
+        NSString *imageURLString = @"";
+        
+        // There are two sections for cover thumbnails, the first represents 'no cover' the second contains all images
+        switch (indexPath.section)
+        {
+            case 0:
+            {
+
+            }
+            break;
+                
+            case 1:
+            {
+                // User channel covers
+                ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                                  inSection: 0]];
+                imageURLString = channelCover.backgroundURL;
+            }
+            break;
+                
+            case 2:
+            {
+                // Rockpack channel covers
+                ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                              inSection: 0]];
+                imageURLString = channelCover.backgroundURL;
+            }
+            break;
+                
+            default:
+            {
+                AssertOrLog(@"Shouldn't have more than three sections");
+            }
+            break;
+        }
+        
+        if ([imageURLString isEqualToString: @""])
+        {
+            self.channelCoverImageView.image = nil;
+        }
+        else
+        {
+            [self.channelCoverImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
+                                                   placeHolderImage: nil];
+        }
     }
     else
     {
