@@ -392,7 +392,7 @@
 {
     self.channelOwnerLabel.text = self.channel.channelOwner.displayName;
     
-    NSString *detailsString = [NSString stringWithFormat: @"%d VIDEOS / %d SUBSCRIBERS", self.channel.videoInstancesSet.count, 0];
+    NSString *detailsString = [NSString stringWithFormat: @"%d SUBSCRIBERS", 0];
     self.channelDetailsLabel.text = detailsString;
     
     // If we have a valid ecommerce URL, then display the button
