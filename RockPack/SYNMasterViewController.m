@@ -390,6 +390,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     
     [self addChildViewController:self.existingChannelsController];
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.existingChannelsController.view.frame = self.view.bounds;
+    }
     [self.view addSubview:self.existingChannelsController.view];
     
     self.existingChannelsController.view.alpha = 0.0;

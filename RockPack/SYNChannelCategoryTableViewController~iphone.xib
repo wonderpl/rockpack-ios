@@ -32,15 +32,15 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
-			<object class="IBUIView" id="666976372">
+			<object class="IBUIView" id="256012752">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIImageView" id="900878767">
-						<reference key="NSNextResponder" ref="666976372"/>
+					<object class="IBUIImageView" id="967425771">
+						<reference key="NSNextResponder" ref="256012752"/>
 						<int key="NSvFlags">276</int>
 						<string key="NSFrame">{{240, 0}, {3, 480}}</string>
-						<reference key="NSSuperview" ref="666976372"/>
+						<reference key="NSSuperview" ref="256012752"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -52,13 +52,13 @@
 						</object>
 					</object>
 					<object class="IBUITableView" id="873029372">
-						<reference key="NSNextResponder" ref="666976372"/>
+						<reference key="NSNextResponder" ref="256012752"/>
 						<int key="NSvFlags">278</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrameSize">{240, 460}</string>
-						<reference key="NSSuperview" ref="666976372"/>
+						<reference key="NSSuperview" ref="256012752"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="900878767"/>
+						<reference key="NSNextKeyView" ref="967425771"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MC45ODgyMzUyOTQxIDEgMC45ODgyMzUyOTQxAA</bytes>
@@ -67,7 +67,7 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-						<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics" id="681323986">
+						<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics" id="36867828">
 							<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
 							<string key="IBUIDisplayName">Freeform</string>
 						</object>
@@ -91,7 +91,7 @@
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MCAwAA</bytes>
 				</object>
-				<reference key="IBUISimulatedDestinationMetrics" ref="681323986"/>
+				<reference key="IBUISimulatedDestinationMetrics" ref="36867828"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</array>
@@ -101,7 +101,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">view</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="666976372"/>
+						<reference key="destination" ref="256012752"/>
 					</object>
 					<int key="connectionID">12</int>
 				</object>
@@ -112,14 +112,6 @@
 						<reference key="destination" ref="873029372"/>
 					</object>
 					<int key="connectionID">13</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">shadowImageView</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="900878767"/>
-					</object>
-					<int key="connectionID">10</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -159,22 +151,22 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="666976372"/>
+						<reference key="object" ref="256012752"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="873029372"/>
-							<reference ref="900878767"/>
+							<reference ref="967425771"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">4</int>
 						<reference key="object" ref="873029372"/>
-						<reference key="parent" ref="666976372"/>
+						<reference key="parent" ref="256012752"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
-						<reference key="object" ref="900878767"/>
-						<reference key="parent" ref="666976372"/>
+						<reference key="object" ref="967425771"/>
+						<reference key="parent" ref="256012752"/>
 					</object>
 				</array>
 			</object>
@@ -198,20 +190,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelCategoryTableViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="shadowImageView">UIImageView</string>
-						<string key="tableView">UITableView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="shadowImageView">
-							<string key="name">shadowImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableView">
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">tableView</string>
+						<string key="NS.object.0">UITableView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">tableView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
 							<string key="name">tableView</string>
 							<string key="candidateClassName">UITableView</string>
 						</object>
-					</dictionary>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNChannelCategoryTableViewController.h</string>
