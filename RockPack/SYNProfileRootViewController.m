@@ -7,7 +7,6 @@
 //
 
 #import "Channel.h"
-#import "ChannelOwner.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNDeviceManager.h"
@@ -55,12 +54,13 @@
 @property (nonatomic, weak) SYNChannelMidCell* cellDeleteCandidate;
 @property (nonatomic, weak) UIButton* channelsTabButton;
 @property (nonatomic, weak) UIButton* subscriptionsTabButton;
-@property (nonatomic, weak) User* user;
 
 @end
 
 
 @implementation SYNProfileRootViewController
+
+@synthesize user = _user;
 
 - (id) initWithViewId: (NSString *) vid
 {
@@ -176,6 +176,9 @@
     subColViewFrame.size.width = [[SYNDeviceManager sharedInstance] currentScreenWidth] - subColViewFrame.origin.x - 10.0;
     [self.subscriptionsViewController setViewFrame: subColViewFrame];
     
+    if(self.user)
+        self.subscriptionsViewController.user = self.user;
+    
     self.headerSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
     if (isIPhone)
@@ -286,7 +289,6 @@
 {
     [super viewDidLoad];
     
-    self.user = appDelegate.currentUser;
     
     self.trackedViewName = @"You - Root";
     
@@ -329,7 +331,7 @@
                                                  name: NSManagedObjectContextObjectsDidChangeNotification
                                                object: appDelegate.mainManagedObjectContext];
     
-    [self reloadCollectionViews];
+    
 }
 
 
@@ -480,11 +482,14 @@
 {
     [super viewWillAppear: animated];
     
-    [self.userProfileController setChannelOwner:appDelegate.currentUser];
+    [self.userProfileController setChannelOwner:self.user];
     
     self.subscriptionsViewController.collectionView.delegate = self;
     
-    [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]]; 
+    [self updateLayoutForOrientation:[[SYNDeviceManager sharedInstance] orientation]];
+    
+    if(self.user)
+        [self reloadCollectionViews];
 }
 
 
@@ -963,6 +968,32 @@
                                               errorHandler: ^(id error) {
                                                   DebugLog(@"Delete channel NOT succeed");
                                               }];
+}
+
+#pragma mark - Accessors
+
+-(void)setUser:(ChannelOwner*)user
+{
+    if(user == _user)
+        return;
+    
+    if([user.uniqueId isEqual:_user.uniqueId])
+        return;
+    
+    _user = user;
+    
+    if(self.userProfileController)
+        [self.userProfileController setChannelOwner:self.user];
+    
+    
+    [self.channelThumbnailCollectionView reloadData];
+    
+    if(self.subscriptionsViewController)
+        self.subscriptionsViewController.user = user;
+}
+-(ChannelOwner*)user
+{
+    return _user;
 }
 
 @end

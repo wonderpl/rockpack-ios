@@ -90,6 +90,8 @@
 {
     [super viewDidLoad];
     
+    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
     // == Feed Page == //
     
     SYNFeedRootViewController *feedRootViewController = [[SYNFeedRootViewController alloc] initWithViewId: kFeedViewId];
@@ -108,10 +110,10 @@
         channelsRootViewController.enableCategoryTable = YES;
     }
     
-    // == You Page == //
+    // == Profile Page == //
     
     SYNProfileRootViewController *myRockpackViewController = [[SYNProfileRootViewController alloc] initWithViewId: kProfileViewId];
-
+    myRockpackViewController.user = appDelegate.currentUser;
     
     
     self.shouldAnimateViewTransitions = YES;
