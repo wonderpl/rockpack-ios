@@ -14,5 +14,4 @@
 
 @property (nonatomic, strong) UIImageView* thumbnailImageView;
 @property (nonatomic, weak) NSString* messageTitle;
-
 @end

@@ -24,8 +24,6 @@
         // == Profile Image View == //
         
         self.imageView.frame = CGRectMake(4.0, 4.0, 60.0, 60.0);
-        self.imageView.image = [UIImage imageNamed:@"AvatarProfile"];
-        self.imageView.backgroundColor = [UIColor blueColor];
         
         // == Main Text == //
         
@@ -77,7 +75,7 @@
     [super layoutSubviews];
     
     
-    
+    self.imageView.frame = CGRectMake(4.0, 4.0, 60.0, 60.0);
     
     self.textLabel.frame = CGRectMake(76.0, 14.0, mainTextSize.width, mainTextSize.height);
     
@@ -128,4 +126,6 @@
 {
     return self.textLabel.text;
 }
+
+
 @end
