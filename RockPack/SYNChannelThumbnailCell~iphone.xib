@@ -391,9 +391,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ChannelCreationCoverNone.png">{160, 121}</string>
-			<string key="GlossChannelProfile~iphone.png">{152, 152}</string>
-			<string key="PanelChannelProfile~iphone.png">{152, 152}</string>
+			<string key="ChannelCreationCoverNone.png">{16, 16}</string>
+			<string key="GlossChannelProfile~iphone.png">{16, 16}</string>
+			<string key="PanelChannelProfile~iphone.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

@@ -93,32 +93,33 @@
 }
 
 #pragma mark - Set the Title Methods
+//No more labels next to back button as per the redesign of the redesign, will leave this incase of u-turn - Kish
 
--(void)setBackTitle:(NSString*)backTitle
-{
-    NSString* upperTitle = [backTitle uppercaseString];
-    CGSize titleSize = [upperTitle sizeWithFont:titleLabel.font];
-    CGRect titleLabelRect = titleLabel.frame;
-    titleLabelRect.size = titleSize;
-    titleLabel.frame = titleLabelRect;
-    titleLabel.center = CGPointMake(titleLabel.center.x, titleBGView.center.y + 4.0);
-    titleLabel.frame = CGRectIntegral(titleLabel.frame);
-    titleLabel.text = upperTitle;
-    
-    CGRect titleBGFrame = titleBGView.frame;
-    titleBGFrame.size.width = titleLabelRect.size.width + 20.0;
-    titleBGView.frame = titleBGFrame;
-    
-    CGSize totalSize = CGSizeZero;
-    totalSize.width = button.frame.size.width + titleBGView.frame.size.width;
-    totalSize.height = button.frame.size.height;
-    
-    CGRect overButtonFrame = CGRectZero;
-    overButtonFrame.size = totalSize;
-    overButtonFrame.origin = self.frame.origin;
-    
-    self.frame = overButtonFrame;
-}
+//-(void)setBackTitle:(NSString*)backTitle
+//{
+//    NSString* upperTitle = [backTitle uppercaseString];
+//    CGSize titleSize = [upperTitle sizeWithFont:titleLabel.font];
+//    CGRect titleLabelRect = titleLabel.frame;
+//    titleLabelRect.size = titleSize;
+//    titleLabel.frame = titleLabelRect;
+//    titleLabel.center = CGPointMake(titleLabel.center.x, titleBGView.center.y + 4.0);
+//    titleLabel.frame = CGRectIntegral(titleLabel.frame);
+//    titleLabel.text = upperTitle;
+//    
+//    CGRect titleBGFrame = titleBGView.frame;
+//    titleBGFrame.size.width = titleLabelRect.size.width + 20.0;
+//    titleBGView.frame = titleBGFrame;
+//    
+//    CGSize totalSize = CGSizeZero;
+//    totalSize.width = button.frame.size.width + titleBGView.frame.size.width;
+//    totalSize.height = button.frame.size.height;
+//    
+//    CGRect overButtonFrame = CGRectZero;
+//    overButtonFrame.size = totalSize;
+//    overButtonFrame.origin = self.frame.origin;
+//    
+//    self.frame = overButtonFrame;
+//}
 
 
 #pragma mark - Initialiser Method

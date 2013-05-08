@@ -19,6 +19,7 @@
 
 
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
+@property (nonatomic, strong) UIImageView* logoImageView;
 @end
 
 @implementation SYNNotificationsViewController
@@ -36,15 +37,35 @@
     return self;
 }
 
+#pragma mark - View Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LogoNotifications"]];
+    //[self.view addSubview:self.logoImageView];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.tableView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.tableView removeObserver:self forKeyPath:@"contentSize"];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -74,16 +95,38 @@
     
     SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
-    NSString* constructedMessage = [NSString stringWithFormat:@"%@ has %@ to your channel", [notification.userDisplayName uppercaseString], notification.messageType];
+    NSMutableString* constructedMessage = [[NSMutableString alloc] init];
+    [constructedMessage appendFormat:@"%@", [notification.userDisplayName uppercaseString]];
+    [constructedMessage appendString:@" has "];
+    [constructedMessage appendFormat:@"%@", notification.messageType];
+    if([notification.messageType isEqualToString:@"subscribed"])
+        [constructedMessage appendString:@" to your channel"];
+    else
+        [constructedMessage appendString:@" your video"];
     
-    notificationCell.messageTitle = constructedMessage;
     
-    NSURL* thumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
-    [notificationCell.imageView setAsynchronousImageFromURL:thumbnailUrl
+    
+    notificationCell.messageTitle = [NSString stringWithString:constructedMessage];
+    
+    NSURL* userThumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
+    [notificationCell.imageView setAsynchronousImageFromURL:userThumbnailUrl
                                            placeHolderImage:[UIImage imageNamed:@"AvatarProfile"]];
+    NSURL* thumbnaillUrl;
+    if([notification.messageType isEqualToString:@"starred"])
+    {
+        thumbnaillUrl = [NSURL URLWithString:notification.videoThumbnailUrl];
+        
+    }
+    else
+    {
+        thumbnaillUrl = [NSURL URLWithString:notification.channelThumbnailUrl];
+        
+    }
     
-    NSURL* thumbnailChannelUrl = [NSURL URLWithString:notification.channelResourceUrl];
-//    notificationCell.thumbnailImageView setAsynchronousImageFromURL:thumbnailUrl placeHolderImage:[UIImage imageNamed:@""]];
+     
+    
+    [notificationCell.thumbnailImageView setAsynchronousImageFromURL: thumbnaillUrl
+                                                    placeHolderImage: [UIImage imageNamed:@""]];
     
     notificationCell.detailTextLabel.text = @"8 Mins";
     
@@ -110,6 +153,22 @@
                                                    } errorHandler:^(id error) {
         
                                                    }];
+}
+
+#pragma mark - KVO
+
+- (void) observeValueForKeyPath: (NSString *) keyPath
+                       ofObject: (id) object
+                         change: (NSDictionary *) change
+                        context: (void *) context
+{
+    if ([keyPath isEqualToString: @"contentSize"])
+    {
+        CGRect tableViewFrame = self.tableView.frame;
+        CGRect logoImageViewFrame = self.logoImageView.frame;
+        logoImageViewFrame.origin.y = tableViewFrame.size.height + 4.0;
+        self.logoImageView.frame = logoImageViewFrame;
+    }
 }
 
 #pragma mark - Accessors

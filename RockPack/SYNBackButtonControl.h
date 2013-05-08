@@ -16,6 +16,6 @@
 }
 
 +(id)backButton;
--(void)setBackTitle:(NSString*)backTitle;
+//-(void)setBackTitle:(NSString*)backTitle;
 
 @end

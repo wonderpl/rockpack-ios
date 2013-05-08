@@ -17,6 +17,7 @@
 #import "SYNNetworkEngine.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNPopoverBackgroundView.h"
 #import "UIFont+SYNFont.h"
 #import "User.h"
 #import <FacebookSDK/FacebookSDK.h>
@@ -39,6 +40,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* signUpButton;
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
+@property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 @property (nonatomic, strong) IBOutlet UILabel* passwordForgottenLabel;
@@ -179,7 +181,7 @@
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
-                                registerNewUserButton, dividerImageView, faceImageButton, sendEmailButton,
+                                registerNewUserButton, dividerImageView, faceImageButton, self.avatarImageView, sendEmailButton,
                                 wellSendYouLabel, termsAndConditionsLabelSide];
     
     for (UIView* control in controlsToHide)
@@ -190,6 +192,7 @@
     dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
     emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
     faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
+    self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0, self.avatarImageView.center.y);
     
     facebookSignInButton.enabled = YES;
     facebookSignInButton.frame = facebookButtonInitialFrame;
@@ -201,6 +204,7 @@
     {
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
+        self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
     }
 
@@ -347,6 +351,9 @@
                                                                        faceImageButton.center = CGPointMake(faceImageButton.center.x,
                                                                                                             faceImageButton.center.y - self.elementsOffsetY);
                                                                        
+                                                                       self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x,
+                                                                                                            self.avatarImageView.center.y - self.elementsOffsetY);
+                                                                       
                                                                        [userNameInputField becomeFirstResponder];
                                                                        
                                                                    }];
@@ -381,6 +388,10 @@
                              faceImageButton.alpha = 0.0;
                              faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0,
                                                                   faceImageButton.center.y);
+                             
+                             self.avatarImageView.alpha = 0.0;
+                             self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0,
+                                                                  self.avatarImageView.center.y);
                              
                              passwordForgottenButton.alpha = 1.0;
                              passwordForgottenLabel.alpha = 1.0;
@@ -493,6 +504,7 @@
                              faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
                              faceRect.origin.y -= self.elementsOffsetY;
                              faceImageButton.frame = faceRect;
+                             self.avatarImageView.frame = faceRect;
                              
                              isAnimating = NO;
                              
@@ -501,6 +513,7 @@
                                                   memberLabel.alpha = 1.0;
                                                   loginButton.alpha = 1.0;
                                                   faceImageButton.alpha = 1.0;
+                                                  self.avatarImageView.alpha = 1.0;
                                                   
                                                   termsAndConditionsLabelSide.alpha = 1.0;
                                               }
@@ -530,9 +543,11 @@
                              dobView.frame = dobRect;
                              
                              faceImageButton.alpha = 1.0;
+                             self.avatarImageView.alpha = 1.0;
                              CGRect faceRect = faceImageButton.frame;
                              faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
                              faceImageButton.frame = faceRect;
+                             self.avatarImageView.frame = faceRect;
                              
                              loginButton.alpha = 1.0;
                              memberLabel.alpha = 1.0;
@@ -1240,56 +1255,130 @@
 
 #pragma mark - CoreData Access
 
-#pragma mark - Face Image and Camera
+//#pragma mark - Face Image and Camera
+//
+//- (IBAction) faceButtonImagePressed: (UIButton*) sender
+//{
+//    
+//    SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
+//    actionPopoverController.delegate = self;
+//    
+//    // Need show the popover controller
+//    self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+//    self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
+//    self.cameraMenuPopoverController.delegate = self;
+//    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+//    
+//    [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
+//                                                      inView: self.view
+//                                    permittedArrowDirections: UIPopoverArrowDirectionUp
+//                                                    animated: YES];
+//}
+//
+//
+//- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+//{
+//    self.imagePicker = [[GKImagePicker alloc] init];
+//    self.imagePicker.cropSize = CGSizeMake(256, 176);
+//    self.imagePicker.delegate = self;
+//    self.imagePicker.imagePickerController.sourceType = sourceType;
+//    
+//    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+//    {
+//        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
+//        {
+//            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+//        }
+//    }
+//    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.imagePicker.imagePickerController];
+//        
+//        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
+//                                                      inView: self.view
+//                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
+//                                                    animated: YES];
+//    }
+//    else
+//    {
+//        [self presentViewController: self.imagePicker.imagePickerController
+//                           animated: YES
+//                         completion: nil];
+//    }
+//}
+//
+//
+//- (void) userTouchedTakePhotoButton
+//{
+//    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
+//    [self showImagePicker: UIImagePickerControllerSourceTypeCamera];
+//}
+//
+//
+//- (void) imagePicker: (GKImagePicker *) imagePicker
+//         pickedImage: (UIImage *) image
+//{
+//    //    self.imgView.image = image;
+//    
+//    [self.faceImageButton setImage:image forState:UIControlStateNormal];
+//    
+//    DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+//    [self hideImagePicker];
+//}
+//
+//
+//- (void) hideImagePicker
+//{
+//    if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
+//    {
+//        [self.cameraPopoverController dismissPopoverAnimated: YES];
+//    }
+//    else
+//    {
+//        [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
+//                                                                   completion: nil];
+//    }
+//}
 
-- (IBAction) faceButtonImagePressed: (UIButton*) sender
+#pragma mark - Cover selection and upload support
+
+- (IBAction) faceButtonImagePressed: (UIButton*) button
 {
+    button.selected = !button.selected;
     
-    SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
-    actionPopoverController.delegate = self;
-    
-    // Need show the popover controller
-    self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
-    self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
-    self.cameraMenuPopoverController.delegate = self;
-    self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-    
-    [self.cameraMenuPopoverController presentPopoverFromRect: sender.frame
-                                                      inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionUp
-                                                    animated: YES];
+    if (button.selected)
+    {
+        SYNCameraPopoverViewController *actionPopoverController = [[SYNCameraPopoverViewController alloc] init];
+        actionPopoverController.delegate = self;
+        
+        // Need show the popover controller
+        self.cameraMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController: actionPopoverController];
+        self.cameraMenuPopoverController.popoverContentSize = CGSizeMake(206, 96);
+        self.cameraMenuPopoverController.delegate = self;
+        self.cameraMenuPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
+        [self.cameraMenuPopoverController presentPopoverFromRect: button.frame
+                                                          inView: self.view
+                                        permittedArrowDirections: UIPopoverArrowDirectionLeft
+                                                        animated: YES];
+    }
 }
 
 
-- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
 {
-    self.imagePicker = [[GKImagePicker alloc] init];
-    self.imagePicker.cropSize = CGSizeMake(256, 176);
-    self.imagePicker.delegate = self;
-    self.imagePicker.imagePickerController.sourceType = sourceType;
-    
-    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+    if (popoverController == self.cameraMenuPopoverController)
     {
-        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
-        {
-            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-        }
+        self.cameraPopoverController = nil;
     }
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    else if (popoverController == self.cameraPopoverController)
     {
-        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.imagePicker.imagePickerController];
-        
-        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
-                                                      inView: self.view
-                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
-                                                    animated: YES];
+        self.cameraPopoverController = nil;
     }
     else
     {
-        [self presentViewController: self.imagePicker.imagePickerController
-                           animated: YES
-                         completion: nil];
+        AssertOrLog(@"Unknown popup dismissed");
     }
 }
 
@@ -1301,31 +1390,106 @@
 }
 
 
+- (void) userTouchedChooseExistingPhotoButton
+{
+    [self.cameraMenuPopoverController dismissPopoverAnimated: NO];
+    [self showImagePicker: UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+
+- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType
+{
+    self.imagePicker = [[GKImagePicker alloc] init];
+    self.imagePicker.cropSize = CGSizeMake(280, 280);
+    self.imagePicker.delegate = self;
+    self.imagePicker.imagePickerController.sourceType = sourceType;
+    
+    if ((sourceType == UIImagePickerControllerSourceTypeCamera) && [UIImagePickerController respondsToSelector: @selector(isCameraDeviceAvailable:)])
+    {
+        if ([UIImagePickerController isCameraDeviceAvailable: UIImagePickerControllerCameraDeviceFront])
+        {
+            self.imagePicker.imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+        }
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        self.cameraPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.imagePicker.imagePickerController];
+        
+        self.cameraPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
+        [self.cameraPopoverController presentPopoverFromRect: self.faceImageButton.frame
+                                                      inView: self.view
+                                    permittedArrowDirections: UIPopoverArrowDirectionLeft
+                                                    animated: YES];
+        
+        self.cameraPopoverController.delegate = self;
+    }
+    else
+    {
+        [self presentViewController: self.imagePicker.imagePickerController
+                           animated: YES
+                         completion: nil];
+    }
+}
+
+
+# pragma mark - GKImagePicker Delegate Methods
+
 - (void) imagePicker: (GKImagePicker *) imagePicker
          pickedImage: (UIImage *) image
 {
-    //    self.imgView.image = image;
-    
-    [self.faceImageButton setImage:image forState:UIControlStateNormal];
-    
     DebugLog(@"width %f, height %f", image.size.width, image.size.height);
+    
+    self.avatarImageView.image = image;
+    
+    [self uploadAvatarImage: image];
+    
     [self hideImagePicker];
 }
-
 
 - (void) hideImagePicker
 {
     if (UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM())
     {
+        
         [self.cameraPopoverController dismissPopoverAnimated: YES];
-    }
-    else
-    {
+        
+    } else {
+        
         [self.imagePicker.imagePickerController dismissViewControllerAnimated: YES
                                                                    completion: nil];
     }
 }
 
+#pragma mark - Upload channel cover image
+
+- (void) uploadAvatarImage: (UIImage *) imageToUpload
+{
+    // TODO: Add avatoar uploading
+    
+//    // Upload the image for this user
+//    [appDelegate.oAuthNetworkEngine uploadCoverArtForUserId: appDelegate.currentOAuth2Credentials.userId
+//                                                      image: imageToUpload
+//                                          completionHandler: ^(NSDictionary *dictionary){
+//                                              NSString *wallpaperURL = dictionary [@"background_url"];
+//                                              
+//                                              if (wallpaperURL)
+//                                              {
+//                                                  self.channel.wallpaperURL = wallpaperURL;
+//                                                  DebugLog(@"Success");
+//                                              }
+//                                              else
+//                                              {
+//                                                  DebugLog(@"Failed to get wallpaper URL");
+//                                              }
+//                                          }
+//                                               errorHandler: ^(NSError* error) {
+//                                                   DebugLog(@"%@", [error debugDescription]);
+//                                               }];
+}
+
+#pragma mark - Rotation support
 
 - (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
                                           duration: (NSTimeInterval) duration
@@ -1338,6 +1502,7 @@
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
+        self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);
         
@@ -1348,6 +1513,7 @@
         signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
+        self.avatarImageView.center = CGPointMake(254.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
@@ -1370,6 +1536,7 @@
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
+    self.avatarImageView.frame = CGRectIntegral(self.avatarImageView.frame);
     areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
 }
 
@@ -1409,6 +1576,7 @@
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
+    self.avatarImageView.frame = CGRectIntegral(self.avatarImageView.frame);
     areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
     termsAndConditionsLabel.frame = CGRectIntegral(termsAndConditionsLabel.frame);
     termsAndConditionsLabelSide.frame = CGRectIntegral(termsAndConditionsLabelSide.frame);

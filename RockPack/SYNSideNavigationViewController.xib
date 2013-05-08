@@ -41,7 +41,7 @@
 					<object class="IBUIImageView" id="861217670">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{580, 670}</string>
+						<string key="NSFrameSize">{556, 82}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="515784887"/>
@@ -56,7 +56,7 @@
 					<object class="IBUITableView" id="747146287">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{4, 72}, {187, 338}}</string>
+						<string key="NSFrame">{{7, 82}, {187, 338}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="898198165"/>
@@ -78,35 +78,36 @@
 					</object>
 					<object class="IBUIImageView" id="515784887">
 						<reference key="NSNextResponder" ref="1018200067"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{17, 18}, {39, 39}}</string>
+						<int key="NSvFlags">289</int>
+						<string key="NSFrame">{{12, 7}, {60, 60}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="329439129"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">AvatarChannel@2x~iphone.png</string>
+						</object>
 					</object>
 					<object class="IBUIView" id="488699221">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{199, 77}, {376, 586}}</string>
+						<string key="NSFrame">{{196, 82}, {353, 586}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace">
-								<int key="NSID">2</int>
-							</object>
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC41MDk4MDM5NTA4IDAuNTUyOTQxMjAzMSAwLjU2ODYyNzQ3NjcgMAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 					<object class="IBUILabel" id="329439129">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{67, 22}, {380, 39}}</string>
+						<string key="NSFrame">{{88, 18}, {476, 44}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="747146287"/>
@@ -130,19 +131,19 @@
 						<int key="IBUINumberOfLines">2</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">1</int>
-							<double key="pointSize">20</double>
+							<double key="pointSize">19</double>
 						</object>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">Helvetica</string>
-							<double key="NSSize">20</double>
+							<double key="NSSize">19</double>
 							<int key="NSfFlags">16</int>
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-						<double key="preferredMaxLayoutWidth">380</double>
+						<double key="preferredMaxLayoutWidth">476</double>
 					</object>
 					<object class="IBUIButton" id="898198165">
 						<reference key="NSNextResponder" ref="1018200067"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">300</int>
 						<string key="NSFrame">{{13, 609}, {169, 50}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
@@ -183,7 +184,7 @@
 						</object>
 					</object>
 				</array>
-				<string key="NSFrameSize">{580, 670}</string>
+				<string key="NSFrameSize">{556, 670}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="861217670"/>
@@ -240,7 +241,15 @@
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="898198165"/>
 					</object>
-					<int key="connectionID">23</int>
+					<int key="connectionID">28</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">backgroundImageView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="861217670"/>
+					</object>
+					<int key="connectionID">30</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -265,7 +274,7 @@
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
-					<int key="connectionID">24</int>
+					<int key="connectionID">29</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -356,7 +365,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">25</int>
+			<int key="maxID">30</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -427,9 +436,10 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="AvatarChannel@2x~iphone.png">{108, 110}</string>
 			<string key="ButtonSettings.png">{169, 50}</string>
 			<string key="ButtonSettingsHighlighted.png">{169, 50}</string>
-			<string key="PanelMenu.png">{580, 670}</string>
+			<string key="PanelMenu.png">{556, 82}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

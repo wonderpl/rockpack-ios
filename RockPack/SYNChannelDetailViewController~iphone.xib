@@ -465,6 +465,7 @@
 										<string key="NSFrame">{{160, 260}, {155, 65}}</string>
 										<reference key="NSSuperview" ref="574818441"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1201,55 +1202,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNChannelDetailViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addButtonTapped:">id</string>
-						<string key="addCoverButtonTapped:">UIButton</string>
-						<string key="backButtonTapped:">id</string>
-						<string key="buyButtonTapped:">id</string>
-						<string key="createChannelPressed:">id</string>
-						<string key="selectCategoryButtonTapped:">UIButton</string>
-						<string key="shareChannelButtonTapped:">id</string>
-						<string key="subscribeButtonTapped:">id</string>
-						<string key="userTouchedCameraButton:">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addButtonTapped:">
-							<string key="name">addButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="addCoverButtonTapped:">
-							<string key="name">addCoverButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="backButtonTapped:">
-							<string key="name">backButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="buyButtonTapped:">
-							<string key="name">buyButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createChannelPressed:">
-							<string key="name">createChannelPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectCategoryButtonTapped:">
-							<string key="name">selectCategoryButtonTapped:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="shareChannelButtonTapped:">
-							<string key="name">shareChannelButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="subscribeButtonTapped:">
-							<string key="name">subscribeButtonTapped:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="userTouchedCameraButton:">
-							<string key="name">userTouchedCameraButton:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="addCoverButton">UIButton</string>
@@ -1265,6 +1217,7 @@
 						<string key="channelCoverImageView">UIImageView</string>
 						<string key="channelDetailsLabel">UILabel</string>
 						<string key="channelOwnerLabel">UILabel</string>
+						<string key="channelTitleTextBackgroundView">UIView</string>
 						<string key="channelTitleTextView">SSTextView</string>
 						<string key="coverChooserMasterView">UIView</string>
 						<string key="coverThumbnailCollectionView">UICollectionView</string>
@@ -1333,6 +1286,10 @@
 						<object class="IBToOneOutletInfo" key="channelOwnerLabel">
 							<string key="name">channelOwnerLabel</string>
 							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="channelTitleTextBackgroundView">
+							<string key="name">channelTitleTextBackgroundView</string>
+							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="channelTitleTextView">
 							<string key="name">channelTitleTextView</string>
@@ -1427,8 +1384,8 @@
 			<string key="ButtonCreate~iphone.png">{106, 58}</string>
 			<string key="ButtonShare.png">{61, 61}</string>
 			<string key="ButtonShareHighlighted.png">{61, 61}</string>
-			<string key="ButtonSubscribe.png">{110, 45}</string>
-			<string key="ButtonSubscribeHighlighted.png">{110, 45}</string>
+			<string key="ButtonSubscribe.png">{120, 45}</string>
+			<string key="ButtonSubscribeHighlighted.png">{120, 45}</string>
 			<string key="ButtonSubscribeSelected.png">{110, 45}</string>
 			<string key="ChannelDetailOverlayBackground.png">{1024, 748}</string>
 			<string key="LogoRockpack.png">{148, 27}</string>

@@ -58,7 +58,8 @@
         
         // == Divider Image View == //
         
-        dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        dividerImageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, 2.0)];
+        dividerImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavDivider"]];
         
         [self addSubview:dividerImageView];
         

@@ -19,6 +19,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "SYNNotificationsViewController.h"
+#import "SYNSoundPlayer.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -48,6 +49,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
 
+
 @property (nonatomic, strong) NSMutableArray* notifications;
 
 @property (nonatomic, strong) UIView* bottomExtraView;
@@ -67,6 +69,7 @@ typedef enum {
 @synthesize keyForSelectedPage;
 @synthesize appDelegate;
 @synthesize unreadNotifications;
+@synthesize state = _state;
 
 - (id) init
 {
@@ -79,16 +82,11 @@ typedef enum {
                                 @{kSideNavTitle: @"NOTIFICATIONS", kSideNavType: @(kSideNavigationTypeLoad), kSideNavAction: @"SYNNotificationsViewController"}
                                 ];
         
-        self.state = SideNavigationStateHidden;
+        _state = SideNavigationStateHidden;
         
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
         
-        if([[SYNDeviceManager sharedInstance] isIPad])
-        {
-            self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.origin.y + self.view.frame.size.height, self.view.frame.size.width, 300.0)];
-            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
-            [self.view addSubview:self.bottomExtraView];
-        }
+        
         
         self.unreadNotifications = 0;
         
@@ -117,9 +115,11 @@ typedef enum {
     
     self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
     
+    CGRect newFrame = self.view.frame;
+    
     if([[SYNDeviceManager sharedInstance] isIPhone])
     {
-        CGRect newFrame = self.view.frame;
+        
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
         self.mainContentView.frame = self.view.bounds;
@@ -133,11 +133,43 @@ typedef enum {
         
         
     }
+    else // isIPad == TRUE
+    {
+        CGFloat bgHeight = (self.backgroundImageView.frame.origin.y + self.backgroundImageView.frame.size.height);
+        self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
+                                                                        bgHeight,
+                                                                        self.backgroundImageView.frame.size.width,
+                                                                        [[SYNDeviceManager sharedInstance] currentScreenHeight] - bgHeight)];
+        
+        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        
+        [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
+        
+        newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        self.view.frame = newFrame;
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notificationMarkedRead:)
                                                  name:kNotificationMarkedRead
                                                object:nil];
+    
+    
+    
+    
+    // == Settings Button == //
+    
+    CGRect settingsButtonFrame = self.settingsButton.frame;
+    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+    self.settingsButton.frame = settingsButtonFrame;
+    self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    
+    
+    // == User Name Label == //
+    
+    self.userNameLabel.alpha = 0.0;
+    
+    
     
     [self getNotifications];
 }
@@ -167,8 +199,6 @@ typedef enum {
         
         if(total == 0)
         {
-            
-            
             [self.tableView reloadData];
             return;
         }
@@ -362,49 +392,14 @@ typedef enum {
         
         // == NOTIFICATIONS == //
         
-        if(indexPath.row == kNotificationsRowIndex )
+        if(indexPath.row == kNotificationsRowIndex)
         {
             
             ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
         
         
-        if([[SYNDeviceManager sharedInstance] isIPad])
-        {
-            [UIView animateWithDuration: 0.5f
-                              delay: 0.0f
-                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                         animations: ^{
-                             
-                             CGRect sideNavigationFrame = self.view.frame;
-                             
-                             sideNavigationFrame.origin.x = 1024.0 - self.view.frame.size.width;
-                             self.view.frame =  sideNavigationFrame;
-                             
-                         } completion: ^(BOOL finished) {
-                             
-                             self.state = SideNavigationStateFull;
-                             
-                         }];
-        }
-        else
-        {
-            CGRect startFrame = self.containerView.frame;
-            startFrame.origin.x = self.view.frame.size.width;
-            self.containerView.frame = startFrame;
-            self.containerView.hidden = NO;
-            [UIView animateWithDuration: 0.5f
-                                  delay: 0.0f
-                                options: UIViewAnimationOptionCurveEaseInOut
-                             animations: ^{
-                                 self.containerView.frame = self.view.bounds;
-                                 
-                             } completion: ^(BOOL finished) {
-                                 
-                                 self.state = SideNavigationStateFull;
-                                 
-                             }];
-        }
+        self.state = SideNavigationStateFull;
         
     }
     else
@@ -440,10 +435,10 @@ typedef enum {
 - (void) setUser: (User *) user
 {
     _user = user;
-    self.userNameLabel.text = self.user.fullName;
+    self.userNameLabel.text = [self.user.fullName uppercaseString];
     self.nicknameLabel.text = self.user.username;
     [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                             placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou.png"]];
+                                             placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou"]];
 }
 
 
@@ -495,6 +490,8 @@ typedef enum {
     
     CGSize containerSize = self.containerView.frame.size;
     CGRect vcRect = self.currentlyLoadedViewController.view.frame;
+    vcRect.origin.x = 0.0;
+    vcRect.origin.y = 2.0;
     vcRect.size = containerSize;
     self.currentlyLoadedViewController.view.frame = vcRect;
     
@@ -511,18 +508,39 @@ typedef enum {
 
 #pragma mark - Orientation Change
 
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    CGRect newFrame = self.view.frame;
+    newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+    self.view.frame = newFrame;
+}
+
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
+    CGRect settingsButtonFrame = self.settingsButton.frame;
+    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+    self.settingsButton.frame = settingsButtonFrame;
+
+    CGFloat bgHeight = (self.backgroundImageView.frame.origin.y + self.backgroundImageView.frame.size.height);
+    self.bottomExtraView = [[UIView alloc] initWithFrame:CGRectMake(0.0,
+                                                                    bgHeight,
+                                                                    self.backgroundImageView.frame.size.width,
+                                                                    [[SYNDeviceManager sharedInstance] currentScreenHeight] - bgHeight)];
+    
     if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
+        
         
     }
     else
     {
         
+        
     }
+    
+    
     
     
 }
@@ -573,5 +591,129 @@ typedef enum {
                 
     }];
 }
+
+#pragma mark - Accessor & Animation
+
+-(void)setState:(SideNavigationState)state
+{
+    if (state == _state)
+        return;
+    
+    _state = state;
+    
+    switch (_state) {
+        case SideNavigationStateHidden:
+            [self showHiddenNavigation];
+            break;
+            
+        case SideNavigationStateHalf:
+            [self showHalfNavigation];
+            break;
+            
+        case SideNavigationStateFull:
+            [self showFullNavigation];
+            break;
+            
+    }
+}
+
+-(void)showHalfNavigation
+{
+    
+    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideIn];
+    
+    [UIView animateWithDuration: kRockieTalkieAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations: ^{
+                         
+                         CGRect sideNavigationFrame = self.view.frame;
+                         if([[SYNDeviceManager sharedInstance] isIPad])
+                         {
+                             sideNavigationFrame.origin.x = 1024.0 - 192.0;
+                         }
+                         else
+                         {
+                             sideNavigationFrame.origin.x = 704.0f;
+                         }
+                         self.view.frame = sideNavigationFrame;
+                         
+                         self.userNameLabel.alpha = 0.0;
+                         
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                     }];
+}
+
+-(void)showFullNavigation
+{
+    self.userNameLabel.text = [_user.fullName uppercaseString];
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations: ^{
+                             
+                             CGRect sideNavigationFrame = self.view.frame;
+                             
+                             sideNavigationFrame.origin.x = 1024.0 - self.view.frame.size.width;
+                             self.view.frame =  sideNavigationFrame;
+                             
+                             self.userNameLabel.alpha = 1.0;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             
+                             
+                         }];
+    }
+    
+    else
+    {
+        CGRect startFrame = self.containerView.frame;
+        startFrame.origin.x = self.view.frame.size.width;
+        self.containerView.frame = startFrame;
+        self.containerView.hidden = NO;
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations: ^{
+                             
+                             CGRect selfBounds = self.view.bounds;
+                             selfBounds.origin.y = self.containerView.frame.origin.y;
+                             self.containerView.frame = selfBounds;
+                             
+                         } completion: ^(BOOL finished) {
+                             
+                             
+                         }];
+    }
+}
+
+-(void)showHiddenNavigation
+{
+    
+    [[SYNSoundPlayer sharedInstance] playSoundByName: kSoundNewSlideOut];
+    
+    [UIView animateWithDuration: 0.2f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations: ^ {
+                         
+                         CGRect sideNavigationFrame = self.view.frame;
+                         sideNavigationFrame.origin.x = 1024;
+                         self.view.frame =  sideNavigationFrame;
+                         
+                     } completion: ^(BOOL finished) {
+                         
+                         [self reset];
+                         [self deselectAllCells];
+                         
+                         
+                     }];
+}
+
 
 @end
