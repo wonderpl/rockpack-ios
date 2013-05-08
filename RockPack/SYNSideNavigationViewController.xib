@@ -41,7 +41,7 @@
 					<object class="IBUIImageView" id="861217670">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{580, 670}</string>
+						<string key="NSFrameSize">{556, 82}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="515784887"/>
@@ -56,7 +56,7 @@
 					<object class="IBUITableView" id="747146287">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{6, 74}, {193, 338}}</string>
+						<string key="NSFrame">{{7, 82}, {187, 338}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="898198165"/>
@@ -79,7 +79,7 @@
 					<object class="IBUIImageView" id="515784887">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{13, 7}, {60, 60}}</string>
+						<string key="NSFrame">{{12, 7}, {60, 60}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="329439129"/>
@@ -94,9 +94,10 @@
 					<object class="IBUIView" id="488699221">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{199, 77}, {376, 586}}</string>
+						<string key="NSFrame">{{199, 82}, {376, 586}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -110,7 +111,7 @@
 					<object class="IBUILabel" id="329439129">
 						<reference key="NSNextResponder" ref="1018200067"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{84, 19}, {476, 44}}</string>
+						<string key="NSFrame">{{88, 18}, {476, 44}}</string>
 						<reference key="NSSuperview" ref="1018200067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="747146287"/>
@@ -187,7 +188,7 @@
 						</object>
 					</object>
 				</array>
-				<string key="NSFrameSize">{580, 670}</string>
+				<string key="NSFrameSize">{556, 670}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="861217670"/>
@@ -245,6 +246,14 @@
 						<reference key="destination" ref="898198165"/>
 					</object>
 					<int key="connectionID">28</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">backgroundImageView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="861217670"/>
+					</object>
+					<int key="connectionID">30</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -360,7 +369,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">29</int>
+			<int key="maxID">30</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -375,17 +384,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNSideNavigationViewController</string>
 					<string key="superclassName">GAITrackedViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">settingsButtonPressed:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">settingsButtonPressed:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">settingsButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="containerView">UIView</string>
@@ -445,7 +443,7 @@
 			<string key="AvatarChannel@2x~iphone.png">{108, 110}</string>
 			<string key="ButtonSettings.png">{169, 50}</string>
 			<string key="ButtonSettingsHighlighted.png">{169, 50}</string>
-			<string key="PanelMenu.png">{556, 748}</string>
+			<string key="PanelMenu.png">{556, 82}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
