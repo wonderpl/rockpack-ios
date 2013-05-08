@@ -435,8 +435,9 @@ typedef enum {
     _user = user;
     self.userNameLabel.text = [self.user.fullName uppercaseString];
     self.nicknameLabel.text = self.user.username;
+    NSLog(@"- %@", self.user.fullName);
     [self.profilePictureImageView setAsynchronousImageFromURL: [NSURL URLWithString: self.user.thumbnailURL]
-                                             placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou.png"]];
+                                             placeHolderImage: [UIImage imageNamed: @"NotFoundAvatarYou"]];
 }
 
 
@@ -640,6 +641,7 @@ typedef enum {
 
 -(void)showFullNavigation
 {
+    self.userNameLabel.text = [_user.fullName uppercaseString];
     if([[SYNDeviceManager sharedInstance] isIPad])
     {
         [UIView animateWithDuration: 0.5f
