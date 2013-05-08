@@ -374,21 +374,14 @@ typedef enum {
         
         // == NOTIFICATIONS == //
         
-        if(indexPath.row == kNotificationsRowIndex )
+        if(indexPath.row == kNotificationsRowIndex)
         {
             
             ((SYNNotificationsViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
         }
         
         
-        if([[SYNDeviceManager sharedInstance] isIPad])
-        {
-            self.state = SideNavigationStateFull;
-        }
-        else
-        {
-            
-        }
+        self.state = SideNavigationStateFull;
         
     }
     else

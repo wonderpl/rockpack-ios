@@ -105,7 +105,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         CGRect sideNavigationFrame = self.sideNavigationViewController.view.frame;
         sideNavigationFrame.origin.x = 1024.0;
-        sideNavigationFrame.origin.y = 0.0f;
+        
+        sideNavigationFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad] ? 0.0 : 58.0f;
+        
         
         self.sideNavigationViewController.view.frame = sideNavigationFrame;
         self.sideNavigationViewController.user = appDelegate.currentUser;
