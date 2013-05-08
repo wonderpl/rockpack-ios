@@ -35,11 +35,16 @@
         self.clipsToBounds = YES;
         _activities = activities;
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
             _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 417)];
             _backgroundImageView.image = [UIImage imageNamed:@"OWActivityViewController.bundle/Background"];
             _backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             [self addSubview:_backgroundImageView];
+        }
+        else
+        {
+            self.backgroundColor = [UIColor whiteColor];
         }
     
         
@@ -83,16 +88,19 @@
             _scrollView.scrollEnabled = NO;
         }
         
-        _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"OWActivityViewController.bundle/Button"] stretchableImageWithLeftCapWidth:22 topCapHeight:47] forState:UIControlStateNormal];
-        _cancelButton.frame = CGRectMake(22, 352, 276, 47);
-        [_cancelButton setTitle:NSLocalizedStringFromTable(@"button.cancel", @"OWActivityViewController", @"Cancel") forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_cancelButton setTitleShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4] forState:UIControlStateNormal];
-        [_cancelButton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
-        [_cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:19]];
-        [_cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:_cancelButton];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+            _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_cancelButton setBackgroundImage:[[UIImage imageNamed:@"OWActivityViewController.bundle/Button"] stretchableImageWithLeftCapWidth:22 topCapHeight:47] forState:UIControlStateNormal];
+            _cancelButton.frame = CGRectMake(22, 352, 276, 47);
+            [_cancelButton setTitle:NSLocalizedStringFromTable(@"button.cancel", @"OWActivityViewController", @"Cancel") forState:UIControlStateNormal];
+            [_cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [_cancelButton setTitleShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4] forState:UIControlStateNormal];
+            [_cancelButton.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+            [_cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:19]];
+            [_cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:_cancelButton];
+        }
     }
     return self;
 }
@@ -112,9 +120,9 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 59, 80, 30)];
     label.textAlignment = NSTextAlignmentCenter;
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.75];
-    label.shadowOffset = CGSizeMake(0, 1);
+    label.textColor = [UIColor blackColor];
+//    label.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.75];
+//    label.shadowOffset = CGSizeMake(0, 1);
     label.text = activity.title;
     label.font = [UIFont boldSystemFontOfSize:12];
     label.numberOfLines = 0;
