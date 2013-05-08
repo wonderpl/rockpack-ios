@@ -25,11 +25,13 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNChannelCategoryTableViewController.h"
+#import "SYNChannelCoverImageSelectorViewController.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate>
+                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate, SYNChannelCoverImageSelectorDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -62,12 +64,15 @@
 @property (nonatomic, weak) Channel *channel;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
+@property (nonatomic,strong) NSString* selectedCoverId;
 
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
+@property (nonatomic,strong) AVURLAsset* selectedAsset;
 
 @end
 
@@ -253,6 +258,7 @@
         }
     }
     self.selectedCategoryId = @"";
+    self.selectedCoverId = @"";
 }
 
 - (void) updateCategoryButtonText: (NSString *) buttonText
@@ -362,6 +368,8 @@
     else if ((controller == self.channelCoverFetchedResultsController) || (controller == self.userChannelCoverFetchedResultsController))
     {
          [self.coverThumbnailCollectionView reloadData];
+        [self.coverImageSelector refreshChannelCoverData];
+        
     }
     else
     {
@@ -897,6 +905,8 @@
 
 - (void) showCoverChooser
 {
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
         
@@ -932,6 +942,31 @@
                                                                                                  kChannelCreationCategoryAdditionalOffsetY));
                          }
                          completion: nil];
+    }
+    }
+    else
+    {
+        [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
+            DebugLog(@"Success");
+        }
+        onError: ^(NSError* error) {
+            DebugLog(@"%@", [error debugDescription]);
+        }];
+        
+        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
+        self.coverImageSelector.userChannelCoverFetchedResultsController = self.userChannelCoverFetchedResultsController;
+        self.coverImageSelector.channelCoverFetchedResultsController = self.channelCoverFetchedResultsController;
+        self.coverImageSelector.imageSelectorDelegate = self;
+        CGRect startFrame = self.coverImageSelector.view.frame;
+        startFrame.origin.y = self.view.frame.size.height;
+        self.coverImageSelector.view.frame = startFrame;
+        [self.view addSubview:self.coverImageSelector.view];
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            CGRect endFrame = self.coverImageSelector.view.frame;
+            endFrame.origin.y = 0.0f;
+            self.coverImageSelector.view.frame = endFrame;
+        } completion:nil];
+        
     }
 }
 
@@ -1024,6 +1059,13 @@
                      completion: nil];
 }
 
+-(IBAction)addItToChannelPresssed:(id)sender
+{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
+    
+}
+
 
 #pragma mark - Tab delegates
 
@@ -1073,7 +1115,7 @@
                                                      title: self.channel.title
                                                description: (self.channel.channelDescription)
                                                   category: self.selectedCategoryId
-                                                     cover: @""
+                                                     cover: self.selectedCoverId
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey:@"id"];
@@ -1429,6 +1471,33 @@
                      completion: ^(BOOL finished) {
                          [self.categoryTableViewController.view removeFromSuperview];
                      }];
+}
+
+#pragma mark - iPhone Cover Chooser delegate
+-(void)closeImageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector
+{
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGRect endFrame = self.coverImageSelector.view.frame;
+        endFrame.origin.y = self.view.frame.size.height;
+        self.coverImageSelector.view.frame = endFrame;
+    } completion:^(BOOL finished) {
+        [self.coverImageSelector.view removeFromSuperview];
+        self.coverImageSelector = nil;
+    }];
+}
+
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectAVURLAsset:(AVURLAsset *)asset
+{
+    self.selectedAsset = asset;
+    [self closeImageSelector:imageSelector];
+    
+}
+
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectImage:(NSString *)imageUrlString withRemoteId:(NSString *)remoteId
+{
+    self.selectedCoverId = remoteId;
+    [self.channelCoverImageView setImageFromURL:[NSURL URLWithString:imageUrlString]];
+    [self closeImageSelector:imageSelector];
 }
 
 @end

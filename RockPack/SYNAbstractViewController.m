@@ -220,7 +220,7 @@
 
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
-    UIView *v = button.superview.superview;
+    UIView *v = button.superview.superview.superview;
     NSIndexPath *indexPath = [self.videoThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
     return indexPath;

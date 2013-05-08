@@ -8,8 +8,8 @@
 
 #import "SYNNotificationsTableViewCell.h"
 #import "UIFont+SYNFont.h"
+#import "SYNDeviceManager.h"
 
-#define kNotificationCellTextWidth 200.0
 
 @implementation SYNNotificationsTableViewCell
 
@@ -29,7 +29,7 @@
         
         
         
-        self.textLabel.frame = CGRectMake(74.0, 8.0, kNotificationCellTextWidth, 0.0);
+        self.textLabel.frame = CGRectMake(74.0, 8.0, 0.0, 0.0); // width, height will be set below
         self.textLabel.font = [UIFont rockpackFontOfSize:14.0];
         self.textLabel.textAlignment = NSTextAlignmentLeft;
         self.textLabel.numberOfLines = 2;
@@ -51,14 +51,15 @@
         
         // == Channel image view == //
         
-        self.thumbnailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(200.0, 4.0, 60, 60.0)];
+        self.thumbnailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 60, 60.0)]; // x, y will be set below
         self.thumbnailImageView.image = [UIImage imageNamed:@"AvatarProfile"];
         [self addSubview:self.thumbnailImageView];
         
         
         // == Divider Image View == //
         
-        dividerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PanelMenuBottom"]];
+        dividerImageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, 2.0)];
+        dividerImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavDivider"]];
         
         [self addSubview:dividerImageView];
         
@@ -77,23 +78,22 @@
     
 }
 
+
 - (void) layoutSubviews {
     
     [super layoutSubviews];
     
     
-    self.imageView.frame = CGRectMake(4.0, 4.0, 60.0, 60.0);
+    self.imageView.frame = CGRectMake(8.0, 6.0, 60.0, 60.0);
     
     self.textLabel.frame = CGRectMake(76.0, 14.0, mainTextSize.width, mainTextSize.height);
     
     
-    //self.textLabel.backgroundColor = [UIColor greenColor];
-    
-    
     // place at the end
     
-    CGRect thumbnailImageViewFrame = self.thumbnailImageView.frame;
-    thumbnailImageViewFrame.origin.x = self.frame.size.width - 70.0;
+    CGRect thumbnailImageViewFrame = self.imageView.frame;
+    thumbnailImageViewFrame.origin.x = self.frame.size.width - 68.0;
+    thumbnailImageViewFrame.origin.y = self.imageView.frame.origin.y;
     
     self.thumbnailImageView.frame = thumbnailImageViewFrame;
     
@@ -114,10 +114,10 @@
     // == main text label == //
     
     CGRect textLabelFrame = self.textLabel.frame;
-    CGSize maxSize = CGSizeMake(kNotificationCellTextWidth, 500.0);
+    CGFloat maxWidth = [[SYNDeviceManager sharedInstance] isIPad] ? 200.0 : 170.0 ;
     mainTextSize = [messageTitle sizeWithFont:self.textLabel.font
-                                         constrainedToSize:maxSize
-                                             lineBreakMode:self.textLabel.lineBreakMode];
+                            constrainedToSize:CGSizeMake(maxWidth, 500.0)
+                                lineBreakMode:self.textLabel.lineBreakMode];
     
     
     textLabelFrame.size = mainTextSize;

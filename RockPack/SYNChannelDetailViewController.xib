@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -904,6 +904,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">addItToChannelPresssed:</string>
+						<reference key="source" ref="1063460983"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">115</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">createChannelPressed:</string>
 						<reference key="source" ref="657402384"/>
 						<reference key="destination" ref="841351856"/>
@@ -1192,7 +1201,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">114</int>
+			<int key="maxID">115</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1268,6 +1277,7 @@
 						<string key="channelCoverImageView">UIImageView</string>
 						<string key="channelDetailsLabel">UILabel</string>
 						<string key="channelOwnerLabel">UILabel</string>
+						<string key="channelTitleTextBackgroundView">UIView</string>
 						<string key="channelTitleTextView">SSTextView</string>
 						<string key="coverChooserMasterView">UIView</string>
 						<string key="coverThumbnailCollectionView">UICollectionView</string>
@@ -1336,6 +1346,10 @@
 						<object class="IBToOneOutletInfo" key="channelOwnerLabel">
 							<string key="name">channelOwnerLabel</string>
 							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="channelTitleTextBackgroundView">
+							<string key="name">channelTitleTextBackgroundView</string>
+							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="channelTitleTextView">
 							<string key="name">channelTitleTextView</string>

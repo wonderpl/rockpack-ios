@@ -46,7 +46,8 @@
     self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LogoNotifications"]];
-    //[self.view addSubview:self.logoImageView];
+    // self.logoImageView.backgroundColor = [UIColor greenColor];
+    [self.view addSubview:self.logoImageView];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[SYNNotificationsTableViewCell class] forCellReuseIdentifier:kNotificationsCellIdent];
@@ -95,9 +96,18 @@
     
     SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
-    NSString* constructedMessage = [NSString stringWithFormat:@"%@ has %@ to your channel", [notification.userDisplayName uppercaseString], notification.messageType];
+    NSMutableString* constructedMessage = [[NSMutableString alloc] init];
+    [constructedMessage appendFormat:@"%@", [notification.userDisplayName uppercaseString]];
+    [constructedMessage appendString:@" has "];
+    [constructedMessage appendFormat:@"%@", notification.messageType];
+    if([notification.messageType isEqualToString:@"subscribed"])
+        [constructedMessage appendString:@" to your channel"];
+    else
+        [constructedMessage appendString:@" your video"];
     
-    notificationCell.messageTitle = constructedMessage;
+    
+    
+    notificationCell.messageTitle = [NSString stringWithString:constructedMessage];
     
     NSURL* userThumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
     [notificationCell.imageView setAsynchronousImageFromURL:userThumbnailUrl
@@ -114,7 +124,6 @@
         
     }
     
-    // NSLog(@"%@", thumbnaillUrl);
      
     
     [notificationCell.thumbnailImageView setAsynchronousImageFromURL: thumbnaillUrl
@@ -156,10 +165,12 @@
 {
     if ([keyPath isEqualToString: @"contentSize"])
     {
-        CGRect tableViewFrame = self.tableView.frame;
+       
         CGRect logoImageViewFrame = self.logoImageView.frame;
-        logoImageViewFrame.origin.y = tableViewFrame.size.height + 4.0;
+        logoImageViewFrame.origin.y = self.tableView.contentSize.height + 20.0;
+        logoImageViewFrame.origin.x = (self.tableView.frame.size.width * 0.5) - (logoImageViewFrame.size.width * 0.5);
         self.logoImageView.frame = logoImageViewFrame;
+        
     }
 }
 
