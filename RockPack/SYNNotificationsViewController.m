@@ -74,13 +74,15 @@
     
     SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
-    NSString* constructedMessage = [NSString stringWithFormat:@"%@ has %@", notification.userDisplayName, notification.messageType];
-    notificationCell.textLabel.text = constructedMessage;
+    NSString* constructedMessage = [NSString stringWithFormat:@"%@ has %@ to your channel", [notification.userDisplayName uppercaseString], notification.messageType];
+    
+    notificationCell.messageTitle = constructedMessage;
     
     NSURL* thumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
-    [notificationCell.imageView setAsynchronousImageFromURL:thumbnailUrl placeHolderImage:[UIImage imageNamed:@""]];
+    [notificationCell.imageView setAsynchronousImageFromURL:thumbnailUrl
+                                           placeHolderImage:[UIImage imageNamed:@"AvatarProfile"]];
     
-//    NSURL* thumbnailChannelUrl = [NSURL URLWithString:notification.channelResourceUrl];
+    NSURL* thumbnailChannelUrl = [NSURL URLWithString:notification.channelResourceUrl];
 //    notificationCell.thumbnailImageView setAsynchronousImageFromURL:thumbnailUrl placeHolderImage:[UIImage imageNamed:@""]];
     
     notificationCell.detailTextLabel.text = @"8 Mins";

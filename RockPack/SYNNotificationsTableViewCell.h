@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNNotificationsTableViewCell : UITableViewCell
+@interface SYNNotificationsTableViewCell : UITableViewCell {
+    CGSize mainTextSize;
+    UIImageView* dividerImageView;
+}
 
 @property (nonatomic, strong) UIImageView* thumbnailImageView;
-
+@property (nonatomic, weak) NSString* messageTitle;
 @end

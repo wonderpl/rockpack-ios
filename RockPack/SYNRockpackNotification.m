@@ -49,6 +49,13 @@
             {
                 self.videoId = [videoDictionary objectForKey:@"id"];
                 self.videoThumbnailUrl = [videoDictionary objectForKey:@"thumbnail_url"];
+                
+                NSDictionary* channelDictionary = [videoDictionary objectForKey:@"channel"];
+                if(channelDictionary && [channelDictionary isKindOfClass:[NSDictionary class]])
+                {
+                    self.channelId = [channelDictionary objectForKey:@"id"];
+                    self.channelResourceUrl = [channelDictionary objectForKey:@"resource_url"];
+                }
             }
             
             NSDictionary* userDictionary = [messageDictionary objectForKey:@"user"];
