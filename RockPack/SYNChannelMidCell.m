@@ -34,7 +34,7 @@
 - (void) setChannelImageViewImage: (NSString*) imageURLString
 {
     [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                               placeHolderImage: nil];
+                               placeHolderImage: [UIImage imageNamed:@"ChannelCreationCoverNone.png"]];
 }
 
 

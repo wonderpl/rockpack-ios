@@ -26,6 +26,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
@@ -62,6 +63,7 @@
 @property (nonatomic, weak) Channel *channel;
 @property (weak, nonatomic) IBOutlet UILabel *byLabel;
 @property (nonatomic,strong) NSString* selectedCategoryId;
+@property (nonatomic,strong) NSString* selectedCoverId;
 
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
@@ -69,6 +71,7 @@
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
+@property (nonatomic,strong) AVURLAsset* selectedAsset;
 
 @end
 
@@ -254,6 +257,7 @@
         }
     }
     self.selectedCategoryId = @"";
+    self.selectedCoverId = @"";
 }
 
 - (void) updateCategoryButtonText: (NSString *) buttonText
@@ -1103,7 +1107,7 @@
                                                      title: self.channel.title
                                                description: (self.channel.channelDescription)
                                                   category: self.selectedCategoryId
-                                                     cover: @""
+                                                     cover: self.selectedCoverId
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary* resourceCreated) {
                                              NSString* channelId = [resourceCreated objectForKey:@"id"];
@@ -1427,4 +1431,19 @@
         self.coverImageSelector = nil;
     }];
 }
+
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectAVURLAsset:(AVURLAsset *)asset
+{
+    self.selectedAsset = asset;
+    [self closeImageSelector:imageSelector];
+    
+}
+
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectImage:(NSString *)imageUrlString withRemoteId:(NSString *)remoteId
+{
+    self.selectedCoverId = remoteId;
+    [self.channelCoverImageView setImageFromURL:[NSURL URLWithString:imageUrlString]];
+    [self closeImageSelector:imageSelector];
+}
+
 @end

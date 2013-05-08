@@ -11,12 +11,15 @@
 #import "ChannelCover.h"
 #import "UIImageView+ImageProcessing.h"
 #import <QuartzCore/QuartzCore.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AVFoundation/AVFoundation.h>
+#import "UIFont+SYNFont.h"
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
     kChannelCoverCameraOptions = 1,
     kChannelCoverLocalAlbum = 2
-    };
+};
 
 @interface SYNChannelCoverImageSelectorViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -26,9 +29,12 @@ enum ChannelCoverSelectorState {
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView; 
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIView *contentContainerView;
-
+@property (nonatomic, strong) NSMutableDictionary* userAssetGroups;
+@property (nonatomic, strong) NSArray* sortedKeys;
+@property (nonatomic, strong) NSString* selectedAlbumKey;
+@property (nonatomic, strong) ALAssetsLibrary* library;
 @end
 
 @implementation SYNChannelCoverImageSelectorViewController
@@ -46,7 +52,37 @@ enum ChannelCoverSelectorState {
 {
     [super viewDidLoad];
     
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
     
+    self.userAssetGroups = [NSMutableDictionary dictionary];
+    
+    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+    self.library = library;
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        if(!group)
+        {
+            // nil indicates end of iterator.
+            self.sortedKeys = [[self.userAssetGroups allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        }
+        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+        NSMutableArray* groupArray = [NSMutableArray array];
+        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *innerStop) {
+            if(result)
+            {
+                ALAssetRepresentation *representation = [result defaultRepresentation];
+                NSURL *url = [representation url];
+                AVAsset *avAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+                [groupArray addObject:avAsset];
+            }
+        }];
+        NSString* groupName = [group valueForProperty:ALAssetsGroupPropertyName];
+        if([groupArray count] > 0 && groupName)
+        {
+            [self.userAssetGroups setObject:groupArray forKey:groupName];
+        }
+    } failureBlock:^(NSError *error) {
+        
+    }];
     
     UINib* cellNib = [UINib nibWithNibName:@"SYNChannelCoverImageCell" bundle:[NSBundle mainBundle]];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SYNChannelCoverImageCell"];
@@ -77,7 +113,9 @@ enum ChannelCoverSelectorState {
             break;
         }
         case kChannelCoverCameraOptions:
+            return [self.sortedKeys count] + 1 ;
         case kChannelCoverLocalAlbum:
+            return [[self.userAssetGroups objectForKey:self.selectedAlbumKey] count];
         default:
             return 0;
             break;
@@ -87,28 +125,130 @@ enum ChannelCoverSelectorState {
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     SYNChannelCoverImageCell* cell =(SYNChannelCoverImageCell*) [self.collectionView dequeueReusableCellWithReuseIdentifier:@"SYNChannelCoverImageCell" forIndexPath:indexPath];
-    id <NSFetchedResultsSectionInfo> channelSectionInfo = self.channelCoverFetchedResultsController.sections [0];
-    if(indexPath.row == 0)
+    NSString* title = @"";
+    if(currentState == kChannelCoverDefault)
     {
-        cell.channelCoverImageView.image = [UIImage imageNamed:@"ChannelCreationCoverNone.png"];
-    }
-    else if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
-    {
-        indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
-        ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+        id <NSFetchedResultsSectionInfo> channelSectionInfo = self.channelCoverFetchedResultsController.sections [0];
+        if(indexPath.row == 0)
+        {
+            cell.channelCoverImageView.image = [UIImage imageNamed:@"ChannelCreationCoverNone.png"];
+            cell.glossImage.hidden = YES;
+        }
+        else if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
+        {
+            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+            ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                           inSection: 0]];
+            
+            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:channelCover.carouselURL] placeHolderImage:nil];
+            cell.glossImage.hidden = NO;
+        }
+        else
+        {
+            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
+            ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                              inSection: 0]];
+            
+            [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:channelCover.carouselURL] placeHolderImage:nil];
+            cell.glossImage.hidden = NO;
+        }
+    }
+    else if (currentState == kChannelCoverCameraOptions)
+    {
+        if(indexPath.row == 0)
+        {
+            cell.channelCoverImageView.image = [UIImage imageNamed:@"ChannelCreationCoverNone.png"];
+            cell.glossImage.hidden = YES;
+        }
+        else
+        {
+            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+            title = [self.sortedKeys objectAtIndex:indexPath.row];
+            AVURLAsset* imageAsset = [[self.userAssetGroups objectForKey:title] objectAtIndex:0];
+            [cell configureWithUrlAsset:imageAsset fromLibrary:self.library];
+            cell.glossImage.hidden = NO;
+        }
         
-        [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:channelCover.carouselURL] placeHolderImage:nil];
     }
     else
     {
-        indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
-        ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
-                                                                                                                          inSection: 0]];
-        
-        [cell.channelCoverImageView setAsynchronousImageFromURL:[NSURL URLWithString:channelCover.carouselURL] placeHolderImage:nil];
+        AVURLAsset* imageAsset = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectAtIndex:indexPath.row];
+        [cell configureWithUrlAsset:imageAsset fromLibrary:self.library];
+        cell.glossImage.hidden = NO;
     }
+    [cell setTitleText:title];
     return cell;
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (currentState) {
+        case kChannelCoverCameraOptions:
+            if(indexPath.row == 0)
+            {
+                //take photo
+            }
+            else
+            {
+                self.selectedAlbumKey = [self.sortedKeys objectAtIndex:indexPath.row-1];
+                CATransition *animation = [CATransition animation];
+                [animation setType:kCATransitionPush];
+                [animation setSubtype:kCATransitionFromRight];
+                [animation setDuration:0.30];
+                [animation setTimingFunction:
+                 [CAMediaTimingFunction functionWithName:
+                  kCAMediaTimingFunctionEaseInEaseOut]];
+                
+                currentState = kChannelCoverLocalAlbum;
+                [self.collectionView reloadData];
+                self.titleLabel.text = NSLocalizedString([self.selectedAlbumKey uppercaseString], nil);
+                [self.contentContainerView.layer addAnimation:animation forKey:nil];
+            }
+            break;
+        case kChannelCoverLocalAlbum:
+        {
+            if([self.imageSelectorDelegate respondsToSelector:@selector(imageSelector:didSelectAVURLAsset:)])
+            {
+                AVURLAsset* imageAsset = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectAtIndex:indexPath.row];
+                [self.imageSelectorDelegate imageSelector:self didSelectAVURLAsset:imageAsset];
+            }
+            break;
+        }
+        case kChannelCoverDefault:
+        {
+            ;
+            NSString* returnStringURL = nil;
+            NSString* returnCoverId = @"";
+            if(indexPath.row != 0)
+            {
+                id <NSFetchedResultsSectionInfo> channelSectionInfo = self.channelCoverFetchedResultsController.sections [0];
+                if (indexPath.row - 1 < [channelSectionInfo numberOfObjects])
+                {
+                    indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0];
+                    ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                                  inSection: 0]];
+                    returnStringURL = channelCover.backgroundURL;
+                    returnCoverId = channelCover.coverRef;
+                }
+                else
+                {
+                    indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 - [channelSectionInfo numberOfObjects] inSection:0];
+                    ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
+                                                                                                                                      inSection: 0]];
+                    returnStringURL = channelCover.backgroundURL;
+                    returnCoverId = channelCover.coverRef;
+                }
+                
+            }
+            if([self.imageSelectorDelegate respondsToSelector:@selector(imageSelector:didSelectImage:withRemoteId:)])
+            {
+                [self.imageSelectorDelegate imageSelector:self didSelectImage:returnStringURL withRemoteId:returnCoverId];
+            }
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 -(void)refreshChannelCoverData
@@ -123,7 +263,6 @@ enum ChannelCoverSelectorState {
 - (IBAction)cameraButtonTapped:(id)sender
 {
     CATransition *animation = [CATransition animation];
-    
     [animation setType:kCATransitionPush];
     [animation setSubtype:kCATransitionFromRight];
     [animation setDuration:0.30];
@@ -136,13 +275,13 @@ enum ChannelCoverSelectorState {
     self.backButton.hidden = NO;
     currentState = kChannelCoverCameraOptions;
     [self.collectionView reloadData];
+    self.titleLabel.text = NSLocalizedString(@"UPLOAD IMAGE", nil);
     
     [self.contentContainerView.layer addAnimation:animation forKey:nil];
 }
 - (IBAction)backButtonTapped:(id)sender
 {
     CATransition *animation = [CATransition animation];
-    
     [animation setType:kCATransitionPush];
     [animation setSubtype:kCATransitionFromLeft];
     [animation setDuration:0.30];
@@ -155,14 +294,16 @@ enum ChannelCoverSelectorState {
             self.closeButton.hidden = NO;
             self.backButton.hidden = YES;
             currentState = kChannelCoverDefault;
+            self.titleLabel.text = NSLocalizedString(@"ADD A COVER", nil);
             break;
         case kChannelCoverLocalAlbum:
             currentState = kChannelCoverCameraOptions;
+            self.titleLabel.text = NSLocalizedString(@"UPLOAD IMAGE", nil);
             break;
         default:
             break;
     }
-        [self.collectionView reloadData];
+    [self.collectionView reloadData];
     
     [self.contentContainerView.layer addAnimation:animation forKey:nil];
     

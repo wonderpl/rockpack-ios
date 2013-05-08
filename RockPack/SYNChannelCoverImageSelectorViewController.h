@@ -10,11 +10,13 @@
 #import <CoreData/CoreData.h>
 
 @class SYNChannelCoverImageSelectorViewController;
+@class AVURLAsset;
 
 @protocol SYNChannelCoverImageSelectorDelegate <NSObject>
 
 @optional
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector didSelectImage:(NSString*)imageUrl;
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector didSelectImage:(NSString*)imageUrlString withRemoteId:(NSString*)remoteId;
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector didSelectAVURLAsset:(AVURLAsset*)asset;
 -(void)closeImageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector;
 
 @end
