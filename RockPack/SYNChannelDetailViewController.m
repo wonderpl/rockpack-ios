@@ -25,11 +25,12 @@
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNChannelCategoryTableViewController.h"
+#import "SYNChannelCoverImageSelectorViewController.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
                                               UIPopoverControllerDelegate,
-                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate>
+                                              SYNCameraPopoverViewControllerDelegate, SYNChannelCategoryTableViewDelegate, SYNChannelCoverImageSelectorDelegate>
 
 @property (nonatomic, assign)  CGPoint originalContentOffset;
 @property (nonatomic, assign)  kChannelDetailsMode mode;
@@ -67,6 +68,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,strong) SYNChannelCoverImageSelectorViewController* coverImageSelector;
 
 @end
 
@@ -361,6 +363,8 @@
     else if ((controller == self.channelCoverFetchedResultsController) || (controller == self.userChannelCoverFetchedResultsController))
     {
          [self.coverThumbnailCollectionView reloadData];
+        [self.coverImageSelector refreshChannelCoverData];
+        
     }
     else
     {
@@ -896,6 +900,8 @@
 
 - (void) showCoverChooser
 {
+    if([[SYNDeviceManager sharedInstance] isIPad])
+    {
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
         
@@ -931,6 +937,31 @@
                                                                                                  kChannelCreationCategoryAdditionalOffsetY));
                          }
                          completion: nil];
+    }
+    }
+    else
+    {
+        [appDelegate.networkEngine updateCoverArtOnCompletion: ^{
+            DebugLog(@"Success");
+        }
+        onError: ^(NSError* error) {
+            DebugLog(@"%@", [error debugDescription]);
+        }];
+        
+        self.coverImageSelector = [[SYNChannelCoverImageSelectorViewController alloc] init];
+        self.coverImageSelector.userChannelCoverFetchedResultsController = self.userChannelCoverFetchedResultsController;
+        self.coverImageSelector.channelCoverFetchedResultsController = self.channelCoverFetchedResultsController;
+        self.coverImageSelector.imageSelectorDelegate = self;
+        CGRect startFrame = self.coverImageSelector.view.frame;
+        startFrame.origin.y = self.view.frame.size.height;
+        self.coverImageSelector.view.frame = startFrame;
+        [self.view addSubview:self.coverImageSelector.view];
+        [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+            CGRect endFrame = self.coverImageSelector.view.frame;
+            endFrame.origin.y = 0.0f;
+            self.coverImageSelector.view.frame = endFrame;
+        } completion:nil];
+        
     }
 }
 
@@ -1384,4 +1415,16 @@
     }];
 }
 
+#pragma mark - iPhone Cover Chooser delegate
+-(void)closeImageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector
+{
+    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGRect endFrame = self.coverImageSelector.view.frame;
+        endFrame.origin.y = self.view.frame.size.height;
+        self.coverImageSelector.view.frame = endFrame;
+    } completion:^(BOOL finished) {
+        [self.coverImageSelector.view removeFromSuperview];
+        self.coverImageSelector = nil;
+    }];
+}
 @end
