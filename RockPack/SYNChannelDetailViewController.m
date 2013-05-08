@@ -66,6 +66,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelTextInputButton;
 @property (strong,nonatomic) SYNChannelCategoryTableViewController *categoryTableViewController;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -943,6 +944,7 @@
         }
         CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.y = self.view.frame.size.height;
+        self.categoryTableViewController.view.frame = startFrame;
         [self.view addSubview:self.categoryTableViewController.view];
         [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
             CGRect endFrame = self.categoryTableViewController.view.frame;
@@ -1018,6 +1020,12 @@
 
 - (IBAction) createChannelPressed: (id) sender
 {
+    if([[SYNDeviceManager sharedInstance] isIPhone])
+    {
+        self.createChannelButton.hidden = YES;
+        self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+    }
     self.channel.title = self.channelTitleTextView.text;
     self.channel.channelDescription = @"Test Description";
     
@@ -1038,6 +1046,13 @@
                                          } errorHandler:^(id error) {
                                              
                                              DebugLog(@"Error @ createChannelPressed:");
+                                             NSString* errorMessage = @"Could not create channel. Please try again later.";
+                                             if([[error objectForKey:@"form_errors"] objectForKey:@"title"])
+                                             {
+                                                 errorMessage = NSLocalizedString(@"This channel name is already taken",nil);
+                                             };
+
+                                             [self showError:errorMessage];
                                              
                                              
                                          }];
@@ -1056,7 +1071,7 @@
                                                        errorHandler:^(id err) {
                                                            
                                                            DebugLog(@"Error @ addVideosToNewChannelForId:");
-                                                           
+                                                           [self showError:@"Could not create channel. Please try again later."];
                                                        }];
     
     
@@ -1086,9 +1101,20 @@
                                           } errorHandler:^(id err) {
                                               
                                               DebugLog(@"Error @ getNewlyCreatedChannelForId:");
-                                              
+                                              [self showError:@"Could not create channel. Please try again later."];
                                           }];
 
+}
+
+-(void)showError:(NSString*)errorMessage
+{
+    self.createChannelButton.hidden = NO;
+    [self.activityIndicator stopAnimating];
+    [[[UIAlertView alloc] initWithTitle: @"Error"
+                                message: errorMessage
+                               delegate: nil
+                      cancelButtonTitle: @"OK"
+                      otherButtonTitles: nil] show];
 }
 
 
@@ -1298,6 +1324,8 @@
 {
     // TODO: Put some networking code in here
 }
+
+#pragma mark - iPhone Category Table delegate
 
 -(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
 {
