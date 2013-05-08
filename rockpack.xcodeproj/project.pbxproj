@@ -950,6 +950,8 @@
 		BEEB6F28172181FD00FEFA43 /* SearchTabHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEEB6F24172181FD00FEFA43 /* SearchTabHighlighted@2x.png */; };
 		BEECE41C173A479B0042941B /* LogoNotifications.png in Resources */ = {isa = PBXBuildFile; fileRef = BEECE41A173A479B0042941B /* LogoNotifications.png */; };
 		BEECE41D173A479B0042941B /* LogoNotifications@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEECE41B173A479B0042941B /* LogoNotifications@2x.png */; };
+		BEECE424173AAFC20042941B /* NavDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = BEECE422173AAFC20042941B /* NavDivider.png */; };
+		BEECE425173AAFC20042941B /* NavDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEECE423173AAFC20042941B /* NavDivider@2x.png */; };
 		BEF0AE0716E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */; };
 		BEF34486172ABCF2008F98FF /* ButtonCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34484172ABCF2008F98FF /* ButtonCreate.png */; };
 		BEF34487172ABCF2008F98FF /* ButtonCreate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34485172ABCF2008F98FF /* ButtonCreate@2x.png */; };
@@ -2065,6 +2067,8 @@
 		BEEB6F24172181FD00FEFA43 /* SearchTabHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SearchTabHighlighted@2x.png"; path = "Assets/Images/SearchTabHighlighted@2x.png"; sourceTree = "<group>"; };
 		BEECE41A173A479B0042941B /* LogoNotifications.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LogoNotifications.png; path = Assets/Images/LogoNotifications.png; sourceTree = "<group>"; };
 		BEECE41B173A479B0042941B /* LogoNotifications@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LogoNotifications@2x.png"; path = "Assets/Images/LogoNotifications@2x.png"; sourceTree = "<group>"; };
+		BEECE422173AAFC20042941B /* NavDivider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavDivider.png; path = Assets/Images/NavDivider.png; sourceTree = "<group>"; };
+		BEECE423173AAFC20042941B /* NavDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavDivider@2x.png"; path = "Assets/Images/NavDivider@2x.png"; sourceTree = "<group>"; };
 		BEF0AE0516E751280094BFDA /* SYNNetworkOperationJsonObjectParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkOperationJsonObjectParse.h; sourceTree = "<group>"; };
 		BEF0AE0616E751280094BFDA /* SYNNetworkOperationJsonObjectParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkOperationJsonObjectParse.m; sourceTree = "<group>"; };
 		BEF34484172ABCF2008F98FF /* ButtonCreate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCreate.png; path = Assets/Images/ButtonCreate.png; sourceTree = "<group>"; };
@@ -4016,6 +4020,8 @@
 				BE7D34FE1715C68C0085AB81 /* NavArrowSelected@2x.png */,
 				BEECE41A173A479B0042941B /* LogoNotifications.png */,
 				BEECE41B173A479B0042941B /* LogoNotifications@2x.png */,
+				BEECE422173AAFC20042941B /* NavDivider.png */,
+				BEECE423173AAFC20042941B /* NavDivider@2x.png */,
 			);
 			name = "Navigation Panel";
 			sourceTree = "<group>";
@@ -4992,6 +4998,8 @@
 				012B4CCD173A7B5A0019DA4C /* ButtonMoveAndScaleUseHighlighted@2x.png in Resources */,
 				1F4CF616173A98F100988034 /* AvatarChannel.png in Resources */,
 				1F4CF617173A98F100988034 /* AvatarChannel@2x.png in Resources */,
+				BEECE424173AAFC20042941B /* NavDivider.png in Resources */,
+				BEECE425173AAFC20042941B /* NavDivider@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,7 +10,7 @@
 
 @interface SYNNotificationsTableViewCell : UITableViewCell {
     CGSize mainTextSize;
-    UIImageView* dividerImageView;
+    UIView* dividerImageView;
 }
 
 @property (nonatomic, strong) UIImageView* thumbnailImageView;

@@ -95,9 +95,18 @@
     
     SYNRockpackNotification* notification = (SYNRockpackNotification*)[_notifications objectAtIndex:indexPath.row];
     
-    NSString* constructedMessage = [NSString stringWithFormat:@"%@ has %@ to your channel", [notification.userDisplayName uppercaseString], notification.messageType];
+    NSMutableString* constructedMessage = [[NSMutableString alloc] init];
+    [constructedMessage appendFormat:@"%@", [notification.userDisplayName uppercaseString]];
+    [constructedMessage appendString:@" has "];
+    [constructedMessage appendFormat:@"%@", notification.messageType];
+    if([notification.messageType isEqualToString:@"subscribed"])
+        [constructedMessage appendString:@" to your channel"];
+    else
+        [constructedMessage appendString:@" your video"];
     
-    notificationCell.messageTitle = constructedMessage;
+    
+    
+    notificationCell.messageTitle = [NSString stringWithString:constructedMessage];
     
     NSURL* userThumbnailUrl = [NSURL URLWithString:notification.userThumbnailUrl];
     [notificationCell.imageView setAsynchronousImageFromURL:userThumbnailUrl
@@ -114,7 +123,6 @@
         
     }
     
-    // NSLog(@"%@", thumbnaillUrl);
      
     
     [notificationCell.thumbnailImageView setAsynchronousImageFromURL: thumbnaillUrl
