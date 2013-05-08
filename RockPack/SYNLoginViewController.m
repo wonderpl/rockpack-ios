@@ -40,6 +40,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* signUpButton;
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
+@property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel* areYouNewLabel;
 @property (nonatomic, strong) IBOutlet UILabel* memberLabel;
 @property (nonatomic, strong) IBOutlet UILabel* passwordForgottenLabel;
@@ -180,7 +181,7 @@
     NSArray* controlsToHide = @[userNameInputField, passwordInputField, finalLoginButton, secondaryFacebookMessage,
                                 areYouNewLabel, registerButton, passwordForgottenLabel,
                                 passwordForgottenButton, termsAndConditionsLabel, dobView, emailInputField,
-                                registerNewUserButton, dividerImageView, faceImageButton, sendEmailButton,
+                                registerNewUserButton, dividerImageView, faceImageButton, self.avatarImageView, sendEmailButton,
                                 wellSendYouLabel, termsAndConditionsLabelSide];
     
     for (UIView* control in controlsToHide)
@@ -191,6 +192,7 @@
     dobView.center = CGPointMake(dobView.center.x - 50.0, dobView.center.y);
     emailInputField.center = CGPointMake(emailInputField.center.x - 50.0, emailInputField.center.y);
     faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0, faceImageButton.center.y);
+    self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0, self.avatarImageView.center.y);
     
     facebookSignInButton.enabled = YES;
     facebookSignInButton.frame = facebookButtonInitialFrame;
@@ -202,6 +204,7 @@
     {
         signUpButton.center = CGPointMake(facebookSignInButton.center.x + 304.0, signUpButton.center.y);
         faceImageButton.center = CGPointMake(78.0, faceImageButton.center.y);
+        self.avatarImageView.center = CGPointMake(78.0, self.avatarImageView.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
     }
 
@@ -348,6 +351,9 @@
                                                                        faceImageButton.center = CGPointMake(faceImageButton.center.x,
                                                                                                             faceImageButton.center.y - self.elementsOffsetY);
                                                                        
+                                                                       self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x,
+                                                                                                            self.avatarImageView.center.y - self.elementsOffsetY);
+                                                                       
                                                                        [userNameInputField becomeFirstResponder];
                                                                        
                                                                    }];
@@ -382,6 +388,10 @@
                              faceImageButton.alpha = 0.0;
                              faceImageButton.center = CGPointMake(faceImageButton.center.x - 50.0,
                                                                   faceImageButton.center.y);
+                             
+                             self.avatarImageView.alpha = 0.0;
+                             self.avatarImageView.center = CGPointMake(self.avatarImageView.center.x - 50.0,
+                                                                  self.avatarImageView.center.y);
                              
                              passwordForgottenButton.alpha = 1.0;
                              passwordForgottenLabel.alpha = 1.0;
@@ -494,6 +504,7 @@
                              faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
                              faceRect.origin.y -= self.elementsOffsetY;
                              faceImageButton.frame = faceRect;
+                             self.avatarImageView.frame = faceRect;
                              
                              isAnimating = NO;
                              
@@ -502,6 +513,7 @@
                                                   memberLabel.alpha = 1.0;
                                                   loginButton.alpha = 1.0;
                                                   faceImageButton.alpha = 1.0;
+                                                  self.avatarImageView.alpha = 1.0;
                                                   
                                                   termsAndConditionsLabelSide.alpha = 1.0;
                                               }
@@ -531,9 +543,11 @@
                              dobView.frame = dobRect;
                              
                              faceImageButton.alpha = 1.0;
+                             self.avatarImageView.alpha = 1.0;
                              CGRect faceRect = faceImageButton.frame;
                              faceRect.origin.x = userNameInputField.frame.origin.x - 10.0 - faceRect.size.width;
                              faceImageButton.frame = faceRect;
+                             self.avatarImageView.frame = faceRect;
                              
                              loginButton.alpha = 1.0;
                              memberLabel.alpha = 1.0;
@@ -1356,12 +1370,10 @@
 {
     if (popoverController == self.cameraMenuPopoverController)
     {
-        self.faceImageButton.selected = NO;
         self.cameraPopoverController = nil;
     }
     else if (popoverController == self.cameraPopoverController)
     {
-        self.faceImageButton.selected = NO;
         self.cameraPopoverController = nil;
     }
     else
@@ -1429,7 +1441,7 @@
 {
     DebugLog(@"width %f, height %f", image.size.width, image.size.height);
     
-//    self.channelCoverImageView.image = image;
+    self.avatarImageView.image = image;
     
     [self uploadAvatarImage: image];
     
@@ -1490,6 +1502,7 @@
         signUpButton.center = CGPointMake(604.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(650.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(124.0, faceImageButton.center.y);
+        self.avatarImageView.center = CGPointMake(124.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 714.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 714.0);
         
@@ -1500,6 +1513,7 @@
         signUpButton.center = CGPointMake(730.0, signUpButton.center.y);
         passwordForgottenLabel.center = CGPointMake(780.0, passwordForgottenLabel.center.y);
         faceImageButton.center = CGPointMake(254.0, faceImageButton.center.y);
+        self.avatarImageView.center = CGPointMake(254.0, self.avatarImageView.center.y);
         termsAndConditionsLabel.center = CGPointMake(termsAndConditionsLabel.center.x, 370.0);
         termsAndConditionsLabelSide.center = CGPointMake(termsAndConditionsLabelSide.center.x, 370.0);
         registerButton.center = CGPointMake(registerButton.center.x, 358.0);
@@ -1522,6 +1536,7 @@
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
+    self.avatarImageView.frame = CGRectIntegral(self.avatarImageView.frame);
     areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
 }
 
@@ -1561,6 +1576,7 @@
     signUpButton.frame = CGRectIntegral(signUpButton.frame);
     passwordForgottenLabel.frame = CGRectIntegral(passwordForgottenLabel.frame);
     faceImageButton.frame = CGRectIntegral(faceImageButton.frame);
+    self.avatarImageView.frame = CGRectIntegral(self.avatarImageView.frame);
     areYouNewLabel.frame = CGRectIntegral(areYouNewLabel.frame);
     termsAndConditionsLabel.frame = CGRectIntegral(termsAndConditionsLabel.frame);
     termsAndConditionsLabelSide.frame = CGRectIntegral(termsAndConditionsLabelSide.frame);
