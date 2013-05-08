@@ -2874,16 +2874,16 @@
 		01A3EC3416AED7F6008DCE08 /* Popover */ = {
 			isa = PBXGroup;
 			children = (
-				01AEFBDE1701ACFD0060467A /* popover-black-bcg-image.png */,
-				01AEFBDF1701ACFD0060467A /* popover-black-bcg-image@2x.png */,
-				01AEFBE01701ACFD0060467A /* popover-black-top-arrow-image.png */,
-				01AEFBE11701ACFD0060467A /* popover-black-top-arrow-image@2x.png */,
 				01AEFBDA1701ACE20060467A /* ArrowSearch.png */,
 				01AEFBDB1701ACE20060467A /* ArrowSearch@2x.png */,
 				01AEFBD61701ACD60060467A /* DividerSearch.png */,
 				01AEFBD71701ACD60060467A /* DividerSearch@2x.png */,
 				01A3EC3516AED804008DCE08 /* NotificationContent.png */,
 				01A3EC3616AED804008DCE08 /* NotificationContent@2x.png */,
+				01AEFBDE1701ACFD0060467A /* popover-black-bcg-image.png */,
+				01AEFBDF1701ACFD0060467A /* popover-black-bcg-image@2x.png */,
+				01AEFBE01701ACFD0060467A /* popover-black-top-arrow-image.png */,
+				01AEFBE11701ACFD0060467A /* popover-black-top-arrow-image@2x.png */,
 				011A15DF16EE2F46008CF25E /* popover-black-right-arrow-image@2x.png */,
 				011A15E016EE2F46008CF25E /* popover-black-right-arrow-image.png */,
 				011A160216EE4F79008CF25E /* popover-black-left-arrow-image.png */,
