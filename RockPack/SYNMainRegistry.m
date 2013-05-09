@@ -303,7 +303,7 @@
     }
     else
     {
-        if([genre isKindOfClass:[Genre class]])
+        if([genre isMemberOfClass:[Genre class]])
         {
             genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
         }
@@ -336,7 +336,7 @@
         if(genre && !append)
             existingChannel.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
         else
-            existingChannel.popularValue = NO; // if the 'all' genre is selected dont delete because this view is composed from all other genres
+            existingChannel.popularValue = NO; // if the 'all' genre is selected don't delete because this view is composed from all other genres
     }
     
     
@@ -369,6 +369,8 @@
         
         if(!genre)
             channel.popularValue = YES;
+        
+        NSLog(@"* Created channel with categoryId: %@", channel.categoryId);
         
     }
         

@@ -258,17 +258,17 @@
     }
     else
     {
-        if([genre isKindOfClass:[Genre class]])
+        if([genre isMemberOfClass:[Genre class]]) // no isKindOfClass: which will always return true in this case
         {
             genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
         }
         else
         {
-            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == %@", genre.uniqueId];
         }
     }
     
-    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != '%@'", appDelegate.currentUser.uniqueId];
+    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
     
     NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[genrePredicate, notOwnedByUserPredicate]];
     
