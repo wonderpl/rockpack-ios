@@ -572,6 +572,10 @@
 
 - (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
+    if([currentCategoryId isEqualToString:selectionId])
+    {
+        return;
+    }
     currentCategoryId = selectionId;
     currentRange = NSMakeRange(0, 50);
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
@@ -587,10 +591,10 @@
                                                           return;
                                                       }
                                                       
-                                                  }
-                                                       onError: ^(NSDictionary* errorInfo) {
+                                                  } onError: ^(NSDictionary* errorInfo) {
                                                            
-                                                       }];
+                                                  
+                                                  }];
 }
 
 - (void) handleNewTabSelectionWithGenre: (Genre *) name
