@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNSubscriptionsViewController.h"
-#import "SYNIntegralCollectionViewFlowLayout.h"
 #import "AppConstants.h"
-#import "SYNChannelMidCell.h"
 #import "Channel.h"
+#import "SYNChannelMidCell.h"
+#import "SYNIntegralCollectionViewFlowLayout.h"
+#import "SYNSubscriptionsViewController.h"
+#import "UIImageView+WebCache.h"
 
 @interface SYNSubscriptionsViewController ()
 
@@ -90,7 +91,10 @@
     SYNChannelMidCell *channelThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                             forIndexPath: indexPath];
     
-    channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnailMid.png"]
+                                            options: SDWebImageRetryFailed];
+    
     [channelThumbnailCell setChannelTitle: channel.title];
     
     return channelThumbnailCell;

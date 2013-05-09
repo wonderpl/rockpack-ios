@@ -522,7 +522,9 @@
                 ChannelCover *channelCover = [self.userChannelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                         inSection: 0]];
                 
-                coverThumbnailCell.coverImageWithURLString = channelCover.carouselURL;
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+                                                  placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
+                                                           options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
             }
             break;
@@ -533,7 +535,9 @@
                 ChannelCover *channelCover = [self.channelCoverFetchedResultsController objectAtIndexPath: [NSIndexPath indexPathForRow: indexPath.row
                                                                                                                   inSection: 0]];
                 
-                coverThumbnailCell.coverImageWithURLString = channelCover.carouselURL;
+                [coverThumbnailCell.coverImageView setImageWithURL: [NSURL URLWithString: channelCover.carouselURL]
+                                                  placeholderImage: [UIImage imageNamed: @"PlaceholderChannelCoverThumbnail.png"]
+                                                           options: SDWebImageRetryFailed];
                 return coverThumbnailCell;
             }
             break;
@@ -558,7 +562,8 @@
         VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
         
         [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                          placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]];
+                                     placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]
+                                              options: SDWebImageRetryFailed];
 
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         videoThumbnailCell.viewControllerDelegate = self;

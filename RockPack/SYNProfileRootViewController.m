@@ -7,20 +7,21 @@
 //
 
 #import "Channel.h"
-#import "SYNChannelThumbnailCell.h"
 #import "SYNChannelDetailViewController.h"
+#import "SYNChannelMidCell.h"
+#import "SYNChannelThumbnailCell.h"
+#import "SYNDeletionWobbleLayout.h"
 #import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SYNProfileRootViewController.h"
+#import "SYNSubscriptionsViewController.h"
+#import "SYNUserProfileViewController.h"
+#import "SYNYouHeaderView.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "UIImageView+WebCache.h"
 #import "Video.h"
-#import "SYNUserProfileViewController.h"
-#import "SYNSubscriptionsViewController.h"
-#import "SYNChannelMidCell.h"
-#import "SYNYouHeaderView.h"
-#import "SYNOAuthNetworkEngine.h"
-#import "SYNDeletionWobbleLayout.h"
 
 #define kInterChannelSpacing 150.0
 #define kInterRowMargin 12.0f
@@ -658,7 +659,11 @@
     SYNChannelMidCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelMidCell"
                                                                                         forIndexPath: indexPath];
     
-    channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
+    
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnailMid.png"]
+                                            options: SDWebImageRetryFailed];
+    
     [channelThumbnailCell setChannelTitle:channel.title];
     [channelThumbnailCell setViewControllerDelegate: self];
     
