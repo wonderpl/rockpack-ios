@@ -106,8 +106,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         self.sideNavigationViewController = [[SYNSideNavigationViewController alloc] init];
         
-        self.sideNavigationViewController.user = appDelegate.currentUser;
-        
         self.sideNavigationViewController.view.frame = CGRectMake(1024.0,
                                                                   ([[SYNDeviceManager sharedInstance] isIPad] ? 0.0 : 58.0f),
                                                                   self.sideNavigationViewController.view.frame.size.width,
@@ -115,6 +113,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         
         self.sideNavigationViewController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        
+        self.sideNavigationViewController.user = appDelegate.currentUser;
+        
         [self addChildViewController:self.sideNavigationViewController];
         
         

@@ -47,6 +47,8 @@ typedef enum {
 
 @property (nonatomic, strong) IBOutlet UIButton* passwordForgottenButton;
 
+@property (nonatomic, strong) IBOutlet UIImage* avatarImage;
+
 -(void)showAutologinWithCredentials:(SYNOAuth2Credential*)credentials;
 
 -(void)setUpInitialState;
@@ -64,5 +66,9 @@ typedef enum {
 - (IBAction) doLogin: (id) sender;
 
 -(BOOL)checkAndSaveRegisteredUser:(SYNOAuth2Credential*)credential;
+
+- (void) showImagePicker: (UIImagePickerControllerSourceType) sourceType;
+- (void) uploadAvatar: (UIImage *) avatarImage;
+
 
 @end
