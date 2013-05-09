@@ -293,7 +293,7 @@
                                                 inManagedObjectContext: importManagedObjectContext]];
     
     
-    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != '%@'", appDelegate.currentUser.uniqueId];
+    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != %@", appDelegate.currentUser.uniqueId];
     NSPredicate* genrePredicate;
     NSPredicate* finalPredicate;
     
@@ -309,7 +309,7 @@
         }
         else
         {
-            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == %@", genre.uniqueId];
         }
         
         finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[genrePredicate, notOwnedByUserPredicate]];
@@ -339,7 +339,7 @@
             existingChannel.popularValue = NO; // if the 'all' genre is selected don't delete because this view is composed from all other genres
     }
     
-    
+    BOOL createdAnew = NO;
     for (NSDictionary *itemDictionary in itemArray)
     {
         
@@ -357,8 +357,7 @@
                             usingManagedObjectContext: importManagedObjectContext
                                   ignoringObjectTypes: kIgnoreStoredObjects
                                             andViewId: kChannelsViewId];
-            
-            
+            createdAnew = YES;
         }
        
         
@@ -370,12 +369,11 @@
         if(!genre)
             channel.popularValue = YES;
         
-        NSLog(@"* Created channel with categoryId: %@", channel.categoryId);
+        NSLog(@"* Created%@ channel %@ categoryId: %@", (createdAnew ? @" (NEW)" : @""),channel.title, channel.categoryId);
         
+        createdAnew = NO;
     }
-        
     
-
 
     [self removeUnusedManagedObjects: matchingChannelEntries
               inManagedObjectContext: importManagedObjectContext];
@@ -436,11 +434,11 @@
     if(!managedObjects)
         return;
     
-    [managedObjects enumerateObjectsUsingBlock: ^(id managedObject, NSUInteger idx, BOOL *stop)
-     {
-         if (((AbstractCommon *)managedObject).markedForDeletionValue == TRUE)
+    [managedObjects enumerateObjectsUsingBlock: ^(AbstractCommon* managedObject, NSUInteger idx, BOOL *stop)
+    {
+         if (managedObject.markedForDeletionValue)
          {
-             [managedObjectContext deleteObject: (NSManagedObject *)managedObject];
+             [managedObjectContext deleteObject:managedObject];
              // DebugLog (@"Deleted NSManagedObject that is no longer used after import");
          }
      }];

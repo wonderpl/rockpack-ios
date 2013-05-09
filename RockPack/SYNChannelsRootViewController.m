@@ -300,6 +300,12 @@
     self.touchedChannelButton = NO;
 }
 
+-(void)viewCameToScrollFront
+{
+    //NSLog(@"Current Genre: %@", currentGenre);
+    //[self loadChannelsForGenre:currentGenre];
+}
+
 
 #pragma mark - Helper methods
 

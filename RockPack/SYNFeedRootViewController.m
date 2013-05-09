@@ -174,6 +174,11 @@
     [self.refreshButton endRefreshCycle];
 }
 
+-(void)viewCameToScrollFront
+{
+    [self refreshButtonPressed];
+}
+
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear:animated];
