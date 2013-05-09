@@ -53,7 +53,9 @@
 @property (nonatomic, strong) UILabel* categoryNameLabel;
 @property (nonatomic, strong) UILabel* subCategoryNameLabel;
 @property (nonatomic, strong) UIImageView* arrowImage;
+@property (nonatomic, strong) NSMutableArray* channels;
 
+@property (nonatomic, strong) Genre* allGenre;
 @end
 
 @implementation SYNChannelsRootViewController
@@ -140,8 +142,7 @@
     
     startAnimationDelay = 0.0;
     
-    currentCategoryId = @"all";
-    currentGenre = nil;
+    
     
     
     currentRange = NSMakeRange(0, 50);
@@ -159,6 +160,8 @@
     [super viewDidLoad];
     
     self.mainRegistry = appDelegate.mainRegistry;
+    
+    self.channels = [NSMutableArray array];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
@@ -182,11 +185,30 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-     SYNChannelsRootViewController *__weak weakSelf = self;
+    self.allGenre = [Genre insertInManagedObjectContext:appDelegate.mainManagedObjectContext];
+    self.allGenre.uniqueId = @"all";
+    self.allGenre.subgenres = [NSSet set];
+    self.allGenre.name = @"All";
+    
+    currentGenre = self.allGenre;
+    
+    [self loadChannelsForGenre:self.allGenre];
     
     
+}
+
+#pragma mark - Load Channels
+
+-(void)loadChannelsForGenre:(Genre*)genre
+{
+    [self loadChannelsForGenre:genre byAppending:NO];
+}
+
+-(void)loadChannelsForGenre:(Genre*)genre byAppending:(BOOL)append
+{
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
+    
+    [appDelegate.networkEngine updateChannelsScreenForCategory: genre.uniqueId
                                                       forRange: currentRange
                                                  ignoringCache: YES
                                                   onCompletion: ^(NSDictionary* response) {
@@ -201,16 +223,55 @@
                                                       
                                                       currentTotal = [totalNumber integerValue];
                                                       
-                                                      BOOL registryResultOk = [weakSelf.mainRegistry registerNewChannelScreensFromDictionary:response
-                                                                                                                                 byAppending:NO];
-                                                      if (!registryResultOk) {
+                                                      BOOL registryResultOk = [appDelegate.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                                    byAppending:append];
+                                                      if (!registryResultOk)
+                                                      {
                                                           DebugLog(@"Registration of Channel Failed for: %@", currentCategoryId);
                                                           return;
                                                       }
                                                       
+                                                      [self displayChannelsForGenre:genre];
+                                                      
                                                   } onError: ^(NSDictionary* errorInfo) {
-                                                           
+                                                      
                                                   }];
+}
+
+-(void)displayChannelsForGenre:(Genre*)genre
+{
+    NSEntityDescription *channelEntityDescription = [NSEntityDescription entityForName:@"Channel"
+                                                         inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:channelEntityDescription];
+    
+    NSPredicate* genrePredicate;
+    if([genre isKindOfClass:[Genre class]])
+    {
+        genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
+    }
+    else
+    {
+        genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
+    }
+    [request setPredicate:genrePredicate];
+    
+    NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"
+                                                                       ascending:YES];
+    
+    [request setSortDescriptors:@[positionDescriptor]];
+    
+    NSError *error = nil;
+    NSArray *resultsArray = [appDelegate.mainManagedObjectContext executeFetchRequest:request error:&error];
+    if (!resultsArray)
+        return;
+    
+    self.channels = [NSMutableArray arrayWithArray:resultsArray];
+    
+    [self.channelThumbnailCollectionView reloadData];
+    
+    
 }
 
 
@@ -251,39 +312,7 @@
 }
 
 
-#pragma mark - Fetched Results Controller
 
-- (NSFetchedResultsController *) fetchedResultsController
-{
-    if (fetchedResultsController)
-        return fetchedResultsController;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    // Edit the entity name as appropriate.
-    fetchRequest.entity = [NSEntityDescription entityForName: @"Channel"
-                                      inManagedObjectContext: appDelegate.mainManagedObjectContext];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat: [NSString stringWithFormat:@"viewId == '%@'", viewId]];
-    
-    
-    fetchRequest.sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"position"
-                                                                 ascending: YES]];
-    
-    
-    
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
-                                                                        managedObjectContext: appDelegate.mainManagedObjectContext
-                                                                          sectionNameKeyPath: nil
-                                                                                   cacheName: kChannelsCache];
-    // fetchedResultsController.delegate = self;
-    
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-    
-    return fetchedResultsController;
-}
 
 
 #pragma mark - CollectionView Delegate
@@ -306,7 +335,7 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = self.channels[indexPath.row];
     
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
@@ -327,7 +356,7 @@
     
     NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
     
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = (Channel*)self.channels[indexPath.row];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kShowUserChannels
                                                         object: self
@@ -377,7 +406,7 @@
     {
         self.touchedChannelButton = YES;
         
-        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        Channel *channel = (Channel*)self.channels[indexPath.row];
         
         NSLog(@"channel.videoInstances: %@", channel.videoInstances);
         
@@ -440,7 +469,7 @@
         
         self.pinchedIndexPath = indexPath;
         
-        Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        Channel *channel = (Channel*)self.channels[indexPath.row];
         SYNChannelThumbnailCell *channelCell = (SYNChannelThumbnailCell *)[self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
         
         // Get the various frames we need to calculate the actual position
@@ -500,7 +529,7 @@
 // Custom zoom out transition
 - (void) transitionToItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Channel *channel = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    Channel *channel = (Channel*)self.channels[indexPath.row];
     
     SYNChannelDetailViewController *channelVC = [[SYNChannelDetailViewController alloc] initWithChannel: channel
                                                                                               usingMode: kChannelDetailsModeDisplay];
@@ -593,13 +622,13 @@
         return;
     }
     
-    currentGenre = genre;
+    
     
     currentCategoryId = genre.uniqueId;
 
     currentRange = NSMakeRange(0, 50);
     
-    NSPredicate* genrePredicate;
+    
     
     if(genre == nil)
     {
@@ -610,47 +639,13 @@
     else
     {
         currentCategoryId = genre.uniqueId;
-        if([genre isKindOfClass:[Genre class]])
-        {
-            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
-        }
-        else
-        {
-            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
-        }
+        currentGenre = genre;
+        
             
     }
     
-    [NSFetchedResultsController deleteCacheWithName:kChannelsCache];
     
-    
-    self.fetchedResultsController.fetchRequest.predicate = genrePredicate;
-    
-    
-    
-    [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
-                                                      forRange: currentRange
-                                                 ignoringCache: NO
-                                                  onCompletion: ^(NSDictionary* response) {
-                                                      
-                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary: response
-                                                                                                                             byAppending: NO];
-                                                      
-                                                      if (!registryResultOk)
-                                                      {
-                                                          DebugLog(@"Registration of Channel Failed");
-                                                          return;
-                                                      }
-                                                      
-                                                      NSError *error = nil;
-                                                      ZAssert([fetchedResultsController performFetch: &error],
-                                                              @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
-                                                      
-                                                      [self reloadCollectionViews];
-                                                      
-                                                  } onError: ^(NSDictionary* errorInfo) {
-                                                           
-                                                  }];
+    [self loadChannelsForGenre:genre];
     
 
 }
