@@ -32,6 +32,8 @@
         <attribute name="backgroundURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="carouselURL" optional="YES" attributeType="String" defaultValueString="http://localhost" syncable="YES"/>
         <attribute name="coverRef" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="offsetX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="offsetY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="viewId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -86,7 +88,7 @@
     <elements>
         <element name="AbstractCommon" positionX="-135" positionY="-288" width="128" height="75"/>
         <element name="Channel" positionX="-54" positionY="90" width="128" height="300"/>
-        <element name="ChannelCover" positionX="160" positionY="-279" width="128" height="120"/>
+        <element name="ChannelCover" positionX="160" positionY="-279" width="128" height="148"/>
         <element name="ChannelOwner" positionX="-234" positionY="39" width="128" height="105"/>
         <element name="Genre" positionX="-317" positionY="-78" width="128" height="88"/>
         <element name="SubGenre" positionX="-522" positionY="-72" width="128" height="58"/>

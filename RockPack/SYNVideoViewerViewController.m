@@ -292,7 +292,16 @@
 - (void) updateVideoDetailsForIndex: (int) index
 {
     VideoInstance *videoInstance = self.videoInstanceArray [index];
-    self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
+    
+    // In video overlay feed display BY followed by username, in video overlay search if no user name display nothing -Kish
+    if ([videoInstance.channel.channelOwner.displayName length] == 0) {
+        self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
+    }
+    else
+    {
+        self.channelCreatorLabel.text = [NSString stringWithFormat:@"BY %@", videoInstance.channel.channelOwner.displayName];
+    }
+    
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.starButton.selected = videoInstance.video.starredByUserValue;
