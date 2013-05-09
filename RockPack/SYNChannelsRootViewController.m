@@ -696,17 +696,22 @@
     }
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategoryWithId:(NSString *)uniqueId title:(NSString *)title
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController
+       didSelectCategoryWithId:(NSString *)uniqueId
+                         title:(NSString *)title
 {
     self.categoryNameLabel.text = title;
     [self.categoryNameLabel sizeToFit];
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;
     [self handleNewTabSelectionWithId:uniqueId];
-    [self handleNewTabSelectionWithGenre: title];
+    //[self handleNewTabSelectionWithGenre: title];
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController
+    didSelectSubCategoryWithId:(NSString *)uniqueId
+                 categoryTitle:(NSString *)categoryTitle
+              subCategoryTitle:(NSString *)subCategoryTitle
 {
     self.categoryNameLabel.text = categoryTitle;
     [self.categoryNameLabel sizeToFit];
@@ -724,7 +729,7 @@
     self.subCategoryNameLabel.frame = newFrame;
     
     [self handleNewTabSelectionWithId:uniqueId];
-    [self handleNewTabSelectionWithGenre: subCategoryTitle];
+    //[self handleNewTabSelectionWithGenre: subCategoryTitle];
     [self toggleChannelsCategoryTable:nil];
 }
 
@@ -736,7 +741,7 @@
     self.arrowImage.hidden = YES;
     
     [self handleNewTabSelectionWithId: @"all"];
-    [self handleNewTabSelectionWithGenre: @"all"];
+    [self handleNewTabSelectionWithGenre: nil];
     
     [self toggleChannelsCategoryTable:nil];
 }

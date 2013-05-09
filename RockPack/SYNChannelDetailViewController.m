@@ -10,6 +10,7 @@
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
 #import "GKImagePicker.h"
+#import "Genre.h"
 #import "SSTextView.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
@@ -1082,9 +1083,9 @@
     self.selectedCategoryId = itemId;
 }
 
-- (void) handleNewTabSelectionWithGenre: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    [self updateCategoryButtonText: name];
+    [self updateCategoryButtonText: genre.name];
 }
 
 
