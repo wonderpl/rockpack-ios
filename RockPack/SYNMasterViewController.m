@@ -34,8 +34,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
-#define kMovableViewReloadButtonX 70
-#define kMovableViewReloadButtonXIPhone 63
 
 #define kSearchBoxShrinkFactor 136.0
 
@@ -61,7 +59,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
-@property (nonatomic, strong) SYNRefreshButton* refreshButton;
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) SYNSideNavigationViewController* sideNavigationViewController;
@@ -143,18 +140,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     [super viewDidLoad];
     
-    // == Refresh button == //
     
-    CGRect movableViewFrame = self.movableButtonsContainer.frame;
-    movableViewFrame.origin.x = kMovableViewOffX;
-    self.movableButtonsContainer.frame = movableViewFrame;
-    
-    self.refreshButton = [SYNRefreshButton refreshButton];
-    [self.refreshButton addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    CGRect refreshButtonFrame = self.refreshButton.frame;
-    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]?kMovableViewReloadButtonX:kMovableViewReloadButtonXIPhone;
-    self.refreshButton.frame = refreshButtonFrame;
-    [self.movableButtonsContainer addSubview:self.refreshButton];
     
     
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
@@ -320,17 +306,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
--(void)refreshButtonPressed
-{
-    [self.refreshButton startRefreshCycle];
-    
-    [self.containerViewController.showingViewController refresh];
-}
 
-- (void) refreshCycleComplete
-{
-    [self.refreshButton endRefreshCycle];
-}
 
 #pragma mark - Scroller Changes
 
@@ -780,7 +756,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          self.backButtonControl.alpha = targetAlpha;
                          self.pageTitleLabel.alpha = !targetAlpha;
                          self.dotsView.alpha = !targetAlpha;
-                         self.refreshButton.alpha = !targetAlpha;
                      }
                      completion: nil];
 

@@ -185,10 +185,7 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-//    self.allGenre = [Genre insertInManagedObjectContext:appDelegate.mainManagedObjectContext];
-//    self.allGenre.uniqueId = @"all";
-//    self.allGenre.subgenres = [NSSet set];
-//    self.allGenre.name = @"All";
+
     
     currentGenre = nil;
     
@@ -355,6 +352,8 @@
 
 - (void)displayNameButtonPressed: (UIButton*) button
 {
+    
+    
     SYNChannelThumbnailCell* parent = (SYNChannelThumbnailCell*)[[button superview] superview];
     
     NSIndexPath* indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
@@ -444,6 +443,8 @@
 {
     if (sender.state == UIGestureRecognizerStateBegan)
     {
+        
+        
         // At this stage, we don't know whether the user is pinching in or out
         self.userPinchedOut = FALSE;
         

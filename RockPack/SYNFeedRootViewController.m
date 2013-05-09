@@ -21,6 +21,7 @@
 #import "VideoInstance.h"
 #import "SYNDeviceManager.h"
 #import "UIImageView+WebCache.h"
+#import "SYNRefreshButton.h"
 
 @interface SYNFeedRootViewController ()
 
@@ -29,8 +30,10 @@
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNHomeSectionHeaderView *supplementaryViewWithRefreshButton;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
 @end
+
 
 
 @implementation SYNFeedRootViewController
@@ -118,6 +121,21 @@
     // Google Analytics support
     self.trackedViewName = @"Feed";
     
+    // == Refresh button == //
+    
+    
+    self.refreshButton = [SYNRefreshButton refreshButton];
+    [self.refreshButton addTarget:self
+                           action:@selector(refreshButtonPressed)
+                 forControlEvents:UIControlEventTouchUpInside];
+    
+    CGRect refreshButtonFrame = self.refreshButton.frame;
+    refreshButtonFrame.origin.x = [[SYNDeviceManager sharedInstance] isIPad]? 10.0  : 63.0;
+    refreshButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] isIPad]? 40.0 : 10.0;
+    self.refreshButton.frame = refreshButtonFrame;
+    
+    [self.view addSubview:self.refreshButton];
+    
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
     [self.refreshControl addTarget: self
@@ -145,6 +163,16 @@
     [self refreshVideoThumbnails];
 }
 
+-(void)refreshButtonPressed
+{
+    [self.refreshButton startRefreshCycle];
+    [self refreshVideoThumbnails];
+}
+
+- (void) refreshCycleComplete
+{
+    [self.refreshButton endRefreshCycle];
+}
 
 - (void) viewWillAppear: (BOOL) animated
 {
