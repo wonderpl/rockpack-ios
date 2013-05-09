@@ -1,40 +1,41 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to TabItem.m instead.
+// Make changes to Genre.m instead.
 
-#import "_TabItem.h"
+#import "_Genre.h"
 
-const struct TabItemAttributes TabItemAttributes = {
+const struct GenreAttributes GenreAttributes = {
 	.name = @"name",
 	.priority = @"priority",
 };
 
-const struct TabItemRelationships TabItemRelationships = {
+const struct GenreRelationships GenreRelationships = {
+	.subgenres = @"subgenres",
 };
 
-const struct TabItemFetchedProperties TabItemFetchedProperties = {
+const struct GenreFetchedProperties GenreFetchedProperties = {
 };
 
-@implementation TabItemID
+@implementation GenreID
 @end
 
-@implementation _TabItem
+@implementation _Genre
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"TabItem" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"Genre" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"TabItem";
+	return @"Genre";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"TabItem" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"Genre" inManagedObjectContext:moc_];
 }
 
-- (TabItemID*)objectID {
-	return (TabItemID*)[super objectID];
+- (GenreID*)objectID {
+	return (GenreID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
@@ -84,6 +85,19 @@ const struct TabItemFetchedProperties TabItemFetchedProperties = {
 
 
 
+
+@dynamic subgenres;
+
+	
+- (NSMutableSet*)subgenresSet {
+	[self willAccessValueForKey:@"subgenres"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"subgenres"];
+  
+	[self didAccessValueForKey:@"subgenres"];
+	return result;
+}
+	
 
 
 

@@ -1,32 +1,34 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to TabItem.h instead.
+// Make changes to Genre.h instead.
 
 #import <CoreData/CoreData.h>
 #import "AbstractCommon.h"
 
-extern const struct TabItemAttributes {
+extern const struct GenreAttributes {
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *priority;
-} TabItemAttributes;
+} GenreAttributes;
 
-extern const struct TabItemRelationships {
-} TabItemRelationships;
+extern const struct GenreRelationships {
+	__unsafe_unretained NSString *subgenres;
+} GenreRelationships;
 
-extern const struct TabItemFetchedProperties {
-} TabItemFetchedProperties;
+extern const struct GenreFetchedProperties {
+} GenreFetchedProperties;
+
+@class SubGenre;
 
 
 
 
-
-@interface TabItemID : NSManagedObjectID {}
+@interface GenreID : NSManagedObjectID {}
 @end
 
-@interface _TabItem : AbstractCommon {}
+@interface _Genre : AbstractCommon {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (TabItemID*)objectID;
+- (GenreID*)objectID;
 
 
 
@@ -56,14 +58,26 @@ extern const struct TabItemFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *subgenres;
+
+- (NSMutableSet*)subgenresSet;
+
+
+
+
 
 @end
 
-@interface _TabItem (CoreDataGeneratedAccessors)
+@interface _Genre (CoreDataGeneratedAccessors)
+
+- (void)addSubgenres:(NSSet*)value_;
+- (void)removeSubgenres:(NSSet*)value_;
+- (void)addSubgenresObject:(SubGenre*)value_;
+- (void)removeSubgenresObject:(SubGenre*)value_;
 
 @end
 
-@interface _TabItem (CoreDataGeneratedPrimitiveAccessors)
+@interface _Genre (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSString*)primitiveName;
@@ -79,6 +93,11 @@ extern const struct TabItemFetchedProperties {
 - (void)setPrimitivePriorityValue:(int32_t)value_;
 
 
+
+
+
+- (NSMutableSet*)primitiveSubgenres;
+- (void)setPrimitiveSubgenres:(NSMutableSet*)value;
 
 
 @end

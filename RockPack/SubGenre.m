@@ -1,18 +1,18 @@
-#import "Subcategory.h"
-#import "Category.h"
+#import "SubGenre.h"
+#import "Genre.h"
 #import "NSDictionary+Validation.h"
 
 static NSEntityDescription *subcategoryEntity = nil;
 
-@interface Subcategory ()
+@interface SubGenre ()
 
 
 @end
 
 
-@implementation Subcategory
+@implementation SubGenre
 
-+ (Subcategory *)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
++ (SubGenre *)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
     NSError *error = nil;
     
@@ -26,7 +26,7 @@ static NSEntityDescription *subcategoryEntity = nil;
         static dispatch_once_t oncePredicate;
         dispatch_once(&oncePredicate, ^{
             // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
-            subcategoryEntity = [NSEntityDescription entityForName: @"Subcategory" inManagedObjectContext: managedObjectContext];
+            subcategoryEntity = [NSEntityDescription entityForName: @"SubGenre" inManagedObjectContext: managedObjectContext];
         });
     }
     
@@ -41,7 +41,7 @@ static NSEntityDescription *subcategoryEntity = nil;
     NSArray *matchingVideoInstanceEntries = [managedObjectContext executeFetchRequest: subcategoryFetchRequest
                                                                                 error: &error];
     
-    Subcategory *instance;
+    SubGenre *instance;
     
     if (matchingVideoInstanceEntries.count > 0)
     {
@@ -53,7 +53,7 @@ static NSEntityDescription *subcategoryEntity = nil;
     }
     else
     {
-        instance = [Subcategory insertInManagedObjectContext: managedObjectContext];
+        instance = [SubGenre insertInManagedObjectContext: managedObjectContext];
         
         
         [instance setAttributesFromDictionary: dictionary

@@ -68,7 +68,7 @@
 					<object class="IBUIImageView" id="509096549">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 88}, {320, 354}}</string>
+						<string key="NSFrame">{{0, 84}, {320, 354}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="562869705"/>
@@ -83,7 +83,7 @@
 					<object class="IBUIImageView" id="496362038">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{10, 107}, {25, 25}}</string>
+						<string key="NSFrame">{{10, 103}, {25, 25}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="525089393"/>
@@ -94,7 +94,7 @@
 					<object class="IBUIButton" id="562869705">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 100}, {40, 40}}</string>
+						<string key="NSFrame">{{0, 96}, {40, 40}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="496362038"/>
@@ -129,7 +129,7 @@
 					<object class="IBUILabel" id="525089393">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{45, 102}, {226, 22}}</string>
+						<string key="NSFrame">{{45, 98}, {226, 22}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="821535031"/>
@@ -160,7 +160,7 @@
 					<object class="IBUILabel" id="821535031">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{45, 117}, {226, 27}}</string>
+						<string key="NSFrame">{{45, 113}, {226, 27}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="850004507"/>
@@ -192,7 +192,7 @@
 					<object class="IBUIButton" id="850004507">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{45, 121}, {206, 12}}</string>
+						<string key="NSFrame">{{45, 117}, {206, 12}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="534751789"/>
@@ -213,7 +213,7 @@
 					<object class="IBUIImageView" id="707482642">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 548}</string>
+						<string key="NSFrame">{{0, -4}, {320, 548}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1041950190"/>
@@ -249,11 +249,14 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="602473140"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage" id="740396760">
+								<object class="NSCustomResource" key="IBUIHighlightedImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">ButtonVideoOverlayLikeHighlighted~iphone.png</string>
+								</object>
+								<object class="NSCustomResource" key="IBUISelectedImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonVideoOverlayLikeSelected~iphone.png</string>
 								</object>
-								<reference key="IBUISelectedImage" ref="740396760"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">ButtonVideoOverlayLike~iphone.png</string>
@@ -393,7 +396,7 @@
 								<reference key="IBUIFont" ref="26539377"/>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 548}</string>
+						<string key="NSFrame">{{0, -4}, {320, 548}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="226314193"/>
@@ -407,7 +410,7 @@
 					<object class="IBUIView" id="534751789">
 						<reference key="NSNextResponder" ref="753127512"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 147}, {320, 137}}</string>
+						<string key="NSFrame">{{0, 143}, {320, 137}}</string>
 						<reference key="NSSuperview" ref="753127512"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="558394908"/>
@@ -754,7 +757,7 @@
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="14.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="2" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="1" key="15.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="79.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -826,19 +829,134 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">SYNVideoPlaybackViewController</string>
+					<string key="superclassName">GAITrackedViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SYNVideoPlaybackViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">SYNVideoViewerViewController</string>
 					<string key="superclassName">SYNAbstractViewController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">closeButton</string>
-						<string key="NS.object.0">UIButton</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">closeButton</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="toggleStarButton:">UIButton</string>
+						<string key="userTouchedChannelButton:">id</string>
+						<string key="userTouchedCloseButton:">id</string>
+						<string key="userTouchedNextVideoButton:">id</string>
+						<string key="userTouchedPreviousVideoButton:">id</string>
+						<string key="userTouchedProfileButton:">id</string>
+						<string key="userTouchedVideoShareButton:">UIButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="toggleStarButton:">
+							<string key="name">toggleStarButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedChannelButton:">
+							<string key="name">userTouchedChannelButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedCloseButton:">
+							<string key="name">userTouchedCloseButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedNextVideoButton:">
+							<string key="name">userTouchedNextVideoButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedPreviousVideoButton:">
+							<string key="name">userTouchedPreviousVideoButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedProfileButton:">
+							<string key="name">userTouchedProfileButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="userTouchedVideoShareButton:">
+							<string key="name">userTouchedVideoShareButton:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="blackPanelView">SYNPassthroughView</string>
+						<string key="channelCreatorLabel">UILabel</string>
+						<string key="channelThumbnailImageView">UIImageView</string>
+						<string key="channelTitleLabel">UILabel</string>
+						<string key="chromeView">SYNPassthroughView</string>
+						<string key="closeButton">UIButton</string>
+						<string key="nextVideoButton">UIButton</string>
+						<string key="panelImageView">UIImageView</string>
+						<string key="passthroughView">SYNPassthroughView</string>
+						<string key="previousVideoButton">UIButton</string>
+						<string key="starButton">UIButton</string>
+						<string key="swipeView">UIView</string>
+						<string key="videoPlaybackViewController">SYNVideoPlaybackViewController</string>
+						<string key="videoThumbnailCollectionView">UICollectionView</string>
+						<string key="videoTitleLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="blackPanelView">
+							<string key="name">blackPanelView</string>
+							<string key="candidateClassName">SYNPassthroughView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="channelCreatorLabel">
+							<string key="name">channelCreatorLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="channelThumbnailImageView">
+							<string key="name">channelThumbnailImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="channelTitleLabel">
+							<string key="name">channelTitleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="chromeView">
+							<string key="name">chromeView</string>
+							<string key="candidateClassName">SYNPassthroughView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="closeButton">
 							<string key="name">closeButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-					</object>
+						<object class="IBToOneOutletInfo" key="nextVideoButton">
+							<string key="name">nextVideoButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="panelImageView">
+							<string key="name">panelImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="passthroughView">
+							<string key="name">passthroughView</string>
+							<string key="candidateClassName">SYNPassthroughView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="previousVideoButton">
+							<string key="name">previousVideoButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="starButton">
+							<string key="name">starButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="swipeView">
+							<string key="name">swipeView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="videoPlaybackViewController">
+							<string key="name">videoPlaybackViewController</string>
+							<string key="candidateClassName">SYNVideoPlaybackViewController</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="videoThumbnailCollectionView">
+							<string key="name">videoThumbnailCollectionView</string>
+							<string key="candidateClassName">UICollectionView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="videoTitleLabel">
+							<string key="name">videoTitleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SYNVideoViewerViewController.h</string>
@@ -862,6 +980,7 @@
 			<string key="ButtonClose.png">{44, 45}</string>
 			<string key="ButtonVideoOverlayAddHighlighted~iphone.png">{53, 52}</string>
 			<string key="ButtonVideoOverlayAdd~iphone.png">{53, 52}</string>
+			<string key="ButtonVideoOverlayLikeHighlighted~iphone.png">{53, 52}</string>
 			<string key="ButtonVideoOverlayLikeSelected~iphone.png">{53, 52}</string>
 			<string key="ButtonVideoOverlayLike~iphone.png">{53, 52}</string>
 			<string key="ButtonVideoOverlayShareHighlighted~iphone.png">{53, 52}</string>

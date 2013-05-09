@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+@class Genre;
+@class SubGenre;
+
 @protocol SYNTabViewDelegate <NSObject>
 
 - (void) handleMainTap: (UITapGestureRecognizer*) recogniser;
@@ -15,7 +18,7 @@
 
 // general
 - (void) handleNewTabSelectionWithId: (NSString*) itemId;
-- (void) handleNewTabSelectionWithName: (NSString*) name;
+- (void) handleNewTabSelectionWithGenre: (NSString*) name;
 
 - (BOOL) showSubcategories;
 

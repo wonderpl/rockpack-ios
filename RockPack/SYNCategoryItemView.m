@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "Category.h"
+#import "Genre.h"
 #import "SYNCategoryItemView.h"
 #import "SYNDeviceManager.h"
-#import "Subcategory.h"
+#import "SubGenre.h"
 #import "UIColor+SYNColor.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
@@ -31,7 +31,7 @@
 
 @implementation SYNCategoryItemView
 
-- (id) initWithTabItemModel: (TabItem *) tabItemModel
+- (id) initWithTabItemModel: (Genre *) tabItemModel
 {
     if ((self = [super init]))
     {        
@@ -39,7 +39,7 @@
         self.tag = [tabItemModel.uniqueId integerValue];
         
         // Identify what type it is (could have passed is as argument)
-        if ([tabItemModel isKindOfClass: [Subcategory class]]) 
+        if ([tabItemModel isKindOfClass: [SubGenre class]]) 
             type = TabItemTypeSub;
         else
             type = TabItemTypeMain;

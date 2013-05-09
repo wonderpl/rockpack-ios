@@ -148,7 +148,7 @@
     
     if (isIPhone)
     {
-        layout.sectionInset = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, 2.0f);
+        layout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([[SYNDeviceManager sharedInstance] currentScreenHeight] - 110.0f, 0.0f, 0.0f, 0.0f);
     }
     else
@@ -1082,7 +1082,7 @@
     self.selectedCategoryId = itemId;
 }
 
-- (void) handleNewTabSelectionWithName: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (NSString*) name
 {
     [self updateCategoryButtonText: name];
 }

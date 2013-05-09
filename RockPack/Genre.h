@@ -1,9 +1,9 @@
-#import "_Category.h"
+#import "_Genre.h"
 
-@interface Category : _Category {}
+@interface Genre : _Genre {}
 
 
-+ (Category *)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
++ (Genre *)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext;

@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12C3006</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -72,7 +72,7 @@
 								<int key="NSvFlags">288</int>
 								<string key="NSFrame">{{0, 47}, {310, 174}}</string>
 								<reference key="NSSuperview" ref="902865727"/>
-								<reference key="NSNextKeyView" ref="55882009"/>
+								<reference key="NSNextKeyView" ref="876796011"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">2</int>
@@ -88,7 +88,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 45}, {310, 174}}</string>
 								<reference key="NSSuperview" ref="902865727"/>
-								<reference key="NSNextKeyView" ref="876796011"/>
+								<reference key="NSNextKeyView" ref="248549610"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="277646798">
 									<int key="NSColorSpace">3</int>
@@ -320,7 +320,7 @@
 										<int key="NSvFlags">267</int>
 										<string key="NSFrame">{{228, 13}, {72, 21}}</string>
 										<reference key="NSSuperview" ref="616018756"/>
-										<reference key="NSNextKeyView" ref="248549610"/>
+										<reference key="NSNextKeyView" ref="55882009"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="277646798"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -348,7 +348,7 @@
 							<object class="IBUIButton" id="876796011">
 								<reference key="NSNextResponder" ref="902865727"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{256, 55}, {44, 45}}</string>
+								<string key="NSFrame">{{253, 47}, {57, 57}}</string>
 								<reference key="NSSuperview" ref="902865727"/>
 								<reference key="NSNextKeyView" ref="919542743"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -380,6 +380,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{8, 191}, {292, 21}}</string>
 								<reference key="NSSuperview" ref="902865727"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -758,8 +759,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="ButtonAdd.png">{44, 45}</string>
-			<string key="ButtonAddHighlighted.png">{44, 45}</string>
+			<string key="ButtonAdd.png">{57, 57}</string>
+			<string key="ButtonAddHighlighted.png">{57, 57}</string>
 			<string key="GlossVideo.png">{249, 140}</string>
 			<string key="PanelVideoFeed~iphone.png">{310, 221}</string>
 		</dictionary>

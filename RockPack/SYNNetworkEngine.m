@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "Category.h"
+#import "Genre.h"
 #import "SYNAppDelegate.h"
 #import "Channel.h"
 #import "NSString+Utils.h"
