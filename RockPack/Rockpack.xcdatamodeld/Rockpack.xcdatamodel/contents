@@ -89,7 +89,7 @@
         <element name="ChannelCover" positionX="160" positionY="-279" width="128" height="120"/>
         <element name="ChannelOwner" positionX="-234" positionY="39" width="128" height="105"/>
         <element name="Genre" positionX="-317" positionY="-78" width="128" height="88"/>
-        <element name="SubGenre" positionX="-513" positionY="-78" width="128" height="58"/>
+        <element name="SubGenre" positionX="-522" positionY="-72" width="128" height="58"/>
         <element name="User" positionX="-387" positionY="63" width="128" height="210"/>
         <element name="Video" positionX="232" positionY="114" width="128" height="210"/>
         <element name="VideoInstance" positionX="277" positionY="-90" width="128" height="135"/>

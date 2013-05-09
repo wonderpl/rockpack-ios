@@ -176,7 +176,7 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    __weak SYNChannelsRootViewController *weakSelf = self;
+     SYNChannelsRootViewController *__weak weakSelf = self;
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
@@ -593,7 +593,7 @@
                                                        }];
 }
 
-- (void) handleNewTabSelectionWithGenre: (NSString *) name
+- (void) handleNewTabSelectionWithGenre: (Genre *) name
 {
     // Nothing to do here
 }
@@ -697,6 +697,8 @@
     }
 }
 
+
+
 -(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategory:(Genre *)category
 {
     if(category)
@@ -706,7 +708,7 @@
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;
         [self handleNewTabSelectionWithId:category.uniqueId];
-        [self handleNewTabSelectionWithGenre:category.name];
+        [self handleNewTabSelectionWithGenre:category];
     }
     else
     {
@@ -736,8 +738,10 @@
     newFrame.origin.x = self.arrowImage.frame.origin.x + self.arrowImage.frame.size.width + 5.0f;
     self.subCategoryNameLabel.frame = newFrame;
     
+
     [self handleNewTabSelectionWithId:subCategory.uniqueId];
-    [self handleNewTabSelectionWithGenre: subCategory.name];
+    [self handleNewTabSelectionWithGenre: subCategory];
+
     [self toggleChannelsCategoryTable:nil];
 }
 
@@ -749,7 +753,7 @@
     self.arrowImage.hidden = YES;
     
     [self handleNewTabSelectionWithId: @"all"];
-    [self handleNewTabSelectionWithGenre: @"all"];
+    [self handleNewTabSelectionWithGenre: nil];
     
     [self toggleChannelsCategoryTable:nil];
 }

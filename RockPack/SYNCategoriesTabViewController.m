@@ -112,7 +112,7 @@
         [self.delegate handleMainTap: recogniser];
         
         [self.delegate handleNewTabSelectionWithId: @"all"];
-        [self.delegate handleNewTabSelectionWithGenre: @"OTHER"];
+        [self.delegate handleNewTabSelectionWithGenre: nil];
         
         if (tab.tag == 0)
         {
@@ -149,11 +149,11 @@
         DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
     }
     
-    Genre* categoryTapped = (Genre*)matchingCategoryInstanceEntries[0];
+    Genre* genreSelected = (Genre*)matchingCategoryInstanceEntries[0];
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
     
-    for (SubGenre* subgenre in categoryTapped.subgenres)
+    for (SubGenre* subgenre in genreSelected.subgenres)
     {
         if ([subgenre.priority integerValue] < 0)
         {
@@ -167,20 +167,20 @@
         [self.tabView createSubcategoriesTab: filteredSet];
     
     [self.delegate handleMainTap: recogniser];
-    [self.delegate handleNewTabSelectionWithId: categoryTapped.uniqueId];
-    [self.delegate handleNewTabSelectionWithGenre: categoryTapped.name];
-    self.currentTopLevelCategoryName = categoryTapped.name;
+    [self.delegate handleNewTabSelectionWithId: genreSelected.uniqueId];
+    [self.delegate handleNewTabSelectionWithGenre: genreSelected];
+    self.currentTopLevelCategoryName = genreSelected.name;
     
     // Log Category in Google Analytics
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"categoryItemClick"
-                         withLabel: categoryTapped.name
+                         withLabel: genreSelected.name
                          withValue: nil];
     
     [tracker setCustom: kGADimensionCategory
-             dimension: categoryTapped.name];
+             dimension: genreSelected.name];
 }
 
 
@@ -219,11 +219,11 @@
         
     }
     
-    SubGenre* subcategoryTapped = (SubGenre*)matchingCategoryInstanceEntries[0];
+    SubGenre* subGenreSelected = (SubGenre*)matchingCategoryInstanceEntries[0];
     
     [self.delegate handleSecondaryTap: recogniser];
-    [self.delegate handleNewTabSelectionWithId: subcategoryTapped.uniqueId];
-    [self.delegate handleNewTabSelectionWithGenre: [NSString stringWithFormat: @"%@ / %@", self.currentTopLevelCategoryName, subcategoryTapped.name]];
+    [self.delegate handleNewTabSelectionWithId: subGenreSelected.uniqueId];
+    [self.delegate handleNewTabSelectionWithGenre: subGenreSelected];
     
     // Log subcategory in Google Analytics
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
@@ -231,11 +231,11 @@
     // TODO: Not sure if we need both of these
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"categoryItemClick"
-                         withLabel: subcategoryTapped.name
+                         withLabel: subGenreSelected.name
                          withValue: nil];
     
     [tracker setCustom: kGADimensionCategory
-             dimension: subcategoryTapped.name];
+             dimension: subGenreSelected.name];
 }
 
 
