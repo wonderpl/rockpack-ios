@@ -16,7 +16,7 @@
 
 @optional
 -(void)imageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector didSelectImage:(NSString*)imageUrlString withRemoteId:(NSString*)remoteId;
--(void)imageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector didSelectAVURLAsset:(AVURLAsset*)asset;
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectUIImage:(UIImage*)image;
 -(void)closeImageSelector:(SYNChannelCoverImageSelectorViewController*)imageSelector;
 
 @end

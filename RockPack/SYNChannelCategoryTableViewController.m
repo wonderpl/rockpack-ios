@@ -304,12 +304,20 @@
     BOOL needToOpen = !self.lastSelectedIndexpath || self.lastSelectedIndexpath.section != header.tag;
     if(needToOpen)
     {
-        [CATransaction begin];
-        
-        [CATransaction setCompletionBlock:^{
-            NSIndexPath* topElement = [NSIndexPath indexPathForRow:0 inSection:header.tag];
-            [self.tableView scrollToRowAtIndexPath:topElement atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }];
+        Genre* category = [self.categoriesDatasource objectAtIndex:header.tag];
+        if([category.subgenres count]<1)
+        {
+            needToOpen = NO;
+        }
+        else
+        {
+            [CATransaction begin];
+            
+            [CATransaction setCompletionBlock:^{
+                NSIndexPath* topElement = [NSIndexPath indexPathForRow:0 inSection:header.tag];
+                [self.tableView scrollToRowAtIndexPath:topElement atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }];
+        }
     }
     
     [self.tableView beginUpdates];
@@ -430,7 +438,7 @@
     {
         SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
         [self.categoryTableControllerDelegate categoryTableController:self
-                                           didSelectSubCategory:subCategory];
+                                                 didSelectSubCategory:subCategory];
     }
     
 }
@@ -440,7 +448,7 @@
     {
         [self.categoryTableControllerDelegate categoryTableControllerDeselectedAll:self];
     }
-
+    
 }
 
 @end
