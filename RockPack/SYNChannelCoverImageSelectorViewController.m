@@ -164,7 +164,7 @@ enum ChannelCoverSelectorState {
     {
         if(indexPath.row == 0)
         {
-            cell.channelCoverImageView.image = [UIImage imageNamed:@"ChannelCreationCoverNone.png"];
+            cell.channelCoverImageView.image = [UIImage imageNamed:@"PanelTakePhoto"];
             cell.glossImage.hidden = YES;
         }
         else
@@ -228,6 +228,7 @@ enum ChannelCoverSelectorState {
                     cropViewController.sourceImage = selectedImage;
                     cropViewController.cropSize = CGSizeMake(280,280);
                     cropViewController.delegate = self;
+                    cropViewController.view.clipsToBounds = YES;
                     [self presentViewController:cropViewController animated:YES completion:nil];
                 } failureBlock:^(NSError *error) {
                     
