@@ -24,6 +24,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNMainRegistry.h"
 #import "SYNChannelCategoryTableViewController.h"
+#import "SubGenre.h"
 
 #define STANDARD_LENGTH 50
 #define kChannelsCache @"ChannelsCache"
@@ -181,7 +182,7 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    __weak SYNChannelsRootViewController *weakSelf = self;
+     SYNChannelsRootViewController *__weak weakSelf = self;
     
     
     
@@ -579,12 +580,23 @@
 
 - (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
+
     NSLog(@"uniqueId: %@", selectionId);
 }
 
 - (void) handleNewTabSelectionWithGenre: (Genre *) genre
 {
+    
+
+    if([currentGenre.uniqueId isEqualToString:genre.uniqueId])
+    {
+        return;
+    }
+    
     currentGenre = genre;
+    
+    currentCategoryId = genre.uniqueId;
+
     currentRange = NSMakeRange(0, 50);
     
     NSPredicate* genrePredicate;
@@ -640,8 +652,9 @@
                                                            
                                                   }];
     
-    
+
 }
+
 
 #pragma mark - categories tableview
 
@@ -742,26 +755,35 @@
     }
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController
-       didSelectCategoryWithId:(NSString *)uniqueId
-                         title:(NSString *)title
+
+
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategory:(Genre *)category
 {
-    self.categoryNameLabel.text = title;
-    [self.categoryNameLabel sizeToFit];
-    self.subCategoryNameLabel.hidden = YES;
-    self.arrowImage.hidden = YES;
-    [self handleNewTabSelectionWithId:uniqueId];
-    //[self handleNewTabSelectionWithGenre: title];
+    if(category)
+    {
+        self.categoryNameLabel.text = category.name;
+        [self.categoryNameLabel sizeToFit];
+        self.subCategoryNameLabel.hidden = YES;
+        self.arrowImage.hidden = YES;
+        [self handleNewTabSelectionWithId:category.uniqueId];
+        [self handleNewTabSelectionWithGenre:category];
+    }
+    else
+    {
+        self.categoryNameLabel.text = @"ALL CATEGORIES";
+        [self.categoryNameLabel sizeToFit];
+        self.subCategoryNameLabel.hidden = YES;
+        self.arrowImage.hidden = YES;
+        [self handleNewTabSelectionWithId:@"all"];
+        [self handleNewTabSelectionWithGenre:nil];
+    }
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController
-    didSelectSubCategoryWithId:(NSString *)uniqueId
-                 categoryTitle:(NSString *)categoryTitle
-              subCategoryTitle:(NSString *)subCategoryTitle
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
-    self.categoryNameLabel.text = categoryTitle;
+    self.categoryNameLabel.text = subCategory.genre.name;
     [self.categoryNameLabel sizeToFit];
-    self.subCategoryNameLabel.text = subCategoryTitle;
+    self.subCategoryNameLabel.text = subCategory.name;
     self.subCategoryNameLabel.hidden = NO;
     [self.subCategoryNameLabel sizeToFit];
     self.arrowImage.hidden = NO;
@@ -774,8 +796,10 @@
     newFrame.origin.x = self.arrowImage.frame.origin.x + self.arrowImage.frame.size.width + 5.0f;
     self.subCategoryNameLabel.frame = newFrame;
     
-    [self handleNewTabSelectionWithId:uniqueId];
-    //[self handleNewTabSelectionWithGenre: subCategoryTitle];
+
+    [self handleNewTabSelectionWithId:subCategory.uniqueId];
+    [self handleNewTabSelectionWithGenre: subCategory];
+
     [self toggleChannelsCategoryTable:nil];
 }
 

@@ -7,6 +7,8 @@ const struct ChannelCoverAttributes ChannelCoverAttributes = {
 	.backgroundURL = @"backgroundURL",
 	.carouselURL = @"carouselURL",
 	.coverRef = @"coverRef",
+	.offsetX = @"offsetX",
+	.offsetY = @"offsetY",
 	.position = @"position",
 	.viewId = @"viewId",
 };
@@ -43,6 +45,16 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"offsetXValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"offsetX"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"offsetYValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"offsetY"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"positionValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"position"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -71,6 +83,58 @@ const struct ChannelCoverFetchedProperties ChannelCoverFetchedProperties = {
 
 @dynamic coverRef;
 
+
+
+
+
+
+@dynamic offsetX;
+
+
+
+- (float)offsetXValue {
+	NSNumber *result = [self offsetX];
+	return [result floatValue];
+}
+
+- (void)setOffsetXValue:(float)value_ {
+	[self setOffsetX:[NSNumber numberWithFloat:value_]];
+}
+
+- (float)primitiveOffsetXValue {
+	NSNumber *result = [self primitiveOffsetX];
+	return [result floatValue];
+}
+
+- (void)setPrimitiveOffsetXValue:(float)value_ {
+	[self setPrimitiveOffsetX:[NSNumber numberWithFloat:value_]];
+}
+
+
+
+
+
+@dynamic offsetY;
+
+
+
+- (float)offsetYValue {
+	NSNumber *result = [self offsetY];
+	return [result floatValue];
+}
+
+- (void)setOffsetYValue:(float)value_ {
+	[self setOffsetY:[NSNumber numberWithFloat:value_]];
+}
+
+- (float)primitiveOffsetYValue {
+	NSNumber *result = [self primitiveOffsetY];
+	return [result floatValue];
+}
+
+- (void)setPrimitiveOffsetYValue:(float)value_ {
+	[self setPrimitiveOffsetY:[NSNumber numberWithFloat:value_]];
+}
 
 
 
