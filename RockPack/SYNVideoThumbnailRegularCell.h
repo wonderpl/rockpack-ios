@@ -21,6 +21,4 @@ typedef enum {
 
 @property (nonatomic) kChannelThumbnailDisplayMode displayMode;
 
-- (void) setVideoImageViewImage: (NSString*) imageURLString;
-
 @end

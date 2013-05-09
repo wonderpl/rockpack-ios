@@ -11,7 +11,6 @@
 #import "SYNNetworkEngine.h"
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
-#import "UIImageView+ImageProcessing.h"
 #import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SYNDeviceManager.h"
@@ -87,20 +86,6 @@
 
 
 #pragma mark - Asynchronous image loading support
-
-- (void) setVideoImageViewImage: (NSString*) imageURLString
-{
-    [self.videoImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                                    placeHolderImage: nil];
-}
-
-
-- (void) setChannelImageViewImage: (NSString*) imageURLString
-{    
-    [self.channelImageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                                      placeHolderImage: nil];
-}
-
 
 // Need to do this outside awakeFromNib as the delegate is not set at that point
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate

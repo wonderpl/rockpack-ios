@@ -6,17 +6,18 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "SYNSearchVideosViewController.h"
-#import "SYNAppDelegate.h"
-#import "SYNSearchRootViewController.h"
-#import "SYNVideoThumbnailWideCell.h"
-#import "VideoInstance.h"
-#import "SYNSearchTabView.h"
-#import "Video.h"
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "NSDate-Utilities.h"
+#import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
+#import "SYNSearchRootViewController.h"
+#import "SYNSearchTabView.h"
+#import "SYNSearchVideosViewController.h"
+#import "SYNVideoThumbnailWideCell.h"
+#import "UIImageView+WebCache.h"
+#import "Video.h"
+#import "VideoInstance.h"
 
 @interface SYNSearchVideosViewController ()
 
@@ -125,7 +126,10 @@
         
         
         videoThumbnailCell.displayMode = kVideoThumbnailDisplayModeYoutube;
-        videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
+        
+        [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                          placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailWide.png"]];
+
         videoThumbnailCell.videoTitle.text = videoInstance.title;
         videoThumbnailCell.videoInstance = videoInstance;
         

@@ -41,7 +41,4 @@ typedef enum {
 // This is used to indicate the UIViewController that 
 @property (nonatomic, weak) UIViewController *viewControllerDelegate;
 
-- (void) setVideoImageViewImage: (NSString*) imageURLString;
-- (void) setChannelImageViewImage: (NSString*) imageURLString;
-
 @end
