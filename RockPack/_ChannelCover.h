@@ -8,6 +8,8 @@ extern const struct ChannelCoverAttributes {
 	__unsafe_unretained NSString *backgroundURL;
 	__unsafe_unretained NSString *carouselURL;
 	__unsafe_unretained NSString *coverRef;
+	__unsafe_unretained NSString *offsetX;
+	__unsafe_unretained NSString *offsetY;
 	__unsafe_unretained NSString *position;
 	__unsafe_unretained NSString *viewId;
 } ChannelCoverAttributes;
@@ -17,6 +19,8 @@ extern const struct ChannelCoverRelationships {
 
 extern const struct ChannelCoverFetchedProperties {
 } ChannelCoverFetchedProperties;
+
+
 
 
 
@@ -63,6 +67,34 @@ extern const struct ChannelCoverFetchedProperties {
 
 
 //- (BOOL)validateCoverRef:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* offsetX;
+
+
+
+@property float offsetXValue;
+- (float)offsetXValue;
+- (void)setOffsetXValue:(float)value_;
+
+//- (BOOL)validateOffsetX:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* offsetY;
+
+
+
+@property float offsetYValue;
+- (float)offsetYValue;
+- (void)setOffsetYValue:(float)value_;
+
+//- (BOOL)validateOffsetY:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -116,6 +148,24 @@ extern const struct ChannelCoverFetchedProperties {
 
 - (NSString*)primitiveCoverRef;
 - (void)setPrimitiveCoverRef:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveOffsetX;
+- (void)setPrimitiveOffsetX:(NSNumber*)value;
+
+- (float)primitiveOffsetXValue;
+- (void)setPrimitiveOffsetXValue:(float)value_;
+
+
+
+
+- (NSNumber*)primitiveOffsetY;
+- (void)setPrimitiveOffsetY:(NSNumber*)value;
+
+- (float)primitiveOffsetYValue;
+- (void)setPrimitiveOffsetYValue:(float)value_;
 
 
 
