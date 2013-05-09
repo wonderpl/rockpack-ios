@@ -147,6 +147,19 @@ typedef enum {
         
         newFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         self.view.frame = newFrame;
+    
+    
+        // == Settings Button == //
+        
+        CGRect settingsButtonFrame = self.settingsButton.frame;
+        settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
+        self.settingsButton.frame = settingsButtonFrame;
+        self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+        
+        
+        // == User Name Label == //
+        
+        self.userNameLabel.alpha = 0.0;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -154,20 +167,6 @@ typedef enum {
                                                  name:kNotificationMarkedRead
                                                object:nil];
     
-    
-    
-    
-    // == Settings Button == //
-    
-    CGRect settingsButtonFrame = self.settingsButton.frame;
-    settingsButtonFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
-    self.settingsButton.frame = settingsButtonFrame;
-    self.settingsButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-    
-    
-    // == User Name Label == //
-    
-    self.userNameLabel.alpha = 0.0;
     
     
     
@@ -631,6 +630,7 @@ typedef enum {
                          if([[SYNDeviceManager sharedInstance] isIPad])
                          {
                              sideNavigationFrame.origin.x = 1024.0 - 192.0;
+                             self.userNameLabel.alpha = 0.0;
                          }
                          else
                          {
@@ -638,7 +638,6 @@ typedef enum {
                          }
                          self.view.frame = sideNavigationFrame;
                          
-                         self.userNameLabel.alpha = 0.0;
                          
                      }
                      completion: ^(BOOL finished) {
