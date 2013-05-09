@@ -299,7 +299,7 @@
     
     if(!genre)
     {
-        finalPredicate = notOwnedByUserPredicate;
+        finalPredicate = notOwnedByUserPredicate; // if the all genre is selected then get all channels
     }
     else
     {
@@ -332,8 +332,11 @@
         
         // NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
-        existingChannel.markedForDeletionValue = YES;
-        existingChannel.popularValue = NO;
+        
+        if(genre)
+            existingChannel.markedForDeletionValue = YES; // if a real genre is passed - delete the old objects
+        else
+            existingChannel.popularValue = NO; // if the 'all' genre is selected dont delete because this view is composed from all other genres
     }
     
     
@@ -360,6 +363,9 @@
        
         
         channel.markedForDeletionValue = NO;
+        
+        channel.position = [itemDictionary objectForKey: @"position"
+                                            withDefault: [NSNumber numberWithInt: 0]];
         
         if(!genre)
             channel.popularValue = YES;
