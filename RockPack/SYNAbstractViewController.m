@@ -19,6 +19,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNContainerViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPopoverBackgroundView.h"
@@ -443,6 +444,45 @@
                                           completionHandler: ^(NSDictionary *responseDictionary) {
                                               DebugLog(@"Share link successful");
                                               
+                                              UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+                                              CGRect keyWindowRect = [keyWindow bounds];
+                                              UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
+                                              CGContextRef context = UIGraphicsGetCurrentContext();
+                                              [keyWindow.layer renderInContext: context];
+                                              UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
+                                              UIGraphicsEndImageContext();
+                                              
+                                              UIInterfaceOrientation orientation = [[SYNDeviceManager sharedInstance] orientation];
+                                              
+                                              switch (orientation)
+                                              {
+                                                  case UIDeviceOrientationPortrait:
+                                                      orientation = UIImageOrientationUp;
+                                                      break;
+                                                      
+                                                  case UIDeviceOrientationPortraitUpsideDown:
+                                                      orientation = UIImageOrientationDown;
+                                                      break;
+                                                      
+                                                  case UIDeviceOrientationLandscapeLeft:
+                                                      orientation = UIImageOrientationLeft;
+                                                      break;
+                                                      
+                                                  case UIDeviceOrientationLandscapeRight:
+                                                      orientation = UIImageOrientationRight;
+                                                      break;
+
+                                                  default:
+                                                      orientation = UIImageOrientationRight;
+                                                      DebugLog(@"Unknown orientation");
+                                                      break;
+                                              }
+                                              
+                                              UIImage *fixedOrientationImage = [UIImage imageWithCGImage: capturedScreenImage.CGImage
+                                                                                                   scale: capturedScreenImage.scale
+                                                                                             orientation: orientation];
+                                              capturedScreenImage = fixedOrientationImage;
+                                              
                                               // Prepare activities
                                               OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
                                               OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
@@ -462,12 +502,12 @@
                                               NSString *resourceURLString = responseDictionary[@"resource_url"];
                                               NSString *message = responseDictionary[@"message"];
                                               
-                                              if (resourceURLString == nil || [resourceURLString isEqualToString: @""])
+                                              if (resourceURLString == nil || [message isKindOfClass: [NSNull class]] || [resourceURLString isEqualToString: @""])
                                               {
                                                   resourceURLString = @"http://www.rockpack.com";
                                               }
                                               
-                                              if (message == nil)
+                                              if (message == nil || [message isKindOfClass: [NSNull class]])
                                               {
                                                   message = @"";
                                               }
@@ -475,7 +515,8 @@
                                               NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
                                               
                                               activityViewController.userInfo = @{@"text": message,
-                                                                                  @"url": resourceURL};
+                                                                                  @"url": resourceURL,
+                                                                                  @"image" : capturedScreenImage};
                                               
                                               // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
                                               if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
