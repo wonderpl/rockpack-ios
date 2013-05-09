@@ -175,7 +175,7 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    __weak SYNChannelsRootViewController *weakSelf = self;
+     SYNChannelsRootViewController *__weak weakSelf = self;
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
