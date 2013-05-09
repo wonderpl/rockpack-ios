@@ -106,7 +106,7 @@
     // override with emtpy function
 }
 
-- (void) handleNewTabSelectionWithGenre: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (Genre*) name
 {
     // override with emtpy function
 }

@@ -10,6 +10,7 @@
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
 #import "GKImagePicker.h"
+#import "Genre.h"
 #import "SSTextView.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
@@ -908,7 +909,7 @@
 
 - (void) showCoverChooser
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if ([[SYNDeviceManager sharedInstance] isIPad])
     {
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
@@ -1083,9 +1084,9 @@
     self.selectedCategoryId = itemId;
 }
 
-- (void) handleNewTabSelectionWithGenre: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    [self updateCategoryButtonText: name];
+    [self updateCategoryButtonText: genre.name];
 }
 
 
@@ -1386,6 +1387,8 @@
                                               {
                                                   DebugLog(@"Failed to get wallpaper URL");
                                               }
+                                              
+                                              self.selectedCoverId = [dictionary objectForKey:@"cover_refpink"];
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"%@", [error debugDescription]);

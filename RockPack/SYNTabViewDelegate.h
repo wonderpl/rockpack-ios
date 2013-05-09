@@ -18,7 +18,7 @@
 
 // general
 - (void) handleNewTabSelectionWithId: (NSString*) itemId;
-- (void) handleNewTabSelectionWithGenre: (NSString*) name;
+- (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
 - (BOOL) showSubcategories;
 

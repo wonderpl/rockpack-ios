@@ -928,6 +928,12 @@
 		BEA1E33116CE6045000AB59D /* SYNNetworkOperationJsonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA1E33016CE6045000AB59D /* SYNNetworkOperationJsonObject.m */; };
 		BEB1576A173BA75100DAFA2F /* _Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB15767173BA75100DAFA2F /* _Genre.m */; };
 		BEB1576B173BA75100DAFA2F /* _SubGenre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB15769173BA75100DAFA2F /* _SubGenre.m */; };
+		BEB15773173BDBD100DAFA2F /* ButtonReport.png in Resources */ = {isa = PBXBuildFile; fileRef = BEB1576D173BDBD100DAFA2F /* ButtonReport.png */; };
+		BEB15774173BDBD100DAFA2F /* ButtonReport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEB1576E173BDBD100DAFA2F /* ButtonReport@2x.png */; };
+		BEB15775173BDBD100DAFA2F /* ButtonReportHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BEB1576F173BDBD100DAFA2F /* ButtonReportHighlighted.png */; };
+		BEB15776173BDBD100DAFA2F /* ButtonReportHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEB15770173BDBD100DAFA2F /* ButtonReportHighlighted@2x.png */; };
+		BEB15777173BDBD100DAFA2F /* ButtonReportSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BEB15771173BDBD100DAFA2F /* ButtonReportSelected.png */; };
+		BEB15778173BDBD100DAFA2F /* ButtonReportSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEB15772173BDBD100DAFA2F /* ButtonReportSelected@2x.png */; };
 		BED4310316EF8D830051465B /* FieldDayMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = BED430FF16EF8D830051465B /* FieldDayMonth.png */; };
 		BED4310416EF8D830051465B /* FieldDayMonth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310016EF8D830051465B /* FieldDayMonth@2x.png */; };
 		BED4310516EF8D830051465B /* FieldYear.png in Resources */ = {isa = PBXBuildFile; fileRef = BED4310116EF8D830051465B /* FieldYear.png */; };
@@ -2040,6 +2046,12 @@
 		BEB15767173BA75100DAFA2F /* _Genre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Genre.m; sourceTree = "<group>"; };
 		BEB15768173BA75100DAFA2F /* _SubGenre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _SubGenre.h; sourceTree = "<group>"; };
 		BEB15769173BA75100DAFA2F /* _SubGenre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _SubGenre.m; sourceTree = "<group>"; };
+		BEB1576D173BDBD100DAFA2F /* ButtonReport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonReport.png; path = Assets/Images/ButtonReport.png; sourceTree = "<group>"; };
+		BEB1576E173BDBD100DAFA2F /* ButtonReport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReport@2x.png"; path = "Assets/Images/ButtonReport@2x.png"; sourceTree = "<group>"; };
+		BEB1576F173BDBD100DAFA2F /* ButtonReportHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonReportHighlighted.png; path = Assets/Images/ButtonReportHighlighted.png; sourceTree = "<group>"; };
+		BEB15770173BDBD100DAFA2F /* ButtonReportHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReportHighlighted@2x.png"; path = "Assets/Images/ButtonReportHighlighted@2x.png"; sourceTree = "<group>"; };
+		BEB15771173BDBD100DAFA2F /* ButtonReportSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonReportSelected.png; path = Assets/Images/ButtonReportSelected.png; sourceTree = "<group>"; };
+		BEB15772173BDBD100DAFA2F /* ButtonReportSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonReportSelected@2x.png"; path = "Assets/Images/ButtonReportSelected@2x.png"; sourceTree = "<group>"; };
 		BED430FF16EF8D830051465B /* FieldDayMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FieldDayMonth.png; path = Assets/Images/FieldDayMonth.png; sourceTree = "<group>"; };
 		BED4310016EF8D830051465B /* FieldDayMonth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FieldDayMonth@2x.png"; path = "Assets/Images/FieldDayMonth@2x.png"; sourceTree = "<group>"; };
 		BED4310116EF8D830051465B /* FieldYear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FieldYear.png; path = Assets/Images/FieldYear.png; sourceTree = "<group>"; };
@@ -2962,6 +2974,7 @@
 		01B0A969166CEC3400CAA235 /* Cell Assets */ = {
 			isa = PBXGroup;
 			children = (
+				BEB1576C173BDB6200DAFA2F /* Report  */,
 				0111CE091729537300612186 /* Cover Thumbnail */,
 				0173F6F616E028C6005B3ECA /* VideoThumbnailSmall */,
 				01B34C9516A99D40002AD8FB /* Channel Thumbnail */,
@@ -4148,6 +4161,19 @@
 			name = "Custom Network Operations";
 			sourceTree = "<group>";
 		};
+		BEB1576C173BDB6200DAFA2F /* Report  */ = {
+			isa = PBXGroup;
+			children = (
+				BEB1576D173BDBD100DAFA2F /* ButtonReport.png */,
+				BEB1576E173BDBD100DAFA2F /* ButtonReport@2x.png */,
+				BEB1576F173BDBD100DAFA2F /* ButtonReportHighlighted.png */,
+				BEB15770173BDBD100DAFA2F /* ButtonReportHighlighted@2x.png */,
+				BEB15771173BDBD100DAFA2F /* ButtonReportSelected.png */,
+				BEB15772173BDBD100DAFA2F /* ButtonReportSelected@2x.png */,
+			);
+			name = "Report ";
+			sourceTree = "<group>";
+		};
 		BED4312816F20CC50051465B /* RegexKitLite */ = {
 			isa = PBXGroup;
 			children = (
@@ -5033,6 +5059,12 @@
 				38BACE8A173AB4B600406597 /* SYNChannelCategoryTableViewControllerFullscreen~iphone.xib in Resources */,
 				38BACE93173AB4E600406597 /* SYNChannelCoverImageCell.xib in Resources */,
 				38BACE95173AB4E600406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib in Resources */,
+				BEB15773173BDBD100DAFA2F /* ButtonReport.png in Resources */,
+				BEB15774173BDBD100DAFA2F /* ButtonReport@2x.png in Resources */,
+				BEB15775173BDBD100DAFA2F /* ButtonReportHighlighted.png in Resources */,
+				BEB15776173BDBD100DAFA2F /* ButtonReportHighlighted@2x.png in Resources */,
+				BEB15777173BDBD100DAFA2F /* ButtonReportSelected.png in Resources */,
+				BEB15778173BDBD100DAFA2F /* ButtonReportSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
