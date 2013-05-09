@@ -185,14 +185,14 @@
     [self.view addGestureRecognizer: pinchOnChannelView];
 #endif
     
-    self.allGenre = [Genre insertInManagedObjectContext:appDelegate.mainManagedObjectContext];
-    self.allGenre.uniqueId = @"all";
-    self.allGenre.subgenres = [NSSet set];
-    self.allGenre.name = @"All";
+//    self.allGenre = [Genre insertInManagedObjectContext:appDelegate.mainManagedObjectContext];
+//    self.allGenre.uniqueId = @"all";
+//    self.allGenre.subgenres = [NSSet set];
+//    self.allGenre.name = @"All";
     
-    currentGenre = self.allGenre;
+    currentGenre = nil;
     
-    [self loadChannelsForGenre:self.allGenre];
+    [self loadChannelsForGenre:nil];
     
     
 }
@@ -208,9 +208,9 @@
 {
     
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory: genre.uniqueId
+    [appDelegate.networkEngine updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                                       forRange: currentRange
-                                                 ignoringCache: YES
+                                                 ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
                                                       
                                                       NSDictionary *channelsDictionary = [response objectForKey: @"channels"];
@@ -234,14 +234,14 @@
                                                       [self displayChannelsForGenre:genre];
                                                       
                                                   } onError: ^(NSDictionary* errorInfo) {
-                                                      
+                                                      DebugLog(@"Could not load channels: %@", errorInfo);
                                                   }];
 }
 
 -(void)displayChannelsForGenre:(Genre*)genre
 {
     NSEntityDescription *channelEntityDescription = [NSEntityDescription entityForName:@"Channel"
-                                                         inManagedObjectContext:appDelegate.mainManagedObjectContext];
+                                                                inManagedObjectContext:appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:channelEntityDescription];
@@ -298,42 +298,26 @@
 }
 
 
-- (void) reloadCollectionViews
-{
-    // Don't refresh whole collection if we are just updating a value
-    if (self.ignoreRefresh == TRUE)
-    {
-        self.ignoreRefresh = FALSE;
-    }
-    else
-    {
-        [self.channelThumbnailCollectionView reloadData];
-    }
-}
-
 
 
 
 
 #pragma mark - CollectionView Delegate
 
-- (NSInteger) collectionView: (UICollectionView *) view
-      numberOfItemsInSection: (NSInteger) section
-{
-    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    return sectionInfo.numberOfObjects;
-
-}
-
-
 - (NSInteger) numberOfSectionsInCollectionView: (UICollectionView *) collectionView
 {
     return 1;
 }
 
+- (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
+{
+    return self.channels.count;
 
-- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
-                   cellForItemAtIndexPath: (NSIndexPath *) indexPath
+}
+
+
+
+- (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     Channel *channel = self.channels[indexPath.row];
     
