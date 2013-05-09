@@ -58,7 +58,22 @@ static char operationKey;
             if (!sself) return;
             if (image)
             {
-                sself.image = image;
+                // If we were not returned directly from the cache, then fade up
+                if (cacheType == SDImageCacheTypeNone)
+                {
+                    [UIView transitionWithView: self.superview
+                                      duration: 0.35f
+                                       options: UIViewAnimationOptionTransitionCrossDissolve
+                                    animations: ^{
+                                        sself.image = image;
+                                    }
+                                    completion: nil];
+                }
+                else
+                {
+                    sself.image = image;
+                }
+
                 [sself setNeedsLayout];
             }
             if (completedBlock && finished)
