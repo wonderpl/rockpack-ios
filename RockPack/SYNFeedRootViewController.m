@@ -279,12 +279,14 @@
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];
-    
+
     [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
-                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailWide.png"]];
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailWide.png"]
+                                               options: SDWebImageRetryFailed];
     
     [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
-                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]];
+                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
+                                                 options: SDWebImageRetryFailed];
     
     videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]
                                                  && [[SYNDeviceManager sharedInstance] isIPad];

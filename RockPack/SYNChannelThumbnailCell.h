@@ -21,7 +21,6 @@
 
 @property (nonatomic, weak) Channel* channel;
 
-- (void) setChannelImageViewImage: (NSString*) imageURLString;
 - (void) setChannelTitle: (NSString*) titleString;
 - (void) showDeleteButton: (BOOL) showDeleteButton;
 

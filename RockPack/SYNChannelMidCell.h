@@ -16,7 +16,6 @@
 
 @property (nonatomic) BOOL specialSelected;
 
-- (void) setChannelImageViewImage: (NSString*) imageURLString;
 - (void) setChannelTitle: (NSString*) titleString;
 
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate;

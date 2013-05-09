@@ -10,20 +10,21 @@
 #import "Channel.h"
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
-#import "SYNChannelThumbnailCell.h"
+#import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelDetailViewController.h"
+#import "SYNChannelFooterMoreView.h"
+#import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsRootViewController.h"
+#import "SYNDeviceManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
+#import "SYNMainRegistry.h"
 #import "SYNNetworkEngine.h"
+#import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
-#import "VideoInstance.h"
+#import "UIImageView+WebCache.h"
 #import "Video.h"
-#import "SYNChannelFooterMoreView.h"
-#import "SYNDeviceManager.h"
-#import "SYNMainRegistry.h"
-#import "SYNChannelCategoryTableViewController.h"
-#import "SubGenre.h"
+#import "VideoInstance.h"
 
 #define STANDARD_LENGTH 50
 
@@ -303,7 +304,10 @@
     SYNChannelThumbnailCell *channelThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNChannelThumbnailCell"
                                                                                               forIndexPath: indexPath];
     
-    channelThumbnailCell.channelImageViewImage = channel.coverThumbnailLargeURL;
+    [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.coverThumbnailLargeURL]
+                                   placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]
+                                            options: SDWebImageRetryFailed];
+    
     [channelThumbnailCell setChannelTitle: channel.title];
     channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate = self;

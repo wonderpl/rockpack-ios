@@ -41,13 +41,6 @@
 }
 
 
-- (void) setChannelImageViewImage: (NSString*) imageURLString
-{
-    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                               placeHolderImage: [UIImage imageNamed:@"ChannelCreationCoverNone.png"]];
-}
-
-
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {
     _viewControllerDelegate = viewControllerDelegate;
