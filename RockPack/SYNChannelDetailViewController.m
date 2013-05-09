@@ -1386,6 +1386,8 @@
                                               {
                                                   DebugLog(@"Failed to get wallpaper URL");
                                               }
+                                              
+                                              self.selectedCoverId = [dictionary objectForKey:@"cover_refpink"];
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"%@", [error debugDescription]);
