@@ -1393,7 +1393,7 @@
                                                   DebugLog(@"Failed to get wallpaper URL");
                                               }
                                               
-                                              self.selectedCoverId = [dictionary objectForKey:@"cover_refpink"];
+                                              self.selectedCoverId = [dictionary objectForKey:@"cover_ref"];
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"%@", [error debugDescription]);
@@ -1501,11 +1501,20 @@
     
 }
 
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectUIImage:(UIImage *)image
+{
+    [self.channelCoverImageView setImage:image];
+    [self uploadChannelImage:image];
+    [self closeImageSelector:imageSelector];
+}
+
 -(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectImage:(NSString *)imageUrlString withRemoteId:(NSString *)remoteId
 {
     self.selectedCoverId = remoteId;
     [self.channelCoverImageView setImageFromURL:[NSURL URLWithString:imageUrlString]];
     [self closeImageSelector:imageSelector];
 }
+
+#pragma mark - Image render
 
 @end
