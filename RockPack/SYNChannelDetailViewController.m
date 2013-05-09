@@ -1082,7 +1082,7 @@
     self.selectedCategoryId = itemId;
 }
 
-- (void) handleNewTabSelectionWithName: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (NSString*) name
 {
     [self updateCategoryButtonText: name];
 }

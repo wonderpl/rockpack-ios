@@ -31,7 +31,7 @@
 
 @implementation SYNCategoryItemView
 
-- (id) initWithTabItemModel: (TabItem *) tabItemModel
+- (id) initWithTabItemModel: (Genre *) tabItemModel
 {
     if ((self = [super init]))
     {        

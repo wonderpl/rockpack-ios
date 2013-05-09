@@ -921,8 +921,6 @@
 		BE86BF3217201BA70006DC8A /* ButtonResetPasswordHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2E17201BA70006DC8A /* ButtonResetPasswordHighlighted.png */; };
 		BE86BF3317201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */; };
 		BE92A87B16CA938200FED47B /* SYNCategoriesTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */; };
-		BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92216CBED2800EC2E72 /* TabItem.m */; };
-		BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE95B92416CBED4400EC2E72 /* _TabItem.m */; };
 		BEA043E716CAA8E1005406E7 /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E416CAA8E1005406E7 /* Genre.m */; };
 		BEA043E816CAA8E1005406E7 /* SubGenre.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043E616CAA8E1005406E7 /* SubGenre.m */; };
 		BEA043EB16CABF1F005406E7 /* SYNCategoryItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA043EA16CABF1F005406E7 /* SYNCategoryItemView.m */; };
@@ -2027,10 +2025,6 @@
 		BE86BF2F17201BA70006DC8A /* ButtonResetPasswordHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonResetPasswordHighlighted@2x.png"; path = "Assets/Images/ButtonResetPasswordHighlighted@2x.png"; sourceTree = "<group>"; };
 		BE92A87916CA938200FED47B /* SYNCategoriesTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCategoriesTabView.h; sourceTree = "<group>"; };
 		BE92A87A16CA938200FED47B /* SYNCategoriesTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCategoriesTabView.m; sourceTree = "<group>"; };
-		BE95B92116CBED2800EC2E72 /* TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabItem.h; sourceTree = "<group>"; };
-		BE95B92216CBED2800EC2E72 /* TabItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabItem.m; sourceTree = "<group>"; };
-		BE95B92316CBED4400EC2E72 /* _TabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TabItem.h; sourceTree = "<group>"; };
-		BE95B92416CBED4400EC2E72 /* _TabItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TabItem.m; sourceTree = "<group>"; };
 		BEA043E316CAA8E1005406E7 /* Genre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Genre.h; sourceTree = "<group>"; };
 		BEA043E416CAA8E1005406E7 /* Genre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Genre.m; sourceTree = "<group>"; };
 		BEA043E516CAA8E1005406E7 /* SubGenre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubGenre.h; sourceTree = "<group>"; };
@@ -3124,8 +3118,6 @@
 			children = (
 				01F1B85817297460005735AF /* _ChannelCover.h */,
 				01F1B85917297460005735AF /* _ChannelCover.m */,
-				BE95B92316CBED4400EC2E72 /* _TabItem.h */,
-				BE95B92416CBED4400EC2E72 /* _TabItem.m */,
 				BEB15766173BA75100DAFA2F /* _Genre.h */,
 				BEB15767173BA75100DAFA2F /* _Genre.m */,
 				BEB15768173BA75100DAFA2F /* _SubGenre.h */,
@@ -3153,8 +3145,6 @@
 				01F1B85C17297471005735AF /* ChannelCover.m */,
 				01C6FD12169E11B000E01AA3 /* AbstractCommon.h */,
 				01C6FD13169E11B000E01AA3 /* AbstractCommon.m */,
-				BE95B92116CBED2800EC2E72 /* TabItem.h */,
-				BE95B92216CBED2800EC2E72 /* TabItem.m */,
 				BEA043E316CAA8E1005406E7 /* Genre.h */,
 				BEA043E416CAA8E1005406E7 /* Genre.m */,
 				BEA043E516CAA8E1005406E7 /* SubGenre.h */,
@@ -5083,8 +5073,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE95B92616CBED9B00EC2E72 /* _TabItem.m in Sources */,
-				BE95B92516CBED8F00EC2E72 /* TabItem.m in Sources */,
 				010DEFE11629BDC40080F26B /* main.m in Sources */,
 				010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */,
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,

@@ -592,7 +592,7 @@
                                                        }];
 }
 
-- (void) handleNewTabSelectionWithName: (NSString *) name
+- (void) handleNewTabSelectionWithGenre: (NSString *) name
 {
     // Nothing to do here
 }
@@ -703,7 +703,7 @@
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;
     [self handleNewTabSelectionWithId:uniqueId];
-    [self handleNewTabSelectionWithName: title];
+    [self handleNewTabSelectionWithGenre: title];
 }
 
 -(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
@@ -724,7 +724,7 @@
     self.subCategoryNameLabel.frame = newFrame;
     
     [self handleNewTabSelectionWithId:uniqueId];
-    [self handleNewTabSelectionWithName: subCategoryTitle];
+    [self handleNewTabSelectionWithGenre: subCategoryTitle];
     [self toggleChannelsCategoryTable:nil];
 }
 
@@ -736,7 +736,7 @@
     self.arrowImage.hidden = YES;
     
     [self handleNewTabSelectionWithId: @"all"];
-    [self handleNewTabSelectionWithName: @"all"];
+    [self handleNewTabSelectionWithGenre: @"all"];
     
     [self toggleChannelsCategoryTable:nil];
 }

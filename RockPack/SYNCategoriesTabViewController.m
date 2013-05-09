@@ -112,7 +112,7 @@
         [self.delegate handleMainTap: recogniser];
         
         [self.delegate handleNewTabSelectionWithId: @"all"];
-        [self.delegate handleNewTabSelectionWithName: @"OTHER"];
+        [self.delegate handleNewTabSelectionWithGenre: @"OTHER"];
         
         if (tab.tag == 0)
         {
@@ -168,7 +168,7 @@
     
     [self.delegate handleMainTap: recogniser];
     [self.delegate handleNewTabSelectionWithId: categoryTapped.uniqueId];
-    [self.delegate handleNewTabSelectionWithName: categoryTapped.name];
+    [self.delegate handleNewTabSelectionWithGenre: categoryTapped.name];
     self.currentTopLevelCategoryName = categoryTapped.name;
     
     // Log Category in Google Analytics
@@ -223,7 +223,7 @@
     
     [self.delegate handleSecondaryTap: recogniser];
     [self.delegate handleNewTabSelectionWithId: subcategoryTapped.uniqueId];
-    [self.delegate handleNewTabSelectionWithName: [NSString stringWithFormat: @"%@ / %@", self.currentTopLevelCategoryName, subcategoryTapped.name]];
+    [self.delegate handleNewTabSelectionWithGenre: [NSString stringWithFormat: @"%@ / %@", self.currentTopLevelCategoryName, subcategoryTapped.name]];
     
     // Log subcategory in Google Analytics
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;

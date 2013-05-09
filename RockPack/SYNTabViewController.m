@@ -38,7 +38,7 @@
 }
 
 
-- (void) handleNewTabSelectionWithName: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (NSString*) name
 {
     // implement in subclass
 }
