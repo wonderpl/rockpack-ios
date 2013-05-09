@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "Channel.h"
+#import "Genre.h"
 #import "ChannelOwner.h"
 #import "SYNAppDelegate.h"
 #import "SYNChannelThumbnailCell.h"
@@ -25,6 +26,7 @@
 #import "SYNChannelCategoryTableViewController.h"
 
 #define STANDARD_LENGTH 50
+#define kChannelsCache @"ChannelsCache"
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate, SYNChannelCategoryTableViewDelegate>
 
@@ -41,6 +43,7 @@
 @property (nonatomic) NSRange currentRange;
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) NSString* currentCategoryId;
+@property (nonatomic, weak) Genre* currentGenre;
 @property (nonatomic, weak) SYNMainRegistry* mainRegistry;
 
 @property (nonatomic, strong) SYNChannelCategoryTableViewController* categoryTableViewController;
@@ -55,6 +58,7 @@
 @implementation SYNChannelsRootViewController
 
 @synthesize currentCategoryId;
+@synthesize currentGenre;
 @synthesize currentRange;
 @synthesize currentTotal;
 @synthesize mainRegistry;
@@ -136,6 +140,8 @@
     startAnimationDelay = 0.0;
     
     currentCategoryId = @"all";
+    currentGenre = nil;
+    
     
     currentRange = NSMakeRange(0, 50);
     
@@ -176,6 +182,8 @@
 #endif
     
     __weak SYNChannelsRootViewController *weakSelf = self;
+    
+    
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
@@ -266,7 +274,7 @@
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest
                                                                         managedObjectContext: appDelegate.mainManagedObjectContext
                                                                           sectionNameKeyPath: nil
-                                                                                   cacheName: nil];
+                                                                                   cacheName: kChannelsCache];
     fetchedResultsController.delegate = self;
     
     NSError *error = nil;
@@ -571,12 +579,50 @@
 
 - (void) handleNewTabSelectionWithId: (NSString *) selectionId
 {
-    currentCategoryId = selectionId;
+    NSLog(@"uniqueId: %@", selectionId);
+}
+
+- (void) handleNewTabSelectionWithGenre: (Genre *) genre
+{
+    currentGenre = genre;
     currentRange = NSMakeRange(0, 50);
+    
+    NSPredicate* genrePredicate;
+    
+    if(genre == nil)
+    {
+        // all category chosen
+        currentCategoryId = @"all";
+        currentGenre = nil;
+    }
+    else
+    {
+        currentCategoryId = genre.uniqueId;
+        if([genre isKindOfClass:[Genre class]])
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
+        }
+        else
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
+        }
+            
+    }
+    
+    [NSFetchedResultsController deleteCacheWithName:kChannelsCache];
+    
+    
+    self.fetchedResultsController.fetchRequest.predicate = genrePredicate;
+    
+    NSError *error = nil;
+    ZAssert([fetchedResultsController performFetch: &error],
+            @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
                                                  ignoringCache: NO
                                                   onCompletion: ^(NSDictionary* response) {
+                                                      
                                                       BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary: response
                                                                                                                              byAppending: NO];
                                                       
@@ -586,15 +632,13 @@
                                                           return;
                                                       }
                                                       
-                                                  }
-                                                       onError: ^(NSDictionary* errorInfo) {
+                                                      [self reloadCollectionViews];
+                                                      
+                                                  } onError: ^(NSDictionary* errorInfo) {
                                                            
-                                                       }];
-}
-
-- (void) handleNewTabSelectionWithGenre: (Genre *) name
-{
-    // Nothing to do here
+                                                  }];
+    
+    
 }
 
 #pragma mark - categories tableview
