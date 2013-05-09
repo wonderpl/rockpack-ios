@@ -907,7 +907,7 @@
 
 - (void) showCoverChooser
 {
-    if([[SYNDeviceManager sharedInstance] isIPad])
+    if ([[SYNDeviceManager sharedInstance] isIPad])
     {
     if (self.coverChooserMasterView.alpha == 0.0f)
     {
