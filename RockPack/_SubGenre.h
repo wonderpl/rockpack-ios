@@ -2,7 +2,7 @@
 // Make changes to SubGenre.h instead.
 
 #import <CoreData/CoreData.h>
-#import "TabItem.h"
+#import "Genre.h"
 
 extern const struct SubGenreAttributes {
 } SubGenreAttributes;
@@ -20,7 +20,7 @@ extern const struct SubGenreFetchedProperties {
 @interface SubGenreID : NSManagedObjectID {}
 @end
 
-@interface _SubGenre : TabItem {}
+@interface _SubGenre : Genre {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
