@@ -55,17 +55,6 @@
     }
 }
 
-#pragma mark - Asynchronous image loading support
-
-- (void) setVideoImageViewImage: (NSString*) imageURLString
-{
-    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: imageURLString]
-                               placeHolderImage: nil];
-//    
-//    [self.imageView setAsynchronousImageFromURL: [NSURL URLWithString: @"http://i.ytimg.com/vi/1qNQHv6jdyY/mqdefault.jpg"]
-//                               placeHolderImage: nil];
-}
-
 
 - (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate
 {

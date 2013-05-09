@@ -14,6 +14,8 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 #import "UIFont+SYNFont.h"
+#import "GKImageCropViewController.h"
+#import "GKImagePicker.h"
 
 enum ChannelCoverSelectorState {
     kChannelCoverDefault = 0,
@@ -21,7 +23,7 @@ enum ChannelCoverSelectorState {
     kChannelCoverLocalAlbum = 2
 };
 
-@interface SYNChannelCoverImageSelectorViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SYNChannelCoverImageSelectorViewController () <UICollectionViewDataSource, UICollectionViewDelegate, GKImageCropControllerDelegate, GKImagePickerDelegate>
 {
     enum ChannelCoverSelectorState currentState;
 }
@@ -35,6 +37,7 @@ enum ChannelCoverSelectorState {
 @property (nonatomic, strong) NSArray* sortedKeys;
 @property (nonatomic, strong) NSString* selectedAlbumKey;
 @property (nonatomic, strong) ALAssetsLibrary* library;
+@property (nonatomic, strong) GKImagePicker* picker;
 @end
 
 @implementation SYNChannelCoverImageSelectorViewController
@@ -161,7 +164,7 @@ enum ChannelCoverSelectorState {
     {
         if(indexPath.row == 0)
         {
-            cell.channelCoverImageView.image = [UIImage imageNamed:@"ChannelCreationCoverNone.png"];
+            cell.channelCoverImageView.image = [UIImage imageNamed:@"PanelTakePhoto"];
             cell.glossImage.hidden = YES;
         }
         else
@@ -190,7 +193,13 @@ enum ChannelCoverSelectorState {
         case kChannelCoverCameraOptions:
             if(indexPath.row == 0)
             {
-                //take photo
+                GKImagePicker* picker = [[GKImagePicker alloc] init];
+                picker = [[GKImagePicker alloc] init];
+                picker.cropSize = CGSizeMake(280, 280);
+                picker.delegate = self;
+                picker.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                self.picker = picker;
+                [self presentViewController:picker.imagePickerController animated:YES completion:nil];
             }
             else
             {
@@ -211,11 +220,19 @@ enum ChannelCoverSelectorState {
             break;
         case kChannelCoverLocalAlbum:
         {
-            if([self.imageSelectorDelegate respondsToSelector:@selector(imageSelector:didSelectAVURLAsset:)])
-            {
                 AVURLAsset* imageAsset = [[self.userAssetGroups objectForKey:self.selectedAlbumKey] objectAtIndex:indexPath.row];
-                [self.imageSelectorDelegate imageSelector:self didSelectAVURLAsset:imageAsset];
-            }
+                [self.library assetForURL:imageAsset.URL resultBlock:^(ALAsset *asset) {
+                    ALAssetRepresentation* representation = [asset defaultRepresentation];
+                    GKImageCropViewController* cropViewController = [[GKImageCropViewController alloc]init];
+                    UIImage* selectedImage = [UIImage imageWithCGImage:[representation fullResolutionImage]];
+                    cropViewController.sourceImage = selectedImage;
+                    cropViewController.cropSize = CGSizeMake(280,280);
+                    cropViewController.delegate = self;
+                    cropViewController.view.clipsToBounds = YES;
+                    [self presentViewController:cropViewController animated:YES completion:nil];
+                } failureBlock:^(NSError *error) {
+                    
+                }];
             break;
         }
         case kChannelCoverDefault:
@@ -327,6 +344,35 @@ enum ChannelCoverSelectorState {
     {
         [self.imageSelectorDelegate closeImageSelector:self];
     }
+}
+
+#pragma mark - GK image picker and cropper delegate methods
+-(void)imagePicker:(GKImagePicker *)imagePicker pickedImage:(UIImage *)image
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        if([self.imageSelectorDelegate respondsToSelector:@selector(imageSelector:didSelectUIImage:)])
+        {
+            [self.imageSelectorDelegate imageSelector:self didSelectUIImage:image];
+        }
+    }];
+    self.picker = nil;
+}
+
+-(void)imagePickerDidCancel:(GKImagePicker *)imagePicker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    self.picker = nil;
+}
+
+-(void)imageCropController:(GKImageCropViewController *)imageCropController didFinishWithCroppedImage:(UIImage *)croppedImage
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        if([self.imageSelectorDelegate respondsToSelector:@selector(imageSelector:didSelectUIImage:)])
+        {
+            if(croppedImage)
+            [self.imageSelectorDelegate imageSelector:self didSelectUIImage:croppedImage];
+        }
+    }];
 }
 
 @end

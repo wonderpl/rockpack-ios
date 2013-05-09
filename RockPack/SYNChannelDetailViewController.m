@@ -12,23 +12,25 @@
 #import "GKImagePicker.h"
 #import "Genre.h"
 #import "SSTextView.h"
-#import "SYNPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
 #import "SYNCategoriesTabViewController.h"
+#import "SYNChannelCategoryTableViewController.h"
+#import "SYNChannelCoverImageSelectorViewController.h"
 #import "SYNChannelDetailViewController.h"
 #import "SYNCoverThumbnailCell.h"
 #import "SYNDeviceManager.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNPopoverBackgroundView.h"
 #import "SYNVideoThumbnailRegularCell.h"
+#import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+ImageProcessing.h"
+#import "UIImageView+WebCache.h"
 #import "Video.h"
 #import "VideoInstance.h"
-#import <QuartzCore/QuartzCore.h>
-#import "SYNChannelCategoryTableViewController.h"
-#import "SYNChannelCoverImageSelectorViewController.h"
 #import <AVFoundation/AVFoundation.h>
-#import "SubGenre.h"
+#import <QuartzCore/QuartzCore.h>
+
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
@@ -554,7 +556,10 @@
                                                         kChannelThumbnailDisplayModeStandard: kChannelThumbnailDisplayModeEdit;
         
         VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
-        videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
+        
+        [videoThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                          placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailRegular.png"]];
+
         videoThumbnailCell.titleLabel.text = videoInstance.title;
         videoThumbnailCell.viewControllerDelegate = self;
         
@@ -1388,7 +1393,7 @@
                                                   DebugLog(@"Failed to get wallpaper URL");
                                               }
                                               
-                                              self.selectedCoverId = [dictionary objectForKey:@"cover_refpink"];
+                                              self.selectedCoverId = [dictionary objectForKey:@"cover_ref"];
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"%@", [error debugDescription]);
@@ -1496,11 +1501,20 @@
     
 }
 
+-(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectUIImage:(UIImage *)image
+{
+    [self.channelCoverImageView setImage:image];
+    [self uploadChannelImage:image];
+    [self closeImageSelector:imageSelector];
+}
+
 -(void)imageSelector:(SYNChannelCoverImageSelectorViewController *)imageSelector didSelectImage:(NSString *)imageUrlString withRemoteId:(NSString *)remoteId
 {
     self.selectedCoverId = remoteId;
     [self.channelCoverImageView setImageFromURL:[NSURL URLWithString:imageUrlString]];
     [self closeImageSelector:imageSelector];
 }
+
+#pragma mark - Image render
 
 @end

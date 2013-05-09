@@ -20,6 +20,7 @@
 #import "Video.h"
 #import "VideoInstance.h"
 #import "SYNDeviceManager.h"
+#import "UIImageView+WebCache.h"
 
 @interface SYNFeedRootViewController ()
 
@@ -279,10 +280,18 @@
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];
     
-    videoThumbnailCell.videoImageViewImage = videoInstance.video.thumbnailURL;
-    videoThumbnailCell.channelImageViewImage = videoInstance.channel.coverThumbnailSmallURL;
-    videoThumbnailCell.channelImageView.hidden =[[SYNDeviceManager sharedInstance] isPortrait] && [[SYNDeviceManager sharedInstance] isIPad];
-    videoThumbnailCell.channelShadowView.hidden =[[SYNDeviceManager sharedInstance] isPortrait] && [[SYNDeviceManager sharedInstance] isIPad];
+    [videoThumbnailCell.videoImageView setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
+                                      placeholderImage: [UIImage imageNamed: @"PlaceholderVideoThumbnailWide.png"]];
+    
+    [videoThumbnailCell.channelImageView setImageWithURL: [NSURL URLWithString: videoInstance.channel.coverThumbnailSmallURL]
+                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelThumbnail.png"]];
+    
+    videoThumbnailCell.channelImageView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]
+                                                 && [[SYNDeviceManager sharedInstance] isIPad];
+    
+    videoThumbnailCell.channelShadowView.hidden = [[SYNDeviceManager sharedInstance] isPortrait]
+                                                  && [[SYNDeviceManager sharedInstance] isIPad];
+    
     videoThumbnailCell.videoTitle.text = videoInstance.title;
     videoThumbnailCell.channelNameText = videoInstance.channel.title;
     videoThumbnailCell.usernameText = [NSString stringWithFormat: @"%@", videoInstance.channel.channelOwner.displayName];
