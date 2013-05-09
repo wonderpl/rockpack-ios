@@ -592,7 +592,7 @@
                                                        }];
 }
 
-- (void) handleNewTabSelectionWithGenre: (NSString *) name
+- (void) handleNewTabSelectionWithGenre: (Genre *) name
 {
     // Nothing to do here
 }
