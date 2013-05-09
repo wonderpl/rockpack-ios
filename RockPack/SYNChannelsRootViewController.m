@@ -23,6 +23,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNMainRegistry.h"
 #import "SYNChannelCategoryTableViewController.h"
+#import "SubGenre.h"
 
 #define STANDARD_LENGTH 50
 
@@ -696,21 +697,33 @@
     }
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategoryWithId:(NSString *)uniqueId title:(NSString *)title
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectCategory:(Genre *)category
 {
-    self.categoryNameLabel.text = title;
-    [self.categoryNameLabel sizeToFit];
-    self.subCategoryNameLabel.hidden = YES;
-    self.arrowImage.hidden = YES;
-    [self handleNewTabSelectionWithId:uniqueId];
-    [self handleNewTabSelectionWithGenre: title];
+    if(category)
+    {
+        self.categoryNameLabel.text = category.name;
+        [self.categoryNameLabel sizeToFit];
+        self.subCategoryNameLabel.hidden = YES;
+        self.arrowImage.hidden = YES;
+        [self handleNewTabSelectionWithId:category.uniqueId];
+        [self handleNewTabSelectionWithGenre:category.name];
+    }
+    else
+    {
+        self.categoryNameLabel.text = @"ALL CATEGORIES";
+        [self.categoryNameLabel sizeToFit];
+        self.subCategoryNameLabel.hidden = YES;
+        self.arrowImage.hidden = YES;
+        [self handleNewTabSelectionWithId:@"all"];
+        [self handleNewTabSelectionWithGenre:nil];
+    }
 }
 
--(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategoryWithId:(NSString *)uniqueId categoryTitle:(NSString *)categoryTitle subCategoryTitle:(NSString *)subCategoryTitle
+-(void)categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
-    self.categoryNameLabel.text = categoryTitle;
+    self.categoryNameLabel.text = subCategory.genre.name;
     [self.categoryNameLabel sizeToFit];
-    self.subCategoryNameLabel.text = subCategoryTitle;
+    self.subCategoryNameLabel.text = subCategory.name;
     self.subCategoryNameLabel.hidden = NO;
     [self.subCategoryNameLabel sizeToFit];
     self.arrowImage.hidden = NO;
@@ -723,8 +736,8 @@
     newFrame.origin.x = self.arrowImage.frame.origin.x + self.arrowImage.frame.size.width + 5.0f;
     self.subCategoryNameLabel.frame = newFrame;
     
-    [self handleNewTabSelectionWithId:uniqueId];
-    [self handleNewTabSelectionWithGenre: subCategoryTitle];
+    [self handleNewTabSelectionWithId:subCategory.uniqueId];
+    [self handleNewTabSelectionWithGenre: subCategory.name];
     [self toggleChannelsCategoryTable:nil];
 }
 

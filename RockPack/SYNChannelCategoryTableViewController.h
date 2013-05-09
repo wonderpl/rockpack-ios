@@ -13,6 +13,7 @@
 #define kSubCategoriesKey @"SubCategory"
 
 @class SYNChannelCategoryTableViewController;
+@class Genre;
 
 @protocol SYNChannelCategoryTableViewDelegate <NSObject>
 
@@ -20,21 +21,20 @@
 /**
 	Callback method triggered when the user selects a category header
 	@param tableController the controller that the user interacted with
-	@param uniqueId the unique Id of the category selected
-	@param title the title of the category selected.
+    @param genre the core data object for the selected category.
  */
--(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectCategoryWithId:(NSString*)uniqueId title:(NSString*)title;
+-(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectCategory:(Genre*) category;
+
 
 /**
-	Callback method triggered when the user selects a sub category cell
+    Callback method triggered when the user selects a sub category cell
  
     Alternatively, if a confirm button was added through a xib, pressing it will fire this callback.
 	@param tableController the controller that the user interacted with
-	@param uniqueId the unique id for the sub category selected
-	@param categoryTitle the title of the category the subcategory belongs to
-	@param subCategoryTitle the title of the subcategory that wa selected
+    @param subCategory the core data object for the selected sub category.
+
  */
--(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectSubCategoryWithId:(NSString*)uniqueId categoryTitle:(NSString*)categoryTitle subCategoryTitle:(NSString*)subCategoryTitle;
+-(void)categoryTableController:(SYNChannelCategoryTableViewController*)tableController didSelectSubCategory:(SubGenre*) subCategory;
 
 /**
 	fires when the user selects the "All categories" header.

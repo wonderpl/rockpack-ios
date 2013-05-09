@@ -41,7 +41,7 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="126965443">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">301</int>
+						<int key="NSvFlags">296</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUIImageView" id="1037328264">
 								<reference key="NSNextResponder" ref="126965443"/>
@@ -541,11 +541,22 @@
 								<reference key="IBUIFontDescription" ref="576185680"/>
 								<reference key="IBUIFont" ref="801596129"/>
 							</object>
+							<object class="IBUIImageView" id="1105180">
+								<reference key="NSNextResponder" ref="257506740"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{106, 0}, {108, 108}}</string>
+								<reference key="NSSuperview" ref="257506740"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="837589100"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+							</object>
 						</array>
 						<string key="NSFrame">{{0, 119}, {320, 182}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="837589100"/>
+						<reference key="NSNextKeyView" ref="1105180"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">2</int>
@@ -1121,14 +1132,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">defaultView</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="126965443"/>
-					</object>
-					<int key="connectionID">62</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">loginView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="420677480"/>
@@ -1294,6 +1297,22 @@
 						<reference key="destination" ref="633699418"/>
 					</object>
 					<int key="connectionID">116</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">avatarImageView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="1105180"/>
+					</object>
+					<int key="connectionID">120</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">initialView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="126965443"/>
+					</object>
+					<int key="connectionID">121</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -1645,6 +1664,7 @@
 							<reference ref="295272749"/>
 							<reference ref="176319543"/>
 							<reference ref="837589100"/>
+							<reference ref="1105180"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">FirstSignupView</string>
@@ -1780,6 +1800,12 @@
 						<reference key="object" ref="633699418"/>
 						<reference key="parent" ref="18887602"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">119</int>
+						<reference key="object" ref="1105180"/>
+						<reference key="parent" ref="257506740"/>
+						<string key="objectName">Avatar</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1792,6 +1818,7 @@
 				<string key="110.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="112.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="115.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="14.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
@@ -1842,7 +1869,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">117</int>
+			<int key="maxID">121</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1909,6 +1936,8 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activityIndicator">UIActivityIndicatorView</string>
 						<string key="areYouNewLabel">UILabel</string>
+						<string key="avatarImage">UIImage</string>
+						<string key="avatarImageView">UIImageView</string>
 						<string key="ddInputField">UITextField</string>
 						<string key="dividerImageView">UIImageView</string>
 						<string key="dobView">UIView</string>
@@ -1945,6 +1974,14 @@
 						<object class="IBToOneOutletInfo" key="areYouNewLabel">
 							<string key="name">areYouNewLabel</string>
 							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="avatarImage">
+							<string key="name">avatarImage</string>
+							<string key="candidateClassName">UIImage</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="avatarImageView">
+							<string key="name">avatarImageView</string>
+							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="ddInputField">
 							<string key="name">ddInputField</string>
@@ -2067,9 +2104,9 @@
 						<string key="backButton">UIButton</string>
 						<string key="cancelButton">UIButton</string>
 						<string key="confirmButton">UIButton</string>
-						<string key="defaultView">UIView</string>
 						<string key="facebookButton">UIButton</string>
 						<string key="firstSignupView">UIView</string>
+						<string key="initialView">UIView</string>
 						<string key="loginButton">UIButton</string>
 						<string key="loginErrorLabel">UILabel</string>
 						<string key="loginView">UIView</string>
@@ -2094,16 +2131,16 @@
 							<string key="name">confirmButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="defaultView">
-							<string key="name">defaultView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="facebookButton">
 							<string key="name">facebookButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="firstSignupView">
 							<string key="name">firstSignupView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="initialView">
+							<string key="name">initialView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="loginButton">
