@@ -275,7 +275,7 @@
                                                                         managedObjectContext: appDelegate.mainManagedObjectContext
                                                                           sectionNameKeyPath: nil
                                                                                    cacheName: kChannelsCache];
-    fetchedResultsController.delegate = self;
+    // fetchedResultsController.delegate = self;
     
     NSError *error = nil;
     ZAssert([fetchedResultsController performFetch: &error],
@@ -614,9 +614,7 @@
     
     self.fetchedResultsController.fetchRequest.predicate = genrePredicate;
     
-    NSError *error = nil;
-    ZAssert([fetchedResultsController performFetch: &error],
-            @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
+    
     
     [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
                                                       forRange: currentRange
@@ -631,6 +629,10 @@
                                                           DebugLog(@"Registration of Channel Failed");
                                                           return;
                                                       }
+                                                      
+                                                      NSError *error = nil;
+                                                      ZAssert([fetchedResultsController performFetch: &error],
+                                                              @"Channels FetchedResultsController Failed: %@\n%@", [error localizedDescription], [error userInfo]);
                                                       
                                                       [self reloadCollectionViews];
                                                       
