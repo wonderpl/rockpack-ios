@@ -224,6 +224,7 @@
                                                       currentTotal = [totalNumber integerValue];
                                                       
                                                       BOOL registryResultOk = [appDelegate.mainRegistry registerNewChannelScreensFromDictionary:response
+                                                                                                                                       forGenre:genre
                                                                                                                                     byAppending:append];
                                                       if (!registryResultOk)
                                                       {
@@ -240,21 +241,29 @@
 
 -(void)displayChannelsForGenre:(Genre*)genre
 {
-    NSEntityDescription *channelEntityDescription = [NSEntityDescription entityForName:@"Channel"
-                                                                inManagedObjectContext:appDelegate.mainManagedObjectContext];
+    
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:channelEntityDescription];
+    [request setEntity:[NSEntityDescription entityForName:@"Channel"
+                                   inManagedObjectContext:appDelegate.mainManagedObjectContext]];
     
     NSPredicate* genrePredicate;
-    if([genre isKindOfClass:[Genre class]])
+    if(!genre) // all category
     {
-        genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
+        genrePredicate = [NSPredicate predicateWithFormat:@"popular == TRUE"];
     }
     else
     {
-        genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
+        if([genre isKindOfClass:[Genre class]])
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
+        }
+        else
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
+        }
     }
+    
     [request setPredicate:genrePredicate];
     
     NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"
@@ -415,21 +424,7 @@
     currentRange = NSMakeRange(nextStart, nextSize);
     
     
-    [appDelegate.networkEngine updateChannelsScreenForCategory: currentCategoryId
-                                                      forRange: currentRange
-                                                 ignoringCache: YES
-                                                  onCompletion: ^(NSDictionary* response) {
-                                                      
-                                                      BOOL registryResultOk = [self.mainRegistry registerNewChannelScreensFromDictionary:response
-                                                                                                                             byAppending:YES];
-                                                      if (!registryResultOk) {
-                                                          DebugLog(@"Registration of Channels Failed");
-                                                          return;
-                                                      }
-                                                      
-                                                    } onError: ^(NSDictionary* errorInfo) {
-                                                           
-                                                    }];
+    [self loadChannelsForGenre:currentGenre byAppending:YES];
 }
 
 

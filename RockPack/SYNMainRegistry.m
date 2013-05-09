@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "Genre.h"
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
 #import "SYNAppDelegate.h"
 #import "SYNMainRegistry.h"
 #import "VideoInstance.h"
+#import "Genre.h"
 #import "AppConstants.h"
 #import <CoreData/CoreData.h>
 
@@ -267,6 +267,7 @@
 
 
 - (BOOL) registerNewChannelScreensFromDictionary: (NSDictionary *) dictionary
+                                        forGenre: (Genre*) genre
                                      byAppending: (BOOL) append {
     
     
@@ -292,13 +293,26 @@
                                                 inManagedObjectContext: importManagedObjectContext]];
     
     
-    NSDictionary *firstItem = [itemArray objectAtIndex:0];
     
-    NSString* heuristicCategoryId = [firstItem objectForKey:@"category"];
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"(viewId == %@)", kChannelsViewId, heuristicCategoryId];
-    
-    [channelFetchRequest setPredicate: predicate];
+    NSPredicate* genrePredicate;
+    if(!genre)
+    {
+        
+    }
+    else
+    {
+        if([genre isKindOfClass:[Genre class]])
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId IN %@", [genre getSubGenreIdArray]];
+        }
+        else
+        {
+            genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
+        }
+        
+        [channelFetchRequest setPredicate: genrePredicate];
+    }
     
     
     NSError* error;
@@ -311,12 +325,13 @@
     for (Channel* existingChannel in matchingChannelEntries)
     {
         
-        NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
+        // NSLog(@" - Channel: %@ (%@)", existingChannel.title, existingChannel.categoryId);
         [existingChannelsByIndex setObject:existingChannel forKey:existingChannel.uniqueId];
-        ((AbstractCommon *)existingChannel).markedForDeletionValue = YES;
+        existingChannel.markedForDeletionValue = YES;
+        existingChannel.popularValue = NO;
     }
     
-    Channel* existingChannelMatch;
+    
     for (NSDictionary *itemDictionary in itemArray)
     {
         
@@ -324,23 +339,26 @@
         if(!uniqueId)
             continue;
         
-        if((existingChannelMatch = [existingChannelsByIndex objectForKey:uniqueId]))
-        {
-            //NSLog(@"Found (title:%@)", existingChannelMatch.title);
-            ((AbstractCommon *)existingChannelMatch).markedForDeletionValue = NO;
-            continue;
-        }
-            
+        Channel* channel;
         
-        if ([itemDictionary isKindOfClass: [NSDictionary class]])
+        channel = [existingChannelsByIndex objectForKey:uniqueId];
+        
+        if(!channel)
         {
+            channel = [Channel instanceFromDictionary: itemDictionary
+                            usingManagedObjectContext: importManagedObjectContext
+                                  ignoringObjectTypes: kIgnoreStoredObjects
+                                            andViewId: kChannelsViewId];
             
-            [Channel instanceFromDictionary: itemDictionary
-                  usingManagedObjectContext: importManagedObjectContext
-                        ignoringObjectTypes: kIgnoreStoredObjects
-                                  andViewId: kChannelsViewId];
+            
         }
-            
+       
+        
+        channel.markedForDeletionValue = NO;
+        
+        if(!genre)
+            channel.popularValue = YES;
+        
     }
         
     
