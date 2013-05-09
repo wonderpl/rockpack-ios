@@ -293,12 +293,13 @@
                                                 inManagedObjectContext: importManagedObjectContext]];
     
     
-    
-    
+    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != '%@'", appDelegate.currentUser.uniqueId];
     NSPredicate* genrePredicate;
+    NSPredicate* finalPredicate;
+    
     if(!genre)
     {
-        
+        finalPredicate = notOwnedByUserPredicate;
     }
     else
     {
@@ -311,8 +312,12 @@
             genrePredicate = [NSPredicate predicateWithFormat:@"categoryId == '%@'", genre.uniqueId];
         }
         
-        [channelFetchRequest setPredicate: genrePredicate];
+        finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[genrePredicate, notOwnedByUserPredicate]];
+    
+        
     }
+
+    [channelFetchRequest setPredicate: finalPredicate];
     
     
     NSError* error;

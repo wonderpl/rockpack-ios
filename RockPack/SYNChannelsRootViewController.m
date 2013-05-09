@@ -247,7 +247,11 @@
     [request setEntity:[NSEntityDescription entityForName:@"Channel"
                                    inManagedObjectContext:appDelegate.mainManagedObjectContext]];
     
+    
+    
+    
     NSPredicate* genrePredicate;
+    
     if(!genre) // all category
     {
         genrePredicate = [NSPredicate predicateWithFormat:@"popular == TRUE"];
@@ -264,7 +268,13 @@
         }
     }
     
-    [request setPredicate:genrePredicate];
+    NSPredicate* notOwnedByUserPredicate = [NSPredicate predicateWithFormat:@"channelOwner.uniqueId != '%@'", appDelegate.currentUser.uniqueId];
+    
+    NSPredicate* finalPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[genrePredicate, notOwnedByUserPredicate]];
+    
+    
+    
+    [request setPredicate:finalPredicate];
     
     NSSortDescriptor *positionDescriptor = [[NSSortDescriptor alloc] initWithKey:@"position"
                                                                        ascending:YES];
