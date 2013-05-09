@@ -7,8 +7,8 @@
 //
 
 #import "SYNCategoriesTabView.h"
-#import "Category.h"
-#import "Subcategory.h"
+#import "Genre.h"
+#import "SubGenre.h"
 #import "SYNCategoryItemView.h"
 #import "UIFont+SYNFont.h"
 #import <QuartzCore/QuartzCore.h>
@@ -121,7 +121,7 @@
     }
 
 
-    for (Category* category in categories)
+    for (Genre* category in categories)
     {
         tab = [[SYNCategoryItemView alloc] initWithTabItemModel: category];
         
@@ -164,7 +164,7 @@
     
     NSArray* sortedSubcategories = [subcategories sortedArrayUsingDescriptors: [NSArray arrayWithObject: idSortDescriptor]];
         
-    for (Subcategory* subcategory in sortedSubcategories)
+    for (SubGenre* subcategory in sortedSubcategories)
     {
         tab = [[SYNCategoryItemView alloc] initWithTabItemModel: subcategory];
         [self.secondaryTabsView addSubview: tab];

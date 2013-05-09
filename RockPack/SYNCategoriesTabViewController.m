@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "Category.h"
+#import "Genre.h"
 #import "GAI.h"
 #import "SYNAppDelegate.h"
 #import "SYNCategoriesTabViewController.h"
 #import "SYNCategoryItemView.h"
 #import "SYNNetworkEngine.h"
-#import "Subcategory.h"
+#import "SubGenre.h"
 #import <CoreData/CoreData.h>
 #import "SYNDeviceManager.h"
 
@@ -58,7 +58,7 @@
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
@@ -124,7 +124,7 @@
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
@@ -149,18 +149,18 @@
         DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
     }
     
-    Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
+    Genre* categoryTapped = (Genre*)matchingCategoryInstanceEntries[0];
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
     
-    for (Subcategory* subcategory in categoryTapped.subcategories)
+    for (SubGenre* subgenre in categoryTapped.subgenres)
     {
-        if ([subcategory.priority integerValue] < 0)
+        if ([subgenre.priority integerValue] < 0)
         {
             continue;
         }
         
-        [filteredSet addObject: subcategory];
+        [filteredSet addObject: subgenre];
     }
     
     if (self.delegate && [self.delegate showSubcategories])
@@ -191,7 +191,7 @@
     
     SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Subcategory"
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"SubGenre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
@@ -219,7 +219,7 @@
         
     }
     
-    Subcategory* subcategoryTapped = (Subcategory*)matchingCategoryInstanceEntries[0];
+    SubGenre* subcategoryTapped = (SubGenre*)matchingCategoryInstanceEntries[0];
     
     [self.delegate handleSecondaryTap: recogniser];
     [self.delegate handleNewTabSelectionWithId: subcategoryTapped.uniqueId];
