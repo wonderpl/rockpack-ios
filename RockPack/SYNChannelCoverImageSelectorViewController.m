@@ -56,34 +56,38 @@ enum ChannelCoverSelectorState {
     
     self.userAssetGroups = [NSMutableDictionary dictionary];
     
-    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-    self.library = library;
-    [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-        if(!group)
-        {
-            // nil indicates end of iterator.
-            self.sortedKeys = [[self.userAssetGroups allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-        }
-        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-        NSMutableArray* groupArray = [NSMutableArray array];
-        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *innerStop) {
-            if(result)
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+        self.library = library;
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+            if(!group)
             {
-                ALAssetRepresentation *representation = [result defaultRepresentation];
-                NSURL *url = [representation url];
-                AVAsset *avAsset = [AVURLAsset URLAssetWithURL:url options:nil];
-                [groupArray addObject:avAsset];
+                // nil indicates end of iterator.
+                self.sortedKeys = [[self.userAssetGroups allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self refreshLocalImageData];
+                });
             }
+            [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+            NSMutableArray* groupArray = [NSMutableArray array];
+            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *innerStop) {
+                if(result)
+                {
+                    ALAssetRepresentation *representation = [result defaultRepresentation];
+                    NSURL *url = [representation url];
+                    AVAsset *avAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+                    [groupArray addObject:avAsset];
+                }
+            }];
+            NSString* groupName = [group valueForProperty:ALAssetsGroupPropertyName];
+            if([groupArray count] > 0 && groupName)
+            {
+                [self.userAssetGroups setObject:groupArray forKey:groupName];
+            }
+        } failureBlock:^(NSError *error) {
         }];
-        NSString* groupName = [group valueForProperty:ALAssetsGroupPropertyName];
-        if([groupArray count] > 0 && groupName)
-        {
-            [self.userAssetGroups setObject:groupArray forKey:groupName];
-        }
-    } failureBlock:^(NSError *error) {
         
-    }];
-    
+    });
     UINib* cellNib = [UINib nibWithNibName:@"SYNChannelCoverImageCell" bundle:[NSBundle mainBundle]];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SYNChannelCoverImageCell"];
 }
@@ -254,6 +258,14 @@ enum ChannelCoverSelectorState {
 -(void)refreshChannelCoverData
 {
     if(currentState == kChannelCoverDefault)
+    {
+        [self.collectionView reloadData];
+    }
+}
+
+-(void)refreshLocalImageData
+{
+    if(currentState == kChannelCoverCameraOptions)
     {
         [self.collectionView reloadData];
     }

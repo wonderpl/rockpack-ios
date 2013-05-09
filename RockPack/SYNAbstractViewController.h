@@ -14,11 +14,12 @@
 #import "SYNAppDelegate.h"
 #import "GAITrackedViewController.h"
 
-//#import "Channel.h"
+
 #import "SYNNetworkEngine.h"
 
 
-@class VideoInstance, Channel, ChannelOwner;
+
+@class VideoInstance, Channel, ChannelOwner, Genre, SubGenre;
 
 @interface SYNAbstractViewController : GAITrackedViewController <NSFetchedResultsControllerDelegate,
                                                                  UICollectionViewDataSource,
@@ -46,7 +47,7 @@
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
 - (void) handleNewTabSelectionWithId: (NSString*) selectionId;
-- (void) handleNewTabSelectionWithName: (NSString*) name;
+- (void) handleNewTabSelectionWithGenre: (Genre*) name;
 
 
 - (void) reloadCollectionViews;

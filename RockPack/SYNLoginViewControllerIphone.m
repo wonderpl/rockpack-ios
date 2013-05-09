@@ -16,11 +16,11 @@
 
 #define kLoginAnimationTransitionDuration 0.3f
 
-@interface SYNLoginViewControllerIphone () <UITextFieldDelegate>
+@interface SYNLoginViewControllerIphone () <UITextFieldDelegate, UIActionSheetDelegate>
 {
     BOOL facebookLoginIsInProgress;
 }
-@property (weak, nonatomic) IBOutlet UIView *defaultView;
+@property (weak, nonatomic) IBOutlet UIView *initialView;
 @property (weak, nonatomic) IBOutlet UIView *loginView;
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
 @property (weak, nonatomic) IBOutlet UIView *firstSignupView;
@@ -231,9 +231,9 @@
         newCenter.x = 160.0f;
         self.termsAndConditionsView.center = newCenter;
         
-        newCenter = self.defaultView.center;
+        newCenter = self.initialView.center;
         newCenter.x = -160.0f;
-        self.defaultView.center = newCenter;
+        self.initialView.center = newCenter;
         
     } completion:nil];
     
@@ -250,9 +250,9 @@
         newCenter.x = 160.0f;
         self.loginView.center = newCenter;
         
-        newCenter = self.defaultView.center;
+        newCenter = self.initialView.center;
         newCenter.x = -160.0f;
-        self.defaultView.center = newCenter;
+        self.initialView.center = newCenter;
     } completion:^(BOOL finished) {
         [self.userNameInputField becomeFirstResponder];
         
@@ -277,11 +277,21 @@
     }];
 
 }
-- (IBAction)photoButtonTapped:(id)sender {
-    
+- (IBAction)photoButtonTapped:(id)sender
+{
+    if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera])
+    {
+        UIActionSheet* sourceSelector = [[UIActionSheet alloc] initWithTitle:@"Select source" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Choose existing", nil];
+        [sourceSelector showInView:self.view];
+    }
+    else
+    {
+        [self showImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
 }
 
-- (IBAction)backbuttonTapped:(id)sender {
+- (IBAction)backbuttonTapped:(id)sender
+{
     
     switch (self.loginScreenState) {
         case kLoginScreenStateRegisterStepTwo:
@@ -337,9 +347,9 @@
                 CGPoint newCenter = self.loginView.center;
                 newCenter.x = 480.0f;
                 self.loginView.center = newCenter;
-                newCenter = self.defaultView.center;
+                newCenter = self.initialView.center;
                 newCenter.x = 160.0f;
-                self.defaultView.center = newCenter;
+                self.initialView.center = newCenter;
             } completion:nil];
             [[self.loginView subviews] makeObjectsPerformSelector:@selector(resignFirstResponder)];
             [self turnOffButton:self.backButton];
@@ -362,9 +372,9 @@
                 newCenter.x = 480.0f;
                 self.termsAndConditionsView.center = newCenter;
                 
-                newCenter = self.defaultView.center;
+                newCenter = self.initialView.center;
                 newCenter.x = 160.0f;
-                self.defaultView.center = newCenter;
+                self.initialView.center = newCenter;
             } completion:nil];
             [self turnOffButton:self.cancelButton];
             [self turnOffButton:self.nextButton];
@@ -469,6 +479,11 @@
                                                                                                     [self checkAndSaveRegisteredUser:credential];
                                                                                                     
                                                                                                     [self.activityIndicator stopAnimating];
+                                                                                                    
+                                                                                                    if(self.avatarImage)
+                                                                                                    {
+                                                                                                        [self uploadAvatar:self.avatarImage];
+                                                                                                    }
                                                                                                     
                                                                                                     [self completeLoginProcess: credential];
                                                                                                     
@@ -606,7 +621,7 @@
 #pragma mark - facebook UI animation
 -(void)doFacebookLoginAnimation
 {
-    self.activityIndicator.center = self.defaultView.center;
+    self.activityIndicator.center = self.initialView.center;
     self.activityIndicator.hidden = NO;
     [self.activityIndicator startAnimating];
     [UIView animateWithDuration:kLoginAnimationTransitionDuration delay:0.0f options:UIViewAnimationCurveEaseInOut animations:^{
@@ -758,6 +773,22 @@
             button.hidden = YES;
         }
     }];
+}
+
+#pragma mark - UIActionsheet delegate
+
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0)
+    {
+        //Camera
+        [self showImagePicker:UIImagePickerControllerSourceTypeCamera];
+    }
+    else if (buttonIndex ==1)
+    {
+        //Choose existing
+        [self showImagePicker:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
 }
 
 @end

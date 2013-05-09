@@ -1,21 +1,21 @@
-#import "Category.h"
+#import "Genre.h"
 #import "NSDictionary+Validation.h"
-#import "Subcategory.h"
+#import "SubGenre.h"
 
 static NSEntityDescription *categoryEntity = nil;
 
-@interface Category ()
+@interface Genre ()
 
 // Private interface goes here.
 
 @end
 
 
-@implementation Category
+@implementation Genre
 
 #pragma mark - Object factory
 
-+ (Category *)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
++ (Genre *)instanceFromDictionary: (NSDictionary *) dictionary usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
     NSError *error = nil;
     
@@ -29,7 +29,7 @@ static NSEntityDescription *categoryEntity = nil;
         static dispatch_once_t oncePredicate;
         dispatch_once(&oncePredicate, ^{
                     // Not entirely sure I shouldn't 'copy' this object before assigning it to the static variable
-                categoryEntity = [NSEntityDescription entityForName: @"Category" inManagedObjectContext: managedObjectContext];
+                categoryEntity = [NSEntityDescription entityForName: @"Genre" inManagedObjectContext: managedObjectContext];
         });
     }
     
@@ -44,7 +44,7 @@ static NSEntityDescription *categoryEntity = nil;
     NSArray *matchingCategoryInstanceEntries = [managedObjectContext executeFetchRequest: categoryFetchRequest
                                                                                 error: &error];
     
-    Category *instance;
+    Genre *instance;
     
     if (matchingCategoryInstanceEntries.count > 0)
     {
@@ -59,7 +59,7 @@ static NSEntityDescription *categoryEntity = nil;
     }
     else
     {
-        instance = [Category insertInManagedObjectContext: managedObjectContext];
+        instance = [Genre insertInManagedObjectContext: managedObjectContext];
         
         
         [instance setAttributesFromDictionary: dictionary
@@ -102,8 +102,8 @@ static NSEntityDescription *categoryEntity = nil;
     
     for (NSDictionary* subcategoryData in [dictionary objectForKey: @"sub_categories"])
     {
-        Subcategory* subcategory = [Subcategory instanceFromDictionary: subcategoryData usingManagedObjectContext: managedObjectContext];
-        [self addSubcategoriesObject:subcategory];
+        SubGenre* subgenre = [SubGenre instanceFromDictionary: subcategoryData usingManagedObjectContext: managedObjectContext];
+        [self addSubgenresObject:subgenre];
         
     }
     
@@ -115,7 +115,7 @@ static NSEntityDescription *categoryEntity = nil;
 {
     NSMutableString* descriptioString = [[NSMutableString alloc] init];
     [descriptioString appendFormat: @"Category(%i) name: %@, priority:  subcategories:", [self.priority intValue], self.name];
-    for (Subcategory* sub in self.subcategories) {
+    for (SubGenre* sub in self.subgenres) {
         [descriptioString appendFormat:@"\n- %@", sub];
     }
     return descriptioString;

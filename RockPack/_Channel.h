@@ -7,7 +7,6 @@
 extern const struct ChannelAttributes {
 	__unsafe_unretained NSString *categoryId;
 	__unsafe_unretained NSString *channelDescription;
-	__unsafe_unretained NSString *coverBackgroundURL;
 	__unsafe_unretained NSString *coverThumbnailLargeURL;
 	__unsafe_unretained NSString *coverThumbnailSmallURL;
 	__unsafe_unretained NSString *eCommerceURL;
@@ -34,7 +33,6 @@ extern const struct ChannelFetchedProperties {
 @class ChannelOwner;
 @class ChannelOwner;
 @class VideoInstance;
-
 
 
 
@@ -79,16 +77,6 @@ extern const struct ChannelFetchedProperties {
 
 
 //- (BOOL)validateChannelDescription:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSString* coverBackgroundURL;
-
-
-
-//- (BOOL)validateCoverBackgroundURL:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -279,12 +267,6 @@ extern const struct ChannelFetchedProperties {
 
 - (NSString*)primitiveChannelDescription;
 - (void)setPrimitiveChannelDescription:(NSString*)value;
-
-
-
-
-- (NSString*)primitiveCoverBackgroundURL;
-- (void)setPrimitiveCoverBackgroundURL:(NSString*)value;
 
 
 

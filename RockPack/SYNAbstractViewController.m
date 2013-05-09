@@ -388,7 +388,7 @@
     DebugLog(@"WARNING: Abstract method called");
 }
 
-- (void) handleNewTabSelectionWithName: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (Genre*) name
 {
     // to be implemented by child
     DebugLog(@"WARNING: Abstract method called");

@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "Category.h"
+#import "Genre.h"
 #import "GAI.h"
 #import "SYNAppDelegate.h"
 #import "SYNCategoriesTabViewController.h"
 #import "SYNCategoryItemView.h"
 #import "SYNNetworkEngine.h"
-#import "Subcategory.h"
+#import "SubGenre.h"
 #import <CoreData/CoreData.h>
 #import "SYNDeviceManager.h"
 
@@ -58,7 +58,7 @@
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
@@ -112,7 +112,7 @@
         [self.delegate handleMainTap: recogniser];
         
         [self.delegate handleNewTabSelectionWithId: @"all"];
-        [self.delegate handleNewTabSelectionWithName: @"OTHER"];
+        [self.delegate handleNewTabSelectionWithGenre: nil];
         
         if (tab.tag == 0)
         {
@@ -124,7 +124,7 @@
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
@@ -149,38 +149,38 @@
         DebugLog(@"WARNING: Found multiple (%i) Categories for Tab %d", matchingCategoryInstanceEntries.count, tab.tag);
     }
     
-    Category* categoryTapped = (Category*)matchingCategoryInstanceEntries[0];
+    Genre* genreSelected = (Genre*)matchingCategoryInstanceEntries[0];
     
     NSMutableSet* filteredSet = [[NSMutableSet alloc] init];
     
-    for (Subcategory* subcategory in categoryTapped.subcategories)
+    for (SubGenre* subgenre in genreSelected.subgenres)
     {
-        if ([subcategory.priority integerValue] < 0)
+        if ([subgenre.priority integerValue] < 0)
         {
             continue;
         }
         
-        [filteredSet addObject: subcategory];
+        [filteredSet addObject: subgenre];
     }
     
     if (self.delegate && [self.delegate showSubcategories])
         [self.tabView createSubcategoriesTab: filteredSet];
     
     [self.delegate handleMainTap: recogniser];
-    [self.delegate handleNewTabSelectionWithId: categoryTapped.uniqueId];
-    [self.delegate handleNewTabSelectionWithName: categoryTapped.name];
-    self.currentTopLevelCategoryName = categoryTapped.name;
+    [self.delegate handleNewTabSelectionWithId: genreSelected.uniqueId];
+    [self.delegate handleNewTabSelectionWithGenre: genreSelected];
+    self.currentTopLevelCategoryName = genreSelected.name;
     
     // Log Category in Google Analytics
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"categoryItemClick"
-                         withLabel: categoryTapped.name
+                         withLabel: genreSelected.name
                          withValue: nil];
     
     [tracker setCustom: kGADimensionCategory
-             dimension: categoryTapped.name];
+             dimension: genreSelected.name];
 }
 
 
@@ -191,7 +191,7 @@
     
     SYNCategoryItemView *tab = (SYNCategoryItemView*)recogniser.view;
     
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Subcategory"
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"SubGenre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
@@ -219,11 +219,11 @@
         
     }
     
-    Subcategory* subcategoryTapped = (Subcategory*)matchingCategoryInstanceEntries[0];
+    SubGenre* subGenreSelected = (SubGenre*)matchingCategoryInstanceEntries[0];
     
     [self.delegate handleSecondaryTap: recogniser];
-    [self.delegate handleNewTabSelectionWithId: subcategoryTapped.uniqueId];
-    [self.delegate handleNewTabSelectionWithName: [NSString stringWithFormat: @"%@ / %@", self.currentTopLevelCategoryName, subcategoryTapped.name]];
+    [self.delegate handleNewTabSelectionWithId: subGenreSelected.uniqueId];
+    [self.delegate handleNewTabSelectionWithGenre: subGenreSelected];
     
     // Log subcategory in Google Analytics
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
@@ -231,11 +231,11 @@
     // TODO: Not sure if we need both of these
     [tracker sendEventWithCategory: @"uiAction"
                         withAction: @"categoryItemClick"
-                         withLabel: subcategoryTapped.name
+                         withLabel: subGenreSelected.name
                          withValue: nil];
     
     [tracker setCustom: kGADimensionCategory
-             dimension: subcategoryTapped.name];
+             dimension: subGenreSelected.name];
 }
 
 

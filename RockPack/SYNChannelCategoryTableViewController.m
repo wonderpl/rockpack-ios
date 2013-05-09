@@ -9,8 +9,8 @@
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNNetworkEngine.h"
-#import "Category.h"
-#import "Subcategory.h"
+#import "Genre.h"
+#import "SubGenre.h"
 #import "SYNChannelCategoryTableCell.h"
 #import "SYNChannelCategoryTableHeader.h"
 #import <QuartzCore/QuartzCore.h>
@@ -96,7 +96,7 @@
 {
     SYNAppDelegate* appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Category"
+    NSEntityDescription* categoryEntity = [NSEntityDescription entityForName: @"Genre"
                                                       inManagedObjectContext: appDelegate.mainManagedObjectContext];
     
     NSFetchRequest *categoriesFetchRequest = [[NSFetchRequest alloc] init];
@@ -130,7 +130,7 @@
     else
     {
         self.transientDatasource = [NSMutableArray arrayWithCapacity:[self.categoriesDatasource count] + 1];
-        for(Category* category in self.categoriesDatasource)
+        for(Genre* category in self.categoriesDatasource)
         {
             NSMutableDictionary* categoryEntry = [NSMutableDictionary dictionaryWithObject:category.name forKey:kCategoryNameKey];
             [self.transientDatasource addObject:categoryEntry];
@@ -165,7 +165,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Subcategory* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] valueForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
+    SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] valueForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
     SYNChannelCategoryTableCell *cell = (SYNChannelCategoryTableCell*) [tableView dequeueReusableCellWithIdentifier:@"SYNChannelCategoryTableCell"];
     cell.titleLabel.text = subCategory.name;
     return cell;
@@ -255,13 +255,14 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Subcategory* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] objectForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
+    SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:indexPath.section] objectForKey:kSubCategoriesKey] objectAtIndex:indexPath.row];
     //Callback to update content
     if(!self.confirmButton)
     {
-        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
+        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
         {
-            [self.categoryTableControllerDelegate categoryTableController:self didSelectSubCategoryWithId:subCategory.uniqueId categoryTitle:subCategory.category.name subCategoryTitle:subCategory.name];
+            [self.categoryTableControllerDelegate categoryTableController:self
+                                                     didSelectSubCategory:subCategory];
         }
     }
     else
@@ -327,9 +328,9 @@
     else
     {
         self.lastSelectedIndexpath = nil;
-        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategoryWithId:title:)])
+        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
         {
-            [self.categoryTableControllerDelegate categoryTableController:self didSelectCategoryWithId:@"all" title:NSLocalizedString(@"ALL CATEGORIES", nil)];
+            [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:nil];
         }
         
     }
@@ -347,9 +348,9 @@
 -(void)expandSection:(NSInteger)section
 {
     NSMutableDictionary* sectionDictionary = [self.transientDatasource objectAtIndex:section];
-    Category * category = [self.categoriesDatasource objectAtIndex:section];
+    Genre * category = [self.categoriesDatasource objectAtIndex:section];
     NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    NSArray* newSubCategories = [category.subcategories sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    NSArray* newSubCategories = [category.subgenres sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [sectionDictionary setObject:newSubCategories forKey:kSubCategoriesKey];
     [self.transientDatasource replaceObjectAtIndex:section withObject:sectionDictionary];
     NSMutableArray* indexPaths = [NSMutableArray arrayWithCapacity:[newSubCategories count]];
@@ -368,9 +369,9 @@
     } completion:nil];
     
     //Callback to update content
-    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategoryWithId:title:)])
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
     {
-        [self.categoryTableControllerDelegate categoryTableController:self didSelectCategoryWithId:category.uniqueId title:category.name];
+        [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
     }
     self.lastSelectedIndexpath = [NSIndexPath indexPathForRow:-1 inSection:section];
 }
@@ -425,10 +426,11 @@
     
 }
 - (IBAction)confirmButtonTapped:(id)sender {
-    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
     {
-        Subcategory* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
-        [self.categoryTableControllerDelegate categoryTableController:self didSelectSubCategoryWithId:subCategory.uniqueId categoryTitle:subCategory.category.name subCategoryTitle:subCategory.name];
+        SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
+        [self.categoryTableControllerDelegate categoryTableController:self
+                                           didSelectSubCategory:subCategory];
     }
     
 }

@@ -10,6 +10,7 @@
 #import "ChannelCover.h"
 #import "ChannelOwner.h"
 #import "GKImagePicker.h"
+#import "Genre.h"
 #import "SSTextView.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNCameraPopoverViewController.h"
@@ -27,6 +28,7 @@
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "SubGenre.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
@@ -148,7 +150,7 @@
     
     if (isIPhone)
     {
-        layout.sectionInset = UIEdgeInsetsMake(0.0f, 2.0f, 0.0f, 2.0f);
+        layout.sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
         self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsMake([[SYNDeviceManager sharedInstance] currentScreenHeight] - 110.0f, 0.0f, 0.0f, 0.0f);
     }
     else
@@ -1082,9 +1084,9 @@
     self.selectedCategoryId = itemId;
 }
 
-- (void) handleNewTabSelectionWithName: (NSString*) name
+- (void) handleNewTabSelectionWithGenre: (Genre*) genre
 {
-    [self updateCategoryButtonText: name];
+    [self updateCategoryButtonText: genre.name];
 }
 
 
@@ -1385,6 +1387,8 @@
                                               {
                                                   DebugLog(@"Failed to get wallpaper URL");
                                               }
+                                              
+                                              self.selectedCoverId = [dictionary objectForKey:@"cover_refpink"];
                                           }
                                                errorHandler: ^(NSError* error) {
                                                    DebugLog(@"%@", [error debugDescription]);
@@ -1438,14 +1442,11 @@
 
 #pragma mark - iPhone Category Table delegate
 
-- (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
-      didSelectSubCategoryWithId: (NSString *) uniqueId
-                   categoryTitle: (NSString *)categoryTitle
-                subCategoryTitle: (NSString *) subCategoryTitle
+- (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
-    self.selectedCategoryId = uniqueId;
+    self.selectedCategoryId = subCategory.uniqueId;
     
-    [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", categoryTitle, subCategoryTitle]
+    [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]
                                forState: UIControlStateNormal];
     
     [self hideCategoriesTable];

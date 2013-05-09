@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "Category.h"
+#import "Genre.h"
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "NSDictionary+Validation.h"
@@ -119,14 +119,14 @@
     
     // We need to mark all of our existing Category objects corresponding to this viewId, just in case they are no longer required
     // and should be removed in a post-import cleanup
-    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Category"
+    NSArray *existingObjectsInViewId = [self markManagedObjectForPossibleDeletionWithEntityName: @"Genre"
                                                                                       andViewId: nil
                                                                          inManagedObjectContext: importManagedObjectContext];
     
     // === Main Processing === //
     for (NSDictionary *categoryDictionary in itemArray)
         if ([categoryDictionary isKindOfClass: [NSDictionary class]])
-            [Category instanceFromDictionary: categoryDictionary
+            [Genre instanceFromDictionary: categoryDictionary
                    usingManagedObjectContext: importManagedObjectContext];
     
     // == =============== == //

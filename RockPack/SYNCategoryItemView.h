@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
-#import "TabItem.h"
 #import <UIKit/UIKit.h>
+
+@class Genre;
 
 typedef enum {
     TabItemTypeMain,
@@ -23,7 +24,7 @@ typedef enum {
 @property (nonatomic, strong) UIImageView* glowImageView;
 @property (nonatomic, strong) UILabel* label;
 
-- (id) initWithTabItemModel: (TabItem*) tabItemModel;
+- (id) initWithTabItemModel: (Genre*) tabItemModel;
 
 - (id) initWithLabel: (NSString *) label
               andTag: (int) tag;

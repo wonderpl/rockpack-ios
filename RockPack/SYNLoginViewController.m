@@ -38,7 +38,6 @@
 @property (nonatomic, strong) IBOutlet UIButton* registerNewUserButton;
 @property (nonatomic, strong) IBOutlet UIButton* sendEmailButton;
 @property (nonatomic, strong) IBOutlet UIButton* signUpButton;
-@property (nonatomic, strong) IBOutlet UIImage* avatarImage;
 @property (nonatomic, strong) IBOutlet UIImageView* dividerImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* titleImageView;
 @property (nonatomic, strong) IBOutlet UIImageView* avatarImageView;
