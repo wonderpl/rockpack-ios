@@ -259,12 +259,10 @@
     //Callback to update content
     if(!self.confirmButton)
     {
-        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
+        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
         {
             [self.categoryTableControllerDelegate categoryTableController:self
-                                               didSelectSubCategoryWithId:subCategory.uniqueId
-                                                            categoryTitle:subCategory.genre.name
-                                                         subCategoryTitle:subCategory.name];
+                                                     didSelectSubCategory:subCategory];
         }
     }
     else
@@ -330,9 +328,9 @@
     else
     {
         self.lastSelectedIndexpath = nil;
-        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategoryWithId:title:)])
+        if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
         {
-            [self.categoryTableControllerDelegate categoryTableController:self didSelectCategoryWithId:@"all" title:NSLocalizedString(@"ALL CATEGORIES", nil)];
+            [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:nil];
         }
         
     }
@@ -371,9 +369,9 @@
     } completion:nil];
     
     //Callback to update content
-    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategoryWithId:title:)])
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectCategory:)])
     {
-        [self.categoryTableControllerDelegate categoryTableController:self didSelectCategoryWithId:category.uniqueId title:category.name];
+        [self.categoryTableControllerDelegate categoryTableController:self didSelectCategory:category];
     }
     self.lastSelectedIndexpath = [NSIndexPath indexPathForRow:-1 inSection:section];
 }
@@ -428,13 +426,11 @@
     
 }
 - (IBAction)confirmButtonTapped:(id)sender {
-    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategoryWithId:categoryTitle:subCategoryTitle:)])
+    if([self.categoryTableControllerDelegate respondsToSelector:@selector(categoryTableController:didSelectSubCategory:)])
     {
         SubGenre* subCategory = [[[self.transientDatasource objectAtIndex:self.lastSelectedIndexpath.section] objectForKey:kSubCategoriesKey] objectAtIndex:self.lastSelectedIndexpath.row];
         [self.categoryTableControllerDelegate categoryTableController:self
-                                           didSelectSubCategoryWithId:subCategory.uniqueId
-                                                        categoryTitle:subCategory.genre.name
-                                                     subCategoryTitle:subCategory.name];
+                                           didSelectSubCategory:subCategory];
     }
     
 }

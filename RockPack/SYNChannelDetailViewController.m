@@ -27,6 +27,7 @@
 #import "SYNChannelCategoryTableViewController.h"
 #import "SYNChannelCoverImageSelectorViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "SubGenre.h"
 
 @interface SYNChannelDetailViewController () <UITextViewDelegate,
                                               GKImagePickerDelegate,
@@ -1438,14 +1439,11 @@
 
 #pragma mark - iPhone Category Table delegate
 
-- (void) categoryTableController: (SYNChannelCategoryTableViewController *) tableController
-      didSelectSubCategoryWithId: (NSString *) uniqueId
-                   categoryTitle: (NSString *)categoryTitle
-                subCategoryTitle: (NSString *) subCategoryTitle
+- (void) categoryTableController:(SYNChannelCategoryTableViewController *)tableController didSelectSubCategory:(SubGenre *)subCategory
 {
-    self.selectedCategoryId = uniqueId;
+    self.selectedCategoryId = subCategory.uniqueId;
     
-    [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", categoryTitle, subCategoryTitle]
+    [self.selectCategoryButton setTitle: [NSString stringWithFormat:@"%@/\n%@", subCategory.genre.name, subCategory.name]
                                forState: UIControlStateNormal];
     
     [self hideCategoriesTable];
