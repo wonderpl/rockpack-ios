@@ -147,6 +147,7 @@
 		015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */; };
 		015487D116DCE35D002A41A2 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015487D016DCE35D002A41A2 /* FacebookSDK.framework */; };
 		015487D316DCE399002A41A2 /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 015487D216DCE399002A41A2 /* FacebookSDKResources.bundle */; };
+		015C13C1173B034C001569FE /* SYNReportConcernTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */; };
 		015CB01616AE039900FEB8E7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01516AE039900FEB8E7 /* User.m */; };
 		015CB01916AE03B200FEB8E7 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01816AE03B200FEB8E7 /* _User.m */; };
 		015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CEE3E16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m */; };
@@ -1142,6 +1143,8 @@
 		015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNVideoPlaybackViewController.m; sourceTree = "<group>"; };
 		015487D016DCE35D002A41A2 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		015487D216DCE399002A41A2 /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
+		015C13BF173B034C001569FE /* SYNReportConcernTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNReportConcernTableViewController.h; sourceTree = "<group>"; };
+		015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNReportConcernTableViewController.m; sourceTree = "<group>"; };
 		015CB01416AE039900FEB8E7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		015CB01516AE039900FEB8E7 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		015CB01716AE03B200FEB8E7 /* _User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _User.h; sourceTree = "<group>"; };
@@ -2527,6 +2530,15 @@
 				01ABBAD5172002E6007E4462 /* ChannelDetailOverlayBackground@2x.png */,
 			);
 			name = "Channel viewer";
+			sourceTree = "<group>";
+		};
+		015C13BE173B02D8001569FE /* Report Concerns */ = {
+			isa = PBXGroup;
+			children = (
+				015C13BF173B034C001569FE /* SYNReportConcernTableViewController.h */,
+				015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */,
+			);
+			name = "Report Concerns";
 			sourceTree = "<group>";
 		};
 		01677DDA1655491100B1B1D8 /* Networking */ = {
@@ -4167,6 +4179,7 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				015C13BE173B02D8001569FE /* Report Concerns */,
 				38BACE8B173AB4C300406597 /* ChannelCoverImageSelector */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				011C1650173002D000CF50B9 /* Activity controller */,
@@ -5230,6 +5243,7 @@
 				012B4C9D17393A080019DA4C /* SYNPopoverBackgroundView.m in Sources */,
 				38BACE92173AB4E600406597 /* SYNChannelCoverImageCell.m in Sources */,
 				38BACE94173AB4E600406597 /* SYNChannelCoverImageSelectorViewController.m in Sources */,
+				015C13C1173B034C001569FE /* SYNReportConcernTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

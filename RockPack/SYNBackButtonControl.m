@@ -10,18 +10,15 @@
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
 
-@implementation SYNBackButtonControl
+#define USE_TITLE_STRING__
 
+@implementation SYNBackButtonControl
 
 
 -(id)init
 {
     if (self = [super init])
     {
-        
-        
-        
-        
         // == Over Button == //
         
         UIImage* normalImage = [UIImage imageNamed:@"ButtonBack"];
@@ -34,6 +31,7 @@
         button.frame = CGRectMake(0.0, 0.0, normalImage.size.width, normalImage.size.height);
         [self addSubview:button];
         
+#ifdef USE_TITLE_STRING
         if([[SYNDeviceManager sharedInstance] isIPad])
         {
             // == UIView == //
@@ -44,11 +42,7 @@
             titleBGRect.origin.x = button.frame.origin.x + button.frame.size.width;
             titleBGRect.size.height = button.frame.size.height;
             titleBGView.frame = titleBGRect;
-            
-            
-            
-            
-            
+
             // == UILabel == //
             
             titleLabel = [[UILabel alloc] init];
@@ -62,10 +56,10 @@
             titleLabel.backgroundColor = [UIColor clearColor];
             [titleBGView addSubview:titleLabel];
             
-            self.frame = button.frame;
             [self addSubview:titleBGView];
         }
-        
+#endif        
+        self.frame = button.frame;  
     }
     
     return self;
@@ -97,6 +91,7 @@
 
 -(void)setBackTitle:(NSString*)backTitle
 {
+#ifdef USE_TITLE_STRING
     NSString* upperTitle = [backTitle uppercaseString];
     CGSize titleSize = [upperTitle sizeWithFont:titleLabel.font];
     CGRect titleLabelRect = titleLabel.frame;
@@ -119,6 +114,7 @@
     overButtonFrame.origin = self.frame.origin;
     
     self.frame = overButtonFrame;
+#endif
 }
 
 
